@@ -1,21 +1,22 @@
 import { useState } from 'react'
 import { Paper, Stack, Typography, TextField, Button } from '@mui/material'
+import Router from "next/router";
 
-export default function AddFight({ endpoint }) {
+export default function AddFight({ endpoint }: any) {
   const [fight, setFight] = useState({name: ''})
   const [saving, setSaving] = useState(false);
 
-  const handleChange = (event) => {
+  const handleChange = (event: any) => {
     setFight({ name: event.target.value })
   }
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = async (event: any) => {
     setSaving(true)
     event.preventDefault()
     const JSONdata = JSON.stringify({"fight": fight})
     console.log(JSONdata)
     // Form the request for sending data to the server.
-    const options = {
+    const options: RequestInit = {
       // The method is POST because we are sending data.
       method: 'POST',
       mode: 'cors',
@@ -31,6 +32,7 @@ export default function AddFight({ endpoint }) {
     console.log(result)
     setSaving(false)
     cancelForm()
+    Router.reload()
   }
 
   const cancelForm = () => {
