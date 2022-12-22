@@ -22,7 +22,7 @@ export async function getServerSideProps(context: any) {
 }
 
 export default function Home({ fights, endpoint }: any) {
-  async function deleteFight(fight) {
+  async function deleteFight(fight: any) {
     const response = await fetch(`${endpoint}/${fight.id}`, {
       method: 'DELETE'
     })
