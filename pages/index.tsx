@@ -5,7 +5,7 @@ import { Container, List, ListItem, ListItemText, Typography } from '@mui/materi
 
 const inter = Inter({ subsets: ['latin'] })
 
-export async function getServerSideProps(context: any) {
+export async function getStaticProps(context: any) {
   console.log(process.env.SERVER_URL)
   const res = await fetch(`${process.env.SERVER_URL}/api/v1/fights`)
   const fights = await res.json()
