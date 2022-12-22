@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import Image from 'next/image'
 import { Inter } from '@next/font/google'
-import { Container, List, ListItem, ListItemText, Typography } from '@mui/material'
+import { Paper, Container, Table, TableContainer, TableBody, TableHead, TableRow, TableCell, Typography } from '@mui/material'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -26,16 +26,36 @@ export default function Home({ fights }: any) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <Typography variant="h1" gutterBottom>Shot Counter</Typography>
-        <List>
-          {fights.map((fight: any) => {
-            return (
-              <ListItem key={fight.id}>
-                <ListItemText>{fight.name}</ListItemText>
-              </ListItem>
-            )
-          })}
-        </List>
+        <Container maxWidth="sm">
+          <Typography variant="h1" gutterBottom>Shot Counter</Typography>
+          <TableContainer component={Paper}>
+            <Table sx={{ minWidth: 650 }} aria-label="simple table">
+              <TableHead>
+                <TableRow>
+                  <TableCell>Fight</TableCell>
+                  <TableCell></TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {fights.map((fight: any) => {
+                  return (
+                    <TableRow
+                      key={fight.id}
+                      sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                    >
+                      <TableCell component="th" scope="row">
+                        {fight.name}
+                      </TableCell>
+                      <TableCell component="th" scope="row">
+                        X
+                      </TableCell>
+                    </TableRow>
+                  )
+                })}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Container>
       </main>
     </>
   )
