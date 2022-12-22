@@ -5,7 +5,7 @@ import { Paper, Container, Table, TableContainer, TableBody, TableHead, TableRow
 
 const inter = Inter({ subsets: ['latin'] })
 
-export async function getStaticProps(context: any) {
+export async function getServerSideProps(context: any) {
   console.log(process.env.SERVER_URL)
   const res = await fetch(`${process.env.SERVER_URL}/api/v1/fights`)
   const fights = await res.json()
