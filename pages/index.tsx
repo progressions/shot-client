@@ -1,8 +1,10 @@
 import Head from 'next/head'
 import Image from 'next/image'
 import { Inter } from '@next/font/google'
-import { Paper, Container, Table, TableContainer, TableBody, TableHead, TableRow, TableCell, Typography } from '@mui/material'
+import { Button, Paper, Container, Table, TableContainer, TableBody, TableHead, TableRow, TableCell, Typography } from '@mui/material'
 import AddFight from '../lib/AddFight'
+import DeleteIcon from '@mui/icons-material/Delete'
+import Router from "next/router";
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -20,6 +22,15 @@ export async function getServerSideProps(context: any) {
 }
 
 export default function Home({ fights, endpoint }: any) {
+  async function deleteFight(fight) {
+    const response = await fetch(`${endpoint}/${fight.id}`, {
+      method: 'DELETE'
+    })
+    if (response.status === 200) {
+      Router.reload()
+    }
+  }
+
   return (
     <>
       <Head>
@@ -51,7 +62,9 @@ export default function Home({ fights, endpoint }: any) {
                         {fight.name}
                       </TableCell>
                       <TableCell component="th" scope="row">
-                        X
+                        <Button onClick={() => deleteFight(fight)}>
+                          <DeleteIcon />
+                        </Button>
                       </TableCell>
                     </TableRow>
                   )
