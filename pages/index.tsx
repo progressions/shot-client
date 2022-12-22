@@ -5,14 +5,9 @@ import { Container, List, ListItem, ListItemText, Typography } from '@mui/materi
 
 const inter = Inter({ subsets: ['latin'] })
 
-export async function getServerSideProps({ req, res }: any) {
-  res.setHeader(
-    'Cache-Control',
-    'public, s-maxage=10, stale-while-revalidate=10'
-  )
-
+export async function getServerSideProps(context: any) {
   console.log(process.env.SERVER_URL)
-  res = await fetch(`${process.env.SERVER_URL}/api/v1/fights`)
+  const res = await fetch(`${process.env.SERVER_URL}/api/v1/fights`)
   const fights = await res.json()
   return {
     props: {
@@ -31,18 +26,16 @@ export default function Home({ fights }: any) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <Container>
-          <Typography variant="h1" gutterBottom>Shot Counter</Typography>
-          <List>
-            {fights.map((fight: any) => {
-              return (
-                <ListItem key={fight.id}>
-                  <ListItemText>{fight.name}</ListItemText>
-                </ListItem>
-              )
-            })}
-          </List>
-        </Container>
+        <Typography variant="h1" gutterBottom>Shot Counter</Typography>
+        <List>
+          {fights.map((fight: any) => {
+            return (
+              <ListItem key={fight.id}>
+                <ListItemText>{fight.name}</ListItemText>
+              </ListItem>
+            )
+          })}
+        </List>
       </main>
     </>
   )
