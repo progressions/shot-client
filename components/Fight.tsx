@@ -23,10 +23,10 @@ export default function Fight({ fight, endpoint }: any) {
         </Link>
       </TableCell>
       <TableCell>
-        {fight.characters.length}
+        {fight.characters?.length}
       </TableCell>
       <TableCell>
-        {fight.shot_order && fight.shot_order[0] && fight.shot_order[0][0] || ''}
+        {fight.shot_order?.[0]?.[0] || ''}
       </TableCell>
       <TableCell component="th" scope="row">
         <Button onClick={() => deleteFight(fight)}>
