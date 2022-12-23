@@ -1,7 +1,17 @@
 import { Button, TableRow, TableCell } from '@mui/material'
 import DeleteIcon from '@mui/icons-material/Delete'
+import Router from "next/router";
 
-export default function Fight({ fight }: any) {
+export default function Fight({ fight, endpoint }: any) {
+  async function deleteFight(fight: any) {
+    const response = await fetch(`${endpoint}/${fight.id}`, {
+      method: 'DELETE'
+    })
+    if (response.status === 200) {
+      Router.reload()
+    }
+  }
+
   return (
     <TableRow
       key={fight.id}

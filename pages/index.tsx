@@ -23,15 +23,6 @@ export async function getServerSideProps(context: any) {
 }
 
 export default function Home({ fights, endpoint }: any) {
-  async function deleteFight(fight: any) {
-    const response = await fetch(`${endpoint}/${fight.id}`, {
-      method: 'DELETE'
-    })
-    if (response.status === 200) {
-      Router.reload()
-    }
-  }
-
   return (
     <>
       <Head>
@@ -53,7 +44,7 @@ export default function Home({ fights, endpoint }: any) {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {fights.map((fight: any) => <Fight fight={fight} />)}
+                {fights.map((fight: any) => <Fight fight={fight} key={fight.id} endpoint={endpoint} />)}
               </TableBody>
             </Table>
           </TableContainer>
