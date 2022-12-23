@@ -1,11 +1,10 @@
 import Head from 'next/head'
 import Image from 'next/image'
 import { Inter } from '@next/font/google'
-import { Button, Paper, Container, Table, TableContainer, TableBody, TableHead, TableRow, TableCell, Typography } from '@mui/material'
+import { Link, Button, Paper, Container, Table, TableContainer, TableBody, TableHead, TableRow, TableCell, Typography } from '@mui/material'
 import AddFight from '../lib/AddFight'
 import Fight from '../lib/Fight'
 import Router from 'next/router'
-import Link from 'next/link'
 
 const inter = Inter({ subsets: ['latin'] })
 

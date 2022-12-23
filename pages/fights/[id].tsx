@@ -5,10 +5,8 @@ import { Paper, Container, Typography } from '@mui/material'
 export async function getServerSideProps(context: any) {
   const endpoint = `${process.env.SERVER_URL}/api/v1/fights`
   const { id } = context.params
-  console.log(id)
   const res = await fetch(`${endpoint}/${id}`)
   const fight = await res.json()
-  console.log(fight)
   return {
     props: {
       fight: fight,

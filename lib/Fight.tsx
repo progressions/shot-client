@@ -1,7 +1,6 @@
-import { Button, TableRow, TableCell } from '@mui/material'
+import { Link, Button, TableRow, TableCell } from '@mui/material'
 import DeleteIcon from '@mui/icons-material/Delete'
 import Router from 'next/router'
-import Link from 'next/link'
 
 export default function Fight({ fight, endpoint }: any) {
   async function deleteFight(fight: any) {
