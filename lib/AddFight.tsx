@@ -42,7 +42,7 @@ export default function AddFight({ endpoint }: any) {
   return (
     <>
       <Typography variant="h4">Add fight</Typography>
-      <Paper sx="padding: 1em">
+      <Paper sx={{"padding": "1em"}}>
         <Stack spacing={1}>
           <form onSubmit={handleSubmit}>
             <TextField label="Fight" required name="name" value={fight.name} onChange={handleChange} />

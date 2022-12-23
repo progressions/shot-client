@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router'
 import { useState } from 'react'
+import { Paper, Container, Typography } from '@mui/material'
 
 export async function getServerSideProps(context: any) {
   const endpoint = `${process.env.SERVER_URL}/api/v1/fights`
@@ -21,8 +22,10 @@ export default function Fight({ fight }: any) {
   const { id } = router.query
   return (
     <>
-      <h1>{fight.name}</h1>
-      <p>Created {fight.created_at}</p>
+      <Container maxWidth="sm">
+        <Typography variant="h1">{fight.name}</Typography>
+        <Typography variant="h6">Created {fight.created_at}</Typography>
+      </Container>
     </>
   )
 }
