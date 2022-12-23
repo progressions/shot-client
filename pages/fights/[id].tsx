@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router'
 import { useState } from 'react'
-import { Paper, Container, Typography } from '@mui/material'
+import { Table, TableContainer, TableBody, TableRow, TableHead, TableCell, Paper, Container, Typography } from '@mui/material'
 import Layout from '../../components/Layout'
 import Shot from '../../components/Shot'
 import AddCharacter from '../../components/AddCharacter'
@@ -37,9 +37,13 @@ export default function Fight({ fight, endpoint }: any) {
           <Typography variant="h1">{fight.name}</Typography>
           <Typography variant="h6">Created {fight.created_at}</Typography>
           <AddCharacter fight={fight} endpoint={endpoint} />
-          <List>
-            {fight.shot_order.map(([shot, chars]: any) => <Shot key={shot} shot={shot} characters={chars} />)}
-          </List>
+          <TableContainer component={Paper}>
+            <Table aria-label="simple table">
+              <TableBody>
+                {fight.shot_order.map(([shot, chars]: any) => <Shot key={shot} shot={shot} characters={chars} />)}
+              </TableBody>
+            </Table>
+          </TableContainer>
         </Container>
       </Layout>
     </>

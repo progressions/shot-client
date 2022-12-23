@@ -1,18 +1,22 @@
-import List from '@mui/material/List'
-import ListItem from '@mui/material/ListItem'
-import ListItemText from '@mui/material/ListItemText'
+import TableRow from '@mui/material/TableRow'
+import TableCell from '@mui/material/TableCell'
+import Typography from '@mui/material/Typography'
 
 export default function Shot({ shot, characters }: any) {
   return (
     <>
-      <ListItem key={shot}>
-        <ListItemText primary={shot} key={shot} />
-      </ListItem>
+      <TableRow key={shot}>
+        <TableCell key={shot}>
+          <Typography variant="h3">{shot || 0}</Typography>
+        </TableCell>
+      </TableRow>
       {characters.map((character: any) => {
         return (
-          <ListItem key={character.id}>
-            <ListItemText key={character.id} primary={character.name} />
-          </ListItem>
+          <TableRow key={character.id}>
+            <TableCell>
+              {character.name}
+            </TableCell>
+          </TableRow>
         )
       })}
     </>

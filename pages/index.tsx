@@ -37,7 +37,7 @@ export default function Home({ fights, endpoint }: any) {
             <Typography variant="h1" gutterBottom>Shot Counter</Typography>
             <AddFight endpoint={endpoint} />
             <TableContainer component={Paper}>
-              <Table sx={{ minWidth: 650 }} aria-label="simple table">
+              <Table aria-label="simple table">
                 <TableHead>
                   <TableRow>
                     <TableCell>Fight</TableCell>
