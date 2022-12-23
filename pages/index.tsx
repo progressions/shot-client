@@ -2,8 +2,9 @@ import Head from 'next/head'
 import Image from 'next/image'
 import { Inter } from '@next/font/google'
 import { Link, Button, Paper, Container, Table, TableContainer, TableBody, TableHead, TableRow, TableCell, Typography } from '@mui/material'
-import AddFight from '../lib/AddFight'
-import Fight from '../lib/Fight'
+import AddFight from '../components/AddFight'
+import Fight from '../components/Fight'
+import Layout from '../components/Layout'
 import Router from 'next/router'
 
 const inter = Inter({ subsets: ['latin'] })
@@ -31,23 +32,25 @@ export default function Home({ fights, endpoint }: any) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <Container maxWidth="sm">
-          <Typography variant="h1" gutterBottom>Shot Counter</Typography>
-          <AddFight endpoint={endpoint} />
-          <TableContainer component={Paper}>
-            <Table sx={{ minWidth: 650 }} aria-label="simple table">
-              <TableHead>
-                <TableRow>
-                  <TableCell>Fight</TableCell>
-                  <TableCell></TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {fights.map((fight: any) => <Fight fight={fight} key={fight.id} endpoint={endpoint} />)}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </Container>
+        <Layout>
+          <Container maxWidth="sm">
+            <Typography variant="h1" gutterBottom>Shot Counter</Typography>
+            <AddFight endpoint={endpoint} />
+            <TableContainer component={Paper}>
+              <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Fight</TableCell>
+                    <TableCell></TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {fights.map((fight: any) => <Fight fight={fight} key={fight.id} endpoint={endpoint} />)}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Container>
+        </Layout>
       </main>
     </>
   )
