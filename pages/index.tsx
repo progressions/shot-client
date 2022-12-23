@@ -41,6 +41,8 @@ export default function Home({ fights, endpoint }: any) {
                 <TableHead>
                   <TableRow>
                     <TableCell>Fight</TableCell>
+                    <TableCell>Characters</TableCell>
+                    <TableCell>Shot</TableCell>
                     <TableCell></TableCell>
                   </TableRow>
                 </TableHead>
