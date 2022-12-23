@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Paper, Stack, Typography, TextField, Button } from '@mui/material'
-import Router from "next/router";
+import Router from "next/router"
 
 export default function AddFight({ endpoint }: any) {
   const [fight, setFight] = useState({name: ''})
