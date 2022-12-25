@@ -40,7 +40,7 @@ export default function AddFight({ endpoint }: any) {
   return (
     <>
       <Box m={1} mb={4} component="form" onSubmit={handleSubmit}>
-        <Typography variant="h4">Add fight</Typography>
+        <Typography variant="h4">Add Fight</Typography>
         <Stack spacing={1}>
           <Stack>
             <TextField label="Fight" required name="name" value={fight.name} onChange={handleChange} />

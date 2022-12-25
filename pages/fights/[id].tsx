@@ -41,7 +41,7 @@ export default function Fight({ fight, endpoint }: any) {
       </Head>
       <Layout>
         <Container maxWidth="md">
-          <Typography variant="h1">{fight.name}</Typography>
+          <Typography variant="h1" gutterBottom>{fight.name}</Typography>
           <AddCharacter fight={fight} endpoint={endpoint} />
           <Typography variant="h2">Shot Counter</Typography>
           <TableContainer>
