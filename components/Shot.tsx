@@ -5,15 +5,6 @@ import Router from "next/router"
 import Character from './Character'
 
 export default function Shot({ fight, endpoint, shot, characters }: any) {
-  async function deleteCharacter(character: any) {
-    const response = await fetch(`${endpoint}/${fight.id}/characters/${character.id}`, {
-      method: 'DELETE'
-    })
-    if (response.status === 200) {
-      Router.reload()
-    }
-  }
-
   return (
     <>
       <TableRow key={shot}>
@@ -24,7 +15,7 @@ export default function Shot({ fight, endpoint, shot, characters }: any) {
       </TableRow>
       {characters.map((character: any) => {
         return (
-          <Character fight={fight} char={character} />
+          <Character endpoint={endpoint} fight={fight} char={character} />
         )
       })}
     </>

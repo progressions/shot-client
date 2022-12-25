@@ -10,8 +10,9 @@ import Dialog from '@mui/material/Dialog'
 import Box from '@mui/material/Box'
 import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
+import Router from "next/router"
 
-export default function Character({ fight, char }: any) {
+export default function Character({ endpoint, fight, char }: any) {
   const [open, setOpen] = useState(false)
   const [saving, setSaving] = useState(false);
   const [character, setCharacter] = useState(char)
@@ -27,10 +28,44 @@ export default function Character({ fight, char }: any) {
     setOpen(false)
   }
 
-  async function handleSubmit() {
+  async function deleteCharacter(character: any) {
+    const response = await fetch(`${endpoint}/${fight.id}/characters/${character.id}`, {
+      method: 'DELETE'
+    })
+    if (response.status === 200) {
+      Router.reload()
+    }
   }
+
+  async function handleSubmit() {
+    setSaving(true)
+    event.preventDefault()
+    const JSONdata = JSON.stringify({"character": character})
+    console.log(JSONdata)
+    // Form the request for sending data to the server.
+    const options: RequestInit = {
+      // The method is POST because we are sending data.
+      method: 'PATCH',
+      mode: 'cors',
+      // Tell the server we're sending JSON.
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      // Body of the request is the JSON data we created above.
+      body: JSONdata,
+    }
+
+    const url = `${endpoint}/${fight.id}/characters/${character.id}`
+    const response = await fetch(url, options)
+    const result = await response.json()
+    console.log(result)
+    setSaving(false)
+    cancelForm()
+    Router.reload()
+  }
+
   const handleChange = (event: any) => {
-    // setCharacter(prevState => ({ ...prevState, [event.target.name]: event.target.value }))
+    setCharacter(prevState => ({ ...prevState, [event.target.name]: event.target.value }))
   }
 
   const defense = character.defense ? `(D${character.defense})` : ''
