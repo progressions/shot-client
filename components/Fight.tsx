@@ -30,7 +30,7 @@ export default function Fight({ fight, endpoint }: any) {
       <TableCell>
         {fight.shot_order?.[0]?.[0] || ''}
       </TableCell>
-      <TableCell component="th" scope="row">
+      <TableCell>
         <IconButton onClick={() => deleteFight(fight)}>
           <DeleteIcon />
         </IconButton>

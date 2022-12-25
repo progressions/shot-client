@@ -47,7 +47,7 @@ export default function Fight({ fight, endpoint }: any) {
           <TableContainer>
             <Table>
               <TableBody>
-                {fight.shot_order.map(([shot, chars]: any) => <Shot key={shot} shot={shot} characters={chars} />)}
+                {fight.shot_order.map(([shot, chars]: any) => <Shot key={shot} shot={shot} characters={chars} endpoint={endpoint} fight={fight} />)}
               </TableBody>
             </Table>
           </TableContainer>

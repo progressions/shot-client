@@ -44,15 +44,17 @@ export default function AddFight({ endpoint }: any) {
   if (adding) {
     return (
       <>
-        <Button variant="outlined" endIcon={<KeyboardDoubleArrowUpIcon />} onClick={() => cancelForm()}>Add Fight</Button>
         <Box m={1} mb={4} component="form" onSubmit={handleSubmit}>
           <Stack spacing={1}>
+            <Stack direction="row" mb={1}>
+              <Button variant="outlined" endIcon={<KeyboardDoubleArrowUpIcon />} onClick={() => cancelForm()}>Add Fight</Button>
+            </Stack>
             <Stack direction="row">
               <Typography variant="h4">Add Fight</Typography>
             </Stack>
             <Stack spacing={1}>
               <Stack>
-                <TextField label="Fight" required name="name" value={fight.name} onChange={handleChange} />
+                <TextField label="Fight" autoFocus required name="name" value={fight.name} onChange={handleChange} />
               </Stack>
               <Stack spacing={2} direction="row">
                 <Button variant="outlined" disabled={saving} onClick={cancelForm}>Cancel</Button>
@@ -66,7 +68,9 @@ export default function AddFight({ endpoint }: any) {
   } else {
     return (
       <>
-        <Button variant="outlined" endIcon={<KeyboardDoubleArrowDownIcon />} onClick={() => setAdding(true)}>Add Fight</Button>
+        <Stack direction="row" mb={1}>
+          <Button variant="outlined" endIcon={<KeyboardDoubleArrowDownIcon />} onClick={() => setAdding(true)}>Add Fight</Button>
+        </Stack>
       </>
     )
   }

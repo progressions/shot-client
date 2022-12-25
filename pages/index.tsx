@@ -34,7 +34,7 @@ export default function Home({ fights, endpoint }: any) {
       <main>
         <Layout>
           <Container maxWidth="md">
-            <Typography variant="h1" gutterBottom>Shot Counter</Typography>
+            <Typography variant="h1" gutterBottom>Fights</Typography>
             <AddFight endpoint={endpoint} />
             <TableContainer>
               <Table>

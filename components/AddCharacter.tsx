@@ -51,14 +51,16 @@ export default function AddCharacter({ fight, endpoint }: any) {
   if (adding) {
     return (
       <>
-        <Button variant="outlined" endIcon={<KeyboardDoubleArrowUpIcon />} onClick={() => cancelForm()}>Add Character</Button>
         <Box m={1} mb={4} component="form" onSubmit={handleSubmit}>
           <Stack spacing={1}>
+            <Stack direction="row" mb={1}>
+              <Button variant="outlined" endIcon={<KeyboardDoubleArrowUpIcon />} onClick={() => cancelForm()}>Add Character</Button>
+            </Stack>
             <Stack direction="row">
               <Typography variant="h4">Add Character</Typography>
             </Stack>
             <Stack direction="row">
-              <TextField label="Name" fullWidth required name="name" value={character.name} onChange={handleChange} />
+              <TextField autoFocus label="Name" fullWidth required name="name" value={character.name} onChange={handleChange} />
             </Stack>
             <Stack spacing={2} direction="row">
               <TextField label="Current Shot" name="current_shot" value={character.current_shot || ''} onChange={handleChange} />
@@ -76,7 +78,9 @@ export default function AddCharacter({ fight, endpoint }: any) {
   } else {
     return (
       <>
-        <Button variant="outlined" endIcon={<KeyboardDoubleArrowDownIcon />} onClick={() => setAdding(true)}>Add Character</Button>
+        <Stack direction="row" mb={1}>
+          <Button variant="outlined" endIcon={<KeyboardDoubleArrowDownIcon />} onClick={() => setAdding(true)}>Add Character</Button>
+        </Stack>
       </>
     )
   }
