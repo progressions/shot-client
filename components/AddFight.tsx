@@ -5,7 +5,7 @@ import KeyboardDoubleArrowDownIcon from '@mui/icons-material/KeyboardDoubleArrow
 import KeyboardDoubleArrowUpIcon from '@mui/icons-material/KeyboardDoubleArrowUp';
 
 export default function AddFight({ endpoint }: any) {
-  const [adding, setAdding] = useState(false)
+  const [open, setOpen] = useState(false)
   const [fight, setFight] = useState({name: ''})
   const [saving, setSaving] = useState(false);
 
@@ -38,10 +38,10 @@ export default function AddFight({ endpoint }: any) {
 
   const cancelForm = () => {
     setFight({name: ''})
-    setAdding(false)
+    setOpen(false)
   }
 
-  if (adding) {
+  if (open) {
     return (
       <>
         <Box m={1} mb={4} component="form" onSubmit={handleSubmit}>
@@ -69,7 +69,7 @@ export default function AddFight({ endpoint }: any) {
     return (
       <>
         <Stack direction="row" mb={1}>
-          <Button variant="outlined" endIcon={<KeyboardDoubleArrowDownIcon />} onClick={() => setAdding(true)}>Add Fight</Button>
+          <Button variant="outlined" endIcon={<KeyboardDoubleArrowDownIcon />} onClick={() => setOpen(true)}>Add Fight</Button>
         </Stack>
       </>
     )

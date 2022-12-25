@@ -15,7 +15,7 @@ export default function Shot({ fight, endpoint, shot, characters }: any) {
       </TableRow>
       {characters.map((character: any) => {
         return (
-          <Character key={character.id} endpoint={endpoint} fight={fight} char={character} />
+          <Character key={character.id} endpoint={endpoint} fight={fight} character={character} />
         )
       })}
     </>
