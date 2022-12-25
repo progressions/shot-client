@@ -37,7 +37,7 @@ export default function Home({ fights, endpoint }: any) {
             <Typography variant="h1" gutterBottom>Fights</Typography>
             <AddFight endpoint={endpoint} />
             <TableContainer>
-              <Table>
+              <Table size="small">
                 <TableHead>
                   <TableRow>
                     <TableCell>Fight</TableCell>
