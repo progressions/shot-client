@@ -4,8 +4,11 @@ import Stack from '@mui/material/Stack'
 import Button from '@mui/material/Button'
 import Router from "next/router"
 import TextField from '@mui/material/TextField'
+import KeyboardDoubleArrowDownIcon from '@mui/icons-material/KeyboardDoubleArrowDown';
+import KeyboardDoubleArrowUpIcon from '@mui/icons-material/KeyboardDoubleArrowUp';
 
 export default function AddCharacter({ fight, endpoint }: any) {
+  const [adding, setAdding] = useState(false)
   const [character, setCharacter] = useState({fight_id: fight.id, name: '', defense: null, current_shot: 0, impairments: null})
   const [saving, setSaving] = useState(false);
 
@@ -42,30 +45,39 @@ export default function AddCharacter({ fight, endpoint }: any) {
 
   const cancelForm = () => {
     setCharacter({fight_id: fight.id, name: '', defense: null, current_shot: 0, impairments: null})
+    setAdding(false)
   }
 
-  return (
-    <>
-      <Box m={1} mb={4} component="form" onSubmit={handleSubmit}>
-        <Stack spacing={1}>
-          <Stack direction="row">
-            <Typography variant="h4">Add Character</Typography>
+  if (adding) {
+    return (
+      <>
+        <Button variant="outlined" endIcon={<KeyboardDoubleArrowUpIcon />} onClick={() => cancelForm()}>Add Character</Button>
+        <Box m={1} mb={4} component="form" onSubmit={handleSubmit}>
+          <Stack spacing={1}>
+            <Stack direction="row">
+              <Typography variant="h4">Add Character</Typography>
+            </Stack>
+            <Stack direction="row">
+              <TextField label="Name" fullWidth required name="name" value={character.name} onChange={handleChange} />
+            </Stack>
+            <Stack spacing={2} direction="row">
+              <TextField label="Current Shot" name="current_shot" value={character.current_shot || ''} onChange={handleChange} />
+              <TextField label="Defense" name="defense" value={character.defense || ''} onChange={handleChange} />
+              <TextField label="Impairments" name="impairments" value={character.impairments || ''} onChange={handleChange} />
+            </Stack>
+            <Stack alignItems="flex-end" spacing={2} direction="row">
+              <Button variant="outlined" disabled={saving} onClick={cancelForm}>Cancel</Button>
+              <Button variant="contained" type="submit" disabled={saving}>Save Changes</Button>
+            </Stack>
           </Stack>
-          <Stack direction="row">
-            <TextField label="Name" fullWidth required name="name" value={character.name} onChange={handleChange} />
-          </Stack>
-          <Stack spacing={2} direction="row">
-            <TextField label="Current Shot" name="current_shot" value={character.current_shot || ''} onChange={handleChange} />
-            <TextField label="Defense" name="defense" value={character.defense || ''} onChange={handleChange} />
-            <TextField label="Impairments" name="impairments" value={character.impairments || ''} onChange={handleChange} />
-          </Stack>
-          <Stack alignItems="flex-end" spacing={2} direction="row">
-            <Button variant="outlined" disabled={saving} onClick={cancelForm}>Cancel</Button>
-            <Button variant="contained" type="submit" disabled={saving}>Save Changes</Button>
-          </Stack>
-        </Stack>
-      </Box>
-    </>
-  )
+        </Box>
+      </>
+    )
+  } else {
+    return (
+      <>
+        <Button variant="outlined" endIcon={<KeyboardDoubleArrowDownIcon />} onClick={() => setAdding(true)}>Add Character</Button>
+      </>
+    )
+  }
 }
-

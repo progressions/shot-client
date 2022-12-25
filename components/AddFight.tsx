@@ -1,8 +1,11 @@
 import { useState } from 'react'
 import { Box, Paper, Stack, Typography, TextField, Button } from '@mui/material'
 import Router from "next/router"
+import KeyboardDoubleArrowDownIcon from '@mui/icons-material/KeyboardDoubleArrowDown';
+import KeyboardDoubleArrowUpIcon from '@mui/icons-material/KeyboardDoubleArrowUp';
 
 export default function AddFight({ endpoint }: any) {
+  const [adding, setAdding] = useState(false)
   const [fight, setFight] = useState({name: ''})
   const [saving, setSaving] = useState(false);
 
@@ -35,26 +38,36 @@ export default function AddFight({ endpoint }: any) {
 
   const cancelForm = () => {
     setFight({name: ''})
+    setAdding(false)
   }
 
-  return (
-    <>
-      <Box m={1} mb={4} component="form" onSubmit={handleSubmit}>
-        <Stack spacing={1}>
-          <Stack direction="row">
-            <Typography variant="h4">Add Fight</Typography>
-          </Stack>
+  if (adding) {
+    return (
+      <>
+        <Button variant="outlined" endIcon={<KeyboardDoubleArrowUpIcon />} onClick={() => cancelForm()}>Add Fight</Button>
+        <Box m={1} mb={4} component="form" onSubmit={handleSubmit}>
           <Stack spacing={1}>
-            <Stack>
-              <TextField label="Fight" required name="name" value={fight.name} onChange={handleChange} />
+            <Stack direction="row">
+              <Typography variant="h4">Add Fight</Typography>
             </Stack>
-            <Stack spacing={2} direction="row">
-              <Button variant="outlined" disabled={saving} onClick={cancelForm}>Cancel</Button>
-              <Button variant="contained" type="submit" disabled={saving}>Save Changes</Button>
+            <Stack spacing={1}>
+              <Stack>
+                <TextField label="Fight" required name="name" value={fight.name} onChange={handleChange} />
+              </Stack>
+              <Stack spacing={2} direction="row">
+                <Button variant="outlined" disabled={saving} onClick={cancelForm}>Cancel</Button>
+                <Button variant="contained" type="submit" disabled={saving}>Save Changes</Button>
+              </Stack>
             </Stack>
           </Stack>
-        </Stack>
-      </Box>
-    </>
-  )
+        </Box>
+      </>
+    )
+  } else {
+    return (
+      <>
+        <Button variant="outlined" endIcon={<KeyboardDoubleArrowDownIcon />} onClick={() => setAdding(true)}>Add Fight</Button>
+      </>
+    )
+  }
 }
