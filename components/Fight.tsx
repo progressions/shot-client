@@ -1,4 +1,4 @@
-import { Link, Button, TableRow, TableCell } from '@mui/material'
+import { Typography, Link, IconButton, TableRow, TableCell } from '@mui/material'
 import DeleteIcon from '@mui/icons-material/Delete'
 import Router from 'next/router'
 
@@ -19,7 +19,9 @@ export default function Fight({ fight, endpoint }: any) {
     >
       <TableCell component="th" scope="row">
         <Link href={`/fights/${fight.id}`}>
-         {fight.name}
+          <Typography>
+           {fight.name}
+          </Typography>
         </Link>
       </TableCell>
       <TableCell>
@@ -29,9 +31,9 @@ export default function Fight({ fight, endpoint }: any) {
         {fight.shot_order?.[0]?.[0] || ''}
       </TableCell>
       <TableCell component="th" scope="row">
-        <Button onClick={() => deleteFight(fight)}>
+        <IconButton onClick={() => deleteFight(fight)}>
           <DeleteIcon />
-        </Button>
+        </IconButton>
       </TableCell>
     </TableRow>
   )

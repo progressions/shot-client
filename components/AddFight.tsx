@@ -40,14 +40,18 @@ export default function AddFight({ endpoint }: any) {
   return (
     <>
       <Box m={1} mb={4} component="form" onSubmit={handleSubmit}>
-        <Typography variant="h4">Add Fight</Typography>
         <Stack spacing={1}>
-          <Stack>
-            <TextField label="Fight" required name="name" value={fight.name} onChange={handleChange} />
+          <Stack direction="row">
+            <Typography variant="h4">Add Fight</Typography>
           </Stack>
-          <Stack spacing={2} direction="row">
-            <Button variant="outlined" disabled={saving} onClick={cancelForm}>Cancel</Button>
-            <Button variant="contained" type="submit" disabled={saving}>Save Changes</Button>
+          <Stack spacing={1}>
+            <Stack>
+              <TextField label="Fight" required name="name" value={fight.name} onChange={handleChange} />
+            </Stack>
+            <Stack spacing={2} direction="row">
+              <Button variant="outlined" disabled={saving} onClick={cancelForm}>Cancel</Button>
+              <Button variant="contained" type="submit" disabled={saving}>Save Changes</Button>
+            </Stack>
           </Stack>
         </Stack>
       </Box>

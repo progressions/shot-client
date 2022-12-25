@@ -7,14 +7,19 @@ export default function Shot({ shot, characters }: any) {
     <>
       <TableRow key={shot}>
         <TableCell key={shot}>
-          <Typography variant="h3">{shot || 0}</Typography>
+          <Typography variant="h4">{shot || 0}</Typography>
         </TableCell>
       </TableRow>
       {characters.map((character: any) => {
         return (
-          <TableRow key={character.id}>
+          <TableRow
+            key={character.id}
+            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+          >
             <TableCell>
-              {character.name}
+              <Typography>
+                {character.name}
+              </Typography>
             </TableCell>
           </TableRow>
         )
