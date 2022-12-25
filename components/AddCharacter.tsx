@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Paper, Container, Typography } from '@mui/material'
+import { Box, Paper, Container, Typography } from '@mui/material'
 import Stack from '@mui/material/Stack'
 import Button from '@mui/material/Button'
 import Router from "next/router"
@@ -46,20 +46,25 @@ export default function AddCharacter({ fight, endpoint }: any) {
 
   return (
     <>
-      <Paper sx={{"padding": "1em"}}>
+      <Box m={1} mb={4} component="form" onSubmit={handleSubmit}>
         <Stack spacing={1}>
-          <form onSubmit={handleSubmit}>
-            <TextField label="Name" required name="name" value={character.name} onChange={handleChange} />
-            <TextField label="Shot" required name="current_shot" value={character.current_shot || ''} onChange={handleChange} />
-            <TextField label="Defense" required name="defense" value={character.defense || ''} onChange={handleChange} />
-            <TextField label="Impairments" required name="impairments" value={character.impairments || ''} onChange={handleChange} />
-            <Stack alignItems="flex-end" spacing={2} direction="row">
-              <Button variant="outlined" disabled={saving} onClick={cancelForm}>Cancel</Button>
-              <Button variant="contained" type="submit" disabled={saving}>Save Changes</Button>
-            </Stack>
-          </form>
+          <Stack direction="row">
+            <Typography variant="h4">Add Character</Typography>
+          </Stack>
+          <Stack direction="row">
+            <TextField label="Name" fullWidth required name="name" value={character.name} onChange={handleChange} />
+          </Stack>
+          <Stack spacing={2} direction="row">
+            <TextField label="Current Shot" name="current_shot" value={character.current_shot || ''} onChange={handleChange} />
+            <TextField label="Defense" name="defense" value={character.defense || ''} onChange={handleChange} />
+            <TextField label="Impairments" name="impairments" value={character.impairments || ''} onChange={handleChange} />
+          </Stack>
+          <Stack alignItems="flex-end" spacing={2} direction="row">
+            <Button variant="outlined" disabled={saving} onClick={cancelForm}>Cancel</Button>
+            <Button variant="contained" type="submit" disabled={saving}>Save Changes</Button>
+          </Stack>
         </Stack>
-      </Paper>
+      </Box>
     </>
   )
 }

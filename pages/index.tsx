@@ -33,11 +33,11 @@ export default function Home({ fights, endpoint }: any) {
       </Head>
       <main>
         <Layout>
-          <Container maxWidth="sm">
+          <Container maxWidth="md">
             <Typography variant="h1" gutterBottom>Shot Counter</Typography>
             <AddFight endpoint={endpoint} />
-            <TableContainer component={Paper}>
-              <Table aria-label="simple table">
+            <TableContainer>
+              <Table>
                 <TableHead>
                   <TableRow>
                     <TableCell>Fight</TableCell>

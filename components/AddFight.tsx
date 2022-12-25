@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Paper, Stack, Typography, TextField, Button } from '@mui/material'
+import { Box, Paper, Stack, Typography, TextField, Button } from '@mui/material'
 import Router from "next/router"
 
 export default function AddFight({ endpoint }: any) {
@@ -14,7 +14,6 @@ export default function AddFight({ endpoint }: any) {
     setSaving(true)
     event.preventDefault()
     const JSONdata = JSON.stringify({"fight": fight})
-    console.log(JSONdata)
     // Form the request for sending data to the server.
     const options: RequestInit = {
       // The method is POST because we are sending data.
@@ -29,7 +28,6 @@ export default function AddFight({ endpoint }: any) {
     }
     const response = await fetch(endpoint, options)
     const result = await response.json()
-    console.log(result)
     setSaving(false)
     cancelForm()
     Router.reload()
@@ -41,18 +39,18 @@ export default function AddFight({ endpoint }: any) {
 
   return (
     <>
-      <Typography variant="h4">Add fight</Typography>
-      <Paper sx={{"padding": "1em"}}>
+      <Box m={1} mb={4} component="form" onSubmit={handleSubmit}>
+        <Typography variant="h4">Add fight</Typography>
         <Stack spacing={1}>
-          <form onSubmit={handleSubmit}>
+          <Stack>
             <TextField label="Fight" required name="name" value={fight.name} onChange={handleChange} />
-            <Stack alignItems="flex-end" spacing={2} direction="row">
-              <Button variant="outlined" disabled={saving} onClick={cancelForm}>Cancel</Button>
-              <Button variant="contained" type="submit" disabled={saving}>Save Changes</Button>
-            </Stack>
-          </form>
+          </Stack>
+          <Stack spacing={2} direction="row">
+            <Button variant="outlined" disabled={saving} onClick={cancelForm}>Cancel</Button>
+            <Button variant="contained" type="submit" disabled={saving}>Save Changes</Button>
+          </Stack>
         </Stack>
-      </Paper>
+      </Box>
     </>
   )
 }

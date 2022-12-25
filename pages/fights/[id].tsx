@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router'
 import { useState } from 'react'
-import { Table, TableContainer, TableBody, TableRow, TableHead, TableCell, Paper, Container, Typography } from '@mui/material'
+import { Divider, Table, TableContainer, TableBody, TableRow, TableHead, TableCell, Paper, Container, Typography } from '@mui/material'
 import Layout from '../../components/Layout'
 import Shot from '../../components/Shot'
 import AddCharacter from '../../components/AddCharacter'
@@ -33,12 +33,12 @@ export default function Fight({ fight, endpoint }: any) {
   return (
     <>
       <Layout>
-        <Container maxWidth="sm">
+        <Container maxWidth="md">
           <Typography variant="h1">{fight.name}</Typography>
-          <Typography variant="h6">Created {fight.created_at}</Typography>
           <AddCharacter fight={fight} endpoint={endpoint} />
-          <TableContainer component={Paper}>
-            <Table aria-label="simple table">
+          <Typography variant="h2">Shot Counter</Typography>
+          <TableContainer>
+            <Table>
               <TableBody>
                 {fight.shot_order.map(([shot, chars]: any) => <Shot key={shot} shot={shot} characters={chars} />)}
               </TableBody>
