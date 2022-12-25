@@ -13,11 +13,8 @@ export default function Fight({ fight, endpoint }: any) {
   }
 
   return (
-    <TableRow
-      key={fight.id}
-      sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-    >
-      <TableCell component="th" scope="row">
+    <TableRow key={fight.id} >
+      <TableCell>
         <Link href={`/fights/${fight.id}`}>
           <Typography>
            {fight.name}
