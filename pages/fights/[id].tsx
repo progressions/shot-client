@@ -1,3 +1,4 @@
+import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { Divider, Table, TableContainer, TableBody, TableRow, TableHead, TableCell, Paper, Container, Typography } from '@mui/material'
@@ -32,6 +33,12 @@ export default function Fight({ fight, endpoint }: any) {
   const { id } = router.query
   return (
     <>
+      <Head>
+        <title>{fight.name}</title>
+        <meta name="description" content="Feng Shui 2 Shot Counter" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
       <Layout>
         <Container maxWidth="md">
           <Typography variant="h1">{fight.name}</Typography>
