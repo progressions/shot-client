@@ -49,8 +49,14 @@ export const authOptions = {
   callbacks: {
     jwt({ token, user, account, isNewUser }) {
       // console.log({ token, user, account, isNewUser })
+      if (user) {
+        token.user = user
+      }
       if (user?.authorization) {
         token.authorization = user.authorization
+      }
+      if (user?.id) {
+        token.id = user.id
       }
       return token
     },
@@ -58,6 +64,12 @@ export const authOptions = {
       // console.log({ session, user, token })
       if (token.authorization) {
         session.authorization = token.authorization
+      }
+      if (token?.id) {
+        session.id = token.id
+      }
+      if (token?.user) {
+        session.user = token.user
       }
       return session
     }

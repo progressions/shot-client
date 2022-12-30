@@ -6,14 +6,19 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
+import MenuItem from '@mui/icons-material/MenuItem';
 import Link from '@mui/material/Link';
 import { useSession } from 'next-auth/react'
 import { useEffect } from 'react'
 import Router from 'next/router'
 import { signIn, signOut } from 'next-auth/react'
+import Avatar from '@mui/material/Avatar';
+import Tooltip from '@mui/material/Tooltip'
+import Stack from '@mui/material/Stack'
 
 export default function Navbar() {
   const { status, data } = useSession()
+  console.log({ data })
   useEffect(() => {
     if (status === "unauthenticated") {
       Router.replace("/auth/signin")
@@ -24,10 +29,12 @@ export default function Navbar() {
     if (status === "authenticated") {
       return (
         <>
-          <Typography>
-            {user?.email}
-          </Typography>
           <Button color="inherit" onClick={() => signOut({ redirect: false })}>Logout</Button>
+          <Tooltip title="Open profile">
+            <IconButton variant="outlined" color="inherit" href="/profile">
+              <Avatar alt="N" src={user.avatar_url} />
+            </IconButton>
+          </Tooltip>
         </>
       )
     }
@@ -50,12 +57,21 @@ export default function Navbar() {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+          <Typography variant="h6" component="div" paddingRight={2} sx={{ minWith: 100 }}>
             <Link color="inherit" href='/'>
               Home
             </Link>
           </Typography>
-          <AuthButton status={status} user={data?.user || {}} />
+          { data?.user?.admin && (
+            <Typography variant="h6" component="div" paddingRight={2} sx={{ minWidth: 100 }}>
+              <Link color="inherit" href='/admin'>
+                Admin
+              </Link>
+            </Typography>
+          )}
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1, textAlign: 'right' }}>
+            <AuthButton status={status} user={data?.user || {}} />
+          </Typography>
         </Toolbar>
       </AppBar>
     </Box>

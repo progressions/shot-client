@@ -46,39 +46,38 @@ export default function Home({ fights, endpoint }: any) {
   const { status, data } = useSession({ required: true })
   if (status !== "authenticated") {
     return <div>Loading...</div>
-  } else {
-    return (
-      <>
-        <Head>
-          <title>Shot Counter</title>
-          <meta name="description" content="Feng Shui 2 Shot Counter" />
-          <meta name="viewport" content="width=device-width, initial-scale=1" />
-          <link rel="icon" href="/favicon.ico" />
-        </Head>
-        <main>
-          <Layout>
-            <Container maxWidth="md">
-              <Typography variant="h1" gutterBottom>Fights</Typography>
-              <AddFight endpoint={endpoint} />
-              <TableContainer>
-                <Table size="small">
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>Fight</TableCell>
-                      <TableCell>Characters</TableCell>
-                      <TableCell>Shot</TableCell>
-                      <TableCell></TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {fights.map((fight: any) => <Fight fight={fight} key={fight.id} endpoint={endpoint} />)}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            </Container>
-          </Layout>
-        </main>
-      </>
-    )
   }
+  return (
+    <>
+      <Head>
+        <title>Shot Counter</title>
+        <meta name="description" content="Feng Shui 2 Shot Counter" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+      <main>
+        <Layout>
+          <Container maxWidth="md">
+            <Typography variant="h1" gutterBottom>Fights</Typography>
+            <AddFight endpoint={endpoint} />
+            <TableContainer>
+              <Table size="small">
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Fight</TableCell>
+                    <TableCell>Characters</TableCell>
+                    <TableCell>Shot</TableCell>
+                    <TableCell></TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {fights.map((fight: any) => <Fight fight={fight} key={fight.id} endpoint={endpoint} />)}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Container>
+        </Layout>
+      </main>
+    </>
+  )
 }
