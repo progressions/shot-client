@@ -20,12 +20,6 @@ export default function Navbar() {
     }
   }, [status])
 
-  if (status !== "authenticated") {
-    return (
-      <p>Loading...</p>
-    )
-  }
-  console.log(data)
   const AuthButton = ({ status, user }: any) => {
     if (status === "authenticated") {
       return (
