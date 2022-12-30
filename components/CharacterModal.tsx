@@ -5,8 +5,12 @@ import Stack from '@mui/material/Stack'
 import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
 import Router from "next/router"
+import { useSession } from 'next-auth/react'
 
 export default function CharacterModal(props: any) {
+  const session: any = useSession({ required: true })
+  const jwt = session?.data?.authorization
+
   const open = props.open
   const setOpen = props.setOpen
   const [saving, setSaving] = useState(false);
@@ -40,6 +44,7 @@ export default function CharacterModal(props: any) {
       // Tell the server we're sending JSON.
       headers: {
         'Content-Type': 'application/json',
+        'Authorization': jwt
       },
       // Body of the request is the JSON data we created above.
       body: JSONdata,

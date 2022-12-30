@@ -14,17 +14,35 @@ import TextField from '@mui/material/TextField'
 import Stack from '@mui/material/Stack'
 import Button from '@mui/material/Button'
 import Router from "next/router"
+import { authOptions } from '../api/auth/[...nextauth]'
+import { unstable_getServerSession } from "next-auth/next"
 
-export async function getServerSideProps(context: any) {
+export async function getServerSideProps({ req, res, params }: any) {
+  const session: any = await unstable_getServerSession(req as any, res as any, authOptions as any)
+  const jwt = session?.authorization
   const endpoint = `${process.env.SERVER_URL}/api/v1/fights`
-  const { id } = context.params
-  const res = await fetch(`${endpoint}/${id}`)
-  const fight = await res.json()
+  const { id } = params
+  const result = await fetch(`${endpoint}/${id}`, {
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': jwt
+    }
+  })
+  if (result.status === 200) {
+    const fight = await result.json()
+    return {
+      props: {
+        fight: fight,
+        endpoint: endpoint,
+        signedIn: true
+      }, // will be passed to the page component as props
+    }
+  }
   return {
     props: {
-      fight: fight,
       endpoint: endpoint,
-    }, // will be passed to the page component as props
+      signedIn: false
+    }
   }
 }
 

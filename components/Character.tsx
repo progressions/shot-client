@@ -8,8 +8,12 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete'
 import Router from "next/router"
 import CharacterModal from './CharacterModal'
+import { useSession } from 'next-auth/react'
 
 export default function Character(props: any) {
+  const session: any = useSession({ required: true })
+  const jwt = session?.data?.authorization
+
   const { endpoint, fight } = props
   const initialCharacter = props.character
   const [character, setCharacter] = useState(initialCharacter)
@@ -17,7 +21,11 @@ export default function Character(props: any) {
 
   async function deleteCharacter(character: any) {
     const response = await fetch(`${endpoint}/${fight.id}/characters/${character.id}`, {
-      method: 'DELETE'
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': jwt
+      }
     })
     if (response.status === 200) {
       Router.reload()

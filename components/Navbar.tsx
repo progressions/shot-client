@@ -7,8 +7,24 @@ import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import Link from '@mui/material/Link';
+import { useSession } from 'next-auth/react'
+import { useEffect } from 'react'
+import Router from 'next/router'
 
 export default function Navbar() {
+  const { status, data } = useSession()
+  useEffect(() => {
+    if (status === "unauthenticated") {
+      Router.replace("/auth/signin")
+    }
+  }, [status])
+
+  if (status !== "authenticated") {
+    return (
+      <p>Loading...</p>
+    )
+  }
+  console.log(data)
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
@@ -27,7 +43,10 @@ export default function Navbar() {
               Home
             </Link>
           </Typography>
-          <Button color="inherit">Login</Button>
+          <Typography>{status}</Typography>
+          { status !== "authenticated" &&
+            <Button color="inherit">Login</Button>
+          }
         </Toolbar>
       </AppBar>
     </Box>

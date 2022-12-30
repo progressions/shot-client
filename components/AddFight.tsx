@@ -3,8 +3,12 @@ import { Box, Paper, Stack, Typography, TextField, Button } from '@mui/material'
 import Router from "next/router"
 import KeyboardDoubleArrowDownIcon from '@mui/icons-material/KeyboardDoubleArrowDown';
 import KeyboardDoubleArrowUpIcon from '@mui/icons-material/KeyboardDoubleArrowUp';
+import { useSession } from 'next-auth/react'
 
 export default function AddFight({ endpoint }: any) {
+  const session: any = useSession({ required: true })
+  const jwt = session?.data?.authorization
+
   const [open, setOpen] = useState(false)
   const [fight, setFight] = useState({name: ''})
   const [saving, setSaving] = useState(false);
@@ -25,6 +29,7 @@ export default function AddFight({ endpoint }: any) {
       // Tell the server we're sending JSON.
       headers: {
         'Content-Type': 'application/json',
+        'Authorization': jwt
       },
       // Body of the request is the JSON data we created above.
       body: JSONdata,

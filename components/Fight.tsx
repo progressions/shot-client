@@ -1,11 +1,19 @@
 import { Typography, Link, IconButton, TableRow, TableCell } from '@mui/material'
 import DeleteIcon from '@mui/icons-material/Delete'
 import Router from 'next/router'
+import { useSession } from 'next-auth/react'
 
 export default function Fight({ fight, endpoint }: any) {
+  const session: any = useSession({ required: true })
+  const jwt = session?.data?.authorization
+
   async function deleteFight(fight: any) {
     const response = await fetch(`${endpoint}/${fight.id}`, {
-      method: 'DELETE'
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': jwt
+      }
     })
     if (response.status === 200) {
       Router.reload()
