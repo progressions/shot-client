@@ -10,6 +10,7 @@ import Link from '@mui/material/Link';
 import { useSession } from 'next-auth/react'
 import { useEffect } from 'react'
 import Router from 'next/router'
+import { signIn, signOut } from 'next-auth/react'
 
 export default function Navbar() {
   const { status, data } = useSession()
@@ -25,6 +26,23 @@ export default function Navbar() {
     )
   }
   console.log(data)
+  const AuthButton = ({ status, user }: any) => {
+    if (status === "authenticated") {
+      return (
+        <>
+          <Typography>
+            {user?.email}
+          </Typography>
+          <Button color="inherit" onClick={() => signOut({ redirect: false })}>Logout</Button>
+        </>
+      )
+    }
+    return (
+      <>
+        <Button color="inherit" onClick={() => signIn()}>Login</Button>
+      </>
+    )
+  }
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
@@ -43,10 +61,7 @@ export default function Navbar() {
               Home
             </Link>
           </Typography>
-          <Typography>{status}</Typography>
-          { status !== "authenticated" &&
-            <Button color="inherit">Login</Button>
-          }
+          <AuthButton status={status} user={data?.user || {}} />
         </Toolbar>
       </AppBar>
     </Box>
