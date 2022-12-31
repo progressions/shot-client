@@ -29,8 +29,12 @@ export default function UserModal(props: any) {
     setUser((prevState: any) => ({ ...prevState, [event.target.name]: event.target.value }))
   }
 
+  const handleCheck = (event: any) => {
+    setUser((prevState: any) => ({ ...prevState, [event.target.name]: event.target.checked }))
+  }
+
   const cancelForm = () => {
-    setUser(props.user || {fight_id: fight.id, name: '', defense: null, current_shot: 0, impairments: null})
+    setUser(props.user || {id: null, first_name: '', last_name: '', email: '', avatar_url: '', admin: false})
     setOpen(false)
   }
 
@@ -69,7 +73,7 @@ export default function UserModal(props: any) {
         aria-describedby="modal-modal-description"
         disableRestoreFocus
       >
-        <Box p={4} component="form" onSubmit={handleSubmit}>
+        <Box p={4} component="form" onSubmit={handleSubmit} key={`Modal_${user.id}`}>
           <Stack spacing={2}>
             <Stack direction="row" spacing={2}>
               <TextField label="First Name" name="first_name" value={user.first_name || ''} onChange={handleChange} />
@@ -80,7 +84,7 @@ export default function UserModal(props: any) {
             </Stack>
             <Stack spacing={2} direction="row">
               <FormGroup>
-                <FormControlLabel control={<Checkbox label="Admin" name="admin" checked={user.admin} onChange={handleChange} />} label="Admin" />
+                <FormControlLabel control={<Checkbox label="Admin" name="admin" checked={user.admin} onChange={handleCheck} />} label="Admin" />
               </FormGroup>
             </Stack>
             <Stack alignItems="flex-end" spacing={2} direction="row">

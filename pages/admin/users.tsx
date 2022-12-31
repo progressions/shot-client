@@ -105,23 +105,21 @@ export default function UsersAdmin({ jwt, endpoint, users, currentUser }: any) {
                   {
                     users && users.map((user: any) => {
                       return (
-                        <>
-                          <TableRow key={user.id}>
-                            <TableCell sx={{width: 120}}>{user.first_name}</TableCell>
-                            <TableCell sx={{width: 120}}>{user.last_name}</TableCell>
-                            <TableCell>{user.email}</TableCell>
-                            <TableCell>{ user.admin && <CheckIcon />}</TableCell>
-                            <TableCell>
-                              <IconButton onClick={() => setOpen(user.id)}>
-                                <EditIcon />
-                              </IconButton>
-                              <IconButton onClick={() => deleteUser(user)}>
-                                <DeleteIcon />
-                              </IconButton>
-                            </TableCell>
-                          </TableRow>
-                          <UserModal key={user.id} open={open === user.id} setOpen={setOpen} endpoint={endpoint} user={user} />
-                        </>
+                        <TableRow key={`Row_${user.id}`}>
+                          <TableCell sx={{width: 120}}>{user.first_name}</TableCell>
+                          <TableCell sx={{width: 120}}>{user.last_name}</TableCell>
+                          <TableCell>{user.email}</TableCell>
+                          <TableCell>{ user.admin && <CheckIcon />}</TableCell>
+                          <TableCell>
+                            <IconButton onClick={() => setOpen(user.id)}>
+                              <EditIcon />
+                              <UserModal key={`UserModal_${user.id}}`} open={open === user.id} setOpen={setOpen} endpoint={endpoint} user={user} />
+                            </IconButton>
+                            <IconButton onClick={() => deleteUser(user)}>
+                              <DeleteIcon />
+                            </IconButton>
+                          </TableCell>
+                        </TableRow>
                       )
                     })
                   }
