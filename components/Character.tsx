@@ -38,18 +38,19 @@ export default function Character(props: any) {
 
   const defense = character.defense ? `(D${character.defense})` : ''
   const impairments = character.impairments ? `(-${character.impairments})` : ''
+  const color = character.impairments > 0 ? 'error.light' : 'text.primary'
   return (
     <>
       <TableRow key={character.id}>
         <TableCell>
           <Stack spacing={1} direction="row">
-            <Typography sx={{fontWeight: 'bold'}}>
+            <Typography color={color} sx={{fontWeight: 'bold'}}>
               {character.name}
             </Typography>
-            <Typography>
+            <Typography color={color}>
               {defense}
             </Typography>
-            <Typography>
+            <Typography color={color}>
               {impairments}
             </Typography>
           </Stack>
