@@ -1,17 +1,19 @@
 import Head from 'next/head'
-import { Avatar, Box, Button, Stack, Container, Typography, TextField } from '@mui/material'
+import { Avatar, Box, Tabs, Tab, Button, Stack, Container, Typography, TextField } from '@mui/material'
+import { TabContext, TabList, TabPanel } from '@mui/lab'
 import Layout from '../components/Layout'
 import { useSession } from 'next-auth/react'
 import { authOptions } from './api/auth/[...nextauth]'
 import { unstable_getServerSession } from "next-auth/next"
 import { useState } from 'react'
 import { useRouter } from "next/router"
+import PeopleIcon from '@mui/icons-material/People';
 
 export async function getServerSideProps({ req, res, params }: any) {
   const session: any = await unstable_getServerSession(req as any, res as any, authOptions as any)
   const jwt = session?.authorization
   const id = session?.id
-  const endpoint = `${process.env.SERVER_URL}/api/v1/`
+  const endpoint = `${process.env.SERVER_URL}/api/v1`
 
   if (!session?.user?.admin) {
     return {
@@ -33,6 +35,11 @@ export async function getServerSideProps({ req, res, params }: any) {
 }
 
 export default function Admin({ jwt, endpoint }: any) {
+  const [value, setValue] = useState('1')
+  const handleChange = (event: React.SyntheticEvent, newValue: string) => {
+    setValue(newValue)
+  }
+
   return (
     <>
       <Head>
@@ -45,6 +52,17 @@ export default function Admin({ jwt, endpoint }: any) {
         <Layout>
           <Container maxWidth="md">
             <Typography variant="h1">Admin</Typography>
+            <TabContext value={value}>
+              <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                <TabList onChange={handleChange}>
+                  <Tab label='Users' icon={<PeopleIcon />} iconPosition='start' value='1' />
+                  <Tab label='Something else' value='2' disabled />
+                </TabList>
+              </Box>
+              <TabPanel value='1'>
+              </TabPanel>
+              <TabPanel value='2'>Panel two</TabPanel>
+            </TabContext>
           </Container>
         </Layout>
       </main>
