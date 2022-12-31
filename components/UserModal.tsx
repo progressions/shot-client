@@ -84,7 +84,7 @@ export default function UserModal(props: any) {
             </Stack>
             <Stack spacing={2} direction="row">
               <FormGroup>
-                <FormControlLabel control={<Checkbox label="Admin" name="admin" checked={user.admin} onChange={handleCheck} />} label="Admin" />
+                <FormControlLabel control={<Checkbox name="admin" checked={user.admin} onChange={handleCheck} />} label="Admin" />
               </FormGroup>
             </Stack>
             <Stack alignItems="flex-end" spacing={2} direction="row">
