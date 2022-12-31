@@ -81,14 +81,14 @@ console.log(fight)
           <AddCharacter fight={fight} endpoint={endpoint} />
           <Stack>
             {
-              fight?.shot_order.map(([shot, characters]) => {
+              fight?.shot_order.map(([shot, characters]: any) => {
                 return (
                   <Stack key={`${shot}_stack`} direction="row" sx={{height: 250}}>
                     <Box key={shot} p={2} mr={2} sx={{width: 100, height: 100 }}>
                       <Typography variant="h1">{shot}</Typography>
                     </Box>
                     {
-                      characters.map((character) => {
+                      characters.map((character: any) => {
                         return (
                           <Box key={character.id} p={1} sx={{width: 150, height: 130 }}>
                             <Card>

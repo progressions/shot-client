@@ -37,6 +37,19 @@ export default function Character(props: any) {
     setOpen(true)
   }
 
+  async function takeAction(character: any) {
+    const response = await fetch(`${endpoint}/${fight.id}/characters/${character.id}/act`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': jwt
+      }
+    })
+    if (response.status === 200) {
+      Router.reload()
+    }
+  }
+
   const defense = character.defense ? `Defense ${character.defense}` : ''
   const impairments = character.impairments ? `(-${character.impairments})` : ''
   const color = character.impairments > 0 ? 'error' : 'primary'
@@ -70,19 +83,19 @@ export default function Character(props: any) {
                 <TableCell sx={{width: 100}}>
                   <ButtonGroup variant="outlined" size="small">
                     <Tooltip title="Take Action" arrow>
-                    <Button onClick={() => {editCharacter(character)}}>
-                      <BoltIcon />
-                    </Button>
+                      <Button onClick={() => {takeAction(character)}}>
+                        <BoltIcon />
+                      </Button>
                     </Tooltip>
                     <Tooltip title="Edit Character" arrow>
-                    <Button onClick={() => {editCharacter(character)}}>
-                      <EditIcon />
-                    </Button>
+                      <Button onClick={() => {editCharacter(character)}}>
+                        <EditIcon />
+                      </Button>
                     </Tooltip>
                     <Tooltip title="Delete Character" arrow>
-                    <Button onClick={() => deleteCharacter(character)}>
-                      <DeleteIcon />
-                    </Button>
+                      <Button onClick={() => deleteCharacter(character)}>
+                        <DeleteIcon />
+                      </Button>
                     </Tooltip>
                   </ButtonGroup>
                 </TableCell>
