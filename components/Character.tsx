@@ -1,10 +1,10 @@
 import { useState } from 'react'
+import { Stack } from '@mui/material'
 import TableRow from '@mui/material/TableRow'
 import TableCell from '@mui/material/TableCell'
 import Typography from '@mui/material/Typography'
-import Stack from '@mui/material/Stack'
 import IconButton from '@mui/material/IconButton'
-import EditIcon from '@mui/icons-material/Edit';
+import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
 import Router from "next/router"
 import CharacterModal from './CharacterModal'
@@ -46,13 +46,17 @@ export default function Character(props: any) {
         <TableCell>
           <Stack spacing={1} direction="row">
             <Typography color={color} sx={{fontWeight: 'bold'}}>
-              { character.impairments > 0 ? <BloodtypeIcon sx={{height: 20, width: 20}} /> : null }
-              {character.name}
+              { (character.impairments > 0) && (
+                <BloodtypeIcon sx={{height: '1em', width: '1em'}} />
+              ) }
             </Typography>
-            <Typography color={color}>
+            <Typography sx={{fontWeight: 'bold'}}>
+              { character.name }
+            </Typography>
+            <Typography>
               {defense}
             </Typography>
-            <Typography color={color}>
+            <Typography>
               {impairments}
             </Typography>
           </Stack>
