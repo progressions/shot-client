@@ -77,7 +77,7 @@ export default function UsersAdmin({ jwt, endpoint, users, currentUser }: any) {
   return (
     <>
       <Head>
-        <title>Admin</title>
+        <title>Admin | Users</title>
         <meta name="description" content="Feng Shui 2 Shot Counter" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
