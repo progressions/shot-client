@@ -58,7 +58,7 @@ export async function getServerSideProps({ req, res, params }: any) {
 
 export default function UsersAdmin({ jwt, endpoint, users, currentUser }: any) {
   const [value, setValue] = useState('1')
-  const [open, setOpen] = useState(false)
+  const [user, setUser] = useState(null)
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue)
   }
@@ -111,9 +111,8 @@ export default function UsersAdmin({ jwt, endpoint, users, currentUser }: any) {
                           <TableCell>{user.email}</TableCell>
                           <TableCell>{ user.admin && <CheckIcon />}</TableCell>
                           <TableCell>
-                            <IconButton onClick={() => setOpen(user.id)}>
+                            <IconButton onClick={() => setUser(user)}>
                               <EditIcon />
-                              <UserModal key={`UserModal_${user.id}}`} open={open === user.id} setOpen={setOpen} endpoint={endpoint} user={user} />
                             </IconButton>
                             <IconButton onClick={() => deleteUser(user)}>
                               <DeleteIcon />
@@ -124,6 +123,7 @@ export default function UsersAdmin({ jwt, endpoint, users, currentUser }: any) {
                     })
                   }
                 </TableBody>
+                <UserModal setUser={setUser} endpoint={endpoint} user={user} />
               </Table>
             </TableContainer>
           </Container>
