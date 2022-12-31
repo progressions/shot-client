@@ -7,7 +7,7 @@ import Button from '@mui/material/Button'
 import { Paper, Popover } from '@mui/material'
 import Router from "next/router"
 import { useSession } from 'next-auth/react'
-import { BlockPicker, SwatchesPicker } from 'react-color';
+import { BlockPicker } from 'react-color'
 
 export default function CharacterModal(props: any) {
   const [picker, setPicker] = useState(false)

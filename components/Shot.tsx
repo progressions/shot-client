@@ -9,11 +9,11 @@ import { useState } from 'react'
 export default function Shot({ fight, endpoint, shot, characters }: any) {
   return (
     <>
-      <TableRow key={shot} sx={{border: 0, borderBottom: 1}}>
-        <TableCell key={shot} sx={{padding: 2, width: 50, verticalAlign: 'top'}}>
+      <TableRow key={shot} sx={{border: 0}}>
+        <TableCell key={shot} sx={{border: 0, padding: 2, width: 50, verticalAlign: 'top'}}>
           <Typography variant="h2">{shot || 0}</Typography>
         </TableCell>
-        <TableCell>
+        <TableCell sx={{border: 0}}>
           <Stack spacing={2}>
             {
               characters.map((character: any) => {
@@ -26,7 +26,3 @@ export default function Shot({ fight, endpoint, shot, characters }: any) {
     </>
   )
 }
-
-/*
- *
-*/
