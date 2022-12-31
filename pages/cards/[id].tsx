@@ -94,12 +94,14 @@ console.log(fight)
                             <Card>
                               <CardMedia component='img' height={60} image={imageUrl} />
                               <CardContent>
-                                <Typography gutterBottom variant='h5' component='div'>
-                                  {character.name}
-                                </Typography>
-                                <Typography variant='body2'>
-                                  Defense {character.defense}
-                                </Typography>
+                                <Stack direction="row">
+                                  <Typography gutterBottom variant='h5' component='div'>
+                                    {character.name}
+                                  </Typography>
+                                </Stack>
+                                  <Typography variant='body2'>
+                                    Defense {character.defense}
+                                  </Typography>
                               </CardContent>
                               <CardActions>
                                 <IconButton size="small"><BoltIcon /></IconButton>

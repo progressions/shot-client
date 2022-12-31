@@ -16,7 +16,7 @@ export default function CharacterModal(props: any) {
   const [saving, setSaving] = useState(false);
 
   const { endpoint, fight } = props
-  const [character, setCharacter] = useState(props.character || {fight_id: fight.id, name: '', defense: null, current_shot: 0, impairments: null})
+  const [character, setCharacter] = useState(props.character || {fight_id: fight.id, name: '', defense: null, current_shot: 0, impairments: null, color: ''})
   const method = props.character ? 'PATCH' : 'POST'
 
   function handleClose() {
@@ -28,7 +28,7 @@ export default function CharacterModal(props: any) {
   }
 
   const cancelForm = () => {
-    setCharacter(props.character || {fight_id: fight.id, name: '', defense: null, current_shot: 0, impairments: null})
+    setCharacter(props.character || {fight_id: fight.id, name: '', defense: null, current_shot: 0, impairments: null, color: ''})
     setOpen(false)
   }
 
@@ -76,6 +76,7 @@ export default function CharacterModal(props: any) {
               <TextField label="Current Shot" name="current_shot" value={character.current_shot || ''} onChange={handleChange} />
               <TextField label="Defense" name="defense" value={character.defense || ''} onChange={handleChange} />
               <TextField label="Impairments" name="impairments" value={character.impairments || ''} onChange={handleChange} />
+              <TextField label="Color" name="color" value={character.color || ''} onChange={handleChange} />
             </Stack>
             <Stack alignItems="flex-end" spacing={2} direction="row">
               <Button variant="outlined" disabled={saving} onClick={cancelForm}>Cancel</Button>

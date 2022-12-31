@@ -38,6 +38,17 @@ export async function getServerSideProps({ req, res, params }: any) {
       }, // will be passed to the page component as props
     }
   }
+  if (result.status === 401) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/auth/signin"
+      },
+      props: {
+        endpoint: endpoint
+      }
+    }
+  }
   return {
     props: {
       endpoint: endpoint,
@@ -62,9 +73,11 @@ export default function Fight({ fight, endpoint }: any) {
           <Typography variant="h1" gutterBottom>{fight.name}</Typography>
           <AddCharacter fight={fight} endpoint={endpoint} />
           <TableContainer>
-            <Table size="small">
+            <Table size="small" border={0}>
               <TableBody>
-                {fight.shot_order.map(([shot, chars]: any) => <Shot key={shot} shot={shot} characters={chars} endpoint={endpoint} fight={fight} />)}
+                {
+                  fight.shot_order.map(([shot, chars]: any) => <Shot key={shot} shot={shot} characters={chars} endpoint={endpoint} fight={fight} />)
+                }
               </TableBody>
             </Table>
           </TableContainer>
