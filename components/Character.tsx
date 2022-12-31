@@ -9,6 +9,7 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import Router from "next/router"
 import CharacterModal from './CharacterModal'
 import { useSession } from 'next-auth/react'
+import BloodtypeIcon from '@mui/icons-material/Bloodtype'
 
 export default function Character(props: any) {
   const session: any = useSession({ required: true })
@@ -45,6 +46,7 @@ export default function Character(props: any) {
         <TableCell>
           <Stack spacing={1} direction="row">
             <Typography color={color} sx={{fontWeight: 'bold'}}>
+              { character.impairments > 0 ? <BloodtypeIcon sx={{height: 20, width: 20}} /> : null }
               {character.name}
             </Typography>
             <Typography color={color}>
