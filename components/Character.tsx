@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Tooltip, Paper, Button, ButtonGroup, Avatar, Stack } from '@mui/material'
+import { Badge, Tooltip, Paper, Button, ButtonGroup, Avatar, Stack } from '@mui/material'
 import { TableContainer, Table, TableBody, TableRow, TableCell } from '@mui/material'
 import Typography from '@mui/material/Typography'
 import IconButton from '@mui/material/IconButton'
@@ -56,11 +56,13 @@ export default function Character(props: any) {
   return (
     <>
         <TableContainer>
-          <Table sx={{width: "100%"}}>
+          <Table>
             <TableBody>
               <TableRow>
                 <TableCell sx={{width: 50}}>
-                  <Avatar sx={{bgcolor: character.color || 'secondary'}} variant="rounded">{character.name[0]}</Avatar>
+                  <Badge color='error' badgeContent={character.impairments}>
+                    <Avatar sx={{bgcolor: character.color || 'secondary'}} variant="rounded">{character.name[0]}</Avatar>
+                  </Badge>
                 </TableCell>
                 <TableCell sx={{width: 200}}>
                   <Typography variant="h4" sx={{fontWeight: 'bold'}}>
@@ -69,15 +71,24 @@ export default function Character(props: any) {
                 </TableCell>
                 <TableCell>
                   <Stack direction="row" spacing={1}>
-                    <Typography variant="body2">
-                      {defense}
+                    <Typography variant="body2" sx={{textAlign: 'center'}}>
+                      Attack {character.action_values['Guns'] || 14}
+                    </Typography>
+                    <Typography variant="body2" sx={{textAlign: 'center'}}>
+                      Defense {character.action_values['Defense']}
+                    </Typography>
+                    <Typography variant="body2" sx={{textAlign: 'center'}}>
+                      Toughness {character.action_values['Toughness']}
+                    </Typography>
+                    <Typography variant="body2" sx={{textAlign: 'center'}}>
+                      Speed {character.action_values['Speed']}
+                    </Typography>
+                    <Typography variant="body2" sx={{textAlign: 'center'}}>
+                      Fortune {character.action_values['Fortune']}
                     </Typography>
                     <Typography variant="body2">
                       {impairments}
                     </Typography>
-                    { (character.impairments > 0) && (
-                      <BloodtypeIcon color={color} sx={{height: '1em', width: '1em'}} />
-                    ) }
                   </Stack>
                 </TableCell>
                 <TableCell sx={{width: 100}}>

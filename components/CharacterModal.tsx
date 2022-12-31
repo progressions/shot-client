@@ -21,7 +21,7 @@ export default function CharacterModal(props: any) {
   const [saving, setSaving] = useState(false);
 
   const { endpoint, fight } = props
-  const [character, setCharacter] = useState(props.character || {fight_id: fight.id, name: '', defense: null, current_shot: 0, impairments: null, color: ''})
+  const [character, setCharacter] = useState(props.character || {fight_id: fight.id, name: '', defense: null, current_shot: 0, impairments: null, color: '', action_values: {}})
   const method = props.character ? 'PATCH' : 'POST'
 
   function handleClose() {
@@ -32,6 +32,11 @@ export default function CharacterModal(props: any) {
     setCharacter((prevState: any) => ({ ...prevState, [event.target.name]: event.target.value }))
   }
 
+  const handleAVChange = (event: any) => {
+    const { action_values } = character
+    setCharacter((prevState: any) => ({ ...prevState, action_values: { ...action_values, [event.target.name]: event.target.value } }))
+  }
+
   const handleColor = (color: any) => {
     setCharacter((prevState: any) => ({ ...prevState, color: color?.hex }))
     setPicker(false)
@@ -39,7 +44,7 @@ export default function CharacterModal(props: any) {
   }
 
   const cancelForm = () => {
-    setCharacter(props.character || {fight_id: fight.id, name: '', defense: null, current_shot: 0, impairments: null, color: ''})
+    setCharacter(props.character || {fight_id: fight.id, name: '', defense: null, current_shot: 0, impairments: null, color: '', action_values: {}})
     setOpen(false)
   }
 
@@ -95,7 +100,6 @@ export default function CharacterModal(props: any) {
             </Stack>
             <Stack spacing={2} direction="row" alignItems='center'>
               <TextField label="Current Shot" name="current_shot" value={character.current_shot || ''} onChange={handleChange} />
-              <TextField label="Defense" name="defense" value={character.defense || ''} onChange={handleChange} />
               <TextField label="Impairments" name="impairments" value={character.impairments || ''} onChange={handleChange} />
               <Box p={2} sx={{width: 10, height: 5, bgcolor: character.color, borderColor: 'primary', border: 1, borderRadius: 2}} onClick={togglePicker} />
               <TextField id="colorPicker" label="Color" name="color" value={character.color || ''} onChange={handleChange} />
@@ -105,6 +109,13 @@ export default function CharacterModal(props: any) {
                 <BlockPicker color={character.color || ''} onChangeComplete={handleColor} colors={['#D0021B', '#F5A623', '#F8E71C', '#8B572A', '#7ED321', '#417505', '#BD10E0', '#9013FE', '#4A90E2', '#50E3C2', '#B8E986', '#000000', '#4A4A4A', '#9B9B9B', '#FFFFFF']} />
               </Paper>
             </Popover>
+            <Stack direction="row" spacing={2}>
+              <TextField label="Attack" sx={{width: 100}} name="Guns" value={character.action_values['Guns'] || ''} onChange={handleAVChange} />
+              <TextField label="Defense" sx={{width: 100}} name="Defense" value={character.action_values['Defense'] || ''} onChange={handleAVChange} />
+              <TextField label="Fortune" sx={{width: 100}} name="Fortune" value={character.action_values['Fortune'] || ''} onChange={handleAVChange} />
+              <TextField label="Toughness" sx={{width: 100}} name="Toughness" value={character.action_values['Toughness'] || ''} onChange={handleAVChange} />
+              <TextField label="Speed" sx={{width: 100}} name="Speed" value={character.action_values['Speed'] || ''} onChange={handleAVChange} />
+            </Stack>
             <Stack alignItems="flex-end" spacing={2} direction="row">
               <Button variant="outlined" disabled={saving} onClick={cancelForm}>Cancel</Button>
               <Button variant="contained" type="submit" disabled={saving}>Save Changes</Button>

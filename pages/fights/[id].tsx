@@ -69,11 +69,11 @@ export default function Fight({ fight, endpoint }: any) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Layout>
-        <Container maxWidth="md">
+        <Container>
           <Typography variant="h1" gutterBottom>{fight.name}</Typography>
           <AddCharacter fight={fight} endpoint={endpoint} />
-          <TableContainer>
-            <Table size="small" border={0}>
+          <TableContainer sx={{width: 875}}>
+            <Table border={0}>
               <TableBody>
                 {
                   fight.shot_order.map(([shot, chars]: any) => <Shot key={shot} shot={shot} characters={chars} endpoint={endpoint} fight={fight} />)
