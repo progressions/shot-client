@@ -2,12 +2,15 @@ import Head from 'next/head'
 import { IconButton, Typography, Container, Table, TableContainer, TableBody, TableHead, TableRow, TableCell } from '@mui/material'
 import { useState } from 'react'
 import Layout from '../../components/Layout'
+import UserModal from '../../components/UserModal'
 import Router from 'next/router'
 
 import { authOptions } from '../api/auth/[...nextauth]'
 import { unstable_getServerSession } from "next-auth/next"
 
 import DeleteIcon from '@mui/icons-material/Delete'
+import EditIcon from '@mui/icons-material/Edit'
+import CheckIcon from '@mui/icons-material/Check'
 
 export async function getServerSideProps({ req, res, params }: any) {
   const session: any = await unstable_getServerSession(req as any, res as any, authOptions as any)
@@ -55,6 +58,7 @@ export async function getServerSideProps({ req, res, params }: any) {
 
 export default function UsersAdmin({ jwt, endpoint, users, currentUser }: any) {
   const [value, setValue] = useState('1')
+  const [open, setOpen] = useState(false)
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue)
   }
@@ -93,23 +97,31 @@ export default function UsersAdmin({ jwt, endpoint, users, currentUser }: any) {
                     <TableCell>First Name</TableCell>
                     <TableCell>Last Name</TableCell>
                     <TableCell>Email</TableCell>
+                    <TableCell>Admin</TableCell>
                     <TableCell></TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
                   {
-                    users.map((user: any) => {
+                    users && users.map((user: any) => {
                       return (
-                        <TableRow key={user.id}>
-                          <TableCell sx={{width: 120}}>{user.first_name}</TableCell>
-                          <TableCell sx={{width: 120}}>{user.last_name}</TableCell>
-                          <TableCell>{user.email}</TableCell>
-                          <TableCell>
-                            <IconButton onClick={() => deleteUser(user)}>
-                              <DeleteIcon />
-                            </IconButton>
-                          </TableCell>
-                        </TableRow>
+                        <>
+                          <TableRow key={user.id}>
+                            <TableCell sx={{width: 120}}>{user.first_name}</TableCell>
+                            <TableCell sx={{width: 120}}>{user.last_name}</TableCell>
+                            <TableCell>{user.email}</TableCell>
+                            <TableCell>{ user.admin && <CheckIcon />}</TableCell>
+                            <TableCell>
+                              <IconButton onClick={() => setOpen(user.id)}>
+                                <EditIcon />
+                              </IconButton>
+                              <IconButton onClick={() => deleteUser(user)}>
+                                <DeleteIcon />
+                              </IconButton>
+                            </TableCell>
+                          </TableRow>
+                          <UserModal key={user.id} open={open === user.id} setOpen={setOpen} endpoint={endpoint} user={user} />
+                        </>
                       )
                     })
                   }

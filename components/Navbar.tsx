@@ -65,7 +65,7 @@ export default function Navbar() {
           </Typography>
           { user?.admin && (
             <Typography variant="h6" component="div" paddingRight={2} sx={{ minWidth: 100 }}>
-              <Link color="inherit" href='/admin'>
+              <Link color="inherit" href='/admin/users'>
                 Admin
               </Link>
             </Typography>
