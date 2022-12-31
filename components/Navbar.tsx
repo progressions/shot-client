@@ -6,7 +6,6 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
-import MenuItem from '@mui/icons-material/MenuItem';
 import Link from '@mui/material/Link';
 import { useSession } from 'next-auth/react'
 import { useEffect } from 'react'
@@ -19,6 +18,8 @@ import Stack from '@mui/material/Stack'
 export default function Navbar() {
   const { status, data } = useSession()
   console.log({ data })
+  const user:any = data?.user
+
   useEffect(() => {
     if (status === "unauthenticated") {
       Router.replace("/auth/signin")
@@ -31,8 +32,8 @@ export default function Navbar() {
         <>
           <Button color="inherit" onClick={() => signOut({ redirect: false })}>Logout</Button>
           <Tooltip title="Open profile">
-            <IconButton variant="outlined" color="inherit" href="/profile">
-              <Avatar alt="N" src={user.avatar_url} />
+            <IconButton href='/profile'>
+              <Avatar alt={user.first_name} src={user.avatar_url} />
             </IconButton>
           </Tooltip>
         </>
@@ -62,7 +63,7 @@ export default function Navbar() {
               Home
             </Link>
           </Typography>
-          { data?.user?.admin && (
+          { user?.admin && (
             <Typography variant="h6" component="div" paddingRight={2} sx={{ minWidth: 100 }}>
               <Link color="inherit" href='/admin'>
                 Admin
@@ -70,7 +71,7 @@ export default function Navbar() {
             </Typography>
           )}
           <Typography variant="h6" component="div" sx={{ flexGrow: 1, textAlign: 'right' }}>
-            <AuthButton status={status} user={data?.user || {}} />
+            <AuthButton status={status} user={user || {}} />
           </Typography>
         </Toolbar>
       </AppBar>
