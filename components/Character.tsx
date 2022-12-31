@@ -75,9 +75,9 @@ export default function Character(props: any) {
                     <Typography variant="body2">
                       {impairments}
                     </Typography>
-                      { (character.impairments > 0) && (
-                        <BloodtypeIcon color={color} sx={{height: '1em', width: '1em'}} />
-                      ) }
+                    { (character.impairments > 0) && (
+                      <BloodtypeIcon color={color} sx={{height: '1em', width: '1em'}} />
+                    ) }
                   </Stack>
                 </TableCell>
                 <TableCell sx={{width: 100}}>
