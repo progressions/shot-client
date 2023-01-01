@@ -7,7 +7,7 @@ import Button from '@mui/material/Button'
 import { Paper, Popover } from '@mui/material'
 import { useSession } from 'next-auth/react'
 import { BlockPicker } from 'react-color'
-import { loadFight } from './Fight'
+import { loadFight } from '../Fight'
 
 export default function CharacterModal({ open, setOpen, endpoint, fight, setFight, character:activeCharacter }: any) {
   const [picker, setPicker] = useState(false)
