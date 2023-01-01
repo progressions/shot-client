@@ -10,6 +10,7 @@ import List from '@mui/material/List'
 import ListItem from '@mui/material/ListItem'
 import ListItemIcon from '@mui/material/ListItemIcon'
 import ListItemText from '@mui/material/ListItemText'
+import FavoriteIcon from '@mui/icons-material/Favorite'
 import TextField from '@mui/material/TextField'
 import Stack from '@mui/material/Stack'
 import Button from '@mui/material/Button'
@@ -74,7 +75,27 @@ export default function Fight({ fight:initialFight, endpoint }: any) {
         <Container>
           <Typography variant="h1" gutterBottom>{fight.name}</Typography>
           <AddCharacter fight={fight} endpoint={endpoint} setFight={setFight} />
-          <TableContainer sx={{width: 875}}>
+          <TableContainer>
+            <Table border={0}>
+              <TableHead>
+                <TableRow>
+                  <TableCell sx={{width: 80}} />
+                  <TableCell sx={{width: 50}}>
+                  </TableCell>
+                  <TableCell sx={{width: 200}}>
+                    <Typography variant="h4">Name</Typography>
+                  </TableCell>
+                  <TableCell sx={{width: 65}}>
+                    <Typography variant="h4" color='error'><FavoriteIcon sx={{width: 30, height: 30}} /></Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography variant="h4">Action Values</Typography>
+                  </TableCell>
+                </TableRow>
+              </TableHead>
+            </Table>
+          </TableContainer>
+          <TableContainer>
             <Table border={0}>
               <TableBody>
                 {
@@ -88,3 +109,23 @@ export default function Fight({ fight:initialFight, endpoint }: any) {
     </>
   )
 }
+
+/*
+              <TableHead>
+                <TableRow>
+                  <TableCell sx={{width: 50}}>
+                  </TableCell>
+                  <TableCell sx={{width: 200}}>
+                    <Typography variant="h4">Name</Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography variant="h4">Wounds</Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography variant="h4">Action Values</Typography>
+                  </TableCell>
+                  <TableCell sx={{width: 100}}>
+                  </TableCell>
+                </TableRow>
+              </TableHead>
+*/

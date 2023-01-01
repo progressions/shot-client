@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Box, TextField, Dialog, Badge, Tooltip, Paper, Button, ButtonGroup, Avatar, Stack } from '@mui/material'
-import { TableContainer, Table, TableBody, TableRow, TableCell } from '@mui/material'
+import { TableHead, TableContainer, Table, TableBody, TableRow, TableCell } from '@mui/material'
 import Typography from '@mui/material/Typography'
 import IconButton from '@mui/material/IconButton'
 import EditIcon from '@mui/icons-material/Edit'
@@ -62,6 +62,9 @@ export default function Character({ character, endpoint, fight, setFight }: any)
                   <Typography variant="h4" sx={{fontWeight: 'bold'}}>
                     { character.name }
                   </Typography>
+                </TableCell>
+                <TableCell>
+                  <Typography variant="h3">21</Typography>
                 </TableCell>
                 <TableCell>
                   <Stack direction="row" spacing={1}>
