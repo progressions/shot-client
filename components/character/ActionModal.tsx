@@ -1,9 +1,9 @@
 import { useState } from 'react'
 import { Stack, TextField, Button, Dialog } from '@mui/material'
 import { useSession } from 'next-auth/react'
-import Router from "next/router"
+import { loadFight } from '../Fight'
 
-const ActionModal = ({open, setOpen, endpoint, fight, character}) => {
+const ActionModal = ({open, setOpen, endpoint, fight, character, setFight}) => {
   const [shots, setShots] = useState(3)
   const [saving, setSaving] = useState(false)
 
@@ -14,6 +14,7 @@ const ActionModal = ({open, setOpen, endpoint, fight, character}) => {
     setShots(event.target.value)
   }
   const submitAction = async (event) => {
+    event.preventDefault()
     const response = await fetch(`${endpoint}/${fight.id}/characters/${character.id}/act`, {
       method: 'PATCH',
       body: JSON.stringify({"shots": shots}),
@@ -23,7 +24,7 @@ const ActionModal = ({open, setOpen, endpoint, fight, character}) => {
       }
     })
     if (response.status === 200) {
-      Router.reload()
+      await loadFight({endpoint, jwt, id: fight.id, setFight})
     }
   }
   const cancelForm = () => {

@@ -5,9 +5,9 @@ import Stack from '@mui/material/Stack'
 import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
 import { Paper, Popover } from '@mui/material'
-import Router from "next/router"
 import { useSession } from 'next-auth/react'
 import { BlockPicker } from 'react-color'
+import { loadFight } from './Fight'
 
 export default function CharacterModal(props: any) {
   const [picker, setPicker] = useState(false)
@@ -20,7 +20,7 @@ export default function CharacterModal(props: any) {
   const setOpen = props.setOpen
   const [saving, setSaving] = useState(false);
 
-  const { endpoint, fight } = props
+  const { endpoint, fight, setFight } = props
   const [character, setCharacter] = useState(props.character || {fight_id: fight.id, name: '', defense: null, current_shot: 0, impairments: null, color: '', action_values: {}})
   const method = props.character ? 'PATCH' : 'POST'
 
@@ -71,7 +71,7 @@ export default function CharacterModal(props: any) {
     const result = await response.json()
     setSaving(false)
     cancelForm()
-    Router.reload()
+    await loadFight({endpoint, jwt, id: fight.id, setFight})
   }
 
   const togglePicker = (event: any) => {

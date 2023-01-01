@@ -57,7 +57,9 @@ export async function getServerSideProps({ req, res, params }: any) {
   }
 }
 
-export default function Fight({ fight, endpoint }: any) {
+export default function Fight({ fight:initialFight, endpoint }: any) {
+  const [fight, setFight] = useState(initialFight)
+
   const router = useRouter()
   const { id } = router.query
   return (
@@ -71,12 +73,12 @@ export default function Fight({ fight, endpoint }: any) {
       <Layout>
         <Container>
           <Typography variant="h1" gutterBottom>{fight.name}</Typography>
-          <AddCharacter fight={fight} endpoint={endpoint} />
+          <AddCharacter fight={fight} endpoint={endpoint} setFight={setFight} />
           <TableContainer sx={{width: 875}}>
             <Table border={0}>
               <TableBody>
                 {
-                  fight.shot_order.map(([shot, chars]: any) => <Shot key={shot} shot={shot} characters={chars} endpoint={endpoint} fight={fight} />)
+                  fight.shot_order.map(([shot, chars]: any) => <Shot key={shot} shot={shot} characters={chars} endpoint={endpoint} fight={fight} setFight={setFight} />)
                 }
               </TableBody>
             </Table>

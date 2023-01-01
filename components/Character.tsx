@@ -5,20 +5,18 @@ import Typography from '@mui/material/Typography'
 import IconButton from '@mui/material/IconButton'
 import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
-import Router from "next/router"
 import CharacterModal from './CharacterModal'
 import { useSession } from 'next-auth/react'
 import BloodtypeIcon from '@mui/icons-material/Bloodtype'
 import BoltIcon from '@mui/icons-material/Bolt'
 import ActionModal from './character/ActionModal.tsx'
+import { loadFight } from './Fight'
 
 export default function Character(props: any) {
   const session: any = useSession({ required: true })
   const jwt = session?.data?.authorization
 
-  const { endpoint, fight } = props
-  const initialCharacter = props.character
-  const [character, setCharacter] = useState(initialCharacter)
+  const { character, endpoint, fight, setFight } = props
   const [open, setOpen] = useState(false)
   const [openAction, setOpenAction] = useState(false)
 
@@ -35,7 +33,7 @@ export default function Character(props: any) {
       }
     })
     if (response.status === 200) {
-      Router.reload()
+      await loadFight({endpoint, jwt, id: fight.id, setFight})
     }
   }
 
@@ -44,7 +42,6 @@ export default function Character(props: any) {
   }
 
   async function takeAction(character: any) {
-    setCharacter(character)
     setOpenAction(true)
   }
 
@@ -112,8 +109,8 @@ export default function Character(props: any) {
             </TableBody>
           </Table>
         </TableContainer>
-      <CharacterModal open={open} setOpen={setOpen} endpoint={endpoint} fight={fight} character={character} />
-      <ActionModal open={openAction} closeAction={closeAction} setOpen={setOpenAction} endpoint={endpoint} fight={fight} character={character} />
+      <CharacterModal open={open} setOpen={setOpen} endpoint={endpoint} fight={fight} character={character} setFight={setFight} />
+      <ActionModal open={openAction} closeAction={closeAction} setOpen={setOpenAction} endpoint={endpoint} fight={fight} character={character} setFight={setFight} />
     </>
   )
 }
