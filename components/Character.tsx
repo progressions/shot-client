@@ -66,7 +66,7 @@ export default function Character({ character, endpoint, fight, setFight }: any)
                 <TableCell>
                   <Stack direction="row" spacing={1}>
                     <Typography variant="body2" sx={{textAlign: 'center'}}>
-                      Attack {character.action_values['Guns'] || 14}
+                      Attack {character.action_values['Guns']}
                     </Typography>
                     <Typography variant="body2" sx={{textAlign: 'center'}}>
                       Defense {character.action_values['Defense']}
