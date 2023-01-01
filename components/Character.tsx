@@ -12,11 +12,10 @@ import BoltIcon from '@mui/icons-material/Bolt'
 import ActionModal from './character/ActionModal'
 import { loadFight } from './Fight'
 
-export default function Character(props: any) {
+export default function Character({ character, endpoint, fight, setFight }: any) {
   const session: any = useSession({ required: true })
   const jwt = session?.data?.authorization
 
-  const { character, endpoint, fight, setFight } = props
   const [open, setOpen] = useState(false)
   const [openAction, setOpenAction] = useState(false)
 

@@ -9,20 +9,17 @@ import { useSession } from 'next-auth/react'
 import { BlockPicker } from 'react-color'
 import { loadFight } from './Fight'
 
-export default function CharacterModal(props: any) {
+export default function CharacterModal({ open, setOpen, endpoint, fight, setFight, character:activeCharacter }: any) {
   const [picker, setPicker] = useState(false)
   const [anchorEl, setAnchorEl] = useState(null)
 
   const session: any = useSession({ required: true })
   const jwt = session?.data?.authorization
 
-  const open = props.open
-  const setOpen = props.setOpen
   const [saving, setSaving] = useState(false);
 
-  const { endpoint, fight, setFight } = props
-  const [character, setCharacter] = useState(props.character || {fight_id: fight.id, name: '', defense: null, current_shot: 0, impairments: null, color: '', action_values: {}})
-  const method = props.character ? 'PATCH' : 'POST'
+  const [character, setCharacter] = useState(activeCharacter || {fight_id: fight.id, name: '', defense: null, current_shot: 0, impairments: null, color: '', action_values: {}})
+  const method = character ? 'PATCH' : 'POST'
 
   function handleClose() {
     cancelForm()
@@ -44,7 +41,7 @@ export default function CharacterModal(props: any) {
   }
 
   const cancelForm = () => {
-    setCharacter(props.character || {fight_id: fight.id, name: '', defense: null, current_shot: 0, impairments: null, color: '', action_values: {}})
+    setCharacter(character || {fight_id: fight.id, name: '', defense: null, current_shot: 0, impairments: null, color: '', action_values: {}})
     setOpen(false)
   }
 
@@ -66,9 +63,10 @@ export default function CharacterModal(props: any) {
       body: JSONdata,
     }
 
-    const url = props.character ? `${endpoint}/${fight.id}/characters/${character.id}` : `${endpoint}/${fight.id}/characters`
+    const url = character ? `${endpoint}/${fight.id}/characters/${character.id}` : `${endpoint}/${fight.id}/characters`
     const response = await fetch(url, options)
-    const result = await response.json()
+    const data = await response.json()
+    setCharacter(data)
     setSaving(false)
     cancelForm()
     await loadFight({endpoint, jwt, id: fight.id, setFight})
