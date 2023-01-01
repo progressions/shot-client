@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Badge, Tooltip, Paper, Button, ButtonGroup, Avatar, Stack } from '@mui/material'
+import { Box, TextField, Dialog, Badge, Tooltip, Paper, Button, ButtonGroup, Avatar, Stack } from '@mui/material'
 import { TableContainer, Table, TableBody, TableRow, TableCell } from '@mui/material'
 import Typography from '@mui/material/Typography'
 import IconButton from '@mui/material/IconButton'
@@ -10,6 +10,7 @@ import CharacterModal from './CharacterModal'
 import { useSession } from 'next-auth/react'
 import BloodtypeIcon from '@mui/icons-material/Bloodtype'
 import BoltIcon from '@mui/icons-material/Bolt'
+import ActionModal from './character/ActionModal.tsx'
 
 export default function Character(props: any) {
   const session: any = useSession({ required: true })
@@ -19,6 +20,11 @@ export default function Character(props: any) {
   const initialCharacter = props.character
   const [character, setCharacter] = useState(initialCharacter)
   const [open, setOpen] = useState(false)
+  const [openAction, setOpenAction] = useState(false)
+
+  function closeAction() {
+    setOpenAction(false)
+  }
 
   async function deleteCharacter(character: any) {
     const response = await fetch(`${endpoint}/${fight.id}/characters/${character.id}`, {
@@ -38,16 +44,8 @@ export default function Character(props: any) {
   }
 
   async function takeAction(character: any) {
-    const response = await fetch(`${endpoint}/${fight.id}/characters/${character.id}/act`, {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': jwt
-      }
-    })
-    if (response.status === 200) {
-      Router.reload()
-    }
+    setCharacter(character)
+    setOpenAction(true)
   }
 
   const defense = character.defense ? `Defense ${character.defense}` : ''
@@ -115,6 +113,7 @@ export default function Character(props: any) {
           </Table>
         </TableContainer>
       <CharacterModal open={open} setOpen={setOpen} endpoint={endpoint} fight={fight} character={character} />
+      <ActionModal open={openAction} closeAction={closeAction} setOpen={setOpenAction} endpoint={endpoint} fight={fight} character={character} />
     </>
   )
 }
