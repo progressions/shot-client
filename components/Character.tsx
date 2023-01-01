@@ -9,7 +9,7 @@ import CharacterModal from './CharacterModal'
 import { useSession } from 'next-auth/react'
 import BloodtypeIcon from '@mui/icons-material/Bloodtype'
 import BoltIcon from '@mui/icons-material/Bolt'
-import ActionModal from './character/ActionModal.tsx'
+import ActionModal from './character/ActionModal'
 import { loadFight } from './Fight'
 
 export default function Character(props: any) {
@@ -110,7 +110,7 @@ export default function Character(props: any) {
           </Table>
         </TableContainer>
       <CharacterModal open={open} setOpen={setOpen} endpoint={endpoint} fight={fight} character={character} setFight={setFight} />
-      <ActionModal open={openAction} closeAction={closeAction} setOpen={setOpenAction} endpoint={endpoint} fight={fight} character={character} setFight={setFight} />
+      <ActionModal open={openAction} setOpen={setOpenAction} endpoint={endpoint} fight={fight} character={character} setFight={setFight} />
     </>
   )
 }
