@@ -82,9 +82,8 @@ export default function UserModal(props: any) {
                 <TextField fullWidth label="Email" name="email" value={user.email || ''} onChange={handleChange} />
               </Stack>
               <Stack spacing={2} direction="row">
-                <FormGroup>
-                  <FormControlLabel control={<Checkbox name="admin" checked={user.admin} onChange={handleCheck} />} label="Admin" />
-                </FormGroup>
+                <FormControlLabel control={<Checkbox name="admin" checked={user.admin} onChange={handleCheck} />} label="Admin" />
+                <FormControlLabel control={<Checkbox name="gamemaster" checked={user.gamemaster} onChange={handleCheck} />} label="GM" />
               </Stack>
               <Stack alignItems="flex-end" spacing={2} direction="row">
                 <Button variant="outlined" disabled={saving} onClick={cancelForm}>Cancel</Button>

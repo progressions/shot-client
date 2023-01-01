@@ -98,6 +98,7 @@ export default function UsersAdmin({ jwt, endpoint, users, currentUser }: any) {
                     <TableCell>Last Name</TableCell>
                     <TableCell>Email</TableCell>
                     <TableCell>Admin</TableCell>
+                    <TableCell>GM</TableCell>
                     <TableCell></TableCell>
                   </TableRow>
                 </TableHead>
@@ -110,6 +111,7 @@ export default function UsersAdmin({ jwt, endpoint, users, currentUser }: any) {
                           <TableCell sx={{width: 120}}>{user.last_name}</TableCell>
                           <TableCell>{user.email}</TableCell>
                           <TableCell>{ user.admin && <CheckIcon />}</TableCell>
+                          <TableCell>{ user.gamemaster && <CheckIcon />}</TableCell>
                           <TableCell>
                             <IconButton onClick={() => setUser(user)}>
                               <EditIcon />
