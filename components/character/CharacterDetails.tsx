@@ -61,6 +61,22 @@ export default function CharacterDetails({ character, endpoint, fight, setFight,
     }
   }
 
+  const CharacterTypeBadge = ({ character }: any) => {
+    const names = {
+      "PC": "PC",
+      "Mook": "Mook",
+      "Featured Foe": "Foe",
+      "Boss": "Boss",
+      "Uber-Boss": "User"
+    }
+    const charType = character?.action_values?.['Type']
+    return (
+      <Box width={40} sx={{textAlign: 'center'}}>
+        <Typography variant="h6" sx={{color: 'text.secondary', fontVariant: 'small-caps'}}>{names[charType].toLowerCase()}</Typography>
+      </Box>
+    )
+  }
+
   return (
     <>
       <TableContainer>
@@ -71,6 +87,9 @@ export default function CharacterDetails({ character, endpoint, fight, setFight,
                 <Badge color='error' badgeContent={character.impairments}>
                   <Avatar sx={{bgcolor: character.color || 'secondary'}} variant="rounded">{character.name[0]}</Avatar>
                 </Badge>
+                <GamemasterOnly user={session?.data?.user} character={character}>
+                  <CharacterTypeBadge character={character} />
+                </GamemasterOnly>
               </TableCell>
               <TableCell sx={{width: 200}}>
                 <Typography variant="h4" sx={{fontWeight: 'bold'}}>
