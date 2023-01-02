@@ -33,7 +33,7 @@ export default function CharacterModal({ open, setOpen, endpoint, fight, setFigh
   }
 
   const handleAVChange = (event: any) => {
-    const { action_values } = character
+    const { action_values } = character || {}
     setCharacter((prevState: any) => ({ ...prevState, action_values: { ...action_values, [event.target.name]: event.target.value } }))
   }
 
@@ -101,7 +101,7 @@ export default function CharacterModal({ open, setOpen, endpoint, fight, setFigh
               <TextField label="Shot" name="current_shot" value={character.current_shot || ''} onChange={handleChange} sx={{width: 80}} />
             </Stack>
             <Stack spacing={2} direction="row" alignItems='center'>
-              <TextField label="Wounds" name="Wounds" value={character.action_values['Wounds'] || ''} onChange={handleAVChange}
+              <TextField label="Wounds" name="Wounds" value={character.action_values?.['Wounds'] || ''} onChange={handleAVChange}
                 InputProps={{startAdornment: <InputAdornment position="start"><FavoriteIcon color='error' /></InputAdornment>}}
                />
               <TextField label="Impairments" name="impairments" value={character.impairments || ''} onChange={handleChange} />
@@ -114,11 +114,11 @@ export default function CharacterModal({ open, setOpen, endpoint, fight, setFigh
               </Paper>
             </Popover>
             <Stack direction="row" spacing={2}>
-              <TextField label="Attack" sx={{width: 100}} name="Guns" value={character.action_values['Guns'] || ''} onChange={handleAVChange} />
-              <TextField label="Defense" sx={{width: 100}} name="Defense" value={character.action_values['Defense'] || ''} onChange={handleAVChange} />
-              <TextField label="Fortune" sx={{width: 100}} name="Fortune" value={character.action_values['Fortune'] || ''} onChange={handleAVChange} />
-              <TextField label="Toughness" sx={{width: 100}} name="Toughness" value={character.action_values['Toughness'] || ''} onChange={handleAVChange} />
-              <TextField label="Speed" sx={{width: 100}} name="Speed" value={character.action_values['Speed'] || ''} onChange={handleAVChange} />
+              <TextField label="Attack" sx={{width: 100}} name="Guns" value={character.action_values?.['Guns'] || ''} onChange={handleAVChange} />
+              <TextField label="Defense" sx={{width: 100}} name="Defense" value={character.action_values?.['Defense'] || ''} onChange={handleAVChange} />
+              <TextField label="Fortune" sx={{width: 100}} name="Fortune" value={character.action_values?.['Fortune'] || ''} onChange={handleAVChange} />
+              <TextField label="Toughness" sx={{width: 100}} name="Toughness" value={character.action_values?.['Toughness'] || ''} onChange={handleAVChange} />
+              <TextField label="Speed" sx={{width: 100}} name="Speed" value={character.action_values?.['Speed'] || ''} onChange={handleAVChange} />
             </Stack>
             <Stack alignItems="flex-end" spacing={2} direction="row">
               <Button variant="outlined" disabled={saving} onClick={cancelForm}>Cancel</Button>
