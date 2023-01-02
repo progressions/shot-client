@@ -27,6 +27,31 @@ export default function MookRolls({ }) {
     }
   }
 
+/*
+  const RollOutcome = ({ outcome, value }) => {
+    return (
+      <Grid key={index} item xs={2}>
+        <Typography sx={style} variant='h5'>
+          {outcome}
+        </Typography>
+      </Grid>
+    )
+  }
+*/
+  const RollOutcome = ({ outcome, value }: any) => {
+    const defense = parseInt(value.defense) || 0
+    const winner = outcome >= defense
+    const style = (value.defense && winner) ? {color: 'red', fontWeight: 'bold'} : {}
+
+    return (
+      <Grid item xs={2}>
+        <Typography sx={style} variant='h5'>
+          {outcome}
+        </Typography>
+      </Grid>
+    )
+  }
+
   return (
     <>
       <Button variant="outlined" onClick={() => setOpen(true)}>Mook Rolls</Button>
@@ -52,18 +77,7 @@ export default function MookRolls({ }) {
             <Box py={2}>
               <Grid container sx={{width: "100%"}}>
                 {
-                  rolls.map((outcome, index) => {
-                    const defense = parseInt(value.defense) || 0
-                    const winner = (outcome >= parseInt(value.defense))
-                    const style = (value.defense && winner) ? {color: 'red', fontWeight: 'bold'} : {}
-                    return (
-                      <Grid key={index} item xs={2}>
-                        <Typography sx={style} variant='h5'>
-                          {outcome}
-                        </Typography>
-                      </Grid>
-                    )
-                  })
+                  rolls.map((outcome, index) => <RollOutcome outcome={outcome} value={value} key={index} />)
                 }
               </Grid>
             </Box>
