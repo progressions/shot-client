@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react'
 import { InputAdornment, Dialog, Box, Stack, TextField, Button, Paper, Popover } from '@mui/material'
 import FavoriteIcon from '@mui/icons-material/Favorite'
 
+import CharacterType from './CharacterType'
+
 import { useSession } from 'next-auth/react'
 import { BlockPicker } from 'react-color'
 import { loadFight } from '../Fight'
@@ -96,6 +98,9 @@ export default function CharacterModal({ open, setOpen, endpoint, fight, setFigh
       >
         <Box p={4} component="form" onSubmit={handleSubmit}>
           <Stack spacing={2}>
+            <Stack direction="row" spacing={2}>
+              <CharacterType value={character.action_values?.['Type'] || ''} onChange={handleAVChange} />
+            </Stack>
             <Stack direction="row" spacing={2}>
               <TextField autoFocus label="Name" variant="filled" size="medium" sx={{paddingBottom: 2}} fullWidth required name="name" value={character.name} onChange={handleChange} />
               <TextField label="Shot" name="current_shot" value={character.current_shot || ''} onChange={handleChange} sx={{width: 80}} />
