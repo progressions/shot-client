@@ -2,9 +2,6 @@ import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { Divider, Table, TableContainer, TableBody, TableRow, TableHead, TableCell, Paper, Container, Typography } from '@mui/material'
-import Layout from '../../components/Layout'
-import Shot from '../../components/Shot'
-import AddCharacter from '../../components/character/AddCharacter'
 import Box from '@mui/material/Box'
 import List from '@mui/material/List'
 import ListItem from '@mui/material/ListItem'
@@ -17,6 +14,11 @@ import Button from '@mui/material/Button'
 import Router from "next/router"
 import { authOptions } from '../api/auth/[...nextauth]'
 import { unstable_getServerSession } from "next-auth/next"
+
+import Layout from '../../components/Layout'
+import Shot from '../../components/Shot'
+import AddCharacter from '../../components/character/AddCharacter'
+import CharacterModal from '../../components/character/CharacterModal'
 
 export async function getServerSideProps({ req, res, params }: any) {
   const session: any = await unstable_getServerSession(req as any, res as any, authOptions as any)
@@ -60,6 +62,7 @@ export async function getServerSideProps({ req, res, params }: any) {
 
 export default function Fight({ fight:initialFight, endpoint }: any) {
   const [fight, setFight] = useState(initialFight)
+  const [editingCharacter, setEditingCharacter] = useState(null)
 
   const router = useRouter()
   const { id } = router.query
@@ -100,11 +103,12 @@ export default function Fight({ fight:initialFight, endpoint }: any) {
             <Table border={0}>
               <TableBody>
                 {
-                  fight.shot_order.map(([shot, chars]: any) => <Shot key={shot} shot={shot} characters={chars} endpoint={endpoint} fight={fight} setFight={setFight} />)
+                  fight.shot_order.map(([shot, chars]: any) => <Shot key={shot} shot={shot} characters={chars} endpoint={endpoint} fight={fight} setFight={setFight} editingCharacter={editingCharacter} setEditingCharacter={setEditingCharacter} />)
                 }
               </TableBody>
             </Table>
           </TableContainer>
+          <CharacterModal open={!!editingCharacter} setOpen={setEditingCharacter} endpoint={endpoint} fight={fight} character={editingCharacter} setFight={setFight} />
         </Container>
       </Layout>
     </>

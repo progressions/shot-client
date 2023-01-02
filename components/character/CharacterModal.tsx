@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Dialog from '@mui/material/Dialog'
 import Box from '@mui/material/Box'
 import Stack from '@mui/material/Stack'
@@ -21,6 +21,12 @@ export default function CharacterModal({ open, setOpen, endpoint, fight, setFigh
   const [character, setCharacter] = useState(activeCharacter || {fight_id: fight.id, name: '', defense: null, current_shot: 0, impairments: null, color: '', action_values: {}})
   const method = character ? 'PATCH' : 'POST'
 
+  useEffect(() => {
+    if (activeCharacter) {
+      setCharacter(activeCharacter)
+    }
+  }, [activeCharacter])
+
   function handleClose() {
     cancelForm()
   }
@@ -42,7 +48,7 @@ export default function CharacterModal({ open, setOpen, endpoint, fight, setFigh
 
   const cancelForm = () => {
     setCharacter(character || {fight_id: fight.id, name: '', defense: null, current_shot: 0, impairments: null, color: '', action_values: {}})
-    setOpen(false)
+    setOpen(null)
   }
 
   async function handleSubmit(event: any) {
@@ -81,6 +87,8 @@ export default function CharacterModal({ open, setOpen, endpoint, fight, setFigh
       setAnchorEl(event.target)
     }
   }
+
+  console.log({ activeCharacter })
 
   return (
     <>

@@ -14,7 +14,7 @@ import ActionButtons from './ActionButtons'
 
 import { loadFight } from '../Fight'
 
-export default function CharacterDetails({ character, endpoint, fight, setFight }: any) {
+export default function CharacterDetails({ character, endpoint, fight, setFight, editingCharacter, setEditingCharacter }: any) {
   const session: any = useSession({ required: true })
   const jwt = session?.data?.authorization
 
@@ -40,7 +40,7 @@ export default function CharacterDetails({ character, endpoint, fight, setFight 
   }
 
   function editCharacter(character: any) {
-    setOpen(true)
+    setEditingCharacter(character)
   }
 
   async function takeAction(character: any) {
@@ -88,7 +88,6 @@ export default function CharacterDetails({ character, endpoint, fight, setFight 
           </TableBody>
         </Table>
       </TableContainer>
-      <CharacterModal open={open} setOpen={setOpen} endpoint={endpoint} fight={fight} character={character} setFight={setFight} />
       <ActionModal open={openAction} setOpen={setOpenAction} endpoint={endpoint} fight={fight} character={character} setFight={setFight} />
       <WoundsModal open={openWounds} setOpen={setOpenWounds} endpoint={endpoint} fight={fight} character={character} setFight={setFight} />
     </>

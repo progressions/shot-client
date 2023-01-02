@@ -4,7 +4,7 @@ import TableCell from '@mui/material/TableCell'
 import Typography from '@mui/material/Typography'
 import CharacterDetails from './character/CharacterDetails'
 
-export default function Shot({ fight, setFight, endpoint, shot, characters }: any) {
+export default function Shot({ fight, setFight, endpoint, shot, characters, editingCharacter, setEditingCharacter }: any) {
   return (
     <>
       <TableRow key={shot} sx={{border: 0}}>
@@ -15,7 +15,7 @@ export default function Shot({ fight, setFight, endpoint, shot, characters }: an
           <Stack spacing={2}>
             {
               characters.map((character: any) => {
-                return <CharacterDetails key={character.id} endpoint={endpoint} fight={fight} character={character} setFight={setFight} />
+                return <CharacterDetails key={character.id} endpoint={endpoint} fight={fight} character={character} setFight={setFight} editingCharacter={editingCharacter} setEditingCharacter={setEditingCharacter} />
               })
             }
           </Stack>

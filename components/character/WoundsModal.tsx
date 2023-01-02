@@ -28,6 +28,7 @@ const WoundsModal = ({open, setOpen, endpoint, fight, character, setFight}: any)
     })
     if (response.status === 200) {
       await loadFight({endpoint, jwt, id: fight.id, setFight})
+      setWounds('')
       setOpen(false)
     }
   }
