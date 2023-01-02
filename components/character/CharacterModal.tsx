@@ -94,7 +94,7 @@ export default function CharacterModal({ open, setOpen, endpoint, fight, setFigh
         <Box p={4} component="form" onSubmit={handleSubmit}>
           <Stack spacing={2}>
             <Stack direction="row">
-              <TextField autoFocus label="Name" variant="filled" size="large" sx={{paddingBottom: 2}} fullWidth required name="name" value={character.name} onChange={handleChange} />
+              <TextField autoFocus label="Name" variant="filled" size="medium" sx={{paddingBottom: 2}} fullWidth required name="name" value={character.name} onChange={handleChange} />
             </Stack>
             <Stack spacing={2} direction="row" alignItems='center'>
               <TextField label="Wounds" name="Wounds" value={character.action_values['Wounds'] || ''} onChange={handleAVChange} />

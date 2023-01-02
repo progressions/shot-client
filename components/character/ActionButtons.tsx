@@ -4,7 +4,7 @@ import HeartBrokenIcon from '@mui/icons-material/HeartBroken';
 import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
 
-export default function ActionButtons({ character, takeWounds, takeAction, editCharacter, deleteCharacter }) {
+export default function ActionButtons({ character, takeWounds, takeAction, editCharacter, deleteCharacter }: any) {
   return (
     <ButtonGroup variant="outlined" size="small">
       <Tooltip title="Take Wounds" arrow>
