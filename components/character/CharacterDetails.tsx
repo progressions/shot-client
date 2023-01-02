@@ -89,7 +89,7 @@ export default function CharacterDetails({ character, endpoint, fight, setFight,
               </TableCell>
               <TableCell sx={{width: 100}}>
                 <GamemasterOnly user={session?.data?.user} character={character}>
-                  <ActionButtons character={character} 
+                  <ActionButtons character={character}
                     takeWounds={takeWounds}
                     takeAction={takeAction}
                     editCharacter={editCharacter}
