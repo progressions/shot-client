@@ -68,7 +68,7 @@ export default function CharacterDetails({ character, endpoint, fight, setFight,
       "Featured Foe": "Foe",
       "Boss": "Boss",
       "Uber-Boss": "User"
-    }
+    } as any
     const charType = character?.action_values?.['Type']
     return (
       <Box width={40} sx={{textAlign: 'center'}}>
