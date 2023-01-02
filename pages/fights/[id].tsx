@@ -15,12 +15,10 @@ import Router from "next/router"
 import { authOptions } from '../api/auth/[...nextauth]'
 import { unstable_getServerSession } from "next-auth/next"
 
+import FightToolbar from '../../components/FightToolbar'
 import Layout from '../../components/Layout'
 import Shot from '../../components/Shot'
-import AddCharacter from '../../components/character/AddCharacter'
 import CharacterModal from '../../components/character/CharacterModal'
-import DiceRoller from '../../components/DiceRoller'
-import MookRolls from '../../components/MookRolls'
 
 export async function getServerSideProps({ req, res, params }: any) {
   const session: any = await unstable_getServerSession(req as any, res as any, authOptions as any)
@@ -79,11 +77,7 @@ export default function Fight({ fight:initialFight, endpoint }: any) {
       <Layout>
         <Container>
           <Typography variant="h1" gutterBottom>{fight.name}</Typography>
-          <Stack direction="row" spacing={2} alignItems='center'>
-            <DiceRoller />
-            <AddCharacter fight={fight} endpoint={endpoint} setFight={setFight} />
-            <MookRolls />
-          </Stack>
+          <FightToolbar fight={fight} endpoint={endpoint} setFight={setFight} />
           <TableContainer>
             <Table border={0}>
               <TableHead>
