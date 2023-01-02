@@ -88,8 +88,6 @@ export default function CharacterModal({ open, setOpen, endpoint, fight, setFigh
     }
   }
 
-  console.log({ activeCharacter })
-
   return (
     <>
       <Dialog
