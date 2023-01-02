@@ -16,6 +16,7 @@ export async function loadFight({ id, endpoint, jwt, setFight }: any) {
   if (result.status === 200) {
     const data = await result.json()
     console.log(data)
+    setFight({shot_order: []})
     setFight(data)
   }
 }

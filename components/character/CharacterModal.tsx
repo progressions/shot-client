@@ -92,11 +92,12 @@ export default function CharacterModal({ open, setOpen, endpoint, fight, setFigh
         disableRestoreFocus
       >
         <Box p={4} component="form" onSubmit={handleSubmit}>
-          <Stack spacing={1}>
+          <Stack spacing={2}>
             <Stack direction="row">
-              <TextField autoFocus label="Name" fullWidth required name="name" value={character.name} onChange={handleChange} />
+              <TextField autoFocus label="Name" variant="filled" size="large" sx={{paddingBottom: 2}} fullWidth required name="name" value={character.name} onChange={handleChange} />
             </Stack>
             <Stack spacing={2} direction="row" alignItems='center'>
+              <TextField label="Wounds" name="Wounds" value={character.action_values['Wounds'] || ''} onChange={handleAVChange} />
               <TextField label="Current Shot" name="current_shot" value={character.current_shot || ''} onChange={handleChange} />
               <TextField label="Impairments" name="impairments" value={character.impairments || ''} onChange={handleChange} />
               <Box p={2} sx={{width: 10, height: 5, bgcolor: character.color, borderColor: 'primary', border: 1, borderRadius: 2}} onClick={togglePicker} />
