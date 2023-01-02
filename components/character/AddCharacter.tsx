@@ -6,16 +6,16 @@ import TextField from '@mui/material/TextField'
 import CharacterModal from './CharacterModal'
 
 export default function AddCharacter({ endpoint, fight, setFight }: any) {
-  const [newCharacter, setNewCharacter] = useState(false)
+  const [newCharacter, setNewCharacter] = useState({id: null, name: '', action_values: []})
 
   return (
     <>
       <Stack direction="row" mb={1}>
-        <Button variant="outlined" onClick={() => setNewCharacter({name: '', action_values: []})}>
+        <Button variant="outlined" onClick={() => setNewCharacter({id: null, name: '', action_values: []})}>
           Add Character
         </Button>
       </Stack>
-      <CharacterModal open={!!newCharacter} setOpen={setNewCharacter} endpoint={endpoint} fight={fight} character={newCharacter} setFight={setFight} />
+      <CharacterModal open={!!newCharacter?.id} setOpen={setNewCharacter} endpoint={endpoint} fight={fight} character={newCharacter} setFight={setFight} />
     </>
   )
 }
