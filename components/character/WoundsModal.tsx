@@ -15,7 +15,7 @@ const WoundsModal = ({open, setOpen, endpoint, fight, character, setFight}: any)
   }
   const submitWounds = async (event: any) => {
     event.preventDefault()
-    const newWounds = parseInt(character.action_values["Wounds"]) + parseInt(wounds)
+    const newWounds = parseInt(character.action_values["Wounds"] || 0) + parseInt(wounds)
     const actionValues = character.action_values
     actionValues['Wounds'] = newWounds
     const response = await fetch(`${endpoint}/${fight.id}/characters/${character.id}`, {

@@ -1,10 +1,7 @@
 import { useState, useEffect } from 'react'
-import Dialog from '@mui/material/Dialog'
-import Box from '@mui/material/Box'
-import Stack from '@mui/material/Stack'
-import TextField from '@mui/material/TextField'
-import Button from '@mui/material/Button'
-import { Paper, Popover } from '@mui/material'
+import { InputAdornment, Dialog, Box, Stack, TextField, Button, Paper, Popover } from '@mui/material'
+import FavoriteIcon from '@mui/icons-material/Favorite'
+
 import { useSession } from 'next-auth/react'
 import { BlockPicker } from 'react-color'
 import { loadFight } from '../Fight'
@@ -19,7 +16,7 @@ export default function CharacterModal({ open, setOpen, endpoint, fight, setFigh
   const [saving, setSaving] = useState(false);
 
   const [character, setCharacter] = useState(activeCharacter || {fight_id: fight.id, name: '', defense: null, current_shot: 0, impairments: null, color: '', action_values: {}})
-  const method = character ? 'PATCH' : 'POST'
+  const method = character?.id ? 'PATCH' : 'POST'
 
   useEffect(() => {
     if (activeCharacter) {
@@ -69,7 +66,7 @@ export default function CharacterModal({ open, setOpen, endpoint, fight, setFigh
       body: JSONdata,
     }
 
-    const url = character ? `${endpoint}/${fight.id}/characters/${character.id}` : `${endpoint}/${fight.id}/characters`
+    const url = character?.id ? `${endpoint}/${fight.id}/characters/${character.id}` : `${endpoint}/${fight.id}/characters`
     const response = await fetch(url, options)
     const data = await response.json()
     setCharacter(data)
@@ -99,12 +96,14 @@ export default function CharacterModal({ open, setOpen, endpoint, fight, setFigh
       >
         <Box p={4} component="form" onSubmit={handleSubmit}>
           <Stack spacing={2}>
-            <Stack direction="row">
+            <Stack direction="row" spacing={2}>
               <TextField autoFocus label="Name" variant="filled" size="medium" sx={{paddingBottom: 2}} fullWidth required name="name" value={character.name} onChange={handleChange} />
+              <TextField label="Shot" name="current_shot" value={character.current_shot || ''} onChange={handleChange} sx={{width: 80}} />
             </Stack>
             <Stack spacing={2} direction="row" alignItems='center'>
-              <TextField label="Wounds" name="Wounds" value={character.action_values['Wounds'] || ''} onChange={handleAVChange} />
-              <TextField label="Current Shot" name="current_shot" value={character.current_shot || ''} onChange={handleChange} />
+              <TextField label="Wounds" name="Wounds" value={character.action_values['Wounds'] || ''} onChange={handleAVChange}
+                InputProps={{startAdornment: <InputAdornment position="start"><FavoriteIcon color='error' /></InputAdornment>}}
+               />
               <TextField label="Impairments" name="impairments" value={character.impairments || ''} onChange={handleChange} />
               <Box p={2} sx={{width: 10, height: 5, bgcolor: character.color, borderColor: 'primary', border: 1, borderRadius: 2}} onClick={togglePicker} />
               <TextField id="colorPicker" label="Color" name="color" value={character.color || ''} onChange={handleChange} />
