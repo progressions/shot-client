@@ -27,17 +27,6 @@ export default function MookRolls({ }) {
     }
   }
 
-/*
-  const RollOutcome = ({ outcome, value }) => {
-    return (
-      <Grid key={index} item xs={2}>
-        <Typography sx={style} variant='h5'>
-          {outcome}
-        </Typography>
-      </Grid>
-    )
-  }
-*/
   const RollOutcome = ({ outcome, value }: any) => {
     const defense = parseInt(value.defense) || 0
     const winner = outcome >= defense
