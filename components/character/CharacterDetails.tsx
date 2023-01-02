@@ -54,6 +54,13 @@ export default function CharacterDetails({ character, endpoint, fight, setFight,
   const defense = character.defense ? `Defense ${character.defense}` : ''
   const impairments = character.impairments ? `(-${character.impairments})` : ''
   const color = character.impairments > 0 ? 'error' : 'primary'
+
+  const GamemasterOnly = ({ user, children, character, override }: any) => {
+    if (override || user?.gamemaster || character?.action_values?.['Type'] === 'PC') {
+      return children
+    }
+  }
+
   return (
     <>
       <TableContainer>
@@ -71,10 +78,14 @@ export default function CharacterDetails({ character, endpoint, fight, setFight,
                 </Typography>
               </TableCell>
               <TableCell sx={{width: 60}}>
-                <Typography variant="h3">{(character.action_values['Wounds'] > 0) ? character.action_values['Wounds'] : ''}</Typography>
+                <GamemasterOnly user={session?.data?.user} character={character}>
+                  <Typography variant="h3">{(character.action_values['Wounds'] > 0) ? character.action_values['Wounds'] : ''}</Typography>
+                </GamemasterOnly>
               </TableCell>
               <TableCell>
-                <ActionValues character={character} />
+                <GamemasterOnly user={session?.data?.user} character={character}>
+                  <ActionValues character={character} />
+                </GamemasterOnly>
               </TableCell>
               <TableCell sx={{width: 100}}>
                 <ActionButtons character={character} 
