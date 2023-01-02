@@ -16,9 +16,11 @@ const WoundsModal = ({open, setOpen, endpoint, fight, character, setFight}: any)
   const submitWounds = async (event: any) => {
     event.preventDefault()
     const newWounds = parseInt(character.action_values["Wounds"]) + parseInt(wounds)
+    const actionValues = character.action_values
+    actionValues['Wounds'] = newWounds
     const response = await fetch(`${endpoint}/${fight.id}/characters/${character.id}`, {
       method: 'PATCH',
-      body: JSON.stringify({"character": {"action_values": { "Wounds": newWounds }}}),
+      body: JSON.stringify({"character": {"action_values": actionValues}}),
       headers: {
         'Content-Type': 'application/json',
         'Authorization': jwt
