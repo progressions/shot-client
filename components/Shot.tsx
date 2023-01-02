@@ -10,7 +10,7 @@ export default function Shot({ fight, setFight, endpoint, shot, characters }: an
     <>
       <TableRow key={shot} sx={{border: 0}}>
         <TableCell key={shot} sx={{border: 0, padding: 2, width: 50, verticalAlign: 'top'}}>
-          <Typography variant="h2">{shot || 0}</Typography>
+          <Typography variant="h2" sx={{marginTop: 2}}>{shot || 0}</Typography>
         </TableCell>
         <TableCell sx={{border: 0}}>
           <Stack spacing={2}>
