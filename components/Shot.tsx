@@ -2,7 +2,7 @@ import { Stack, TableContainer, Table } from '@mui/material'
 import TableRow from '@mui/material/TableRow'
 import TableCell from '@mui/material/TableCell'
 import Typography from '@mui/material/Typography'
-import Character from './Character'
+import CharacterDetails from './character/CharacterDetails'
 import { useState } from 'react'
 
 export default function Shot({ fight, setFight, endpoint, shot, characters }: any) {
@@ -16,7 +16,7 @@ export default function Shot({ fight, setFight, endpoint, shot, characters }: an
           <Stack spacing={2}>
             {
               characters.map((character: any) => {
-                return <Character key={character.id} endpoint={endpoint} fight={fight} character={character} setFight={setFight} />
+                return <CharacterDetails key={character.id} endpoint={endpoint} fight={fight} character={character} setFight={setFight} />
               })
             }
           </Stack>

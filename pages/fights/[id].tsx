@@ -79,17 +79,18 @@ export default function Fight({ fight:initialFight, endpoint }: any) {
             <Table border={0}>
               <TableHead>
                 <TableRow>
-                  <TableCell sx={{width: 80}} />
                   <TableCell sx={{width: 50}}>
                   </TableCell>
-                  <TableCell sx={{width: 200}}>
+                  <TableCell sx={{width: 240}}>
                     <Typography variant="h4">Name</Typography>
                   </TableCell>
-                  <TableCell sx={{width: 65}}>
+                  <TableCell sx={{width: 30}}>
                     <Typography variant="h4" color='error'><FavoriteIcon sx={{width: 30, height: 30}} /></Typography>
                   </TableCell>
-                  <TableCell>
+                  <TableCell sx={{width: 350}}>
                     <Typography variant="h4">Action Values</Typography>
+                  </TableCell>
+                  <TableCell sx={{width: 100}}>
                   </TableCell>
                 </TableRow>
               </TableHead>
@@ -109,23 +110,3 @@ export default function Fight({ fight:initialFight, endpoint }: any) {
     </>
   )
 }
-
-/*
-              <TableHead>
-                <TableRow>
-                  <TableCell sx={{width: 50}}>
-                  </TableCell>
-                  <TableCell sx={{width: 200}}>
-                    <Typography variant="h4">Name</Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography variant="h4">Wounds</Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography variant="h4">Action Values</Typography>
-                  </TableCell>
-                  <TableCell sx={{width: 100}}>
-                  </TableCell>
-                </TableRow>
-              </TableHead>
-*/

@@ -1,16 +1,21 @@
 import { useState } from 'react'
-import { Box, TextField, Dialog, Badge, Tooltip, Paper, Button, ButtonGroup, Avatar, Stack } from '@mui/material'
+import { Grid, Item, Box, TextField, Dialog, Badge, Tooltip, Paper, Button, ButtonGroup, Avatar, Stack } from '@mui/material'
 import { TableHead, TableContainer, Table, TableBody, TableRow, TableCell } from '@mui/material'
 import Typography from '@mui/material/Typography'
 import IconButton from '@mui/material/IconButton'
 import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
-import CharacterModal from './character/CharacterModal'
 import { useSession } from 'next-auth/react'
 import BloodtypeIcon from '@mui/icons-material/Bloodtype'
 import BoltIcon from '@mui/icons-material/Bolt'
-import ActionModal from './character/ActionModal'
-import { loadFight } from './Fight'
+import HeartBrokenIcon from '@mui/icons-material/HeartBroken';
+
+import CharacterModal from './CharacterModal'
+import ActionValues from './ActionValues'
+import ActionModal from './ActionModal'
+import WoundsModal from './WoundsModal'
+
+import { loadFight } from '../Fight'
 
 export default function Character({ character, endpoint, fight, setFight }: any) {
   const session: any = useSession({ required: true })
@@ -18,6 +23,7 @@ export default function Character({ character, endpoint, fight, setFight }: any)
 
   const [open, setOpen] = useState(false)
   const [openAction, setOpenAction] = useState(false)
+  const [openWounds, setOpenWounds] = useState(false)
 
   function closeAction() {
     setOpenAction(false)
@@ -44,6 +50,10 @@ export default function Character({ character, endpoint, fight, setFight }: any)
     setOpenAction(true)
   }
 
+  async function takeWounds(character: any) {
+    setOpenWounds(true)
+  }
+
   const defense = character.defense ? `Defense ${character.defense}` : ''
   const impairments = character.impairments ? `(-${character.impairments})` : ''
   const color = character.impairments > 0 ? 'error' : 'primary'
@@ -63,33 +73,19 @@ export default function Character({ character, endpoint, fight, setFight }: any)
                     { character.name }
                   </Typography>
                 </TableCell>
-                <TableCell>
-                  <Typography variant="h3">21</Typography>
+                <TableCell sx={{width: 60}}>
+                  <Typography variant="h3">{(character.action_values['Wounds'] > 0) ? character.action_values['Wounds'] : ''}</Typography>
                 </TableCell>
                 <TableCell>
-                  <Stack direction="row" spacing={1}>
-                    <Typography variant="body2" sx={{textAlign: 'center'}}>
-                      Attack {character.action_values['Guns']}
-                    </Typography>
-                    <Typography variant="body2" sx={{textAlign: 'center'}}>
-                      Defense {character.action_values['Defense']}
-                    </Typography>
-                    <Typography variant="body2" sx={{textAlign: 'center'}}>
-                      Toughness {character.action_values['Toughness']}
-                    </Typography>
-                    <Typography variant="body2" sx={{textAlign: 'center'}}>
-                      Speed {character.action_values['Speed']}
-                    </Typography>
-                    <Typography variant="body2" sx={{textAlign: 'center'}}>
-                      Fortune {character.action_values['Fortune']}
-                    </Typography>
-                    <Typography variant="body2">
-                      {impairments}
-                    </Typography>
-                  </Stack>
+                  <ActionValues character={character} />
                 </TableCell>
                 <TableCell sx={{width: 100}}>
                   <ButtonGroup variant="outlined" size="small">
+                    <Tooltip title="Take Wounds" arrow>
+                      <Button onClick={() => {takeWounds(character)}}>
+                        <HeartBrokenIcon color='error' />
+                      </Button>
+                    </Tooltip>
                     <Tooltip title="Take Action" arrow>
                       <Button onClick={() => {takeAction(character)}}>
                         <BoltIcon />
@@ -113,6 +109,36 @@ export default function Character({ character, endpoint, fight, setFight }: any)
         </TableContainer>
       <CharacterModal open={open} setOpen={setOpen} endpoint={endpoint} fight={fight} character={character} setFight={setFight} />
       <ActionModal open={openAction} setOpen={setOpenAction} endpoint={endpoint} fight={fight} character={character} setFight={setFight} />
+      <WoundsModal open={openWounds} setOpen={setOpenWounds} endpoint={endpoint} fight={fight} character={character} setFight={setFight} />
     </>
   )
 }
+/*
+                  <Grid container spacing={1}>
+                    <Grid item>
+                      <Typography variant="body2" sx={{textAlign: 'center'}}>
+                        Attack {character.action_values['Guns']}
+                      </Typography>
+                    </Grid>
+                    <Grid item>
+                      <Typography variant="body2" sx={{textAlign: 'center'}}>
+                        Defense {character.action_values['Defense']}
+                      </Typography>
+                    </Grid>
+                    <Grid item>
+                      <Typography variant="body2" sx={{textAlign: 'center'}}>
+                        Toughness {character.action_values['Toughness']}
+                      </Typography>
+                    </Grid>
+                    <Grid item>
+                      <Typography variant="body2" sx={{textAlign: 'center'}}>
+                        Speed {character.action_values['Speed']}
+                      </Typography>
+                    </Grid>
+                    <Grid item>
+                      <Typography variant="body2" sx={{textAlign: 'center'}}>
+                        Fortune {character.action_values['Fortune']}
+                      </Typography>
+                    </Grid>
+                  </Grid>
+*/
