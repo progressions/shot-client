@@ -2,16 +2,16 @@ import { Tooltip, IconButton, Dialog, Box, Typography} from '@mui/material'
 import CasinoIcon from '@mui/icons-material/Casino'
 import { useState } from 'react'
 
-export const roll = () => {
+export const rollDie = () => {
   const result = Math.floor(Math.random() * 6) + 1
   return result
 }
 
-export const explodingRoll = (roll) => {
-  let result = roll()
+export const rollExplodingDie = (rollDie: any) => {
+  let result = rollDie()
   let total = []
   do {
-    result = roll()
+    result = rollDie()
     total.push(result)
   }
   while (result == 6)
@@ -19,22 +19,22 @@ export const explodingRoll = (roll) => {
   return [total, total.reduce((sum, num) => {return (sum + num)}, 0)]
 }
 
+const rollSwerve = () => {
+  const [posRolls, positive] = rollExplodingDie(rollDie)
+  const [negRolls, negative] = rollExplodingDie(rollDie)
+
+  const result = positive - negative
+  console.log({ result })
+
+  return result
+}
+
 export default function DiceRoller({ }) {
   const [open, setOpen] = useState(false)
-  const [result, setResult] = useState(null)
-
-  const swerve = () => {
-    const [posRolls, positive] = explodingRoll(roll)
-    const [negRolls, negative] = explodingRoll(roll)
-
-    const result = positive - negative
-    console.log({ result })
-
-    return result
-  }
+  const [result, setResult] = useState<number | null>(null)
 
   const showExplodingRoll = () => {
-    const sum = swerve()
+    const sum = rollSwerve()
     setResult(sum)
     setOpen(true)
   }
