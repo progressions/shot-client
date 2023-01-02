@@ -3,7 +3,6 @@ import TableRow from '@mui/material/TableRow'
 import TableCell from '@mui/material/TableCell'
 import Typography from '@mui/material/Typography'
 import CharacterDetails from './character/CharacterDetails'
-import { useState } from 'react'
 
 export default function Shot({ fight, setFight, endpoint, shot, characters }: any) {
   return (

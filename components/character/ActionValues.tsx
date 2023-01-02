@@ -1,7 +1,7 @@
 import { TableContainer, Table, TableHead, TableBody, TableCell, TableRow } from '@mui/material'
 import { tableCellClasses } from "@mui/material/TableCell"
 
-export default function ActionValues({ character }) {
+export default function ActionValues({ character }: any) {
   return (
     <TableContainer>
       <Table sx={{[`& .${tableCellClasses.root}`]: { padding: 0, paddingBottom: 1, borderBottom: "none" } }} border={0}>
