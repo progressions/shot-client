@@ -19,6 +19,8 @@ import Layout from '../../components/Layout'
 import Shot from '../../components/Shot'
 import AddCharacter from '../../components/character/AddCharacter'
 import CharacterModal from '../../components/character/CharacterModal'
+import DiceRoller from '../../components/DiceRoller'
+import MookRolls from '../../components/MookRolls'
 
 export async function getServerSideProps({ req, res, params }: any) {
   const session: any = await unstable_getServerSession(req as any, res as any, authOptions as any)
@@ -77,7 +79,11 @@ export default function Fight({ fight:initialFight, endpoint }: any) {
       <Layout>
         <Container>
           <Typography variant="h1" gutterBottom>{fight.name}</Typography>
-          <AddCharacter fight={fight} endpoint={endpoint} setFight={setFight} />
+          <Stack direction="row" spacing={2} alignItems='center'>
+            <DiceRoller />
+            <AddCharacter fight={fight} endpoint={endpoint} setFight={setFight} />
+            <MookRolls />
+          </Stack>
           <TableContainer>
             <Table border={0}>
               <TableHead>

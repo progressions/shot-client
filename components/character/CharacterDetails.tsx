@@ -6,6 +6,8 @@ import IconButton from '@mui/material/IconButton'
 import { useSession } from 'next-auth/react'
 import BloodtypeIcon from '@mui/icons-material/Bloodtype'
 
+import WhatshotIcon from '@mui/icons-material/Whatshot'
+
 import CharacterModal from './CharacterModal'
 import ActionValues from './ActionValues'
 import ActionModal from './ActionModal'
@@ -72,7 +74,7 @@ export default function CharacterDetails({ character, endpoint, fight, setFight,
     const charType = character?.action_values?.['Type']
     return (
       <Box width={40} sx={{textAlign: 'center'}}>
-        <Typography variant="h6" sx={{color: 'text.secondary', fontVariant: 'small-caps'}}>{names[charType].toLowerCase()}</Typography>
+        <Typography variant="h6" sx={{color: 'text.secondary', fontVariant: 'small-caps', textTransform: 'lowercase'}}>{names?.[charType]}</Typography>
       </Box>
     )
   }

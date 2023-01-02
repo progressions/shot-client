@@ -17,7 +17,6 @@ import Stack from '@mui/material/Stack'
 
 export default function Navbar() {
   const { status, data } = useSession()
-  console.log({ data })
   const user:any = data?.user
 
   useEffect(() => {
