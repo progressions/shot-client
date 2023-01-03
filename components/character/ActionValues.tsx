@@ -25,10 +25,10 @@ export default function ActionValues({ character }: any) {
     <Stack direction="row" spacing={0}>
       <ActionValueDisplay label="Attack" name="Guns" character={character} />
       <ActionValueDisplay label="Defense" name="Defense" character={character} />
-      { character.action_values["Type"] === "PC" &&
-        <ActionValueDisplay label="Fortune" name="Fortune" character={character} /> }
       { character.action_values["Type"] !== "Mook" &&
         <ActionValueDisplay label="Tough" name="Toughness" character={character} /> }
+      { character.action_values["Type"] === "PC" &&
+        <ActionValueDisplay label="Fortune" name="Fortune" character={character} /> }
       <ActionValueDisplay label="Speed" name="Speed" character={character} sx={{...styles, borderRightColor: "#ccc", borderRight: 1}} />
     </Stack>
   )

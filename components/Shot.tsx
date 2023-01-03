@@ -5,6 +5,8 @@ import Typography from '@mui/material/Typography'
 import CharacterDetails from './character/CharacterDetails'
 
 export default function Shot({ fight, setFight, endpoint, shot, characters, editingCharacter, setEditingCharacter, showHidden }: any) {
+  const label = shot === null ? "-" : shot
+
   if (!showHidden && (shot === null || shot === undefined)) {
     return null
   }
@@ -12,7 +14,7 @@ export default function Shot({ fight, setFight, endpoint, shot, characters, edit
     <>
       <TableRow key={shot} sx={{border: 0}}>
         <TableCell key={shot} sx={{border: 0, padding: 2, width: 50, verticalAlign: 'top'}}>
-          <Typography variant="h2" sx={{marginTop: 2}}>{shot || "-"}</Typography>
+          <Typography variant="h2" sx={{marginTop: 2}}>{label}</Typography>
         </TableCell>
         <TableCell sx={{border: 0}}>
           <Stack spacing={2}>
