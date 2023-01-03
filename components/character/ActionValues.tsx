@@ -3,8 +3,8 @@ import { Box, Stack, Typography } from '@mui/material'
 import { tableCellClasses } from "@mui/material/TableCell"
 
 export default function ActionValues({ character }: any) {
-  const color = character.impairments ? 'red' : ''
   const borderColor = "#aaa"
+  const color = character.impairments ? 'red' : borderColor
   const styles = {
     width: 60,
     borderColor: borderColor,
