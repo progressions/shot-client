@@ -11,7 +11,7 @@ export default function FightToolbar({ fight, setFight, endpoint, showHidden, se
         <DiceRoller />
         <AddCharacter fight={fight} endpoint={endpoint} setFight={setFight} />
         <MookRolls />
-        <FormControlLabel label="Show Hidden" control={<Switch checked={showHidden} />} onChange={(event) => setShowHidden(event.target.checked)} />
+        <FormControlLabel label="Show Hidden" control={<Switch checked={showHidden} />} onChange={(event: any) => setShowHidden(event.target.checked)} />
       </Stack>
     </>
   )

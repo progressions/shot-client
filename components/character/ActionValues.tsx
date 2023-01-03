@@ -9,7 +9,7 @@ export default function ActionValues({ character }: any) {
     borderColor: '#ccc',
     borderRight: 'none'
   }
-  const ActionValueDisplay = ({ name, label, character, sx }) => {
+  const ActionValueDisplay = ({ name, label, character, sx }: any) => {
     if (character.action_values[name]) {
       return (
         <Stack spacing={1} sx={sx || styles} border={1}>
@@ -17,6 +17,8 @@ export default function ActionValues({ character }: any) {
           <Typography variant="h6" align='center' sx={{color: color}}>{character.action_values[name] - (character.impairments || 0)}</Typography>
         </Stack>
       )
+    } else {
+      return <></>
     }
   }
   return (
