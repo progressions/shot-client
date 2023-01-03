@@ -10,11 +10,12 @@ export default function Shot({ fight, setFight, endpoint, shot, characters, edit
   if (!showHidden && (shot === null || shot === undefined)) {
     return null
   }
+  const color = (shot <= 0) ? "#ccc" : ""
   return (
     <>
       <TableRow key={shot} sx={{border: 0}}>
         <TableCell key={shot} sx={{border: 0, padding: 2, width: 50, verticalAlign: 'top'}}>
-          <Typography variant="h2" sx={{marginTop: 2}}>{label}</Typography>
+          <Typography variant="h2" sx={{marginTop: 2, color: color}}>{label}</Typography>
         </TableCell>
         <TableCell sx={{border: 0}}>
           <Stack spacing={2}>
