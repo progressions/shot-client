@@ -1,4 +1,4 @@
-import { Tooltip, IconButton, Dialog, Box, Typography} from '@mui/material'
+import { Tooltip, Button, IconButton, Dialog, DialogTitle, DialogContent, Box, Typography} from '@mui/material'
 import CasinoIcon from '@mui/icons-material/Casino'
 import { useState } from 'react'
 
@@ -32,26 +32,48 @@ const rollSwerve = () => {
 export default function DiceRoller({ }) {
   const [open, setOpen] = useState(false)
   const [result, setResult] = useState<number | null>(null)
+  const [title, setTitle] = useState('')
 
   const showExplodingRoll = () => {
     const sum = rollSwerve()
+    setTitle("Swerve")
+    setResult(sum)
+    setOpen(true)
+  }
+
+  const showSingleRoll = () => {
+    const sum = rollDie()
+    setTitle("Single Die Roll")
     setResult(sum)
     setOpen(true)
   }
 
   return (
     <>
-      <Tooltip title="Roll Swerve" arrow>
-        <IconButton onClick={showExplodingRoll}>
+      <Tooltip title="Roll Single Die" arrow>
+        <IconButton onClick={showSingleRoll} sx={{marginRight: -3}}>
           <CasinoIcon color='error' sx={{width: 45, height: 45}} />
         </IconButton>
       </Tooltip>
+      <Tooltip title="Roll Swerve" arrow>
+        <Button onClick={showExplodingRoll}>
+          <Box sx={{height: 35, bgcolor: 'primary.dark', borderRadius: 3}}>
+            <Box sx={{marginTop: '-13px'}} p={1}>
+              <CasinoIcon sx={{color: 'white', width: 25, height: 45}} />
+              <CasinoIcon sx={{color: 'error', width: 25, height: 45}} />
+            </Box>
+          </Box>
+        </Button>
+      </Tooltip>
       <Dialog open={open} onClose={() => setOpen(false)}>
-        <Box p={4}>
-          <Typography variant="h3">
-            {result}
-          </Typography>
-        </Box>
+        <DialogTitle>{title}</DialogTitle>
+        <DialogContent>
+          <Box p={4}>
+            <Typography align='center' variant="h3">
+              {result}
+            </Typography>
+          </Box>
+        </DialogContent>
       </Dialog>
     </>
   )
