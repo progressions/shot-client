@@ -121,8 +121,8 @@ export default function CharacterModal({ open, setOpen, endpoint, fight, setFigh
             <Stack direction="row" spacing={2}>
               <TextField label="Attack" sx={{width: 100}} name="Guns" value={character.action_values?.['Guns'] || ''} onChange={handleAVChange} />
               <TextField label="Defense" sx={{width: 100}} name="Defense" value={character.action_values?.['Defense'] || ''} onChange={handleAVChange} />
-              <TextField label="Fortune" sx={{width: 100}} name="Fortune" value={character.action_values?.['Fortune'] || ''} onChange={handleAVChange} />
               <TextField label="Toughness" sx={{width: 100}} name="Toughness" value={character.action_values?.['Toughness'] || ''} onChange={handleAVChange} />
+              <TextField label="Fortune" sx={{width: 100}} name="Fortune" value={character.action_values?.['Fortune'] || ''} onChange={handleAVChange} />
               <TextField label="Speed" sx={{width: 100}} name="Speed" value={character.action_values?.['Speed'] || ''} onChange={handleAVChange} />
             </Stack>
             <Stack alignItems="flex-end" spacing={2} direction="row">
