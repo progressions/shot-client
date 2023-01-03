@@ -9,30 +9,25 @@ export default function ActionValues({ character }: any) {
     borderColor: '#ccc',
     borderRight: 'none'
   }
+  const ActionValueDisplay = ({ name, label, character, sx }) => {
+    if (character.action_values[name]) {
+      return (
+        <Stack spacing={1} sx={sx || styles} border={1}>
+          <Typography variant="body2" align='center'>{label}</Typography>
+          <Typography variant="h6" align='center' sx={{color: color}}>{character.action_values[name] - (character.impairments || 0)}</Typography>
+        </Stack>
+      )
+    }
+  }
   return (
     <Stack direction="row" spacing={0}>
-      <Stack spacing={1} sx={styles} border={1}>
-        <Typography variant="body2" align='center'>Attack</Typography>
-        <Typography variant="h6" align='center' sx={{color: color}}>{character.action_values["Guns"] - (character.impairments || 0)}</Typography>
-      </Stack>
-      <Stack spacing={1} sx={styles} border={1}>
-        <Typography variant="body2" align='center'>Defense</Typography>
-        <Typography variant="h6" align='center' sx={{color: color}}>{character.action_values["Defense"] - (character.impairments || 0)}</Typography>
-      </Stack>
+      <ActionValueDisplay label="Attack" name="Guns" character={character} />
+      <ActionValueDisplay label="Defense" name="Defense" character={character} />
       { character.action_values["Type"] === "PC" &&
-      <Stack spacing={1} sx={styles} border={1}>
-        <Typography variant="body2" align='center'>Fortune</Typography>
-        <Typography variant="h6" align='center' sx={{color: color}}>{character.action_values["Fortune"] - (character.impairments || 0)}</Typography>
-      </Stack> }
+        <ActionValueDisplay label="Fortune" name="Fortune" character={character} /> }
       { character.action_values["Type"] !== "Mook" &&
-      <Stack spacing={1} sx={styles} border={1}>
-        <Typography variant="body2" align='center'>Tough</Typography>
-        <Typography variant="h6" align='center' sx={{color: color}}>{character.action_values["Toughness"] - (character.impairments || 0)}</Typography>
-      </Stack> }
-      <Stack spacing={1} sx={{...styles, borderRightColor: '#ccc', borderRight: 1}} border={1}>
-        <Typography variant="body2" align='center'>Speed</Typography>
-        <Typography variant="h6" align='center' sx={{color: color}}>{character.action_values["Speed"] - (character.impairments || 0)}</Typography>
-      </Stack>
+        <ActionValueDisplay label="Tough" name="Toughness" character={character} /> }
+      <ActionValueDisplay label="Speed" name="Speed" character={character} sx={{...styles, borderRightColor: "#ccc", borderRight: 1}} />
     </Stack>
   )
 }

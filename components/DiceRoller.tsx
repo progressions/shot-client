@@ -60,7 +60,7 @@ export default function DiceRoller({ }) {
           <Box sx={{height: 35, bgcolor: 'primary.dark', borderRadius: 3}}>
             <Box sx={{marginTop: '-13px'}} p={1}>
               <CasinoIcon sx={{color: 'white', width: 25, height: 45}} />
-              <CasinoIcon sx={{color: 'error', width: 25, height: 45}} />
+              <CasinoIcon sx={{color: 'red', width: 25, height: 45}} />
             </Box>
           </Box>
         </Button>
