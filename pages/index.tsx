@@ -59,10 +59,6 @@ export default function Home({ fights, endpoint }: any) {
   if (status !== "authenticated") {
     return <div>Loading...</div>
   }
-  if (status === "unauthenticated") {
-    console.log("WUUUT")
-    return <div>Loading...</div>
-  }
   return (
     <>
       <Head>
