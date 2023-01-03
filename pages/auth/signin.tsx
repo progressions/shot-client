@@ -1,24 +1,25 @@
 import { Box, Stack, TextField, Button } from '@mui/material'
 import { useState } from 'react'
 import Layout from '../../components/Layout'
-import { signIn } from 'next-auth/react'
+import { signIn, signOut } from 'next-auth/react'
 import Router from 'next/router'
 
 export async function getServerSideProps(context: any) {
   const endpoint = `${process.env.SERVER_URL}/users/sign_in`
 
-  console.log(context?.req.headers['referer'])
+  console.log(context?.req?.headers?.['referer'])
 
   // get CSRF as soon as i figure out how
   return {
     props: {
       endpoint: endpoint,
-      referer: context?.req?.headers['referer']
+      referer: context?.req?.headers?.['referer']
     },
   }
 }
 
 export default function SignInPage({ endpoint, referer }: any) {
+  signOut({ redirect: false })
   const [credentials, setCredentials] = useState(
     {
       email: '',

@@ -60,6 +60,7 @@ export const authOptions = {
       if (user?.id) {
         token.id = user.id
       }
+      // console.log({ token, user, account, isNewUser })
       return token
     },
     session({ session, user, token }) {
@@ -78,12 +79,12 @@ export const authOptions = {
       if (token?.user) {
         session.user = token.user
       }
+      // console.log({ session, user, token })
       return session
     }
   },
   pages: {
     signIn: '/auth/signin',
-    signOut: '/auth/signout'
   }
 }
 export default NextAuth(authOptions)

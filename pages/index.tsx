@@ -9,6 +9,7 @@ import Router from 'next/router'
 import { useSession } from 'next-auth/react'
 import { getToken } from 'next-auth/jwt'
 import { useEffect } from 'react'
+import { signIn, signOut } from 'next-auth/react'
 
 import { authOptions } from './api/auth/[...nextauth]'
 import { unstable_getServerSession } from "next-auth/next"
@@ -34,6 +35,17 @@ export async function getServerSideProps({ req, res }: any) {
       }, // will be passed to the page component as props
     }
   }
+  if (response.status === 401) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/auth/signin"
+      },
+      props: {
+        endpoint: endpoint,
+      }
+    }
+  }
   return {
     props: {
       fights: [],
@@ -45,6 +57,10 @@ export async function getServerSideProps({ req, res }: any) {
 export default function Home({ fights, endpoint }: any) {
   const { status, data } = useSession({ required: true })
   if (status !== "authenticated") {
+    return <div>Loading...</div>
+  }
+  if (status === "unauthenticated") {
+    console.log("WUUUT")
     return <div>Loading...</div>
   }
   return (
