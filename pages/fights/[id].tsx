@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
-import { Divider, Table, TableContainer, TableBody, TableRow, TableHead, TableCell, Paper, Container, Typography } from '@mui/material'
+import { Switch, Divider, Table, TableContainer, TableBody, TableRow, TableHead, TableCell, Paper, Container, Typography } from '@mui/material'
 import Box from '@mui/material/Box'
 import List from '@mui/material/List'
 import ListItem from '@mui/material/ListItem'
@@ -63,6 +63,7 @@ export async function getServerSideProps({ req, res, params }: any) {
 export default function Fight({ fight:initialFight, endpoint }: any) {
   const [fight, setFight] = useState(initialFight)
   const [editingCharacter, setEditingCharacter] = useState(null)
+  const [showHidden, setShowHidden] = useState(false)
 
   const router = useRouter()
   const { id } = router.query
@@ -77,7 +78,7 @@ export default function Fight({ fight:initialFight, endpoint }: any) {
       <Layout>
         <Container>
           <Typography variant="h1" gutterBottom>{fight.name}</Typography>
-          <FightToolbar fight={fight} endpoint={endpoint} setFight={setFight} />
+          <FightToolbar fight={fight} endpoint={endpoint} setFight={setFight} showHidden={showHidden} setShowHidden={setShowHidden} />
           <TableContainer>
             <Table border={0}>
               <TableHead>
@@ -103,7 +104,7 @@ export default function Fight({ fight:initialFight, endpoint }: any) {
             <Table border={0}>
               <TableBody>
                 {
-                  fight.shot_order.map(([shot, chars]: any) => <Shot key={shot} shot={shot} characters={chars} endpoint={endpoint} fight={fight} setFight={setFight} editingCharacter={editingCharacter} setEditingCharacter={setEditingCharacter} />)
+                  fight.shot_order.map(([shot, chars]: any) => <Shot key={shot} shot={shot} characters={chars} endpoint={endpoint} fight={fight} setFight={setFight} editingCharacter={editingCharacter} setEditingCharacter={setEditingCharacter} showHidden={showHidden} />)
                 }
               </TableBody>
             </Table>
