@@ -1,5 +1,5 @@
 import { Box, Stack, TextField, Button } from '@mui/material'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Layout from '../../components/Layout'
 import { signIn, signOut } from 'next-auth/react'
 import Router from 'next/router'
@@ -19,7 +19,10 @@ export async function getServerSideProps(context: any) {
 }
 
 export default function SignInPage({ endpoint, referer }: any) {
-  signOut({ redirect: false })
+  useEffect(() => {
+    signOut({ redirect: false })
+  })
+
   const [credentials, setCredentials] = useState(
     {
       email: '',
