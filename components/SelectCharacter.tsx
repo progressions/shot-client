@@ -19,9 +19,14 @@ export default function SelectCharacter({ fight, setFight, endpoint }: any) {
       }
     })
     const chars = await response.json()
-    console.log(chars)
-    setChars(chars)
 
+    const ids = fight.characters.map((char) => char.id)
+    const availableChars = chars.filter((char) => {
+      return !ids.includes(char.id)
+    })
+
+    setValue('')
+    setChars(availableChars)
     setOpen(true)
   }
 
