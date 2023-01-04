@@ -10,6 +10,11 @@ export default function Shot({ fight, setFight, endpoint, shot, characters, edit
   if (!showHidden && (shot === null || shot === undefined)) {
     return null
   }
+
+  const setEditingCharacterWithCurrentShot = (value: any) => {
+    setEditingCharacter({...value, current_shot: shot})
+  }
+
   const color = (shot <= 0) ? "#ccc" : ""
   return (
     <>
@@ -21,7 +26,7 @@ export default function Shot({ fight, setFight, endpoint, shot, characters, edit
           <Stack spacing={2}>
             {
               characters.map((character: any) => {
-                return <CharacterDetails key={character.id} endpoint={endpoint} fight={fight} character={character} setFight={setFight} editingCharacter={editingCharacter} setEditingCharacter={setEditingCharacter} />
+                return <CharacterDetails key={character.id} endpoint={endpoint} fight={fight} character={character} setFight={setFight} editingCharacter={editingCharacter} setEditingCharacter={setEditingCharacterWithCurrentShot} />
               })
             }
           </Stack>

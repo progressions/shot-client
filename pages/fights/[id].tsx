@@ -67,6 +67,9 @@ export default function Fight({ fight:initialFight, endpoint }: any) {
 
   const router = useRouter()
   const { id } = router.query
+  if (!fight) {
+    return <>Loading...</>
+  }
   return (
     <>
       <Head>

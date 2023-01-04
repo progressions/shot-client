@@ -24,6 +24,7 @@ const ActionModal = ({open, setOpen, endpoint, fight, character, setFight}: any)
       }
     })
     if (response.status === 200) {
+      setOpen(false)
       await loadFight({endpoint, jwt, id: fight.id, setFight})
     }
   }
