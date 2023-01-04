@@ -20,8 +20,8 @@ export default function SelectCharacter({ fight, setFight, endpoint }: any) {
     })
     const chars = await response.json()
 
-    const ids = fight.characters.map((char) => char.id)
-    const availableChars = chars.filter((char) => {
+    const ids = fight.characters.map((char: any) => char.id)
+    const availableChars = chars.filter((char: any) => {
       return !ids.includes(char.id)
     })
 
@@ -79,7 +79,7 @@ export default function SelectCharacter({ fight, setFight, endpoint }: any) {
           <Box sx={{width: 300}} py={2}>
             <TextField label="Character" name="character" fullWidth select value={value} onChange={handleChange}>
               {
-                chars.map((char) => <MenuItem key={char.id} value={char.id}>{char.name}</MenuItem>)
+                chars.map((char: any) => <MenuItem key={char.id} value={char.id}>{char.name}</MenuItem>)
               }
             </TextField>
           </Box>
