@@ -23,44 +23,47 @@ import CharacterModal from '../../components/character/CharacterModal'
 export async function getServerSideProps({ req, res, params }: any) {
   const session: any = await unstable_getServerSession(req as any, res as any, authOptions as any)
   const jwt = session?.authorization
+  const apiEndpoint = `${process.env.SERVER_URL}/api/v1`
   const endpoint = `${process.env.SERVER_URL}/api/v1/fights`
   const { id } = params
-  const result = await fetch(`${endpoint}/${id}`, {
+  const response = await fetch(`${endpoint}/${id}`, {
     headers: {
       'Content-Type': 'application/json',
       'Authorization': jwt
     }
   })
-  if (result.status === 200) {
-    const fight = await result.json()
+  if (response.status === 200) {
+    const fight = await response.json()
     return {
       props: {
         fight: fight,
         endpoint: endpoint,
+        apiEndpoint: apiEndpoint,
         signedIn: true
       }, // will be passed to the page component as props
     }
   }
-  if (result.status === 401) {
+  if (response.status === 401) {
     return {
       redirect: {
         permanent: false,
         destination: "/auth/signin"
       },
       props: {
-        endpoint: endpoint
+        endpoint: endpoint,
+        apiEndpoint: apiEndpoint,
       }
     }
   }
   return {
     props: {
       endpoint: endpoint,
-      signedIn: false
+      apiEndpoint: apiEndpoint,
     }
   }
 }
 
-export default function Fight({ fight:initialFight, endpoint }: any) {
+export default function Fight({ fight:initialFight, endpoint, apiEndpoint }: any) {
   const [fight, setFight] = useState(initialFight)
   const [editingCharacter, setEditingCharacter] = useState(null)
   const [showHidden, setShowHidden] = useState(false)
@@ -81,7 +84,7 @@ export default function Fight({ fight:initialFight, endpoint }: any) {
       <Layout>
         <Container>
           <Typography variant="h1" gutterBottom>{fight.name}</Typography>
-          <FightToolbar fight={fight} endpoint={endpoint} setFight={setFight} showHidden={showHidden} setShowHidden={setShowHidden} />
+          <FightToolbar fight={fight} endpoint={apiEndpoint} setFight={setFight} showHidden={showHidden} setShowHidden={setShowHidden} />
           <TableContainer>
             <Table border={0}>
               <TableHead>
