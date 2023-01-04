@@ -69,7 +69,7 @@ export default function CharacterDetails({ character, endpoint, fight, setFight,
       "Mook": "Mook",
       "Featured Foe": "Foe",
       "Boss": "Boss",
-      "Uber-Boss": "User"
+      "Uber-Boss": "Uber"
     } as any
     const charType = character?.action_values?.['Type']
     return (
