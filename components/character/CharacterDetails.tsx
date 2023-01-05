@@ -58,7 +58,7 @@ export default function CharacterDetails({ character, endpoint, fight, setFight,
   const color = character.impairments > 0 ? 'error' : 'primary'
 
   const GamemasterOnly = ({ user, children, character, override }: any) => {
-    if (override || user?.gamemaster || character?.action_values?.['Type'] === 'PC') {
+    if (override || user?.gamemaster || ["PC", "Ally"].includes(character?.action_values?.['Type'])) {
       return children
     }
   }
@@ -66,6 +66,7 @@ export default function CharacterDetails({ character, endpoint, fight, setFight,
   const CharacterTypeBadge = ({ character }: any) => {
     const names = {
       "PC": "PC",
+      "Ally": "Ally",
       "Mook": "Mook",
       "Featured Foe": "Foe",
       "Boss": "Boss",

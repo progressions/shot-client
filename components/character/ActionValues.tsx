@@ -29,7 +29,7 @@ export default function ActionValues({ character }: any) {
       <ActionValueDisplay label="Defense" name="Defense" character={character} />
       { character.action_values["Type"] !== "Mook" &&
         <ActionValueDisplay label="Tough" name="Toughness" character={character} /> }
-      { character.action_values["Type"] === "PC" &&
+      { ["PC", "Ally"].includes(character.action_values["Type"]) &&
         <ActionValueDisplay label="Fortune" name="Fortune" character={character} /> }
       <ActionValueDisplay label="Speed" name="Speed" character={character} />
       <Stack sx={{borderLeft: 1, borderLeftColor: borderColor}} />
