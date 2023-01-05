@@ -42,10 +42,10 @@ export default function MookRolls({ }) {
     )
   }
 
-  const smackdowns = (rolls) => {
+  const smackdowns = (rolls: number[]) => {
     if (rolls) {
       return (rolls
-        .filter((roll: any) => (roll >= value.defense))
+        .filter((roll: number) => (roll >= parseInt(value.defense)))
         .map((outcome, index) => <Typography key={(Math.random() * 10000)}>{outcome}: You take a smackdown of {outcome - parseInt(value.defense) + parseInt(value.damage)}</Typography>)
       )
     } else {
