@@ -42,6 +42,13 @@ export default function MookRolls({ }) {
     )
   }
 
+  const smackdowns = (rolls) => {
+    return (rolls
+      .filter((roll: any) => (roll >= value.defense))
+      .map((outcome, index) => <Typography key={outcome}>You take a smackdown of {outcome - parseInt(value.defense) + parseInt(value.damage)}</Typography>)
+    )
+  }
+
   return (
     <>
       <Button variant="outlined" onClick={() => setOpen(true)}>Mook Rolls</Button>
@@ -75,9 +82,7 @@ export default function MookRolls({ }) {
             <Divider />
             <Box py={2}>
               {
-                rolls
-                  .filter((roll: any) => (roll >= value.defense))
-                  .map((outcome, index) => <Typography key={outcome}>You take a smackdown of {outcome - parseInt(value.defense) + parseInt(value.damage)}</Typography>)
+                smackdowns(rolls)
               }
             </Box>
           </Box>
