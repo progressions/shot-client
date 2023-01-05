@@ -15,7 +15,8 @@ export interface Character {
     current_shot: string,
     impairments: string,
     color: string,
-    action_values: any
+    action_values: any,
+    user?: any
   }
 
 export default function CharacterModal({ open, setOpen, endpoint, fight, setFight, character:activeCharacter }: any) {
