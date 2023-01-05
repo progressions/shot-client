@@ -11,7 +11,7 @@ export default function ActionValues({ character }: any) {
     borderRight: 'none'
   }
   const ActionValueDisplay = ({ name, label, character, sx }: any) => {
-    if (character.action_values[name]) {
+    if (character.action_values?.[name]) {
       return (
         <Stack spacing={1} sx={sx || styles} border={1}>
           <Typography variant="body2" color="white" align="center" component="div"><Box bgcolor={borderColor}>{label}</Box></Typography>
@@ -27,9 +27,9 @@ export default function ActionValues({ character }: any) {
     <Stack direction="row" spacing={0}>
       <ActionValueDisplay label="Attack" name="Guns" character={character} />
       <ActionValueDisplay label="Defense" name="Defense" character={character} />
-      { character.action_values["Type"] !== "Mook" &&
+      { character.action_values?.["Type"] !== "Mook" &&
         <ActionValueDisplay label="Tough" name="Toughness" character={character} /> }
-      { ["PC", "Ally"].includes(character.action_values["Type"]) &&
+      { ["PC", "Ally"].includes(character.action_values?.["Type"]) &&
         <ActionValueDisplay label="Fortune" name="Fortune" character={character} /> }
       <ActionValueDisplay label="Speed" name="Speed" character={character} />
       <Stack sx={{borderLeft: 1, borderLeftColor: borderColor}} />

@@ -78,6 +78,7 @@ export default function Characters({ endpoint, characters }: any) {
                     <TableCell>Name</TableCell>
                     <TableCell>Type</TableCell>
                     <TableCell />
+                    <TableCell>Creator</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -90,6 +91,7 @@ export default function Characters({ endpoint, characters }: any) {
                         <TableCell sx={{fontWeight: 'bold'}}><Typography variant="h5">{character.name}</Typography></TableCell>
                         <TableCell>{character.action_values?.["Type"]}</TableCell>
                         <TableCell><ActionValues character={character} /></TableCell>
+                        <TableCell>{character.user?.first_name} {character.user?.last_name}</TableCell>
                       </TableRow>)
                     })
                   }
