@@ -80,7 +80,7 @@ export default function Characters({ endpoint, characters }: any) {
                 </TableHead>
                 <TableBody>
                   {
-                    characters.map((character) => {
+                    characters.map((character: any) => {
                       return (<TableRow key={character.id}>
                         <TableCell sx={{width: 50}}>
                           <Avatar sx={{bgcolor: character.color || 'secondary'}} variant="rounded">{character.name[0]}</Avatar>
