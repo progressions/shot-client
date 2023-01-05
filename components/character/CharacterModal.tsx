@@ -11,6 +11,7 @@ import { loadFight } from '../Fight'
 export default function CharacterModal({ open, setOpen, endpoint, fight, setFight, character:activeCharacter }: any) {
 
   interface Character {
+    id?: string,
     name: string,
     defense: string,
     current_shot: string,

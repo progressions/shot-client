@@ -2,7 +2,7 @@ import { Divider, Grid, Stack, Dialog, DialogTitle, DialogContent, DialogActions
 import { useState } from 'react'
 import { rollDie, rollExplodingDie } from './DiceRoller'
 
-export default function MookRolls({ count, attack, damage, icon }) {
+export default function MookRolls({ count, attack, damage, icon }: any) {
   const defaultValue = {count: count || '10', attack: attack || '8', defense: '13', damage: damage || '10'}
   const [open, setOpen] = useState(false)
   const [value, setValue] = useState(defaultValue)
