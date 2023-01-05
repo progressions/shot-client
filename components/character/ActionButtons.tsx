@@ -3,10 +3,15 @@ import BoltIcon from '@mui/icons-material/Bolt'
 import HeartBrokenIcon from '@mui/icons-material/HeartBroken';
 import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
+import NewReleasesIcon from '@mui/icons-material/NewReleases'
+
+import MookRolls from '../MookRolls'
 
 export default function ActionButtons({ character, takeWounds, takeAction, editCharacter, deleteCharacter }: any) {
   return (
     <ButtonGroup variant="outlined" size="small">
+      { character.action_values["Type"] == "Mook" &&
+      <MookRolls count={character.action_values["Wounds"]} attack={character.action_values["Guns"]} damage={character.action_values["Damage"]} icon={<NewReleasesIcon />} /> }
       <Tooltip title="Take Wounds" arrow>
         <Button onClick={() => {takeWounds(character)}}>
           <HeartBrokenIcon color='error' />

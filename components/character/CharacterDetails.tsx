@@ -4,8 +4,8 @@ import { TableHead, TableContainer, Table, TableBody, TableRow, TableCell } from
 import Typography from '@mui/material/Typography'
 import IconButton from '@mui/material/IconButton'
 import { useSession } from 'next-auth/react'
-import BloodtypeIcon from '@mui/icons-material/Bloodtype'
 
+import BloodtypeIcon from '@mui/icons-material/Bloodtype'
 import WhatshotIcon from '@mui/icons-material/Whatshot'
 
 import CharacterModal from './CharacterModal'

@@ -2,8 +2,8 @@ import { Divider, Grid, Stack, Dialog, DialogTitle, DialogContent, DialogActions
 import { useState } from 'react'
 import { rollDie, rollExplodingDie } from './DiceRoller'
 
-export default function MookRolls({ }) {
-  const defaultValue = {count: '10', attack: '8', defense: '13', damage: '10'}
+export default function MookRolls({ count, attack, damage, icon }) {
+  const defaultValue = {count: count || '10', attack: attack || '8', defense: '13', damage: damage || '10'}
   const [open, setOpen] = useState(false)
   const [value, setValue] = useState(defaultValue)
   const [rolls, setRolls] = useState<number[]>([])
@@ -51,7 +51,7 @@ export default function MookRolls({ }) {
 
   return (
     <>
-      <Button variant="outlined" onClick={() => setOpen(true)}>Mook Rolls</Button>
+      <Button variant="outlined" onClick={() => setOpen(true)}>{ icon || "Mook Rolls" }</Button>
       <Dialog
         open={open}
         onClose={handleClose}
