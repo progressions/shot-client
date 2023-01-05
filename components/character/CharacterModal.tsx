@@ -8,9 +8,7 @@ import { useSession } from 'next-auth/react'
 import { BlockPicker } from 'react-color'
 import { loadFight } from '../Fight'
 
-export default function CharacterModal({ open, setOpen, endpoint, fight, setFight, character:activeCharacter }: any) {
-
-  interface Character {
+export interface Character {
     id?: string,
     name: string,
     defense: string,
@@ -19,6 +17,8 @@ export default function CharacterModal({ open, setOpen, endpoint, fight, setFigh
     color: string,
     action_values: any
   }
+
+export default function CharacterModal({ open, setOpen, endpoint, fight, setFight, character:activeCharacter }: any) {
 
   const defaultCharacter:Character = {name: '', defense: '', current_shot: '', impairments: '', color: '', action_values: {}}
   const [picker, setPicker] = useState(false)

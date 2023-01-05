@@ -10,6 +10,8 @@ import { useSession } from "next-auth/react"
 
 import ActionValues from "../components/character/ActionValues"
 
+import type { Character } from "../components/character/CharacterModal"
+
 export async function getServerSideProps({ req, res }: any) {
   const session: any = await unstable_getServerSession(req as any, res as any, authOptions as any)
   const jwt = session?.authorization
@@ -80,7 +82,7 @@ export default function Characters({ endpoint, characters }: any) {
                 </TableHead>
                 <TableBody>
                   {
-                    characters.map((character: any) => {
+                    characters.map((character: Character) => {
                       return (<TableRow key={character.id}>
                         <TableCell sx={{width: 50}}>
                           <Avatar sx={{bgcolor: character.color || 'secondary'}} variant="rounded">{character.name[0]}</Avatar>
