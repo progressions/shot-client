@@ -2,6 +2,7 @@ import Head from "next/head"
 import Layout from "../components/Layout"
 
 import { useState } from 'react'
+import Router from 'next/router'
 
 import { Avatar, Box, TableContainer, Table, TableHead, TableBody, TableRow, TableCell, Container, Typography } from "@mui/material"
 
@@ -34,6 +35,7 @@ export async function getServerSideProps({ req, res }: any) {
       props: {
         characters: characters,
         endpoint: endpoint,
+        jwt: jwt
       }, // will be passed to the page component as props
     }
   }
@@ -56,12 +58,38 @@ export async function getServerSideProps({ req, res }: any) {
   }
 }
 
-export default function Characters({ endpoint, characters }: any) {
+export default function Characters({ endpoint, characters, jwt }: any) {
   const { status, data } = useSession({ required: true })
   const [editingCharacter, setEditingCharacter] = useState(null)
 
   function editCharacter(character: any) {
     setEditingCharacter(character)
+  }
+
+  const generateUrl = ({ endpoint, fight, character }: any) => {
+    if (fight?.id && character?.id) {
+      return `${endpoint}/${fight.id}/characters/${character.id}`
+    } else if (fight?.id) {
+      return `${endpoint}/${fight.id}/characters`
+    } else if (character?.id) {
+      return `${endpoint}/${character.id}`.replace("fights", "all_characters")
+    } else {
+      return endpoint.replace("fights", "all_characters")
+    }
+  }
+
+  async function deleteCharacter(character: any) {
+    const url = `${endpoint}/${character.id}`.replace("fights", "all_characters")
+    const response = await fetch(url, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': jwt
+      }
+    })
+    if (response.status === 200) {
+      Router.reload()
+    }
   }
 
   if (status !== "authenticated") {
@@ -103,7 +131,7 @@ export default function Characters({ endpoint, characters }: any) {
                         <TableCell>{character.action_values?.["Type"]}</TableCell>
                         <TableCell><ActionValues character={character} /></TableCell>
                         <TableCell>{character.user?.first_name} {character.user?.last_name}</TableCell>
-                        <TableCell><ActionButtons editCharacter={editCharacter} character={character} /></TableCell>
+                        <TableCell><ActionButtons editCharacter={editCharacter} deleteCharacter={deleteCharacter} character={character} /></TableCell>
                       </TableRow>)
                     })
                   }
