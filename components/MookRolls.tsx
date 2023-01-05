@@ -76,8 +76,8 @@ export default function MookRolls({ }) {
             <Box py={2}>
               {
                 rolls
-                  .filter((roll) => (roll >= value.defense))
-                  .map((outcome, index) => <Typography>You take a smackdown of {parseInt(outcome) - parseInt(value.defense) + parseInt(value.damage)}</Typography>)
+                  .filter((roll: any) => (roll >= value.defense))
+                  .map((outcome, index) => <Typography key={outcome}>You take a smackdown of {outcome - parseInt(value.defense) + parseInt(value.damage)}</Typography>)
               }
             </Box>
           </Box>
