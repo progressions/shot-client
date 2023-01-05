@@ -15,7 +15,7 @@ const WoundsModal = ({open, setOpen, endpoint, fight, character, setFight}: any)
   }
   const submitWounds = async (event: any) => {
     event.preventDefault()
-    const newWounds = parseInt(character.action_values["Wounds"] || 0) + parseInt(wounds)
+    const newWounds = (character.action_values["Type"] === "Mook") ? parseInt(character.action_values["Wounds"] || 0) - parseInt(wounds) : parseInt(character.action_values["Wounds"] || 0) + parseInt(wounds)
     const actionValues = character.action_values
     actionValues['Wounds'] = newWounds
     const response = await fetch(`${endpoint}/${fight.id}/characters/${character.id}`, {
@@ -36,6 +36,7 @@ const WoundsModal = ({open, setOpen, endpoint, fight, character, setFight}: any)
     setWounds('')
     setOpen(false)
   }
+  const label = (character.action_values["Type"] === "Mook") ? "Mooks" : "Wounds"
 
   return (
     <Dialog
@@ -46,7 +47,7 @@ const WoundsModal = ({open, setOpen, endpoint, fight, character, setFight}: any)
       disableRestoreFocus
     >
       <Stack p={4} spacing={2} component="form" onSubmit={submitWounds}>
-        <TextField autoFocus label="Wounds" required name="wounds" value={wounds} onChange={handleChange} />
+        <TextField autoFocus label={label} required name="wounds" value={wounds} onChange={handleChange} />
         <Stack alignItems="flex-end" spacing={2} direction="row">
           <Button variant="outlined" disabled={saving} onClick={cancelForm}>Cancel</Button>
           <Button variant="contained" type="submit" disabled={saving}>Save Changes</Button>

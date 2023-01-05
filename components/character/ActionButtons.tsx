@@ -8,11 +8,12 @@ import NewReleasesIcon from '@mui/icons-material/NewReleases'
 import MookRolls from '../MookRolls'
 
 export default function ActionButtons({ character, takeWounds, takeAction, editCharacter, deleteCharacter }: any) {
+  const woundLabel = character.action_values["Type"] === "Mook" ? "Kill Mooks" : "Take Wounds"
   return (
     <ButtonGroup variant="outlined" size="small">
       { character.action_values["Type"] == "Mook" &&
           <MookRolls count={character.action_values["Wounds"]} attack={character.action_values["Guns"]} damage={character.action_values["Damage"]} icon={<NewReleasesIcon />} /> }
-      <Tooltip title="Take Wounds" arrow>
+      <Tooltip title={woundLabel} arrow>
         <Button onClick={() => {takeWounds(character)}}>
           <HeartBrokenIcon color='error' />
         </Button>
