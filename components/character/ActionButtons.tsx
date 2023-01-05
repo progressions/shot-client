@@ -11,7 +11,7 @@ export default function ActionButtons({ character, takeWounds, takeAction, editC
   return (
     <ButtonGroup variant="outlined" size="small">
       { character.action_values["Type"] == "Mook" &&
-      <MookRolls count={character.action_values["Wounds"]} attack={character.action_values["Guns"]} damage={character.action_values["Damage"]} icon={<NewReleasesIcon />} /> }
+          <MookRolls count={character.action_values["Wounds"]} attack={character.action_values["Guns"]} damage={character.action_values["Damage"]} icon={<NewReleasesIcon />} /> }
       <Tooltip title="Take Wounds" arrow>
         <Button onClick={() => {takeWounds(character)}}>
           <HeartBrokenIcon color='error' />

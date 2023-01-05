@@ -1,4 +1,4 @@
-import { Divider, Grid, Stack, Dialog, DialogTitle, DialogContent, DialogActions, DialogContentText, Button, Box, Typography, TextField } from '@mui/material'
+import { Tooltip, Divider, Grid, Stack, Dialog, DialogTitle, DialogContent, DialogActions, DialogContentText, Button, Box, Typography, TextField } from '@mui/material'
 import { useState } from 'react'
 import { rollDie, rollExplodingDie } from './DiceRoller'
 
@@ -49,9 +49,21 @@ export default function MookRolls({ count, attack, damage, icon }: any) {
     )
   }
 
+  const buttonWithTooltip = (icon: any) => {
+    if (icon) {
+      return (
+        <Tooltip title="Mook Attacks" arrow>
+         {icon}
+        </Tooltip>
+      )
+    } else {
+      return "Mook Rolls"
+    }
+  }
+
   return (
     <>
-      <Button variant="outlined" onClick={() => setOpen(true)}>{ icon || "Mook Rolls" }</Button>
+      <Button variant="outlined" onClick={() => setOpen(true)}>{ buttonWithTooltip(icon) }</Button>
       <Dialog
         open={open}
         onClose={handleClose}
