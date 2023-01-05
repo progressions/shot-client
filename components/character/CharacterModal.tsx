@@ -9,7 +9,17 @@ import { BlockPicker } from 'react-color'
 import { loadFight } from '../Fight'
 
 export default function CharacterModal({ open, setOpen, endpoint, fight, setFight, character:activeCharacter }: any) {
-  const defaultCharacter = {name: '', defense: '', current_shot: '', impairments: '', color: '', action_values: {}}
+
+  interface Character {
+    name: string,
+    defense: string,
+    current_shot: string,
+    impairments: string,
+    color: string,
+    action_values: any
+  }
+
+  const defaultCharacter:Character = {name: '', defense: '', current_shot: '', impairments: '', color: '', action_values: {}}
   const [picker, setPicker] = useState(false)
   const [anchorEl, setAnchorEl] = useState(null)
 
@@ -18,7 +28,7 @@ export default function CharacterModal({ open, setOpen, endpoint, fight, setFigh
 
   const [saving, setSaving] = useState(false);
 
-  const [character, setCharacter] = useState(activeCharacter || defaultCharacter)
+  const [character, setCharacter] = useState<Character>(activeCharacter || defaultCharacter)
   const method = character?.id ? 'PATCH' : 'POST'
 
   useEffect(() => {
