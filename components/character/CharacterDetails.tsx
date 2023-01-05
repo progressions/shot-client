@@ -8,7 +8,6 @@ import { useSession } from 'next-auth/react'
 import BloodtypeIcon from '@mui/icons-material/Bloodtype'
 import WhatshotIcon from '@mui/icons-material/Whatshot'
 
-import CharacterModal from './CharacterModal'
 import ActionValues from './ActionValues'
 import ActionModal from './ActionModal'
 import WoundsModal from './WoundsModal'

@@ -1,6 +1,8 @@
 import Head from "next/head"
 import Layout from "../components/Layout"
 
+import { useState } from 'react'
+
 import { Avatar, Box, TableContainer, Table, TableHead, TableBody, TableRow, TableCell, Container, Typography } from "@mui/material"
 
 import { authOptions } from "./api/auth/[...nextauth]"
@@ -9,6 +11,8 @@ import { unstable_getServerSession } from "next-auth/next"
 import { useSession } from "next-auth/react"
 
 import ActionValues from "../components/character/ActionValues"
+import ActionButtons from "../components/character/ActionButtons"
+import CharacterModal from '../components/character/CharacterModal'
 
 import type { Character } from "../components/character/CharacterModal"
 
@@ -54,6 +58,12 @@ export async function getServerSideProps({ req, res }: any) {
 
 export default function Characters({ endpoint, characters }: any) {
   const { status, data } = useSession({ required: true })
+  const [editingCharacter, setEditingCharacter] = useState(null)
+
+  function editCharacter(character: any) {
+    setEditingCharacter(character)
+  }
+
   if (status !== "authenticated") {
     return <div>Loading...</div>
   }
@@ -79,6 +89,7 @@ export default function Characters({ endpoint, characters }: any) {
                     <TableCell>Type</TableCell>
                     <TableCell />
                     <TableCell>Creator</TableCell>
+                    <TableCell />
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -92,12 +103,14 @@ export default function Characters({ endpoint, characters }: any) {
                         <TableCell>{character.action_values?.["Type"]}</TableCell>
                         <TableCell><ActionValues character={character} /></TableCell>
                         <TableCell>{character.user?.first_name} {character.user?.last_name}</TableCell>
+                        <TableCell><ActionButtons editCharacter={editCharacter} character={character} /></TableCell>
                       </TableRow>)
                     })
                   }
                 </TableBody>
               </Table>
             </TableContainer>
+            <CharacterModal open={!!editingCharacter} setOpen={setEditingCharacter} endpoint={endpoint} character={editingCharacter} />
           </Container>
         </Layout>
       </main>
