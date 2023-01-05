@@ -9,6 +9,7 @@ import { BlockPicker } from 'react-color'
 import { loadFight } from '../Fight'
 
 export default function CharacterModal({ open, setOpen, endpoint, fight, setFight, character:activeCharacter }: any) {
+  const defaultCharacter = {name: '', defense: '', current_shot: '', impairments: '', color: '', action_values: {}}
   const [picker, setPicker] = useState(false)
   const [anchorEl, setAnchorEl] = useState(null)
 
@@ -17,7 +18,7 @@ export default function CharacterModal({ open, setOpen, endpoint, fight, setFigh
 
   const [saving, setSaving] = useState(false);
 
-  const [character, setCharacter] = useState(activeCharacter || {fight_id: fight.id, name: '', defense: null, current_shot: 0, impairments: null, color: '', action_values: {}})
+  const [character, setCharacter] = useState(activeCharacter || defaultCharacter)
   const method = character?.id ? 'PATCH' : 'POST'
 
   useEffect(() => {
@@ -46,7 +47,7 @@ export default function CharacterModal({ open, setOpen, endpoint, fight, setFigh
   }
 
   const cancelForm = () => {
-    setCharacter(character || {fight_id: fight.id, name: '', defense: null, current_shot: 0, impairments: null, color: '', action_values: {}})
+    setCharacter(character || defaultCharacter)
     setOpen(null)
   }
 
@@ -103,7 +104,7 @@ export default function CharacterModal({ open, setOpen, endpoint, fight, setFigh
             </Stack>
             <Stack direction="row" spacing={2}>
               <TextField autoFocus label="Name" variant="filled" size="medium" sx={{paddingBottom: 2}} fullWidth required name="name" value={character.name} onChange={handleChange} />
-              <TextField label="Shot" name="current_shot" value={character.current_shot} onChange={handleChange} sx={{width: 80}} />
+              <TextField label="Shot" name="current_shot" value={character.current_shot === null ? '' : character.current_shot} onChange={handleChange} sx={{width: 80}} />
             </Stack>
             <Stack spacing={2} direction="row" alignItems='center'>
               <TextField label="Wounds" name="Wounds" value={character.action_values?.['Wounds'] || ''} onChange={handleAVChange}
