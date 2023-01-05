@@ -1,9 +1,9 @@
-import { Grid, Stack, Dialog, DialogTitle, DialogContent, DialogActions, DialogContentText, Button, Box, Typography, TextField } from '@mui/material'
+import { Divider, Grid, Stack, Dialog, DialogTitle, DialogContent, DialogActions, DialogContentText, Button, Box, Typography, TextField } from '@mui/material'
 import { useState } from 'react'
 import { rollDie, rollExplodingDie } from './DiceRoller'
 
 export default function MookRolls({ }) {
-  const defaultValue = {count: '10', attack: '8', defense: '13'}
+  const defaultValue = {count: '10', attack: '8', defense: '13', damage: '10'}
   const [open, setOpen] = useState(false)
   const [value, setValue] = useState(defaultValue)
   const [rolls, setRolls] = useState<number[]>([])
@@ -20,6 +20,7 @@ export default function MookRolls({ }) {
 
   const generateRolls = (event: any) => {
     event.preventDefault()
+    setRolls([])
     const count = parseInt(value.count) || 0
     for (var i = 0; i < count; i++) {
       const [dieRolls, result] = rollExplodingDie(rollDie)
@@ -55,12 +56,13 @@ export default function MookRolls({ }) {
           <DialogContentText>
             Generate some mook rolls
           </DialogContentText>
-          <Box py={2} sx={{width: 300}}>
+          <Box py={2} sx={{width: 400}}>
             <Stack spacing={2}>
               <Stack direction="row" spacing={2}>
                 <TextField name="count" autoFocus value={value.count} onChange={handleChange} label="Count" required sx={{width: 150}} />
-                <TextField name="attack" value={value.attack} onChange={handleChange} label="Attack Value" required sx={{width: 150}} />
-                <TextField name="defense" value={value.defense} onChange={handleChange} label="Against Defense" required sx={{width: 150}} />
+                <TextField name="attack" value={value.attack} onChange={handleChange} label="Attack" required sx={{width: 150}} />
+                <TextField name="defense" value={value.defense} onChange={handleChange} label="Defense" required sx={{width: 150}} />
+                <TextField name="damage" value={value.damage} onChange={handleChange} label="Damage" required sx={{width: 150}} />
               </Stack>
             </Stack>
             <Box py={2}>
@@ -69,6 +71,14 @@ export default function MookRolls({ }) {
                   rolls.map((outcome, index) => <RollOutcome outcome={outcome} value={value} key={index} />)
                 }
               </Grid>
+            </Box>
+            <Divider />
+            <Box py={2}>
+              {
+                rolls
+                  .filter((roll) => (roll >= value.defense))
+                  .map((outcome, index) => <Typography>You take a smackdown of {parseInt(outcome) - parseInt(value.defense) + parseInt(value.damage)}</Typography>)
+              }
             </Box>
           </Box>
         </DialogContent>
