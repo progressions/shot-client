@@ -14,6 +14,7 @@ import { useSession } from "next-auth/react"
 import ActionValues from "../components/character/ActionValues"
 import ActionButtons from "../components/character/ActionButtons"
 import CharacterModal from '../components/character/CharacterModal'
+import AvatarBadge from "../components/character/AvatarBadge"
 
 import type { Character } from "../components/character/CharacterModal"
 
@@ -59,7 +60,8 @@ export async function getServerSideProps({ req, res }: any) {
 }
 
 export default function Characters({ endpoint, characters, jwt }: any) {
-  const { status, data } = useSession({ required: true })
+  const session = useSession({ required: true })
+  const { status, data } = session
   const [editingCharacter, setEditingCharacter] = useState(null)
 
   function editCharacter(character: any) {
@@ -125,7 +127,7 @@ export default function Characters({ endpoint, characters, jwt }: any) {
                     characters.map((character: Character) => {
                       return (<TableRow key={character.id}>
                         <TableCell sx={{width: 50}}>
-                          <Avatar sx={{bgcolor: character.color || 'secondary'}} variant="rounded">{character.name[0]}</Avatar>
+                          <AvatarBadge character={character} session={session} />
                         </TableCell>
                         <TableCell sx={{fontWeight: 'bold'}}><Typography variant="h5">{character.name}</Typography></TableCell>
                         <TableCell>{character.action_values?.["Type"]}</TableCell>

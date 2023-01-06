@@ -12,6 +12,8 @@ import ActionValues from './ActionValues'
 import ActionModal from './ActionModal'
 import WoundsModal from './WoundsModal'
 import ActionButtons from './ActionButtons'
+import AvatarBadge from './AvatarBadge'
+import GamemasterOnly from '../GamemasterOnly'
 
 import { loadFight } from '../Fight'
 
@@ -56,29 +58,6 @@ export default function CharacterDetails({ character, endpoint, fight, setFight,
   const impairments = character.impairments ? `(-${character.impairments})` : ''
   const color = character.impairments > 0 ? 'error' : 'primary'
 
-  const GamemasterOnly = ({ user, children, character, override }: any) => {
-    if (override || user?.gamemaster || ["PC", "Ally"].includes(character?.action_values?.['Type'])) {
-      return children
-    }
-  }
-
-  const CharacterTypeBadge = ({ character }: any) => {
-    const names = {
-      "PC": "PC",
-      "Ally": "Ally",
-      "Mook": "Mook",
-      "Featured Foe": "Foe",
-      "Boss": "Boss",
-      "Uber-Boss": "Uber"
-    } as any
-    const charType = character?.action_values?.['Type']
-    return (
-      <Box width={40} sx={{textAlign: 'center'}}>
-        <Typography variant="h6" sx={{color: 'text.secondary', fontVariant: 'small-caps', textTransform: 'lowercase'}}>{names?.[charType]}</Typography>
-      </Box>
-    )
-  }
-
   return (
     <>
       <TableContainer>
@@ -86,12 +65,7 @@ export default function CharacterDetails({ character, endpoint, fight, setFight,
           <TableBody>
             <TableRow>
               <TableCell sx={{width: 50}}>
-                <Badge color='error' badgeContent={character.impairments}>
-                  <Avatar sx={{bgcolor: character.color || 'secondary'}} variant="rounded">{character.name[0]}</Avatar>
-                </Badge>
-                <GamemasterOnly user={session?.data?.user} character={character}>
-                  <CharacterTypeBadge character={character} />
-                </GamemasterOnly>
+                <AvatarBadge character={character} session={session} />
               </TableCell>
               <TableCell sx={{width: 200}}>
                 <Typography variant="h4" sx={{fontWeight: 'bold'}}>
