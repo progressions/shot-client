@@ -13,7 +13,7 @@ export async function getServerSideProps(context: any) {
   return {
     props: {
       endpoint: endpoint,
-      referer: context?.req?.headers?.['referer']
+      referer: context?.req?.headers?.['referer'] || null
     },
   }
 }
