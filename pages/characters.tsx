@@ -106,7 +106,7 @@ export default function Characters({ endpoint, characters, jwt }: any) {
       </Head>
       <main>
         <Layout>
-          <Container maxWidth="md">
+          <Container maxWidth="lg">
             <Typography variant="h1" gutterBottom>Characters</Typography>
             <TableContainer>
               <Table size="small">
