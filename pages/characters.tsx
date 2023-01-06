@@ -4,7 +4,7 @@ import Layout from "../components/Layout"
 import { useState } from 'react'
 import Router from 'next/router'
 
-import { Avatar, Box, TableContainer, Table, TableHead, TableBody, TableRow, TableCell, Container, Typography } from "@mui/material"
+import { Stack, Avatar, Box, TableContainer, Table, TableHead, TableBody, TableRow, TableCell, Container, Typography } from "@mui/material"
 
 import { authOptions } from "./api/auth/[...nextauth]"
 import { unstable_getServerSession } from "next-auth/next"
@@ -15,6 +15,7 @@ import ActionValues from "../components/character/ActionValues"
 import ActionButtons from "../components/character/ActionButtons"
 import CharacterModal from '../components/character/CharacterModal'
 import AvatarBadge from "../components/character/AvatarBadge"
+import NewCharacter from '../components/character/NewCharacter'
 
 import type { Character } from "../components/character/CharacterModal"
 
@@ -68,12 +69,8 @@ export default function Characters({ endpoint, characters, jwt }: any) {
     setEditingCharacter(character)
   }
 
-  const generateUrl = ({ endpoint, fight, character }: any) => {
-    if (fight?.id && character?.id) {
-      return `${endpoint}/${fight.id}/characters/${character.id}`
-    } else if (fight?.id) {
-      return `${endpoint}/${fight.id}/characters`
-    } else if (character?.id) {
+  const generateUrl = ({ endpoint, character }: any) => {
+    if (character?.id) {
       return `${endpoint}/${character.id}`.replace("fights", "all_characters")
     } else {
       return endpoint.replace("fights", "all_characters")
@@ -110,6 +107,9 @@ export default function Characters({ endpoint, characters, jwt }: any) {
         <Layout>
           <Container maxWidth="lg">
             <Typography variant="h1" gutterBottom>Characters</Typography>
+            <Stack direction="row" spacing={2} alignItems='center'>
+              <NewCharacter endpoint={endpoint} />
+            </Stack>
             <TableContainer>
               <Table size="small">
                 <TableHead>

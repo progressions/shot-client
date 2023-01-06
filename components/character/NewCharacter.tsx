@@ -6,7 +6,7 @@ import TextField from '@mui/material/TextField'
 import CharacterModal from './CharacterModal'
 
 export default function CreateCharacter({ endpoint, fight, setFight }: any) {
-  const characterTemplate = {fight_id: fight.id, name: '', defense: null, current_shot: 0, impairments: null, color: '', action_values: {}, new: false}
+  const characterTemplate = {fight_id: fight?.id, name: '', defense: null, current_shot: 0, impairments: null, color: '', action_values: {}, new: false}
   const [newCharacter, setNewCharacter] = useState(characterTemplate)
 
   const openModal = () => {
