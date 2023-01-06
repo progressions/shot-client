@@ -1,7 +1,7 @@
 import { Stack, Box, TextField, MenuItem } from "@mui/material"
 import { useState } from 'react'
 
-export default function CharacterFilters({ filters, setFilters }) {
+export default function CharacterFilters({ filters, setFilters }: any) {
   const handleTypeChange = (event: any) => {
     setFilters({ ...filters, type: event.target.value })
   }

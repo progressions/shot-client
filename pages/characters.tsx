@@ -101,7 +101,7 @@ export default function Characters({ endpoint, characters:initialCharacters, jwt
     return <div>Loading...</div>
   }
 
-  const filteredCharacters = (characters) => {
+  const filteredCharacters = (characters: Character[]) => {
     return characters.filter((character) => {
       if (filters.type) {
         return character?.action_values?.["Type"] === filters.type
