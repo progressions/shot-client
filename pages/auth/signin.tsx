@@ -5,7 +5,7 @@ import { signIn, signOut } from 'next-auth/react'
 import Router from 'next/router'
 
 export async function getServerSideProps(context: any) {
-  const endpoint = `${process.env.SERVER_URL}/users/sign_in`
+  const endpoint = `${process.env.NEXT_PUBLIC_SERVER_URL}/users/sign_in`
 
   console.log(context?.req?.headers?.['referer'])
 

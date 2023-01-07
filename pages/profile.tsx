@@ -12,7 +12,7 @@ export async function getServerSideProps({ req, res, params }: any) {
   const jwt = session?.authorization
   const id = session?.id
 
-  const endpoint = `${process.env.SERVER_URL}/api/v1/users`
+  const endpoint = `${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/users`
   const result = await fetch(`${endpoint}/${id}`, {
     headers: {
       'Content-Type': 'application/json',

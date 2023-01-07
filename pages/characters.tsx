@@ -23,7 +23,7 @@ import type { Character } from "../components/character/CharacterModal"
 export async function getServerSideProps({ req, res }: any) {
   const session: any = await unstable_getServerSession(req as any, res as any, authOptions as any)
   const jwt = session?.authorization
-  const endpoint = `${process.env.SERVER_URL}/api/v1/all_characters`
+  const endpoint = `${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/all_characters`
 
   const response = await fetch(endpoint, {
     headers: {

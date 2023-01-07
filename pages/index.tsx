@@ -14,10 +14,12 @@ import { signIn, signOut } from 'next-auth/react'
 import { authOptions } from './api/auth/[...nextauth]'
 import { unstable_getServerSession } from "next-auth/next"
 
+const apiUrl = process.env.NEXT_PUBLIC_SERVER_URL
+
 export async function getServerSideProps({ req, res }: any) {
+  const endpoint = `${apiUrl}/api/v1/fights`
   const session: any = await unstable_getServerSession(req as any, res as any, authOptions as any)
   const jwt = session?.authorization
-  const endpoint = `${process.env.SERVER_URL}/api/v1/fights`
 
   const response = await fetch(endpoint, {
     headers: {

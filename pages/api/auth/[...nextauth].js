@@ -2,7 +2,7 @@ import NextAuth from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials"
 import { getToken } from 'next-auth/jwt'
 
-const endpoint = `${process.env.SERVER_URL}/users/sign_in`
+const endpoint = `${process.env.NEXT_PUBLIC_SERVER_URL}/users/sign_in`
 
 export const authOptions = {
   session: {
