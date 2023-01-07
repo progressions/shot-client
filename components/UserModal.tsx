@@ -9,6 +9,8 @@ import Button from '@mui/material/Button'
 import Router from "next/router"
 import { useSession } from 'next-auth/react'
 
+const apiUrl = process.env.NEXT_PUBLIC_SERVER_URL
+
 export default function UserModal(props: any) {
   const session: any = useSession({ required: true })
   const jwt = session?.data?.authorization
@@ -17,7 +19,6 @@ export default function UserModal(props: any) {
   const setUser = props.setUser
   const [saving, setSaving] = useState(false);
 
-  const { endpoint } = props
   const method = props.user ? 'PATCH' : 'POST'
 
   function handleClose() {
@@ -54,7 +55,7 @@ export default function UserModal(props: any) {
       body: JSONdata,
     }
 
-    const url = props.user ? `${endpoint}/${user?.id}` : endpoint
+    const url = user ? `${apiUrl}/api/v1/users/${user?.id}` : `${apiUrl}/api/v1/users`
     const response = await fetch(url, options)
     const result = await response.json()
     setSaving(false)

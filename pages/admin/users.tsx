@@ -12,11 +12,12 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import EditIcon from '@mui/icons-material/Edit'
 import CheckIcon from '@mui/icons-material/Check'
 
+const apiUrl = process.env.NEXT_PUBLIC_SERVER_URL
+
 export async function getServerSideProps({ req, res, params }: any) {
   const session: any = await unstable_getServerSession(req as any, res as any, authOptions as any)
   const jwt = session?.authorization
   const id = session?.id
-  const endpoint = `${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/users`
 
   if (!session?.user?.admin) {
     return {
@@ -28,7 +29,7 @@ export async function getServerSideProps({ req, res, params }: any) {
     }
   }
 
-  const response = await fetch(endpoint, {
+  const response = await fetch(`${apiUrl}/api/v1/users`, {
     headers: {
       'Content-Type': 'application/json',
       'Authorization': jwt
@@ -41,7 +42,6 @@ export async function getServerSideProps({ req, res, params }: any) {
       props: {
         jwt: jwt,
         currentUser: session?.user,
-        endpoint: endpoint,
         users: users
       }, // will be passed to the page component as props
     }
@@ -51,12 +51,11 @@ export async function getServerSideProps({ req, res, params }: any) {
     props: {
       jwt: jwt,
       user: session?.user,
-      endpoint: endpoint,
     }, // will be passed to the page component as props
   }
 }
 
-export default function UsersAdmin({ jwt, endpoint, users, currentUser }: any) {
+export default function UsersAdmin({ jwt, users, currentUser }: any) {
   const [value, setValue] = useState('1')
   const [user, setUser] = useState(null)
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
@@ -64,7 +63,7 @@ export default function UsersAdmin({ jwt, endpoint, users, currentUser }: any) {
   }
 
   async function deleteUser(user: any) {
-    const response = await fetch(`${endpoint}/${user.id}`, {
+    const response = await fetch(`${apiUrl}/api/v1/users/${user.id}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
@@ -125,7 +124,7 @@ export default function UsersAdmin({ jwt, endpoint, users, currentUser }: any) {
                     })
                   }
                 </TableBody>
-                <UserModal setUser={setUser} endpoint={endpoint} user={user} />
+                <UserModal setUser={setUser} user={user} />
               </Table>
             </TableContainer>
           </Container>

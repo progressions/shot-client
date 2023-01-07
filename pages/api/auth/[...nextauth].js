@@ -2,7 +2,7 @@ import NextAuth from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials"
 import { getToken } from 'next-auth/jwt'
 
-const endpoint = `${process.env.NEXT_PUBLIC_SERVER_URL}/users/sign_in`
+const apiUrl = process.env.NEXT_PUBLIC_SERVER_URL
 
 export const authOptions = {
   session: {
@@ -29,7 +29,7 @@ export const authOptions = {
           body: JSON.stringify({"user": credentials})
         }
 
-        const response = await fetch(endpoint, options)
+        const response = await fetch(`${apiUrl}/users/sign_in`, options)
 
         // If no error and we have user data, return it
         if (response.status === 200) {

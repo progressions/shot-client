@@ -3,7 +3,9 @@ import { Stack, TextField, Button, Dialog } from '@mui/material'
 import { useSession } from 'next-auth/react'
 import { loadFight } from '../Fight'
 
-const ActionModal = ({open, setOpen, endpoint, fight, character, setFight}: any) => {
+const apiUrl = process.env.NEXT_PUBLIC_SERVER_URL
+
+const ActionModal = ({open, setOpen, fight, character, setFight}: any) => {
   const [shots, setShots] = useState(3)
   const [saving, setSaving] = useState(false)
 
@@ -15,7 +17,7 @@ const ActionModal = ({open, setOpen, endpoint, fight, character, setFight}: any)
   }
   const submitAction = async (event: any) => {
     event.preventDefault()
-    const response = await fetch(`${endpoint}/${fight.id}/characters/${character.id}/act`, {
+    const response = await fetch(`${apiUrl}/api/v1/fights/${fight.id}/characters/${character.id}/act`, {
       method: 'PATCH',
       body: JSON.stringify({"shots": shots}),
       headers: {
@@ -25,7 +27,7 @@ const ActionModal = ({open, setOpen, endpoint, fight, character, setFight}: any)
     })
     if (response.status === 200) {
       setOpen(false)
-      await loadFight({endpoint, jwt, id: fight.id, setFight})
+      await loadFight({jwt, id: fight.id, setFight})
     }
   }
   const cancelForm = () => {

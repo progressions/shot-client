@@ -5,7 +5,10 @@ import KeyboardDoubleArrowDownIcon from '@mui/icons-material/KeyboardDoubleArrow
 import KeyboardDoubleArrowUpIcon from '@mui/icons-material/KeyboardDoubleArrowUp';
 import { useSession } from 'next-auth/react'
 
-export default function AddFight({ endpoint }: any) {
+const apiUrl = process.env.NEXT_PUBLIC_SERVER_URL
+
+export default function AddFight({ }: any) {
+  const fightsUrl = `${apiUrl}/api/v1/fights`
   const session: any = useSession({ required: true })
   const jwt = session?.data?.authorization
 
@@ -34,7 +37,7 @@ export default function AddFight({ endpoint }: any) {
       // Body of the request is the JSON data we created above.
       body: JSONdata,
     }
-    const response = await fetch(endpoint, options)
+    const response = await fetch(fightsUrl, options)
     const result = await response.json()
     setSaving(false)
     cancelForm()

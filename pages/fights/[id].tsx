@@ -20,13 +20,13 @@ import Layout from '../../components/Layout'
 import Shot from '../../components/Shot'
 import CharacterModal from '../../components/character/CharacterModal'
 
+const apiUrl = process.env.NEXT_PUBLIC_SERVER_URL
+
 export async function getServerSideProps({ req, res, params }: any) {
   const session: any = await unstable_getServerSession(req as any, res as any, authOptions as any)
   const jwt = session?.authorization
-  const apiEndpoint = `${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1`
-  const endpoint = `${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/fights`
   const { id } = params
-  const response = await fetch(`${endpoint}/${id}`, {
+  const response = await fetch(`${apiUrl}/api/v1/fights/${id}`, {
     headers: {
       'Content-Type': 'application/json',
       'Authorization': jwt
@@ -37,8 +37,6 @@ export async function getServerSideProps({ req, res, params }: any) {
     return {
       props: {
         fight: fight,
-        endpoint: endpoint,
-        apiEndpoint: apiEndpoint,
         signedIn: true
       }, // will be passed to the page component as props
     }
@@ -50,20 +48,16 @@ export async function getServerSideProps({ req, res, params }: any) {
         destination: "/auth/signin"
       },
       props: {
-        endpoint: endpoint,
-        apiEndpoint: apiEndpoint,
       }
     }
   }
   return {
     props: {
-      endpoint: endpoint,
-      apiEndpoint: apiEndpoint,
     }
   }
 }
 
-export default function Fight({ fight:initialFight, endpoint, apiEndpoint }: any) {
+export default function Fight({ fight:initialFight }: any) {
   const [fight, setFight] = useState(initialFight)
   const [editingCharacter, setEditingCharacter] = useState(null)
   const [showHidden, setShowHidden] = useState(false)
@@ -84,7 +78,7 @@ export default function Fight({ fight:initialFight, endpoint, apiEndpoint }: any
       <Layout>
         <Container>
           <Typography variant="h1" gutterBottom>{fight.name}</Typography>
-          <FightToolbar fight={fight} endpoint={apiEndpoint} setFight={setFight} showHidden={showHidden} setShowHidden={setShowHidden} />
+          <FightToolbar fight={fight} setFight={setFight} showHidden={showHidden} setShowHidden={setShowHidden} />
           <TableContainer>
             <Table border={0}>
               <TableHead>
@@ -110,12 +104,12 @@ export default function Fight({ fight:initialFight, endpoint, apiEndpoint }: any
             <Table border={0}>
               <TableBody>
                 {
-                  fight.shot_order.map(([shot, chars]: any) => <Shot key={shot} shot={shot} characters={chars} endpoint={endpoint} fight={fight} setFight={setFight} editingCharacter={editingCharacter} setEditingCharacter={setEditingCharacter} showHidden={showHidden} />)
+                  fight.shot_order.map(([shot, chars]: any) => <Shot key={shot} shot={shot} characters={chars} fight={fight} setFight={setFight} editingCharacter={editingCharacter} setEditingCharacter={setEditingCharacter} showHidden={showHidden} />)
                 }
               </TableBody>
             </Table>
           </TableContainer>
-          <CharacterModal open={!!editingCharacter} setOpen={setEditingCharacter} endpoint={endpoint} fight={fight} character={editingCharacter} setFight={setFight} />
+          <CharacterModal open={!!editingCharacter} setOpen={setEditingCharacter} fight={fight} character={editingCharacter} setFight={setFight} />
         </Container>
       </Layout>
     </>

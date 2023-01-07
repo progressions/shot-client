@@ -4,7 +4,9 @@ import TableCell from '@mui/material/TableCell'
 import Typography from '@mui/material/Typography'
 import CharacterDetails from './character/CharacterDetails'
 
-export default function Shot({ fight, setFight, endpoint, shot, characters, editingCharacter, setEditingCharacter, showHidden }: any) {
+const apiUrl = process.env.NEXT_PUBLIC_SERVER_URL
+
+export default function Shot({ fight, setFight, shot, characters, editingCharacter, setEditingCharacter, showHidden }: any) {
   const label = shot === null ? "-" : shot
 
   if (!showHidden && (shot === null || shot === undefined)) {
@@ -26,7 +28,7 @@ export default function Shot({ fight, setFight, endpoint, shot, characters, edit
           <Stack spacing={2}>
             {
               characters.map((character: any) => {
-                return <CharacterDetails key={character.id} endpoint={endpoint} fight={fight} character={character} setFight={setFight} editingCharacter={editingCharacter} setEditingCharacter={setEditingCharacterWithCurrentShot} />
+                return <CharacterDetails key={character.id} fight={fight} character={character} setFight={setFight} editingCharacter={editingCharacter} setEditingCharacter={setEditingCharacterWithCurrentShot} />
               })
             }
           </Stack>

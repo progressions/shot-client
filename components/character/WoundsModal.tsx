@@ -3,7 +3,9 @@ import { Stack, TextField, Button, Dialog } from '@mui/material'
 import { useSession } from 'next-auth/react'
 import { loadFight } from '../Fight'
 
-const WoundsModal = ({open, setOpen, endpoint, fight, character, setFight}: any) => {
+const apiUrl = process.env.NEXT_PUBLIC_SERVER_URL
+
+const WoundsModal = ({open, setOpen, fight, character, setFight}: any) => {
   const [wounds, setWounds] = useState('')
   const [saving, setSaving] = useState(false)
 
@@ -18,7 +20,7 @@ const WoundsModal = ({open, setOpen, endpoint, fight, character, setFight}: any)
     const newWounds = (character.action_values["Type"] === "Mook") ? parseInt(character.action_values["Wounds"] || 0) - parseInt(wounds) : parseInt(character.action_values["Wounds"] || 0) + parseInt(wounds)
     const actionValues = character.action_values
     actionValues['Wounds'] = newWounds
-    const response = await fetch(`${endpoint}/${fight.id}/characters/${character.id}`, {
+    const response = await fetch(`${apiUrl}/api/v1/fights/${fight.id}/characters/${character.id}`, {
       method: 'PATCH',
       body: JSON.stringify({"character": {"action_values": actionValues}}),
       headers: {
@@ -27,7 +29,7 @@ const WoundsModal = ({open, setOpen, endpoint, fight, character, setFight}: any)
       }
     })
     if (response.status === 200) {
-      await loadFight({endpoint, jwt, id: fight.id, setFight})
+      await loadFight({jwt, id: fight.id, setFight})
       setWounds('')
       setOpen(false)
     }

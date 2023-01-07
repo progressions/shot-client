@@ -4,21 +4,20 @@ import Layout from '../../components/Layout'
 import { signIn, signOut } from 'next-auth/react'
 import Router from 'next/router'
 
-export async function getServerSideProps(context: any) {
-  const endpoint = `${process.env.NEXT_PUBLIC_SERVER_URL}/users/sign_in`
+const apiUrl = process.env.NEXT_PUBLIC_SERVER_URL
 
+export async function getServerSideProps(context: any) {
   console.log(context?.req?.headers?.['referer'])
 
   // get CSRF as soon as i figure out how
   return {
     props: {
-      endpoint: endpoint,
       referer: context?.req?.headers?.['referer'] || null
     },
   }
 }
 
-export default function SignInPage({ endpoint, referer }: any) {
+export default function SignInPage({ referer }: any) {
   useEffect(() => {
     signOut({ redirect: false })
   })

@@ -17,7 +17,9 @@ import GamemasterOnly from '../GamemasterOnly'
 
 import { loadFight } from '../Fight'
 
-export default function CharacterDetails({ character, endpoint, fight, setFight, editingCharacter, setEditingCharacter }: any) {
+const apiUrl = process.env.NEXT_PUBLIC_SERVER_URL
+
+export default function CharacterDetails({ character, fight, setFight, editingCharacter, setEditingCharacter }: any) {
   const session: any = useSession({ required: true })
   const jwt = session?.data?.authorization
 
@@ -30,7 +32,7 @@ export default function CharacterDetails({ character, endpoint, fight, setFight,
   }
 
   async function deleteCharacter(character: any) {
-    const response = await fetch(`${endpoint}/${fight.id}/characters/${character.id}`, {
+    const response = await fetch(`${apiUrl}/api/v1/fights/${fight.id}/characters/${character.id}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
@@ -38,7 +40,7 @@ export default function CharacterDetails({ character, endpoint, fight, setFight,
       }
     })
     if (response.status === 200) {
-      await loadFight({endpoint, jwt, id: fight.id, setFight})
+      await loadFight({jwt, id: fight.id, setFight})
     }
   }
 
@@ -96,8 +98,8 @@ export default function CharacterDetails({ character, endpoint, fight, setFight,
           </TableBody>
         </Table>
       </TableContainer>
-      <ActionModal open={openAction} setOpen={setOpenAction} endpoint={endpoint} fight={fight} character={character} setFight={setFight} />
-      <WoundsModal open={openWounds} setOpen={setOpenWounds} endpoint={endpoint} fight={fight} character={character} setFight={setFight} />
+      <ActionModal open={openAction} setOpen={setOpenAction} fight={fight} character={character} setFight={setFight} />
+      <WoundsModal open={openWounds} setOpen={setOpenWounds} fight={fight} character={character} setFight={setFight} />
     </>
   )
 }

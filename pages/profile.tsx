@@ -7,13 +7,14 @@ import { unstable_getServerSession } from "next-auth/next"
 import { useState } from 'react'
 import Router from "next/router"
 
+const apiUrl = process.env.NEXT_PUBLIC_SERVER_URL
+
 export async function getServerSideProps({ req, res, params }: any) {
   const session: any = await unstable_getServerSession(req as any, res as any, authOptions as any)
   const jwt = session?.authorization
   const id = session?.id
 
-  const endpoint = `${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/users`
-  const result = await fetch(`${endpoint}/${id}`, {
+  const result = await fetch(`${apiUrl}/api/v1/users/${id}`, {
     headers: {
       'Content-Type': 'application/json',
       'Authorization': jwt
@@ -24,19 +25,17 @@ export async function getServerSideProps({ req, res, params }: any) {
     return {
       props: {
         jwt: jwt,
-        user: user,
-        endpoint: endpoint,
+        user: user
       }, // will be passed to the page component as props
     }
   }
   return {
     props: {
-      endpoint: endpoint,
     }
   }
 }
 
-export default function Profile({ jwt, endpoint, user:initialUser }: any) {
+export default function Profile({ jwt, user:initialUser }: any) {
   const [user, setUser] = useState(initialUser)
   const [saving, setSaving] = useState(false)
 
@@ -59,7 +58,7 @@ export default function Profile({ jwt, endpoint, user:initialUser }: any) {
       body: JSON.stringify({ "user": user })
     }
 
-    const url = `${endpoint}/${user.id}`
+    const url = `${apiUrl}/api/v1/users/${user.id}`
     const response = await fetch(url, options)
     const result = await response.json()
     setSaving(false)

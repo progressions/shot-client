@@ -3,7 +3,9 @@ import { Box, TextField, MenuItem, Dialog, DialogActions, DialogTitle, DialogCon
 import { useSession } from 'next-auth/react'
 import { loadFight } from './Fight'
 
-export default function SelectCharacter({ fight, setFight, endpoint }: any) {
+const apiUrl = process.env.NEXT_PUBLIC_SERVER_URL
+
+export default function SelectCharacter({ fight, setFight }: any) {
   const session: any = useSession({ required: true })
   const jwt = session?.data?.authorization
 
@@ -12,7 +14,7 @@ export default function SelectCharacter({ fight, setFight, endpoint }: any) {
   const [chars, setChars] = useState([])
 
   const handleOpen = async () => {
-    const response = await fetch(`${endpoint}/all_characters`, {
+    const response = await fetch(`${apiUrl}/api/v1/all_characters`, {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': jwt
@@ -43,7 +45,7 @@ export default function SelectCharacter({ fight, setFight, endpoint }: any) {
     event.preventDefault()
 
     // api/v1/fights/bfa297b3-64fe-4f5e-9376-d3334f71c9bb/characters/bd3de553-cbd3-47b1-baaa-b6ce757ef43d
-    const url = `${endpoint}/fights/${fight.id}/characters/${value}/add`
+    const url = `${apiUrl}/api/v1/fights/${fight.id}/characters/${value}/add`
 
     const options: RequestInit = {
       method: "POST",
@@ -57,7 +59,7 @@ export default function SelectCharacter({ fight, setFight, endpoint }: any) {
 
     const response = await fetch(url, options)
     const data = await response.json()
-    await loadFight({endpoint: `${endpoint}/fights`, jwt, id: fight.id, setFight})
+    await loadFight({jwt, id: fight.id, setFight})
 
     setOpen(false)
   }

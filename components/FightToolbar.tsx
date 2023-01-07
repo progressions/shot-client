@@ -5,13 +5,15 @@ import SelectCharacter from './SelectCharacter'
 import DiceRoller from './DiceRoller'
 import MookRolls from './MookRolls'
 
-export default function FightToolbar({ fight, setFight, endpoint, showHidden, setShowHidden }: any) {
+const apiUrl = process.env.NEXT_PUBLIC_SERVER_URL
+
+export default function FightToolbar({ fight, setFight, showHidden, setShowHidden }: any) {
   return (
     <>
       <Stack direction="row" spacing={2} alignItems='center'>
         <DiceRoller />
-        <NewCharacter fight={fight} endpoint={`${endpoint}/fights`} setFight={setFight} />
-        <SelectCharacter fight={fight} endpoint={endpoint} setFight={setFight} />
+        <NewCharacter fight={fight} setFight={setFight} />
+        <SelectCharacter fight={fight} setFight={setFight} />
         <MookRolls />
         <FormControlLabel label="Show Hidden" control={<Switch checked={showHidden} />} onChange={(event: any) => setShowHidden(event.target.checked)} />
       </Stack>

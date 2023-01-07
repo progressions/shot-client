@@ -20,12 +20,13 @@ import CharacterFilters from "../components/CharacterFilters"
 
 import type { Character } from "../components/character/CharacterModal"
 
+const apiUrl = process.env.NEXT_PUBLIC_SERVER_URL
+
 export async function getServerSideProps({ req, res }: any) {
   const session: any = await unstable_getServerSession(req as any, res as any, authOptions as any)
   const jwt = session?.authorization
-  const endpoint = `${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/all_characters`
 
-  const response = await fetch(endpoint, {
+  const response = await fetch(`${apiUrl}/api/v1/all_characters`, {
     headers: {
       "Content-Type": "application/json",
       "Authorization": jwt
@@ -37,7 +38,6 @@ export async function getServerSideProps({ req, res }: any) {
     return {
       props: {
         characters: characters,
-        endpoint: endpoint,
         jwt: jwt
       }, // will be passed to the page component as props
     }
@@ -49,19 +49,17 @@ export async function getServerSideProps({ req, res }: any) {
         destination: "/auth/signin"
       },
       props: {
-        endpoint: endpoint,
       }
     }
   }
   return {
     props: {
       characters: [],
-      endpoint: endpoint,
     }
   }
 }
 
-export default function Characters({ endpoint, characters:initialCharacters, jwt }: any) {
+export default function Characters({ characters:initialCharacters, jwt }: any) {
   const session = useSession({ required: true })
   const { status, data } = session
   const [editingCharacter, setEditingCharacter] = useState(null)
@@ -75,16 +73,16 @@ export default function Characters({ endpoint, characters:initialCharacters, jwt
     setEditingCharacter(character)
   }
 
-  const generateUrl = ({ endpoint, character }: any) => {
+  const generateUrl = ({ character }: any) => {
     if (character?.id) {
-      return `${endpoint}/${character.id}`.replace("fights", "all_characters")
+      return `${apiUrl}/api/v1/all_characters/${character.id}`
     } else {
-      return endpoint.replace("fights", "all_characters")
+      return `${apiUrl}/api/v1/all_characters`
     }
   }
 
   async function deleteCharacter(character: any) {
-    const url = `${endpoint}/${character.id}`.replace("fights", "all_characters")
+    const url = `${apiUrl}/api/v1/all_characters/${character.id}`
     const response = await fetch(url, {
       method: "DELETE",
       headers: {
@@ -133,7 +131,7 @@ export default function Characters({ endpoint, characters:initialCharacters, jwt
             <Typography variant="h1" gutterBottom>Characters</Typography>
             <Stack direction="row" spacing={2} alignItems="center">
               <CharacterFilters filters={filters} setFilters={setFilters} />
-              <NewCharacter endpoint={endpoint} />
+              <NewCharacter />
             </Stack>
             <TableContainer>
               <Table size="small">
@@ -165,7 +163,7 @@ export default function Characters({ endpoint, characters:initialCharacters, jwt
                 </TableBody>
               </Table>
             </TableContainer>
-            <CharacterModal open={!!editingCharacter} setOpen={setEditingCharacter} endpoint={endpoint} character={editingCharacter} />
+            <CharacterModal open={!!editingCharacter} setOpen={setEditingCharacter} character={editingCharacter} />
           </Container>
         </Layout>
       </main>

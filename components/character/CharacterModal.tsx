@@ -20,7 +20,9 @@ export interface Character {
     user?: any
   }
 
-export default function CharacterModal({ open, setOpen, endpoint, fight, setFight, character:activeCharacter }: any) {
+const apiUrl = process.env.NEXT_PUBLIC_SERVER_URL
+
+export default function CharacterModal({ open, setOpen, fight, setFight, character:activeCharacter }: any) {
 
   const defaultCharacter:Character = {name: '', defense: '', current_shot: '', impairments: '', color: '', action_values: {}}
   const [picker, setPicker] = useState(false)
@@ -82,28 +84,28 @@ export default function CharacterModal({ open, setOpen, endpoint, fight, setFigh
       body: JSONdata,
     }
 
-    const url = generateUrl({ endpoint, fight, character })
+    const url = generateUrl({ fight, character })
     const response = await fetch(url, options)
     const data = await response.json()
     setCharacter(data)
     setSaving(false)
     cancelForm()
     if (fight) {
-      await loadFight({endpoint, jwt, id: fight.id, setFight})
+      await loadFight({jwt, id: fight.id, setFight})
     } else {
       Router.reload()
     }
   }
 
-  const generateUrl = ({ endpoint, fight, character }: any) => {
+  const generateUrl = ({ fight, character }: any) => {
     if (fight?.id && character?.id) {
-      return `${endpoint}/${fight.id}/characters/${character.id}`
+      return `${apiUrl}/api/v1/fights/${fight.id}/characters/${character.id}`
     } else if (fight?.id) {
-      return `${endpoint}/${fight.id}/characters`
+      return `${apiUrl}/api/v1/fights/${fight.id}/characters`
     } else if (character?.id) {
-      return `${endpoint}/${character.id}`.replace("fights", "all_characters")
+      return `${apiUrl}/api/v1/all_characters/${character.id}`
     } else {
-      return endpoint.replace("fights", "all_characters")
+      return `${apiUrl}/api/v1/all_characters`
     }
   }
 

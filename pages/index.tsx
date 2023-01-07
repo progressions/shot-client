@@ -17,11 +17,10 @@ import { unstable_getServerSession } from "next-auth/next"
 const apiUrl = process.env.NEXT_PUBLIC_SERVER_URL
 
 export async function getServerSideProps({ req, res }: any) {
-  const endpoint = `${apiUrl}/api/v1/fights`
   const session: any = await unstable_getServerSession(req as any, res as any, authOptions as any)
   const jwt = session?.authorization
 
-  const response = await fetch(endpoint, {
+  const response = await fetch(`${apiUrl}/api/v1/fights`, {
     headers: {
       'Content-Type': 'application/json',
       'Authorization': jwt
@@ -33,7 +32,6 @@ export async function getServerSideProps({ req, res }: any) {
     return {
       props: {
         fights: fights,
-        endpoint: endpoint,
       }, // will be passed to the page component as props
     }
   }
@@ -44,19 +42,17 @@ export async function getServerSideProps({ req, res }: any) {
         destination: "/auth/signin"
       },
       props: {
-        endpoint: endpoint,
       }
     }
   }
   return {
     props: {
       fights: [],
-      endpoint: endpoint,
     }
   }
 }
 
-export default function Home({ fights, endpoint }: any) {
+export default function Home({ fights }: any) {
   const { status, data } = useSession({ required: true })
   if (status !== "authenticated") {
     return <div>Loading...</div>
@@ -73,7 +69,7 @@ export default function Home({ fights, endpoint }: any) {
         <Layout>
           <Container maxWidth="md">
             <Typography variant="h1" gutterBottom>Fights</Typography>
-            <AddFight endpoint={endpoint} />
+            <AddFight />
             <TableContainer>
               <Table size="small">
                 <TableHead>
@@ -85,7 +81,7 @@ export default function Home({ fights, endpoint }: any) {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {fights.map((fight: any) => <Fight fight={fight} key={fight.id} endpoint={endpoint} />)}
+                  {fights.map((fight: any) => <Fight fight={fight} key={fight.id} />)}
                 </TableBody>
               </Table>
             </TableContainer>

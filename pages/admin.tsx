@@ -9,11 +9,12 @@ import { useState } from 'react'
 import { useRouter } from "next/router"
 import PeopleIcon from '@mui/icons-material/People';
 
+const apiUrl = process.env.NEXT_PUBLIC_SERVER_URL
+
 export async function getServerSideProps({ req, res, params }: any) {
   const session: any = await unstable_getServerSession(req as any, res as any, authOptions as any)
   const jwt = session?.authorization
   const id = session?.id
-  const endpoint = `${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1`
 
   if (!session?.user?.admin) {
     return {
@@ -29,12 +30,11 @@ export async function getServerSideProps({ req, res, params }: any) {
     props: {
       jwt: jwt,
       user: session?.user,
-      endpoint: endpoint,
     }, // will be passed to the page component as props
   }
 }
 
-export default function Admin({ jwt, endpoint }: any) {
+export default function Admin({ jwt }: any) {
   const [value, setValue] = useState('1')
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue)

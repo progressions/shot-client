@@ -5,9 +5,10 @@ import { useSession } from 'next-auth/react'
 import { authOptions } from '../pages/api/auth/[...nextauth]'
 import { unstable_getServerSession } from "next-auth/next"
 
-export async function loadFight({ id, endpoint, jwt, setFight }: any) {
-  console.log({ endpoint })
-  const result = await fetch(`${endpoint}/${id}`, {
+const apiUrl = process.env.NEXT_PUBLIC_SERVER_URL
+
+export async function loadFight({ id, jwt, setFight }: any) {
+  const result = await fetch(`${apiUrl}/api/v1/fights/${id}`, {
     headers: {
       'Content-Type': 'application/json',
       'Authorization': jwt
@@ -21,12 +22,12 @@ export async function loadFight({ id, endpoint, jwt, setFight }: any) {
   }
 }
 
-export default function Fight({ fight, endpoint }: any) {
+export default function Fight({ fight }: any) {
   const session: any = useSession({ required: true })
   const jwt = session?.data?.authorization
 
   async function deleteFight(fight: any) {
-    const response = await fetch(`${endpoint}/${fight.id}`, {
+    const response = await fetch(`${apiUrl}/api/v1/${fight.id}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
