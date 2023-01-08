@@ -11,38 +11,41 @@ import { useSession } from 'next-auth/react'
 
 import Client from "./Client"
 
-export default function UserModal(props: any) {
+import type { User } from "../types/types"
+
+interface UserModalParams {
+  user: User,
+  setUser: any
+}
+
+export default function UserModal({ user, setUser }: UserModalParams) {
   const session: any = useSession({ required: true })
   const jwt = session?.data?.authorization
   const client = new Client({ jwt: jwt })
 
-  const user = props.user
-  const setUser = props.setUser
   const [saving, setSaving] = useState(false);
-
-  const method = props.user ? 'PATCH' : 'POST'
 
   function handleClose() {
     cancelForm()
   }
 
   const handleChange = (event: any) => {
-    setUser((prevState: any) => ({ ...prevState, [event.target.name]: event.target.value }))
+    setUser((prevState: User) => ({ ...prevState, [event.target.name]: event.target.value }))
   }
 
   const handleCheck = (event: any) => {
-    setUser((prevState: any) => ({ ...prevState, [event.target.name]: event.target.checked }))
+    setUser((prevState: User) => ({ ...prevState, [event.target.name]: event.target.checked }))
   }
 
   const cancelForm = () => {
-    setUser(null)
+    setUser({})
   }
 
   async function handleSubmit(event: any) {
     setSaving(true)
     event.preventDefault()
 
-    const response = user ?
+    const response = user.id ?
       await client.updateUser(user)
     : await client.createUser(user)
 

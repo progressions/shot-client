@@ -6,20 +6,22 @@ import KeyboardDoubleArrowUpIcon from '@mui/icons-material/KeyboardDoubleArrowUp
 import { useSession } from 'next-auth/react'
 import Client from "./Client"
 
-export default function AddFight({ }: any) {
+import type { Fight } from "../types/types"
+
+export default function AddFight() {
   const session: any = useSession({ required: true })
   const jwt = session?.data?.authorization
   const client = new Client({ jwt })
 
-  const [open, setOpen] = useState(false)
-  const [fight, setFight] = useState({name: ''})
-  const [saving, setSaving] = useState(false);
+  const [open, setOpen] = useState<boolean>(false)
+  const [fight, setFight] = useState<Fight>({name: ''})
+  const [saving, setSaving] = useState<boolean>(false);
 
-  const handleChange = (event: any) => {
+  const handleChange = (event: any): void => {
     setFight({ name: event.target.value })
   }
 
-  const handleSubmit = async (event: any) => {
+  const handleSubmit = async (event: any): Promise<void> => {
     setSaving(true)
     event.preventDefault()
 
@@ -29,7 +31,7 @@ export default function AddFight({ }: any) {
     Router.reload()
   }
 
-  const cancelForm = () => {
+  const cancelForm = (): void => {
     setFight({name: ''})
     setOpen(false)
   }

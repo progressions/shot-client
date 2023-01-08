@@ -23,9 +23,9 @@ import type { Character, Fight, ID } from "../../types/types"
 interface CharacterDetailsParams {
   character: Character,
   fight: Fight,
-  setFight: any,
+  setFight: (fight: Fight) => void,
   editingCharacter: Character,
-  setEditingCharacter: any
+  setEditingCharacter: (character: Character) => void
 }
 
 export default function CharacterDetails({ character, fight, setFight, editingCharacter, setEditingCharacter }: CharacterDetailsParams) {
@@ -41,22 +41,22 @@ export default function CharacterDetails({ character, fight, setFight, editingCh
     setOpenAction(false)
   }
 
-  async function deleteCharacter(character: Character) {
+  async function deleteCharacter(character: Character): Promise<void> {
     const response = await client.deleteCharacter(character, fight)
     if (response.status === 200) {
-      await loadFight({jwt, id: fight.id, setFight})
+      await loadFight({jwt, id: fight.id as string, setFight})
     }
   }
 
-  function editCharacter(character: Character) {
+  function editCharacter(character: Character): void {
     setEditingCharacter(character)
   }
 
-  async function takeAction(character: Character) {
+  function takeAction(character: Character): void {
     setOpenAction(true)
   }
 
-  async function takeWounds(character: Character) {
+  function takeWounds(character: Character): void {
     setOpenWounds(true)
   }
 

@@ -16,17 +16,23 @@ import ActionValues from "../components/character/ActionValues"
 import ActionButtons from "../components/character/ActionButtons"
 import CharacterModal from "../components/character/CharacterModal"
 import AvatarBadge from "../components/character/AvatarBadge"
-import NewCharacter from "../components/character/NewCharacter"
+import CreateCharacter from "../components/character/CreateCharacter"
 import CharacterFilters from "../components/CharacterFilters"
 
+import type { CharacterFilter } from "../components/CharacterFilters"
 import type { Character } from "../types/types"
 
-interface CharactersParams {
-  character: Character[],
+interface CharactersProps {
+  characters: Character[],
   jwt: string
 }
 
-export async function getServerSideProps({ req, res }: any) {
+interface CharactersServerSideProps {
+  req: any,
+  res: any
+}
+
+export async function getServerSideProps({ req, res }: CharactersServerSideProps) {
   const session: any = await unstable_getServerSession(req as any, res as any, authOptions as any)
   const jwt = session?.authorization
   const client = new Client({ jwt })
@@ -59,22 +65,22 @@ export async function getServerSideProps({ req, res }: any) {
   }
 }
 
-export default function Characters({ characters:initialCharacters, jwt }: any) {
+export default function Characters({ characters:initialCharacters, jwt }: CharactersProps) {
   const client = new Client({ jwt })
   const session = useSession({ required: true })
   const { status, data } = session
   const [editingCharacter, setEditingCharacter] = useState<Character | null>(null)
   const [characters, setCharacters] = useState<Character[]>(initialCharacters)
-  const [filters, setFilters] = useState({
+  const [filters, setFilters] = useState<CharacterFilter>({
     type: null,
     name: null
   })
 
-  function editCharacter(character: Character) {
+  function editCharacter(character: Character): void {
     setEditingCharacter(character)
   }
 
-  async function deleteCharacter(character: Character) {
+  async function deleteCharacter(character: Character): Promise<void> {
     const response = await client.deleteCharacter(character)
 
     if (response.status === 200) {
@@ -86,7 +92,7 @@ export default function Characters({ characters:initialCharacters, jwt }: any) {
     return <div>Loading...</div>
   }
 
-  const filteredCharacters = (characters: Character[]) => {
+  const filteredCharacters = (characters: Character[]): Character[] => {
     return characters.filter((character) => {
       if (filters.type) {
         return character?.action_values?.["Type"] === filters.type
@@ -118,7 +124,7 @@ export default function Characters({ characters:initialCharacters, jwt }: any) {
             <Typography variant="h1" gutterBottom>Characters</Typography>
             <Stack direction="row" spacing={2} alignItems="center">
               <CharacterFilters filters={filters} setFilters={setFilters} />
-              <NewCharacter />
+              <CreateCharacter />
             </Stack>
             <TableContainer>
               <Table size="small">

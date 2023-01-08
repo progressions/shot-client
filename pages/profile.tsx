@@ -8,7 +8,20 @@ import { unstable_getServerSession } from "next-auth/next"
 import { useState } from 'react'
 import Router from "next/router"
 
-export async function getServerSideProps({ req, res, params }: any) {
+import type { User } from "../types/types"
+
+interface ProfileServerSideProps {
+  req: any,
+  res: any,
+  params: any
+}
+
+interface ProfileProps {
+  jwt: string,
+  user: User
+}
+
+export async function getServerSideProps({ req, res, params }: ProfileServerSideProps) {
   const session: any = await unstable_getServerSession(req as any, res as any, authOptions as any)
   const jwt = session?.authorization
   const client = new Client({ jwt })
@@ -30,16 +43,16 @@ export async function getServerSideProps({ req, res, params }: any) {
   }
 }
 
-export default function Profile({ jwt, user:initialUser }: any) {
+export default function Profile({ jwt, user:initialUser }: ProfileProps) {
   const client = new Client({ jwt })
-  const [user, setUser] = useState(initialUser)
-  const [saving, setSaving] = useState(false)
+  const [user, setUser] = useState<User>(initialUser)
+  const [saving, setSaving] = useState<boolean>(false)
 
-  const handleChange = (event: any) => {
-    setUser((prevState: any) => ({ ...prevState, [event.target.name]: event.target.value }))
+  const handleChange = (event: any): void => {
+    setUser((prevState: User) => ({ ...prevState, [event.target.name]: event.target.value }))
   }
 
-  const handleSubmit = async (event: any) => {
+  const handleSubmit = async (event: any): Promise<void> => {
     setSaving(true)
     event.preventDefault()
 
@@ -48,7 +61,7 @@ export default function Profile({ jwt, user:initialUser }: any) {
     Router.reload()
   }
 
-  const cancelForm = (event: any) => {
+  const cancelForm = (event: any): void => {
     setUser(initialUser)
     setSaving(false)
   }

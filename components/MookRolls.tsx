@@ -2,33 +2,53 @@ import { Tooltip, Divider, Grid, Stack, Dialog, DialogTitle, DialogContent, Dial
 import { useState } from 'react'
 import { rollDie, rollExplodingDie } from './DiceRoller'
 
-export default function MookRolls({ count, attack, damage, icon }: any) {
-  const defaultValue = {count: count || '10', attack: attack || '8', defense: '13', damage: damage || '10'}
-  const [open, setOpen] = useState(false)
-  const [value, setValue] = useState(defaultValue)
+interface MookRollsParams {
+  count?: string,
+  attack?: string | undefined,
+  defense?: string | undefined,
+  damage?: string | undefined,
+  icon?: any
+}
+
+interface MookRollValue {
+  count: string,
+  attack: string,
+  defense: string,
+  damage: string
+}
+
+interface RollOutcomeParams {
+  outcome: any,
+  value: MookRollValue
+}
+
+export default function MookRolls({ count, attack, damage, icon }: MookRollsParams) {
+  const defaultValue:MookRollValue = {count: count || '10', attack: attack || '8', defense: '13', damage: damage || '10'}
+  const [open, setOpen] = useState<boolean>(false)
+  const [value, setValue] = useState<MookRollValue>(defaultValue)
   const [rolls, setRolls] = useState<number[]>([])
 
-  const handleChange = (event: any) => {
+  const handleChange = (event: any): void => {
     setValue({...value, [event.target.name]: event.target.value})
   }
 
-  const handleClose = () => {
+  const handleClose = (): void => {
     setOpen(false)
     setValue(defaultValue)
     setRolls([])
   }
 
-  const generateRolls = (event: any) => {
+  const generateRolls = (event: any): void => {
     event.preventDefault()
     setRolls([])
     const count = parseInt(value.count) || 0
     for (var i = 0; i < count; i++) {
       const [dieRolls, result] = rollExplodingDie(rollDie)
-      setRolls((oldArray: any) => [...oldArray, (result + parseInt(value.attack))])
+      setRolls((oldArray: number[]) => [...oldArray, (result + parseInt(value.attack))])
     }
   }
 
-  const RollOutcome = ({ outcome, value }: any) => {
+  const RollOutcome = ({ outcome, value }: RollOutcomeParams) => {
     const defense = parseInt(value.defense) || 0
     const winner = outcome >= defense
     const style = (value.defense && winner) ? {color: 'red', fontWeight: 'bold'} : {}

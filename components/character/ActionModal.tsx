@@ -8,31 +8,31 @@ import type { Character, Fight } from "../../types/types"
 
 interface ActionModalParams {
   open: boolean,
-  setOpen: any,
+  setOpen: (open: boolean) => void,
   fight: Fight,
   character: Character,
-  setFight: any
+  setFight: (fight: Fight) => void
 }
 
-const ActionModal = ({open, setOpen, fight, character, setFight}: any) => {
-  const [shots, setShots] = useState(3)
-  const [saving, setSaving] = useState(false)
+const ActionModal = ({open, setOpen, fight, character, setFight}: ActionModalParams) => {
+  const [shots, setShots] = useState<number>(3)
+  const [saving, setSaving] = useState<boolean>(false)
 
   const session: any = useSession({ required: true })
   const jwt = session?.data?.authorization
   const client = new Client({ jwt: jwt })
 
-  const handleChange = (event: any) => {
+  const handleChange = (event: any): void => {
     setShots(event.target.value)
   }
-  const submitAction = async (event: any) => {
+  const submitAction = async (event: any): Promise<void> => {
     event.preventDefault()
 
     const response = await client.actCharacter(character, fight)
 
     if (response.status === 200) {
       setOpen(false)
-      await loadFight({jwt, id: fight.id, setFight})
+      await loadFight({jwt, id: fight.id as string, setFight})
     }
   }
   const cancelForm = () => {

@@ -65,6 +65,8 @@ export default function UsersAdmin({ jwt, users, currentUser }: any) {
     }
   }
 
+  if (!user) return <></>
+
   return (
     <>
       <Head>

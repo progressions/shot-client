@@ -16,7 +16,7 @@ interface CharacterModalParams {
   open: boolean,
   setOpen: any,
   fight?: Fight,
-  setFight?: any,
+  setFight?: (fight: Fight) => void,
   character: Character | null
 }
 
@@ -61,23 +61,23 @@ export default function CharacterModal({ open, setOpen, fight, setFight, charact
   }
 
   const handleChange = (event: any) => {
-    setCharacter((prevState: any) => ({ ...prevState, [event.target.name]: event.target.value }))
+    setCharacter((prevState: Character) => ({ ...prevState, [event.target.name]: event.target.value }))
   }
 
   const handleAVChange = (event: any) => {
     const { action_values } = character || {}
-    setCharacter((prevState: any) => ({ ...prevState, action_values: { ...action_values, [event.target.name]: event.target.value } }))
+    setCharacter((prevState: Character) => ({ ...prevState, action_values: { ...action_values, [event.target.name]: event.target.value } }))
   }
 
-  const handleColor = (color: any) => {
-    setCharacter((prevState: any) => ({ ...prevState, color: color?.hex }))
+  const handleColor = (color: string) => {
+    setCharacter((prevState: Character) => ({ ...prevState, color: color?.hex }))
     setPicker(false)
     setAnchorEl(null)
   }
 
   const cancelForm = () => {
     setCharacter(character || defaultCharacter)
-    setOpen(null)
+    setOpen(false)
   }
 
   async function handleSubmit(event: any) {
@@ -93,8 +93,8 @@ export default function CharacterModal({ open, setOpen, fight, setFight, charact
     setCharacter(data)
     setSaving(false)
     cancelForm()
-    if (fight) {
-      await loadFight({jwt, id: fight.id, setFight})
+    if (fight && setFight) {
+      await loadFight({jwt, id: fight.id as string, setFight})
     } else {
       Router.reload()
     }

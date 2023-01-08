@@ -6,6 +6,15 @@ import Router from 'next/router'
 import Layout from '../../components/Layout'
 import Api from '../../components/Api'
 
+interface SignInPageProps {
+  referer: string | null
+}
+
+interface Credentials {
+  email: string,
+  password: string
+}
+
 export async function getServerSideProps(context: any) {
 
   // get CSRF as soon as i figure out how
@@ -16,19 +25,19 @@ export async function getServerSideProps(context: any) {
   }
 }
 
-export default function SignInPage({ referer }: any) {
+export default function SignInPage({ referer }: SignInPageProps) {
   useEffect(() => {
     signOut({ redirect: false })
   })
 
-  const [credentials, setCredentials] = useState(
+  const [credentials, setCredentials] = useState<Credentials>(
     {
       email: '',
       password: ''
     }
   )
 
-  const handleSubmit = async (event: any) => {
+  const handleSubmit = async (event: any): Promise<void> => {
     event.preventDefault()
     const result = await signIn('credentials', {
       email: credentials.email,
@@ -42,8 +51,8 @@ export default function SignInPage({ referer }: any) {
     }
   }
 
-  const handleChange = (event: any) => {
-    setCredentials((prevState: any) => ({ ...prevState, [event.target.name]: event.target.value }))
+  const handleChange = (event: any): void => {
+    setCredentials((prevState: Credentials) => ({ ...prevState, [event.target.name]: event.target.value }))
   }
 
   return (

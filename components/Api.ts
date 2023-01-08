@@ -1,9 +1,11 @@
+import type { Fight, Character, User, ID } from "../types/types"
+
 class Api {
   base():string { return process.env.NEXT_PUBLIC_SERVER_URL as string }
 
   api():string { return `${this.base()}/api/v1` }
 
-  fights(fight: any): string {
+  fights(fight: Fight | undefined): string {
     if (fight) {
       return `${this.api()}/fights/${fight.id}`
     } else {
@@ -11,7 +13,7 @@ class Api {
     }
   }
 
-  characters(fight: any, character: any): string {
+  characters(fight: Fight | null, character: Character | undefined): string {
     if (!fight) {
       return this.allCharacters(character)
     }
@@ -22,15 +24,15 @@ class Api {
     }
   }
 
-  addCharacter(fight: any, character: any): string {
+  addCharacter(fight: Fight, character: Character): string {
     return `${this.characters(fight, character)}/add`
   }
 
-  actCharacter(fight: any, character: any): string {
+  actCharacter(fight: Fight, character: Character): string {
     return `${this.characters(fight, character)}/act`
   }
 
-  allCharacters(character: any): string {
+  allCharacters(character: Character | undefined): string {
     if (character) {
       return `${this.api()}/all_characters/${character.id}`
     } else {
@@ -38,7 +40,7 @@ class Api {
     }
   }
 
-  adminUsers(user: any): string {
+  adminUsers(user: User | undefined): string {
     if (user) {
       return `${this.api()}/users/${user.id}`
     } else {

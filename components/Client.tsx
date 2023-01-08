@@ -1,11 +1,15 @@
 import Api from "./Api"
 import type { Character, ID, Fight, User } from "../types/types"
 
+interface ClientParams {
+  jwt: string
+}
+
 class Client {
   jwt: string
   api: any
 
-  constructor({ jwt }: any) {
+  constructor({ jwt }: ClientParams) {
     this.jwt = jwt
     this.api = new Api()
   }

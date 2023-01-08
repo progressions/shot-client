@@ -4,15 +4,27 @@ import TableCell from '@mui/material/TableCell'
 import Typography from '@mui/material/Typography'
 import CharacterDetails from './character/CharacterDetails'
 
-export default function Shot({ fight, setFight, shot, characters, editingCharacter, setEditingCharacter, showHidden }: any) {
+import type { Character, Fight } from "../types/types"
+
+interface ShotParams {
+  fight: Fight,
+  setFight: (fight: Fight) => void,
+  shot: number | string,
+  characters: Character[],
+  editingCharacter: Character | null,
+  setEditingCharacter: (character: Character | null) => void,
+  showHidden: boolean
+}
+
+export default function Shot({ fight, setFight, shot, characters, editingCharacter, setEditingCharacter, showHidden }: ShotParams) {
   const label = shot === null ? "-" : shot
 
   if (!showHidden && (shot === null || shot === undefined)) {
     return null
   }
 
-  const setEditingCharacterWithCurrentShot = (value: any) => {
-    setEditingCharacter({...value, current_shot: shot})
+  const setEditingCharacterWithCurrentShot = (character: Character | null): void => {
+    setEditingCharacter({...character, current_shot: shot} as any)
   }
 
   const color = (shot <= 0) ? "#ccc" : ""
@@ -25,8 +37,8 @@ export default function Shot({ fight, setFight, shot, characters, editingCharact
         <TableCell sx={{border: 0}}>
           <Stack spacing={2}>
             {
-              characters.map((character: any) => {
-                return <CharacterDetails key={character.id} fight={fight} character={character} setFight={setFight} editingCharacter={editingCharacter} setEditingCharacter={setEditingCharacterWithCurrentShot} />
+              characters.map((character: Character) => {
+                return <CharacterDetails key={character.id} fight={fight} character={character} setFight={setFight} editingCharacter={editingCharacter as Character} setEditingCharacter={setEditingCharacterWithCurrentShot} />
               })
             }
           </Stack>

@@ -8,10 +8,10 @@ import type { Character, Fight } from "../../types/types"
 
 interface WoundsModalParams {
   open: boolean,
-  setOpen: any,
+  setOpen: (open: boolean) => void,
   fight: Fight,
   character: Character,
-  setFight: any
+  setFight: (fight: Fight) => void
 }
 
 const WoundsModal = ({open, setOpen, fight, character, setFight}: WoundsModalParams) => {
@@ -35,7 +35,7 @@ const WoundsModal = ({open, setOpen, fight, character, setFight}: WoundsModalPar
 
     const response = await client.updateCharacter({ ...character, "action_values": actionValues}, fight)
     if (response.status === 200) {
-      await loadFight({jwt, id: fight.id, setFight})
+      await loadFight({jwt, id: fight.id as string, setFight})
       setWounds('')
       setOpen(false)
     }

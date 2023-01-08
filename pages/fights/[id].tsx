@@ -22,7 +22,19 @@ import CharacterModal from '../../components/character/CharacterModal'
 import Api from '../../components/Api'
 import Client from '../../components/Client'
 
-export async function getServerSideProps({ req, res, params }: any) {
+import type { Character, Fight, ID } from "../../types/types"
+
+interface FightServerSideProps {
+  req: any,
+  res: any,
+  params: any
+}
+
+interface FightParams {
+  fight: Fight
+}
+
+export async function getServerSideProps({ req, res, params }: FightServerSideProps) {
   const session: any = await unstable_getServerSession(req as any, res as any, authOptions as any)
   const jwt = session?.authorization
   const client = new Client({ jwt: jwt })
@@ -54,10 +66,10 @@ export async function getServerSideProps({ req, res, params }: any) {
   }
 }
 
-export default function Fight({ fight:initialFight }: any) {
-  const [fight, setFight] = useState(initialFight)
-  const [editingCharacter, setEditingCharacter] = useState(null)
-  const [showHidden, setShowHidden] = useState(false)
+export default function Fight({ fight:initialFight }: FightParams) {
+  const [fight, setFight] = useState<Fight>(initialFight)
+  const [editingCharacter, setEditingCharacter] = useState<Character | null>(null)
+  const [showHidden, setShowHidden] = useState<boolean>(false)
 
   const router = useRouter()
   const { id } = router.query
@@ -101,7 +113,7 @@ export default function Fight({ fight:initialFight }: any) {
             <Table border={0}>
               <TableBody>
                 {
-                  fight.shot_order.map(([shot, chars]: any) => <Shot key={shot} shot={shot} characters={chars} fight={fight} setFight={setFight} editingCharacter={editingCharacter} setEditingCharacter={setEditingCharacter} showHidden={showHidden} />)
+                  fight.shot_order.map(([shot, chars]: [number, Character[]]) => <Shot key={shot} shot={shot} characters={chars} fight={fight} setFight={setFight} editingCharacter={editingCharacter} setEditingCharacter={setEditingCharacter} showHidden={showHidden} />)
                 }
               </TableBody>
             </Table>

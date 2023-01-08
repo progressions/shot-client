@@ -11,13 +11,15 @@ import type { Character } from "../../types/types"
 
 interface ActionButtonsParams {
   character: Character,
-  takeWounds?: any,
-  takeAction?: any,
-  editCharacter: any,
-  deleteCharacter: any
+  takeWounds?: (character: Character) => void,
+  takeAction?: (character: Character) => void,
+  editCharacter: (character: Character) => void,
+  deleteCharacter:(character: Character) => void,
 }
 
 export default function ActionButtons({ character, takeWounds, takeAction, editCharacter, deleteCharacter }: ActionButtonsParams) {
+  if (!character) return <></>
+
   const woundLabel = character.action_values["Type"] === "Mook" ? "Kill Mooks" : "Take Wounds"
   return (
     <ButtonGroup variant="outlined" size="small">

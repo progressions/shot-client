@@ -3,7 +3,7 @@ import Image from 'next/image'
 import { Inter } from '@next/font/google'
 import { Link, Button, Paper, Container, Table, TableContainer, TableBody, TableHead, TableRow, TableCell, Typography } from '@mui/material'
 import AddFight from '../components/AddFight'
-import Fight from '../components/Fight'
+import FightDetail from '../components/Fight'
 import Layout from '../components/Layout'
 import Api from '../components/Api'
 import Client from '../components/Client'
@@ -15,6 +15,12 @@ import { signIn, signOut } from 'next-auth/react'
 
 import { authOptions } from './api/auth/[...nextauth]'
 import { unstable_getServerSession } from "next-auth/next"
+
+import type { Fight } from "../types/types"
+
+interface HomeProps {
+  fights: Fight[]
+}
 
 export async function getServerSideProps({ req, res }: any) {
   const api = new Api()
@@ -49,7 +55,7 @@ export async function getServerSideProps({ req, res }: any) {
   }
 }
 
-export default function Home({ fights }: any) {
+export default function Home({ fights }: HomeProps) {
   const { status, data } = useSession({ required: true })
   if (status !== "authenticated") {
     return <div>Loading...</div>
@@ -78,7 +84,7 @@ export default function Home({ fights }: any) {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {fights.map((fight: any) => <Fight fight={fight} key={fight.id} />)}
+                  {fights.map((fight: Fight) => <FightDetail fight={fight} key={fight.id} />)}
                 </TableBody>
               </Table>
             </TableContainer>
