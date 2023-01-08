@@ -1,6 +1,6 @@
 import { Switch, FormControlLabel, Stack } from '@mui/material'
 
-import NewCharacter from './character/NewCharacter'
+import CreateCharacter from './character/CreateCharacter'
 import SelectCharacter from './SelectCharacter'
 import DiceRoller from './DiceRoller'
 import MookRolls from './MookRolls'
@@ -19,7 +19,7 @@ export default function FightToolbar({ fight, setFight, showHidden, setShowHidde
     <>
       <Stack direction="row" spacing={2} alignItems='center'>
         <DiceRoller />
-        <NewCharacter fight={fight} setFight={setFight} />
+        <CreateCharacter fight={fight} setFight={setFight} />
         <SelectCharacter fight={fight} setFight={setFight} />
         <MookRolls />
         <FormControlLabel label="Show Hidden" control={<Switch checked={showHidden} />} onChange={(event: any) => setShowHidden(event.target.checked)} />

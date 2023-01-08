@@ -26,9 +26,9 @@ export default function SelectCharacter({ fight, setFight }: SelectCharacterPara
     const response = await client.getAllCharacters()
     const chars = await response.json()
 
-    const ids = fight.characters.map((char: Character) => char.id)
+    const ids = fight?.characters?.map((char: Character) => char.id)
     const availableChars = chars.filter((char: Character) => {
-      return !ids.includes(char.id)
+      return !ids?.includes(char.id)
     })
 
     setValue('')
@@ -50,7 +50,7 @@ export default function SelectCharacter({ fight, setFight }: SelectCharacterPara
 
     const response = await client.addCharacter(fight, {id: value})
     const data = await response.json()
-    await loadFight({jwt, id: fight.id, setFight})
+    await loadFight({jwt, id: fight.id as string, setFight})
 
     setOpen(false)
   }

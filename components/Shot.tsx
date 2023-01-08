@@ -12,7 +12,7 @@ interface ShotParams {
   shot: number | string,
   characters: Character[],
   editingCharacter: Character | null,
-  setEditingCharacter: (character: Character) => void,
+  setEditingCharacter: (character: Character | null) => void,
   showHidden: boolean
 }
 
@@ -23,8 +23,8 @@ export default function Shot({ fight, setFight, shot, characters, editingCharact
     return null
   }
 
-  const setEditingCharacterWithCurrentShot = (character: Character): void => {
-    setEditingCharacter({...character, current_shot: shot})
+  const setEditingCharacterWithCurrentShot = (character: Character | null): void => {
+    setEditingCharacter({...character, current_shot: shot} as any)
   }
 
   const color = (shot <= 0) ? "#ccc" : ""
@@ -38,7 +38,7 @@ export default function Shot({ fight, setFight, shot, characters, editingCharact
           <Stack spacing={2}>
             {
               characters.map((character: Character) => {
-                return <CharacterDetails key={character.id} fight={fight} character={character} setFight={setFight} editingCharacter={editingCharacter} setEditingCharacter={setEditingCharacterWithCurrentShot} />
+                return <CharacterDetails key={character.id} fight={fight} character={character} setFight={setFight} editingCharacter={editingCharacter as Character} setEditingCharacter={setEditingCharacterWithCurrentShot} />
               })
             }
           </Stack>

@@ -14,7 +14,7 @@ import type { Fight, Character, ID } from "../../types/types"
 
 interface CharacterModalParams {
   open: boolean,
-  setOpen: (open: boolean) => void,
+  setOpen: any,
   fight?: Fight,
   setFight?: (fight: Fight) => void,
   character: Character | null
@@ -93,7 +93,7 @@ export default function CharacterModal({ open, setOpen, fight, setFight, charact
     setCharacter(data)
     setSaving(false)
     cancelForm()
-    if (fight) {
+    if (fight && setFight) {
       await loadFight({jwt, id: fight.id as string, setFight})
     } else {
       Router.reload()

@@ -8,8 +8,8 @@ import CharacterModal from './CharacterModal'
 import type { Character, Fight, ID } from "../../types/types"
 
 interface CreateCharacterParams {
-  fight: Fight,
-  setFight: (fight: Fight) => void
+  fight?: Fight,
+  setFight?: (fight: Fight) => void
 }
 
 export default function CreateCharacter({ fight, setFight }: CreateCharacterParams) {

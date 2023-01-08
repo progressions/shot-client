@@ -16,7 +16,7 @@ import ActionValues from "../components/character/ActionValues"
 import ActionButtons from "../components/character/ActionButtons"
 import CharacterModal from "../components/character/CharacterModal"
 import AvatarBadge from "../components/character/AvatarBadge"
-import NewCharacter from "../components/character/NewCharacter"
+import CreateCharacter from "../components/character/CreateCharacter"
 import CharacterFilters from "../components/CharacterFilters"
 
 import type { Character } from "../types/types"
@@ -118,7 +118,7 @@ export default function Characters({ characters:initialCharacters, jwt }: any) {
             <Typography variant="h1" gutterBottom>Characters</Typography>
             <Stack direction="row" spacing={2} alignItems="center">
               <CharacterFilters filters={filters} setFilters={setFilters} />
-              <NewCharacter />
+              <CreateCharacter />
             </Stack>
             <TableContainer>
               <Table size="small">

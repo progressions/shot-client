@@ -22,6 +22,8 @@ import CharacterModal from '../../components/character/CharacterModal'
 import Api from '../../components/Api'
 import Client from '../../components/Client'
 
+import type { Character, Fight, ID } from "../../types/types"
+
 export async function getServerSideProps({ req, res, params }: any) {
   const session: any = await unstable_getServerSession(req as any, res as any, authOptions as any)
   const jwt = session?.authorization
@@ -55,9 +57,9 @@ export async function getServerSideProps({ req, res, params }: any) {
 }
 
 export default function Fight({ fight:initialFight }: any) {
-  const [fight, setFight] = useState(initialFight)
-  const [editingCharacter, setEditingCharacter] = useState(null)
-  const [showHidden, setShowHidden] = useState(false)
+  const [fight, setFight] = useState<Fight>(initialFight)
+  const [editingCharacter, setEditingCharacter] = useState<Character | null>(null)
+  const [showHidden, setShowHidden] = useState<boolean>(false)
 
   const router = useRouter()
   const { id } = router.query
