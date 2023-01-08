@@ -2,6 +2,7 @@ import Head from 'next/head'
 import { IconButton, Typography, Container, Table, TableContainer, TableBody, TableHead, TableRow, TableCell } from '@mui/material'
 import { useState } from 'react'
 import Layout from '../../components/Layout'
+import Client from "../../components/Client"
 import UserModal from '../../components/UserModal'
 import Router from 'next/router'
 
@@ -12,11 +13,10 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import EditIcon from '@mui/icons-material/Edit'
 import CheckIcon from '@mui/icons-material/Check'
 
-const apiUrl = process.env.NEXT_PUBLIC_SERVER_URL
-
 export async function getServerSideProps({ req, res, params }: any) {
   const session: any = await unstable_getServerSession(req as any, res as any, authOptions as any)
   const jwt = session?.authorization
+  const client = new Client({ jwt })
   const id = session?.id
 
   if (!session?.user?.admin) {
@@ -29,12 +29,7 @@ export async function getServerSideProps({ req, res, params }: any) {
     }
   }
 
-  const response = await fetch(`${apiUrl}/api/v1/users`, {
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': jwt
-    }
-  })
+  const response = await client.getUsers()
 
   if (response.status === 200) {
     const users = await response.json()
@@ -56,6 +51,7 @@ export async function getServerSideProps({ req, res, params }: any) {
 }
 
 export default function UsersAdmin({ jwt, users, currentUser }: any) {
+  const client = new Client({ jwt })
   const [value, setValue] = useState('1')
   const [user, setUser] = useState(null)
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
@@ -63,19 +59,11 @@ export default function UsersAdmin({ jwt, users, currentUser }: any) {
   }
 
   async function deleteUser(user: any) {
-    const response = await fetch(`${apiUrl}/api/v1/users/${user.id}`, {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': jwt
-      }
-    })
+    const response = await client.deleteUser(user)
     if (response.status === 200) {
       Router.reload()
     }
   }
-
-  console.log(users)
 
   return (
     <>

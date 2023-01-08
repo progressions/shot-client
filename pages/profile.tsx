@@ -1,27 +1,22 @@
 import Head from 'next/head'
 import { Avatar, Box, Button, Stack, Container, Typography, TextField } from '@mui/material'
 import Layout from '../components/Layout'
+import Client from '../components/Client'
 import { useSession } from 'next-auth/react'
 import { authOptions } from './api/auth/[...nextauth]'
 import { unstable_getServerSession } from "next-auth/next"
 import { useState } from 'react'
 import Router from "next/router"
 
-const apiUrl = process.env.NEXT_PUBLIC_SERVER_URL
-
 export async function getServerSideProps({ req, res, params }: any) {
   const session: any = await unstable_getServerSession(req as any, res as any, authOptions as any)
   const jwt = session?.authorization
+  const client = new Client({ jwt })
   const id = session?.id
 
-  const result = await fetch(`${apiUrl}/api/v1/users/${id}`, {
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': jwt
-    }
-  })
-  if (result.status === 200) {
-    const user = await result.json()
+  const response = await client.getUser({id: id})
+  if (response.status === 200) {
+    const user = await response.json()
     return {
       props: {
         jwt: jwt,
@@ -36,6 +31,7 @@ export async function getServerSideProps({ req, res, params }: any) {
 }
 
 export default function Profile({ jwt, user:initialUser }: any) {
+  const client = new Client({ jwt })
   const [user, setUser] = useState(initialUser)
   const [saving, setSaving] = useState(false)
 
@@ -46,21 +42,8 @@ export default function Profile({ jwt, user:initialUser }: any) {
   const handleSubmit = async (event: any) => {
     setSaving(true)
     event.preventDefault()
-    const options: RequestInit = {
-      method: 'PATCH',
-      mode: 'cors',
-      // Tell the server we're sending JSON.
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': jwt
-      },
-      // Body of the request is the JSON data we created above.
-      body: JSON.stringify({ "user": user })
-    }
 
-    const url = `${apiUrl}/api/v1/users/${user.id}`
-    const response = await fetch(url, options)
-    const result = await response.json()
+    const response = await client.updateUser(user)
     setSaving(false)
     Router.reload()
   }

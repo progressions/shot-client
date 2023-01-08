@@ -1,7 +1,12 @@
 import { Box, TextField, MenuItem } from '@mui/material'
 import { useState } from 'react'
 
-export default function CharacterType({ value, onChange }: any) {
+interface CharacterTypeParams {
+  value: string,
+  onChange: any
+}
+
+export default function CharacterType({ value, onChange }: CharacterTypeParams) {
   return (
     <Box sx={{width: 250}}>
       <TextField fullWidth name='Type' required label='Character Type' select value={value} onChange={onChange}>

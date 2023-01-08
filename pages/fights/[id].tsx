@@ -19,19 +19,16 @@ import FightToolbar from '../../components/FightToolbar'
 import Layout from '../../components/Layout'
 import Shot from '../../components/Shot'
 import CharacterModal from '../../components/character/CharacterModal'
-
-const apiUrl = process.env.NEXT_PUBLIC_SERVER_URL
+import Api from '../../components/Api'
+import Client from '../../components/Client'
 
 export async function getServerSideProps({ req, res, params }: any) {
   const session: any = await unstable_getServerSession(req as any, res as any, authOptions as any)
   const jwt = session?.authorization
+  const client = new Client({ jwt: jwt })
   const { id } = params
-  const response = await fetch(`${apiUrl}/api/v1/fights/${id}`, {
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': jwt
-    }
-  })
+
+  const response = await client.getFight({id: id})
   if (response.status === 200) {
     const fight = await response.json()
     return {

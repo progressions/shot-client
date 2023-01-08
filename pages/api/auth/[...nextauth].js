@@ -1,8 +1,7 @@
 import NextAuth from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials"
 import { getToken } from 'next-auth/jwt'
-
-const apiUrl = process.env.NEXT_PUBLIC_SERVER_URL
+import Api from "../../../components/Api"
 
 export const authOptions = {
   session: {
@@ -19,7 +18,9 @@ export const authOptions = {
       // You can pass any HTML attribute to the <input> tag through the object.
       credentials: {},
       async authorize(credentials, req) {
-        const options = {
+        const api = new Api()
+
+        const response = await fetch(api.signIn(), {
           method: 'POST',
           mode: 'cors',
           headers: {
@@ -27,9 +28,7 @@ export const authOptions = {
             'Access-Control-Allow-Headers': true
           },
           body: JSON.stringify({"user": credentials})
-        }
-
-        const response = await fetch(`${apiUrl}/users/sign_in`, options)
+        })
 
         // If no error and we have user data, return it
         if (response.status === 200) {

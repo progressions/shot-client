@@ -2,6 +2,7 @@ import Head from 'next/head'
 import { Avatar, Box, Tabs, Tab, Button, Stack, Container, Typography, TextField } from '@mui/material'
 import { TabContext, TabList, TabPanel } from '@mui/lab'
 import Layout from '../components/Layout'
+import Api from '../components/Api'
 import { useSession } from 'next-auth/react'
 import { authOptions } from './api/auth/[...nextauth]'
 import { unstable_getServerSession } from "next-auth/next"
@@ -9,9 +10,16 @@ import { useState } from 'react'
 import { useRouter } from "next/router"
 import PeopleIcon from '@mui/icons-material/People';
 
-const apiUrl = process.env.NEXT_PUBLIC_SERVER_URL
+interface AdminServerProps {
+  req: any,
+  res: any,
+  params: any
+}
+interface AdminProps {
+  jwt: string
+}
 
-export async function getServerSideProps({ req, res, params }: any) {
+export async function getServerSideProps({ req, res, params }: AdminServerProps) {
   const session: any = await unstable_getServerSession(req as any, res as any, authOptions as any)
   const jwt = session?.authorization
   const id = session?.id
@@ -34,8 +42,8 @@ export async function getServerSideProps({ req, res, params }: any) {
   }
 }
 
-export default function Admin({ jwt }: any) {
-  const [value, setValue] = useState('1')
+export default function Admin({ jwt }: AdminProps) {
+  const [value, setValue] = useState<string>('1')
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue)
   }

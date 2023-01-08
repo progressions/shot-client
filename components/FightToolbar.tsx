@@ -5,8 +5,6 @@ import SelectCharacter from './SelectCharacter'
 import DiceRoller from './DiceRoller'
 import MookRolls from './MookRolls'
 
-const apiUrl = process.env.NEXT_PUBLIC_SERVER_URL
-
 export default function FightToolbar({ fight, setFight, showHidden, setShowHidden }: any) {
   return (
     <>

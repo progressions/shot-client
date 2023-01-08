@@ -4,8 +4,6 @@ import TableCell from '@mui/material/TableCell'
 import Typography from '@mui/material/Typography'
 import CharacterDetails from './character/CharacterDetails'
 
-const apiUrl = process.env.NEXT_PUBLIC_SERVER_URL
-
 export default function Shot({ fight, setFight, shot, characters, editingCharacter, setEditingCharacter, showHidden }: any) {
   const label = shot === null ? "-" : shot
 

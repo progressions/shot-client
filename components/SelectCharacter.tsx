@@ -2,24 +2,21 @@ import { useState } from 'react'
 import { Box, TextField, MenuItem, Dialog, DialogActions, DialogTitle, DialogContent, DialogContentText, Button } from '@mui/material'
 import { useSession } from 'next-auth/react'
 import { loadFight } from './Fight'
-
-const apiUrl = process.env.NEXT_PUBLIC_SERVER_URL
+import Client from "./Client"
+import Api from "./Api"
 
 export default function SelectCharacter({ fight, setFight }: any) {
+  const api = new Api()
   const session: any = useSession({ required: true })
   const jwt = session?.data?.authorization
+  const client = new Client({ jwt })
 
   const [value, setValue] = useState('')
   const [open, setOpen] = useState(false)
   const [chars, setChars] = useState([])
 
   const handleOpen = async () => {
-    const response = await fetch(`${apiUrl}/api/v1/all_characters`, {
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': jwt
-      }
-    })
+    const response = await client.getAllCharacters()
     const chars = await response.json()
 
     const ids = fight.characters.map((char: any) => char.id)
@@ -44,20 +41,7 @@ export default function SelectCharacter({ fight, setFight }: any) {
   const handleSubmit = async (event: any) => {
     event.preventDefault()
 
-    // api/v1/fights/bfa297b3-64fe-4f5e-9376-d3334f71c9bb/characters/bd3de553-cbd3-47b1-baaa-b6ce757ef43d
-    const url = `${apiUrl}/api/v1/fights/${fight.id}/characters/${value}/add`
-
-    const options: RequestInit = {
-      method: "POST",
-      mode: 'cors',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': jwt
-      },
-      body: JSON.stringify({"character": {"current_shot": 0}})
-    }
-
-    const response = await fetch(url, options)
+    const response = await client.addCharacter(fight, {id: value})
     const data = await response.json()
     await loadFight({jwt, id: fight.id, setFight})
 

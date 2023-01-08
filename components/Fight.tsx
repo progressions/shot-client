@@ -4,19 +4,13 @@ import Router from 'next/router'
 import { useSession } from 'next-auth/react'
 import { authOptions } from '../pages/api/auth/[...nextauth]'
 import { unstable_getServerSession } from "next-auth/next"
-
-const apiUrl = process.env.NEXT_PUBLIC_SERVER_URL
+import Client from "./Client"
 
 export async function loadFight({ id, jwt, setFight }: any) {
-  const result = await fetch(`${apiUrl}/api/v1/fights/${id}`, {
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': jwt
-    }
-  })
-  if (result.status === 200) {
-    const data = await result.json()
-    console.log(data)
+  const client = new Client({ jwt })
+  const response = await client.getFight({ id })
+  if (response.status === 200) {
+    const data = await response.json()
     setFight({shot_order: []})
     setFight(data)
   }
@@ -25,15 +19,10 @@ export async function loadFight({ id, jwt, setFight }: any) {
 export default function Fight({ fight }: any) {
   const session: any = useSession({ required: true })
   const jwt = session?.data?.authorization
+  const client = new Client({ jwt })
 
   async function deleteFight(fight: any) {
-    const response = await fetch(`${apiUrl}/api/v1/${fight.id}`, {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': jwt
-      }
-    })
+    const response = await client.deleteFight(fight)
     if (response.status === 200) {
       Router.reload()
     }

@@ -15,6 +15,13 @@ import Avatar from '@mui/material/Avatar';
 import Tooltip from '@mui/material/Tooltip'
 import Stack from '@mui/material/Stack'
 
+import type { User } from "../types/types"
+
+interface AuthButtonParams {
+  status: string,
+  user: User
+}
+
 export default function Navbar() {
   const { status, data } = useSession()
   const user:any = data?.user
@@ -25,7 +32,7 @@ export default function Navbar() {
     }
   }, [status])
 
-  const AuthButton = ({ status, user }: any) => {
+  const AuthButton = ({ status, user }: AuthButtonParams) => {
     if (status === "authenticated") {
       return (
         <>

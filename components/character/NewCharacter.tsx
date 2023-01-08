@@ -5,10 +5,31 @@ import Button from '@mui/material/Button'
 import TextField from '@mui/material/TextField'
 import CharacterModal from './CharacterModal'
 
-const apiUrl = process.env.NEXT_PUBLIC_SERVER_URL
+import type { Character, Fight, ID } from "../../types/types"
+
+interface CreateCharacterParams {
+  fight: Fight,
+  setFight: any
+}
 
 export default function CreateCharacter({ fight, setFight }: any) {
-  const characterTemplate = {fight_id: fight?.id, name: '', defense: null, current_shot: 0, impairments: null, color: '', action_values: {}, new: false}
+  const characterTemplate:Character = {name: '', defense: '', current_shot: 0, impairments: 0, color: '', new: false, action_values: {
+    Guns: "",
+    "Martial Arts": "",
+    Sorcery: "",
+    Scroungetech: "",
+    Genome: "",
+    Defense: "",
+    Toughness: "",
+    Speed: "",
+    Fortune: "",
+    "Max Fortune": "",
+    FortuneType: "",
+    MainAttack: "",
+    SecondaryAttack: "",
+    Wounds: "0",
+    Type: ""
+  }}
   const [newCharacter, setNewCharacter] = useState(characterTemplate)
 
   const openModal = () => {

@@ -2,32 +2,38 @@ import { useState } from 'react'
 import { Stack, TextField, Button, Dialog } from '@mui/material'
 import { useSession } from 'next-auth/react'
 import { loadFight } from '../Fight'
+import Client from "../Client"
 
-const apiUrl = process.env.NEXT_PUBLIC_SERVER_URL
+import type { Character, Fight } from "../../types/types"
 
-const WoundsModal = ({open, setOpen, fight, character, setFight}: any) => {
-  const [wounds, setWounds] = useState('')
-  const [saving, setSaving] = useState(false)
+interface WoundsModalParams {
+  open: boolean,
+  setOpen: any,
+  fight: Fight,
+  character: Character,
+  setFight: any
+}
+
+const WoundsModal = ({open, setOpen, fight, character, setFight}: WoundsModalParams) => {
+  const [wounds, setWounds] = useState<string>('')
+  const [saving, setSaving] = useState<boolean>(false)
 
   const session: any = useSession({ required: true })
   const jwt = session?.data?.authorization
+  const client = new Client({ jwt })
 
   const handleChange = (event: any) => {
     setWounds(event.target.value)
   }
   const submitWounds = async (event: any) => {
     event.preventDefault()
-    const newWounds = (character.action_values["Type"] === "Mook") ? parseInt(character.action_values["Wounds"] || 0) - parseInt(wounds) : parseInt(character.action_values["Wounds"] || 0) + parseInt(wounds)
+    const newWounds = (character.action_values["Type"] === "Mook") ?
+      parseInt(character.action_values["Wounds"]) - parseInt(wounds) :
+      parseInt(character.action_values["Wounds"]) + parseInt(wounds)
     const actionValues = character.action_values
-    actionValues['Wounds'] = newWounds
-    const response = await fetch(`${apiUrl}/api/v1/fights/${fight.id}/characters/${character.id}`, {
-      method: 'PATCH',
-      body: JSON.stringify({"character": {"action_values": actionValues}}),
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': jwt
-      }
-    })
+    actionValues['Wounds'] = `${newWounds}`
+
+    const response = await client.updateCharacter({ ...character, "action_values": actionValues}, fight)
     if (response.status === 200) {
       await loadFight({jwt, id: fight.id, setFight})
       setWounds('')

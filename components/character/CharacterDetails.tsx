@@ -16,12 +16,22 @@ import AvatarBadge from './AvatarBadge'
 import GamemasterOnly from '../GamemasterOnly'
 
 import { loadFight } from '../Fight'
+import Client from "../Client"
 
-const apiUrl = process.env.NEXT_PUBLIC_SERVER_URL
+import type { Character, Fight, ID } from "../../types/types"
 
-export default function CharacterDetails({ character, fight, setFight, editingCharacter, setEditingCharacter }: any) {
+interface CharacterDetailsParams {
+  character: Character,
+  fight: Fight,
+  setFight: any,
+  editingCharacter: Character,
+  setEditingCharacter: any
+}
+
+export default function CharacterDetails({ character, fight, setFight, editingCharacter, setEditingCharacter }: CharacterDetailsParams) {
   const session: any = useSession({ required: true })
   const jwt = session?.data?.authorization
+  const client = new Client({ jwt })
 
   const [open, setOpen] = useState(false)
   const [openAction, setOpenAction] = useState(false)
@@ -31,34 +41,29 @@ export default function CharacterDetails({ character, fight, setFight, editingCh
     setOpenAction(false)
   }
 
-  async function deleteCharacter(character: any) {
-    const response = await fetch(`${apiUrl}/api/v1/fights/${fight.id}/characters/${character.id}`, {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': jwt
-      }
-    })
+  async function deleteCharacter(character: Character) {
+    const response = await client.deleteCharacter(character, fight)
     if (response.status === 200) {
       await loadFight({jwt, id: fight.id, setFight})
     }
   }
 
-  function editCharacter(character: any) {
+  function editCharacter(character: Character) {
     setEditingCharacter(character)
   }
 
-  async function takeAction(character: any) {
+  async function takeAction(character: Character) {
     setOpenAction(true)
   }
 
-  async function takeWounds(character: any) {
+  async function takeWounds(character: Character) {
     setOpenWounds(true)
   }
 
   const defense = character.defense ? `Defense ${character.defense}` : ''
   const impairments = character.impairments ? `(-${character.impairments})` : ''
   const color = character.impairments > 0 ? 'error' : 'primary'
+  const wounds = parseInt(character.action_values["Wounds"]) > 0 ? character.action_values["Wounds"] : ''
 
   return (
     <>
@@ -76,7 +81,7 @@ export default function CharacterDetails({ character, fight, setFight, editingCh
               </TableCell>
               <TableCell sx={{width: 60}}>
                 <GamemasterOnly user={session?.data?.user} character={character}>
-                  <Typography variant="h3">{(character.action_values['Wounds'] > 0) ? character.action_values['Wounds'] : ''}</Typography>
+                  <Typography variant="h3">{wounds}</Typography>
                 </GamemasterOnly>
               </TableCell>
               <TableCell>

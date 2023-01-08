@@ -2,8 +2,17 @@ import { useState } from 'react'
 import { Stack, TextField, Button, Dialog } from '@mui/material'
 import { useSession } from 'next-auth/react'
 import { loadFight } from '../Fight'
+import Client from "../Client"
 
-const apiUrl = process.env.NEXT_PUBLIC_SERVER_URL
+import type { Character, Fight } from "../../types/types"
+
+interface ActionModalParams {
+  open: boolean,
+  setOpen: any,
+  fight: Fight,
+  character: Character,
+  setFight: any
+}
 
 const ActionModal = ({open, setOpen, fight, character, setFight}: any) => {
   const [shots, setShots] = useState(3)
@@ -11,20 +20,16 @@ const ActionModal = ({open, setOpen, fight, character, setFight}: any) => {
 
   const session: any = useSession({ required: true })
   const jwt = session?.data?.authorization
+  const client = new Client({ jwt: jwt })
 
   const handleChange = (event: any) => {
     setShots(event.target.value)
   }
   const submitAction = async (event: any) => {
     event.preventDefault()
-    const response = await fetch(`${apiUrl}/api/v1/fights/${fight.id}/characters/${character.id}/act`, {
-      method: 'PATCH',
-      body: JSON.stringify({"shots": shots}),
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': jwt
-      }
-    })
+
+    const response = await client.actCharacter(character, fight)
+
     if (response.status === 200) {
       setOpen(false)
       await loadFight({jwt, id: fight.id, setFight})

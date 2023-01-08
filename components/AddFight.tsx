@@ -4,13 +4,12 @@ import Router from "next/router"
 import KeyboardDoubleArrowDownIcon from '@mui/icons-material/KeyboardDoubleArrowDown';
 import KeyboardDoubleArrowUpIcon from '@mui/icons-material/KeyboardDoubleArrowUp';
 import { useSession } from 'next-auth/react'
-
-const apiUrl = process.env.NEXT_PUBLIC_SERVER_URL
+import Client from "./Client"
 
 export default function AddFight({ }: any) {
-  const fightsUrl = `${apiUrl}/api/v1/fights`
   const session: any = useSession({ required: true })
   const jwt = session?.data?.authorization
+  const client = new Client({ jwt })
 
   const [open, setOpen] = useState(false)
   const [fight, setFight] = useState({name: ''})
@@ -23,22 +22,8 @@ export default function AddFight({ }: any) {
   const handleSubmit = async (event: any) => {
     setSaving(true)
     event.preventDefault()
-    const JSONdata = JSON.stringify({"fight": fight})
-    // Form the request for sending data to the server.
-    const options: RequestInit = {
-      // The method is POST because we are sending data.
-      method: 'POST',
-      mode: 'cors',
-      // Tell the server we're sending JSON.
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': jwt
-      },
-      // Body of the request is the JSON data we created above.
-      body: JSONdata,
-    }
-    const response = await fetch(fightsUrl, options)
-    const result = await response.json()
+
+    const response = client.createFight(fight)
     setSaving(false)
     cancelForm()
     Router.reload()

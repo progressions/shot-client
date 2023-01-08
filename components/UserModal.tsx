@@ -9,11 +9,12 @@ import Button from '@mui/material/Button'
 import Router from "next/router"
 import { useSession } from 'next-auth/react'
 
-const apiUrl = process.env.NEXT_PUBLIC_SERVER_URL
+import Client from "./Client"
 
 export default function UserModal(props: any) {
   const session: any = useSession({ required: true })
   const jwt = session?.data?.authorization
+  const client = new Client({ jwt: jwt })
 
   const user = props.user
   const setUser = props.setUser
@@ -40,24 +41,12 @@ export default function UserModal(props: any) {
   async function handleSubmit(event: any) {
     setSaving(true)
     event.preventDefault()
-    const JSONdata = JSON.stringify({"user": user})
-    // Form the request for sending data to the server.
-    const options: RequestInit = {
-      // The method is POST because we are sending data.
-      method: method,
-      mode: 'cors',
-      // Tell the server we're sending JSON.
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': jwt
-      },
-      // Body of the request is the JSON data we created above.
-      body: JSONdata,
-    }
 
-    const url = user ? `${apiUrl}/api/v1/users/${user?.id}` : `${apiUrl}/api/v1/users`
-    const response = await fetch(url, options)
-    const result = await response.json()
+    const response = user ?
+      await client.updateUser(user)
+    : await client.createUser(user)
+
+    const data = await response.json()
     setSaving(false)
     cancelForm()
     Router.reload()

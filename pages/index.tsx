@@ -5,6 +5,8 @@ import { Link, Button, Paper, Container, Table, TableContainer, TableBody, Table
 import AddFight from '../components/AddFight'
 import Fight from '../components/Fight'
 import Layout from '../components/Layout'
+import Api from '../components/Api'
+import Client from '../components/Client'
 import Router from 'next/router'
 import { useSession } from 'next-auth/react'
 import { getToken } from 'next-auth/jwt'
@@ -14,18 +16,13 @@ import { signIn, signOut } from 'next-auth/react'
 import { authOptions } from './api/auth/[...nextauth]'
 import { unstable_getServerSession } from "next-auth/next"
 
-const apiUrl = process.env.NEXT_PUBLIC_SERVER_URL
-
 export async function getServerSideProps({ req, res }: any) {
+  const api = new Api()
   const session: any = await unstable_getServerSession(req as any, res as any, authOptions as any)
   const jwt = session?.authorization
+  const client = new Client({ jwt: jwt })
 
-  const response = await fetch(`${apiUrl}/api/v1/fights`, {
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': jwt
-    }
-  })
+  const response = await client.getFights()
 
   if (response.status === 200) {
     const fights = await response.json()

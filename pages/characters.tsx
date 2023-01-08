@@ -1,5 +1,6 @@
 import Head from "next/head"
 import Layout from "../components/Layout"
+import Client from "../components/Client"
 
 import { useState } from "react"
 import Router from "next/router"
@@ -18,20 +19,19 @@ import AvatarBadge from "../components/character/AvatarBadge"
 import NewCharacter from "../components/character/NewCharacter"
 import CharacterFilters from "../components/CharacterFilters"
 
-import type { Character } from "../components/character/CharacterModal"
+import type { Character } from "../types/types"
 
-const apiUrl = process.env.NEXT_PUBLIC_SERVER_URL
+interface CharactersParams {
+  character: Character[],
+  jwt: string
+}
 
 export async function getServerSideProps({ req, res }: any) {
   const session: any = await unstable_getServerSession(req as any, res as any, authOptions as any)
   const jwt = session?.authorization
+  const client = new Client({ jwt })
 
-  const response = await fetch(`${apiUrl}/api/v1/all_characters`, {
-    headers: {
-      "Content-Type": "application/json",
-      "Authorization": jwt
-    }
-  })
+  const response = await client.getAllCharacters()
 
   if (response.status === 200) {
     const characters = await response.json()
@@ -60,36 +60,23 @@ export async function getServerSideProps({ req, res }: any) {
 }
 
 export default function Characters({ characters:initialCharacters, jwt }: any) {
+  const client = new Client({ jwt })
   const session = useSession({ required: true })
   const { status, data } = session
-  const [editingCharacter, setEditingCharacter] = useState(null)
+  const [editingCharacter, setEditingCharacter] = useState<Character | null>(null)
   const [characters, setCharacters] = useState<Character[]>(initialCharacters)
   const [filters, setFilters] = useState({
     type: null,
     name: null
   })
 
-  function editCharacter(character: any) {
+  function editCharacter(character: Character) {
     setEditingCharacter(character)
   }
 
-  const generateUrl = ({ character }: any) => {
-    if (character?.id) {
-      return `${apiUrl}/api/v1/all_characters/${character.id}`
-    } else {
-      return `${apiUrl}/api/v1/all_characters`
-    }
-  }
+  async function deleteCharacter(character: Character) {
+    const response = await client.deleteCharacter(character)
 
-  async function deleteCharacter(character: any) {
-    const url = `${apiUrl}/api/v1/all_characters/${character.id}`
-    const response = await fetch(url, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": jwt
-      }
-    })
     if (response.status === 200) {
       Router.reload()
     }

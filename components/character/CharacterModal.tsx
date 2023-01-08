@@ -8,28 +8,42 @@ import CharacterType from './CharacterType'
 import { useSession } from 'next-auth/react'
 import { BlockPicker } from 'react-color'
 import { loadFight } from '../Fight'
+import Client from "../Client"
 
-export interface Character {
-    id?: string,
-    name: string,
-    defense: string,
-    current_shot: string,
-    impairments: string,
-    color: string,
-    action_values: any,
-    user?: any
-  }
+import type { Fight, Character, ID } from "../../types/types"
 
-const apiUrl = process.env.NEXT_PUBLIC_SERVER_URL
+interface CharacterModalParams {
+  open: boolean,
+  setOpen: any,
+  fight?: Fight,
+  setFight?: any,
+  character: Character | null
+}
 
-export default function CharacterModal({ open, setOpen, fight, setFight, character:activeCharacter }: any) {
-
-  const defaultCharacter:Character = {name: '', defense: '', current_shot: '', impairments: '', color: '', action_values: {}}
+export default function CharacterModal({ open, setOpen, fight, setFight, character:activeCharacter }: CharacterModalParams) {
+  const defaultCharacter:Character = {name: '', defense: '', current_shot: '', impairments: 0, color: '', action_values: {
+    Guns: "",
+    "Martial Arts": "",
+    Sorcery: "",
+    Scroungetech: "",
+    Genome: "",
+    Defense: "",
+    Toughness: "",
+    Speed: "",
+    Fortune: "",
+    "Max Fortune": "",
+    FortuneType: "",
+    MainAttack: "",
+    SecondaryAttack: "",
+    Wounds: "0",
+    Type: ""
+  }}
   const [picker, setPicker] = useState(false)
   const [anchorEl, setAnchorEl] = useState(null)
 
   const session: any = useSession({ required: true })
   const jwt = session?.data?.authorization
+  const client = new Client({ jwt: jwt })
 
   const [saving, setSaving] = useState(false);
 
@@ -69,24 +83,13 @@ export default function CharacterModal({ open, setOpen, fight, setFight, charact
   async function handleSubmit(event: any) {
     setSaving(true)
     event.preventDefault()
-    const JSONdata = JSON.stringify({"character": character})
-    // Form the request for sending data to the server.
-    const options: RequestInit = {
-      // The method is POST because we are sending data.
-      method: method,
-      mode: 'cors',
-      // Tell the server we're sending JSON.
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': jwt
-      },
-      // Body of the request is the JSON data we created above.
-      body: JSONdata,
-    }
 
-    const url = generateUrl({ fight, character })
-    const response = await fetch(url, options)
+    const response = character?.id ?
+      await client.updateCharacter(character, fight) :
+      await client.createCharacter(character, fight)
+
     const data = await response.json()
+
     setCharacter(data)
     setSaving(false)
     cancelForm()
@@ -94,18 +97,6 @@ export default function CharacterModal({ open, setOpen, fight, setFight, charact
       await loadFight({jwt, id: fight.id, setFight})
     } else {
       Router.reload()
-    }
-  }
-
-  const generateUrl = ({ fight, character }: any) => {
-    if (fight?.id && character?.id) {
-      return `${apiUrl}/api/v1/fights/${fight.id}/characters/${character.id}`
-    } else if (fight?.id) {
-      return `${apiUrl}/api/v1/fights/${fight.id}/characters`
-    } else if (character?.id) {
-      return `${apiUrl}/api/v1/all_characters/${character.id}`
-    } else {
-      return `${apiUrl}/api/v1/all_characters`
     }
   }
 
@@ -131,7 +122,7 @@ export default function CharacterModal({ open, setOpen, fight, setFight, charact
         <Box p={4} component="form" onSubmit={handleSubmit}>
           <Stack spacing={2}>
             <Stack direction="row" spacing={2}>
-              <CharacterType value={character.action_values?.['Type'] || ''} onChange={handleAVChange} />
+              <CharacterType value={character.action_values?.['Type'] as string || ''} onChange={handleAVChange} />
             </Stack>
             <Stack direction="row" spacing={2}>
               <TextField autoFocus label="Name" variant="filled" size="medium" sx={{paddingBottom: 2}} fullWidth required name="name" value={character.name} onChange={handleChange} />

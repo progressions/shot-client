@@ -1,7 +1,14 @@
 import { Badge, Avatar, Box, Typography } from "@mui/material"
 import GamemasterOnly from '../GamemasterOnly'
 
-export default function AvatarBadge({ character, session }: any) {
+import type { Character } from "../../types/types"
+
+interface AvatarBadgeParams {
+  character: Character,
+  session: any
+}
+
+export default function AvatarBadge({ character, session }: AvatarBadgeParams) {
   const names = {
     "PC": "PC",
     "Ally": "Ally",
@@ -20,7 +27,7 @@ export default function AvatarBadge({ character, session }: any) {
       </Badge>
       <GamemasterOnly user={session?.data?.user} character={character}>
         <Box width={40} sx={{textAlign: 'center'}}>
-          <Typography variant="h6" sx={{color: 'text.secondary', fontVariant: 'small-caps', textTransform: 'lowercase'}}>{names?.[charType]}</Typography>
+          <Typography variant="h6" sx={{color: 'text.secondary', fontVariant: 'small-caps', textTransform: 'lowercase'}}>{charType && names?.[charType]}</Typography>
         </Box>
       </GamemasterOnly>
     </>

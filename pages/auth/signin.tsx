@@ -1,13 +1,12 @@
 import { Box, Stack, TextField, Button } from '@mui/material'
 import { useState, useEffect } from 'react'
-import Layout from '../../components/Layout'
 import { signIn, signOut } from 'next-auth/react'
 import Router from 'next/router'
 
-const apiUrl = process.env.NEXT_PUBLIC_SERVER_URL
+import Layout from '../../components/Layout'
+import Api from '../../components/Api'
 
 export async function getServerSideProps(context: any) {
-  console.log(context?.req?.headers?.['referer'])
 
   // get CSRF as soon as i figure out how
   return {
