@@ -44,7 +44,7 @@ export default function CharacterDetails({ character, fight, setFight, editingCh
   async function deleteCharacter(character: Character) {
     const response = await client.deleteCharacter(character, fight)
     if (response.status === 200) {
-      await loadFight({jwt, id: fight.id, setFight})
+      await loadFight({jwt, id: fight.id as string, setFight})
     }
   }
 

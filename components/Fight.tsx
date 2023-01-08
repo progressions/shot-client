@@ -6,7 +6,19 @@ import { authOptions } from '../pages/api/auth/[...nextauth]'
 import { unstable_getServerSession } from "next-auth/next"
 import Client from "./Client"
 
-export async function loadFight({ id, jwt, setFight }: any) {
+import type { Fight } from "../types/types"
+
+interface loadFightParams {
+  id: string,
+  jwt: string,
+  setFight: any
+}
+
+interface FightParams {
+  fight: Fight
+}
+
+export async function loadFight({ id, jwt, setFight }: loadFightParams) {
   const client = new Client({ jwt })
   const response = await client.getFight({ id })
   if (response.status === 200) {
@@ -16,12 +28,12 @@ export async function loadFight({ id, jwt, setFight }: any) {
   }
 }
 
-export default function Fight({ fight }: any) {
+export default function Fight({ fight }: FightParams) {
   const session: any = useSession({ required: true })
   const jwt = session?.data?.authorization
   const client = new Client({ jwt })
 
-  async function deleteFight(fight: any) {
+  async function deleteFight(fight: Fight) {
     const response = await client.deleteFight(fight)
     if (response.status === 200) {
       Router.reload()

@@ -94,7 +94,7 @@ export default function CharacterModal({ open, setOpen, fight, setFight, charact
     setSaving(false)
     cancelForm()
     if (fight) {
-      await loadFight({jwt, id: fight.id, setFight})
+      await loadFight({jwt, id: fight.id as string, setFight})
     } else {
       Router.reload()
     }

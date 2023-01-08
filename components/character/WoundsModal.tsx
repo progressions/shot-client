@@ -35,7 +35,7 @@ const WoundsModal = ({open, setOpen, fight, character, setFight}: WoundsModalPar
 
     const response = await client.updateCharacter({ ...character, "action_values": actionValues}, fight)
     if (response.status === 200) {
-      await loadFight({jwt, id: fight.id, setFight})
+      await loadFight({jwt, id: fight.id as string, setFight})
       setWounds('')
       setOpen(false)
     }
