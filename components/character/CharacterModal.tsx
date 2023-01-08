@@ -14,9 +14,9 @@ import type { Fight, Character, ID } from "../../types/types"
 
 interface CharacterModalParams {
   open: boolean,
-  setOpen: any,
+  setOpen: (open: boolean) => void,
   fight?: Fight,
-  setFight?: any,
+  setFight?: (fight: Fight) => void,
   character: Character | null
 }
 
@@ -77,7 +77,7 @@ export default function CharacterModal({ open, setOpen, fight, setFight, charact
 
   const cancelForm = () => {
     setCharacter(character || defaultCharacter)
-    setOpen(null)
+    setOpen(false)
   }
 
   async function handleSubmit(event: any) {

@@ -101,7 +101,7 @@ export default function Fight({ fight:initialFight }: any) {
             <Table border={0}>
               <TableBody>
                 {
-                  fight.shot_order.map(([shot, chars]: any) => <Shot key={shot} shot={shot} characters={chars} fight={fight} setFight={setFight} editingCharacter={editingCharacter} setEditingCharacter={setEditingCharacter} showHidden={showHidden} />)
+                  fight.shot_order.map(([shot, chars]: [number, Character[]]) => <Shot key={shot} shot={shot} characters={chars} fight={fight} setFight={setFight} editingCharacter={editingCharacter} setEditingCharacter={setEditingCharacter} showHidden={showHidden} />)
                 }
               </TableBody>
             </Table>

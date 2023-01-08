@@ -5,7 +5,16 @@ import SelectCharacter from './SelectCharacter'
 import DiceRoller from './DiceRoller'
 import MookRolls from './MookRolls'
 
-export default function FightToolbar({ fight, setFight, showHidden, setShowHidden }: any) {
+import type { Fight } from "../types/types"
+
+interface FightToolbarParams {
+  fight: Fight,
+  setFight: (fight: Fight) => void,
+  showHidden: boolean,
+  setShowHidden: (hidden: boolean) => void
+}
+
+export default function FightToolbar({ fight, setFight, showHidden, setShowHidden }: FightToolbarParams) {
   return (
     <>
       <Stack direction="row" spacing={2} alignItems='center'>

@@ -11,7 +11,7 @@ import type { Fight } from "../types/types"
 interface loadFightParams {
   id: string,
   jwt: string,
-  setFight: any
+  setFight: (fight: Fight) => void
 }
 
 interface FightParams {

@@ -23,9 +23,9 @@ import type { Character, Fight, ID } from "../../types/types"
 interface CharacterDetailsParams {
   character: Character,
   fight: Fight,
-  setFight: any,
+  setFight: (fight: Fight) => void,
   editingCharacter: Character,
-  setEditingCharacter: any
+  setEditingCharacter: (character: Character) => void
 }
 
 export default function CharacterDetails({ character, fight, setFight, editingCharacter, setEditingCharacter }: CharacterDetailsParams) {

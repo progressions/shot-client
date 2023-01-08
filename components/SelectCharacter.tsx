@@ -5,22 +5,29 @@ import { loadFight } from './Fight'
 import Client from "./Client"
 import Api from "./Api"
 
-export default function SelectCharacter({ fight, setFight }: any) {
+import type { Fight, Character } from "../types/types"
+
+interface SelectCharacterParams {
+  fight: Fight,
+  setFight: (fight: Fight) => void
+}
+
+export default function SelectCharacter({ fight, setFight }: SelectCharacterParams) {
   const api = new Api()
   const session: any = useSession({ required: true })
   const jwt = session?.data?.authorization
   const client = new Client({ jwt })
 
-  const [value, setValue] = useState('')
-  const [open, setOpen] = useState(false)
-  const [chars, setChars] = useState([])
+  const [value, setValue] = useState<string>('')
+  const [open, setOpen] = useState<boolean>(false)
+  const [chars, setChars] = useState<Character[]>([])
 
-  const handleOpen = async () => {
+  const handleOpen = async (): Promise<void> => {
     const response = await client.getAllCharacters()
     const chars = await response.json()
 
-    const ids = fight.characters.map((char: any) => char.id)
-    const availableChars = chars.filter((char: any) => {
+    const ids = fight.characters.map((char: Character) => char.id)
+    const availableChars = chars.filter((char: Character) => {
       return !ids.includes(char.id)
     })
 
@@ -29,16 +36,16 @@ export default function SelectCharacter({ fight, setFight }: any) {
     setOpen(true)
   }
 
-  const handleClose = () => {
+  const handleClose = ():void => {
     setOpen(false)
     setChars([])
   }
 
-  const handleChange = (event: any) => {
+  const handleChange = (event: any):void => {
     setValue(event.target.value)
   }
 
-  const handleSubmit = async (event: any) => {
+  const handleSubmit = async (event: any):Promise<void> => {
     event.preventDefault()
 
     const response = await client.addCharacter(fight, {id: value})
@@ -65,7 +72,7 @@ export default function SelectCharacter({ fight, setFight }: any) {
           <Box sx={{width: 300}} py={2}>
             <TextField label="Character" name="character" fullWidth select value={value} onChange={handleChange}>
               {
-                chars.map((char: any) => <MenuItem key={char.id} value={char.id}>{char.name}</MenuItem>)
+                chars.map((char: Character) => <MenuItem key={char.id} value={char.id}>{char.name}</MenuItem>)
               }
             </TextField>
           </Box>

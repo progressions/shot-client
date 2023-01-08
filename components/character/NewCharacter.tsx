@@ -9,10 +9,10 @@ import type { Character, Fight, ID } from "../../types/types"
 
 interface CreateCharacterParams {
   fight: Fight,
-  setFight: any
+  setFight: (fight: Fight) => void
 }
 
-export default function CreateCharacter({ fight, setFight }: any) {
+export default function CreateCharacter({ fight, setFight }: CreateCharacterParams) {
   const characterTemplate:Character = {name: '', defense: '', current_shot: 0, impairments: 0, color: '', new: false, action_values: {
     Guns: "",
     "Martial Arts": "",
@@ -30,9 +30,9 @@ export default function CreateCharacter({ fight, setFight }: any) {
     Wounds: "0",
     Type: ""
   }}
-  const [newCharacter, setNewCharacter] = useState(characterTemplate)
+  const [newCharacter, setNewCharacter] = useState<Character>(characterTemplate)
 
-  const openModal = () => {
+  const openModal = (): void => {
     setNewCharacter({...characterTemplate, new: true})
   }
 

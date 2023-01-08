@@ -8,10 +8,10 @@ import type { Character, Fight } from "../../types/types"
 
 interface WoundsModalParams {
   open: boolean,
-  setOpen: any,
+  setOpen: (open: boolean) => void,
   fight: Fight,
   character: Character,
-  setFight: any
+  setFight: (fight: Fight) => void
 }
 
 const WoundsModal = ({open, setOpen, fight, character, setFight}: WoundsModalParams) => {
