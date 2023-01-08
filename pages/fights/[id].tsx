@@ -24,7 +24,17 @@ import Client from '../../components/Client'
 
 import type { Character, Fight, ID } from "../../types/types"
 
-export async function getServerSideProps({ req, res, params }: any) {
+interface FightServerSideProps {
+  req: any,
+  res: any,
+  params: any
+}
+
+interface FightParams {
+  fight: Fight
+}
+
+export async function getServerSideProps({ req, res, params }: FightServerSideProps) {
   const session: any = await unstable_getServerSession(req as any, res as any, authOptions as any)
   const jwt = session?.authorization
   const client = new Client({ jwt: jwt })
@@ -56,7 +66,7 @@ export async function getServerSideProps({ req, res, params }: any) {
   }
 }
 
-export default function Fight({ fight:initialFight }: any) {
+export default function Fight({ fight:initialFight }: FightParams) {
   const [fight, setFight] = useState<Fight>(initialFight)
   const [editingCharacter, setEditingCharacter] = useState<Character | null>(null)
   const [showHidden, setShowHidden] = useState<boolean>(false)
