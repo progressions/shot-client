@@ -1,3 +1,9 @@
+export interface Toast {
+  open: boolean,
+  message: string,
+  severity: string
+}
+
 export interface ActionValues {
   [key: string]: string | number | null | undefined,
   Guns?: string,

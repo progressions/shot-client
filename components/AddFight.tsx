@@ -6,7 +6,7 @@ import KeyboardDoubleArrowUpIcon from '@mui/icons-material/KeyboardDoubleArrowUp
 import { useSession } from 'next-auth/react'
 import Client from "./Client"
 
-import type { Fight } from "../types/types"
+import type { Fight, Toast } from "../types/types"
 import { loadFights } from "./FightDetail"
 
 interface AddFightProps {
@@ -42,7 +42,7 @@ export default function AddFight({ setFights, setToast }: AddFightProps) {
 
   const cancelForm = (): void => {
     setFight({name: ''})
-    setToast((prevToast: any) => { return { ...prevToast, open: false }})
+    setToast((prevToast: Toast) => { return { ...prevToast, open: false }})
     setOpen(false)
   }
 

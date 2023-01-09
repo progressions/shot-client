@@ -20,7 +20,7 @@ import { GetServerSideProps } from 'next'
 import { InferGetServerSidePropsType } from 'next'
 import { NextApiRequest, NextApiResponse } from 'next'
 
-import type { Fight } from "../types/types"
+import type { Fight, Toast } from "../types/types"
 
 interface HomeProps {
   fights: Fight[]
@@ -66,12 +66,12 @@ export async function getServerSideProps<GetServerSideProps>({ req, res }: Serve
 }
 
 export default function Home({ fights:initialFights }: HomeProps) {
-  const [toast, setToast] = useState<any>({ open: false, message: "", severity: "success" })
+  const [toast, setToast] = useState<Toast>({ open: false, message: "", severity: "success" })
   const [fights, setFights] = useState<Fight[]>(initialFights)
   const { status, data }: any = useSession({ required: true })
 
   const closeToast = (): void => {
-    setToast((prevToast: any) => { return { ...prevToast, open: false }})
+    setToast((prevToast: Toast) => { return { ...prevToast, open: false }})
   }
 
   if (status !== "authenticated") {
@@ -106,7 +106,7 @@ export default function Home({ fights:initialFights }: HomeProps) {
               </Table>
             </TableContainer>
             <Snackbar open={toast.open} onClose={closeToast} autoHideDuration={6000}>
-              <Alert severity={toast.severity}>{toast.message}</Alert>
+              <Alert severity={toast.severity as any}>{toast.message}</Alert>
             </Snackbar>
           </Container>
         </Layout>
