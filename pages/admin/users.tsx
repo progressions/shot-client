@@ -14,6 +14,8 @@ import EditIcon from '@mui/icons-material/Edit'
 import CheckIcon from '@mui/icons-material/Check'
 import { NextApiRequest, NextApiResponse } from 'next'
 
+import type { User } from "../../types/types"
+
 interface ServerSideProps {
   req: NextApiRequest,
   res: NextApiResponse,
@@ -60,7 +62,7 @@ export async function getServerSideProps({ req, res }: ServerSideProps) {
 export default function UsersAdmin({ jwt, users, currentUser }: any) {
   const client = new Client({ jwt })
   const [value, setValue] = useState('1')
-  const [user, setUser] = useState(null)
+  const [user, setUser] = useState<User | null>(null)
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue)
   }
@@ -71,8 +73,6 @@ export default function UsersAdmin({ jwt, users, currentUser }: any) {
       Router.reload()
     }
   }
-
-  if (!user) return <></>
 
   return (
     <>
@@ -100,12 +100,12 @@ export default function UsersAdmin({ jwt, users, currentUser }: any) {
                 </TableHead>
                 <TableBody>
                   {
-                    users && users.map((user: any) => {
+                    users && users.map((user: User) => {
                       return (
                         <TableRow key={`Row_${user.id}`}>
                           <TableCell sx={{width: 120}}>{user.first_name}</TableCell>
                           <TableCell sx={{width: 120}}>{user.last_name}</TableCell>
-                          <TableCell>{user.email}</TableCell>
+                          <TableCell>{ user.email }</TableCell>
                           <TableCell>{ user.admin && <CheckIcon />}</TableCell>
                           <TableCell>{ user.gamemaster && <CheckIcon />}</TableCell>
                           <TableCell>

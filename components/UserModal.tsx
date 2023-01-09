@@ -14,7 +14,7 @@ import Client from "./Client"
 import type { User } from "../types/types"
 
 interface UserModalParams {
-  user: User,
+  user: User | null,
   setUser: any
 }
 
@@ -45,9 +45,9 @@ export default function UserModal({ user, setUser }: UserModalParams) {
     setSaving(true)
     event.preventDefault()
 
-    const response = user.id ?
+    const response = user?.id ?
       await client.updateUser(user)
-    : await client.createUser(user)
+    : await client.createUser(user as User)
 
     const data = await response.json()
     setSaving(false)

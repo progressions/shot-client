@@ -22,7 +22,7 @@ export async function getServerSideProps(context: any) {
 export default function SignUp() {
   const client = new Client()
 
-  const defaultUser:User = {first_name: '', last_name: '', email: '', gamemaster: false, admin: false, avatar_url: ''}
+  const defaultUser:User = {first_name: '', last_name: '', email: '', password: '', gamemaster: false, admin: false, avatar_url: ''}
   const [saving, setSaving] = useState<boolean>(false)
   const [user, setUser] = useState<User>(defaultUser)
 

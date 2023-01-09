@@ -47,6 +47,8 @@ export default function SignInPage({ referer }: SignInPageProps) {
     })
     if (result?.status === 200) {
       if (referer) {
+        Router.replace(referer)
+      } else {
         Router.replace("/")
       }
     }
@@ -68,7 +70,7 @@ export default function SignInPage({ referer }: SignInPageProps) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <Layout>
+        <Layout unauthenticated>
           <Box margin="auto" sx={{width: 300}} p={4} component="form" onSubmit={handleSubmit}>
             <Stack spacing={1}>
               { error && (<Alert severity={'error'}>You have entered an invalid email or password.</Alert>) }
