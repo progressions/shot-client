@@ -2,15 +2,17 @@ import Api from "./Api"
 import type { Character, ID, Fight, User } from "../types/types"
 
 interface ClientParams {
-  jwt: string
+  jwt?: string
 }
 
 class Client {
-  jwt: string
+  jwt?: string
   api: any
 
-  constructor({ jwt }: ClientParams) {
-    this.jwt = jwt
+  constructor(params: ClientParams = {}) {
+    if (params.jwt) {
+      this.jwt = params.jwt
+    }
     this.api = new Api()
   }
 
@@ -55,7 +57,12 @@ class Client {
   }
 
   async createUser(user: User):Promise<Response> {
-    return await this.post(this.api.adminUsers(user), {"user": user})
+    // override options to exclude JWT, no authentication exists yet for a new user
+    return await this.post(this.api.registerUser(), {"user": user}, {
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
   }
 
   async updateUser(user: User):Promise<Response> {
@@ -104,7 +111,7 @@ class Client {
         'Content-Type': 'application/json',
         'Authorization': this.jwt
       }
-    })
+    } as any)
   }
 
   async delete(url:string):Promise<Response> {
@@ -114,7 +121,7 @@ class Client {
         'Content-Type': 'application/json',
         'Authorization': this.jwt
       }
-    })
+    } as any)
   }
 }
 

@@ -1,10 +1,10 @@
+import Head from 'next/head'
 import { Alert, Snackbar, Box, Stack, TextField, Button } from '@mui/material'
 import { useState, useEffect } from 'react'
 import { signIn, signOut } from 'next-auth/react'
 import Router from 'next/router'
 
 import Layout from '../../components/Layout'
-import Api from '../../components/Api'
 
 interface SignInPageProps {
   referer: string | null
@@ -52,7 +52,6 @@ export default function SignInPage({ referer }: SignInPageProps) {
     }
     if (result?.status === 401) {
       setError(true)
-      console.log("UNAUTHORIZED")
     }
   }
 
@@ -61,15 +60,25 @@ export default function SignInPage({ referer }: SignInPageProps) {
   }
 
   return (
-    <Layout>
-      <Box margin="auto" sx={{width: 300}} p={4} component="form" onSubmit={handleSubmit}>
-        <Stack spacing={1}>
-          { error && (<Alert severity={'error'}>You have entered an invalid email or password.</Alert>) }
-          <TextField autoFocus required error={error} id="email" label="Email Address" name="email" value={credentials.email} onChange={handleChange} />
-          <TextField required id="password" error={error} label="Password" name="password" value={credentials.password} onChange={handleChange} type="password" />
-          <Button variant="contained" type="submit">Sign In</Button>
-        </Stack>
-      </Box>
-    </Layout>
+    <>
+      <Head>
+        <title>Sign In | Shot Counter</title>
+        <meta name="description" content="Feng Shui 2 Shot Counter" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+      <main>
+        <Layout>
+          <Box margin="auto" sx={{width: 300}} p={4} component="form" onSubmit={handleSubmit}>
+            <Stack spacing={1}>
+              { error && (<Alert severity={'error'}>You have entered an invalid email or password.</Alert>) }
+              <TextField autoFocus required error={error} id="email" label="Email Address" name="email" value={credentials.email} onChange={handleChange} />
+              <TextField required id="password" error={error} label="Password" name="password" value={credentials.password} onChange={handleChange} type="password" />
+              <Button variant="contained" type="submit">Sign In</Button>
+            </Stack>
+          </Box>
+        </Layout>
+      </main>
+    </>
   )
 }

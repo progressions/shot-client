@@ -14,43 +14,14 @@ import { signIn, signOut } from 'next-auth/react'
 import Avatar from '@mui/material/Avatar';
 import Tooltip from '@mui/material/Tooltip'
 import Stack from '@mui/material/Stack'
+import AuthButton from "./navbar/AuthButton"
 
 import type { User } from "../types/types"
-
-interface AuthButtonParams {
-  status: string,
-  user: User
-}
 
 export default function Navbar() {
   const { status, data } = useSession()
   const user:any = data?.user
 
-  useEffect(() => {
-    if (status === "unauthenticated") {
-      Router.replace("/auth/signin")
-    }
-  }, [status])
-
-  const AuthButton = ({ status, user }: AuthButtonParams) => {
-    if (status === "authenticated") {
-      return (
-        <>
-          <Button color="inherit" onClick={() => signOut({ redirect: false })}>Logout</Button>
-          <Tooltip title="Open profile">
-            <IconButton href='/profile'>
-              <Avatar alt={user.first_name} src={user.avatar_url} />
-            </IconButton>
-          </Tooltip>
-        </>
-      )
-    }
-    return (
-      <>
-        <Button color="inherit" onClick={() => signIn()}>Login</Button>
-      </>
-    )
-  }
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
@@ -81,9 +52,7 @@ export default function Navbar() {
               </Link>
             </Typography>
           )}
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1, textAlign: 'right' }}>
-            <AuthButton status={status} user={user || {}} />
-          </Typography>
+          <AuthButton status={status} user={user || {}} />
         </Toolbar>
       </AppBar>
     </Box>

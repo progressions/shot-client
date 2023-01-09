@@ -52,6 +52,10 @@ class Api {
     return `${this.base()}/users/sign_in`
   }
 
+  registerUser(): string {
+    return `${this.base()}/users`
+  }
+
 }
 
 export default Api

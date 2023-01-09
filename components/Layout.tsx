@@ -4,7 +4,24 @@ import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 
-export default function Layout({ children }: any) {
+import { useSession } from 'next-auth/react'
+import { useEffect } from 'react'
+import Router from 'next/router'
+
+interface LayoutProps {
+  unauthenticated?: boolean,
+  children: any
+}
+
+export default function Layout({ unauthenticated, children }: LayoutProps) {
+  const { status, data } = useSession()
+
+  useEffect(() => {
+    if (!unauthenticated && status === "unauthenticated") {
+      Router.replace("/auth/signin")
+    }
+  })
+
   return (
     <>
       <Navbar />
