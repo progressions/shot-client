@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Box, TextField, MenuItem, Dialog, DialogActions, DialogTitle, DialogContent, DialogContentText, Button } from '@mui/material'
 import { useSession } from 'next-auth/react'
-import { loadFight } from './Fight'
+import { loadFight } from './FightDetail'
 import Client from "./Client"
 import Api from "./Api"
 

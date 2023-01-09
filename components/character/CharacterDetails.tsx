@@ -15,7 +15,7 @@ import ActionButtons from './ActionButtons'
 import AvatarBadge from './AvatarBadge'
 import GamemasterOnly from '../GamemasterOnly'
 
-import { loadFight } from '../Fight'
+import { loadFight } from '../FightDetail'
 import Client from "../Client"
 
 import type { Character, Fight, ID } from "../../types/types"

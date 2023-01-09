@@ -7,7 +7,7 @@ import CharacterType from './CharacterType'
 
 import { useSession } from 'next-auth/react'
 import { BlockPicker } from 'react-color'
-import { loadFight } from '../Fight'
+import { loadFight } from '../FightDetail'
 import Client from "../Client"
 
 import type { Fight, Character, ID } from "../../types/types"
@@ -69,7 +69,7 @@ export default function CharacterModal({ open, setOpen, fight, setFight, charact
     setCharacter((prevState: Character) => ({ ...prevState, action_values: { ...action_values, [event.target.name]: event.target.value } }))
   }
 
-  const handleColor = (color: string) => {
+  const handleColor = (color: any) => {
     setCharacter((prevState: Character) => ({ ...prevState, color: color?.hex }))
     setPicker(false)
     setAnchorEl(null)
