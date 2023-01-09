@@ -32,7 +32,8 @@ interface ServerSideProps {
 }
 
 interface FightParams {
-  fight: Fight
+  fight: Fight | null,
+  notFound?: boolean
 }
 
 export async function getServerSideProps({ req, res, params }: ServerSideProps) {
@@ -47,7 +48,14 @@ export async function getServerSideProps({ req, res, params }: ServerSideProps) 
     return {
       props: {
         fight: fight,
-        signedIn: true
+      }, // will be passed to the page component as props
+    }
+  }
+  if (response.status === 404) {
+    return {
+      props: {
+        fight: null,
+        notFound: true
       }, // will be passed to the page component as props
     }
   }
@@ -67,59 +75,64 @@ export async function getServerSideProps({ req, res, params }: ServerSideProps) 
   }
 }
 
-export default function Fight({ fight:initialFight }: FightParams) {
-  const [fight, setFight] = useState<Fight>(initialFight)
+export default function Fight({ fight:initialFight, notFound }: FightParams) {
+  const [fight, setFight] = useState<Fight>(initialFight as Fight)
   const [editingCharacter, setEditingCharacter] = useState<Character | null>(null)
   const [showHidden, setShowHidden] = useState<boolean>(false)
 
   const router = useRouter()
   const { id } = router.query
-  if (!fight) {
+  if (!fight && !notFound) {
     return <>Loading...</>
   }
   return (
     <>
       <Head>
-        <title>{fight.name}</title>
+        <title>{fight ? fight.name : "Fight not found"}</title>
         <meta name="description" content="Feng Shui 2 Shot Counter" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Layout>
         <Container>
-          <Typography variant="h1" gutterBottom>{fight.name}</Typography>
-          <FightToolbar fight={fight} setFight={setFight} showHidden={showHidden} setShowHidden={setShowHidden} />
-          <TableContainer>
-            <Table border={0}>
-              <TableHead>
-                <TableRow>
-                  <TableCell sx={{width: 50}}>
-                  </TableCell>
-                  <TableCell sx={{width: 240}}>
-                    <Typography variant="h4">Name</Typography>
-                  </TableCell>
-                  <TableCell sx={{width: 30}}>
-                    <Typography variant="h4" color='error'><FavoriteIcon sx={{width: 30, height: 30}} /></Typography>
-                  </TableCell>
-                  <TableCell sx={{width: 350}}>
-                    <Typography variant="h4">Action Values</Typography>
-                  </TableCell>
-                  <TableCell sx={{width: 100}}>
-                  </TableCell>
-                </TableRow>
-              </TableHead>
-            </Table>
-          </TableContainer>
-          <TableContainer>
-            <Table border={0}>
-              <TableBody>
-                {
-                  fight.shot_order.map(([shot, chars]: [number, Character[]]) => <Shot key={shot} shot={shot} characters={chars} fight={fight} setFight={setFight} editingCharacter={editingCharacter} setEditingCharacter={setEditingCharacter} showHidden={showHidden} />)
-                }
-              </TableBody>
-            </Table>
-          </TableContainer>
-          <CharacterModal open={!!editingCharacter} setOpen={setEditingCharacter} fight={fight} character={editingCharacter} setFight={setFight} />
+          { !fight && <>
+              <Typography sx={{mt: 5}} variant="h3">Fight not found.</Typography>
+            </> }
+          { fight && (<>
+            <Typography variant="h1" gutterBottom>{fight.name}</Typography>
+            <FightToolbar fight={fight} setFight={setFight} showHidden={showHidden} setShowHidden={setShowHidden} />
+            <TableContainer>
+              <Table border={0}>
+                <TableHead>
+                  <TableRow>
+                    <TableCell sx={{width: 50}}>
+                    </TableCell>
+                    <TableCell sx={{width: 240}}>
+                      <Typography variant="h4">Name</Typography>
+                    </TableCell>
+                    <TableCell sx={{width: 30}}>
+                      <Typography variant="h4" color='error'><FavoriteIcon sx={{width: 30, height: 30}} /></Typography>
+                    </TableCell>
+                    <TableCell sx={{width: 350}}>
+                      <Typography variant="h4">Action Values</Typography>
+                    </TableCell>
+                    <TableCell sx={{width: 100}}>
+                    </TableCell>
+                  </TableRow>
+                </TableHead>
+              </Table>
+            </TableContainer>
+            <TableContainer>
+              <Table border={0}>
+                <TableBody>
+                  {
+                    fight.shot_order.map(([shot, chars]: [number, Character[]]) => <Shot key={shot} shot={shot} characters={chars} fight={fight} setFight={setFight} editingCharacter={editingCharacter} setEditingCharacter={setEditingCharacter} showHidden={showHidden} />)
+                  }
+                </TableBody>
+              </Table>
+            </TableContainer>
+            <CharacterModal open={!!editingCharacter} setOpen={setEditingCharacter} fight={fight} character={editingCharacter} setFight={setFight} />
+          </>)}
         </Container>
       </Layout>
     </>
