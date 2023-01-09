@@ -94,7 +94,7 @@ export default function Characters({ characters:initialCharacters, jwt }: Charac
     return <div>Loading...</div>
   }
 
-  const filterCharactersByType = (character) => {
+  const filterCharactersByType = (character: Character): boolean => {
     if (filters.type) {
       return character?.action_values?.["Type"] === filters.type
     } else {
@@ -102,7 +102,7 @@ export default function Characters({ characters:initialCharacters, jwt }: Charac
     }
   }
 
-  const filterCharactersByName = (character) => {
+  const filterCharactersByName = (character: Character): boolean => {
     if (filters.name) {
       return new RegExp(filters.name, "gi").test(character.name)
     } else {
