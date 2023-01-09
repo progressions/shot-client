@@ -90,10 +90,6 @@ export default function Characters({ characters:initialCharacters, jwt }: Charac
     }
   }
 
-  if (status !== "authenticated") {
-    return <div>Loading...</div>
-  }
-
   const filterCharactersByType = (character: Character): boolean => {
     if (filters.type) {
       return character?.action_values?.["Type"] === filters.type
@@ -114,6 +110,10 @@ export default function Characters({ characters:initialCharacters, jwt }: Charac
     return characters
       .filter(filterCharactersByType)
       .filter(filterCharactersByName)
+  }
+
+  if (status !== "authenticated") {
+    return <div>Loading...</div>
   }
 
   return (
