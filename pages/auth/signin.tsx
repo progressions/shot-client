@@ -64,7 +64,7 @@ export default function SignInPage({ referer }: SignInPageProps) {
     <Layout>
       <Box margin="auto" sx={{width: 300}} p={4} component="form" onSubmit={handleSubmit}>
         <Stack spacing={1}>
-          { error && <Alert severity="error">You have entered an invalid email or password."</Alert> }
+          { error && (<Alert severity={'error'}>You have entered an invalid email or password.</Alert>) }
           <TextField autoFocus required error={error} id="email" label="Email Address" name="email" value={credentials.email} onChange={handleChange} />
           <TextField required id="password" error={error} label="Password" name="password" value={credentials.password} onChange={handleChange} type="password" />
           <Button variant="contained" type="submit">Sign In</Button>
