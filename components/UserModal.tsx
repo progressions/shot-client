@@ -19,6 +19,8 @@ interface UserModalParams {
 }
 
 export default function UserModal({ user, setUser }: UserModalParams) {
+  const defaultUser:User = {first_name: '', last_name: '', email: '', password: '', gamemaster: false, admin: false, avatar_url: ''}
+
   const session: any = useSession({ required: true })
   const jwt = session?.data?.authorization
   const client = new Client({ jwt: jwt })
@@ -38,7 +40,7 @@ export default function UserModal({ user, setUser }: UserModalParams) {
   }
 
   const cancelForm = () => {
-    setUser({})
+    setUser(defaultUser)
   }
 
   async function handleSubmit(event: any) {
@@ -59,7 +61,7 @@ export default function UserModal({ user, setUser }: UserModalParams) {
     return (
       <>
         <Dialog
-          open={!!user}
+          open={!!user?.id}
           onClose={handleClose}
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description"
@@ -75,8 +77,8 @@ export default function UserModal({ user, setUser }: UserModalParams) {
                 <TextField fullWidth label="Email" name="email" value={user.email || ''} onChange={handleChange} />
               </Stack>
               <Stack spacing={2} direction="row">
-                <FormControlLabel control={<Checkbox name="admin" checked={user.admin} onChange={handleCheck} />} label="Admin" />
-                <FormControlLabel control={<Checkbox name="gamemaster" checked={user.gamemaster} onChange={handleCheck} />} label="GM" />
+                <FormControlLabel control={<Checkbox name="admin" checked={!!user.admin} onChange={handleCheck} />} label="Admin" />
+                <FormControlLabel control={<Checkbox name="gamemaster" checked={!!user.gamemaster} onChange={handleCheck} />} label="GM" />
               </Stack>
               <Stack alignItems="flex-end" spacing={2} direction="row">
                 <Button variant="outlined" disabled={saving} onClick={cancelForm}>Cancel</Button>
