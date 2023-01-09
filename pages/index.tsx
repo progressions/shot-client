@@ -7,6 +7,7 @@ import FightDetail from '../components/FightDetail'
 import Layout from '../components/Layout'
 import Api from '../components/Api'
 import Client from '../components/Client'
+import PopupToast from '../components/PopupToast'
 import Router from 'next/router'
 import { useSession } from 'next-auth/react'
 import { getToken } from 'next-auth/jwt'
@@ -105,9 +106,7 @@ export default function Home({ fights:initialFights }: HomeProps) {
                 </TableBody>
               </Table>
             </TableContainer>
-            <Snackbar open={toast.open} onClose={closeToast} autoHideDuration={6000}>
-              <Alert severity={toast.severity as any}>{toast.message}</Alert>
-            </Snackbar>
+            <PopupToast toast={toast} closeToast={closeToast} />
           </Container>
         </Layout>
       </main>

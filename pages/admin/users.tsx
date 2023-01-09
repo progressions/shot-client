@@ -3,6 +3,7 @@ import { IconButton, Typography, Container, Table, TableContainer, TableBody, Ta
 import { useState } from 'react'
 import Layout from '../../components/Layout'
 import Client from "../../components/Client"
+import PopupToast from "../../components/PopupToast"
 import UserModal from '../../components/UserModal'
 import Router from 'next/router'
 
@@ -14,12 +15,27 @@ import EditIcon from '@mui/icons-material/Edit'
 import CheckIcon from '@mui/icons-material/Check'
 import { NextApiRequest, NextApiResponse } from 'next'
 
-import type { User } from "../../types/types"
+import type { User, Toast } from "../../types/types"
 
 interface ServerSideProps {
   req: NextApiRequest,
   res: NextApiResponse,
   params?: any
+}
+
+interface loadUsersParams {
+  jwt: string,
+  setUsers: (users: User[]) => void
+}
+
+export async function loadUsers({ jwt, setUsers }: loadUsersParams) {
+  const client = new Client({ jwt })
+  const response = await client.getUsers()
+  if (response.status === 200) {
+    const data = await response.json()
+    setUsers([])
+    setUsers(data)
+  }
 }
 
 export async function getServerSideProps({ req, res }: ServerSideProps) {
@@ -59,18 +75,34 @@ export async function getServerSideProps({ req, res }: ServerSideProps) {
   }
 }
 
-export default function UsersAdmin({ jwt, users, currentUser }: any) {
+export default function UsersAdmin({ jwt, users:initialUsers, currentUser }: any) {
   const client = new Client({ jwt })
+  const [users, setUsers] = useState<User[]>(initialUsers)
   const [value, setValue] = useState('1')
   const [user, setUser] = useState<User | null>(null)
+  const [toast, setToast] = useState<Toast>({ open: false, message: "", severity: "success" })
+
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue)
   }
 
+  const closeToast = (): void => {
+    setToast((prevToast: Toast) => { return { ...prevToast, open: false }})
+  }
+
   async function deleteUser(user: any) {
+    if (user.email === currentUser.email) {
+      setToast({ open: true, message: "You can't delete yourself!", severity: "error" })
+      return
+    }
+    if (users.length === 1) {
+      setToast({ open: true, message: "You can't delete the last user!", severity: "error" })
+      return
+    }
     const response = await client.deleteUser(user)
     if (response.status === 200) {
-      Router.reload()
+      setToast({ open: true, message: `User ${user.email} deleted.`, severity: "error" })
+      loadUsers({ jwt, setUsers })
     }
   }
 
@@ -124,6 +156,7 @@ export default function UsersAdmin({ jwt, users, currentUser }: any) {
                 <UserModal setUser={setUser} user={user} />
               </Table>
             </TableContainer>
+            <PopupToast toast={toast} closeToast={closeToast} />
           </Container>
         </Layout>
       </main>
