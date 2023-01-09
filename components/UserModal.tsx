@@ -11,6 +11,7 @@ import { useSession } from 'next-auth/react'
 
 import Client from "./Client"
 
+import { DefaultSession } from "next-auth"
 import type { User } from "../types/types"
 
 interface UserModalParams {

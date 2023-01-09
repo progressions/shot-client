@@ -16,13 +16,22 @@ import { signIn, signOut } from 'next-auth/react'
 import { authOptions } from './api/auth/[...nextauth]'
 import { unstable_getServerSession } from "next-auth/next"
 
+import { GetServerSideProps } from 'next'
+import { InferGetServerSidePropsType } from 'next'
+import { NextApiRequest, NextApiResponse } from 'next'
+
 import type { Fight } from "../types/types"
 
 interface HomeProps {
   fights: Fight[]
 }
 
-export async function getServerSideProps({ req, res }: any) {
+interface ServerSideProps {
+  req: NextApiRequest,
+  res: NextApiResponse
+}
+
+export async function getServerSideProps<GetServerSideProps>({ req, res }: ServerSideProps) {
   const api = new Api()
   const session: any = await unstable_getServerSession(req as any, res as any, authOptions as any)
   const jwt = session?.authorization
@@ -56,7 +65,7 @@ export async function getServerSideProps({ req, res }: any) {
 }
 
 export default function Home({ fights }: HomeProps) {
-  const { status, data } = useSession({ required: true })
+  const { status, data }: any = useSession({ required: true })
   if (status !== "authenticated") {
     return <div>Loading...</div>
   }
