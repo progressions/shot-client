@@ -94,22 +94,26 @@ export default function Characters({ characters:initialCharacters, jwt }: Charac
     return <div>Loading...</div>
   }
 
+  const filterCharactersByType = (character) => {
+    if (filters.type) {
+      return character?.action_values?.["Type"] === filters.type
+    } else {
+      return true
+    }
+  }
+
+  const filterCharactersByName = (character) => {
+    if (filters.name) {
+      return new RegExp(filters.name, "gi").test(character.name)
+    } else {
+      return true
+    }
+  }
+
   const filteredCharacters = (characters: Character[]): Character[] => {
-    return characters.filter((character) => {
-      if (filters.type) {
-        return character?.action_values?.["Type"] === filters.type
-      } else {
-        return true
-      }
-    }).filter((character) => {
-      if (filters.name) {
-        console.log(filters.name)
-        console.log(character?.name)
-        return new RegExp(filters.name, "gi").test(character.name)
-      } else {
-        return true
-      }
-    })
+    return characters
+      .filter(filterCharactersByType)
+      .filter(filterCharactersByName)
   }
 
   return (
