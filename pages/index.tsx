@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import Image from 'next/image'
 import { Inter } from '@next/font/google'
-import { Link, Button, Paper, Container, Table, TableContainer, TableBody, TableHead, TableRow, TableCell, Typography } from '@mui/material'
+import { Snackbar, Alert, Link, Button, Paper, Container, Table, TableContainer, TableBody, TableHead, TableRow, TableCell, Typography } from '@mui/material'
 import AddFight from '../components/AddFight'
 import FightDetail from '../components/FightDetail'
 import Layout from '../components/Layout'
@@ -10,7 +10,7 @@ import Client from '../components/Client'
 import Router from 'next/router'
 import { useSession } from 'next-auth/react'
 import { getToken } from 'next-auth/jwt'
-import { useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { signIn, signOut } from 'next-auth/react'
 
 import { authOptions } from './api/auth/[...nextauth]'
@@ -65,8 +65,15 @@ export async function getServerSideProps<GetServerSideProps>({ req, res }: Serve
   }
 }
 
-export default function Home({ fights }: HomeProps) {
+export default function Home({ fights:initialFights }: HomeProps) {
+  const [toast, setToast] = useState<any>({ open: false, message: "", severity: "success" })
+  const [fights, setFights] = useState<Fight[]>(initialFights)
   const { status, data }: any = useSession({ required: true })
+
+  const closeToast = (): void => {
+    setToast((prevToast) => { return { ...prevToast, open: false }})
+  }
+
   if (status !== "authenticated") {
     return <div>Loading...</div>
   }
@@ -82,7 +89,7 @@ export default function Home({ fights }: HomeProps) {
         <Layout>
           <Container maxWidth="md">
             <Typography variant="h1" gutterBottom>Fights</Typography>
-            <AddFight />
+            <AddFight setFights={setFights} setToast={setToast} />
             <TableContainer>
               <Table size="small">
                 <TableHead>
@@ -94,10 +101,13 @@ export default function Home({ fights }: HomeProps) {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {fights.map((fight: Fight) => <FightDetail fight={fight} key={fight.id} />)}
+                  {fights.map((fight: Fight) => <FightDetail fight={fight} key={fight.id} setFights={setFights} setToast={setToast} />)}
                 </TableBody>
               </Table>
             </TableContainer>
+            <Snackbar open={toast.open} severity="success" onClose={closeToast} autoHideDuration={6000}>
+              <Alert severity={toast.severity}>{toast.message}</Alert>
+            </Snackbar>
           </Container>
         </Layout>
       </main>

@@ -15,7 +15,9 @@ interface loadFightParams {
 }
 
 interface FightParams {
-  fight: Fight
+  fight: Fight,
+  setFights: (fights: Fight[]) => void,
+  setToast: any
 }
 
 export async function loadFight({ id, jwt, setFight }: loadFightParams) {
@@ -28,7 +30,23 @@ export async function loadFight({ id, jwt, setFight }: loadFightParams) {
   }
 }
 
-export default function FightDetail({ fight }: FightParams) {
+interface loadFightsParams {
+  jwt: string,
+  setFights: (fights: Fight[]) => void
+}
+
+export async function loadFights({jwt, setFights}) {
+  const client = new Client({ jwt })
+  const response = await client.getFights()
+  if (response.status === 200) {
+    const data = await response.json()
+    setFights([])
+    console.log(data)
+    setFights(data)
+  }
+}
+
+export default function FightDetail({ fight, setFights, setToast }: FightParams) {
   const session: any = useSession({ required: true })
   const jwt = session?.data?.authorization
   const client = new Client({ jwt })
@@ -36,7 +54,8 @@ export default function FightDetail({ fight }: FightParams) {
   async function deleteFight(fight: Fight) {
     const response = await client.deleteFight(fight)
     if (response.status === 200) {
-      Router.reload()
+      setToast({ open: true, message: `Fight ${fight.name} deleted`, severity: "error" })
+      loadFights({ jwt, setFights })
     }
   }
 
