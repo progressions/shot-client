@@ -90,7 +90,7 @@ export default function Characters({ characters:initialCharacters, jwt }: Charac
     }
   }
 
-  const filterCharactersByType = (character: Character): boolean => {
+  const characterMatchesType = (character: Character): boolean => {
     if (filters.type) {
       return character?.action_values?.["Type"] === filters.type
     } else {
@@ -98,7 +98,7 @@ export default function Characters({ characters:initialCharacters, jwt }: Charac
     }
   }
 
-  const filterCharactersByName = (character: Character): boolean => {
+  const characterMatchesName = (character: Character): boolean => {
     if (filters.name) {
       return new RegExp(filters.name, "gi").test(character.name)
     } else {
@@ -108,8 +108,8 @@ export default function Characters({ characters:initialCharacters, jwt }: Charac
 
   const filteredCharacters = (characters: Character[]): Character[] => {
     return characters
-      .filter(filterCharactersByType)
-      .filter(filterCharactersByName)
+      .filter(characterMatchesType)
+      .filter(characterMatchesName)
   }
 
   if (status !== "authenticated") {
