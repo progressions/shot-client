@@ -14,7 +14,7 @@ interface AddFightProps {
   setToast: any
 }
 
-export default function AddFight({ setFights, setToast }) {
+export default function AddFight({ setFights, setToast }: AddFightProps) {
   const session: any = useSession({ required: true })
   const jwt = session?.data?.authorization
   const client = new Client({ jwt })
@@ -42,7 +42,7 @@ export default function AddFight({ setFights, setToast }) {
 
   const cancelForm = (): void => {
     setFight({name: ''})
-    setToast((prevToast) => { return { ...prevToast, open: false }})
+    setToast((prevToast: any) => { return { ...prevToast, open: false }})
     setOpen(false)
   }
 

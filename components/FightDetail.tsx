@@ -35,7 +35,7 @@ interface loadFightsParams {
   setFights: (fights: Fight[]) => void
 }
 
-export async function loadFights({jwt, setFights}) {
+export async function loadFights({jwt, setFights}: loadFightsParams) {
   const client = new Client({ jwt })
   const response = await client.getFights()
   if (response.status === 200) {

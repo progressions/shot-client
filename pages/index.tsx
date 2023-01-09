@@ -71,7 +71,7 @@ export default function Home({ fights:initialFights }: HomeProps) {
   const { status, data }: any = useSession({ required: true })
 
   const closeToast = (): void => {
-    setToast((prevToast) => { return { ...prevToast, open: false }})
+    setToast((prevToast: any) => { return { ...prevToast, open: false }})
   }
 
   if (status !== "authenticated") {
@@ -105,7 +105,7 @@ export default function Home({ fights:initialFights }: HomeProps) {
                 </TableBody>
               </Table>
             </TableContainer>
-            <Snackbar open={toast.open} severity="success" onClose={closeToast} autoHideDuration={6000}>
+            <Snackbar open={toast.open} onClose={closeToast} autoHideDuration={6000}>
               <Alert severity={toast.severity}>{toast.message}</Alert>
             </Snackbar>
           </Container>
