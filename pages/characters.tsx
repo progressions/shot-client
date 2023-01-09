@@ -19,6 +19,7 @@ import AvatarBadge from "../components/character/AvatarBadge"
 import CreateCharacter from "../components/character/CreateCharacter"
 import CharacterFilters from "../components/CharacterFilters"
 
+import { NextApiRequest, NextApiResponse } from 'next'
 import type { CharacterFilter } from "../components/CharacterFilters"
 import type { Character } from "../types/types"
 
@@ -27,12 +28,13 @@ interface CharactersProps {
   jwt: string
 }
 
-interface CharactersServerSideProps {
-  req: any,
-  res: any
+interface ServerSideProps {
+  req: NextApiRequest,
+  res: NextApiResponse,
+  params?: any
 }
 
-export async function getServerSideProps({ req, res }: CharactersServerSideProps) {
+export async function getServerSideProps({ req, res }: ServerSideProps) {
   const session: any = await unstable_getServerSession(req as any, res as any, authOptions as any)
   const jwt = session?.authorization
   const client = new Client({ jwt })

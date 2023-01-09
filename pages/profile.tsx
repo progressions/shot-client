@@ -8,20 +8,21 @@ import { unstable_getServerSession } from "next-auth/next"
 import { useState } from 'react'
 import Router from "next/router"
 
+import { NextApiRequest, NextApiResponse } from 'next'
 import type { User } from "../types/types"
-
-interface ProfileServerSideProps {
-  req: any,
-  res: any,
-  params: any
-}
 
 interface ProfileProps {
   jwt: string,
   user: User
 }
 
-export async function getServerSideProps({ req, res, params }: ProfileServerSideProps) {
+interface ServerSideProps {
+  req: NextApiRequest,
+  res: NextApiResponse,
+  params?: any
+}
+
+export async function getServerSideProps({ req, res, params }: ServerSideProps) {
   const session: any = await unstable_getServerSession(req as any, res as any, authOptions as any)
   const jwt = session?.authorization
   const client = new Client({ jwt })

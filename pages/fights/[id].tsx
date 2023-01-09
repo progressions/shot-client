@@ -23,18 +23,19 @@ import Api from '../../components/Api'
 import Client from '../../components/Client'
 
 import type { Character, Fight, ID } from "../../types/types"
+import { NextApiRequest, NextApiResponse } from 'next'
 
-interface FightServerSideProps {
-  req: any,
-  res: any,
-  params: any
+interface ServerSideProps {
+  req: NextApiRequest,
+  res: NextApiResponse,
+  params?: any
 }
 
 interface FightParams {
   fight: Fight
 }
 
-export async function getServerSideProps({ req, res, params }: FightServerSideProps) {
+export async function getServerSideProps({ req, res, params }: ServerSideProps) {
   const session: any = await unstable_getServerSession(req as any, res as any, authOptions as any)
   const jwt = session?.authorization
   const client = new Client({ jwt: jwt })

@@ -28,7 +28,8 @@ interface HomeProps {
 
 interface ServerSideProps {
   req: NextApiRequest,
-  res: NextApiResponse
+  res: NextApiResponse,
+  params?: any
 }
 
 export async function getServerSideProps<GetServerSideProps>({ req, res }: ServerSideProps) {

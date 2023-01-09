@@ -12,8 +12,15 @@ import { unstable_getServerSession } from "next-auth/next"
 import DeleteIcon from '@mui/icons-material/Delete'
 import EditIcon from '@mui/icons-material/Edit'
 import CheckIcon from '@mui/icons-material/Check'
+import { NextApiRequest, NextApiResponse } from 'next'
 
-export async function getServerSideProps({ req, res, params }: any) {
+interface ServerSideProps {
+  req: NextApiRequest,
+  res: NextApiResponse,
+  params?: any
+}
+
+export async function getServerSideProps({ req, res }: ServerSideProps) {
   const session: any = await unstable_getServerSession(req as any, res as any, authOptions as any)
   const jwt = session?.authorization
   const client = new Client({ jwt })
