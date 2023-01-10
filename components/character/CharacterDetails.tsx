@@ -99,6 +99,7 @@ export default function CharacterDetails({ character, fight, setFight, editingCh
                     takeAction={takeAction}
                     editCharacter={editCharacter}
                     deleteCharacter={deleteCharacter}
+                    setToast={setToast}
                   />
                 </GamemasterOnly>
               </TableCell>
@@ -106,8 +107,8 @@ export default function CharacterDetails({ character, fight, setFight, editingCh
           </TableBody>
         </Table>
       </TableContainer>
-      <ActionModal open={openAction} setOpen={setOpenAction} fight={fight} character={character} setFight={setFight} />
-      <WoundsModal open={openWounds} setOpen={setOpenWounds} fight={fight} character={character} setFight={setFight} />
+      <ActionModal open={openAction} setOpen={setOpenAction} fight={fight} character={character} setFight={setFight} setToast={setToast} />
+      <WoundsModal open={openWounds} setOpen={setOpenWounds} fight={fight} character={character} setFight={setFight} setToast={setToast} />
     </>
   )
 }

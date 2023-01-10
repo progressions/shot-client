@@ -15,6 +15,7 @@ interface ActionButtonsParams {
   takeAction?: (character: Character) => void,
   editCharacter: (character: Character) => void,
   deleteCharacter: (character: Character) => void,
+  setToast: React.Dispatch<React.SetStateAction<Toast>>
 }
 
 export default function ActionButtons({ character, takeWounds, takeAction, editCharacter, deleteCharacter }: ActionButtonsParams) {

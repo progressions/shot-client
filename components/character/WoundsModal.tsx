@@ -12,9 +12,10 @@ interface WoundsModalParams {
   fight: Fight,
   character: Character,
   setFight: React.Dispatch<React.SetStateAction<Fight>>
+  setToast: React.Dispatch<React.SetStateAction<Toast>>
 }
 
-const WoundsModal = ({open, setOpen, fight, character, setFight}: WoundsModalParams) => {
+const WoundsModal = ({open, setOpen, fight, character, setFight, setToast}: WoundsModalParams) => {
   const [wounds, setWounds] = useState<string>('')
   const [saving, setSaving] = useState<boolean>(false)
 
@@ -38,6 +39,11 @@ const WoundsModal = ({open, setOpen, fight, character, setFight}: WoundsModalPar
       await loadFight({jwt, id: fight.id as string, setFight})
       setWounds('')
       setOpen(false)
+      if (character.action_values["Type"] === "Mook") {
+        setToast({ open: true, message: `${character.name} lost ${wounds} mooks.`, severity: "success" })
+      } else {
+        setToast({ open: true, message: `Character ${character.name} took ${wounds} wounds.`, severity: "success" })
+      }
     }
   }
   const cancelForm = () => {
@@ -54,15 +60,15 @@ const WoundsModal = ({open, setOpen, fight, character, setFight}: WoundsModalPar
       aria-describedby="modal-modal-description"
       disableRestoreFocus
     >
-      <Stack p={4} spacing={2} onSubmit={submitWounds}>
-        <Box component="form">
+      <Box component="form" onSubmit={submitWounds}>
+        <Stack p={4} spacing={2}>
           <TextField autoFocus label={label} required name="wounds" value={wounds} onChange={handleChange} />
           <Stack alignItems="flex-end" spacing={2} direction="row">
             <Button variant="outlined" disabled={saving} onClick={cancelForm}>Cancel</Button>
             <Button variant="contained" type="submit" disabled={saving}>Save Changes</Button>
           </Stack>
-        </Box>
-      </Stack>
+        </Stack>
+      </Box>
     </Dialog>
   )
 }

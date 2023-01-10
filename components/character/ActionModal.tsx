@@ -12,10 +12,11 @@ interface ActionModalParams {
   fight: Fight,
   character: Character,
   setFight: React.Dispatch<React.SetStateAction<Fight>>
+  setToast: React.Dispatch<React.SetStateAction<Toast>>
 }
 
-const ActionModal = ({open, setOpen, fight, character, setFight}: ActionModalParams) => {
-  const [shots, setShots] = useState<number>(3)
+const ActionModal = ({open, setOpen, fight, character, setFight, setToast}: ActionModalParams) => {
+  const [shots, setShots] = useState<number | string>(3)
   const [saving, setSaving] = useState<boolean>(false)
 
   const session: any = useSession({ required: true })
@@ -27,12 +28,14 @@ const ActionModal = ({open, setOpen, fight, character, setFight}: ActionModalPar
   }
   const submitAction = async (event: React.ChangeEvent<HTMLInputElement>): Promise<void> => {
     event.preventDefault()
+    if (shots > 0) {
+      const response = await client.actCharacter(character, fight)
 
-    const response = await client.actCharacter(character, fight)
-
-    if (response.status === 200) {
-      setOpen(false)
-      await loadFight({jwt, id: fight.id as string, setFight})
+      if (response.status === 200) {
+        setOpen(false)
+        setToast({ open: true, message: `Character ${character.name} spent ${shots} shots.`, severity: "success" })
+        await loadFight({jwt, id: fight.id as string, setFight})
+      }
     }
   }
   const cancelForm = () => {
@@ -50,7 +53,7 @@ const ActionModal = ({open, setOpen, fight, character, setFight}: ActionModalPar
     >
       <Box component="form" onSubmit={submitAction}>
         <Stack p={4} spacing={2}>
-          <TextField autoFocus label="Shots" required name="shots" value={shots} onChange={handleChange} />
+          <TextField autoFocus label="Shots" required name="shots" value={shots || ''} onChange={handleChange} />
           <Stack alignItems="flex-end" spacing={2} direction="row">
             <Button variant="outlined" disabled={saving} onClick={cancelForm}>Cancel</Button>
             <Button variant="contained" type="submit" disabled={saving}>Save Changes</Button>

@@ -133,7 +133,7 @@ export default function Fight({ fight:initialFight, notFound }: FightParams) {
               </Table>
             </TableContainer>
             <PopupToast toast={toast} closeToast={closeToast} />
-            <CharacterModal open={editingCharacter} setOpen={setEditingCharacter} fight={fight} character={editingCharacter} setFight={setFight} />
+            <CharacterModal open={editingCharacter} setOpen={setEditingCharacter} fight={fight} character={editingCharacter} setFight={setFight} setToast={setToast} />
           </>)}
         </Container>
       </Layout>

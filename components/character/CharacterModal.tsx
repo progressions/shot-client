@@ -19,9 +19,10 @@ interface CharacterModalParams {
   fight?: Fight,
   setFight?: React.Dispatch<React.SetStateAction<Fight>>
   character: Character | null
+  setToast: React.Dispatch<React.SetStateAction<Toast>>
 }
 
-export default function CharacterModal({ open, setOpen, fight, setFight, character:activeCharacter }: CharacterModalParams) {
+export default function CharacterModal({ open, setOpen, fight, setFight, character:activeCharacter, setToast }: CharacterModalParams) {
   const [picker, setPicker] = useState<boolean>(false)
   const [anchorEl, setAnchorEl] = useState(null)
 
@@ -68,7 +69,9 @@ export default function CharacterModal({ open, setOpen, fight, setFight, charact
     setSaving(true)
     event.preventDefault()
 
-    const response = character?.id ?
+    const newCharacter = !!character.id
+
+    const response = newCharacter ?
       await client.updateCharacter(character, fight) :
       await client.createCharacter(character, fight)
 
@@ -79,6 +82,7 @@ export default function CharacterModal({ open, setOpen, fight, setFight, charact
     cancelForm()
     if (fight && setFight) {
       await loadFight({jwt, id: fight.id as string, setFight})
+      setToast({ open: true, message: `Character ${character.name} updated.`, severity: "success" })
     } else {
       Router.reload()
     }
