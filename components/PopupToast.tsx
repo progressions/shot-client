@@ -9,7 +9,7 @@ interface ToastParams {
 export default function PopupToast({ toast, closeToast }: ToastParams) {
   return (
     <Snackbar open={toast.open} onClose={closeToast} autoHideDuration={6000}>
-      <Alert severity={toast.severity as any}>{toast.message}</Alert>
+      <Alert severity={toast.severity}>{toast.message}</Alert>
     </Snackbar>
   )
 }

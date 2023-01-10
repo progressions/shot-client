@@ -1,9 +1,10 @@
 import { NextApiRequest, NextApiResponse } from 'next'
+import { AlertColor } from "@mui/material"
 
 export interface Toast {
   open: boolean
   message: string
-  severity: string
+  severity: AlertColor | undefined
 }
 
 export interface ActionValues {
