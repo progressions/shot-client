@@ -13,10 +13,10 @@ import Client from "../Client"
 import type { Fight, Character, ID } from "../../types/types"
 
 interface CharacterModalParams {
-  open: boolean,
-  setOpen: any,
+  open: Character,
+  setOpen: React.Dispatch<React.SetStateAction<Character>>
   fight?: Fight,
-  setFight?: (fight: Fight) => void,
+  setFight?: React.Dispatch<React.SetStateAction<Fight>>
   character: Character | null
 }
 
@@ -38,7 +38,7 @@ export default function CharacterModal({ open, setOpen, fight, setFight, charact
     Wounds: "0",
     Type: ""
   }}
-  const [picker, setPicker] = useState(false)
+  const [picker, setPicker] = useState<boolean>(false)
   const [anchorEl, setAnchorEl] = useState(null)
 
   const session: any = useSession({ required: true })
@@ -77,7 +77,7 @@ export default function CharacterModal({ open, setOpen, fight, setFight, charact
 
   const cancelForm = () => {
     setCharacter(character || defaultCharacter)
-    setOpen(false)
+    setOpen(defaultCharacter)
   }
 
   async function handleSubmit(event: React.ChangeEvent<HTMLInputElement>) {
@@ -113,7 +113,7 @@ export default function CharacterModal({ open, setOpen, fight, setFight, charact
   return (
     <>
       <Dialog
-        open={open}
+        open={!!(open.id)}
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"

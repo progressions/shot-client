@@ -9,7 +9,7 @@ import type { Character, Fight, ID } from "../../types/types"
 
 interface CreateCharacterParams {
   fight?: Fight,
-  setFight?: (fight: Fight) => void
+  setFight?: React.Dispatch<React.SetStateAction<Fight>>
 }
 
 export default function CreateCharacter({ fight, setFight }: CreateCharacterParams) {
@@ -43,7 +43,7 @@ export default function CreateCharacter({ fight, setFight }: CreateCharacterPara
           New Character
         </Button>
       </Stack>
-      <CharacterModal open={!!newCharacter?.new} setOpen={setNewCharacter} fight={fight} character={newCharacter} setFight={setFight} />
+      <CharacterModal open={newCharacter} setOpen={setNewCharacter} fight={fight} character={newCharacter} setFight={setFight} />
     </>
   )
 }

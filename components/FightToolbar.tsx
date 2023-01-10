@@ -9,7 +9,7 @@ import type { Fight } from "../types/types"
 
 interface FightToolbarParams {
   fight: Fight,
-  setFight: (fight: Fight) => void,
+  setFight: React.Dispatch<React.SetStateAction<Fight>>
   showHidden: boolean,
   setShowHidden: (hidden: boolean) => void
 }

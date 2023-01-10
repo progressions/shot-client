@@ -68,10 +68,27 @@ export async function getServerSideProps({ req, res }: ServerSideProps) {
 }
 
 export default function Characters({ characters:initialCharacters, jwt }: CharactersProps) {
+  const characterTemplate:Character = {name: '', defense: '', current_shot: 0, impairments: 0, color: '', new: false, action_values: {
+    Guns: "",
+    "Martial Arts": "",
+    Sorcery: "",
+    Scroungetech: "",
+    Genome: "",
+    Defense: "",
+    Toughness: "",
+    Speed: "",
+    Fortune: "",
+    "Max Fortune": "",
+    FortuneType: "",
+    MainAttack: "",
+    SecondaryAttack: "",
+    Wounds: "0",
+    Type: ""
+  }}
   const client = new Client({ jwt })
   const session = useSession({ required: true })
   const { status, data } = session
-  const [editingCharacter, setEditingCharacter] = useState<Character | null>(null)
+  const [editingCharacter, setEditingCharacter] = useState<Character>(characterTemplate)
   const [characters, setCharacters] = useState<Character[]>(initialCharacters)
   const [filters, setFilters] = useState<CharacterFilter>({
     type: null,
@@ -162,7 +179,7 @@ export default function Characters({ characters:initialCharacters, jwt }: Charac
                 </TableBody>
               </Table>
             </TableContainer>
-            <CharacterModal open={!!editingCharacter} setOpen={setEditingCharacter} character={editingCharacter} />
+            <CharacterModal open={editingCharacter} setOpen={setEditingCharacter} character={editingCharacter} />
           </Container>
         </Layout>
       </main>

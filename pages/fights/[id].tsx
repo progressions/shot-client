@@ -77,8 +77,10 @@ export async function getServerSideProps({ req, res, params }: ServerSideProps) 
 }
 
 export default function Fight({ fight:initialFight, notFound }: FightParams) {
+  const characterTemplate:Character = {name: '', defense: '', current_shot: 0, impairments: 0, color: '', new: false, action_values: {
+    Guns: "", "Martial Arts": "", Sorcery: "", Scroungetech: "", Genome: "", Defense: "", Toughness: "", Speed: "", Fortune: "", "Max Fortune": "", FortuneType: "", MainAttack: "", SecondaryAttack: "", Wounds: "0", Type: "" }}
   const [fight, setFight] = useState<Fight>(initialFight as Fight)
-  const [editingCharacter, setEditingCharacter] = useState<Character | null>(null)
+  const [editingCharacter, setEditingCharacter] = useState<Character>(characterTemplate)
   const [showHidden, setShowHidden] = useState<boolean>(false)
 
   const router = useRouter()
@@ -132,7 +134,7 @@ export default function Fight({ fight:initialFight, notFound }: FightParams) {
                 </TableBody>
               </Table>
             </TableContainer>
-            <CharacterModal open={!!editingCharacter} setOpen={setEditingCharacter} fight={fight} character={editingCharacter} setFight={setFight} />
+            <CharacterModal open={editingCharacter} setOpen={setEditingCharacter} fight={fight} character={editingCharacter} setFight={setFight} />
           </>)}
         </Container>
       </Layout>

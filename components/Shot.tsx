@@ -8,11 +8,11 @@ import type { Character, Fight } from "../types/types"
 
 interface ShotParams {
   fight: Fight,
-  setFight: (fight: Fight) => void,
+  setFight: React.Dispatch<React.SetStateAction<Fight>>
   shot: number | string,
   characters: Character[],
-  editingCharacter: Character | null,
-  setEditingCharacter: (character: Character | null) => void,
+  editingCharacter: Character,
+  setEditingCharacter: React.Dispatch<React.SetStateAction<Character>>
   showHidden: boolean
 }
 

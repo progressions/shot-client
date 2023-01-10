@@ -29,11 +29,28 @@ interface CharacterDetailsParams {
 }
 
 export default function CharacterDetails({ character, fight, setFight, editingCharacter, setEditingCharacter }: CharacterDetailsParams) {
+  const defaultCharacter:Character = {name: '', defense: '', current_shot: '', impairments: 0, color: '', action_values: {
+    Guns: "",
+    "Martial Arts": "",
+    Sorcery: "",
+    Scroungetech: "",
+    Genome: "",
+    Defense: "",
+    Toughness: "",
+    Speed: "",
+    Fortune: "",
+    "Max Fortune": "",
+    FortuneType: "",
+    MainAttack: "",
+    SecondaryAttack: "",
+    Wounds: "0",
+    Type: ""
+  }}
   const session: any = useSession({ required: true })
   const jwt = session?.data?.authorization
   const client = new Client({ jwt })
 
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState<Character>(defaultCharacter)
   const [openAction, setOpenAction] = useState(false)
   const [openWounds, setOpenWounds] = useState(false)
 
