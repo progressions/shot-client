@@ -113,7 +113,7 @@ export default function CharacterModal({ open, setOpen, fight, setFight, charact
   return (
     <>
       <Dialog
-        open={!!(open.id)}
+        open={!!(open.id || open.new)}
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"

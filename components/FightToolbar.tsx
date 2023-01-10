@@ -11,7 +11,7 @@ interface FightToolbarParams {
   fight: Fight,
   setFight: React.Dispatch<React.SetStateAction<Fight>>
   showHidden: boolean,
-  setShowHidden: (hidden: boolean) => void
+  setShowHidden: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 export default function FightToolbar({ fight, setFight, showHidden, setShowHidden }: FightToolbarParams) {
