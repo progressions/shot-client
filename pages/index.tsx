@@ -19,18 +19,11 @@ import { unstable_getServerSession } from "next-auth/next"
 
 import { GetServerSideProps } from 'next'
 import { InferGetServerSidePropsType } from 'next'
-import { NextApiRequest, NextApiResponse } from 'next'
 
-import type { Fight, Toast } from "../types/types"
+import type { Fight, Toast, ServerSideProps } from "../types/types"
 
 interface HomeProps {
   fights: Fight[]
-}
-
-interface ServerSideProps {
-  req: NextApiRequest,
-  res: NextApiResponse,
-  params?: any
 }
 
 export async function getServerSideProps<GetServerSideProps>({ req, res }: ServerSideProps) {

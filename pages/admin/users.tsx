@@ -13,15 +13,8 @@ import { unstable_getServerSession } from "next-auth/next"
 import DeleteIcon from '@mui/icons-material/Delete'
 import EditIcon from '@mui/icons-material/Edit'
 import CheckIcon from '@mui/icons-material/Check'
-import { NextApiRequest, NextApiResponse } from 'next'
 
-import type { User, Toast } from "../../types/types"
-
-interface ServerSideProps {
-  req: NextApiRequest,
-  res: NextApiResponse,
-  params?: any
-}
+import type { User, Toast, ServerSideProps } from "../../types/types"
 
 interface loadUsersParams {
   jwt: string,

@@ -1,3 +1,5 @@
+import { NextApiRequest, NextApiResponse } from 'next'
+
 export interface Toast {
   open: boolean
   message: string
@@ -73,6 +75,13 @@ export interface CharacterFilter {
   type: string | null,
   name: string | null
 }
+
+export interface ServerSideProps {
+  req: NextApiRequest,
+  res: NextApiResponse,
+  params?: any
+}
+
 
 export const defaultCharacter:Character = {
   name: '',

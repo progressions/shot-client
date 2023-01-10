@@ -23,14 +23,7 @@ import Api from '../../components/Api'
 import Client from '../../components/Client'
 
 import type { Character, Fight, ID } from "../../types/types"
-import { defaultCharacter } from "../../types/types"
-import { NextApiRequest, NextApiResponse } from 'next'
-
-interface ServerSideProps {
-  req: NextApiRequest,
-  res: NextApiResponse,
-  params?: any
-}
+import { defaultCharacter, ServerSideProps } from "../../types/types"
 
 interface FightParams {
   fight: Fight | null,

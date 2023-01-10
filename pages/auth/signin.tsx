@@ -5,6 +5,7 @@ import { signIn, signOut } from 'next-auth/react'
 import Router from 'next/router'
 
 import Layout from '../../components/Layout'
+import type { ServerSideProps } from "../../types/types"
 
 interface SignInPageProps {
   referer: string | null
@@ -15,12 +16,12 @@ interface Credentials {
   password: string
 }
 
-export async function getServerSideProps(context: any) {
+export async function getServerSideProps({ req }: ServerSideProps) {
 
   // get CSRF as soon as i figure out how
   return {
     props: {
-      referer: context?.req?.headers?.['referer'] || null
+      referer: req.headers['referer'] || null
     },
   }
 }

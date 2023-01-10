@@ -19,19 +19,12 @@ import AvatarBadge from "../components/character/AvatarBadge"
 import CreateCharacter from "../components/character/CreateCharacter"
 import CharacterFilters from "../components/CharacterFilters"
 
-import { NextApiRequest, NextApiResponse } from 'next'
-import type { Character, CharacterFilter } from "../types/types"
+import type { Character, CharacterFilter, ServerSideProps } from "../types/types"
 import { defaultCharacter } from "../types/types"
 
 interface CharactersProps {
   characters: Character[],
   jwt: string
-}
-
-interface ServerSideProps {
-  req: NextApiRequest,
-  res: NextApiResponse,
-  params?: any
 }
 
 export async function getServerSideProps({ req, res }: ServerSideProps) {

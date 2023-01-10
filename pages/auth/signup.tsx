@@ -7,14 +7,14 @@ import Layout from '../../components/Layout'
 import Api from '../../components/Api'
 import Client from "../../components/Client"
 
-import type { User } from "../../types/types"
+import type { User, ServerSideProps } from "../../types/types"
 
-export async function getServerSideProps(context: any) {
+export async function getServerSideProps({ req }: ServerSideProps) {
 
   // get CSRF as soon as i figure out how
   return {
     props: {
-      referer: context?.req?.headers?.['referer'] || null
+      referer: req.headers['referer'] || null
     },
   }
 }
