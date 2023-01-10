@@ -23,9 +23,9 @@ import type { Character, Fight, ID } from "../../types/types"
 interface CharacterDetailsParams {
   character: Character,
   fight: Fight,
-  setFight: (fight: Fight) => void,
+  setFight: React.Dispatch<React.SetStateAction<Fight>>
   editingCharacter: Character,
-  setEditingCharacter: (character: Character) => void
+  setEditingCharacter: React.Dispatch<React.SetStateAction<Character>> | ((character: Character | null) => void)
 }
 
 export default function CharacterDetails({ character, fight, setFight, editingCharacter, setEditingCharacter }: CharacterDetailsParams) {

@@ -10,8 +10,8 @@ import type { Fight, Toast } from "../types/types"
 import { loadFights } from "./FightDetail"
 
 interface AddFightProps {
-  setFights: (fights: Fight[]) => void,
-  setToast: any
+  setFights: React.Dispatch<React.SetStateAction<Fight[]>>
+  setToast: React.Dispatch<React.SetStateAction<Toast>>
 }
 
 export default function AddFight({ setFights, setToast }: AddFightProps) {

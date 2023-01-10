@@ -8,7 +8,7 @@ export interface CharacterFilter {
 
 interface CharacterFiltersProps {
   filters: CharacterFilter,
-  setFilters: (filter: CharacterFilter) => void
+  setFilters: React.Dispatch<React.SetStateAction<CharacterFilter>>
 }
 
 export default function CharacterFilters({ filters, setFilters }: CharacterFiltersProps) {

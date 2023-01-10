@@ -6,18 +6,23 @@ import { authOptions } from '../pages/api/auth/[...nextauth]'
 import { unstable_getServerSession } from "next-auth/next"
 import Client from "./Client"
 
-import type { Fight } from "../types/types"
+import type { Fight, Toast } from "../types/types"
 
 interface loadFightParams {
   id: string,
   jwt: string,
-  setFight: (fight: Fight) => void
+  setFight: React.Dispatch<React.SetStateAction<Fight>>
 }
 
 interface FightParams {
   fight: Fight,
-  setFights: (fights: Fight[]) => void,
-  setToast: any
+  setFights: React.Dispatch<React.SetStateAction<Fight[]>>
+  setToast: React.Dispatch<React.SetStateAction<Toast>>
+}
+
+interface loadFightsParams {
+  jwt: string,
+  setFights: React.Dispatch<React.SetStateAction<Fight[]>>
 }
 
 export async function loadFight({ id, jwt, setFight }: loadFightParams) {
@@ -28,11 +33,6 @@ export async function loadFight({ id, jwt, setFight }: loadFightParams) {
     setFight({shot_order: []})
     setFight(data)
   }
-}
-
-interface loadFightsParams {
-  jwt: string,
-  setFights: (fights: Fight[]) => void
 }
 
 export async function loadFights({jwt, setFights}: loadFightsParams) {

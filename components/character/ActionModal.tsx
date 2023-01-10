@@ -8,10 +8,10 @@ import type { Character, Fight } from "../../types/types"
 
 interface ActionModalParams {
   open: boolean,
-  setOpen: (open: boolean) => void,
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>
   fight: Fight,
   character: Character,
-  setFight: (fight: Fight) => void
+  setFight: React.Dispatch<React.SetStateAction<Fight>>
 }
 
 const ActionModal = ({open, setOpen, fight, character, setFight}: ActionModalParams) => {

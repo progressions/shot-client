@@ -9,7 +9,7 @@ import type { Fight, Character } from "../types/types"
 
 interface SelectCharacterParams {
   fight: Fight,
-  setFight: (fight: Fight) => void
+  setFight: React.Dispatch<React.SetStateAction<Fight>>
 }
 
 export default function SelectCharacter({ fight, setFight }: SelectCharacterParams) {
