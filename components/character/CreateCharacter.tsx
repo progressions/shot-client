@@ -6,6 +6,7 @@ import TextField from '@mui/material/TextField'
 import CharacterModal from './CharacterModal'
 
 import type { Character, Fight, ID } from "../../types/types"
+import { defaultCharacter } from "../../types/types"
 
 interface CreateCharacterParams {
   fight?: Fight,
@@ -13,27 +14,10 @@ interface CreateCharacterParams {
 }
 
 export default function CreateCharacter({ fight, setFight }: CreateCharacterParams) {
-  const characterTemplate:Character = {name: '', defense: '', current_shot: 0, impairments: 0, color: '', new: false, action_values: {
-    Guns: "",
-    "Martial Arts": "",
-    Sorcery: "",
-    Scroungetech: "",
-    Genome: "",
-    Defense: "",
-    Toughness: "",
-    Speed: "",
-    Fortune: "",
-    "Max Fortune": "",
-    FortuneType: "",
-    MainAttack: "",
-    SecondaryAttack: "",
-    Wounds: "0",
-    Type: ""
-  }}
-  const [newCharacter, setNewCharacter] = useState<Character>(characterTemplate)
+  const [newCharacter, setNewCharacter] = useState<Character>(defaultCharacter)
 
   const openModal = (): void => {
-    setNewCharacter({...characterTemplate, new: true})
+    setNewCharacter({...defaultCharacter, new: true})
   }
 
   return (

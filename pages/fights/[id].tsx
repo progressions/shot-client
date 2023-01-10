@@ -23,6 +23,7 @@ import Api from '../../components/Api'
 import Client from '../../components/Client'
 
 import type { Character, Fight, ID } from "../../types/types"
+import { defaultCharacter } from "../../types/types"
 import { NextApiRequest, NextApiResponse } from 'next'
 
 interface ServerSideProps {
@@ -77,10 +78,8 @@ export async function getServerSideProps({ req, res, params }: ServerSideProps) 
 }
 
 export default function Fight({ fight:initialFight, notFound }: FightParams) {
-  const characterTemplate:Character = {name: '', defense: '', current_shot: 0, impairments: 0, color: '', new: false, action_values: {
-    Guns: "", "Martial Arts": "", Sorcery: "", Scroungetech: "", Genome: "", Defense: "", Toughness: "", Speed: "", Fortune: "", "Max Fortune": "", FortuneType: "", MainAttack: "", SecondaryAttack: "", Wounds: "0", Type: "" }}
   const [fight, setFight] = useState<Fight>(initialFight as Fight)
-  const [editingCharacter, setEditingCharacter] = useState<Character>(characterTemplate)
+  const [editingCharacter, setEditingCharacter] = useState<Character>(defaultCharacter)
   const [showHidden, setShowHidden] = useState<boolean>(false)
 
   const router = useRouter()

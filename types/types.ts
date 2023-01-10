@@ -68,3 +68,28 @@ export interface User {
   admin?: boolean,
   avatar_url?: string
 }
+
+export const defaultCharacter:Character = {
+  name: '',
+  defense: '',
+  current_shot: '',
+  impairments: 0,
+  color: '',
+  action_values: {
+    Guns: "",
+    "Martial Arts": "",
+    Sorcery: "",
+    Scroungetech: "",
+    Genome: "",
+    Defense: "",
+    Toughness: "",
+    Speed: "",
+    Fortune: "",
+    "Max Fortune": "",
+    FortuneType: "",
+    MainAttack: "",
+    SecondaryAttack: "",
+    Wounds: "0",
+    Type: ""
+  }
+}

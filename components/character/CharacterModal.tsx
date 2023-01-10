@@ -11,6 +11,7 @@ import { loadFight } from '../FightDetail'
 import Client from "../Client"
 
 import type { Fight, Character, ID } from "../../types/types"
+import { defaultCharacter } from "../../types/types"
 
 interface CharacterModalParams {
   open: Character,
@@ -21,23 +22,6 @@ interface CharacterModalParams {
 }
 
 export default function CharacterModal({ open, setOpen, fight, setFight, character:activeCharacter }: CharacterModalParams) {
-  const defaultCharacter:Character = {name: '', defense: '', current_shot: '', impairments: 0, color: '', action_values: {
-    Guns: "",
-    "Martial Arts": "",
-    Sorcery: "",
-    Scroungetech: "",
-    Genome: "",
-    Defense: "",
-    Toughness: "",
-    Speed: "",
-    Fortune: "",
-    "Max Fortune": "",
-    FortuneType: "",
-    MainAttack: "",
-    SecondaryAttack: "",
-    Wounds: "0",
-    Type: ""
-  }}
   const [picker, setPicker] = useState<boolean>(false)
   const [anchorEl, setAnchorEl] = useState(null)
 

@@ -19,6 +19,7 @@ import { loadFight } from '../FightDetail'
 import Client from "../Client"
 
 import type { Character, Fight, ID } from "../../types/types"
+import { defaultCharacter } from "../../types/types"
 
 interface CharacterDetailsParams {
   character: Character,
@@ -29,23 +30,6 @@ interface CharacterDetailsParams {
 }
 
 export default function CharacterDetails({ character, fight, setFight, editingCharacter, setEditingCharacter }: CharacterDetailsParams) {
-  const defaultCharacter:Character = {name: '', defense: '', current_shot: '', impairments: 0, color: '', action_values: {
-    Guns: "",
-    "Martial Arts": "",
-    Sorcery: "",
-    Scroungetech: "",
-    Genome: "",
-    Defense: "",
-    Toughness: "",
-    Speed: "",
-    Fortune: "",
-    "Max Fortune": "",
-    FortuneType: "",
-    MainAttack: "",
-    SecondaryAttack: "",
-    Wounds: "0",
-    Type: ""
-  }}
   const session: any = useSession({ required: true })
   const jwt = session?.data?.authorization
   const client = new Client({ jwt })
