@@ -16,7 +16,7 @@ class Client {
     this.api = new Api()
   }
 
-  async getFights():Promise<any> {
+  async getFights():Promise<Response> {
     return await this.get(this.api.fights())
   }
 

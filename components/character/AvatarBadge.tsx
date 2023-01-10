@@ -18,7 +18,7 @@ export default function AvatarBadge({ character, session }: AvatarBadgeParams) {
     "Uber-Boss": "Uber"
   } as any
 
-  const charType = character?.action_values?.['Type']
+  const charType = character.action_values['Type']
 
   return (
     <>
@@ -27,7 +27,7 @@ export default function AvatarBadge({ character, session }: AvatarBadgeParams) {
       </Badge>
       <GamemasterOnly user={session?.data?.user} character={character}>
         <Box width={40} sx={{textAlign: 'center'}}>
-          <Typography variant="h6" sx={{color: 'text.secondary', fontVariant: 'small-caps', textTransform: 'lowercase'}}>{charType && names?.[charType]}</Typography>
+          <Typography variant="h6" sx={{color: 'text.secondary', fontVariant: 'small-caps', textTransform: 'lowercase'}}>{charType && names[charType]}</Typography>
         </Box>
       </GamemasterOnly>
     </>
