@@ -110,8 +110,8 @@ class Client {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': this.jwt
-      }
-    } as any)
+      } as HeadersInit
+    })
   }
 
   async delete(url:string):Promise<Response> {
@@ -120,8 +120,8 @@ class Client {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': this.jwt
-      }
-    } as any)
+      } as HeadersInit
+    })
   }
 }
 
