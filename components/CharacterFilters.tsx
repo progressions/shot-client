@@ -1,10 +1,7 @@
 import { Stack, Box, TextField, MenuItem } from "@mui/material"
 import { useState } from 'react'
 
-export interface CharacterFilter {
-  type: string | null,
-  name: string | null
-}
+import type { CharacterFilter } from "../types/types"
 
 interface CharacterFiltersProps {
   filters: CharacterFilter,

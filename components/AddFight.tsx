@@ -7,6 +7,7 @@ import { useSession } from 'next-auth/react'
 import Client from "./Client"
 
 import type { Fight, Toast } from "../types/types"
+import { defaultFight } from "../types/types"
 import { loadFights } from "./FightDetail"
 
 interface AddFightProps {
@@ -20,11 +21,11 @@ export default function AddFight({ setFights, setToast }: AddFightProps) {
   const client = new Client({ jwt })
 
   const [open, setOpen] = useState<boolean>(false)
-  const [fight, setFight] = useState<Fight>({name: '', shot_order: []})
+  const [fight, setFight] = useState<Fight>(defaultFight)
   const [saving, setSaving] = useState<boolean>(false);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
-    setFight({ ...fight, name: event.target.value })
+    setFight((prev: Fight) => ({ ...prev, name: event.target.value }))
   }
 
   const handleSubmit = async (event: React.ChangeEvent<HTMLInputElement>): Promise<void> => {

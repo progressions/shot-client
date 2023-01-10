@@ -40,10 +40,10 @@ export interface ID {
 export interface Character {
   id?: string,
   name: string,
-  defense?: string,
+  defense: string,
   current_shot?: number | string,
   impairments: number,
-  color?: string,
+  color: string,
   action_values: ActionValues,
   user?: User,
   created_at?: string,
@@ -69,6 +69,11 @@ export interface User {
   avatar_url?: string
 }
 
+export interface CharacterFilter {
+  type: string | null,
+  name: string | null
+}
+
 export const defaultCharacter:Character = {
   name: '',
   defense: '',
@@ -92,4 +97,10 @@ export const defaultCharacter:Character = {
     Wounds: "0",
     Type: ""
   }
+}
+
+export const defaultFight:Fight = {
+  name: '',
+  characters: [],
+  shot_order: []
 }

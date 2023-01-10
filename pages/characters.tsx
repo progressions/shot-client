@@ -20,8 +20,7 @@ import CreateCharacter from "../components/character/CreateCharacter"
 import CharacterFilters from "../components/CharacterFilters"
 
 import { NextApiRequest, NextApiResponse } from 'next'
-import type { CharacterFilter } from "../components/CharacterFilters"
-import type { Character } from "../types/types"
+import type { Character, CharacterFilter } from "../types/types"
 import { defaultCharacter } from "../types/types"
 
 interface CharactersProps {
@@ -93,7 +92,7 @@ export default function Characters({ characters:initialCharacters, jwt }: Charac
 
   const characterMatchesType = (character: Character): boolean => {
     if (filters.type) {
-      return character?.action_values?.["Type"] === filters.type
+      return character.action_values?.["Type"] === filters.type
     } else {
       return true
     }
