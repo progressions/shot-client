@@ -75,16 +75,22 @@ export default function CharacterModal({ open, setOpen, fight, setFight, charact
       await client.updateCharacter(character, fight) :
       await client.createCharacter(character, fight)
 
-    const data = await response.json()
+    if (response.status === 200) {
+      const data = await response.json()
 
-    setCharacter(data)
-    setSaving(false)
-    cancelForm()
-    if (fight && setFight) {
-      await loadFight({jwt, id: fight.id as string, setFight})
-      setToast({ open: true, message: `Character ${character.name} updated.`, severity: "success" })
+      setCharacter(data)
+      setSaving(false)
+      cancelForm()
+      if (fight && setFight) {
+        await loadFight({jwt, id: fight.id as string, setFight})
+        setToast({ open: true, message: `Character ${character.name} updated.`, severity: "success" })
+      } else {
+        Router.reload()
+      }
     } else {
-      Router.reload()
+      setToast({ open: true, message: `There was an error`, severity: "error" })
+      setSaving(false)
+      cancelForm()
     }
   }
 

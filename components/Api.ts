@@ -17,7 +17,7 @@ class Api {
     if (!fight) {
       return this.allCharacters(character)
     }
-    if (character) {
+    if (character?.id) {
       return `${this.fights(fight)}/characters/${character.id}`
     } else {
       return `${this.fights(fight)}/characters`
@@ -33,7 +33,7 @@ class Api {
   }
 
   allCharacters(character?: Character | ID): string {
-    if (character) {
+    if (character?.id) {
       return `${this.api()}/all_characters/${character.id}`
     } else {
       return `${this.api()}/all_characters`
