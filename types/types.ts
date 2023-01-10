@@ -1,26 +1,26 @@
 export interface Toast {
-  open: boolean,
-  message: string,
+  open: boolean
+  message: string
   severity: string
 }
 
 export interface ActionValues {
-  [key: string]: string | number | null | undefined,
-  Guns?: string,
-  "Martial Arts"?: string,
-  Sorcery?: string,
-  Scroungetech?: string,
-  Genome?: string,
-  Defense?: string,
-  Toughness?: string,
-  Speed?: string,
-  Fortune?: string,
-  "Max Fortune"?: string,
-  FortuneType?: string,
-  MainAttack?: string,
-  SecondaryAttack?: string,
-  Wounds: string,
-  Type?: CharacterType | string | null,
+  [key: string]: string | number | null | undefined
+  Guns?: string
+  "Martial Arts"?: string
+  Sorcery?: string
+  Scroungetech?: string
+  Genome?: string
+  Defense?: string
+  Toughness?: string
+  Speed?: string
+  Fortune?: string
+  "Max Fortune"?: string
+  FortuneType?: string
+  MainAttack?: string
+  SecondaryAttack?: string
+  Wounds: string
+  Type?: CharacterType | string | null
   Damage?: string
 }
 
@@ -55,7 +55,7 @@ export interface Fight {
   id?: string,
   name?: string,
   characters?: Character[],
-  shot_order?: any
+  shot_order: [number, Character[]][]
 }
 
 export interface User {

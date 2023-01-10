@@ -20,11 +20,11 @@ export default function AddFight({ setFights, setToast }: AddFightProps) {
   const client = new Client({ jwt })
 
   const [open, setOpen] = useState<boolean>(false)
-  const [fight, setFight] = useState<Fight>({name: ''})
+  const [fight, setFight] = useState<Fight>({name: '', shot_order: []})
   const [saving, setSaving] = useState<boolean>(false);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
-    setFight({ name: event.target.value })
+    setFight({ ...fight, name: event.target.value })
   }
 
   const handleSubmit = async (event: React.ChangeEvent<HTMLInputElement>): Promise<void> => {
@@ -41,7 +41,7 @@ export default function AddFight({ setFights, setToast }: AddFightProps) {
   }
 
   const cancelForm = (): void => {
-    setFight({name: ''})
+    setFight({name: '', shot_order: []})
     setToast((prevToast: Toast) => { return { ...prevToast, open: false }})
     setOpen(false)
   }

@@ -76,10 +76,11 @@ export async function getServerSideProps({ req, res }: ServerSideProps) {
 }
 
 export default function UsersAdmin({ jwt, users:initialUsers, currentUser }: any) {
+  const defaultUser = {email: ''}
   const client = new Client({ jwt })
   const [users, setUsers] = useState<User[]>(initialUsers)
-  const [value, setValue] = useState('1')
-  const [user, setUser] = useState<User | null>(null)
+  const [value, setValue] = useState<string>('1')
+  const [user, setUser] = useState<User>(defaultUser)
   const [toast, setToast] = useState<Toast>({ open: false, message: "", severity: "success" })
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {

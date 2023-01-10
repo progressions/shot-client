@@ -42,9 +42,10 @@ export async function getServerSideProps({ req, res, params }: ServerSideProps) 
   const client = new Client({ jwt: jwt })
   const { id } = params
 
-  const response = await client.getFight({id: id})
+  const response = await client.getFight({id: id, shot_order: []})
   if (response.status === 200) {
     const fight = await response.json()
+
     return {
       props: {
         fight: fight,

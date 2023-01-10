@@ -22,7 +22,7 @@ interface FightParams {
 
 export async function loadFight({ id, jwt, setFight }: loadFightParams) {
   const client = new Client({ jwt })
-  const response = await client.getFight({ id })
+  const response = await client.getFight({ id, shot_order: [] })
   if (response.status === 200) {
     const data = await response.json()
     setFight({shot_order: []})

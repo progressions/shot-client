@@ -14,8 +14,8 @@ import Client from "./Client"
 import type { User } from "../types/types"
 
 interface UserModalParams {
-  user: User | null,
-  setUser: any
+  user: User
+  setUser: React.Dispatch<React.SetStateAction<User>>
 }
 
 export default function UserModal({ user, setUser }: UserModalParams) {
@@ -25,21 +25,21 @@ export default function UserModal({ user, setUser }: UserModalParams) {
   const jwt = session?.data?.authorization
   const client = new Client({ jwt: jwt })
 
-  const [saving, setSaving] = useState(false);
+  const [saving, setSaving] = useState<boolean>(false);
 
-  function handleClose() {
+  function handleClose(): void {
     cancelForm()
   }
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setUser((prevState: User) => ({ ...prevState, [event.target.name]: event.target.value }))
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
+    setUser((prev: User) => ({ ...prev, [event.target.name]: event.target.value}))
   }
 
-  const handleCheck = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setUser((prevState: User) => ({ ...prevState, [event.target.name]: event.target.checked }))
+  const handleCheck = (event: React.ChangeEvent<HTMLInputElement>): void => {
+    setUser((prev: User) => ({ ...prev, [event.target.name]: event.target.checked}))
   }
 
-  const cancelForm = () => {
+  const cancelForm = (): void => {
     setUser(defaultUser)
   }
 
@@ -47,7 +47,7 @@ export default function UserModal({ user, setUser }: UserModalParams) {
     setSaving(true)
     event.preventDefault()
 
-    const response = user?.id ?
+    const response = user.id ?
       await client.updateUser(user)
     : await client.createUser(user as User)
 
