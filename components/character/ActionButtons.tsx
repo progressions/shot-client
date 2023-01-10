@@ -14,7 +14,7 @@ interface ActionButtonsParams {
   takeWounds?: (character: Character) => void,
   takeAction?: (character: Character) => void,
   editCharacter: (character: Character) => void,
-  deleteCharacter:(character: Character) => void,
+  deleteCharacter: (character: Character) => void,
 }
 
 export default function ActionButtons({ character, takeWounds, takeAction, editCharacter, deleteCharacter }: ActionButtonsParams) {

@@ -14,9 +14,10 @@ interface ShotParams {
   editingCharacter: Character,
   setEditingCharacter: React.Dispatch<React.SetStateAction<Character>>
   showHidden: boolean
+  setToast: React.Dispatch<React.SetStateAction<Toast>>
 }
 
-export default function Shot({ fight, setFight, shot, characters, editingCharacter, setEditingCharacter, showHidden }: ShotParams) {
+export default function Shot({ fight, setFight, shot, characters, editingCharacter, setEditingCharacter, showHidden, setToast }: ShotParams) {
   const label = shot === null ? "-" : shot
 
   if (!showHidden && (shot === null || shot === undefined)) {
@@ -38,7 +39,7 @@ export default function Shot({ fight, setFight, shot, characters, editingCharact
           <Stack spacing={2}>
             {
               characters.map((character: Character) => {
-                return <CharacterDetails key={character.id} fight={fight} character={character} setFight={setFight} editingCharacter={editingCharacter as Character} setEditingCharacter={setEditingCharacterWithCurrentShot} />
+                return <CharacterDetails key={character.id} fight={fight} character={character} setFight={setFight} editingCharacter={editingCharacter as Character} setEditingCharacter={setEditingCharacterWithCurrentShot} setToast={setToast} />
               })
             }
           </Stack>

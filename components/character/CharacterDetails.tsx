@@ -18,7 +18,7 @@ import GamemasterOnly from '../GamemasterOnly'
 import { loadFight } from '../FightDetail'
 import Client from "../Client"
 
-import type { Character, Fight, ID } from "../../types/types"
+import type { Character, Fight, Toast, ID } from "../../types/types"
 import { defaultCharacter } from "../../types/types"
 
 interface CharacterDetailsParams {
@@ -27,9 +27,10 @@ interface CharacterDetailsParams {
   setFight: React.Dispatch<React.SetStateAction<Fight>>
   editingCharacter: Character,
   setEditingCharacter: React.Dispatch<React.SetStateAction<Character>> | ((character: Character | null) => void)
+  setToast: React.Dispatch<React.SetStateAction<Toast>>
 }
 
-export default function CharacterDetails({ character, fight, setFight, editingCharacter, setEditingCharacter }: CharacterDetailsParams) {
+export default function CharacterDetails({ character, fight, setFight, editingCharacter, setEditingCharacter, setToast }: CharacterDetailsParams) {
   const session: any = useSession({ required: true })
   const jwt = session?.data?.authorization
   const client = new Client({ jwt })
@@ -45,6 +46,7 @@ export default function CharacterDetails({ character, fight, setFight, editingCh
   async function deleteCharacter(character: Character): Promise<void> {
     const response = await client.deleteCharacter(character, fight)
     if (response.status === 200) {
+      setToast({ open: true, message: `Character ${character.name} removed.`, severity: "success" })
       await loadFight({jwt, id: fight.id as string, setFight})
     }
   }

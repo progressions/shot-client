@@ -21,8 +21,9 @@ import Shot from '../../components/Shot'
 import CharacterModal from '../../components/character/CharacterModal'
 import Api from '../../components/Api'
 import Client from '../../components/Client'
+import PopupToast from '../../components/PopupToast'
 
-import type { Character, Fight, ID } from "../../types/types"
+import type { Character, Fight, Toast, ID } from "../../types/types"
 import { defaultCharacter, ServerSideProps } from "../../types/types"
 
 interface FightParams {
@@ -74,6 +75,11 @@ export default function Fight({ fight:initialFight, notFound }: FightParams) {
   const [fight, setFight] = useState<Fight>(initialFight as Fight)
   const [editingCharacter, setEditingCharacter] = useState<Character>(defaultCharacter)
   const [showHidden, setShowHidden] = useState<boolean>(false)
+  const [toast, setToast] = useState<Toast>({ open: false, message: "", severity: "success" })
+
+  const closeToast = (): void => {
+    setToast((prevToast: Toast) => { return { ...prevToast, open: false }})
+  }
 
   const router = useRouter()
   const { id } = router.query
@@ -121,11 +127,12 @@ export default function Fight({ fight:initialFight, notFound }: FightParams) {
               <Table border={0}>
                 <TableBody>
                   {
-                    fight.shot_order.map(([shot, chars]: [number, Character[]]) => <Shot key={shot} shot={shot} characters={chars} fight={fight} setFight={setFight} editingCharacter={editingCharacter} setEditingCharacter={setEditingCharacter} showHidden={showHidden} />)
+                    fight.shot_order.map(([shot, chars]: [number, Character[]]) => <Shot key={shot} shot={shot} characters={chars} fight={fight} setFight={setFight} editingCharacter={editingCharacter} setEditingCharacter={setEditingCharacter} showHidden={showHidden} setToast={setToast} />)
                   }
                 </TableBody>
               </Table>
             </TableContainer>
+            <PopupToast toast={toast} closeToast={closeToast} />
             <CharacterModal open={editingCharacter} setOpen={setEditingCharacter} fight={fight} character={editingCharacter} setFight={setFight} />
           </>)}
         </Container>
