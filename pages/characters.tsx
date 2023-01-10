@@ -137,7 +137,6 @@ export default function Characters({ characters:initialCharacters, jwt }: Charac
                   <TableRow>
                     <TableCell />
                     <TableCell>Name</TableCell>
-                    <TableCell>Type</TableCell>
                     <TableCell />
                     <TableCell>Creator</TableCell>
                     <TableCell />
@@ -151,7 +150,6 @@ export default function Characters({ characters:initialCharacters, jwt }: Charac
                           <AvatarBadge character={character} session={session} />
                         </TableCell>
                         <TableCell sx={{fontWeight: "bold"}}><Typography variant="h5">{character.name}</Typography></TableCell>
-                        <TableCell>{character.action_values?.["Type"]}</TableCell>
                         <TableCell><ActionValues character={character} /></TableCell>
                         <TableCell>{character.user?.first_name} {character.user?.last_name}</TableCell>
                         <TableCell><ActionButtons editCharacter={editCharacter} deleteCharacter={deleteCharacter} character={character} setToast={setToast} /></TableCell>
