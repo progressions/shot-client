@@ -2,8 +2,8 @@ import { Box, TextField, MenuItem } from '@mui/material'
 import { useState } from 'react'
 
 interface CharacterTypeParams {
-  value: string,
-  onChange: any
+  value: string
+  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void
 }
 
 export default function CharacterType({ value, onChange }: CharacterTypeParams) {

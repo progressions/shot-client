@@ -113,3 +113,7 @@ export const defaultFight:Fight = {
   characters: [],
   shot_order: []
 }
+
+export const defaultUser:User = {
+  email: '',
+}

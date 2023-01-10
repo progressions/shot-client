@@ -3,6 +3,7 @@ import { Box, Stack, Typography } from '@mui/material'
 import { tableCellClasses } from "@mui/material/TableCell"
 
 import type { Character, ActionValues } from "../../types/types"
+import { SxProps, Theme } from '@mui/material/styles'
 
 interface ActionValuesParams {
   character: Character
@@ -12,7 +13,7 @@ interface ActionValueDisplayParams {
   name: string,
   label: string,
   character: Character,
-  sx?: any
+  sx?: SxProps<Theme>
 }
 
 export default function ActionValues({ character }: ActionValuesParams) {

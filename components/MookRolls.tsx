@@ -7,7 +7,7 @@ interface MookRollsParams {
   attack?: string | undefined,
   defense?: string | undefined,
   damage?: string | undefined,
-  icon?: any
+  icon?: React.ReactElement | undefined
 }
 
 interface MookRollValue {
@@ -18,7 +18,7 @@ interface MookRollValue {
 }
 
 interface RollOutcomeParams {
-  outcome: any,
+  outcome: number,
   value: MookRollValue
 }
 
@@ -69,7 +69,7 @@ export default function MookRolls({ count, attack, damage, icon }: MookRollsPara
     )
   }
 
-  const buttonWithTooltip = (icon: any) => {
+  const buttonWithTooltip = (icon: React.ReactElement | undefined) => {
     if (icon) {
       return (
         <Tooltip title="Mook Attacks" arrow>

@@ -10,7 +10,7 @@ import Router from 'next/router'
 
 interface LayoutProps {
   unauthenticated?: boolean,
-  children: any
+  children: React.ReactNode
 }
 
 export default function Layout({ unauthenticated, children }: LayoutProps) {

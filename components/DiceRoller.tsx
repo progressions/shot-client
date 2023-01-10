@@ -2,12 +2,12 @@ import { Tooltip, Button, IconButton, Dialog, DialogTitle, DialogContent, Box, T
 import CasinoIcon from '@mui/icons-material/Casino'
 import { useState } from 'react'
 
-export const rollDie = () => {
+export const rollDie = (): number => {
   const result = Math.floor(Math.random() * 6) + 1
   return result
 }
 
-export const rollExplodingDie = (rollDie: any) => {
+export const rollExplodingDie = (rollDie: () => number): [number[], number] => {
   let result = rollDie()
   let total = []
   do {
@@ -19,7 +19,7 @@ export const rollExplodingDie = (rollDie: any) => {
   return [total, total.reduce((sum, num) => {return (sum + num)}, 0)]
 }
 
-const rollSwerve = () => {
+const rollSwerve = (): number => {
   const [posRolls, positive] = rollExplodingDie(rollDie)
   const [negRolls, negative] = rollExplodingDie(rollDie)
 
@@ -29,19 +29,19 @@ const rollSwerve = () => {
   return result
 }
 
-export default function DiceRoller({ }) {
+export default function DiceRoller() {
   const [open, setOpen] = useState(false)
   const [result, setResult] = useState<number | null>(null)
   const [title, setTitle] = useState('')
 
-  const showExplodingRoll = () => {
+  const showExplodingRoll = (): void => {
     const sum = rollSwerve()
     setTitle("Swerve")
     setResult(sum)
     setOpen(true)
   }
 
-  const showSingleRoll = () => {
+  const showSingleRoll = (): void => {
     const sum = rollDie()
     setTitle("Single Die Roll")
     setResult(sum)

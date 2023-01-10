@@ -16,9 +16,17 @@ import CheckIcon from '@mui/icons-material/Check'
 
 import type { User, Toast, ServerSideProps } from "../../types/types"
 
+import { defaultUser } from "../../types/types"
+
+interface UsersAdminProps {
+  jwt: string
+  users: User[]
+  currentUser: User
+}
+
 interface loadUsersParams {
   jwt: string,
-  setUsers: (users: User[]) => void
+  setUsers: React.Dispatch<React.SetStateAction<User[]>>
 }
 
 export async function loadUsers({ jwt, setUsers }: loadUsersParams) {
@@ -68,8 +76,7 @@ export async function getServerSideProps({ req, res }: ServerSideProps) {
   }
 }
 
-export default function UsersAdmin({ jwt, users:initialUsers, currentUser }: any) {
-  const defaultUser = {email: ''}
+export default function UsersAdmin({ jwt, users:initialUsers, currentUser }: UsersAdminProps) {
   const client = new Client({ jwt })
   const [users, setUsers] = useState<User[]>(initialUsers)
   const [value, setValue] = useState<string>('1')
@@ -84,7 +91,7 @@ export default function UsersAdmin({ jwt, users:initialUsers, currentUser }: any
     setToast((prevToast: Toast) => { return { ...prevToast, open: false }})
   }
 
-  async function deleteUser(user: any) {
+  async function deleteUser(user: User): Promise<void> {
     if (user.email === currentUser.email) {
       setToast({ open: true, message: "You can't delete yourself!", severity: "error" })
       return
