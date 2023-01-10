@@ -4,7 +4,7 @@ import { useSession } from 'next-auth/react'
 import { loadFight } from '../FightDetail'
 import Client from "../Client"
 
-import type { Character, Fight } from "../../types/types"
+import type { Character, Fight, Toast } from "../../types/types"
 
 interface ActionModalParams {
   open: boolean,

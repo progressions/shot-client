@@ -101,7 +101,7 @@ export default function Fight({ fight:initialFight, notFound }: FightParams) {
             </> }
           { fight && (<>
             <Typography variant="h1" gutterBottom>{fight.name}</Typography>
-            <FightToolbar fight={fight} setFight={setFight} showHidden={showHidden} setShowHidden={setShowHidden} />
+            <FightToolbar fight={fight} setFight={setFight} showHidden={showHidden} setShowHidden={setShowHidden} setToast={setToast} />
             <TableContainer>
               <Table border={0}>
                 <TableHead>

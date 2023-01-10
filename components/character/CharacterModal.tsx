@@ -10,7 +10,7 @@ import { BlockPicker } from 'react-color'
 import { loadFight } from '../FightDetail'
 import Client from "../Client"
 
-import type { Fight, Character, ID } from "../../types/types"
+import type { Fight, Character, Toast, ID } from "../../types/types"
 import { defaultCharacter } from "../../types/types"
 
 interface CharacterModalParams {

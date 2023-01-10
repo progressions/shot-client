@@ -5,15 +5,16 @@ import Button from '@mui/material/Button'
 import TextField from '@mui/material/TextField'
 import CharacterModal from './CharacterModal'
 
-import type { Character, Fight, ID } from "../../types/types"
+import type { Character, Fight, Toast, ID } from "../../types/types"
 import { defaultCharacter } from "../../types/types"
 
 interface CreateCharacterParams {
   fight?: Fight,
   setFight?: React.Dispatch<React.SetStateAction<Fight>>
+  setToast: React.Dispatch<React.SetStateAction<Toast>>
 }
 
-export default function CreateCharacter({ fight, setFight }: CreateCharacterParams) {
+export default function CreateCharacter({ fight, setFight, setToast }: CreateCharacterParams) {
   const [newCharacter, setNewCharacter] = useState<Character>(defaultCharacter)
 
   const openModal = (): void => {
@@ -27,7 +28,7 @@ export default function CreateCharacter({ fight, setFight }: CreateCharacterPara
           New Character
         </Button>
       </Stack>
-      <CharacterModal open={newCharacter} setOpen={setNewCharacter} fight={fight} character={newCharacter} setFight={setFight} />
+      <CharacterModal open={newCharacter} setOpen={setNewCharacter} fight={fight} character={newCharacter} setFight={setFight} setToast={setToast} />
     </>
   )
 }

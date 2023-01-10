@@ -7,7 +7,7 @@ import NewReleasesIcon from '@mui/icons-material/NewReleases'
 
 import MookRolls from '../MookRolls'
 
-import type { Character } from "../../types/types"
+import type { Character, Toast } from "../../types/types"
 
 interface ActionButtonsParams {
   character: Character,

@@ -4,7 +4,7 @@ import TableCell from '@mui/material/TableCell'
 import Typography from '@mui/material/Typography'
 import CharacterDetails from './character/CharacterDetails'
 
-import type { Character, Fight } from "../types/types"
+import type { Character, Fight, Toast } from "../types/types"
 
 interface ShotParams {
   fight: Fight,

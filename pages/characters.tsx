@@ -18,8 +18,9 @@ import CharacterModal from "../components/character/CharacterModal"
 import AvatarBadge from "../components/character/AvatarBadge"
 import CreateCharacter from "../components/character/CreateCharacter"
 import CharacterFilters from "../components/CharacterFilters"
+import PopupToast from "../components/PopupToast"
 
-import type { Character, CharacterFilter, ServerSideProps } from "../types/types"
+import type { Character, CharacterFilter, ServerSideProps, Toast } from "../types/types"
 import { defaultCharacter } from "../types/types"
 
 interface CharactersProps {
@@ -70,6 +71,7 @@ export default function Characters({ characters:initialCharacters, jwt }: Charac
     type: null,
     name: null
   })
+  const [toast, setToast] = useState<Toast>({ open: false, message: "", severity: "success" })
 
   function editCharacter(character: Character): void {
     setEditingCharacter(character)
@@ -109,6 +111,10 @@ export default function Characters({ characters:initialCharacters, jwt }: Charac
     return <div>Loading...</div>
   }
 
+  const closeToast = (): void => {
+    setToast((prevToast: Toast) => { return { ...prevToast, open: false }})
+  }
+
   return (
     <>
       <Head>
@@ -123,7 +129,7 @@ export default function Characters({ characters:initialCharacters, jwt }: Charac
             <Typography variant="h1" gutterBottom>Characters</Typography>
             <Stack direction="row" spacing={2} alignItems="center">
               <CharacterFilters filters={filters} setFilters={setFilters} />
-              <CreateCharacter />
+              <CreateCharacter setToast={setToast} />
             </Stack>
             <TableContainer>
               <Table size="small">
@@ -148,14 +154,15 @@ export default function Characters({ characters:initialCharacters, jwt }: Charac
                         <TableCell>{character.action_values?.["Type"]}</TableCell>
                         <TableCell><ActionValues character={character} /></TableCell>
                         <TableCell>{character.user?.first_name} {character.user?.last_name}</TableCell>
-                        <TableCell><ActionButtons editCharacter={editCharacter} deleteCharacter={deleteCharacter} character={character} /></TableCell>
+                        <TableCell><ActionButtons editCharacter={editCharacter} deleteCharacter={deleteCharacter} character={character} setToast={setToast} /></TableCell>
                       </TableRow>)
                     })
                   }
                 </TableBody>
               </Table>
             </TableContainer>
-            <CharacterModal open={editingCharacter} setOpen={setEditingCharacter} character={editingCharacter} />
+            <PopupToast toast={toast} closeToast={closeToast} />
+            <CharacterModal open={editingCharacter} setOpen={setEditingCharacter} character={editingCharacter} setToast={setToast} />
           </Container>
         </Layout>
       </main>
