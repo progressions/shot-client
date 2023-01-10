@@ -154,7 +154,7 @@ export default function UsersAdmin({ jwt, users:initialUsers, currentUser }: Use
                     })
                   }
                 </TableBody>
-                <UserModal setUser={setUser} user={user} />
+                <UserModal setUser={setUser} user={user} setUsers={setUsers} />
               </Table>
             </TableContainer>
             <PopupToast toast={toast} closeToast={closeToast} />

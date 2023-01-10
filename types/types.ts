@@ -54,11 +54,13 @@ export interface Character {
   new?: boolean
 }
 
+export type ShotType = [number, Character[]]
+
 export interface Fight {
   id?: string,
   name?: string,
   characters?: Character[],
-  shot_order: [number, Character[]][]
+  shot_order: ShotType[]
 }
 
 export interface User {

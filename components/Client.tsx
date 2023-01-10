@@ -20,7 +20,7 @@ class Client {
     return await this.get(this.api.fights())
   }
 
-  async getFight(fight: Fight):Promise<Response> {
+  async getFight(fight: Fight | ID):Promise<Response> {
     return await this.get(this.api.fights(fight))
   }
 

@@ -5,7 +5,7 @@ class Api {
 
   api():string { return `${this.base()}/api/v1` }
 
-  fights(fight?: Fight | undefined): string {
+  fights(fight?: Fight | ID | undefined): string {
     if (fight) {
       return `${this.api()}/fights/${fight.id}`
     } else {

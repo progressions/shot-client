@@ -12,13 +12,15 @@ import { useSession } from 'next-auth/react'
 import Client from "./Client"
 
 import type { User } from "../types/types"
+import { loadUsers } from "../pages/admin/users"
 
 interface UserModalParams {
   user: User
   setUser: React.Dispatch<React.SetStateAction<User>>
+  setUsers: React.Dispatch<React.SetStateAction<User[]>>
 }
 
-export default function UserModal({ user, setUser }: UserModalParams) {
+export default function UserModal({ user, setUser, setUsers }: UserModalParams) {
   const defaultUser:User = {first_name: '', last_name: '', email: '', password: '', gamemaster: false, admin: false, avatar_url: ''}
 
   const session: any = useSession({ required: true })
@@ -54,7 +56,7 @@ export default function UserModal({ user, setUser }: UserModalParams) {
     const data = await response.json()
     setSaving(false)
     cancelForm()
-    Router.reload()
+    loadUsers({ jwt, setUsers })
   }
 
   if (user) {
