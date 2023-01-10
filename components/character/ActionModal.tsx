@@ -48,15 +48,15 @@ const ActionModal = ({open, setOpen, fight, character, setFight}: ActionModalPar
       aria-describedby="modal-modal-description"
       disableRestoreFocus
     >
-      <Stack p={4} spacing={2} onSubmit={submitAction}>
-        <Box component="form">
-        <TextField autoFocus label="Shots" required name="shots" value={shots} onChange={handleChange} />
+      <Box component="form" onSubmit={submitAction}>
+        <Stack p={4} spacing={2}>
+          <TextField autoFocus label="Shots" required name="shots" value={shots} onChange={handleChange} />
           <Stack alignItems="flex-end" spacing={2} direction="row">
             <Button variant="outlined" disabled={saving} onClick={cancelForm}>Cancel</Button>
             <Button variant="contained" type="submit" disabled={saving}>Save Changes</Button>
           </Stack>
-        </Box>
-      </Stack>
+        </Stack>
+      </Box>
     </Dialog>
   )
 }
