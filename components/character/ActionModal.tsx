@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Stack, TextField, Button, Dialog } from '@mui/material'
+import { Box, Stack, TextField, Button, Dialog } from '@mui/material'
 import { useSession } from 'next-auth/react'
 import { loadFight } from '../FightDetail'
 import Client from "../Client"
@@ -22,10 +22,10 @@ const ActionModal = ({open, setOpen, fight, character, setFight}: ActionModalPar
   const jwt = session?.data?.authorization
   const client = new Client({ jwt: jwt })
 
-  const handleChange = (event: any): void => {
-    setShots(event.target.value)
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
+    setShots(parseInt(event.target.value))
   }
-  const submitAction = async (event: any): Promise<void> => {
+  const submitAction = async (event: React.ChangeEvent<HTMLInputElement>): Promise<void> => {
     event.preventDefault()
 
     const response = await client.actCharacter(character, fight)
@@ -48,12 +48,14 @@ const ActionModal = ({open, setOpen, fight, character, setFight}: ActionModalPar
       aria-describedby="modal-modal-description"
       disableRestoreFocus
     >
-      <Stack p={4} spacing={2} component="form" onSubmit={submitAction}>
+      <Stack p={4} spacing={2} onSubmit={submitAction}>
+        <Box component="form">
         <TextField autoFocus label="Shots" required name="shots" value={shots} onChange={handleChange} />
-        <Stack alignItems="flex-end" spacing={2} direction="row">
-          <Button variant="outlined" disabled={saving} onClick={cancelForm}>Cancel</Button>
-          <Button variant="contained" type="submit" disabled={saving}>Save Changes</Button>
-        </Stack>
+          <Stack alignItems="flex-end" spacing={2} direction="row">
+            <Button variant="outlined" disabled={saving} onClick={cancelForm}>Cancel</Button>
+            <Button variant="contained" type="submit" disabled={saving}>Save Changes</Button>
+          </Stack>
+        </Box>
       </Stack>
     </Dialog>
   )

@@ -49,11 +49,11 @@ export default function Profile({ jwt, user:initialUser }: ProfileProps) {
   const [user, setUser] = useState<User>(initialUser)
   const [saving, setSaving] = useState<boolean>(false)
 
-  const handleChange = (event: any): void => {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
     setUser((prevState: User) => ({ ...prevState, [event.target.name]: event.target.value }))
   }
 
-  const handleSubmit = async (event: any): Promise<void> => {
+  const handleSubmit = async (event: React.ChangeEvent<HTMLInputElement>): Promise<void> => {
     setSaving(true)
     event.preventDefault()
 
@@ -62,7 +62,7 @@ export default function Profile({ jwt, user:initialUser }: ProfileProps) {
     Router.reload()
   }
 
-  const cancelForm = (event: any): void => {
+  const cancelForm = (): void => {
     setUser(initialUser)
     setSaving(false)
   }

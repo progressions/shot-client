@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Stack, TextField, Button, Dialog } from '@mui/material'
+import { Box, Stack, TextField, Button, Dialog } from '@mui/material'
 import { useSession } from 'next-auth/react'
 import { loadFight } from '../FightDetail'
 import Client from "../Client"
@@ -22,10 +22,10 @@ const WoundsModal = ({open, setOpen, fight, character, setFight}: WoundsModalPar
   const jwt = session?.data?.authorization
   const client = new Client({ jwt })
 
-  const handleChange = (event: any) => {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setWounds(event.target.value)
   }
-  const submitWounds = async (event: any) => {
+  const submitWounds = async (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault()
     const newWounds = (character.action_values["Type"] === "Mook") ?
       parseInt(character.action_values["Wounds"]) - parseInt(wounds) :
@@ -54,12 +54,14 @@ const WoundsModal = ({open, setOpen, fight, character, setFight}: WoundsModalPar
       aria-describedby="modal-modal-description"
       disableRestoreFocus
     >
-      <Stack p={4} spacing={2} component="form" onSubmit={submitWounds}>
-        <TextField autoFocus label={label} required name="wounds" value={wounds} onChange={handleChange} />
-        <Stack alignItems="flex-end" spacing={2} direction="row">
-          <Button variant="outlined" disabled={saving} onClick={cancelForm}>Cancel</Button>
-          <Button variant="contained" type="submit" disabled={saving}>Save Changes</Button>
-        </Stack>
+      <Stack p={4} spacing={2} onSubmit={submitWounds}>
+        <Box component="form">
+          <TextField autoFocus label={label} required name="wounds" value={wounds} onChange={handleChange} />
+          <Stack alignItems="flex-end" spacing={2} direction="row">
+            <Button variant="outlined" disabled={saving} onClick={cancelForm}>Cancel</Button>
+            <Button variant="contained" type="submit" disabled={saving}>Save Changes</Button>
+          </Stack>
+        </Box>
       </Stack>
     </Dialog>
   )

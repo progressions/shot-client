@@ -12,11 +12,11 @@ interface CharacterFiltersProps {
 }
 
 export default function CharacterFilters({ filters, setFilters }: CharacterFiltersProps) {
-  const handleTypeChange = (event: any) => {
+  const handleTypeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setFilters({ ...filters, type: event.target.value })
   }
 
-  const handleNameChange = (event: any) => {
+  const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setFilters({ ...filters, name: event.target.value })
   }
 

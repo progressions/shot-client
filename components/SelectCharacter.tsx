@@ -41,11 +41,11 @@ export default function SelectCharacter({ fight, setFight }: SelectCharacterPara
     setChars([])
   }
 
-  const handleChange = (event: any):void => {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>):void => {
     setValue(event.target.value)
   }
 
-  const handleSubmit = async (event: any):Promise<void> => {
+  const handleSubmit = async (event: React.SyntheticEvent):Promise<void> => {
     event.preventDefault()
 
     const response = await client.addCharacter(fight, {id: value})

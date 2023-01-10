@@ -45,7 +45,7 @@ export interface Character {
   impairments: number,
   color?: string,
   action_values: ActionValues,
-  user?: any,
+  user?: User,
   created_at?: string,
   updated_at?: string,
   new?: boolean

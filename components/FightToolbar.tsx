@@ -15,6 +15,9 @@ interface FightToolbarParams {
 }
 
 export default function FightToolbar({ fight, setFight, showHidden, setShowHidden }: FightToolbarParams) {
+  const show = (event: React.SyntheticEvent<Element, Event>, checked: boolean) => {
+    setShowHidden(checked)
+  }
   return (
     <>
       <Stack direction="row" spacing={2} alignItems='center'>
@@ -22,7 +25,7 @@ export default function FightToolbar({ fight, setFight, showHidden, setShowHidde
         <CreateCharacter fight={fight} setFight={setFight} />
         <SelectCharacter fight={fight} setFight={setFight} />
         <MookRolls />
-        <FormControlLabel label="Show Hidden" control={<Switch checked={showHidden} />} onChange={(event: any) => setShowHidden(event.target.checked)} />
+        <FormControlLabel label="Show Hidden" control={<Switch checked={showHidden} />} onChange={show} />
       </Stack>
     </>
   )

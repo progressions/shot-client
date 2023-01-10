@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { MouseEventHandler, useState, useEffect } from 'react'
 import { InputAdornment, Dialog, Box, Stack, TextField, Button, Paper, Popover } from '@mui/material'
 import FavoriteIcon from '@mui/icons-material/Favorite'
 import Router from 'next/router'
@@ -60,11 +60,11 @@ export default function CharacterModal({ open, setOpen, fight, setFight, charact
     cancelForm()
   }
 
-  const handleChange = (event: any) => {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setCharacter((prevState: Character) => ({ ...prevState, [event.target.name]: event.target.value }))
   }
 
-  const handleAVChange = (event: any) => {
+  const handleAVChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { action_values } = character || {}
     setCharacter((prevState: Character) => ({ ...prevState, action_values: { ...action_values, [event.target.name]: event.target.value } }))
   }
@@ -80,7 +80,7 @@ export default function CharacterModal({ open, setOpen, fight, setFight, charact
     setOpen(false)
   }
 
-  async function handleSubmit(event: any) {
+  async function handleSubmit(event: React.ChangeEvent<HTMLInputElement>) {
     setSaving(true)
     event.preventDefault()
 
@@ -100,13 +100,13 @@ export default function CharacterModal({ open, setOpen, fight, setFight, charact
     }
   }
 
-  const togglePicker = (event: any) => {
+  const togglePicker = (event: React.MouseEvent<HTMLElement>) => {
     if (picker) {
       setPicker(false)
       setAnchorEl(null)
     } else {
       setPicker(true)
-      setAnchorEl(event.target)
+      setAnchorEl(event.target as any)
     }
   }
 
@@ -134,7 +134,7 @@ export default function CharacterModal({ open, setOpen, fight, setFight, charact
                 InputProps={{startAdornment: <InputAdornment position="start"><FavoriteIcon color='error' /></InputAdornment>}}
                />
               <TextField label="Impairments" name="impairments" value={character.impairments || ''} onChange={handleChange} />
-              <Box p={2} sx={{width: 10, height: 5, bgcolor: character.color, borderColor: 'primary', border: 1, borderRadius: 2}} onClick={togglePicker} />
+              <Button sx={{width: 2, height: 50, bgcolor: character.color, borderColor: 'primary', border: 1, borderRadius: 2}} onClick={togglePicker} />
               <TextField id="colorPicker" label="Color" name="color" value={character.color || ''} onChange={handleChange} />
             </Stack>
             <Popover anchorEl={anchorEl} open={picker} onClose={() => setPicker(false)} anchorOrigin={{vertical: 'bottom', horizontal: 'center'}}>

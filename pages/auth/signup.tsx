@@ -26,11 +26,11 @@ export default function SignUp() {
   const [saving, setSaving] = useState<boolean>(false)
   const [user, setUser] = useState<User>(defaultUser)
 
-  const handleChange = (event: any) => {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setUser((prevState:User) => { return { ...prevState, [event.target.name]: event.target.value }})
   }
 
-  const handleSubmit = async (event: any) => {
+  const handleSubmit = async (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault()
     console.log(user)
     const response = await client.createUser(user)

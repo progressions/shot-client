@@ -23,11 +23,11 @@ export default function AddFight({ setFights, setToast }: AddFightProps) {
   const [fight, setFight] = useState<Fight>({name: ''})
   const [saving, setSaving] = useState<boolean>(false);
 
-  const handleChange = (event: any): void => {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
     setFight({ name: event.target.value })
   }
 
-  const handleSubmit = async (event: any): Promise<void> => {
+  const handleSubmit = async (event: React.ChangeEvent<HTMLInputElement>): Promise<void> => {
     setSaving(true)
     event.preventDefault()
 

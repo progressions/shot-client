@@ -38,7 +38,7 @@ export default function SignInPage({ referer }: SignInPageProps) {
     }
   )
 
-  const handleSubmit = async (event: any): Promise<void> => {
+  const handleSubmit = async (event: React.ChangeEvent<HTMLInputElement>): Promise<void> => {
     event.preventDefault()
     const result = await signIn('credentials', {
       email: credentials.email,
@@ -57,7 +57,7 @@ export default function SignInPage({ referer }: SignInPageProps) {
     }
   }
 
-  const handleChange = (event: any): void => {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
     setCredentials((prevState: Credentials) => ({ ...prevState, [event.target.name]: event.target.value }))
   }
 

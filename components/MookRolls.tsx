@@ -28,7 +28,7 @@ export default function MookRolls({ count, attack, damage, icon }: MookRollsPara
   const [value, setValue] = useState<MookRollValue>(defaultValue)
   const [rolls, setRolls] = useState<number[]>([])
 
-  const handleChange = (event: any): void => {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
     setValue({...value, [event.target.name]: event.target.value})
   }
 
@@ -38,7 +38,7 @@ export default function MookRolls({ count, attack, damage, icon }: MookRollsPara
     setRolls([])
   }
 
-  const generateRolls = (event: any): void => {
+  const generateRolls = (event: React.ChangeEvent<HTMLInputElement>): void => {
     event.preventDefault()
     setRolls([])
     const count = parseInt(value.count) || 0

@@ -31,11 +31,11 @@ export default function UserModal({ user, setUser }: UserModalParams) {
     cancelForm()
   }
 
-  const handleChange = (event: any) => {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setUser((prevState: User) => ({ ...prevState, [event.target.name]: event.target.value }))
   }
 
-  const handleCheck = (event: any) => {
+  const handleCheck = (event: React.ChangeEvent<HTMLInputElement>) => {
     setUser((prevState: User) => ({ ...prevState, [event.target.name]: event.target.checked }))
   }
 
@@ -43,7 +43,7 @@ export default function UserModal({ user, setUser }: UserModalParams) {
     setUser(defaultUser)
   }
 
-  async function handleSubmit(event: any) {
+  async function handleSubmit(event: React.ChangeEvent<HTMLInputElement>) {
     setSaving(true)
     event.preventDefault()
 
