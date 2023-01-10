@@ -5,7 +5,7 @@ class Api {
 
   api():string { return `${this.base()}/api/v1` }
 
-  fights(fight: Fight | undefined): string {
+  fights(fight?: Fight | undefined): string {
     if (fight) {
       return `${this.api()}/fights/${fight.id}`
     } else {
@@ -13,7 +13,7 @@ class Api {
     }
   }
 
-  characters(fight: Fight | null, character: Character | undefined): string {
+  characters(fight?: Fight | null, character?: Character | ID | undefined): string {
     if (!fight) {
       return this.allCharacters(character)
     }
@@ -24,7 +24,7 @@ class Api {
     }
   }
 
-  addCharacter(fight: Fight, character: Character): string {
+  addCharacter(fight: Fight, character: Character | ID): string {
     return `${this.characters(fight, character)}/add`
   }
 
@@ -32,7 +32,7 @@ class Api {
     return `${this.characters(fight, character)}/act`
   }
 
-  allCharacters(character: Character | undefined): string {
+  allCharacters(character?: Character | ID | undefined): string {
     if (character) {
       return `${this.api()}/all_characters/${character.id}`
     } else {
@@ -40,7 +40,7 @@ class Api {
     }
   }
 
-  adminUsers(user: User | undefined): string {
+  adminUsers(user?: User | ID | undefined): string {
     if (user) {
       return `${this.api()}/users/${user.id}`
     } else {

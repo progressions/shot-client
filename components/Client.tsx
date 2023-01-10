@@ -7,7 +7,7 @@ interface ClientParams {
 
 class Client {
   jwt?: string
-  api: any
+  api: Api
 
   constructor(params: ClientParams = {}) {
     if (params.jwt) {
