@@ -4,7 +4,7 @@ import { useSession } from 'next-auth/react'
 import { loadFight } from '../FightDetail'
 import Client from "../Client"
 
-import type { Character, Fight, Toast } from "../../types/types"
+import type { Character, Fight, Toast, ActionValues } from "../../types/types"
 
 interface WoundsModalParams {
   open: boolean,
@@ -16,7 +16,7 @@ interface WoundsModalParams {
 }
 
 const WoundsModal = ({open, setOpen, fight, character, setFight, setToast}: WoundsModalParams) => {
-  const [wounds, setWounds] = useState<string>('')
+  const [wounds, setWounds] = useState<number>(0)
   const [saving, setSaving] = useState<boolean>(false)
 
   const session: any = useSession({ required: true })
@@ -24,20 +24,21 @@ const WoundsModal = ({open, setOpen, fight, character, setFight, setToast}: Woun
   const client = new Client({ jwt })
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setWounds(event.target.value)
+    setWounds(parseInt(event.target.value))
   }
   const submitWounds = async (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault()
-    const newWounds = (character.action_values["Type"] === "Mook") ?
-      parseInt(character.action_values["Wounds"]) - parseInt(wounds) :
-      parseInt(character.action_values["Wounds"]) + parseInt(wounds)
-    const actionValues = character.action_values
-    actionValues['Wounds'] = `${newWounds}`
+    console.log(character.action_values)
+    const newWounds: number = (character.action_values["Type"] === "Mook") ?
+      character.action_values["Wounds"] - wounds :
+      character.action_values["Wounds"] + wounds
+    const actionValues: ActionValues = character.action_values
+    actionValues['Wounds'] = newWounds
 
     const response = await client.updateCharacter({ ...character, "action_values": actionValues}, fight)
     if (response.status === 200) {
       await loadFight({jwt, id: fight.id as string, setFight})
-      setWounds('')
+      setWounds(0)
       setOpen(false)
       if (character.action_values["Type"] === "Mook") {
         setToast({ open: true, message: `${character.name} lost ${wounds} mooks.`, severity: "success" })
@@ -47,7 +48,7 @@ const WoundsModal = ({open, setOpen, fight, character, setFight, setToast}: Woun
     }
   }
   const cancelForm = () => {
-    setWounds('')
+    setWounds(0)
     setOpen(false)
   }
   const label = (character.action_values["Type"] === "Mook") ? "Mooks" : "Wounds"
@@ -62,7 +63,7 @@ const WoundsModal = ({open, setOpen, fight, character, setFight, setToast}: Woun
     >
       <Box component="form" onSubmit={submitWounds}>
         <Stack p={4} spacing={2}>
-          <TextField autoFocus label={label} required name="wounds" value={wounds} onChange={handleChange} />
+          <TextField autoFocus type="number" label={label} required name="wounds" value={wounds} onChange={handleChange} />
           <Stack alignItems="flex-end" spacing={2} direction="row">
             <Button variant="outlined" disabled={saving} onClick={cancelForm}>Cancel</Button>
             <Button variant="contained" type="submit" disabled={saving}>Save Changes</Button>

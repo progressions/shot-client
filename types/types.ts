@@ -8,33 +8,28 @@ export interface Toast {
 }
 
 export interface ActionValues {
-  [key: string]: string | number | null | undefined
-  Guns?: string
-  "Martial Arts"?: string
-  Sorcery?: string
-  Scroungetech?: string
-  Genome?: string
-  Defense?: string
-  Toughness?: string
-  Speed?: string
-  Fortune?: string
-  "Max Fortune"?: string
-  FortuneType?: string
-  MainAttack?: string
-  SecondaryAttack?: string
-  Wounds: string
-  Type?: CharacterType | string | null
-  Damage?: string
+  [key: string]: string | number | null | undefined | boolean
+  Guns?: number
+  "Martial Arts"?: number
+  Sorcery?: number
+  Scroungetech?: number
+  Genome?: number
+  Defense?: number
+  Toughness?: number
+  Speed?: number
+  Fortune?: number
+  "Max Fortune"?: number
+  FortuneType?: number
+  MainAttack?: number
+  SecondaryAttack?: number
+  Wounds: number
+  Type?: CharacterType
+  Damage?: number,
+  Vehicle?: boolean,
+  "Marks of Death": number
 }
 
-export enum CharacterType {
-  "PC",
-  "Ally",
-  "Mook",
-  "Featured Foe",
-  "Boss",
-  "Uber-Boss"
-}
+export type CharacterType = "" | "PC" | "Ally" | "Mook" | "Featured Foe" | "Boss" | "Uber-Boss"
 
 export interface ID {
   id: string
@@ -93,21 +88,23 @@ export const defaultCharacter:Character = {
   impairments: 0,
   color: '',
   action_values: {
-    Guns: "",
-    "Martial Arts": "",
-    Sorcery: "",
-    Scroungetech: "",
-    Genome: "",
-    Defense: "",
-    Toughness: "",
-    Speed: "",
-    Fortune: "",
-    "Max Fortune": "",
-    FortuneType: "",
-    MainAttack: "",
-    SecondaryAttack: "",
-    Wounds: "0",
-    Type: ""
+    Guns: 0,
+    "Martial Arts": 0,
+    Sorcery: 0,
+    Scroungetech: 0,
+    Genome: 0,
+    Defense: 0,
+    Toughness: 0,
+    Speed: 0,
+    Fortune: 0,
+    "Max Fortune": 0,
+    FortuneType: 0,
+    MainAttack: 0,
+    SecondaryAttack: 0,
+    Wounds: 0,
+    Type: "PC",
+    Vehicle: false,
+    "Marks of Death": 0
   }
 }
 

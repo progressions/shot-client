@@ -7,7 +7,7 @@ import NewReleasesIcon from '@mui/icons-material/NewReleases'
 
 import MookRolls from '../MookRolls'
 
-import type { Character, Toast } from "../../types/types"
+import type { Character, CharacterType, Toast } from "../../types/types"
 
 interface ActionButtonsParams {
   character: Character,
@@ -21,7 +21,7 @@ interface ActionButtonsParams {
 export default function ActionButtons({ character, takeWounds, takeAction, editCharacter, deleteCharacter }: ActionButtonsParams) {
   if (!character) return <></>
 
-  const woundLabel = character.action_values["Type"] === "Mook" ? "Kill Mooks" : "Take Wounds"
+  const woundLabel = character.action_values["Type"] === "Mook" as CharacterType ? "Kill Mooks" : "Take Wounds"
   return (
     <ButtonGroup variant="outlined" size="small">
       { takeWounds && character.action_values["Type"] == "Mook" &&

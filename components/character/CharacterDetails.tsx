@@ -21,6 +21,18 @@ import Client from "../Client"
 import type { Character, Fight, Toast, ID } from "../../types/types"
 import { defaultCharacter } from "../../types/types"
 
+import { styled } from '@mui/material/styles'
+import { Rating } from "@mui/material"
+import { IoSkull, IoSkullOutline } from "react-icons/io5"
+const StyledRating = styled(Rating)({
+  '& .MuiRating-iconFilled': {
+    color: '#000',
+  },
+  '& .MuiRating-iconHover': {
+    color: '#333',
+  },
+});
+
 interface CharacterDetailsParams {
   character: Character,
   fight: Fight,
@@ -66,7 +78,7 @@ export default function CharacterDetails({ character, fight, setFight, editingCh
   const defense = character.defense ? `Defense ${character.defense}` : ''
   const impairments = character.impairments ? `(-${character.impairments})` : ''
   const color = character.impairments > 0 ? 'error' : 'primary'
-  const wounds = parseInt(character.action_values["Wounds"]) > 0 ? character.action_values["Wounds"] : ''
+  const wounds = character.action_values["Wounds"] > 0 ? character.action_values["Wounds"] : ''
 
   return (
     <>
@@ -79,7 +91,22 @@ export default function CharacterDetails({ character, fight, setFight, editingCh
               </TableCell>
               <TableCell sx={{width: 200}}>
                 <Typography variant="h4" sx={{fontWeight: 'bold'}}>
-                  { character.name }
+                  <Stack direction="row" alignItems="center" spacing={2}>
+                    <Box component="span">
+                    { character.name }
+                    </Box>
+                    { character.action_values["Type"] === "PC" &&
+                      character.action_values["Marks of Death"] > 0 &&
+                    <StyledRating
+                      size="small"
+                      name="Marks of Death"
+                      readOnly
+                      value={character.action_values["Marks of Death"] as number}
+                      icon={<IoSkull />}
+                      emptyIcon={<IoSkullOutline />}
+                      max={5} />
+                  }
+                  </Stack>
                 </Typography>
               </TableCell>
               <TableCell sx={{width: 60}}>

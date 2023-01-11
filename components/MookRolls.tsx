@@ -3,18 +3,18 @@ import { useState } from 'react'
 import { rollDie, rollExplodingDie } from './DiceRoller'
 
 interface MookRollsParams {
-  count?: string,
-  attack?: string | undefined,
-  defense?: string | undefined,
-  damage?: string | undefined,
-  icon?: React.ReactElement | undefined
+  count?: number,
+  attack?: number
+  defense?: number
+  damage?: number
+  icon?: React.ReactElement
 }
 
 interface MookRollValue {
-  count: string,
-  attack: string,
-  defense: string,
-  damage: string
+  count: number,
+  attack: number,
+  defense: number,
+  damage: number
 }
 
 interface RollOutcomeParams {
@@ -23,7 +23,7 @@ interface RollOutcomeParams {
 }
 
 export default function MookRolls({ count, attack, damage, icon }: MookRollsParams) {
-  const defaultValue:MookRollValue = {count: count || '10', attack: attack || '8', defense: '13', damage: damage || '10'}
+  const defaultValue:MookRollValue = {count: count || 10, attack: attack || 8, defense: 13, damage: damage || 10}
   const [open, setOpen] = useState<boolean>(false)
   const [value, setValue] = useState<MookRollValue>(defaultValue)
   const [rolls, setRolls] = useState<number[]>([])
@@ -41,15 +41,15 @@ export default function MookRolls({ count, attack, damage, icon }: MookRollsPara
   const generateRolls = (event: React.ChangeEvent<HTMLInputElement>): void => {
     event.preventDefault()
     setRolls([])
-    const count = parseInt(value.count) || 0
+    const count = value.count
     for (var i = 0; i < count; i++) {
       const [dieRolls, result] = rollExplodingDie(rollDie)
-      setRolls((oldArray: number[]) => [...oldArray, (result + parseInt(value.attack))])
+      setRolls((oldArray: number[]) => [...oldArray, (result + value.attack)])
     }
   }
 
   const RollOutcome = ({ outcome, value }: RollOutcomeParams) => {
-    const defense = parseInt(value.defense) || 0
+    const defense = value.defense
     const winner = outcome >= defense
     const style = (value.defense && winner) ? {color: 'red', fontWeight: 'bold'} : {}
 
@@ -64,8 +64,8 @@ export default function MookRolls({ count, attack, damage, icon }: MookRollsPara
 
   const smackdowns = (rolls: number[]) => {
     return (rolls
-      .filter((roll: number) => (roll >= parseInt(value.defense)))
-      .map((outcome, index) => <Typography key={(Math.random() * 10000)}>{outcome}: You take a smackdown of {outcome - parseInt(value.defense) + parseInt(value.damage)}</Typography>)
+      .filter((roll: number) => (roll >= value.defense))
+      .map((outcome, index) => <Typography key={(Math.random() * 10000)}>{outcome}: You take a smackdown of {outcome - value.defense + value.damage}</Typography>)
     )
   }
 
