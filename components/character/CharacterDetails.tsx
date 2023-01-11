@@ -14,24 +14,13 @@ import WoundsModal from './WoundsModal'
 import ActionButtons from './ActionButtons'
 import AvatarBadge from './AvatarBadge'
 import GamemasterOnly from '../GamemasterOnly'
+import DeathMarks from "./DeathMarks"
 
 import { loadFight } from '../FightDetail'
 import Client from "../Client"
 
 import type { Character, Fight, Toast, ID } from "../../types/types"
 import { defaultCharacter } from "../../types/types"
-
-import { styled } from '@mui/material/styles'
-import { Rating } from "@mui/material"
-import { IoSkull, IoSkullOutline } from "react-icons/io5"
-const StyledRating = styled(Rating)({
-  '& .MuiRating-iconFilled': {
-    color: '#000',
-  },
-  '& .MuiRating-iconHover': {
-    color: '#333',
-  },
-});
 
 interface CharacterDetailsParams {
   character: Character,
@@ -95,17 +84,9 @@ export default function CharacterDetails({ character, fight, setFight, editingCh
                     <Box component="span">
                     { character.name }
                     </Box>
-                    { character.action_values["Type"] === "PC" &&
-                      character.action_values["Marks of Death"] > 0 &&
-                    <StyledRating
-                      size="small"
-                      name="Marks of Death"
-                      readOnly
-                      value={character.action_values["Marks of Death"] as number}
-                      icon={<IoSkull />}
-                      emptyIcon={<IoSkullOutline />}
-                      max={5} />
-                  }
+                    { (["PC", "Ally"].includes(character.action_values["Type"] as string) &&
+                      character.action_values["Marks of Death"] > 0) &&
+                    <DeathMarks character={character} readOnly={true} /> }
                   </Stack>
                 </Typography>
               </TableCell>

@@ -1,12 +1,11 @@
 import { MouseEventHandler, useState, useEffect } from 'react'
-import { Rating, InputAdornment, Dialog, Box, Stack, TextField, Button, Paper, Popover } from '@mui/material'
+import { InputAdornment, Dialog, Box, Stack, TextField, Button, Paper, Popover } from '@mui/material'
 import FavoriteIcon from '@mui/icons-material/Favorite'
-import { IoSkull, IoSkullOutline } from "react-icons/io5"
-import { styled } from '@mui/material/styles'
 
 import Router from 'next/router'
 
 import CharacterType from './CharacterType'
+import DeathMarks from "./DeathMarks"
 
 import { useSession } from 'next-auth/react'
 import { BlockPicker } from 'react-color'
@@ -15,15 +14,6 @@ import Client from "../Client"
 
 import type { Fight, Character, Toast, ID } from "../../types/types"
 import { defaultCharacter } from "../../types/types"
-
-const StyledRating = styled(Rating)({
-  '& .MuiRating-iconFilled': {
-    color: '#000',
-  },
-  '& .MuiRating-iconHover': {
-    color: '#333',
-  },
-});
 
 interface CharacterModalParams {
   open: Character,
@@ -148,14 +138,7 @@ export default function CharacterModal({ open, setOpen, fight, setFight, charact
               <TextField label={woundsLabel} type="number" name="Wounds" value={character.action_values?.['Wounds'] || ''} onChange={handleAVChange}
                 InputProps={{startAdornment: <InputAdornment position="start"><FavoriteIcon color='error' /></InputAdornment>}} />
               { character.action_values["Type"] === "PC" &&
-                <StyledRating
-                  name="Marks of Death"
-                  onChange={handleDeathMarks}
-                  value={character.action_values["Marks of Death"] as number}
-                  icon={<IoSkull />}
-                  emptyIcon={<IoSkullOutline />}
-                  max={5} />
-              }
+              <DeathMarks character={character} onChange={handleDeathMarks} /> }
               <TextField label="Impairments" type="number" name="impairments" value={character.impairments || ''} onChange={handleChange} />
               <Button sx={{width: 2, height: 50, bgcolor: character.color, borderColor: 'primary', border: 1, borderRadius: 2}} onClick={togglePicker} />
               <TextField id="colorPicker" label="Color" name="color" value={character.color || ''} onChange={handleChange} />
