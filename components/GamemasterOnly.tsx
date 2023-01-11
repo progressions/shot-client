@@ -3,7 +3,7 @@ import type { User, Character } from "../types/types"
 interface GamemasterOnlyProps {
   user: User,
   character: Character,
-  children: JSX.Element,
+  children: any,
   override?: boolean,
 }
 

@@ -29,16 +29,46 @@ export interface ActionValues {
   "Marks of Death": number
 }
 
+export interface VehicleActionValues {
+  [key: string]: number | Position | CharacterType | undefined
+  Acceleration: number
+  Handling: number
+  Squeal: number
+  Frame: number
+  Crunch: number
+  "Chase Points": number
+  "Condition Points": number
+  Position: Position
+  Type: CharacterType
+}
+
+export type Position = "near" | "far"
+
 export type CharacterType = "" | "PC" | "Ally" | "Mook" | "Featured Foe" | "Boss" | "Uber-Boss"
 
 export interface ID {
   id: string
 }
 
-export interface Character {
+export type Character = Vehicle | Person
+
+export interface Vehicle {
   id?: string,
   name: string,
-  defense: string,
+  current_shot?: number | string,
+  impairments: number,
+  color: string,
+  action_values: VehicleActionValues,
+  user?: User,
+  created_at?: string,
+  updated_at?: string,
+  new?: boolean
+  category: "character" | "vehicle"
+}
+
+export interface Person {
+  id?: string,
+  name: string,
   current_shot?: number | string,
   impairments: number,
   color: string,
@@ -47,6 +77,7 @@ export interface Character {
   created_at?: string,
   updated_at?: string,
   new?: boolean
+  category: "character" | "vehicle"
 }
 
 export type ShotType = [number, Character[]]
@@ -80,10 +111,9 @@ export interface ServerSideProps {
   params?: any
 }
 
-
-export const defaultCharacter:Character = {
+export const defaultCharacter:Person = {
   name: '',
-  defense: '',
+  category: "character",
   current_shot: '',
   impairments: 0,
   color: '',
@@ -105,6 +135,25 @@ export const defaultCharacter:Character = {
     Type: "PC",
     Vehicle: false,
     "Marks of Death": 0
+  }
+}
+
+export const defaultVehicle:Vehicle = {
+  name: '',
+  category: "vehicle",
+  current_shot: '',
+  impairments: 0,
+  color: '',
+  action_values: {
+    Acceleration: 0,
+    Handling: 0,
+    Squeal: 0,
+    Frame: 0,
+    Crunch: 0,
+    "Chase Points": 0,
+    "Condition Points": 0,
+    Position: "far",
+    Type: "PC"
   }
 }
 

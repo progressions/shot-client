@@ -2,6 +2,7 @@ import { Switch, FormControlLabel, Stack } from '@mui/material'
 
 import CreateCharacter from './character/CreateCharacter'
 import SelectCharacter from './SelectCharacter'
+import CreateVehicle from './vehicles/CreateVehicle'
 import DiceRoller from './DiceRoller'
 import MookRolls from './MookRolls'
 
@@ -23,6 +24,7 @@ export default function FightToolbar({ fight, setFight, showHidden, setShowHidde
     <>
       <Stack direction="row" spacing={2} alignItems='center'>
         <DiceRoller />
+        <CreateVehicle fight={fight} setFight={setFight} setToast={setToast} />
         <CreateCharacter fight={fight} setFight={setFight} setToast={setToast} />
         <SelectCharacter fight={fight} setFight={setFight} />
         <MookRolls />

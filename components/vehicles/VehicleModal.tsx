@@ -1,30 +1,31 @@
 import { MouseEventHandler, useState, useEffect } from 'react'
 import { FormControlLabel, Checkbox, InputAdornment, Dialog, Box, Stack, TextField, Button, Paper, Popover } from '@mui/material'
 import FavoriteIcon from '@mui/icons-material/Favorite'
+import CommuteIcon from '@mui/icons-material/Commute'
+import CarCrashIcon from '@mui/icons-material/CarCrash'
 
 import Router from 'next/router'
 
-import CharacterType from './CharacterType'
-import DeathMarks from "./DeathMarks"
+import CharacterType from '../character/CharacterType'
 
 import { useSession } from 'next-auth/react'
 import { BlockPicker } from 'react-color'
 import { loadFight } from '../FightDetail'
 import Client from "../Client"
 
-import type { Person, Fight, Character, Toast, ID } from "../../types/types"
-import { defaultCharacter } from "../../types/types"
+import type { Vehicle, Fight, Character, Toast, ID } from "../../types/types"
+import { defaultVehicle } from "../../types/types"
 
-interface CharacterModalParams {
-  open: Character,
-  setOpen: React.Dispatch<React.SetStateAction<Character>>
+interface VehicleModalParams {
+  open: Vehicle,
+  setOpen: React.Dispatch<React.SetStateAction<Vehicle>>
   fight?: Fight,
   setFight?: React.Dispatch<React.SetStateAction<Fight>>
-  character: Person | null
+  character: Vehicle | null
   setToast: React.Dispatch<React.SetStateAction<Toast>>
 }
 
-export default function CharacterModal({ open, setOpen, fight, setFight, character:activeCharacter, setToast }: CharacterModalParams) {
+export default function CharacterModal({ open, setOpen, fight, setFight, character:activeVehicle, setToast }: VehicleModalParams) {
   const [picker, setPicker] = useState<boolean>(false)
   const [anchorEl, setAnchorEl] = useState(null)
 
@@ -34,55 +35,48 @@ export default function CharacterModal({ open, setOpen, fight, setFight, charact
 
   const [saving, setSaving] = useState(false);
 
-  const [character, setCharacter] = useState<Person>(activeCharacter || defaultCharacter)
+  const [character, setCharacter] = useState<Vehicle>(activeVehicle || defaultVehicle)
   const method = character?.id ? 'PATCH' : 'POST'
 
   useEffect(() => {
-    if (activeCharacter) {
-      setCharacter(activeCharacter)
+    if (activeVehicle) {
+      setCharacter(activeVehicle)
     }
-  }, [activeCharacter])
+  }, [activeVehicle])
 
   function handleClose() {
     cancelForm()
   }
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setCharacter((prevState: Person) => ({ ...prevState, [event.target.name]: event.target.value }))
+    setCharacter((prevState: Vehicle) => ({ ...prevState, [event.target.name]: event.target.value }))
   }
 
   const handleAVChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { action_values } = character || {}
-    setCharacter((prevState: Person) => ({ ...prevState, action_values: { ...action_values, [event.target.name]: event.target.value } }))
-  }
-
-  const handleDeathMarks = (event: React.SyntheticEvent<Element, Event>, newValue: number | null) => {
-    const { action_values } = character || {}
-    console.log(newValue)
-    const value = (newValue === character.action_values["Marks of Death"]) ? 0 : newValue
-    setCharacter((prevState: Person) => ({ ...prevState, action_values: { ...action_values, "Marks of Death": value as number } }))
+    setCharacter((prevState: any) => ({ ...prevState, action_values: { ...action_values, [event.target.name]: event.target.value } }))
   }
 
   const handleColor = (color: any) => {
-    setCharacter((prevState: Person) => ({ ...prevState, color: color?.hex }))
+    setCharacter((prevState: Vehicle) => ({ ...prevState, color: color?.hex }))
     setPicker(false)
     setAnchorEl(null)
   }
 
   const cancelForm = () => {
-    setCharacter(character || defaultCharacter)
-    setOpen(defaultCharacter)
+    setCharacter(character || defaultVehicle)
+    setOpen(defaultVehicle)
   }
 
   async function handleSubmit(event: React.ChangeEvent<HTMLInputElement>) {
     setSaving(true)
     event.preventDefault()
 
-    const newCharacter = !!character.id
+    const newVehicle = !!character.id
 
-    const response = newCharacter ?
-      await client.updateCharacter(character, fight) :
-      await client.createCharacter(character, fight)
+    const response = newVehicle ?
+      await client.updateVehicle(character, fight) :
+      await client.createVehicle(character, fight)
 
     if (response.status === 200) {
       const data = await response.json()
@@ -92,7 +86,7 @@ export default function CharacterModal({ open, setOpen, fight, setFight, charact
       cancelForm()
       if (fight && setFight) {
         await loadFight({jwt, id: fight.id as string, setFight})
-        setToast({ open: true, message: `Character ${character.name} updated.`, severity: "success" })
+        setToast({ open: true, message: `Vehicle ${character.name} updated.`, severity: "success" })
       } else {
         Router.reload()
       }
@@ -113,12 +107,12 @@ export default function CharacterModal({ open, setOpen, fight, setFight, charact
     }
   }
 
-  const woundsLabel = character.action_values["Type"] === "Mook" ? "Mooks" : "Wounds"
+  const woundsLabel = character.action_values["Type"] === "Mook" ? "Mooks" : "Chase"
 
   return (
     <>
       <Dialog
-        open={!!(open.id || open.new) && open.category === "character"}
+        open={!!(open.id || open.new) && open.category === "vehicle"}
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
@@ -135,10 +129,10 @@ export default function CharacterModal({ open, setOpen, fight, setFight, charact
               <TextField label="Shot" type="number" name="current_shot" value={character.current_shot === null ? '' : character.current_shot} onChange={handleChange} sx={{width: 80}} /> }
             </Stack>
             <Stack spacing={2} direction="row" alignItems='center'>
-              <TextField label={woundsLabel} type="number" name="Wounds" value={character.action_values?.['Wounds'] || ''} onChange={handleAVChange}
-                InputProps={{startAdornment: <InputAdornment position="start"><FavoriteIcon color='error' /></InputAdornment>}} />
-              { character.action_values["Type"] === "PC" &&
-              <DeathMarks character={character} onChange={handleDeathMarks} /> }
+              <TextField label={woundsLabel} type="number" name="Chase Points" value={character.action_values?.['Chase Points'] || ''} onChange={handleAVChange}
+                InputProps={{startAdornment: <InputAdornment position="start"><CommuteIcon color='error' /></InputAdornment>}} />
+              <TextField label="Condition" type="number" name="Condition Points" value={character.action_values?.['Condition Points'] || ''} onChange={handleAVChange}
+                InputProps={{startAdornment: <InputAdornment position="start"><CarCrashIcon color='error' /></InputAdornment>}} />
               <TextField label="Impairments" type="number" name="impairments" value={character.impairments || ''} onChange={handleChange} />
               <Button sx={{width: 2, height: 50, bgcolor: character.color, borderColor: 'primary', border: 1, borderRadius: 2}} onClick={togglePicker} />
               <TextField id="colorPicker" label="Color" name="color" value={character.color || ''} onChange={handleChange} />
@@ -149,11 +143,11 @@ export default function CharacterModal({ open, setOpen, fight, setFight, charact
               </Paper>
             </Popover>
             <Stack direction="row" spacing={2}>
-              <TextField label="Attack" type="number" sx={{width: 100}} name="Guns" value={character.action_values?.['Guns'] || ''} onChange={handleAVChange} />
-              <TextField label="Defense" type="number" sx={{width: 100}} name="Defense" value={character.action_values?.['Defense'] || ''} onChange={handleAVChange} />
-              <TextField label="Toughness" type="number" sx={{width: 100}} name="Toughness" value={character.action_values?.['Toughness'] || ''} onChange={handleAVChange} />
-              <TextField label="Fortune" type="number" sx={{width: 100}} name="Fortune" value={character.action_values?.['Fortune'] || ''} onChange={handleAVChange} />
-              <TextField label="Speed" type="number" sx={{width: 100}} name="Speed" value={character.action_values?.['Speed'] || ''} onChange={handleAVChange} />
+              <TextField label="Acceleration" type="number" sx={{width: 100}} name="Acceleration" value={character.action_values?.['Acceleration'] || ''} onChange={handleAVChange} />
+              <TextField label="Handling" type="number" sx={{width: 100}} name="Handling" value={character.action_values?.['Handling'] || ''} onChange={handleAVChange} />
+              <TextField label="Squeal" type="number" sx={{width: 100}} name="Squeal" value={character.action_values?.['Squeal'] || ''} onChange={handleAVChange} />
+              <TextField label="Frame" type="number" sx={{width: 100}} name="Frame" value={character.action_values?.['Frame'] || ''} onChange={handleAVChange} />
+              <TextField label="Crunch" type="number" sx={{width: 100}} name="Crunch" value={character.action_values?.['Crunch'] || ''} onChange={handleAVChange} />
             </Stack>
             <Stack alignItems="flex-end" spacing={2} direction="row">
               <Button variant="outlined" disabled={saving} onClick={cancelForm}>Cancel</Button>

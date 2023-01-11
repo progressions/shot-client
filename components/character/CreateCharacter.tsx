@@ -4,8 +4,9 @@ import Stack from '@mui/material/Stack'
 import Button from '@mui/material/Button'
 import TextField from '@mui/material/TextField'
 import CharacterModal from './CharacterModal'
+import PersonAddIcon from '@mui/icons-material/PersonAdd'
 
-import type { Character, Fight, Toast, ID } from "../../types/types"
+import type { Person, Character, Fight, Toast, ID } from "../../types/types"
 import { defaultCharacter } from "../../types/types"
 
 interface CreateCharacterParams {
@@ -24,11 +25,11 @@ export default function CreateCharacter({ fight, setFight, setToast }: CreateCha
   return (
     <>
       <Stack direction="row" mb={1}>
-        <Button variant="outlined" onClick={openModal}>
+        <Button variant="outlined" startIcon={<PersonAddIcon />} onClick={openModal}>
           New Character
         </Button>
       </Stack>
-      <CharacterModal open={newCharacter} setOpen={setNewCharacter} fight={fight} character={newCharacter} setFight={setFight} setToast={setToast} />
+      <CharacterModal open={newCharacter} setOpen={setNewCharacter} fight={fight} character={newCharacter as Person} setFight={setFight} setToast={setToast} />
     </>
   )
 }

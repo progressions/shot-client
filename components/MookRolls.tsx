@@ -1,6 +1,7 @@
 import { Tooltip, Divider, Grid, Stack, Dialog, DialogTitle, DialogContent, DialogActions, DialogContentText, Button, Box, Typography, TextField } from '@mui/material'
 import { useState } from 'react'
 import { rollDie, rollExplodingDie } from './DiceRoller'
+import CasinoIcon from '@mui/icons-material/Casino'
 
 interface MookRollsParams {
   count?: number,

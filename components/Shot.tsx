@@ -3,8 +3,9 @@ import TableRow from '@mui/material/TableRow'
 import TableCell from '@mui/material/TableCell'
 import Typography from '@mui/material/Typography'
 import CharacterDetails from './character/CharacterDetails'
+import VehicleDetails from './vehicles/VehicleDetails'
 
-import type { Character, Fight, Toast } from "../types/types"
+import type { Vehicle, Character, Fight, Toast } from "../types/types"
 
 interface ShotParams {
   fight: Fight,
@@ -39,7 +40,11 @@ export default function Shot({ fight, setFight, shot, characters, editingCharact
           <Stack spacing={2}>
             {
               characters.map((character: Character) => {
-                return <CharacterDetails key={character.id} fight={fight} character={character} setFight={setFight} editingCharacter={editingCharacter as Character} setEditingCharacter={setEditingCharacterWithCurrentShot} setToast={setToast} />
+                if (character.category === "character") {
+                  return <CharacterDetails key={character.id} fight={fight} character={character} setFight={setFight} editingCharacter={editingCharacter as Character} setEditingCharacter={setEditingCharacterWithCurrentShot} setToast={setToast} />
+                } else {
+                  return <VehicleDetails key={character.id} fight={fight} character={character as Vehicle} setFight={setFight} editingCharacter={editingCharacter as Vehicle} setEditingCharacter={setEditingCharacterWithCurrentShot} setToast={setToast} />
+                }
               })
             }
           </Stack>

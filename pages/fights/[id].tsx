@@ -19,11 +19,12 @@ import FightToolbar from '../../components/FightToolbar'
 import Layout from '../../components/Layout'
 import Shot from '../../components/Shot'
 import CharacterModal from '../../components/character/CharacterModal'
+import VehicleModal from '../../components/vehicles/VehicleModal'
 import Api from '../../components/Api'
 import Client from '../../components/Client'
 import PopupToast from '../../components/PopupToast'
 
-import type { Character, Fight, Toast, ID } from "../../types/types"
+import type { Vehicle, Person, Character, Fight, Toast, ID } from "../../types/types"
 import { defaultCharacter, ServerSideProps } from "../../types/types"
 
 interface FightParams {
@@ -73,7 +74,7 @@ export async function getServerSideProps({ req, res, params }: ServerSideProps) 
 
 export default function Fight({ fight:initialFight, notFound }: FightParams) {
   const [fight, setFight] = useState<Fight>(initialFight as Fight)
-  const [editingCharacter, setEditingCharacter] = useState<Character>(defaultCharacter)
+  const [editingCharacter, setEditingCharacter] = useState<Person | Vehicle>(defaultCharacter)
   const [showHidden, setShowHidden] = useState<boolean>(false)
   const [toast, setToast] = useState<Toast>({ open: false, message: "", severity: "success" })
 
@@ -106,18 +107,16 @@ export default function Fight({ fight:initialFight, notFound }: FightParams) {
               <Table border={0}>
                 <TableHead>
                   <TableRow>
-                    <TableCell sx={{width: 50}}>
+                    <TableCell sx={{width: 50, border: 0}}>
                     </TableCell>
-                    <TableCell sx={{width: 240}}>
+                    <TableCell sx={{width: 300, border: 0}}>
                       <Typography variant="h4">Name</Typography>
                     </TableCell>
-                    <TableCell sx={{width: 30}}>
+                    <TableCell sx={{width: 120, border: 0}}>
                       <Typography variant="h4" color='error'><FavoriteIcon sx={{width: 30, height: 30}} /></Typography>
                     </TableCell>
-                    <TableCell sx={{width: 350}}>
+                    <TableCell sx={{width: 350, border: 0}}>
                       <Typography variant="h4">Action Values</Typography>
-                    </TableCell>
-                    <TableCell sx={{width: 100}}>
                     </TableCell>
                   </TableRow>
                 </TableHead>
@@ -133,7 +132,8 @@ export default function Fight({ fight:initialFight, notFound }: FightParams) {
               </Table>
             </TableContainer>
             <PopupToast toast={toast} closeToast={closeToast} />
-            <CharacterModal open={editingCharacter} setOpen={setEditingCharacter} fight={fight} character={editingCharacter} setFight={setFight} setToast={setToast} />
+            <CharacterModal open={editingCharacter} setOpen={setEditingCharacter} fight={fight} character={editingCharacter as Person} setFight={setFight} setToast={setToast} />
+            <VehicleModal open={editingCharacter as Vehicle} setOpen={setEditingCharacter as React.Dispatch<React.SetStateAction<Vehicle>>} fight={fight} character={editingCharacter as Vehicle} setFight={setFight} setToast={setToast} />
           </>)}
         </Container>
       </Layout>

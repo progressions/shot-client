@@ -20,7 +20,7 @@ import CreateCharacter from "../components/character/CreateCharacter"
 import CharacterFilters from "../components/CharacterFilters"
 import PopupToast from "../components/PopupToast"
 
-import type { Character, CharacterFilter, ServerSideProps, Toast } from "../types/types"
+import type { Person, Vehicle, Character, CharacterFilter, ServerSideProps, Toast } from "../types/types"
 import { defaultCharacter } from "../types/types"
 
 interface CharactersProps {
@@ -160,7 +160,7 @@ export default function Characters({ characters:initialCharacters, jwt }: Charac
               </Table>
             </TableContainer>
             <PopupToast toast={toast} closeToast={closeToast} />
-            <CharacterModal open={editingCharacter} setOpen={setEditingCharacter} character={editingCharacter} setToast={setToast} />
+            <CharacterModal open={editingCharacter} setOpen={setEditingCharacter} character={editingCharacter as Person} setToast={setToast} />
           </Container>
         </Layout>
       </main>

@@ -1,5 +1,5 @@
 import Api from "./Api"
-import type { Character, ID, Fight, User } from "../types/types"
+import type { Vehicle, Character, ID, Fight, User } from "../types/types"
 
 interface ClientParams {
   jwt?: string
@@ -50,6 +50,22 @@ class Client {
 
   async addCharacter(fight: Fight, character: Character | ID):Promise<Response> {
     return await this.post(this.api.addCharacter(fight, character), {"character": {"current_shot": 0}})
+  }
+
+  async createVehicle(vehicle: Vehicle, fight?: Fight | null):Promise<Response> {
+    return await this.post(this.api.vehicles(fight, vehicle), {"vehicle": vehicle})
+  }
+
+  async updateVehicle(vehicle: Character, fight?: Fight | null):Promise<Response> {
+    return await this.patch(this.api.vehicles(fight, vehicle), {"vehicle": vehicle})
+  }
+
+  async deleteVehicle(vehicle: Vehicle, fight?: Fight | null):Promise<Response> {
+    return await this.delete(this.api.vehicles(fight, vehicle))
+  }
+
+  async actVehicle(vehicle: Character, fight: Fight):Promise<Response> {
+    return await this.patch(this.api.actVehicle(fight, vehicle), {"vehicle": vehicle})
   }
 
   async getAllCharacters():Promise<Response> {

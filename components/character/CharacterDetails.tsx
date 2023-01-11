@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Grid, Box, TextField, Dialog, Badge, Tooltip, Paper, Button, ButtonGroup, Avatar, Stack } from '@mui/material'
+import { Container, Grid, Box, TextField, Dialog, Badge, Tooltip, Paper, Button, ButtonGroup, Avatar, Stack } from '@mui/material'
 import { TableHead, TableContainer, Table, TableBody, TableRow, TableCell } from '@mui/material'
 import Typography from '@mui/material/Typography'
 import IconButton from '@mui/material/IconButton'
@@ -15,11 +15,12 @@ import ActionButtons from './ActionButtons'
 import AvatarBadge from './AvatarBadge'
 import GamemasterOnly from '../GamemasterOnly'
 import DeathMarks from "./DeathMarks"
+import NameDisplay from "./NameDisplay"
 
 import { loadFight } from '../FightDetail'
 import Client from "../Client"
 
-import type { Character, Fight, Toast, ID } from "../../types/types"
+import type { Person, Character, Fight, Toast, ID } from "../../types/types"
 import { defaultCharacter } from "../../types/types"
 
 interface CharacterDetailsParams {
@@ -64,10 +65,9 @@ export default function CharacterDetails({ character, fight, setFight, editingCh
     setOpenWounds(true)
   }
 
-  const defense = character.defense ? `Defense ${character.defense}` : ''
   const impairments = character.impairments ? `(-${character.impairments})` : ''
   const color = character.impairments > 0 ? 'error' : 'primary'
-  const wounds = character.action_values["Wounds"] > 0 ? character.action_values["Wounds"] : ''
+  const wounds = character.action_values["Wounds"] || 0
 
   return (
     <>
@@ -78,27 +78,31 @@ export default function CharacterDetails({ character, fight, setFight, editingCh
               <TableCell sx={{width: 50}}>
                 <AvatarBadge character={character} session={session} />
               </TableCell>
-              <TableCell sx={{width: 200}}>
-                <Typography variant="h4" sx={{fontWeight: 'bold'}}>
-                  <Stack direction="row" alignItems="center" spacing={2}>
-                    <Box component="span">
-                    { character.name }
-                    </Box>
-                    { (["PC", "Ally"].includes(character.action_values["Type"] as string) &&
-                      character.action_values["Marks of Death"] > 0) &&
-                    <DeathMarks character={character} readOnly={true} /> }
-                  </Stack>
-                </Typography>
-              </TableCell>
-              <TableCell sx={{width: 60}}>
-                <GamemasterOnly user={session?.data?.user} character={character}>
-                  <Typography variant="h3">{wounds}</Typography>
-                </GamemasterOnly>
-              </TableCell>
               <TableCell>
+                <NameDisplay character={character} />
+              </TableCell>
+              <TableCell sx={{width: 80}}>
                 <GamemasterOnly user={session?.data?.user} character={character}>
-                  <ActionValues character={character} />
+                  <Stack direction="row" spacing={1}>
+                    <Stack direction="column" sx={{width: 170}} alignItems="center">
+                      <Typography variant="h3">{wounds}</Typography>
+                      <Typography variant="h6" sx={{color: 'text.secondary', fontVariant: 'small-caps', textTransform: 'lowercase'}}>
+                        { character.action_values["Type"] === "Mook" && "Mooks" }
+                        { character.action_values["Type"] !== "Mook" && "Wounds" }
+                      </Typography>
+                    </Stack>
+                  </Stack>
                 </GamemasterOnly>
+              </TableCell>
+              <TableCell sx={{width: 200}}>
+                <Stack spacing={1}>
+                  <GamemasterOnly user={session?.data?.user} character={character}>
+                    <ActionValues character={character} />
+                  </GamemasterOnly>
+                  { character.category === "character" && (["PC", "Ally"].includes(character.action_values["Type"] as string) &&
+                    character.action_values["Marks of Death"] as number > 0) &&
+                  <DeathMarks character={character} readOnly={true} /> }
+                </Stack>
               </TableCell>
               <TableCell sx={{width: 100}}>
                 <GamemasterOnly user={session?.data?.user} character={character}>
@@ -116,7 +120,7 @@ export default function CharacterDetails({ character, fight, setFight, editingCh
         </Table>
       </TableContainer>
       <ActionModal open={openAction} setOpen={setOpenAction} fight={fight} character={character} setFight={setFight} setToast={setToast} />
-      <WoundsModal open={openWounds} setOpen={setOpenWounds} fight={fight} character={character} setFight={setFight} setToast={setToast} />
+      <WoundsModal open={openWounds} setOpen={setOpenWounds} fight={fight} character={character as Person} setFight={setFight} setToast={setToast} />
     </>
   )
 }
