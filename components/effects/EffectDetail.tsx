@@ -4,7 +4,7 @@ import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import { useState } from "react"
 import { Tooltip, Alert, AlertTitle, Popover, Box, Stack, Typography, IconButton } from "@mui/material"
 
-import type { Effect } from "../../types/types"
+import type { Toast, Effect } from "../../types/types"
 
 interface EffectDetailProps {
   effect: Effect

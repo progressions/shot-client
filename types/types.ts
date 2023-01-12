@@ -181,3 +181,13 @@ export const defaultFight:Fight = {
 export const defaultUser:User = {
   email: '',
 }
+
+export const defaultEffect:Effect = {
+  title: "",
+  description: "",
+  severity: "error",
+  start_sequence: 1,
+  end_sequence: 2,
+  start_shot: 15,
+  end_shot: 15,
+}

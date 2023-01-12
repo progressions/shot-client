@@ -1,4 +1,4 @@
-import { Box, Stack, TableContainer, Table } from '@mui/material'
+import { IconButton, Button, Box, Stack, TableContainer, Table } from '@mui/material'
 import TableRow from '@mui/material/TableRow'
 import TableCell from '@mui/material/TableCell'
 import Typography from '@mui/material/Typography'
@@ -6,6 +6,8 @@ import CharacterDetails from '../character/CharacterDetails'
 import VehicleDetails from '../vehicles/VehicleDetails'
 import ShotButton from "./ShotButton"
 import EffectDetail from "../effects/EffectDetail"
+import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined'
+import EffectModal from "../effects/EffectModal"
 
 import type { Vehicle, Character, Fight, Toast } from "../../types/types"
 
@@ -23,6 +25,9 @@ interface ShotParams {
 }
 
 export default function Shot({ fight, setFight, shot, characters, editingCharacter, setEditingCharacter, showHidden, setToast }: ShotParams) {
+  const [open, setOpen] = useState<boolean>(false)
+  const [openEffectDialog, setOpenEffectDialog] = useState<boolean>(false)
+
   if (!showHidden && (shot === null || shot === undefined)) {
     return null
   }
@@ -46,10 +51,14 @@ export default function Shot({ fight, setFight, shot, characters, editingCharact
       <TableRow key={shot}>
         <TableCell rowSpan={characters.length + 1} sx={{width: 60, verticalAlign: "top"}}>
           <Stack spacing={0}>
-            <ShotButton fight={fight} shot={shot} />
+            <ShotButton fight={fight} shot={shot} setFight={setFight} setToast={setToast} />
             {
               effectsForShot(fight, shot).map((effect) => <EffectDetail effect={effect} key={effect.id} />)
             }
+            <IconButton onClick={() => { setOpen(false); setOpenEffectDialog(true) }}>
+              <AddCircleOutlineOutlinedIcon />
+            </IconButton>
+            <EffectModal fight={fight} shot={shot} open={openEffectDialog} setOpen={setOpenEffectDialog} setFight={setFight} setToast={setToast} />
           </Stack>
         </TableCell>
       </TableRow>
