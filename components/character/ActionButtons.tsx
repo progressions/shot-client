@@ -23,7 +23,7 @@ export default function ActionButtons({ character, takeWounds, takeAction, editC
 
   const woundLabel = character.action_values["Type"] === "Mook" as CharacterType ? "Kill Mooks" : "Take Wounds"
   return (
-    <Box sx={{width: 220, border: 0, justifyContent: "flex-end", alignItems: "flex-end", display: "flex"}}>
+    <Box>
       <ButtonGroup variant="outlined" size="small">
         { character.category === "character" && takeWounds && character.action_values["Type"] == "Mook" &&
             <MookRolls count={character.action_values["Wounds"] as number} attack={character.action_values["Guns"] as number} damage={character.action_values["Damage"] as number} icon={<NewReleasesIcon />} /> }

@@ -167,8 +167,8 @@ export default function CharacterModal({ open, setOpen, fight, setFight, charact
               </TextField>
             </Stack>
             <Stack direction="row" spacing={2}>
-              <TextField label={character.action_values["MainAttack"]} type="number" sx={{width: 100}} name={character.action_values["MainAttack"]} value={character.action_values[character.action_values["MainAttack"]] || ''} onChange={handleAVChange} />
-              <TextField label={character.action_values["SecondaryAttack"]} type="number" sx={{width: 100}} name={character.action_values["SecondaryAttack"] || ""} value={character.action_values[character.action_values["SecondaryAttack"]] || ''} onChange={handleAVChange} />
+              <TextField label={character.action_values["MainAttack"]} type="number" sx={{width: 100}} name={character.action_values["MainAttack"]} value={character.action_values[character.action_values["MainAttack"] as string] || ''} onChange={handleAVChange} />
+              <TextField label={character.action_values["SecondaryAttack"]} type="number" sx={{width: 100}} name={character.action_values["SecondaryAttack"] || ""} value={character.action_values[character.action_values["SecondaryAttack"] as string] || ''} onChange={handleAVChange} />
               <TextField label="Defense" type="number" sx={{width: 100}} name="Defense" value={character.action_values?.['Defense'] || ''} onChange={handleAVChange} />
               <TextField label="Toughness" type="number" sx={{width: 100}} name="Toughness" value={character.action_values?.['Toughness'] || ''} onChange={handleAVChange} />
               <TextField label="Speed" type="number" sx={{width: 100}} name="Speed" value={character.action_values?.['Speed'] || ''} onChange={handleAVChange} />

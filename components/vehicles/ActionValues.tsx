@@ -13,6 +13,17 @@ export default function ActionValues({ character }: ActionValuesParams) {
   const borderColor = "#aaa"
 
   return (
+    <Stack direction="row" spacing={1} alignItems="center">
+      <ActionValueDisplay name="Acceleration" description="Acceleration" label="Acceleration" character={character} />
+      <ActionValueDisplay name="Handling" description="Handling" label="Handling" character={character} />
+      <ActionValueDisplay name="Squeal" description="Squeal" label="Squeal" character={character} />
+      <ActionValueDisplay name="Frame" description="Frame" label="Frame" character={character} />
+      <ActionValueDisplay name="Crunch" description="Crunch" label="Crunch" character={character} />
+      <ActionValueDisplay name="Condition Points" description="Condition" label="Condition" character={character} />
+    </Stack>
+  )
+}
+/*
     <Stack>
       <Stack direction="row" spacing={0} sx={{width: 200, border: 0}}>
         <ActionValueDisplay label="Acc" description="Acceleration (Chase Speed)" name="Acceleration" character={character} />
@@ -27,5 +38,4 @@ export default function ActionValues({ character }: ActionValuesParams) {
         <Stack sx={{borderLeft: 1, borderLeftColor: borderColor}} />
       </Stack>
     </Stack>
-  )
-}
+    */

@@ -104,26 +104,15 @@ export default function Fight({ fight:initialFight, notFound }: FightParams) {
             <Typography variant="h1" gutterBottom>{fight.name}</Typography>
             <FightToolbar fight={fight} setFight={setFight} showHidden={showHidden} setShowHidden={setShowHidden} setToast={setToast} />
             <TableContainer>
-              <Table border={0}>
+              <Table>
                 <TableHead>
                   <TableRow>
-                    <TableCell sx={{width: 50, border: 0}}>
-                    </TableCell>
-                    <TableCell sx={{width: 300, border: 0}}>
-                      <Typography variant="h4">Name</Typography>
-                    </TableCell>
-                    <TableCell sx={{width: 120, border: 0}}>
-                      <Typography variant="h4" color='error'><FavoriteIcon sx={{width: 30, height: 30}} /></Typography>
-                    </TableCell>
-                    <TableCell sx={{width: 350, border: 0}}>
-                      <Typography variant="h4">Action Values</Typography>
-                    </TableCell>
+                    <TableCell />
+                    <TableCell />
+                    <TableCell />
+                    <TableCell />
                   </TableRow>
                 </TableHead>
-              </Table>
-            </TableContainer>
-            <TableContainer>
-              <Table border={0}>
                 <TableBody>
                   {
                     fight.shot_order.map(([shot, chars]: [number, Character[]]) => <Shot key={shot} shot={shot} characters={chars} fight={fight} setFight={setFight} editingCharacter={editingCharacter} setEditingCharacter={setEditingCharacter} showHidden={showHidden} setToast={setToast} />)

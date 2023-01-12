@@ -11,25 +11,13 @@ interface ActionValuesParams {
 }
 
 export default function ActionValues({ character }: ActionValuesParams) {
-  const borderColor = "#aaa"
   return (
-    <Stack>
-      <Stack direction="row" spacing={0} sx={{width: 200, border: 0}}>
-        <ActionValueDisplay label={character.action_values["MainAttack"]} description={character.action_values["MainAttack"]} name={character.action_values["MainAttack"]} character={character} />
-        <ActionValueDisplay label={character.action_values["SecondaryAttack"]} description={character.action_values["SecondaryAttack"] || ""} name={character.action_values["SecondaryAttack"]} character={character} />
-        <ActionValueDisplay label="Def" description="Defense" name="Defense" character={character} />
-        { character?.action_values?.["Type"] !== "Mook" &&
-          <ActionValueDisplay label="Tuf" description="Toughness" name="Toughness" character={character} /> }
-        <Stack sx={{borderLeft: 1, borderLeftColor: borderColor}} />
-      </Stack>
-      <Stack direction="row" spacing={0} sx={{width: 200, border: 0}}>
-        { ["PC", "Ally"].includes(character?.action_values?.["Type"] as string) &&
-          <ActionValueDisplay label="Max" description="Max" name="Max Fortune" character={character} /> }
-        { ["PC", "Ally"].includes(character?.action_values?.["Type"] as string) &&
-          <ActionValueDisplay label={character.action_values["FortuneType"]} description={`Current ${character.action_values["FortuneType"]} points`} name="Fortune" character={character} /> }
-        <ActionValueDisplay label="Spd" description="Speed" name="Speed" character={character} />
-        <Stack sx={{borderLeft: 1, borderLeftColor: borderColor}} />
-      </Stack>
+    <Stack direction="row" spacing={1} alignItems="center">
+      <ActionValueDisplay name={character.action_values["MainAttack"] as string} description={character.action_values["MainAttack"] as string} label={character.action_values["MainAttack"] as string} character={character} />
+      <ActionValueDisplay name={character.action_values["SecondaryAttack"] as string} description={character.action_values["SecondaryAttack"] as string} label={character.action_values["SecondaryAttack"] as string} character={character} />
+      <ActionValueDisplay name="Defense" description="Defense" label="Defense" character={character} />
+      <ActionValueDisplay name="Fortune" description={character.action_values["FortuneType"] as string} label={character.action_values["FortuneType"] as string} character={character} />
+      <ActionValueDisplay name="Speed" description="Speed" label="Speed" character={character} />
     </Stack>
   )
 }

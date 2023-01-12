@@ -16,6 +16,7 @@ import AvatarBadge from './AvatarBadge'
 import GamemasterOnly from '../GamemasterOnly'
 import DeathMarks from "./DeathMarks"
 import NameDisplay from "./NameDisplay"
+import WoundsDisplay from "./WoundsDisplay"
 
 import { loadFight } from '../FightDetail'
 import Client from "../Client"
@@ -67,57 +68,38 @@ export default function CharacterDetails({ character, fight, setFight, editingCh
 
   const impairments = character.impairments ? `(-${character.impairments})` : ''
   const color = character.impairments > 0 ? 'error' : 'primary'
-  const wounds = character.action_values["Wounds"] || 0
+  const showDeathMarks = character.category === "character" &&
+    (["PC", "Ally"].includes(character.action_values["Type"] as string) &&
+    character.action_values["Marks of Death"] as number > 0)
 
   return (
-    <>
-      <TableContainer>
-        <Table>
-          <TableBody>
-            <TableRow>
-              <TableCell sx={{width: 50}}>
-                <AvatarBadge character={character} session={session} />
-              </TableCell>
-              <TableCell sx={{width: 200}}>
-                <NameDisplay character={character} />
-              </TableCell>
-              <TableCell sx={{width: 70}}>
-                <GamemasterOnly user={session?.data?.user} character={character}>
-                  <Stack direction="column" sx={{width: 70}} alignItems="center">
-                    <Typography variant="h3">{wounds}</Typography>
-                    <Typography variant="h6" sx={{color: 'text.secondary', fontVariant: 'small-caps', textTransform: 'lowercase'}}>
-                      { character.action_values["Type"] === "Mook" ? "Mooks" : "Wounds" }
-                    </Typography>
-                  </Stack>
-                </GamemasterOnly>
-              </TableCell>
-              <TableCell sx={{width: 200}}>
-                <Stack spacing={1}>
-                  <GamemasterOnly user={session?.data?.user} character={character}>
-                    <ActionValues character={character} />
-                  </GamemasterOnly>
-                  { character.category === "character" && (["PC", "Ally"].includes(character.action_values["Type"] as string) &&
-                    character.action_values["Marks of Death"] as number > 0) &&
-                  <DeathMarks character={character} readOnly={true} /> }
-                </Stack>
-              </TableCell>
-              <TableCell sx={{width: 100}}>
-                <GamemasterOnly user={session?.data?.user} character={character}>
-                  <ActionButtons character={character}
-                    takeWounds={takeWounds}
-                    takeAction={takeAction}
-                    editCharacter={editCharacter}
-                    deleteCharacter={deleteCharacter}
-                    setToast={setToast}
-                  />
-                </GamemasterOnly>
-              </TableCell>
-            </TableRow>
-          </TableBody>
-        </Table>
-      </TableContainer>
+    <TableRow key={character.id}>
+      <TableCell sx={{width: 50, verticalAlign: "top"}}>
+        <AvatarBadge character={character} session={session} />
+      </TableCell>
+      <TableCell sx={{width: 70, verticalAlign: "top"}}>
+        <WoundsDisplay character={character as Person} session={session} />
+      </TableCell>
+      <TableCell sx={{verticalAlign: "top"}}>
+        <Stack spacing={2}>
+          <NameDisplay character={character} />
+          {showDeathMarks && <DeathMarks character={character} readOnly={true} /> }
+          <GamemasterOnly user={session?.data?.user} character={character}>
+            <Stack direction="row" spacing={1} justifyContent="space-between">
+              <ActionValues character={character} />
+              <ActionButtons character={character}
+                takeWounds={takeWounds}
+                takeAction={takeAction}
+                editCharacter={editCharacter}
+                deleteCharacter={deleteCharacter}
+                setToast={setToast}
+              />
+            </Stack>
+          </GamemasterOnly>
+        </Stack>
       <ActionModal open={openAction} setOpen={setOpenAction} fight={fight} character={character} setFight={setFight} setToast={setToast} />
       <WoundsModal open={openWounds} setOpen={setOpenWounds} fight={fight} character={character as Person} setFight={setFight} setToast={setToast} />
-    </>
+      </TableCell>
+    </TableRow>
   )
 }

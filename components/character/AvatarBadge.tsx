@@ -1,5 +1,6 @@
 import { Badge, Avatar, Box, Typography } from "@mui/material"
 import GamemasterOnly from '../GamemasterOnly'
+import DirectionsCarIcon from "@mui/icons-material/DirectionsCar"
 
 import type { Character } from "../../types/types"
 
@@ -27,8 +28,12 @@ export default function AvatarBadge({ character, session }: AvatarBadgeParams) {
       </Badge>
       <GamemasterOnly user={session?.data?.user} character={character}>
         <Box width={40} sx={{textAlign: 'center'}}>
-          <Typography variant="h6" sx={{color: 'text.secondary', fontVariant: 'small-caps', textTransform: 'lowercase'}}>{charType && names[charType]}</Typography>
+          <Typography variant="caption" sx={{color: 'text.secondary'}}>{charType && names[charType]}</Typography>
         </Box>
+        <Box width={40} sx={{textAlign: 'center'}}>
+          { character.category === "vehicle" &&
+            <DirectionsCarIcon sx={{color: "#aaa"}} /> }
+          </Box>
       </GamemasterOnly>
     </>
   )

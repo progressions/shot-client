@@ -9,11 +9,12 @@ import VehicleActionModal from "./ActionModal"
 import VehicleWoundsModal from "./WoundsModal"
 import ActionButtons from "../character/ActionButtons"
 import NameDisplay from "../character/NameDisplay"
+import WoundsDisplay from "../vehicles/WoundsDisplay"
 import { useState } from "react"
 
 import { loadFight } from '../FightDetail'
 
-import type { Character, Vehicle, Fight, Toast, ID } from "../../types/types"
+import type { Character, Person, Vehicle, Fight, Toast, ID } from "../../types/types"
 import { defaultVehicle } from "../../types/types"
 
 interface VehicleDetailsParams {
@@ -61,6 +62,37 @@ export default function VehicleDetails({ character, fight, setFight, editingChar
   const wounds = (character?.action_values["Chase Points"])
 
   return (
+    <TableRow key={character.id}>
+      <TableCell sx={{width: 50, verticalAlign: "top"}}>
+        <AvatarBadge character={character} session={session} />
+      </TableCell>
+      <TableCell sx={{width: 70, verticalAlign: "top"}}>
+        <WoundsDisplay character={character} session={session} />
+      </TableCell>
+      <TableCell sx={{verticalAlign: "top"}}>
+        <Stack spacing={2}>
+          <NameDisplay character={character} />
+          <GamemasterOnly user={session?.data?.user} character={character}>
+            <Stack direction="row" spacing={1} justifyContent="space-between">
+              <VehicleActionValues character={character} />
+              <ActionButtons character={character}
+                takeWounds={takeWounds}
+                takeAction={takeAction}
+                editCharacter={editCharacter}
+                deleteCharacter={deleteCharacter}
+                setToast={setToast}
+              />
+            </Stack>
+          </GamemasterOnly>
+        </Stack>
+      <VehicleActionModal open={openAction} setOpen={setOpenAction} fight={fight} character={character} setFight={setFight} setToast={setToast} />
+      <VehicleWoundsModal open={openWounds} setOpen={setOpenWounds} fight={fight} character={character as Vehicle} setFight={setFight} setToast={setToast} />
+      </TableCell>
+    </TableRow>
+  )
+}
+
+/*
     <>
       <TableContainer>
         <Table>
@@ -105,5 +137,4 @@ export default function VehicleDetails({ character, fight, setFight, editingChar
       <VehicleWoundsModal open={openWounds} setOpen={setOpenWounds} fight={fight} character={character} setFight={setFight} setToast={setToast} />
       <VehicleActionModal open={openAction} setOpen={setOpenAction} fight={fight} character={character} setFight={setFight} setToast={setToast} />
     </>
-  )
-}
+    */
