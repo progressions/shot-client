@@ -4,12 +4,18 @@ import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import { useState } from "react"
 import { Tooltip, Alert, AlertTitle, Popover, Box, Stack, Typography, IconButton } from "@mui/material"
 
-export default function EffectDetail({ effect }) {
-  const [open, setOpen] = useState(false)
-  const [anchorEl, setAnchorEl] = useState(null)
-  const [timer, setTimer] = useState(null)
+import type { Effect } from "../../types/types"
 
-  const showEffect = (event) => {
+interface EffectDetailProps {
+  effect: Effect
+}
+
+export default function EffectDetail({ effect }: EffectDetailProps) {
+  const [open, setOpen] = useState<boolean>(false)
+  const [anchorEl, setAnchorEl] = useState<any>(null)
+  const [timer, setTimer] = useState<any>(null)
+
+  const showEffect = (event: any) => {
     clearTimeout(timer)
     setOpen(true)
     setAnchorEl(event.target)
@@ -30,12 +36,12 @@ export default function EffectDetail({ effect }) {
   return (
     <>
       <Tooltip title={effect.title}>
-        <IconButton onMouseEnter={showEffect} color={effect.severity}>
+        <IconButton onMouseEnter={showEffect} color={effect.severity as any}>
           <InfoOutlinedIcon />
         </IconButton>
       </Tooltip>
       <Popover anchorEl={anchorEl} open={open} onClose={closePopover} anchorOrigin={{vertical: 'bottom', horizontal: 'center'}}>
-        <Alert severity={effect.severity} sx={{paddingRight: 5}}>
+        <Alert severity={effect.severity as any} sx={{paddingRight: 5}}>
           <AlertTitle>{effect.title}</AlertTitle>
           <Typography>{effect.description}</Typography>
           <Typography variant="caption">Until sequence {effect.end_sequence}, shot {effect.end_shot}</Typography>

@@ -17,7 +17,7 @@ import { unstable_getServerSession } from "next-auth/next"
 
 import FightToolbar from '../../components/FightToolbar'
 import Layout from '../../components/Layout'
-import Shot from '../../components/Shot'
+import Shot from '../../components/shots/Shot'
 import CharacterModal from '../../components/character/CharacterModal'
 import VehicleModal from '../../components/vehicles/VehicleModal'
 import Api from '../../components/Api'
@@ -108,7 +108,7 @@ export default function Fight({ fight:initialFight, notFound }: FightParams) {
               <Table>
                 <TableHead>
                   <TableRow>
-                    <TableCell colSpan="4">
+                    <TableCell colSpan={4}>
                       <Typography variant="h4">
                         Sequence {fight.sequence}
                       </Typography>

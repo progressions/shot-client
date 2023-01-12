@@ -80,12 +80,25 @@ export interface Person {
   category: "character" | "vehicle"
 }
 
+export interface Effect {
+  id?: string
+  title: string
+  description: string
+  severity: string
+  start_sequence: number
+  end_sequence: number
+  start_shot: number
+  end_shot: number
+}
+
 export type ShotType = [number, Character[]]
 
 export interface Fight {
-  id?: string,
-  name?: string,
-  characters?: Character[],
+  id?: string
+  name?: string
+  sequence: number
+  effects: Effect[]
+  characters?: Character[]
   shot_order: ShotType[]
 }
 
@@ -159,6 +172,8 @@ export const defaultVehicle:Vehicle = {
 
 export const defaultFight:Fight = {
   name: '',
+  sequence: 1,
+  effects: [],
   characters: [],
   shot_order: []
 }

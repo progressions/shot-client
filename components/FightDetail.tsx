@@ -7,6 +7,7 @@ import { unstable_getServerSession } from "next-auth/next"
 import Client from "./Client"
 
 import type { Fight, Toast } from "../types/types"
+import { defaultFight } from "../types/types"
 
 interface loadFightParams {
   id: string,
@@ -30,7 +31,7 @@ export async function loadFight({ id, jwt, setFight }: loadFightParams) {
   const response = await client.getFight({ id })
   if (response.status === 200) {
     const data = await response.json()
-    setFight({shot_order: []})
+    setFight(defaultFight)
     setFight(data)
   }
 }
@@ -41,7 +42,6 @@ export async function loadFights({jwt, setFights}: loadFightsParams) {
   if (response.status === 200) {
     const data = await response.json()
     setFights([])
-    console.log(data)
     setFights(data)
   }
 }

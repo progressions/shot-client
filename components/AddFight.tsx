@@ -42,7 +42,7 @@ export default function AddFight({ setFights, setToast }: AddFightProps) {
   }
 
   const cancelForm = (): void => {
-    setFight({name: '', shot_order: []})
+    setFight(defaultFight)
     setToast((prevToast: Toast) => { return { ...prevToast, open: false }})
     setOpen(false)
   }

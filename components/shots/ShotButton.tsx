@@ -2,15 +2,22 @@ import { Button, IconButton, Typography, Box, Popover } from "@mui/material"
 import { useState } from "react"
 import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined'
 
-export default function ShotButton({ fight, shot }) {
-  const [open, setOpen] = useState(false)
-  const [anchorEl, setAnchorEl] = useState(null)
-  const [timer, setTimer] = useState(null)
+import type { Fight } from "../../types/types"
+
+interface ShotButtonProps {
+  fight: Fight
+  shot: number
+}
+
+export default function ShotButton({ fight, shot }: ShotButtonProps) {
+  const [open, setOpen] = useState<boolean>(false)
+  const [anchorEl, setAnchorEl] = useState<any>(null)
+  const [timer, setTimer] = useState<any>(null)
 
   const label = shot === null ? "hidden" : shot
 
-  const showShotButton = (event) => {
-    clearTimeout(timer)
+  const showShotButton = (event: any) => {
+    clearTimeout(timer as any)
     setOpen(true)
     setAnchorEl(event.target)
     setTimer(closeAfterTimeout)

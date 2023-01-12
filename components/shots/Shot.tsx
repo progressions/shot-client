@@ -2,22 +2,22 @@ import { Box, Stack, TableContainer, Table } from '@mui/material'
 import TableRow from '@mui/material/TableRow'
 import TableCell from '@mui/material/TableCell'
 import Typography from '@mui/material/Typography'
-import CharacterDetails from './character/CharacterDetails'
-import VehicleDetails from './vehicles/VehicleDetails'
+import CharacterDetails from '../character/CharacterDetails'
+import VehicleDetails from '../vehicles/VehicleDetails'
 import ShotEffects from "./ShotEffects"
 import ShotButton from "./ShotButton"
-import EffectDetail from "./effects/EffectDetail"
+import EffectDetail from "../effects/EffectDetail"
 
-import type { Vehicle, Character, Fight, Toast } from "../types/types"
+import type { Vehicle, Character, Fight, Toast } from "../../types/types"
 
 import { useState } from "react"
 
 interface ShotParams {
-  fight: Fight,
+  fight: Fight
   setFight: React.Dispatch<React.SetStateAction<Fight>>
-  shot: number | string,
-  characters: Character[],
-  editingCharacter: Character,
+  shot: number
+  characters: Character[]
+  editingCharacter: Character
   setEditingCharacter: React.Dispatch<React.SetStateAction<Character>>
   showHidden: boolean
   setToast: React.Dispatch<React.SetStateAction<Toast>>
@@ -32,7 +32,7 @@ export default function Shot({ fight, setFight, shot, characters, editingCharact
     setEditingCharacter({...character, current_shot: shot} as any)
   }
 
-  const effectsForShot = (fight, shot) => {
+  const effectsForShot = (fight: Fight, shot: number) => {
     return fight.effects.filter((effect) => {
       return shot > 0 && (
         (fight.sequence == effect.start_sequence && shot <= effect.start_shot) ||
