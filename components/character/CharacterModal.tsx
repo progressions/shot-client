@@ -180,8 +180,8 @@ export default function CharacterModal({ open, setOpen, fight, setFight, charact
                 <MenuItem value="Genome">Genome</MenuItem>
                 <MenuItem value="Magic">Magic</MenuItem>
               </TextField>
-              <TextField label={`Max ${character.action_values["FortuneType"]}`} type="number" sx={{width: 100}} name="Fortune" value={character.action_values?.['Fortune'] || ''} onChange={handleAVChange} />
               <TextField label={character.action_values["FortuneType"]} type="number" sx={{width: 100}} name="Fortune" value={character.action_values?.['Fortune'] || ''} onChange={handleAVChange} />
+              <TextField label={`Max ${character.action_values["FortuneType"]}`} type="number" sx={{width: 100}} name="Max Fortune" value={character.action_values["Max Fortune"]} onChange={handleAVChange} />
             </Stack>
             <Stack alignItems="flex-end" spacing={2} direction="row">
               <Button variant="outlined" disabled={saving} onClick={cancelForm}>Cancel</Button>
