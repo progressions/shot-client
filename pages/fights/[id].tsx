@@ -87,6 +87,7 @@ export default function Fight({ fight:initialFight, notFound }: FightParams) {
   if (!fight && !notFound) {
     return <>Loading...</>
   }
+
   return (
     <>
       <Head>
@@ -107,10 +108,11 @@ export default function Fight({ fight:initialFight, notFound }: FightParams) {
               <Table>
                 <TableHead>
                   <TableRow>
-                    <TableCell />
-                    <TableCell />
-                    <TableCell />
-                    <TableCell />
+                    <TableCell colSpan="4">
+                      <Typography variant="h4">
+                        Sequence {fight.sequence}
+                      </Typography>
+                    </TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
