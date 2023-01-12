@@ -4,7 +4,6 @@ import TableCell from '@mui/material/TableCell'
 import Typography from '@mui/material/Typography'
 import CharacterDetails from '../character/CharacterDetails'
 import VehicleDetails from '../vehicles/VehicleDetails'
-import ShotEffects from "./ShotEffects"
 import ShotButton from "./ShotButton"
 import EffectDetail from "../effects/EffectDetail"
 
