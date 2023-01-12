@@ -44,8 +44,8 @@ class Client {
     return await this.delete(this.api.characters(fight, character))
   }
 
-  async actCharacter(character: Character, fight: Fight):Promise<Response> {
-    return await this.patch(this.api.actCharacter(fight, character), {"character": character})
+  async actCharacter(character: Character, fight: Fight, shots: number):Promise<Response> {
+    return await this.patch(this.api.actCharacter(fight, character), {"character": character, "shots": shots})
   }
 
   async addCharacter(fight: Fight, character: Character | ID):Promise<Response> {
@@ -64,8 +64,8 @@ class Client {
     return await this.delete(this.api.vehicles(fight, vehicle))
   }
 
-  async actVehicle(vehicle: Character, fight: Fight):Promise<Response> {
-    return await this.patch(this.api.actVehicle(fight, vehicle), {"vehicle": vehicle})
+  async actVehicle(vehicle: Character, fight: Fight, shots: number):Promise<Response> {
+    return await this.patch(this.api.actVehicle(fight, vehicle), {"vehicle": vehicle, "shots": shots})
   }
 
   async getAllCharacters():Promise<Response> {

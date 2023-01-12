@@ -16,7 +16,7 @@ interface ActionModalParams {
 }
 
 const ActionModal = ({open, setOpen, fight, character, setFight, setToast}: ActionModalParams) => {
-  const [shots, setShots] = useState<number | string>(3)
+  const [shots, setShots] = useState<number>(3)
   const [saving, setSaving] = useState<boolean>(false)
 
   const session: any = useSession({ required: true })
@@ -29,7 +29,7 @@ const ActionModal = ({open, setOpen, fight, character, setFight, setToast}: Acti
   const submitAction = async (event: React.ChangeEvent<HTMLInputElement>): Promise<void> => {
     event.preventDefault()
     if (shots > 0) {
-      const response = await client.actVehicle(character, fight)
+      const response = await client.actVehicle(character, fight, shots)
 
       if (response.status === 200) {
         setOpen(false)
