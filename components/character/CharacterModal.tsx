@@ -1,5 +1,5 @@
 import { MouseEventHandler, useState, useEffect } from 'react'
-import { FormControlLabel, Checkbox, InputAdornment, Dialog, Box, Stack, TextField, Button, Paper, Popover } from '@mui/material'
+import { FormControlLabel, MenuItem, Checkbox, InputAdornment, Dialog, Box, Stack, TextField, Button, Paper, Popover } from '@mui/material'
 import FavoriteIcon from '@mui/icons-material/Favorite'
 
 import Router from 'next/router'
@@ -58,7 +58,6 @@ export default function CharacterModal({ open, setOpen, fight, setFight, charact
 
   const handleDeathMarks = (event: React.SyntheticEvent<Element, Event>, newValue: number | null) => {
     const { action_values } = character || {}
-    console.log(newValue)
     const value = (newValue === character.action_values["Marks of Death"]) ? 0 : newValue
     setCharacter((prevState: Person) => ({ ...prevState, action_values: { ...action_values, "Marks of Death": value as number } }))
   }
@@ -149,11 +148,40 @@ export default function CharacterModal({ open, setOpen, fight, setFight, charact
               </Paper>
             </Popover>
             <Stack direction="row" spacing={2}>
-              <TextField label="Attack" type="number" sx={{width: 100}} name="Guns" value={character.action_values?.['Guns'] || ''} onChange={handleAVChange} />
+              <TextField select fullWidth label="Main Attack" name="MainAttack" value={character.action_values["MainAttack"]} onChange={handleAVChange}>
+                <MenuItem value="Guns">Guns</MenuItem>
+                <MenuItem value="Martial Arts">Martial Arts</MenuItem>
+                <MenuItem value="Scroungetech">Scroungetech</MenuItem>
+                <MenuItem value="Sorcery">Sorcery</MenuItem>
+                <MenuItem value="Mutant">Mutant</MenuItem>
+                <MenuItem value="Creature">Creature</MenuItem>
+              </TextField>
+              <TextField select fullWidth label="Secondary Attack" name="SecondaryAttack" value={character.action_values["SecondaryAttack"] || ""} onChange={handleAVChange}>
+                <MenuItem value="">None</MenuItem>
+                <MenuItem value="Guns">Guns</MenuItem>
+                <MenuItem value="Martial Arts">Martial Arts</MenuItem>
+                <MenuItem value="Scroungetech">Scroungetech</MenuItem>
+                <MenuItem value="Sorcery">Sorcery</MenuItem>
+                <MenuItem value="Mutant">Mutant</MenuItem>
+                <MenuItem value="Creature">Creature</MenuItem>
+              </TextField>
+            </Stack>
+            <Stack direction="row" spacing={2}>
+              <TextField label={character.action_values["MainAttack"]} type="number" sx={{width: 100}} name={character.action_values["MainAttack"]} value={character.action_values[character.action_values["MainAttack"]] || ''} onChange={handleAVChange} />
+              <TextField label={character.action_values["SecondaryAttack"]} type="number" sx={{width: 100}} name={character.action_values["SecondaryAttack"] || ""} value={character.action_values[character.action_values["SecondaryAttack"]] || ''} onChange={handleAVChange} />
               <TextField label="Defense" type="number" sx={{width: 100}} name="Defense" value={character.action_values?.['Defense'] || ''} onChange={handleAVChange} />
               <TextField label="Toughness" type="number" sx={{width: 100}} name="Toughness" value={character.action_values?.['Toughness'] || ''} onChange={handleAVChange} />
-              <TextField label="Fortune" type="number" sx={{width: 100}} name="Fortune" value={character.action_values?.['Fortune'] || ''} onChange={handleAVChange} />
               <TextField label="Speed" type="number" sx={{width: 100}} name="Speed" value={character.action_values?.['Speed'] || ''} onChange={handleAVChange} />
+            </Stack>
+            <Stack direction="row" spacing={2}>
+              <TextField select fullWidth label="Fortune Type" name="FortuneType" value={character.action_values["FortuneType"]} onChange={handleAVChange}>
+                <MenuItem value="Fortune">Fortune</MenuItem>
+                <MenuItem value="Chi">Chi</MenuItem>
+                <MenuItem value="Genome">Genome</MenuItem>
+                <MenuItem value="Magic">Magic</MenuItem>
+              </TextField>
+              <TextField label={`Max ${character.action_values["FortuneType"]}`} type="number" sx={{width: 100}} name="Fortune" value={character.action_values?.['Fortune'] || ''} onChange={handleAVChange} />
+              <TextField label={character.action_values["FortuneType"]} type="number" sx={{width: 100}} name="Fortune" value={character.action_values?.['Fortune'] || ''} onChange={handleAVChange} />
             </Stack>
             <Stack alignItems="flex-end" spacing={2} direction="row">
               <Button variant="outlined" disabled={saving} onClick={cancelForm}>Cancel</Button>

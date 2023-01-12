@@ -19,9 +19,9 @@ export interface ActionValues {
   Speed?: number
   Fortune?: number
   "Max Fortune"?: number
-  FortuneType?: number
-  MainAttack?: number
-  SecondaryAttack?: number
+  FortuneType?: string
+  MainAttack?: string
+  SecondaryAttack?: string | null
   Wounds: number
   Type?: CharacterType
   Damage?: number,
@@ -128,9 +128,9 @@ export const defaultCharacter:Person = {
     Speed: 0,
     Fortune: 0,
     "Max Fortune": 0,
-    FortuneType: 0,
-    MainAttack: 0,
-    SecondaryAttack: 0,
+    FortuneType: "Fortune",
+    MainAttack: "Guns",
+    SecondaryAttack: null,
     Wounds: 0,
     Type: "PC",
     Vehicle: false,
