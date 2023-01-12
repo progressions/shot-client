@@ -78,19 +78,16 @@ export default function CharacterDetails({ character, fight, setFight, editingCh
               <TableCell sx={{width: 50}}>
                 <AvatarBadge character={character} session={session} />
               </TableCell>
-              <TableCell>
+              <TableCell sx={{width: 200}}>
                 <NameDisplay character={character} />
               </TableCell>
-              <TableCell sx={{width: 80}}>
+              <TableCell sx={{width: 70}}>
                 <GamemasterOnly user={session?.data?.user} character={character}>
-                  <Stack direction="row" spacing={1}>
-                    <Stack direction="column" sx={{width: 170}} alignItems="center">
-                      <Typography variant="h3">{wounds}</Typography>
-                      <Typography variant="h6" sx={{color: 'text.secondary', fontVariant: 'small-caps', textTransform: 'lowercase'}}>
-                        { character.action_values["Type"] === "Mook" && "Mooks" }
-                        { character.action_values["Type"] !== "Mook" && "Wounds" }
-                      </Typography>
-                    </Stack>
+                  <Stack direction="column" sx={{width: 70}} alignItems="center">
+                    <Typography variant="h3">{wounds}</Typography>
+                    <Typography variant="h6" sx={{color: 'text.secondary', fontVariant: 'small-caps', textTransform: 'lowercase'}}>
+                      { character.action_values["Type"] === "Mook" ? "Mooks" : "Wounds" }
+                    </Typography>
                   </Stack>
                 </GamemasterOnly>
               </TableCell>

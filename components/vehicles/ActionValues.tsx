@@ -18,8 +18,12 @@ export default function ActionValues({ character }: ActionValuesParams) {
         <ActionValueDisplay label="Acc" description="Acceleration (Chase Speed)" name="Acceleration" character={character} />
         <ActionValueDisplay label="Han" description="Handling (Chase Toughness)" name="Handling" character={character} />
         <ActionValueDisplay label="Sq" description="Squeal (Chase Damage)" name="Squeal" character={character} />
+        <Stack sx={{borderLeft: 1, borderLeftColor: borderColor}} />
+      </Stack>
+      <Stack direction="row" spacing={0} sx={{width: 200, border: 0}}>
         <ActionValueDisplay label="Fra" description="Frame (Collision Toughness)" name="Frame" character={character} />
         <ActionValueDisplay label="Cr" description="Crunch (Collision Damage)" name="Crunch" character={character} />
+        <ActionValueDisplay label="Cond" description="Condition Points" name="Condition Points" character={character} />
         <Stack sx={{borderLeft: 1, borderLeftColor: borderColor}} />
       </Stack>
     </Stack>

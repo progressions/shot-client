@@ -72,21 +72,13 @@ export default function VehicleDetails({ character, fight, setFight, editingChar
               <TableCell sx={{width: 200}}>
                 <NameDisplay character={character} />
               </TableCell>
-              <TableCell sx={{width: 170}}>
+              <TableCell sx={{width: 70}}>
                 <GamemasterOnly user={session?.data?.user} character={character}>
-                  <Stack direction="row" spacing={1}>
-                    <Stack direction="column" sx={{width: 70}} alignItems="center">
-                      <Typography variant="h3">{wounds}</Typography>
-                      <Typography variant="h6" sx={{color: 'text.secondary', fontVariant: 'small-caps', textTransform: 'lowercase'}}>
-                        { character.action_values["Type"] === "Mook" ? "Mooks" : "Chase" }
-                      </Typography>
-                    </Stack>
-                    <Stack direction="column" sx={{width: 70}} alignItems="center">
-                      <Typography variant="h3">{character.action_values["Type"] !== "Mook" && character.action_values["Condition Points"]}</Typography>
-                      <Typography variant="h6" sx={{color: 'text.secondary', fontVariant: 'small-caps', textTransform: 'lowercase'}}>
-                        { character.action_values["Type"] !== "Mook" && "Cond" }
-                      </Typography>
-                    </Stack>
+                  <Stack direction="column" sx={{width: 70}} alignItems="center">
+                    <Typography variant="h3">{wounds}</Typography>
+                    <Typography variant="h6" sx={{color: 'text.secondary', fontVariant: 'small-caps', textTransform: 'lowercase'}}>
+                      { character.action_values["Type"] === "Mook" ? "Mooks" : "Chase" }
+                    </Typography>
                   </Stack>
                 </GamemasterOnly>
               </TableCell>

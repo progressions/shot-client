@@ -53,7 +53,7 @@ const ActionModal = ({open, setOpen, fight, character, setFight, setToast}: Acti
     >
       <Box component="form" onSubmit={submitAction}>
         <Stack p={4} spacing={2}>
-          <TextField autoFocus label="Shots" required name="shots" value={shots || ''} onChange={handleChange} />
+          <TextField autoFocus type="number" label="Shots" required name="shots" value={shots || ''} onChange={handleChange} />
           <Stack alignItems="flex-end" spacing={2} direction="row">
             <Button variant="outlined" disabled={saving} onClick={cancelForm}>Cancel</Button>
             <Button variant="contained" type="submit" disabled={saving}>Save Changes</Button>
