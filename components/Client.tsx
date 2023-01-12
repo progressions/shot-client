@@ -1,5 +1,5 @@
 import Api from "./Api"
-import type { Vehicle, Character, ID, Fight, User } from "../types/types"
+import type { Effect, Vehicle, Character, ID, Fight, User } from "../types/types"
 
 interface ClientParams {
   jwt?: string
@@ -70,6 +70,18 @@ class Client {
 
   async getAllCharacters():Promise<Response> {
     return await this.get(this.api.allCharacters())
+  }
+
+  async updateEffect(effect: Effect, fight: Fight):Promise<Response> {
+    return await this.patch(this.api.effects(fight, effect), {"effect": effect})
+  }
+
+  async createEffect(effect: Effect, fight: Fight):Promise<Response> {
+    return await this.post(this.api.effects(fight, effect), {"effect": effect})
+  }
+
+  async deleteEffect(effect: Effect, fight: Fight):Promise<Response> {
+    return await this.delete(this.api.effects(fight, effect))
   }
 
   async createUser(user: User):Promise<Response> {

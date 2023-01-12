@@ -1,4 +1,4 @@
-import type { Fight, Character, User, ID } from "../types/types"
+import type { Effect, Fight, Character, User, ID } from "../types/types"
 
 class Api {
   base():string { return process.env.NEXT_PUBLIC_SERVER_URL as string }
@@ -52,6 +52,14 @@ class Api {
       return `${this.api()}/all_characters/${character.id}`
     } else {
       return `${this.api()}/all_characters`
+    }
+  }
+
+  effects(fight: Fight, effect?: Effect | ID): string {
+    if (effect?.id) {
+      return `${this.fights(fight)}/effects/${effect.id}`
+    } else {
+      return `${this.fights(fight)}/effects`
     }
   }
 
