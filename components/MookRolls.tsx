@@ -30,7 +30,7 @@ export default function MookRolls({ count, attack, damage, icon }: MookRollsPara
   const [rolls, setRolls] = useState<number[]>([])
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
-    setValue({...value, [event.target.name]: event.target.value})
+    setValue({...value, [event.target.name]: parseInt(event.target.value)})
   }
 
   const handleClose = (): void => {
@@ -42,16 +42,16 @@ export default function MookRolls({ count, attack, damage, icon }: MookRollsPara
   const generateRolls = (event: React.ChangeEvent<HTMLInputElement>): void => {
     event.preventDefault()
     setRolls([])
-    const count = value.count
+    const count: number = value.count
     for (var i = 0; i < count; i++) {
-      const [dieRolls, result] = rollExplodingDie(rollDie)
+      const [dieRolls, result]: [number[], number] = rollExplodingDie(rollDie)
       setRolls((oldArray: number[]) => [...oldArray, (result + value.attack)])
     }
   }
 
   const RollOutcome = ({ outcome, value }: RollOutcomeParams) => {
-    const defense = value.defense
-    const winner = outcome >= defense
+    const defense: number = value.defense
+    const winner: boolean = outcome >= defense
     const style = (value.defense && winner) ? {color: 'red', fontWeight: 'bold'} : {}
 
     return (
@@ -66,7 +66,9 @@ export default function MookRolls({ count, attack, damage, icon }: MookRollsPara
   const smackdowns = (rolls: number[]) => {
     return (rolls
       .filter((roll: number) => (roll >= value.defense))
-      .map((outcome, index) => <Typography key={(Math.random() * 10000)}>{outcome}: You take a smackdown of {outcome - value.defense + value.damage}</Typography>)
+      .map((outcome: number, index: number) => {
+        return <Typography key={(Math.random() * 10000)}>{outcome}: You take a smackdown of {outcome - value.defense + value.damage}</Typography>
+      })
     )
   }
 
@@ -99,10 +101,10 @@ export default function MookRolls({ count, attack, damage, icon }: MookRollsPara
           <Box py={2} sx={{width: 400}}>
             <Stack spacing={2}>
               <Stack direction="row" spacing={2}>
-                <TextField name="count" autoFocus value={value.count} onChange={handleChange} label="Count" required sx={{width: 150}} />
-                <TextField name="attack" value={value.attack} onChange={handleChange} label="Attack" required sx={{width: 150}} />
-                <TextField name="defense" value={value.defense} onChange={handleChange} label="Defense" required sx={{width: 150}} />
-                <TextField name="damage" value={value.damage} onChange={handleChange} label="Damage" required sx={{width: 150}} />
+                <TextField name="count" type="number" autoFocus value={value.count} onChange={handleChange} label="Count" required sx={{width: 150}} />
+                <TextField name="attack" type="number" value={value.attack} onChange={handleChange} label="Attack" required sx={{width: 150}} />
+                <TextField name="defense" type="number" value={value.defense} onChange={handleChange} label="Defense" required sx={{width: 150}} />
+                <TextField name="damage" type="number" value={value.damage} onChange={handleChange} label="Damage" required sx={{width: 150}} />
               </Stack>
             </Stack>
             <Box py={2}>
