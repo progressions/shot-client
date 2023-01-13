@@ -4,7 +4,7 @@ import { useState } from "react"
 import type { Toast, Effect, Fight } from "../../types/types"
 import { defaultEffect } from "../../types/types"
 
-import { loadFight } from '../FightDetail'
+import { loadFight } from '../fights/FightDetail'
 import { useSession } from 'next-auth/react'
 import Client from "../Client"
 

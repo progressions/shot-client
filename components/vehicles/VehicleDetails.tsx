@@ -12,7 +12,7 @@ import NameDisplay from "../character/NameDisplay"
 import WoundsDisplay from "../vehicles/WoundsDisplay"
 import { useState } from "react"
 
-import { loadFight } from '../FightDetail'
+import { loadFight } from '../fights/FightDetail'
 
 import type { Character, Person, Vehicle, Fight, Toast, ID } from "../../types/types"
 import { defaultVehicle } from "../../types/types"

@@ -1,13 +1,13 @@
 import { Switch, FormControlLabel, Stack } from '@mui/material'
 
-import CreateCharacter from './character/CreateCharacter'
-import SelectCharacter from './SelectCharacter'
-import CreateVehicle from './vehicles/CreateVehicle'
-import DiceRoller from './DiceRoller'
-import MookRolls from './MookRolls'
-import RollInitiative from "./RollInitiative"
+import CreateCharacter from '../character/CreateCharacter'
+import SelectCharacter from '../SelectCharacter'
+import CreateVehicle from '../vehicles/CreateVehicle'
+import DiceRoller from '../DiceRoller'
+import MookRolls from '../MookRolls'
+import RollInitiative from "../RollInitiative"
 
-import type { Fight, Toast } from "../types/types"
+import type { Fight, Toast } from "../../types/types"
 
 interface FightToolbarParams {
   fight: Fight,

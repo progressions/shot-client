@@ -6,7 +6,7 @@ import Client from "./Client"
 import AddIcon from '@mui/icons-material/Add'
 import RemoveIcon from '@mui/icons-material/Remove'
 
-import { loadFight } from "./FightDetail"
+import { loadFight } from "./fights/FightDetail"
 
 import { Toast, Fight } from "../types/types"
 

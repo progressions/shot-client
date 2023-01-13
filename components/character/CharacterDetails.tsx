@@ -18,7 +18,7 @@ import DeathMarks from "./DeathMarks"
 import NameDisplay from "./NameDisplay"
 import WoundsDisplay from "./WoundsDisplay"
 
-import { loadFight } from '../FightDetail'
+import { loadFight } from '../fights/FightDetail'
 import Client from "../Client"
 
 import type { Person, Character, Fight, Toast, ID } from "../../types/types"

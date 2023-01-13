@@ -8,7 +8,7 @@ import Client from "./Client"
 
 import type { Fight, Toast } from "../types/types"
 import { defaultFight } from "../types/types"
-import { loadFights } from "./FightDetail"
+import { loadFights } from "./fights/FightDetail"
 
 interface AddFightProps {
   setFights: React.Dispatch<React.SetStateAction<Fight[]>>

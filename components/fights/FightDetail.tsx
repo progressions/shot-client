@@ -2,12 +2,12 @@ import { Typography, Link, IconButton, TableRow, TableCell } from '@mui/material
 import DeleteIcon from '@mui/icons-material/Delete'
 import Router from 'next/router'
 import { useSession } from 'next-auth/react'
-import { authOptions } from '../pages/api/auth/[...nextauth]'
+import { authOptions } from '../../pages/api/auth/[...nextauth]'
 import { unstable_getServerSession } from "next-auth/next"
-import Client from "./Client"
+import Client from "../Client"
 
-import type { Fight, Toast } from "../types/types"
-import { defaultFight } from "../types/types"
+import type { Fight, Toast } from "../../types/types"
+import { defaultFight } from "../../types/types"
 
 interface loadFightParams {
   id: string,

@@ -4,7 +4,7 @@ import { useSession } from 'next-auth/react'
 
 import type { ShotType, Fight, Toast, Character, Person, Vehicle } from "../types/types"
 
-import { loadFight } from './FightDetail'
+import { loadFight } from './fights/FightDetail'
 import { rollDie } from "./DiceRoller"
 import Client from "./Client"
 

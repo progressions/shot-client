@@ -15,7 +15,7 @@ import Router from "next/router"
 import { authOptions } from '../api/auth/[...nextauth]'
 import { unstable_getServerSession } from "next-auth/next"
 
-import FightToolbar from '../../components/FightToolbar'
+import FightToolbar from '../../components/fights/FightToolbar'
 import Layout from '../../components/Layout'
 import Shot from '../../components/shots/Shot'
 import CharacterModal from '../../components/character/CharacterModal'

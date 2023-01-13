@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Box, Stack, TextField, Button, Dialog } from '@mui/material'
 import { useSession } from 'next-auth/react'
-import { loadFight } from '../FightDetail'
+import { loadFight } from '../fights/FightDetail'
 import Client from "../Client"
 
 import type { Character, Fight, Toast } from "../../types/types"

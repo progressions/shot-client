@@ -9,7 +9,7 @@ import DeathMarks from "./DeathMarks"
 
 import { useSession } from 'next-auth/react'
 import { BlockPicker } from 'react-color'
-import { loadFight } from '../FightDetail'
+import { loadFight } from '../fights/FightDetail'
 import Client from "../Client"
 
 import type { Person, Fight, Character, Toast, ID } from "../../types/types"
