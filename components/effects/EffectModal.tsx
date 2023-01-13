@@ -18,7 +18,9 @@ interface EffectModalProps {
 }
 
 export default function EffectModal({ fight, shot, open, setOpen, setToast, setFight }: EffectModalProps) {
-  const [effect, setEffect] = useState<Effect>({ ...defaultEffect, start_sequence: fight.sequence, end_sequence: fight.sequence+1, start_shot: shot, end_shot: shot })
+  const initialEffect = { ...defaultEffect, start_sequence: fight.sequence, end_sequence: fight.sequence+1, start_shot: shot, end_shot: shot }
+
+  const [effect, setEffect] = useState<Effect>(initialEffect)
   const [saving, setSaving] = useState<boolean>(false)
 
   const session: any = useSession({ required: true })
@@ -26,7 +28,7 @@ export default function EffectModal({ fight, shot, open, setOpen, setToast, setF
   const client = new Client({ jwt: jwt })
 
   const cancelForm = () => {
-    setEffect(defaultEffect)
+    setEffect(initialEffect)
     setOpen(false)
   }
 

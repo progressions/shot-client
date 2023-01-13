@@ -53,7 +53,7 @@ export default function Shot({ fight, setFight, shot, characters, editingCharact
           <Stack spacing={0} alignItems="center">
             <ShotButton fight={fight} shot={shot} setFight={setFight} setToast={setToast} />
             {
-              effectsForShot(fight, shot).map((effect) => <EffectDetail effect={effect} key={effect.id} />)
+              effectsForShot(fight, shot).map((effect) => <EffectDetail effect={effect} fight={fight} key={effect.id} setToast={setToast} setFight={setFight} />)
             }
             { shot > 0 && <IconButton onClick={() => { setOpen(false); setOpenEffectDialog(true) }}>
               <AddCircleOutlineOutlinedIcon />
