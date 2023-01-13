@@ -16,7 +16,7 @@ export default function ShotButton({ fight, shot, setToast, setFight }: ShotButt
 
   return (
     <>
-      <Typography variant="h3">
+      <Typography variant="h2" sx={{fontWeight: "bold", color: "text.disabled"}}>
         {label}
       </Typography>
     </>

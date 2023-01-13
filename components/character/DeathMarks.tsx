@@ -35,15 +35,19 @@ export const deathMarkIcons = (character: Character) => {
 }
 
 export default function DeathMarks({ character, readOnly, onChange }: DeathMarksProps) {
-  return (
-    <StyledRating
-      size="small"
-      name="Marks of Death"
-      readOnly={readOnly}
-      onChange={onChange}
-      value={character.action_values["Marks of Death"] as number}
-      icon={<IoSkull />}
-      emptyIcon={<IoSkullOutline />}
-      max={5} />
-  )
+  if (readOnly) {
+    return (deathMarkIcons(character).map((icon) => (icon)))
+  } else {
+    return (
+      <StyledRating
+        size="small"
+        name="Marks of Death"
+        readOnly={readOnly}
+        onChange={onChange}
+        value={character.action_values["Marks of Death"] as number}
+        icon={<IoSkull />}
+        emptyIcon={<IoSkullOutline />}
+        max={5} />
+    )
+  }
 }

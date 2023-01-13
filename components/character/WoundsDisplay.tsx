@@ -14,7 +14,7 @@ export default function WoundsDisplay({ character, session }: WoundsDisplayProps
   return (
     <GamemasterOnly user={session?.data?.user} character={character}>
       <Stack direction="column" sx={{width: 70}} alignItems="center">
-        <Typography variant="h3">{wounds}</Typography>
+        <Typography variant="h4">{wounds}</Typography>
         <Typography variant="subtitle1" sx={{color: 'text.secondary'}}>
           { character.action_values["Type"] === "Mook" ? "Mooks" : "Wounds" }
         </Typography>
