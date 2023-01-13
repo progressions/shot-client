@@ -26,7 +26,7 @@ export default function CreateVehicle({ fight, setFight, setToast }: CreateVehic
     <>
       <Stack direction="row" mb={1}>
         <Button variant="outlined" startIcon={<DirectionsCarFilledIcon />} onClick={openModal}>
-          New Vehicle
+          New
         </Button>
       </Stack>
       <VehicleModal open={newVehicle} setOpen={setNewVehicle} fight={fight} character={newVehicle} setFight={setFight} setToast={setToast} />

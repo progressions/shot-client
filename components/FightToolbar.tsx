@@ -5,6 +5,7 @@ import SelectCharacter from './SelectCharacter'
 import CreateVehicle from './vehicles/CreateVehicle'
 import DiceRoller from './DiceRoller'
 import MookRolls from './MookRolls'
+import RollInitiative from "./RollInitiative"
 
 import type { Fight, Toast } from "../types/types"
 
@@ -23,6 +24,7 @@ export default function FightToolbar({ fight, setFight, showHidden, setShowHidde
   return (
     <>
       <Stack direction="row" spacing={2} alignItems='center'>
+        <RollInitiative fight={fight} setFight={setFight} setToast={setToast} />
         <DiceRoller />
         <CreateVehicle fight={fight} setFight={setFight} setToast={setToast} />
         <CreateCharacter fight={fight} setFight={setFight} setToast={setToast} />

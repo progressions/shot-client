@@ -26,7 +26,7 @@ export default function CreateCharacter({ fight, setFight, setToast }: CreateCha
     <>
       <Stack direction="row" mb={1}>
         <Button variant="outlined" startIcon={<PersonAddIcon />} onClick={openModal}>
-          New Character
+          New
         </Button>
       </Stack>
       <CharacterModal open={newCharacter} setOpen={setNewCharacter} fight={fight} character={newCharacter as Person} setFight={setFight} setToast={setToast} />

@@ -80,7 +80,9 @@ export default function MookRolls({ count, attack, damage, icon }: MookRollsPara
         </Tooltip>
       )
     } else {
-      return "Mook Rolls"
+      return (
+        "Mooks"
+      )
     }
   }
 

@@ -5,6 +5,8 @@ import { loadFight } from './FightDetail'
 import Client from "./Client"
 import Api from "./Api"
 
+import PersonIcon from '@mui/icons-material/Person'
+
 import type { Fight, Character } from "../types/types"
 
 interface SelectCharacterParams {
@@ -57,7 +59,7 @@ export default function SelectCharacter({ fight, setFight }: SelectCharacterPara
 
   return (
     <>
-      <Button variant="outlined" onClick={handleOpen}>Select Character</Button>
+      <Button variant="outlined" startIcon={<PersonIcon />} onClick={handleOpen}>Select</Button>
       <Dialog
         open={open}
         onClose={handleClose}
