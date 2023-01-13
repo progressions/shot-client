@@ -132,8 +132,21 @@ export default function Fight({ fight:initialFight, notFound }: FightParams) {
               </Table>
             </TableContainer>
             <PopupToast toast={toast} closeToast={closeToast} />
-            <CharacterModal open={editingCharacter} setOpen={setEditingCharacter} fight={fight} character={editingCharacter as Person} setFight={setFight} setToast={setToast} />
-            <VehicleModal open={editingCharacter as Vehicle} setOpen={setEditingCharacter as React.Dispatch<React.SetStateAction<Vehicle>>} fight={fight} character={editingCharacter as Vehicle} setFight={setFight} setToast={setToast} />
+            <CharacterModal open={editingCharacter}
+              setOpen={setEditingCharacter}
+              fight={fight}
+              character={editingCharacter as Person}
+              setFight={setFight}
+              setToast={setToast}
+            />
+            <VehicleModal
+              open={editingCharacter as Vehicle}
+              setOpen={setEditingCharacter as React.Dispatch<React.SetStateAction<Vehicle>>}
+              fight={fight}
+              character={editingCharacter as Vehicle}
+              setFight={setFight}
+              setToast={setToast}
+            />
           </>)}
         </Container>
       </Layout>
