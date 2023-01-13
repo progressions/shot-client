@@ -25,8 +25,21 @@ export default function NameDisplay({ character, editCharacter, deleteCharacter,
     setOpen(false)
   }
 
+  const subheading = () => {
+    if (character.category !== "character" || character.action_values["Type"] !== "PC") {
+      return null
+    }
+    return (
+      <Typography variant="caption" sx={{textTransform: "uppercase", color: "text.secondary"}}>
+        { character.action_values["Archetype"] }
+        &nbsp;
+        <DeathMarks character={character} readOnly />
+      </Typography>
+    )
+  }
+
   return (
-    <Box component="div">
+    <Box>
       <Box onMouseEnter={showButtons} onMouseLeave={hideButtons}>
         <Stack direction="row" spacing={1} alignItems="baseline">
           <Typography variant="h4" sx={{fontWeight: 'bold', overflow: "hidden", textOverflow: "ellipsis"}}>
@@ -36,12 +49,8 @@ export default function NameDisplay({ character, editCharacter, deleteCharacter,
             <EditButtons character={character} editCharacter={editCharacter} deleteCharacter={deleteCharacter} setToast={setToast} />
           </Box>
         </Stack>
+        { subheading() }
       </Box>
-      <Typography variant="caption" sx={{textTransform: "uppercase", color: "text.secondary"}}>
-        { character.action_values["Archetype"] }
-        &nbsp;
-        <DeathMarks character={character} readOnly />
-      </Typography>
     </Box>
   )
 }
