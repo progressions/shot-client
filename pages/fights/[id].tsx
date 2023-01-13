@@ -25,7 +25,7 @@ import Client from '../../components/Client'
 import PopupToast from '../../components/PopupToast'
 import Sequence from "../../components/Sequence"
 
-import type { Vehicle, Person, Character, Fight, Toast, ID } from "../../types/types"
+import type { ShotType, Vehicle, Person, Character, Fight, Toast, ID } from "../../types/types"
 import { defaultCharacter, ServerSideProps } from "../../types/types"
 
 interface FightParams {
@@ -106,7 +106,7 @@ export default function Fight({ fight:initialFight, notFound }: FightParams) {
             <Typography variant="h1" gutterBottom>{fight.name}</Typography>
             <FightToolbar fight={fight} setFight={setFight} showHidden={showHidden} setShowHidden={setShowHidden} setToast={setToast} />
             <TableContainer>
-              <Table>
+              <Table sx={{minWidth: 900, maxWidth: 1000}}>
                 <TableHead>
                   <TableRow>
                     <TableCell colSpan={4}>
@@ -116,7 +116,17 @@ export default function Fight({ fight:initialFight, notFound }: FightParams) {
                 </TableHead>
                 <TableBody>
                   {
-                    fight.shot_order.map(([shot, chars]: [number, Character[]]) => <Shot key={shot} shot={shot} characters={chars} fight={fight} setFight={setFight} editingCharacter={editingCharacter} setEditingCharacter={setEditingCharacter} showHidden={showHidden} setToast={setToast} />)
+                    fight.shot_order.map(([shot, chars]: ShotType) =>
+                      <Shot key={shot}
+                        shot={shot}
+                        characters={chars}
+                        fight={fight}
+                        setFight={setFight}
+                        editingCharacter={editingCharacter}
+                        setEditingCharacter={setEditingCharacter}
+                        showHidden={showHidden}
+                        setToast={setToast}
+                      />)
                   }
                 </TableBody>
               </Table>
