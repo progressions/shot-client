@@ -132,6 +132,7 @@ export const defaultCharacter:Person = {
   impairments: 0,
   color: '',
   action_values: {
+    Archetype: "",
     Guns: 0,
     "Martial Arts": 0,
     Sorcery: 0,
