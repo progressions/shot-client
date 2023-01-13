@@ -60,7 +60,7 @@ class Client {
     return await this.post(this.api.vehicles(fight, vehicle), {"vehicle": vehicle})
   }
 
-  async updateVehicle(vehicle: Character, fight?: Fight | null):Promise<Response> {
+  async updateVehicle(vehicle: Vehicle, fight?: Fight | null):Promise<Response> {
     return await this.patch(this.api.vehicles(fight, vehicle), {"vehicle": vehicle})
   }
 
@@ -68,7 +68,7 @@ class Client {
     return await this.delete(this.api.vehicles(fight, vehicle))
   }
 
-  async actVehicle(vehicle: Character, fight: Fight, shots: number):Promise<Response> {
+  async actVehicle(vehicle: Vehicle, fight: Fight, shots: number):Promise<Response> {
     return await this.patch(this.api.actVehicle(fight, vehicle), {"vehicle": vehicle, "shots": shots})
   }
 

@@ -4,13 +4,13 @@ import { useSession } from 'next-auth/react'
 import { loadFight } from '../fights/FightDetail'
 import Client from "../Client"
 
-import type { Character, Fight, Toast } from "../../types/types"
+import type { Vehicle, Character, Fight, Toast } from "../../types/types"
 
 interface ActionModalParams {
   open: boolean,
   setOpen: React.Dispatch<React.SetStateAction<boolean>>
   fight: Fight,
-  character: Character,
+  character: Vehicle,
   setFight: React.Dispatch<React.SetStateAction<Fight>>
   setToast: React.Dispatch<React.SetStateAction<Toast>>
 }

@@ -1,4 +1,4 @@
-import type { Effect, Fight, Character, User, ID } from "../types/types"
+import type { Vehicle, Effect, Fight, Character, User, ID } from "../types/types"
 
 class Api {
   base():string { return process.env.NEXT_PUBLIC_SERVER_URL as string }
@@ -24,7 +24,7 @@ class Api {
     }
   }
 
-  vehicles(fight?: Fight | null, vehicle?: Character | ID): string {
+  vehicles(fight?: Fight | null, vehicle?: Vehicle | ID): string {
     if (!fight) {
       return this.allVehicles(vehicle)
     }
@@ -35,7 +35,7 @@ class Api {
     }
   }
 
-  actVehicle(fight: Fight, vehicle: Character): string {
+  actVehicle(fight: Fight, vehicle: Vehicle): string {
     return `${this.vehicles(fight, vehicle)}/act`
   }
 

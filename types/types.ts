@@ -100,6 +100,7 @@ export interface Fight {
   sequence: number
   effects: Effect[]
   characters?: Character[]
+  vehicles?: Vehicle[]
   shot_order: ShotType[]
 }
 
