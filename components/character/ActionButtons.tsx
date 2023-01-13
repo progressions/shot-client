@@ -1,4 +1,4 @@
-import { Box, ButtonGroup, Button, Tooltip } from '@mui/material'
+import { Stack, Box, ButtonGroup, Button, Tooltip } from '@mui/material'
 import BoltIcon from '@mui/icons-material/Bolt'
 import HeartBrokenIcon from '@mui/icons-material/HeartBroken';
 import EditIcon from '@mui/icons-material/Edit'
@@ -29,15 +29,7 @@ export default function ActionButtons({ character, takeWounds, takeAction, editC
   }
 
   return (
-    <Box>
-      <ButtonGroup variant="outlined" size="small">
-        { takeAction && <Tooltip title="Take Action" arrow>
-          <Button variant="contained" color="secondary" onClick={() => {takeAction(character)}}>
-            <BoltIcon />
-          </Button>
-        </Tooltip> }
-      </ButtonGroup>
-      &nbsp;
+    <Stack direction="row" spacing={1} sx={{height: 30}}>
       <ButtonGroup variant="outlined" size="small">
         { character.category === "character" && takeWounds && character.action_values["Type"] == "Mook" &&
             <MookRolls count={character.action_values["Wounds"] as number} attack={character.action_values["Guns"] as number} damage={character.action_values["Damage"] as number} icon={<NewReleasesIcon />} /> }
@@ -60,6 +52,13 @@ export default function ActionButtons({ character, takeWounds, takeAction, editC
           </Button>
         </Tooltip> }
       </ButtonGroup>
-    </Box>
+      <ButtonGroup variant="outlined" size="small">
+        { takeAction && <Tooltip title="Take Action" arrow>
+          <Button variant="contained" color="secondary" onClick={() => {takeAction(character)}}>
+            <BoltIcon />
+          </Button>
+        </Tooltip> }
+      </ButtonGroup>
+    </Stack>
   )
 }
