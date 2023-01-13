@@ -16,25 +16,25 @@ interface WoundsModalParams {
 }
 
 const WoundsModal = ({open, setOpen, fight, character, setFight, setToast}: WoundsModalParams) => {
-  const [wounds, setWounds] = useState<number>(0)
+  const [smackdown, setSmackdown] = useState<number>(0)
   const [saving, setSaving] = useState<boolean>(false)
 
   const session: any = useSession({ required: true })
   const jwt = session?.data?.authorization
   const client = new Client({ jwt })
 
-  const calculateSmackdown = (): number => {
+  const calculateWounds = (): number => {
     if (character.action_values["Type"] === "Mook") {
-      return wounds
+      return smackdown
     }
-    const result = wounds - (character.action_values["Toughness"] || 0)
+    const result = smackdown - (character.action_values["Toughness"] || 0)
     if (result >= 0) {
       return result
     }
     return 0
   }
 
-  const calculateWounds = (smackdown: number) => {
+  const calculateNewTotal = (smackdown: number) => {
     if (character.action_values["Type"] === "Mook") {
       return (character.action_values["Wounds"] - smackdown)
     }
@@ -43,30 +43,30 @@ const WoundsModal = ({open, setOpen, fight, character, setFight, setToast}: Woun
   }
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setWounds(parseInt(event.target.value))
+    setSmackdown(parseInt(event.target.value))
   }
   const submitWounds = async (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault()
 
-    const smackdown: number = calculateSmackdown()
-    const newWounds: number = calculateWounds(smackdown)
+    const wounds: number = calculateWounds()
+    const newWounds: number = calculateNewTotal(wounds)
     const actionValues: ActionValues = character.action_values
     actionValues['Wounds'] = newWounds
 
     const response = await client.updateCharacter({ ...character, "action_values": actionValues}, fight)
     if (response.status === 200) {
       await loadFight({jwt, id: fight.id as string, setFight})
-      setWounds(0)
+      setSmackdown(0)
       setOpen(false)
       if (character.action_values["Type"] === "Mook") {
         setToast({ open: true, message: `${character.name} lost ${wounds} mooks.`, severity: "success" })
       } else {
-        setToast({ open: true, message: `Character ${character.name} took a smackdown of ${smackdown}.`, severity: "success" })
+        setToast({ open: true, message: `Character ${character.name} took a smackdown of ${smackdown}, causing ${wounds} wounds.`, severity: "success" })
       }
     }
   }
   const cancelForm = () => {
-    setWounds(0)
+    setSmackdown(0)
     setOpen(false)
   }
   const label = (character.action_values["Type"] === "Mook") ? "Mooks" : "Smackdown"
@@ -81,7 +81,7 @@ const WoundsModal = ({open, setOpen, fight, character, setFight, setToast}: Woun
     >
       <Box component="form" onSubmit={submitWounds}>
         <Stack p={4} spacing={2}>
-          <TextField autoFocus type="number" label={label} required name="wounds" value={wounds} onChange={handleChange} />
+          <TextField autoFocus type="number" label={label} required name="wounds" value={smackdown} onChange={handleChange} />
           <Stack alignItems="flex-end" spacing={2} direction="row">
             <Button variant="outlined" disabled={saving} onClick={cancelForm}>Cancel</Button>
             <Button variant="contained" type="submit" disabled={saving}>Save Changes</Button>
