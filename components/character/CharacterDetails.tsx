@@ -72,8 +72,10 @@ export default function CharacterDetails({ character, fight, setFight, editingCh
     (["PC", "Ally"].includes(character.action_values["Type"] as string) &&
     character.action_values["Marks of Death"] as number > 0)
 
+  const key = `CharacterDetails ${character.id}`
+
   return (
-    <TableRow key={character.id}>
+    <TableRow key={key}>
       <TableCell sx={{width: 50, verticalAlign: "top"}}>
         <AvatarBadge character={character} session={session} />
       </TableCell>

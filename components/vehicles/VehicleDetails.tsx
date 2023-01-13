@@ -71,15 +71,17 @@ export default function VehicleDetails({ character, fight, setFight, editingChar
       </TableCell>
       <TableCell sx={{verticalAlign: "top"}}>
         <Stack spacing={2}>
-          <NameDisplay character={character} />
+          <NameDisplay character={character}
+            editCharacter={editCharacter}
+            deleteCharacter={deleteCharacter}
+            setToast={setToast}
+          />
           <GamemasterOnly user={session?.data?.user} character={character}>
             <Stack direction="row" spacing={1} justifyContent="space-between">
               <VehicleActionValues character={character} />
               <ActionButtons character={character}
                 takeWounds={takeWounds}
                 takeAction={takeAction}
-                editCharacter={editCharacter}
-                deleteCharacter={deleteCharacter}
                 setToast={setToast}
               />
             </Stack>
