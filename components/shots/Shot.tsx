@@ -50,7 +50,7 @@ export default function Shot({ fight, setFight, shot, characters, editingCharact
     <>
       <TableRow key={shot}>
         <TableCell rowSpan={characters.length + 1} sx={{width: 60, verticalAlign: "top"}}>
-          <Stack spacing={0}>
+          <Stack spacing={0} alignItems="center">
             <ShotButton fight={fight} shot={shot} setFight={setFight} setToast={setToast} />
             {
               effectsForShot(fight, shot).map((effect) => <EffectDetail effect={effect} key={effect.id} />)
