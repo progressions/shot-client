@@ -8,7 +8,7 @@ interface CharacterTypeParams {
 
 export default function CharacterType({ value, onChange }: CharacterTypeParams) {
   return (
-    <TextField fullWidth name='Type' required label='Character Type' select value={value} onChange={onChange}>
+    <TextField fullWidth name='Type' required label='Type' select value={value} onChange={onChange}>
       <MenuItem value='PC'>Player Character</MenuItem>
       <MenuItem value='Ally'>Ally</MenuItem>
       <MenuItem value='Mook'>Mook</MenuItem>
