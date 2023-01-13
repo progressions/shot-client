@@ -42,7 +42,7 @@ export default function NameDisplay({ character, editCharacter, deleteCharacter,
     <Box>
       <Box onMouseEnter={showButtons} onMouseLeave={hideButtons}>
         <Stack direction="row" spacing={1} alignItems="baseline">
-          <Typography variant="h4" sx={{fontWeight: 'bold', overflow: "hidden", textOverflow: "ellipsis"}}>
+          <Typography variant="h4" sx={{fontWeight: 'bold', overflow: "hidden", textOverflow: "ellipsis", width: "100%"}}>
             { character.name }
           </Typography>
           <Box visibility={open ? "visible" : "hidden"}>
