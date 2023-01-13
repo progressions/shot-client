@@ -4,6 +4,7 @@ import HeartBrokenIcon from '@mui/icons-material/HeartBroken';
 import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
 import NewReleasesIcon from '@mui/icons-material/NewReleases'
+import DirectionsRunIcon from '@mui/icons-material/DirectionsRun'
 
 import MookRolls from '../MookRolls'
 
@@ -15,11 +16,12 @@ interface ActionButtonsParams {
   takeAction?: (character: Character) => void,
   editCharacter?: (character: Character) => void,
   deleteCharacter?: (character: Character) => void,
+  takeDodgeAction?: (character: Character) => void,
   setToast: React.Dispatch<React.SetStateAction<Toast>>
 }
 
-export default function ActionButtons({ character, takeWounds, takeAction, editCharacter, deleteCharacter }: ActionButtonsParams) {
-  if (!character) return <></>
+export default function ActionButtons({ character, takeWounds, takeAction, editCharacter, deleteCharacter, takeDodgeAction }: ActionButtonsParams) {
+  if (!character) return (<></>)
 
   let woundLabel:string
   if (character.category === "character") {
@@ -53,6 +55,10 @@ export default function ActionButtons({ character, takeWounds, takeAction, editC
         </Tooltip> }
       </ButtonGroup>
       <ButtonGroup variant="outlined" size="small">
+        { takeDodgeAction &&
+        <Button color="secondary" onClick={() => takeDodgeAction(character)}>
+          <DirectionsRunIcon />
+        </Button> }
         { takeAction && <Tooltip title="Take Action" arrow>
           <Button variant="contained" color="secondary" onClick={() => {takeAction(character)}}>
             <BoltIcon />

@@ -66,6 +66,14 @@ export default function CharacterDetails({ character, fight, setFight, editingCh
     setOpenWounds(true)
   }
 
+  const takeDodgeAction = async (character: Character) => {
+    const response = await client.actCharacter(character, fight, 1)
+    if (response.status === 200) {
+      setToast({ open: true, message: `Character ${character.name} dodged for 1 shot.`, severity: "success" })
+      await loadFight({jwt, id: fight.id as string, setFight})
+    }
+  }
+
   const impairments = character.impairments ? `(-${character.impairments})` : ''
   const color = character.impairments > 0 ? 'error' : 'primary'
   const showDeathMarks = character.category === "character" &&
@@ -95,6 +103,7 @@ export default function CharacterDetails({ character, fight, setFight, editingCh
               <ActionButtons character={character}
                 takeWounds={takeWounds}
                 takeAction={takeAction}
+                takeDodgeAction={takeDodgeAction}
                 setToast={setToast}
               />
             </Stack>
