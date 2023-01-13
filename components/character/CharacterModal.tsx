@@ -1,6 +1,7 @@
 import { MouseEventHandler, useState, useEffect } from 'react'
 import { Typography, DialogActions, FormControlLabel, MenuItem, Checkbox, InputAdornment, Dialog, DialogTitle, DialogContent, DialogContentText, Box, Stack, TextField, Button, Paper, Popover } from '@mui/material'
 import FavoriteIcon from '@mui/icons-material/Favorite'
+import PeopleIcon from '@mui/icons-material/People'
 
 import Router from 'next/router'
 
@@ -115,6 +116,17 @@ export default function CharacterModal({ open, setOpen, fight, setFight, charact
   const woundsLabel = character.action_values["Type"] === "Mook" ? "Mooks" : "Wounds"
   const dialogTitle = newCharacter ? "Create Character" : "Update Character"
 
+  const woundsAdornment = () => {
+    if (character.action_values["Type"] === "Mook") {
+      return (
+        <InputAdornment position="start"><PeopleIcon color='error' /></InputAdornment>
+      )
+    }
+    return (
+      <InputAdornment position="start"><FavoriteIcon color='error' /></InputAdornment>
+    )
+  }
+
   return (
     <>
       <Dialog
@@ -138,8 +150,15 @@ export default function CharacterModal({ open, setOpen, fight, setFight, charact
                 <TextField label="Shot" type="number" name="current_shot" value={character.current_shot === null ? '' : character.current_shot} onChange={handleChange} sx={{width: 80}} /> }
               </Stack>
               <Stack spacing={2} direction="row" alignItems='center'>
-                <TextField label={woundsLabel} type="number" name="Wounds" value={character.action_values?.['Wounds'] || ''} onChange={handleAVChange}
-                  InputProps={{startAdornment: <InputAdornment position="start"><FavoriteIcon color='error' /></InputAdornment>}} />
+                <TextField label={woundsLabel}
+                  type="number"
+                  name="Wounds"
+                  value={character.action_values?.['Wounds'] || ''}
+                  onChange={handleAVChange}
+                  InputProps={
+                    {startAdornment: woundsAdornment()}
+                  }
+                />
                 { character.action_values["Type"] === "PC" &&
                 <DeathMarks character={character} onChange={handleDeathMarks} /> }
                 <TextField label="Impairments" type="number" name="impairments" value={character.impairments || ''} onChange={handleChange} />

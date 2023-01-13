@@ -58,7 +58,7 @@ export default function DiceRoller() {
       <Tooltip title="Roll Swerve" arrow>
         <Button onClick={showExplodingRoll}>
           <Box sx={{height: 35, bgcolor: 'primary.dark', borderRadius: 3}}>
-            <Box sx={{marginTop: '-13px'}} p={1}>
+            <Box sx={{marginTop: '-13px', whiteSpace: "nowrap"}} p={1}>
               <CasinoIcon sx={{color: 'white', width: 25, height: 45}} />
               <CasinoIcon sx={{color: 'red', width: 25, height: 45}} />
             </Box>
