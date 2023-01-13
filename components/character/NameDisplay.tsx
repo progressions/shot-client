@@ -32,7 +32,7 @@ export default function NameDisplay({ character, editCharacter, deleteCharacter,
           <Typography variant="h4" sx={{fontWeight: 'bold', overflow: "hidden", textOverflow: "ellipsis"}}>
             { character.name }
           </Typography>
-          <Box display={open ? "block" : "none"}>
+          <Box visibility={open ? "visible" : "hidden"}>
             <EditButtons character={character} editCharacter={editCharacter} deleteCharacter={deleteCharacter} setToast={setToast} />
           </Box>
         </Stack>
