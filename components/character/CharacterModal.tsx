@@ -6,6 +6,8 @@ import Router from 'next/router'
 
 import CharacterType from './CharacterType'
 import DeathMarks from "./DeathMarks"
+import FortuneSelect from "./edit/FortuneSelect"
+import EditActionValues from "./edit/EditActionValues"
 
 import { useSession } from 'next-auth/react'
 import { BlockPicker } from 'react-color'
@@ -149,41 +151,9 @@ export default function CharacterModal({ open, setOpen, fight, setFight, charact
                   <BlockPicker color={character.color || ''} onChangeComplete={handleColor} colors={['#D0021B', '#F5A623', '#F8E71C', '#8B572A', '#7ED321', '#417505', '#BD10E0', '#9013FE', '#4A90E2', '#50E3C2', '#B8E986', '#000000', '#4A4A4A', '#9B9B9B', '#FFFFFF']} />
                 </Paper>
               </Popover>
+              <EditActionValues character={character} onChange={handleAVChange} />
               <Stack direction="row" spacing={2}>
-                <TextField select fullWidth label="Main Attack" name="MainAttack" value={character.action_values["MainAttack"]} onChange={handleAVChange}>
-                  <MenuItem value="Guns">Guns</MenuItem>
-                  <MenuItem value="Martial Arts">Martial Arts</MenuItem>
-                  <MenuItem value="Scroungetech">Scroungetech</MenuItem>
-                  <MenuItem value="Sorcery">Sorcery</MenuItem>
-                  <MenuItem value="Mutant">Mutant</MenuItem>
-                  <MenuItem value="Creature">Creature</MenuItem>
-                </TextField>
-                <TextField select fullWidth label="Secondary Attack" name="SecondaryAttack" value={character.action_values["SecondaryAttack"] || ""} onChange={handleAVChange}>
-                  <MenuItem value="">None</MenuItem>
-                  <MenuItem value="Guns">Guns</MenuItem>
-                  <MenuItem value="Martial Arts">Martial Arts</MenuItem>
-                  <MenuItem value="Scroungetech">Scroungetech</MenuItem>
-                  <MenuItem value="Sorcery">Sorcery</MenuItem>
-                  <MenuItem value="Mutant">Mutant</MenuItem>
-                  <MenuItem value="Creature">Creature</MenuItem>
-                </TextField>
-              </Stack>
-              <Stack direction="row" spacing={2}>
-                <TextField label={character.action_values["MainAttack"]} type="number" sx={{width: 100}} name={character.action_values["MainAttack"]} value={character.action_values[character.action_values["MainAttack"] as string] || ''} onChange={handleAVChange} />
-                <TextField label={character.action_values["SecondaryAttack"]} type="number" sx={{width: 100}} name={character.action_values["SecondaryAttack"] || ""} value={character.action_values[character.action_values["SecondaryAttack"] as string] || ''} onChange={handleAVChange} />
-                <TextField label="Defense" type="number" sx={{width: 100}} name="Defense" value={character.action_values?.['Defense'] || ''} onChange={handleAVChange} />
-                <TextField label="Toughness" type="number" sx={{width: 100}} name="Toughness" value={character.action_values?.['Toughness'] || ''} onChange={handleAVChange} />
-                <TextField label="Speed" type="number" sx={{width: 100}} name="Speed" value={character.action_values?.['Speed'] || ''} onChange={handleAVChange} />
-              </Stack>
-              <Stack direction="row" spacing={2}>
-                <TextField select fullWidth label="Fortune Type" name="FortuneType" value={character.action_values["FortuneType"]} onChange={handleAVChange}>
-                  <MenuItem value="Fortune">Fortune</MenuItem>
-                  <MenuItem value="Chi">Chi</MenuItem>
-                  <MenuItem value="Genome">Genome</MenuItem>
-                  <MenuItem value="Magic">Magic</MenuItem>
-                </TextField>
-                <TextField label={character.action_values["FortuneType"]} type="number" sx={{width: 100}} name="Fortune" value={character.action_values?.['Fortune'] || ''} onChange={handleAVChange} />
-                <TextField label={`Max ${character.action_values["FortuneType"]}`} type="number" sx={{width: 100}} name="Max Fortune" value={character.action_values["Max Fortune"]} onChange={handleAVChange} />
+                <FortuneSelect character={character} onChange={handleAVChange} />
               </Stack>
             </Stack>
           </DialogContent>
