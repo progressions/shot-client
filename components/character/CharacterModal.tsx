@@ -5,13 +5,15 @@ import PeopleIcon from '@mui/icons-material/People'
 
 import Router from 'next/router'
 
+import ColorPicker from "./edit/ColorPicker"
 import CharacterType from './edit/CharacterType'
-import DeathMarks from "./DeathMarks"
 import FortuneSelect from "./edit/FortuneSelect"
 import EditActionValues from "./edit/EditActionValues"
 
+import DeathMarks from "./DeathMarks"
+import PlayerTypeOnly from "../PlayerTypeOnly"
+
 import { useSession } from 'next-auth/react'
-import { BlockPicker } from 'react-color'
 import { loadFight } from '../fights/FightDetail'
 import Client from "../Client"
 
@@ -28,9 +30,6 @@ interface CharacterModalParams {
 }
 
 export default function CharacterModal({ open, setOpen, fight, setFight, character:activeCharacter, setToast }: CharacterModalParams) {
-  const [picker, setPicker] = useState<boolean>(false)
-  const [anchorEl, setAnchorEl] = useState(null)
-
   const session: any = useSession({ required: true })
   const jwt = session?.data?.authorization
   const client = new Client({ jwt: jwt })
@@ -65,12 +64,6 @@ export default function CharacterModal({ open, setOpen, fight, setFight, charact
     setCharacter((prevState: Person) => ({ ...prevState, action_values: { ...action_values, "Marks of Death": value as number } }))
   }
 
-  const handleColor = (color: any) => {
-    setCharacter((prevState: Person) => ({ ...prevState, color: color?.hex }))
-    setPicker(false)
-    setAnchorEl(null)
-  }
-
   const cancelForm = () => {
     setCharacter(character || defaultCharacter)
     setOpen(defaultCharacter)
@@ -100,16 +93,6 @@ export default function CharacterModal({ open, setOpen, fight, setFight, charact
       setToast({ open: true, message: `There was an error`, severity: "error" })
       setSaving(false)
       cancelForm()
-    }
-  }
-
-  const togglePicker = (event: React.MouseEvent<HTMLElement>) => {
-    if (picker) {
-      setPicker(false)
-      setAnchorEl(null)
-    } else {
-      setPicker(true)
-      setAnchorEl(event.target as any)
     }
   }
 
@@ -159,22 +142,19 @@ export default function CharacterModal({ open, setOpen, fight, setFight, charact
                     {startAdornment: woundsAdornment()}
                   }
                 />
-                { character.action_values["Type"] === "PC" &&
-                <DeathMarks character={character} onChange={handleDeathMarks} /> }
+                <PlayerTypeOnly character={character} type="PC">
+                  <DeathMarks character={character} onChange={handleDeathMarks} />
+                </PlayerTypeOnly>
                 <TextField label="Impairments" type="number" name="impairments" value={character.impairments || ''} onChange={handleChange} />
-                <Button sx={{width: 2, height: 50, bgcolor: character.color, borderColor: 'primary', border: 1, borderRadius: 2}} onClick={togglePicker} />
-                <TextField id="colorPicker" label="Color" name="color" value={character.color || ''} onChange={handleChange} />
+                <ColorPicker character={character} onChange={handleChange} setCharacter={setCharacter} />
               </Stack>
-              <Popover anchorEl={anchorEl} open={picker} onClose={() => setPicker(false)} anchorOrigin={{vertical: 'bottom', horizontal: 'center'}}>
-                <Paper>
-                  <BlockPicker color={character.color || ''} onChangeComplete={handleColor} colors={['#D0021B', '#F5A623', '#F8E71C', '#8B572A', '#7ED321', '#417505', '#BD10E0', '#9013FE', '#4A90E2', '#50E3C2', '#B8E986', '#000000', '#4A4A4A', '#9B9B9B', '#FFFFFF']} />
-                </Paper>
-              </Popover>
               <Typography variant="h6">Action Values</Typography>
               <EditActionValues character={character} onChange={handleAVChange} />
-              <Stack direction="row" spacing={2}>
-                <FortuneSelect character={character} onChange={handleAVChange} />
-              </Stack>
+              <PlayerTypeOnly character={character} type="PC">
+                <Stack direction="row" spacing={2}>
+                  <FortuneSelect character={character} onChange={handleAVChange} />
+                </Stack>
+              </PlayerTypeOnly>
             </Stack>
           </DialogContent>
           <DialogActions>
