@@ -1,6 +1,6 @@
 import { Stack, TextField, MenuItem, Dialog, DialogTitle, DialogContent, DialogContentText, Button, IconButton, Typography, Box, Popover } from "@mui/material"
 import { useState } from "react"
-import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined'
+import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined'
 
 import type { Fight, Toast } from "../../types/types"
 
@@ -12,7 +12,7 @@ interface ShotButtonProps {
 }
 
 export default function ShotButton({ fight, shot, setToast, setFight }: ShotButtonProps) {
-  const label = shot === null ? "hidden" : shot
+  const label = shot === null ? <VisibilityOffOutlinedIcon sx={{width: 40, height: 40}} />: shot
 
   return (
     <>

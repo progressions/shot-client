@@ -55,9 +55,9 @@ export default function Shot({ fight, setFight, shot, characters, editingCharact
             {
               effectsForShot(fight, shot).map((effect) => <EffectDetail effect={effect} key={effect.id} />)
             }
-            <IconButton onClick={() => { setOpen(false); setOpenEffectDialog(true) }}>
+            { shot > 0 && <IconButton onClick={() => { setOpen(false); setOpenEffectDialog(true) }}>
               <AddCircleOutlineOutlinedIcon />
-            </IconButton>
+            </IconButton> }
             <EffectModal fight={fight} shot={shot} open={openEffectDialog} setOpen={setOpenEffectDialog} setFight={setFight} setToast={setToast} />
           </Stack>
         </TableCell>

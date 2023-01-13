@@ -21,7 +21,13 @@ interface ActionButtonsParams {
 export default function ActionButtons({ character, takeWounds, takeAction, editCharacter, deleteCharacter }: ActionButtonsParams) {
   if (!character) return <></>
 
-  const woundLabel = character.action_values["Type"] === "Mook" as CharacterType ? "Kill Mooks" : "Take Wounds"
+  let woundLabel:string
+  if (character.category === "character") {
+    woundLabel = character.action_values["Type"] === "Mook" as CharacterType ? "Kill Mooks" : "Take Wounds"
+  } else {
+    woundLabel = character.action_values["Type"] === "Mook" as CharacterType ? "Kill Mooks" : "Take Chase Points"
+  }
+
   return (
     <Box>
       <ButtonGroup variant="outlined" size="small">
@@ -56,7 +62,3 @@ export default function ActionButtons({ character, takeWounds, takeAction, editC
     </Box>
   )
 }
-
-/*
- *
-        */
