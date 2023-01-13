@@ -127,6 +127,7 @@ export default function CharacterModal({ open, setOpen, fight, setFight, charact
           <Stack spacing={2}>
             <Stack direction="row" spacing={2}>
               <CharacterType value={character.action_values?.['Type'] as string || ''} onChange={handleAVChange} />
+              { character.action_values["Type"] === "PC" && <TextField name="Archetype" label="Archetype" value={character.action_values["Archetype"]} onChange={handleAVChange} /> }
             </Stack>
             <Stack direction="row" spacing={2}>
               <TextField autoFocus label="Name" variant="filled" size="medium" sx={{paddingBottom: 2}} fullWidth required name="name" value={character.name} onChange={handleChange} />

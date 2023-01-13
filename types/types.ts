@@ -24,9 +24,10 @@ export interface ActionValues {
   SecondaryAttack?: string | null
   Wounds: number
   Type?: CharacterType
-  Damage?: number,
-  Vehicle?: boolean,
+  Damage?: number
+  Vehicle?: boolean
   "Marks of Death": number
+  Archetypes: string
 }
 
 export interface VehicleActionValues {

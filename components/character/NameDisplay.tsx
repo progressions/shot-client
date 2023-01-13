@@ -13,6 +13,9 @@ export default function NameDisplay({ character }: NameDisplayProps) {
       <Typography variant="h4" sx={{fontWeight: 'bold', overflow: "hidden", textOverflow: "ellipsis"}}>
         { character.name }
       </Typography>
+      <Typography variant="caption" sx={{textTransform: "uppercase", color: "text.secondary"}}>
+        { character.action_values["Archetype"] }
+      </Typography>
     </Box>
   )
 }
