@@ -27,7 +27,7 @@ export interface ActionValues {
   Damage?: number
   Vehicle?: boolean
   "Marks of Death": number
-  Archetypes: string
+  Archetype: string
 }
 
 export interface VehicleActionValues {
