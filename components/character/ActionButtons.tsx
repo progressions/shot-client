@@ -25,7 +25,7 @@ export default function ActionButtons({ character, takeWounds, takeAction, editC
 
   let woundLabel:string
   if (character.category === "character") {
-    woundLabel = character.action_values["Type"] === "Mook" as CharacterType ? "Kill Mooks" : "Take Wounds"
+    woundLabel = character.action_values["Type"] === "Mook" as CharacterType ? "Kill Mooks" : "Take Smackdown"
   } else {
     woundLabel = character.action_values["Type"] === "Mook" as CharacterType ? "Kill Mooks" : "Take Chase Points"
   }

@@ -23,15 +23,33 @@ const WoundsModal = ({open, setOpen, fight, character, setFight, setToast}: Woun
   const jwt = session?.data?.authorization
   const client = new Client({ jwt })
 
+  const calculateSmackdown = () => {
+    if (character.action_values["Type"] === "Mook") {
+      return wounds
+    }
+    const result = (wounds - character.action_values["Toughness"])
+    if (result >= 0) {
+      return result
+    }
+    return 0
+  }
+
+  const calculateWounds = (smackdown) => {
+    if (character.action_values["Type"] === "Mook") {
+      return (character.action_values["Wounds"] - smackdown)
+    }
+
+    return (character.action_values["Wounds"] + smackdown)
+  }
+
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setWounds(parseInt(event.target.value))
   }
   const submitWounds = async (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault()
-    console.log(character.action_values)
-    const newWounds: number = (character.action_values["Type"] === "Mook") ?
-      (character.action_values["Wounds"] as number) - wounds :
-      (character.action_values["Wounds"] as number) + wounds
+
+    const smackdown = calculateSmackdown()
+    const newWounds: number = calculateWounds(smackdown)
     const actionValues: ActionValues = character.action_values
     actionValues['Wounds'] = newWounds
 
@@ -43,7 +61,7 @@ const WoundsModal = ({open, setOpen, fight, character, setFight, setToast}: Woun
       if (character.action_values["Type"] === "Mook") {
         setToast({ open: true, message: `${character.name} lost ${wounds} mooks.`, severity: "success" })
       } else {
-        setToast({ open: true, message: `Character ${character.name} took ${wounds} wounds.`, severity: "success" })
+        setToast({ open: true, message: `Character ${character.name} took a smackdown of ${smackdown}.`, severity: "success" })
       }
     }
   }
@@ -51,7 +69,7 @@ const WoundsModal = ({open, setOpen, fight, character, setFight, setToast}: Woun
     setWounds(0)
     setOpen(false)
   }
-  const label = (character.action_values["Type"] === "Mook") ? "Mooks" : "Wounds"
+  const label = (character.action_values["Type"] === "Mook") ? "Mooks" : "Smackdown"
 
   return (
     <Dialog
