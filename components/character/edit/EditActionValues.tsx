@@ -1,6 +1,6 @@
 import { Stack, TextField, MenuItem } from "@mui/material"
 
-import type { Character } from "../../types/types"
+import type { Character } from "../../../types/types"
 
 interface EditActionValuesProps {
   character: Character
@@ -30,8 +30,8 @@ export default function EditActionValues({ character, onChange }: EditActionValu
         </TextField>
       </Stack>
       <Stack direction="row" spacing={2}>
-        <TextField label={character.action_values["MainAttack"]} type="number" sx={{width: 100}} name={character.action_values["MainAttack"]} value={character.action_values[character.action_values["MainAttack"] as string] || ''} onChange={onChange} />
-        <TextField label={character.action_values["SecondaryAttack"]} type="number" sx={{width: 100}} name={character.action_values["SecondaryAttack"] || ""} value={character.action_values[character.action_values["SecondaryAttack"] as string] || ''} onChange={onChange} />
+        <TextField label={character.action_values["MainAttack"]} type="number" sx={{width: 100}} name={character.action_values["MainAttack"] as string} value={character.action_values[character.action_values["MainAttack"] as string] || ''} onChange={onChange} />
+        <TextField label={character.action_values["SecondaryAttack"]} type="number" sx={{width: 100}} name={(character.action_values["SecondaryAttack"] || "") as string} value={character.action_values[character.action_values["SecondaryAttack"] as string] || ''} onChange={onChange} />
         <TextField label="Defense" type="number" sx={{width: 100}} name="Defense" value={character.action_values?.['Defense'] || ''} onChange={onChange} />
         <TextField label="Toughness" type="number" sx={{width: 100}} name="Toughness" value={character.action_values?.['Toughness'] || ''} onChange={onChange} />
         <TextField label="Speed" type="number" sx={{width: 100}} name="Speed" value={character.action_values?.['Speed'] || ''} onChange={onChange} />

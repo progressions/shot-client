@@ -1,6 +1,6 @@
 import { TextField, MenuItem } from "@mui/material"
 
-import type { Character } from "../../types/types"
+import type { Character } from "../../../types/types"
 
 interface FortuneSelectProps {
   character: Character

@@ -4,7 +4,7 @@ import { IoSkull, IoSkullOutline } from "react-icons/io5"
 import DeathMarks from "./DeathMarks"
 import EditButtons from "./EditButtons"
 
-import type { Character, Person, Vehicle } from "../../types/types"
+import type { Character, Toast, Person, Vehicle } from "../../types/types"
 import { useState } from "react"
 
 interface NameDisplayProps {
