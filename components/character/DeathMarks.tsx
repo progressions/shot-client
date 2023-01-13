@@ -36,7 +36,12 @@ export const deathMarkIcons = (character: Character) => {
 
 export default function DeathMarks({ character, readOnly, onChange }: DeathMarksProps) {
   if (readOnly) {
-    return (deathMarkIcons(character).map((icon) => (icon)))
+    return (
+    <>
+      {
+        deathMarkIcons(character).map((icon) => (icon))
+      }
+    </>)
   } else {
     return (
       <StyledRating
