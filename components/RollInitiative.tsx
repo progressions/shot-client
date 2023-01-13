@@ -71,12 +71,3 @@ export default function RollInitiative({ fight, setFight, setToast }: RollInitia
     <Button variant="contained" color="secondary" disabled={processing} onClick={handleClick}>Initiative</Button>
   )
 }
-
-/*
- *
-        } else if (character.category === "vehicle") {
-          const roll = (character.action_values["Acceleration"] as number) + rollDie() + shot
-          const initiative = (roll > 1) ? roll : 1
-          const response = await client.updateVehicle({...character, "current_shot": initiative}, fight)
-          if (response.status === 200) { return true }
-        */
