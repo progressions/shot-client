@@ -23,18 +23,18 @@ const WoundsModal = ({open, setOpen, fight, character, setFight, setToast}: Woun
   const jwt = session?.data?.authorization
   const client = new Client({ jwt })
 
-  const calculateSmackdown = () => {
+  const calculateSmackdown = (): number => {
     if (character.action_values["Type"] === "Mook") {
       return wounds
     }
-    const result = (wounds - character.action_values["Toughness"])
+    const result = wounds - (character.action_values["Toughness"] || 0)
     if (result >= 0) {
       return result
     }
     return 0
   }
 
-  const calculateWounds = (smackdown) => {
+  const calculateWounds = (smackdown: number) => {
     if (character.action_values["Type"] === "Mook") {
       return (character.action_values["Wounds"] - smackdown)
     }
@@ -48,7 +48,7 @@ const WoundsModal = ({open, setOpen, fight, character, setFight, setToast}: Woun
   const submitWounds = async (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault()
 
-    const smackdown = calculateSmackdown()
+    const smackdown: number = calculateSmackdown()
     const newWounds: number = calculateWounds(smackdown)
     const actionValues: ActionValues = character.action_values
     actionValues['Wounds'] = newWounds
