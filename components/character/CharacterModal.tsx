@@ -1,11 +1,13 @@
 import { MouseEventHandler, useState, useEffect } from 'react'
-import { FormControlLabel, MenuItem, Checkbox, InputAdornment, Dialog, DialogTitle, DialogContent, DialogContentText, Box, Stack, TextField, Button, Paper, Popover } from '@mui/material'
+import { Typography, DialogActions, FormControlLabel, MenuItem, Checkbox, InputAdornment, Dialog, DialogTitle, DialogContent, DialogContentText, Box, Stack, TextField, Button, Paper, Popover } from '@mui/material'
 import FavoriteIcon from '@mui/icons-material/Favorite'
 
 import Router from 'next/router'
 
-import CharacterType from './CharacterType'
+import CharacterType from './edit/CharacterType'
 import DeathMarks from "./DeathMarks"
+import FortuneSelect from "./edit/FortuneSelect"
+import EditActionValues from "./edit/EditActionValues"
 
 import { useSession } from 'next-auth/react'
 import { BlockPicker } from 'react-color'
@@ -35,7 +37,7 @@ export default function CharacterModal({ open, setOpen, fight, setFight, charact
   const [saving, setSaving] = useState(false);
 
   const [character, setCharacter] = useState<Person>(activeCharacter || defaultCharacter)
-  const method = character?.id ? 'PATCH' : 'POST'
+  const newCharacter = !character.id
 
   useEffect(() => {
     if (activeCharacter) {
@@ -77,11 +79,9 @@ export default function CharacterModal({ open, setOpen, fight, setFight, charact
     setSaving(true)
     event.preventDefault()
 
-    const newCharacter = !!character.id
-
     const response = newCharacter ?
-      await client.updateCharacter(character, fight) :
-      await client.createCharacter(character, fight)
+      await client.createCharacter(character, fight) :
+      await client.updateCharacter(character, fight)
 
     if (response.status === 200) {
       const data = await response.json()
@@ -113,6 +113,7 @@ export default function CharacterModal({ open, setOpen, fight, setFight, charact
   }
 
   const woundsLabel = character.action_values["Type"] === "Mook" ? "Mooks" : "Wounds"
+  const dialogTitle = newCharacter ? "Create Character" : "Update Character"
 
   return (
     <>
@@ -123,72 +124,46 @@ export default function CharacterModal({ open, setOpen, fight, setFight, charact
         aria-describedby="modal-modal-description"
         disableRestoreFocus
       >
-        <Box p={4} component="form" onSubmit={handleSubmit}>
-          <Stack spacing={2}>
-            <Stack direction="row" spacing={2}>
-              <CharacterType value={character.action_values?.['Type'] as string || ''} onChange={handleAVChange} />
-              { character.action_values["Type"] === "PC" && <TextField name="Archetype" label="Archetype" value={character.action_values["Archetype"]} onChange={handleAVChange} /> }
+        <DialogTitle>{dialogTitle}</DialogTitle>
+        <Box component="form" onSubmit={handleSubmit} pb={1}>
+          <DialogContent>
+            <Stack spacing={2}>
+              <Stack direction="row" spacing={2}>
+                <CharacterType value={character.action_values?.['Type'] as string || ''} onChange={handleAVChange} />
+                { character.action_values["Type"] === "PC" && <TextField name="Archetype" label="Archetype" fullWidth value={character.action_values["Archetype"]} onChange={handleAVChange} /> }
+              </Stack>
+              <Stack direction="row" spacing={2}>
+                <TextField autoFocus label="Name" variant="filled" size="medium" sx={{paddingBottom: 2}} fullWidth required name="name" value={character.name} onChange={handleChange} />
+                { fight &&
+                <TextField label="Shot" type="number" name="current_shot" value={character.current_shot === null ? '' : character.current_shot} onChange={handleChange} sx={{width: 80}} /> }
+              </Stack>
+              <Stack spacing={2} direction="row" alignItems='center'>
+                <TextField label={woundsLabel} type="number" name="Wounds" value={character.action_values?.['Wounds'] || ''} onChange={handleAVChange}
+                  InputProps={{startAdornment: <InputAdornment position="start"><FavoriteIcon color='error' /></InputAdornment>}} />
+                { character.action_values["Type"] === "PC" &&
+                <DeathMarks character={character} onChange={handleDeathMarks} /> }
+                <TextField label="Impairments" type="number" name="impairments" value={character.impairments || ''} onChange={handleChange} />
+                <Button sx={{width: 2, height: 50, bgcolor: character.color, borderColor: 'primary', border: 1, borderRadius: 2}} onClick={togglePicker} />
+                <TextField id="colorPicker" label="Color" name="color" value={character.color || ''} onChange={handleChange} />
+              </Stack>
+              <Popover anchorEl={anchorEl} open={picker} onClose={() => setPicker(false)} anchorOrigin={{vertical: 'bottom', horizontal: 'center'}}>
+                <Paper>
+                  <BlockPicker color={character.color || ''} onChangeComplete={handleColor} colors={['#D0021B', '#F5A623', '#F8E71C', '#8B572A', '#7ED321', '#417505', '#BD10E0', '#9013FE', '#4A90E2', '#50E3C2', '#B8E986', '#000000', '#4A4A4A', '#9B9B9B', '#FFFFFF']} />
+                </Paper>
+              </Popover>
+              <Typography variant="h6">Action Values</Typography>
+              <EditActionValues character={character} onChange={handleAVChange} />
+              <Stack direction="row" spacing={2}>
+                <FortuneSelect character={character} onChange={handleAVChange} />
+              </Stack>
             </Stack>
-            <Stack direction="row" spacing={2}>
-              <TextField autoFocus label="Name" variant="filled" size="medium" sx={{paddingBottom: 2}} fullWidth required name="name" value={character.name} onChange={handleChange} />
-              { fight &&
-              <TextField label="Shot" type="number" name="current_shot" value={character.current_shot === null ? '' : character.current_shot} onChange={handleChange} sx={{width: 80}} /> }
-            </Stack>
-            <Stack spacing={2} direction="row" alignItems='center'>
-              <TextField label={woundsLabel} type="number" name="Wounds" value={character.action_values?.['Wounds'] || ''} onChange={handleAVChange}
-                InputProps={{startAdornment: <InputAdornment position="start"><FavoriteIcon color='error' /></InputAdornment>}} />
-              { character.action_values["Type"] === "PC" &&
-              <DeathMarks character={character} onChange={handleDeathMarks} /> }
-              <TextField label="Impairments" type="number" name="impairments" value={character.impairments || ''} onChange={handleChange} />
-              <Button sx={{width: 2, height: 50, bgcolor: character.color, borderColor: 'primary', border: 1, borderRadius: 2}} onClick={togglePicker} />
-              <TextField id="colorPicker" label="Color" name="color" value={character.color || ''} onChange={handleChange} />
-            </Stack>
-            <Popover anchorEl={anchorEl} open={picker} onClose={() => setPicker(false)} anchorOrigin={{vertical: 'bottom', horizontal: 'center'}}>
-              <Paper>
-                <BlockPicker color={character.color || ''} onChangeComplete={handleColor} colors={['#D0021B', '#F5A623', '#F8E71C', '#8B572A', '#7ED321', '#417505', '#BD10E0', '#9013FE', '#4A90E2', '#50E3C2', '#B8E986', '#000000', '#4A4A4A', '#9B9B9B', '#FFFFFF']} />
-              </Paper>
-            </Popover>
-            <Stack direction="row" spacing={2}>
-              <TextField select fullWidth label="Main Attack" name="MainAttack" value={character.action_values["MainAttack"]} onChange={handleAVChange}>
-                <MenuItem value="Guns">Guns</MenuItem>
-                <MenuItem value="Martial Arts">Martial Arts</MenuItem>
-                <MenuItem value="Scroungetech">Scroungetech</MenuItem>
-                <MenuItem value="Sorcery">Sorcery</MenuItem>
-                <MenuItem value="Mutant">Mutant</MenuItem>
-                <MenuItem value="Creature">Creature</MenuItem>
-              </TextField>
-              <TextField select fullWidth label="Secondary Attack" name="SecondaryAttack" value={character.action_values["SecondaryAttack"] || ""} onChange={handleAVChange}>
-                <MenuItem value="">None</MenuItem>
-                <MenuItem value="Guns">Guns</MenuItem>
-                <MenuItem value="Martial Arts">Martial Arts</MenuItem>
-                <MenuItem value="Scroungetech">Scroungetech</MenuItem>
-                <MenuItem value="Sorcery">Sorcery</MenuItem>
-                <MenuItem value="Mutant">Mutant</MenuItem>
-                <MenuItem value="Creature">Creature</MenuItem>
-              </TextField>
-            </Stack>
-            <Stack direction="row" spacing={2}>
-              <TextField label={character.action_values["MainAttack"]} type="number" sx={{width: 100}} name={character.action_values["MainAttack"]} value={character.action_values[character.action_values["MainAttack"] as string] || ''} onChange={handleAVChange} />
-              <TextField label={character.action_values["SecondaryAttack"]} type="number" sx={{width: 100}} name={character.action_values["SecondaryAttack"] || ""} value={character.action_values[character.action_values["SecondaryAttack"] as string] || ''} onChange={handleAVChange} />
-              <TextField label="Defense" type="number" sx={{width: 100}} name="Defense" value={character.action_values?.['Defense'] || ''} onChange={handleAVChange} />
-              <TextField label="Toughness" type="number" sx={{width: 100}} name="Toughness" value={character.action_values?.['Toughness'] || ''} onChange={handleAVChange} />
-              <TextField label="Speed" type="number" sx={{width: 100}} name="Speed" value={character.action_values?.['Speed'] || ''} onChange={handleAVChange} />
-            </Stack>
-            <Stack direction="row" spacing={2}>
-              <TextField select fullWidth label="Fortune Type" name="FortuneType" value={character.action_values["FortuneType"]} onChange={handleAVChange}>
-                <MenuItem value="Fortune">Fortune</MenuItem>
-                <MenuItem value="Chi">Chi</MenuItem>
-                <MenuItem value="Genome">Genome</MenuItem>
-                <MenuItem value="Magic">Magic</MenuItem>
-              </TextField>
-              <TextField label={character.action_values["FortuneType"]} type="number" sx={{width: 100}} name="Fortune" value={character.action_values?.['Fortune'] || ''} onChange={handleAVChange} />
-              <TextField label={`Max ${character.action_values["FortuneType"]}`} type="number" sx={{width: 100}} name="Max Fortune" value={character.action_values["Max Fortune"]} onChange={handleAVChange} />
-            </Stack>
-            <Stack alignItems="flex-end" spacing={2} direction="row">
+          </DialogContent>
+          <DialogActions>
+            <Stack spacing={2} direction="row">
               <Button variant="outlined" disabled={saving} onClick={cancelForm}>Cancel</Button>
               <Button variant="contained" type="submit" disabled={saving}>Save Changes</Button>
             </Stack>
-          </Stack>
+          </DialogActions>
         </Box>
       </Dialog>
     </>

@@ -66,14 +66,24 @@ export default function CharacterDetails({ character, fight, setFight, editingCh
     setOpenWounds(true)
   }
 
+  const takeDodgeAction = async (character: Character) => {
+    const response = await client.actCharacter(character, fight, 1)
+    if (response.status === 200) {
+      setToast({ open: true, message: `Character ${character.name} dodged for 1 shot.`, severity: "success" })
+      await loadFight({jwt, id: fight.id as string, setFight})
+    }
+  }
+
   const impairments = character.impairments ? `(-${character.impairments})` : ''
   const color = character.impairments > 0 ? 'error' : 'primary'
   const showDeathMarks = character.category === "character" &&
     (["PC", "Ally"].includes(character.action_values["Type"] as string) &&
     character.action_values["Marks of Death"] as number > 0)
 
+  const key = `CharacterDetails ${character.id}`
+
   return (
-    <TableRow key={character.id}>
+    <TableRow key={key}>
       <TableCell sx={{width: 50, verticalAlign: "top"}}>
         <AvatarBadge character={character} session={session} />
       </TableCell>
@@ -82,15 +92,18 @@ export default function CharacterDetails({ character, fight, setFight, editingCh
       </TableCell>
       <TableCell sx={{verticalAlign: "top"}}>
         <Stack spacing={2}>
-          <NameDisplay character={character} />
+          <NameDisplay character={character}
+            editCharacter={editCharacter}
+            deleteCharacter={deleteCharacter}
+            setToast={setToast}
+          />
           <GamemasterOnly user={session?.data?.user} character={character}>
             <Stack direction="row" spacing={1} justifyContent="space-between">
               <ActionValues character={character} />
               <ActionButtons character={character}
                 takeWounds={takeWounds}
                 takeAction={takeAction}
-                editCharacter={editCharacter}
-                deleteCharacter={deleteCharacter}
+                takeDodgeAction={takeDodgeAction}
                 setToast={setToast}
               />
             </Stack>
