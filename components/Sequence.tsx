@@ -1,8 +1,5 @@
 import { Stack, Button, Typography, IconButton, ButtonGroup } from "@mui/material"
 
-import { authOptions } from '../api/auth/[...nextauth]'
-import { unstable_getServerSession } from "next-auth/next"
-
 import { useSession } from 'next-auth/react'
 import Client from "./Client"
 
@@ -11,7 +8,15 @@ import RemoveIcon from '@mui/icons-material/Remove'
 
 import { loadFight } from "./FightDetail"
 
-export default function Sequence({ fight, setFight, setToast }) {
+import { Toast, Fight } from "../types/types"
+
+interface SequenceProps {
+  fight: Fight
+  setFight: React.Dispatch<React.SetStateAction<Fight>>
+  setToast: React.Dispatch<React.SetStateAction<Toast>>
+}
+
+export default function Sequence({ fight, setFight, setToast }: SequenceProps) {
   const session: any = useSession({ required: true })
   const jwt = session?.data?.authorization
   const client = new Client({ jwt })
