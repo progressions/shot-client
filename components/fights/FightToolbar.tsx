@@ -1,7 +1,7 @@
 import { Switch, FormControlLabel, Stack } from '@mui/material'
 
 import CreateCharacter from '../character/CreateCharacter'
-import SelectCharacter from '../SelectCharacter'
+import SelectCharacter from '../character/SelectCharacter'
 import CreateVehicle from '../vehicles/CreateVehicle'
 import DiceRoller from '../DiceRoller'
 import MookRolls from '../MookRolls'

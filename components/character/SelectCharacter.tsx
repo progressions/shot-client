@@ -1,13 +1,12 @@
 import { useState } from 'react'
 import { Box, TextField, MenuItem, Dialog, DialogActions, DialogTitle, DialogContent, DialogContentText, Button } from '@mui/material'
 import { useSession } from 'next-auth/react'
-import { loadFight } from './fights/FightDetail'
-import Client from "./Client"
-import Api from "./Api"
+import { loadFight } from '../fights/FightDetail'
+import Client from "../Client"
 
 import PersonIcon from '@mui/icons-material/Person'
 
-import type { Fight, Character } from "../types/types"
+import type { Fight, Character } from "../../types/types"
 
 interface SelectCharacterParams {
   fight: Fight,
@@ -15,7 +14,6 @@ interface SelectCharacterParams {
 }
 
 export default function SelectCharacter({ fight, setFight }: SelectCharacterParams) {
-  const api = new Api()
   const session: any = useSession({ required: true })
   const jwt = session?.data?.authorization
   const client = new Client({ jwt })
