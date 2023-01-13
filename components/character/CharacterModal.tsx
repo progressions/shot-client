@@ -1,10 +1,10 @@
 import { MouseEventHandler, useState, useEffect } from 'react'
-import { DialogActions, FormControlLabel, MenuItem, Checkbox, InputAdornment, Dialog, DialogTitle, DialogContent, DialogContentText, Box, Stack, TextField, Button, Paper, Popover } from '@mui/material'
+import { Typography, DialogActions, FormControlLabel, MenuItem, Checkbox, InputAdornment, Dialog, DialogTitle, DialogContent, DialogContentText, Box, Stack, TextField, Button, Paper, Popover } from '@mui/material'
 import FavoriteIcon from '@mui/icons-material/Favorite'
 
 import Router from 'next/router'
 
-import CharacterType from './CharacterType'
+import CharacterType from './edit/CharacterType'
 import DeathMarks from "./DeathMarks"
 import FortuneSelect from "./edit/FortuneSelect"
 import EditActionValues from "./edit/EditActionValues"
@@ -130,7 +130,7 @@ export default function CharacterModal({ open, setOpen, fight, setFight, charact
             <Stack spacing={2}>
               <Stack direction="row" spacing={2}>
                 <CharacterType value={character.action_values?.['Type'] as string || ''} onChange={handleAVChange} />
-                { character.action_values["Type"] === "PC" && <TextField name="Archetype" label="Archetype" value={character.action_values["Archetype"]} onChange={handleAVChange} /> }
+                { character.action_values["Type"] === "PC" && <TextField name="Archetype" label="Archetype" fullWidth value={character.action_values["Archetype"]} onChange={handleAVChange} /> }
               </Stack>
               <Stack direction="row" spacing={2}>
                 <TextField autoFocus label="Name" variant="filled" size="medium" sx={{paddingBottom: 2}} fullWidth required name="name" value={character.name} onChange={handleChange} />
@@ -151,6 +151,7 @@ export default function CharacterModal({ open, setOpen, fight, setFight, charact
                   <BlockPicker color={character.color || ''} onChangeComplete={handleColor} colors={['#D0021B', '#F5A623', '#F8E71C', '#8B572A', '#7ED321', '#417505', '#BD10E0', '#9013FE', '#4A90E2', '#50E3C2', '#B8E986', '#000000', '#4A4A4A', '#9B9B9B', '#FFFFFF']} />
                 </Paper>
               </Popover>
+              <Typography variant="h6">Action Values</Typography>
               <EditActionValues character={character} onChange={handleAVChange} />
               <Stack direction="row" spacing={2}>
                 <FortuneSelect character={character} onChange={handleAVChange} />

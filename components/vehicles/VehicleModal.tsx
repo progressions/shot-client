@@ -6,7 +6,7 @@ import CarCrashIcon from '@mui/icons-material/CarCrash'
 
 import Router from 'next/router'
 
-import CharacterType from '../character/CharacterType'
+import CharacterType from '../character/edit/CharacterType'
 
 import { useSession } from 'next-auth/react'
 import { BlockPicker } from 'react-color'
