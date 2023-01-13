@@ -27,7 +27,9 @@ const WoundsModal = ({open, setOpen, fight, character, setFight, setToast}: Woun
     if (character.action_values["Type"] === "Mook") {
       return smackdown
     }
-    const result = smackdown - (character.action_values["Toughness"] || 0)
+
+    const result = smackdown - (character.action_values["Toughness"] || 0) + (character.impairments)
+
     if (result >= 0) {
       return result
     }
