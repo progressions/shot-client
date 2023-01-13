@@ -14,7 +14,7 @@ interface RollInitiativeProps {
   setToast: React.Dispatch<React.SetStateAction<Toast>>
 }
 
-export default function RollInitiative({ fight, setFight, setToast }) {
+export default function RollInitiative({ fight, setFight, setToast }: RollInitiativeProps) {
   const [processing, setProcessing] = useState<boolean>(false)
 
   const session: any = useSession({ required: true })
@@ -33,7 +33,7 @@ export default function RollInitiative({ fight, setFight, setToast }) {
         // only roll for GMCs with a Speed value
         return (character.action_values["Type"] !== "PC" && character.action_values["Speed"])
       }).forEach(async (character: Character) => {
-        const initiative = parseInt(character.action_values["Speed"]) + rollDie() + shot
+        const initiative = (character.action_values["Speed"] as number) + rollDie() + shot
         const response = await client.updateCharacter({...character, "current_shot": initiative}, fight)
         if (response.status === 200) {
           await loadFight({jwt, id: fight.id as string, setFight})
