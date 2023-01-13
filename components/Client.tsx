@@ -24,6 +24,10 @@ class Client {
     return await this.get(this.api.fights(fight))
   }
 
+  async updateFight(fight: Fight):Promise<Response> {
+    return await this.patch(this.api.fights(fight), {"fight": fight})
+  }
+
   async createFight(fight: Fight):Promise<Response> {
     return await this.post(this.api.fights(), {"fight": fight})
   }

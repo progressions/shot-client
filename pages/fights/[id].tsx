@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
-import { Switch, Divider, Table, TableContainer, TableBody, TableRow, TableHead, TableCell, Paper, Container, Typography } from '@mui/material'
+import { ButtonGroup, IconButton, Switch, Divider, Table, TableContainer, TableBody, TableRow, TableHead, TableCell, Paper, Container, Typography } from '@mui/material'
 import Box from '@mui/material/Box'
 import List from '@mui/material/List'
 import ListItem from '@mui/material/ListItem'
@@ -23,6 +23,7 @@ import VehicleModal from '../../components/vehicles/VehicleModal'
 import Api from '../../components/Api'
 import Client from '../../components/Client'
 import PopupToast from '../../components/PopupToast'
+import Sequence from "../../components/Sequence"
 
 import type { Vehicle, Person, Character, Fight, Toast, ID } from "../../types/types"
 import { defaultCharacter, ServerSideProps } from "../../types/types"
@@ -109,9 +110,7 @@ export default function Fight({ fight:initialFight, notFound }: FightParams) {
                 <TableHead>
                   <TableRow>
                     <TableCell colSpan={4}>
-                      <Typography variant="h4">
-                        Sequence {fight.sequence}
-                      </Typography>
+                      <Sequence fight={fight} setFight={setFight} setToast={setToast} />
                     </TableCell>
                   </TableRow>
                 </TableHead>
