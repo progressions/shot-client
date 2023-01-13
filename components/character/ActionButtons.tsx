@@ -6,6 +6,9 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import NewReleasesIcon from '@mui/icons-material/NewReleases'
 import DirectionsRunIcon from '@mui/icons-material/DirectionsRun'
 
+import CommuteIcon from '@mui/icons-material/Commute'
+import CarCrashIcon from '@mui/icons-material/CarCrash'
+
 import MookRolls from '../MookRolls'
 
 import type { Character, CharacterType, Toast } from "../../types/types"
@@ -13,6 +16,7 @@ import type { Character, CharacterType, Toast } from "../../types/types"
 interface ActionButtonsParams {
   character: Character,
   takeWounds?: (character: Character) => void,
+  takeConditionPoints?: (character: Character) => void,
   takeAction?: (character: Character) => void,
   editCharacter?: (character: Character) => void,
   deleteCharacter?: (character: Character) => void,
@@ -20,14 +24,17 @@ interface ActionButtonsParams {
   setToast: React.Dispatch<React.SetStateAction<Toast>>
 }
 
-export default function ActionButtons({ character, takeWounds, takeAction, editCharacter, deleteCharacter, takeDodgeAction }: ActionButtonsParams) {
+export default function ActionButtons({ character, takeWounds, takeConditionPoints, takeAction, editCharacter, deleteCharacter, takeDodgeAction }: ActionButtonsParams) {
   if (!character) return (<></>)
 
   let woundLabel:string
+  let woundIcon
   if (character.category === "character") {
     woundLabel = character.action_values["Type"] === "Mook" as CharacterType ? "Kill Mooks" : "Take Smackdown"
+    woundIcon = <HeartBrokenIcon color='error' />
   } else {
     woundLabel = character.action_values["Type"] === "Mook" as CharacterType ? "Kill Mooks" : "Take Chase Points"
+    woundIcon = <CommuteIcon color="error" />
   }
 
   return (
@@ -38,7 +45,13 @@ export default function ActionButtons({ character, takeWounds, takeAction, editC
         { takeWounds &&
         <Tooltip title={woundLabel} arrow>
           <Button onClick={() => {takeWounds(character)}}>
-            <HeartBrokenIcon color='error' />
+            {woundIcon}
+          </Button>
+        </Tooltip> }
+        { character.category === "vehicle" &&
+        <Tooltip title="Take Condition Points">
+          <Button onClick={() => {takeConditionPoints(character)}}>
+            <CarCrashIcon color="error" />
           </Button>
         </Tooltip> }
         { editCharacter &&

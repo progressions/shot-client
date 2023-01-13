@@ -6,7 +6,8 @@ import DirectionsCarIcon from "@mui/icons-material/DirectionsCar"
 import GamemasterOnly from "../GamemasterOnly"
 import VehicleActionValues from "./ActionValues"
 import VehicleActionModal from "./ActionModal"
-import VehicleWoundsModal from "./WoundsModal"
+import ChasePointsModal from "./ChasePointsModal"
+import ConditionPointsModal from "./ConditionPointsModal"
 import ActionButtons from "../character/ActionButtons"
 import NameDisplay from "../character/NameDisplay"
 import WoundsDisplay from "../vehicles/WoundsDisplay"
@@ -33,7 +34,8 @@ export default function VehicleDetails({ character, fight, setFight, editingChar
 
   const [open, setOpen] = useState<Vehicle>(defaultVehicle)
   const [openAction, setOpenAction] = useState(false)
-  const [openWounds, setOpenWounds] = useState(false)
+  const [openChasePoints, setOpenChasePoints] = useState(false)
+  const [openConditionPoints, setOpenConditionPoints] = useState(false)
 
   function closeAction() {
     setOpenAction(false)
@@ -55,8 +57,12 @@ export default function VehicleDetails({ character, fight, setFight, editingChar
     setOpenAction(true)
   }
 
-  function takeWounds(character: Character): void {
-    setOpenWounds(true)
+  function takeChasePoints(character: Character): void {
+    setOpenChasePoints(true)
+  }
+
+  function takeConditionPoints(character: Character): void {
+    setOpenConditionPoints(true)
   }
 
   const wounds = (character?.action_values["Chase Points"])
@@ -80,7 +86,8 @@ export default function VehicleDetails({ character, fight, setFight, editingChar
             <Stack direction="row" spacing={1} justifyContent="space-between">
               <VehicleActionValues character={character} />
               <ActionButtons character={character}
-                takeWounds={takeWounds}
+                takeWounds={takeChasePoints}
+                takeConditionPoints={takeConditionPoints}
                 takeAction={takeAction}
                 setToast={setToast}
               />
@@ -88,7 +95,8 @@ export default function VehicleDetails({ character, fight, setFight, editingChar
           </GamemasterOnly>
         </Stack>
       <VehicleActionModal open={openAction} setOpen={setOpenAction} fight={fight} character={character} setFight={setFight} setToast={setToast} />
-      <VehicleWoundsModal open={openWounds} setOpen={setOpenWounds} fight={fight} character={character as Vehicle} setFight={setFight} setToast={setToast} />
+      <ChasePointsModal open={openChasePoints} setOpen={setOpenChasePoints} fight={fight} character={character as Vehicle} setFight={setFight} setToast={setToast} />
+      <ConditionPointsModal open={openConditionPoints} setOpen={setOpenConditionPoints} fight={fight} character={character as Vehicle} setFight={setFight} setToast={setToast} />
       </TableCell>
     </TableRow>
   )
