@@ -11,7 +11,7 @@ interface ColorPickerProps {
   setCharacter: any
 }
 
-export default function ColorPicker({ character, onChange, setCharacter }) {
+export default function ColorPicker({ character, onChange, setCharacter }: ColorPickerProps) {
   const [picker, setPicker] = useState<boolean>(false)
   const [anchorEl, setAnchorEl] = useState(null)
 
@@ -26,7 +26,7 @@ export default function ColorPicker({ character, onChange, setCharacter }) {
   }
 
   const handleColor = (color: any) => {
-    setCharacter((prevState: Person) => ({ ...prevState, color: color?.hex }))
+    setCharacter((prevState: Character) => ({ ...prevState, color: color?.hex }))
     setPicker(false)
     setAnchorEl(null)
   }
