@@ -9,7 +9,7 @@ interface WoundsDisplayProps {
 }
 
 export default function WoundsDisplay({ character, session }: WoundsDisplayProps) {
-  const wounds = character.action_values["Wounds"] || 0
+  const wounds = character.action_values["Chase Points"] || 0
 
   return (
     <GamemasterOnly user={session?.data?.user} character={character}>
