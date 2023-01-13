@@ -42,12 +42,13 @@ export default function EffectModal({ fight, shot, open, setOpen, setToast, setF
       if (setFight) {
         await loadFight({jwt, id: fight.id as string, setFight})
         setToast({ open: true, message: `Effect ${effect.title} added.`, severity: "success" })
+        setSaving(false)
       }
     }
   }
 
   const handleChange = (event: any) => {
-    setEffect((prev) => { return { ...effect, [event.target.name]: event.target.value } })
+    setEffect((prev) => { return { ...prev, [event.target.name]: event.target.value } })
   }
 
   return (
@@ -64,8 +65,8 @@ export default function EffectModal({ fight, shot, open, setOpen, setToast, setF
               <TextField autoFocus label="Title" variant="filled" size="medium" sx={{paddingBottom: 2}} fullWidth required name="title" value={effect.title} onChange={handleChange} />
               <TextField label="Description" fullWidth name="description" value={effect.description} onChange={handleChange} />
               <Stack direction="row" spacing={1}>
-                <TextField label="First Sequence" type="number" fullWidth required value={effect.start_sequence} onChange={handleChange} />
-                <TextField label="Last Sequence" type="number" fullWidth required value={effect.end_sequence} onChange={handleChange} />
+                <TextField label="First Sequence" name="start_sequence" type="number" fullWidth required value={effect.start_sequence} onChange={handleChange} />
+                <TextField label="Last Sequence" name="end_sequence" type="number" fullWidth required value={effect.end_sequence} onChange={handleChange} />
                 <TextField label="Severity" name="severity" select fullWidth required value={effect.severity} onChange={handleChange}>
                   <MenuItem value="error">Danger</MenuItem>
                   <MenuItem value="warning">Warning</MenuItem>
@@ -74,8 +75,8 @@ export default function EffectModal({ fight, shot, open, setOpen, setToast, setF
                 </TextField>
               </Stack>
               <Stack direction="row" spacing={1}>
-                <TextField label="First Shot" type="number" fullWidth required value={effect.start_shot} onChange={handleChange} />
-                <TextField label="Last Shot" type="number" fullWidth required value={effect.end_shot} onChange={handleChange} />
+                <TextField label="First Shot" type="number" name="start_shot" fullWidth required value={effect.start_shot} onChange={handleChange} />
+                <TextField label="Last Shot" type="number" name="end_shot" fullWidth required value={effect.end_shot} onChange={handleChange} />
               </Stack>
               <Stack alignItems="flex-end" spacing={2} direction="row">
                 <Button variant="outlined" disabled={saving} onClick={cancelForm}>Cancel</Button>
