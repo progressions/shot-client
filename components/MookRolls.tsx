@@ -24,7 +24,7 @@ interface RollOutcomeParams {
 }
 
 export default function MookRolls({ count, attack, damage, icon }: MookRollsParams) {
-  const defaultValue:MookRollValue = {count: count || 10, attack: attack || 8, defense: 13, damage: damage || 10}
+  const defaultValue:MookRollValue = {count: count || 10, attack: attack || 8, defense: 13, damage: damage || 7}
   const [open, setOpen] = useState<boolean>(false)
   const [value, setValue] = useState<MookRollValue>(defaultValue)
   const [rolls, setRolls] = useState<number[]>([])
