@@ -25,7 +25,7 @@ export default function EffectDetail({ effect }: EffectDetailProps) {
   const closeAfterTimeout = () => {
     return (setTimeout(() => {
       closePopover()
-    }, 3000))
+    }, 2000))
   }
 
   const closePopover = () => {
