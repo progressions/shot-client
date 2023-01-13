@@ -48,7 +48,7 @@ export default function ActionButtons({ character, takeWounds, takeConditionPoin
             {woundIcon}
           </Button>
         </Tooltip> }
-        { character.category === "vehicle" &&
+        { takeConditionPoints && character.category === "vehicle" &&
         <Tooltip title="Take Condition Points">
           <Button onClick={() => {takeConditionPoints(character)}}>
             <CarCrashIcon color="error" />
