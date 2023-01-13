@@ -19,6 +19,21 @@ interface DeathMarksProps {
   onChange?: any
 }
 
+export const deathMarkIcons = (character: Character) => {
+  if (!character.action_values["Marks of Death"]) { return [] }
+
+  const icons = []
+  for (let i=1; i <= 5; i++) {
+    if (i <= character.action_values["Marks of Death"]) {
+      icons.push(<IoSkull key={`Mark ${i}`} />)
+    } else {
+      icons.push(<IoSkullOutline key={`Mark ${i}`} />)
+    }
+  }
+
+  return icons
+}
+
 export default function DeathMarks({ character, readOnly, onChange }: DeathMarksProps) {
   return (
     <StyledRating

@@ -83,7 +83,6 @@ export default function CharacterDetails({ character, fight, setFight, editingCh
       <TableCell sx={{verticalAlign: "top"}}>
         <Stack spacing={2}>
           <NameDisplay character={character} />
-          {showDeathMarks && <DeathMarks character={character} readOnly={true} /> }
           <GamemasterOnly user={session?.data?.user} character={character}>
             <Stack direction="row" spacing={1} justifyContent="space-between">
               <ActionValues character={character} />
