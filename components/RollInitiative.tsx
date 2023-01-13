@@ -23,25 +23,48 @@ export default function RollInitiative({ fight, setFight, setToast }: RollInitia
 
   const handleClick = async () => {
     setProcessing(true)
-    console.log("Rolling")
-    fight.shot_order.filter(([shot, characters]: ShotType) => {
+    const nonzeroShots = fight.shot_order.filter(([shot, characters]: ShotType) => {
       // only roll for characters on shots zero or below
       return (shot <= 0)
-    }).forEach(([shot, characters]: ShotType) => {
-      console.log("Shot", shot)
-      characters.filter((character: Character) => {
-        // only roll for GMCs with a Speed value
-        return (character.action_values["Type"] !== "PC" && character.action_values["Speed"])
-      }).forEach(async (character: Character) => {
-        const initiative = (character.action_values["Speed"] as number) + rollDie() + shot
-        const response = await client.updateCharacter({...character, "current_shot": initiative}, fight)
-        if (response.status === 200) {
-          await loadFight({jwt, id: fight.id as string, setFight})
-          setToast({ open: true, message: "Initiative updated", severity: "success" })
+    })
+
+    await Promise.all(nonzeroShots.map(rollForShot))
+
+    await loadFight({jwt, id: fight.id as string, setFight})
+    setToast({ open: true, message: "Initiative updated", severity: "success" })
+    setProcessing(false)
+  }
+
+  const rollForShot = async ([shot, characters]: ShotType) => {
+    console.log("Shot", shot)
+    const eligibleCharacters = characters.filter((character: Character) => {
+      // only roll for GMCs with a Speed value
+      return (character.action_values["Type"] !== "PC") && (character.action_values["Speed"] || character.action_values["Acceleration"])
+    })
+
+    await Promise.all(
+      eligibleCharacters.map(async (character: Character) => {
+        if (character.category === "character") {
+          await updateCharacter(character as Person, shot)
+        } else {
+          await updateVehicle(character as Vehicle, shot)
         }
       })
-    })
-    setProcessing(false)
+    )
+  }
+
+  const updateCharacter = async (character: Person, shot: number) => {
+    const roll = (character.action_values["Speed"] as number) - (character.impairments || 0) + rollDie() + shot
+    const initiative = (roll > 1) ? roll : 1
+    const response = await client.updateCharacter({...character, "current_shot": initiative}, fight)
+    return (response.status === 200)
+  }
+
+  const updateVehicle = async (vehicle: Vehicle, shot: number) => {
+    const roll = (vehicle.action_values["Acceleration"] as number) - (vehicle.impairments || 0) + rollDie() + shot
+    const initiative = (roll > 1) ? roll : 1
+    const response = await client.updateVehicle({...vehicle, "current_shot": initiative}, fight)
+    return (response.status === 200)
   }
 
   return (
@@ -50,7 +73,10 @@ export default function RollInitiative({ fight, setFight, setToast }: RollInitia
 }
 
 /*
-      characters.forEach((character: Character) => {
-        console.log("Speed", character.action_values["Speed"])
-      })
-      */
+ *
+        } else if (character.category === "vehicle") {
+          const roll = (character.action_values["Acceleration"] as number) + rollDie() + shot
+          const initiative = (roll > 1) ? roll : 1
+          const response = await client.updateVehicle({...character, "current_shot": initiative}, fight)
+          if (response.status === 200) { return true }
+        */
