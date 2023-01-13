@@ -36,7 +36,6 @@ export default function RollInitiative({ fight, setFight, setToast }: RollInitia
   }
 
   const rollForShot = async ([shot, characters]: ShotType) => {
-    console.log("Shot", shot)
     const eligibleCharacters = characters.filter((character: Character) => {
       // only roll for GMCs with a Speed value
       return (character.action_values["Type"] !== "PC") && (character.action_values["Speed"] || character.action_values["Acceleration"])
