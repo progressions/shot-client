@@ -26,7 +26,7 @@ class Api {
 
   vehicles(fight?: Fight | null, vehicle?: Character | ID): string {
     if (!fight) {
-      return this.allCharacters(vehicle)
+      return this.allVehicles(vehicle)
     }
     if (vehicle?.id) {
       return `${this.fights(fight)}/vehicles/${vehicle.id}`
@@ -39,12 +39,24 @@ class Api {
     return `${this.vehicles(fight, vehicle)}/act`
   }
 
+  addVehicle(fight: Fight, vehicle: Vehicle | ID): string {
+    return `${this.vehicles(fight, vehicle)}/add`
+  }
+
   addCharacter(fight: Fight, character: Character | ID): string {
     return `${this.characters(fight, character)}/add`
   }
 
   actCharacter(fight: Fight, character: Character): string {
     return `${this.characters(fight, character)}/act`
+  }
+
+  allVehicles(vehicle?: Vehicle | ID): string {
+    if (vehicle?.id) {
+      return `${this.api()}/all_vehicles/${vehicle.id}`
+    } else {
+      return `${this.api()}/all_vehicles`
+    }
   }
 
   allCharacters(character?: Character | ID): string {

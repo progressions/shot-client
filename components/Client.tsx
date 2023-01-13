@@ -72,6 +72,14 @@ class Client {
     return await this.patch(this.api.actVehicle(fight, vehicle), {"vehicle": vehicle, "shots": shots})
   }
 
+  async addVehicle(fight: Fight, vehicle: Vehicle | ID):Promise<Response> {
+    return await this.post(this.api.addVehicle(fight, vehicle), {"vehicle": {"current_shot": 0}})
+  }
+
+  async getAllVehicles():Promise<Response> {
+    return await this.get(this.api.allVehicles())
+  }
+
   async getAllCharacters():Promise<Response> {
     return await this.get(this.api.allCharacters())
   }
