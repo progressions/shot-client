@@ -3,7 +3,7 @@ import { Box, Stack, Typography } from '@mui/material'
 import { tableCellClasses } from "@mui/material/TableCell"
 
 import type { Character, ActionValues } from "../../types/types"
-import ActionValueDisplay from "../ActionValueDisplay"
+import ActionValueDisplay from "../characters/ActionValueDisplay"
 
 interface ActionValuesParams {
   character: Character

@@ -12,11 +12,11 @@ import { unstable_getServerSession } from "next-auth/next"
 
 import { useSession } from "next-auth/react"
 
-import ActionValues from "../components/character/ActionValues"
-import ActionButtons from "../components/character/ActionButtons"
-import CharacterModal from "../components/character/CharacterModal"
-import AvatarBadge from "../components/character/AvatarBadge"
-import CreateCharacter from "../components/character/CreateCharacter"
+import ActionValues from "../components/characters/ActionValues"
+import ActionButtons from "../components/characters/ActionButtons"
+import CharacterModal from "../components/characters/CharacterModal"
+import AvatarBadge from "../components/characters/AvatarBadge"
+import CreateCharacter from "../components/characters/CreateCharacter"
 import CharacterFilters from "../components/CharacterFilters"
 
 import { useToast } from "../contexts/ToastContext"

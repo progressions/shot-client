@@ -1,12 +1,12 @@
 import { TableContainer, Table, TableHead, TableBody, TableRow, TableCell } from "@mui/material"
 
 import { useFight } from "../../contexts/FightContext"
-import FightName from "../../components/fights/FightName"
-import FightToolbar from '../../components/fights/FightToolbar'
+import FightName from "./FightName"
+import FightToolbar from './FightToolbar'
 import Shot from '../../components/shots/Shot'
-import CharacterModal from '../../components/character/CharacterModal'
+import CharacterModal from '../../components/characters/CharacterModal'
 import VehicleModal from '../../components/vehicles/VehicleModal'
-import Sequence from "../../components/Sequence"
+import Sequence from "./Sequence"
 
 import { defaultCharacter, ServerSideProps } from "../../types/types"
 

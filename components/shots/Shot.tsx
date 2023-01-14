@@ -2,7 +2,7 @@ import { IconButton, Button, Box, Stack, TableContainer, Table } from '@mui/mate
 import TableRow from '@mui/material/TableRow'
 import TableCell from '@mui/material/TableCell'
 import Typography from '@mui/material/Typography'
-import CharacterDetails from '../character/CharacterDetails'
+import CharacterDetails from '../characters/CharacterDetails'
 import VehicleDetails from '../vehicles/VehicleDetails'
 import ShotButton from "./ShotButton"
 import EffectDetail from "../effects/EffectDetail"

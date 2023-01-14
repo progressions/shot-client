@@ -1,12 +1,12 @@
 import { ButtonGroup, Switch, FormControlLabel, Stack } from '@mui/material'
 
-import CreateCharacter from '../character/CreateCharacter'
-import SelectCharacter from '../character/SelectCharacter'
+import CreateCharacter from '../characters/CreateCharacter'
+import SelectCharacter from '../characters/SelectCharacter'
 import SelectVehicle from '../vehicles/SelectVehicle'
 import CreateVehicle from '../vehicles/CreateVehicle'
-import DiceRoller from '../DiceRoller'
+import DiceRoller from '../dice/DiceRoller'
 import MookRolls from '../MookRolls'
-import RollInitiative from "../RollInitiative"
+import RollInitiative from "./RollInitiative"
 
 import type { Fight } from "../../types/types"
 
