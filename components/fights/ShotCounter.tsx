@@ -10,6 +10,8 @@ import Sequence from "../../components/Sequence"
 
 import { defaultCharacter, ServerSideProps } from "../../types/types"
 
+import type { Person, Vehicle, ShotType, Character, Fight } from "../../types/types"
+
 import { useState } from "react"
 
 export default function ShotCounter() {

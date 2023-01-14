@@ -7,6 +7,7 @@ import Client from "../Client"
 import { useFight } from "../../contexts/FightContext"
 import { useToast } from "../../contexts/ToastContext"
 import type { Character, Fight, Toast } from "../../types/types"
+import type { FightContextType } from "../../contexts/FightContext"
 
 interface ActionModalParams {
   open: boolean,
@@ -15,7 +16,7 @@ interface ActionModalParams {
 }
 
 const ActionModal = ({open, setOpen, character }: ActionModalParams) => {
-  const [fight, setFight] = useFight()
+  const [fight, setFight]:FightContextType = useFight()
   const [shots, setShots] = useState<number>(3)
   const [saving, setSaving] = useState<boolean>(false)
   const { setToast } = useToast()
@@ -30,7 +31,7 @@ const ActionModal = ({open, setOpen, character }: ActionModalParams) => {
   const submitAction = async (event: React.ChangeEvent<HTMLInputElement>): Promise<void> => {
     event.preventDefault()
     if (shots > 0) {
-      const response = await client.actCharacter(character, fight, shots)
+      const response = await client.actCharacter(character, fight as Fight, shots)
 
       if (response.status === 200) {
         setOpen(false)

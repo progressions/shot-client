@@ -1,4 +1,4 @@
-import { Container} from "@mui/material"
+import { Container, Typography } from "@mui/material"
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useState, useEffect } from 'react'
@@ -66,7 +66,7 @@ export default function Fight({ fight:initialFight, notFound }: FightParams) {
 
   useEffect(() => {
     setFight(initialFight)
-  }, [initialFight])
+  }, [setFight, initialFight])
 
   if (!fight && !notFound) {
     return <>Loading...</>
