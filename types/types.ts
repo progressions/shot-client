@@ -194,3 +194,9 @@ export const defaultEffect:Effect = {
   start_shot: 15,
   end_shot: 15,
 }
+
+export const defaultToast:Toast = {
+  open: false,
+  message: "",
+  severity: "success"
+}

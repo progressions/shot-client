@@ -13,6 +13,7 @@ import { BlockPicker } from 'react-color'
 import { loadFight } from '../fights/FightDetail'
 import Client from "../Client"
 
+import { useToast } from "../../contexts/ToastContext"
 import type { Vehicle, Fight, Character, Toast, ID } from "../../types/types"
 import { defaultVehicle } from "../../types/types"
 
@@ -22,12 +23,12 @@ interface VehicleModalParams {
   fight?: Fight,
   setFight?: React.Dispatch<React.SetStateAction<Fight>>
   character: Vehicle | null
-  setToast: React.Dispatch<React.SetStateAction<Toast>>
 }
 
-export default function CharacterModal({ open, setOpen, fight, setFight, character:activeVehicle, setToast }: VehicleModalParams) {
+export default function CharacterModal({ open, setOpen, fight, setFight, character:activeVehicle }: VehicleModalParams) {
   const [picker, setPicker] = useState<boolean>(false)
   const [anchorEl, setAnchorEl] = useState(null)
+  const { setToast } = useToast()
 
   const session: any = useSession({ required: true })
   const jwt = session?.data?.authorization

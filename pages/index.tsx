@@ -7,7 +7,6 @@ import FightDetail from '../components/fights/FightDetail'
 import Layout from '../components/Layout'
 import Api from '../components/Api'
 import Client from '../components/Client'
-import PopupToast from '../components/PopupToast'
 import Router from 'next/router'
 import { useSession } from 'next-auth/react'
 import { getToken } from 'next-auth/jwt'
@@ -19,6 +18,8 @@ import { unstable_getServerSession } from "next-auth/next"
 
 import { GetServerSideProps } from 'next'
 import { InferGetServerSidePropsType } from 'next'
+
+import { useToast } from "../contexts/ToastContext"
 
 import type { Fight, Toast, ServerSideProps } from "../types/types"
 
@@ -60,13 +61,9 @@ export async function getServerSideProps<GetServerSideProps>({ req, res }: Serve
 }
 
 export default function Home({ fights:initialFights }: HomeProps) {
-  const [toast, setToast] = useState<Toast>({ open: false, message: "", severity: "success" })
   const [fights, setFights] = useState<Fight[]>(initialFights)
   const { status, data }: any = useSession({ required: true })
-
-  const closeToast = (): void => {
-    setToast((prevToast: Toast) => { return { ...prevToast, open: false }})
-  }
+  const { toast, closeToast } = useToast()
 
   if (status !== "authenticated") {
     return <div>Loading...</div>
@@ -83,7 +80,7 @@ export default function Home({ fights:initialFights }: HomeProps) {
         <Layout>
           <Container maxWidth="md">
             <Typography variant="h1" gutterBottom>Fights</Typography>
-            <AddFight setFights={setFights} setToast={setToast} />
+            <AddFight setFights={setFights} />
             <TableContainer>
               <Table size="small">
                 <TableHead>
@@ -95,11 +92,10 @@ export default function Home({ fights:initialFights }: HomeProps) {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {fights.map((fight: Fight) => <FightDetail fight={fight} key={fight.id} setFights={setFights} setToast={setToast} />)}
+                  {fights.map((fight: Fight) => <FightDetail fight={fight} key={fight.id} setFights={setFights} />)}
                 </TableBody>
               </Table>
             </TableContainer>
-            <PopupToast toast={toast} closeToast={closeToast} />
           </Container>
         </Layout>
       </main>

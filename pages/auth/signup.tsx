@@ -8,6 +8,7 @@ import Api from '../../components/Api'
 import Client from "../../components/Client"
 
 import type { User, ServerSideProps } from "../../types/types"
+import { defaultUser } from "../../types/types"
 
 export async function getServerSideProps({ req }: ServerSideProps) {
 
@@ -22,7 +23,6 @@ export async function getServerSideProps({ req }: ServerSideProps) {
 export default function SignUp() {
   const client = new Client()
 
-  const defaultUser:User = {first_name: '', last_name: '', email: '', password: '', gamemaster: false, admin: false, avatar_url: ''}
   const [saving, setSaving] = useState<boolean>(false)
   const [user, setUser] = useState<User>(defaultUser)
 

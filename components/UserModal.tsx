@@ -11,6 +11,7 @@ import { useSession } from 'next-auth/react'
 
 import Client from "./Client"
 
+import { defaultUser } from "../types/types"
 import type { User } from "../types/types"
 import { loadUsers } from "../pages/admin/users"
 
@@ -21,8 +22,6 @@ interface UserModalParams {
 }
 
 export default function UserModal({ user, setUser, setUsers }: UserModalParams) {
-  const defaultUser:User = {first_name: '', last_name: '', email: '', password: '', gamemaster: false, admin: false, avatar_url: ''}
-
   const session: any = useSession({ required: true })
   const jwt = session?.data?.authorization
   const client = new Client({ jwt: jwt })

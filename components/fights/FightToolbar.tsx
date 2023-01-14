@@ -8,31 +8,30 @@ import DiceRoller from '../DiceRoller'
 import MookRolls from '../MookRolls'
 import RollInitiative from "../RollInitiative"
 
-import type { Fight, Toast } from "../../types/types"
+import type { Fight } from "../../types/types"
 
 interface FightToolbarParams {
   fight: Fight,
   setFight: React.Dispatch<React.SetStateAction<Fight>>
   showHidden: boolean,
   setShowHidden: React.Dispatch<React.SetStateAction<boolean>>
-  setToast: React.Dispatch<React.SetStateAction<Toast>>
 }
 
-export default function FightToolbar({ fight, setFight, showHidden, setShowHidden, setToast }: FightToolbarParams) {
+export default function FightToolbar({ fight, setFight, showHidden, setShowHidden }: FightToolbarParams) {
   const show = (event: React.SyntheticEvent<Element, Event>, checked: boolean) => {
     setShowHidden(checked)
   }
   return (
     <>
       <Stack direction="row" spacing={2} alignItems='center'>
-        <RollInitiative fight={fight} setFight={setFight} setToast={setToast} />
+        <RollInitiative fight={fight} setFight={setFight} />
         <DiceRoller />
         <ButtonGroup>
-          <CreateVehicle fight={fight} setFight={setFight} setToast={setToast} />
+          <CreateVehicle fight={fight} setFight={setFight} />
           <SelectVehicle fight={fight} setFight={setFight} />
         </ButtonGroup>
         <ButtonGroup>
-          <CreateCharacter fight={fight} setFight={setFight} setToast={setToast} />
+          <CreateCharacter fight={fight} setFight={setFight} />
           <SelectCharacter fight={fight} setFight={setFight} />
         </ButtonGroup>
         <MookRolls />

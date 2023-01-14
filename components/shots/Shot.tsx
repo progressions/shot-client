@@ -21,10 +21,9 @@ interface ShotParams {
   editingCharacter: Character
   setEditingCharacter: React.Dispatch<React.SetStateAction<Character>>
   showHidden: boolean
-  setToast: React.Dispatch<React.SetStateAction<Toast>>
 }
 
-export default function Shot({ fight, setFight, shot, characters, editingCharacter, setEditingCharacter, showHidden, setToast }: ShotParams) {
+export default function Shot({ fight, setFight, shot, characters, editingCharacter, setEditingCharacter, showHidden }: ShotParams) {
   const [open, setOpen] = useState<boolean>(false)
   const [openEffectDialog, setOpenEffectDialog] = useState<boolean>(false)
 
@@ -51,23 +50,23 @@ export default function Shot({ fight, setFight, shot, characters, editingCharact
       <TableRow key={shot}>
         <TableCell rowSpan={characters.length + 1} sx={{width: 60, verticalAlign: "top"}}>
           <Stack spacing={0} alignItems="center">
-            <ShotButton fight={fight} shot={shot} setFight={setFight} setToast={setToast} />
+            <ShotButton fight={fight} shot={shot} setFight={setFight} />
             {
-              effectsForShot(fight, shot).map((effect) => <EffectDetail effect={effect} fight={fight} key={effect.id} setToast={setToast} setFight={setFight} />)
+              effectsForShot(fight, shot).map((effect) => <EffectDetail effect={effect} fight={fight} key={effect.id} setFight={setFight} />)
             }
             { shot > 0 && <IconButton onClick={() => { setOpen(false); setOpenEffectDialog(true) }}>
               <AddCircleOutlineOutlinedIcon />
             </IconButton> }
-            <EffectModal fight={fight} shot={shot} open={openEffectDialog} setOpen={setOpenEffectDialog} setFight={setFight} setToast={setToast} />
+            <EffectModal fight={fight} shot={shot} open={openEffectDialog} setOpen={setOpenEffectDialog} setFight={setFight} />
           </Stack>
         </TableCell>
       </TableRow>
       {characters.map((character: Character) => {
         if (character.category === "character") {
-          return <CharacterDetails key={character.id} fight={fight} character={character} setFight={setFight} editingCharacter={editingCharacter as Character} setEditingCharacter={setEditingCharacterWithCurrentShot} setToast={setToast} />
+          return <CharacterDetails key={character.id} fight={fight} character={character} setFight={setFight} editingCharacter={editingCharacter as Character} setEditingCharacter={setEditingCharacterWithCurrentShot} />
         }
         if (character.category === "vehicle") {
-          return <VehicleDetails key={character.id} fight={fight} character={character as Vehicle} setFight={setFight} editingCharacter={editingCharacter as Vehicle} setEditingCharacter={setEditingCharacterWithCurrentShot} setToast={setToast} />
+          return <VehicleDetails key={character.id} fight={fight} character={character as Vehicle} setFight={setFight} editingCharacter={editingCharacter as Vehicle} setEditingCharacter={setEditingCharacterWithCurrentShot} />
         }
       })}
     </>

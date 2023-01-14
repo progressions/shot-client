@@ -1,5 +1,6 @@
 import { MenuItem, Box, Dialog, DialogTitle, DialogContent, DialogContentText, Stack, Button, TextField } from "@mui/material"
 import { useState } from "react"
+import { useToast } from "../../contexts/ToastContext"
 
 import type { Toast, Effect, Fight } from "../../types/types"
 import { defaultEffect } from "../../types/types"
@@ -14,14 +15,14 @@ interface EffectModalProps {
   open: boolean
   setOpen: any
   setFight?: React.Dispatch<React.SetStateAction<Fight>>
-  setToast: React.Dispatch<React.SetStateAction<Toast>>
 }
 
-export default function EffectModal({ fight, shot, open, setOpen, setToast, setFight }: EffectModalProps) {
+export default function EffectModal({ fight, shot, open, setOpen, setFight }: EffectModalProps) {
   const initialEffect = { ...defaultEffect, start_sequence: fight.sequence, end_sequence: fight.sequence+1, start_shot: shot, end_shot: shot }
 
   const [effect, setEffect] = useState<Effect>(initialEffect)
   const [saving, setSaving] = useState<boolean>(false)
+  const { setToast } = useToast()
 
   const session: any = useSession({ required: true })
   const jwt = session?.data?.authorization
