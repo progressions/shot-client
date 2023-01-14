@@ -51,20 +51,29 @@ export interface ID {
   id: string
 }
 
+export interface Campaign {
+  name: string
+  description?: string
+  user?: User
+  created_at?: string
+  updated_at?: string
+}
+
 export type Character = Vehicle | Person
 
 export interface Vehicle {
-  id?: string,
-  name: string,
-  current_shot?: number | string,
-  impairments: number,
-  color: string,
-  action_values: VehicleActionValues,
-  user?: User,
-  created_at?: string,
-  updated_at?: string,
+  id?: string
+  name: string
+  current_shot?: number | string
+  impairments: number
+  color: string
+  action_values: VehicleActionValues
+  user?: User
+  created_at?: string
+  updated_at?: string
   new?: boolean
-  category: "character" | "vehicle"
+  category: "vehicle"
+  campaign?: Campaign
 }
 
 export interface Person {
@@ -79,6 +88,7 @@ export interface Person {
   updated_at?: string,
   new?: boolean
   category: "character" | "vehicle"
+  campaign?: Campaign
 }
 
 export interface Effect {
@@ -90,6 +100,7 @@ export interface Effect {
   end_sequence: number
   start_shot: number
   end_shot: number
+  campaign?: Campaign
 }
 
 export type ShotType = [number, Character[]]
@@ -102,6 +113,7 @@ export interface Fight {
   characters?: Character[]
   vehicles?: Vehicle[]
   shot_order: ShotType[]
+  campaign?: Campaign
 }
 
 export interface User {
@@ -113,6 +125,7 @@ export interface User {
   gamemaster?: boolean,
   admin?: boolean,
   avatar_url?: string
+  campaigns?: Campaign[]
 }
 
 export interface CharacterFilter {
