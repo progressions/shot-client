@@ -1,8 +1,8 @@
 import { createContext, useContext, useState } from "react"
 
-const CurrentFight = createContext()
+const CurrentFight = createContext([{}, ()=>{}])
 
-export function CurrentFightProvider({ children }) {
+export function CurrentFightProvider({ children }: any) {
   const [currentFight, setCurrentFight] = useState({})
 
   return (

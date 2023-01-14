@@ -6,7 +6,7 @@ interface FightNameProps {
   fight: Fight
 }
 
-export default function FightName({ fight }) {
+export default function FightName({ fight }: FightNameProps) {
   return (
     <>
       <Typography variant="h2" gutterBottom>

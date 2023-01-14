@@ -3,7 +3,6 @@ import { IconButton, Typography, Container, Table, TableContainer, TableBody, Ta
 import { useState } from 'react'
 import Layout from '../../components/Layout'
 import Client from "../../components/Client"
-import PopupToast from "../../components/PopupToast"
 import UserModal from '../../components/UserModal'
 import Router from 'next/router'
 
@@ -158,7 +157,6 @@ export default function UsersAdmin({ jwt, users:initialUsers, currentUser }: Use
                 <UserModal setUser={setUser} user={user} setUsers={setUsers} />
               </Table>
             </TableContainer>
-            <PopupToast toast={toast} closeToast={closeToast} />
           </Container>
         </Layout>
       </main>

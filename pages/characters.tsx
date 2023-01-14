@@ -18,7 +18,6 @@ import CharacterModal from "../components/character/CharacterModal"
 import AvatarBadge from "../components/character/AvatarBadge"
 import CreateCharacter from "../components/character/CreateCharacter"
 import CharacterFilters from "../components/CharacterFilters"
-import PopupToast from "../components/PopupToast"
 
 import { useToast } from "../contexts/ToastContext"
 import type { Person, Vehicle, Character, CharacterFilter, ServerSideProps, Toast } from "../types/types"
@@ -160,7 +159,6 @@ export default function Characters({ characters:initialCharacters, jwt }: Charac
                 </TableBody>
               </Table>
             </TableContainer>
-            <PopupToast toast={toast} closeToast={closeToast} />
             <CharacterModal open={editingCharacter} setOpen={setEditingCharacter} character={editingCharacter as Person} />
           </Container>
         </Layout>

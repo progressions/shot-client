@@ -7,7 +7,6 @@ import FightDetail from '../components/fights/FightDetail'
 import Layout from '../components/Layout'
 import Api from '../components/Api'
 import Client from '../components/Client'
-import PopupToast from '../components/PopupToast'
 import Router from 'next/router'
 import { useSession } from 'next-auth/react'
 import { getToken } from 'next-auth/jwt'
@@ -97,7 +96,6 @@ export default function Home({ fights:initialFights }: HomeProps) {
                 </TableBody>
               </Table>
             </TableContainer>
-            <PopupToast toast={toast} closeToast={closeToast} />
           </Container>
         </Layout>
       </main>

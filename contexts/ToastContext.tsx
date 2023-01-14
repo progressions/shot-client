@@ -3,9 +3,9 @@ import { createContext, useContext, useState } from "react"
 import type { Toast } from "../types/types"
 import { defaultToast } from "../types/types"
 
-const ToastContext = createContext()
+const ToastContext = createContext({})
 
-export function ToastProvider({ children }) {
+export function ToastProvider({ children }: any) {
   const [toast, setToast] = useState<Toast>(defaultToast)
 
   const closeToast = (): void => {
@@ -19,6 +19,6 @@ export function ToastProvider({ children }) {
   )
 }
 
-export function useToast() {
+export function useToast(): any {
   return useContext(ToastContext)
 }

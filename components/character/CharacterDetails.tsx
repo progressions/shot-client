@@ -96,7 +96,6 @@ export default function CharacterDetails({ character, fight, setFight, editingCh
           <NameDisplay character={character}
             editCharacter={editCharacter}
             deleteCharacter={deleteCharacter}
-            setToast={setToast}
           />
           <GamemasterOnly user={session?.data?.user} character={character}>
             <Stack direction="row" spacing={1} justifyContent="space-between">
@@ -105,13 +104,22 @@ export default function CharacterDetails({ character, fight, setFight, editingCh
                 takeWounds={takeWounds}
                 takeAction={takeAction}
                 takeDodgeAction={takeDodgeAction}
-                setToast={setToast}
               />
             </Stack>
           </GamemasterOnly>
         </Stack>
-      <ActionModal open={openAction} setOpen={setOpenAction} fight={fight} character={character} setFight={setFight} setToast={setToast} />
-      <WoundsModal open={openWounds} setOpen={setOpenWounds} fight={fight} character={character as Person} setFight={setFight} setToast={setToast} />
+      <ActionModal open={openAction}
+        setOpen={setOpenAction}
+        fight={fight}
+        character={character}
+        setFight={setFight}
+      />
+      <WoundsModal open={openWounds}
+        setOpen={setOpenWounds}
+        fight={fight}
+        character={character as Person}
+        setFight={setFight}
+      />
       </TableCell>
     </TableRow>
   )
