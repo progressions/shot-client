@@ -51,30 +51,20 @@ export interface ID {
   id: string
 }
 
-export interface Campaign {
-  id?: string
-  name: string
-  description?: string
-  user?: User
-  created_at?: string
-  updated_at?: string
-}
-
 export type Character = Vehicle | Person
 
 export interface Vehicle {
-  id?: string
-  name: string
-  current_shot?: number | string
-  impairments: number
-  color: string
-  action_values: VehicleActionValues
-  user?: User
-  created_at?: string
-  updated_at?: string
+  id?: string,
+  name: string,
+  current_shot?: number | string,
+  impairments: number,
+  color: string,
+  action_values: VehicleActionValues,
+  user?: User,
+  created_at?: string,
+  updated_at?: string,
   new?: boolean
-  category: "vehicle"
-  campaign?: Campaign
+  category: "character" | "vehicle"
 }
 
 export interface Person {
@@ -89,7 +79,6 @@ export interface Person {
   updated_at?: string,
   new?: boolean
   category: "character" | "vehicle"
-  campaign?: Campaign
 }
 
 export interface Effect {
@@ -101,7 +90,6 @@ export interface Effect {
   end_sequence: number
   start_shot: number
   end_shot: number
-  campaign?: Campaign
 }
 
 export type ShotType = [number, Character[]]
@@ -114,7 +102,6 @@ export interface Fight {
   characters?: Character[]
   vehicles?: Vehicle[]
   shot_order: ShotType[]
-  campaign?: Campaign
 }
 
 export interface User {
@@ -126,7 +113,6 @@ export interface User {
   gamemaster?: boolean,
   admin?: boolean,
   avatar_url?: string
-  campaigns?: Campaign[]
 }
 
 export interface CharacterFilter {
@@ -138,16 +124,6 @@ export interface ServerSideProps {
   req: NextApiRequest,
   res: NextApiResponse,
   params?: any
-}
-
-export const defaultUser:User = {
-  email: '',
-  campaigns?: []
-}
-
-export const defaultCampaign:Campaign = {
-  name: '',
-  user: defaultUser
 }
 
 export const defaultCharacter:Person = {
@@ -175,8 +151,7 @@ export const defaultCharacter:Person = {
     Type: "PC",
     Vehicle: false,
     "Marks of Death": 0
-  },
-  campaign?: defaultCampaign
+  }
 }
 
 export const defaultVehicle:Vehicle = {
@@ -195,8 +170,7 @@ export const defaultVehicle:Vehicle = {
     "Condition Points": 0,
     Position: "far",
     Type: "PC"
-  },
-  campaign?: defaultCampaign
+  }
 }
 
 export const defaultFight:Fight = {
@@ -204,8 +178,11 @@ export const defaultFight:Fight = {
   sequence: 1,
   effects: [],
   characters: [],
-  shot_order: [],
-  campaign?: defaultCampaign
+  shot_order: []
+}
+
+export const defaultUser:User = {
+  email: '',
 }
 
 export const defaultEffect:Effect = {
@@ -216,5 +193,4 @@ export const defaultEffect:Effect = {
   end_sequence: 2,
   start_shot: 15,
   end_shot: 15,
-  campaign?: defaultCampaign
 }
