@@ -15,6 +15,7 @@ import Router from "next/router"
 import { authOptions } from '../api/auth/[...nextauth]'
 import { unstable_getServerSession } from "next-auth/next"
 
+import FightName from "../../components/fights/FightName"
 import FightToolbar from '../../components/fights/FightToolbar'
 import Layout from '../../components/Layout'
 import Shot from '../../components/shots/Shot'
@@ -106,14 +107,14 @@ export default function Fight({ fight:initialFight, notFound }: FightParams) {
               <Typography sx={{mt: 5}} variant="h3">Fight not found.</Typography>
             </> }
           { fight && (<>
-            <Typography variant="h1" gutterBottom>{fight.name}</Typography>
-            <FightToolbar fight={fight} setFight={setFight} showHidden={showHidden} setShowHidden={setShowHidden} />
+          <FightName />
+            <FightToolbar showHidden={showHidden} setShowHidden={setShowHidden} />
             <TableContainer>
               <Table sx={{minWidth: 900, maxWidth: 1000}}>
                 <TableHead>
                   <TableRow>
                     <TableCell colSpan={4}>
-                      <Sequence fight={fight} setFight={setFight} />
+                      <Sequence />
                     </TableCell>
                   </TableRow>
                 </TableHead>
@@ -123,8 +124,6 @@ export default function Fight({ fight:initialFight, notFound }: FightParams) {
                       <Shot key={shot}
                         shot={shot}
                         characters={chars}
-                        fight={fight}
-                        setFight={setFight}
                         editingCharacter={editingCharacter}
                         setEditingCharacter={setEditingCharacter}
                         showHidden={showHidden}

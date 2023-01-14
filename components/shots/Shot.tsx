@@ -11,11 +11,10 @@ import EffectModal from "../effects/EffectModal"
 
 import type { Vehicle, Character, Fight, Toast } from "../../types/types"
 
+import { useFight } from "../../contexts/FightContext"
 import { useState } from "react"
 
 interface ShotParams {
-  fight: Fight
-  setFight: React.Dispatch<React.SetStateAction<Fight>>
   shot: number
   characters: Character[]
   editingCharacter: Character
@@ -23,9 +22,10 @@ interface ShotParams {
   showHidden: boolean
 }
 
-export default function Shot({ fight, setFight, shot, characters, editingCharacter, setEditingCharacter, showHidden }: ShotParams) {
+export default function Shot({ shot, characters, editingCharacter, setEditingCharacter, showHidden }: ShotParams) {
   const [open, setOpen] = useState<boolean>(false)
   const [openEffectDialog, setOpenEffectDialog] = useState<boolean>(false)
+  const [fight, setFight] = useFight()
 
   if (!showHidden && (shot === null || shot === undefined)) {
     return null
@@ -50,23 +50,23 @@ export default function Shot({ fight, setFight, shot, characters, editingCharact
       <TableRow key={shot}>
         <TableCell rowSpan={characters.length + 1} sx={{width: 60, verticalAlign: "top"}}>
           <Stack spacing={0} alignItems="center">
-            <ShotButton fight={fight} shot={shot} setFight={setFight} />
+            <ShotButton shot={shot} />
             {
-              effectsForShot(fight, shot).map((effect) => <EffectDetail effect={effect} fight={fight} key={effect.id} setFight={setFight} />)
+              effectsForShot(fight, shot).map((effect) => <EffectDetail effect={effect} key={effect.id} />)
             }
             { shot > 0 && <IconButton onClick={() => { setOpen(false); setOpenEffectDialog(true) }}>
               <AddCircleOutlineOutlinedIcon />
             </IconButton> }
-            <EffectModal fight={fight} shot={shot} open={openEffectDialog} setOpen={setOpenEffectDialog} setFight={setFight} />
+            <EffectModal shot={shot} open={openEffectDialog} setOpen={setOpenEffectDialog} />
           </Stack>
         </TableCell>
       </TableRow>
       {characters.map((character: Character) => {
         if (character.category === "character") {
-          return <CharacterDetails key={character.id} fight={fight} character={character} setFight={setFight} editingCharacter={editingCharacter as Character} setEditingCharacter={setEditingCharacterWithCurrentShot} />
+          return <CharacterDetails key={character.id} character={character} editingCharacter={editingCharacter as Character} setEditingCharacter={setEditingCharacterWithCurrentShot} />
         }
         if (character.category === "vehicle") {
-          return <VehicleDetails key={character.id} fight={fight} character={character as Vehicle} setFight={setFight} editingCharacter={editingCharacter as Vehicle} setEditingCharacter={setEditingCharacterWithCurrentShot} />
+          return <VehicleDetails key={character.id} character={character as Vehicle} editingCharacter={editingCharacter as Vehicle} setEditingCharacter={setEditingCharacterWithCurrentShot} />
         }
       })}
     </>

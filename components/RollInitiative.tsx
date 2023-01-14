@@ -4,17 +4,14 @@ import { useSession } from 'next-auth/react'
 
 import type { ShotType, Fight, Toast, Character, Person, Vehicle } from "../types/types"
 
+import { useFight } from "../contexts/FightContext"
 import { useToast } from "../contexts/ToastContext"
 import { loadFight } from './fights/FightDetail'
 import { rollDie } from "./DiceRoller"
 import Client from "./Client"
 
-interface RollInitiativeProps {
-  fight: Fight
-  setFight: React.Dispatch<React.SetStateAction<Fight>>
-}
-
-export default function RollInitiative({ fight, setFight }: RollInitiativeProps) {
+export default function RollInitiative() {
+  const [fight, setFight] = useFight()
   const [processing, setProcessing] = useState<boolean>(false)
 
   const session: any = useSession({ required: true })

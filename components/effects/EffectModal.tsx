@@ -1,6 +1,7 @@
 import { MenuItem, Box, Dialog, DialogTitle, DialogContent, DialogContentText, Stack, Button, TextField } from "@mui/material"
 import { useState } from "react"
 import { useToast } from "../../contexts/ToastContext"
+import { useFight } from "../../contexts/FightContext"
 
 import type { Toast, Effect, Fight } from "../../types/types"
 import { defaultEffect } from "../../types/types"
@@ -10,14 +11,14 @@ import { useSession } from 'next-auth/react'
 import Client from "../Client"
 
 interface EffectModalProps {
-  fight: Fight
   shot: number
   open: boolean
   setOpen: any
-  setFight?: React.Dispatch<React.SetStateAction<Fight>>
 }
 
-export default function EffectModal({ fight, shot, open, setOpen, setFight }: EffectModalProps) {
+export default function EffectModal({ shot, open, setOpen }: EffectModalProps) {
+  const [fight, setFight] = useFight()
+
   const initialEffect = { ...defaultEffect, start_sequence: fight.sequence, end_sequence: fight.sequence+1, start_shot: shot, end_shot: shot }
 
   const [effect, setEffect] = useState<Effect>(initialEffect)

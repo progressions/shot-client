@@ -18,6 +18,7 @@ import DeathMarks from "./DeathMarks"
 import NameDisplay from "./NameDisplay"
 import WoundsDisplay from "./WoundsDisplay"
 
+import { useFight } from "../../contexts/FightContext"
 import { useToast } from "../../contexts/ToastContext"
 import { loadFight } from '../fights/FightDetail'
 import Client from "../Client"
@@ -27,13 +28,13 @@ import { defaultCharacter } from "../../types/types"
 
 interface CharacterDetailsParams {
   character: Character,
-  fight: Fight,
-  setFight: React.Dispatch<React.SetStateAction<Fight>>
   editingCharacter: Character,
   setEditingCharacter: React.Dispatch<React.SetStateAction<Character>> | ((character: Character | null) => void)
 }
 
-export default function CharacterDetails({ character, fight, setFight, editingCharacter, setEditingCharacter }: CharacterDetailsParams) {
+export default function CharacterDetails({ character, editingCharacter, setEditingCharacter }: CharacterDetailsParams) {
+  const [fight, setFight] = useFight()
+
   const session: any = useSession({ required: true })
   const jwt = session?.data?.authorization
   const client = new Client({ jwt })
@@ -110,15 +111,11 @@ export default function CharacterDetails({ character, fight, setFight, editingCh
         </Stack>
       <ActionModal open={openAction}
         setOpen={setOpenAction}
-        fight={fight}
         character={character}
-        setFight={setFight}
       />
       <WoundsModal open={openWounds}
         setOpen={setOpenWounds}
-        fight={fight}
         character={character as Person}
-        setFight={setFight}
       />
       </TableCell>
     </TableRow>

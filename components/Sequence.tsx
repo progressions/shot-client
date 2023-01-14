@@ -1,5 +1,6 @@
 import { Stack, Button, Typography, IconButton, ButtonGroup } from "@mui/material"
 
+import { useFight } from "../contexts/FightContext"
 import { useToast } from "../contexts/ToastContext"
 import { useSession } from 'next-auth/react'
 import Client from "./Client"
@@ -11,17 +12,13 @@ import { loadFight } from "./fights/FightDetail"
 
 import { Toast, Fight } from "../types/types"
 
-interface SequenceProps {
-  fight: Fight
-  setFight: React.Dispatch<React.SetStateAction<Fight>>
-}
-
-export default function Sequence({ fight, setFight }: SequenceProps) {
+export default function Sequence() {
   const session: any = useSession({ required: true })
   const jwt = session?.data?.authorization
   const client = new Client({ jwt })
 
   const { setToast } = useToast()
+  const [fight, setFight] = useFight()
 
   const addSequence = async () => {
     const updatedFight = fight

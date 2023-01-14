@@ -6,18 +6,15 @@ import Client from "../Client"
 
 import PersonIcon from '@mui/icons-material/Person'
 
+import { useFight } from "../../contexts/FightContext"
 import type { Fight, Character } from "../../types/types"
 
-interface SelectCharacterParams {
-  fight: Fight,
-  setFight: React.Dispatch<React.SetStateAction<Fight>>
-}
-
-export default function SelectCharacter({ fight, setFight }: SelectCharacterParams) {
+export default function SelectCharacter() {
   const session: any = useSession({ required: true })
   const jwt = session?.data?.authorization
   const client = new Client({ jwt })
 
+  const [fight, setFight] = useFight()
   const [value, setValue] = useState<string>('')
   const [open, setOpen] = useState<boolean>(false)
   const [chars, setChars] = useState<Character[]>([])

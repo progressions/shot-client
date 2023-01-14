@@ -4,18 +4,18 @@ import { useSession } from 'next-auth/react'
 import { loadFight } from '../fights/FightDetail'
 import Client from "../Client"
 
+import { useFight } from "../../contexts/FightContext"
 import { useToast } from "../../contexts/ToastContext"
 import type { Vehicle, Character, Fight, Toast, VehicleActionValues } from "../../types/types"
 
 interface ConditionPointsModalParams {
   open: boolean,
   setOpen: React.Dispatch<React.SetStateAction<boolean>>
-  fight: Fight,
   character: Vehicle,
-  setFight: React.Dispatch<React.SetStateAction<Fight>>
 }
 
-const ConditionPointsModal = ({open, setOpen, fight, character, setFight }: ConditionPointsModalParams) => {
+const ConditionPointsModal = ({open, setOpen, character }: ConditionPointsModalParams) => {
+  const [fight, setFight] = useFight()
   const [conditionPoints, setConditionPoints] = useState<number>(0)
   const [saving, setSaving] = useState<boolean>(false)
   const { setToast } = useToast()

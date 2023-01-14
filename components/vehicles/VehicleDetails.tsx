@@ -13,6 +13,7 @@ import NameDisplay from "../character/NameDisplay"
 import WoundsDisplay from "../vehicles/WoundsDisplay"
 import { useState } from "react"
 import { useToast } from "../../contexts/ToastContext"
+import { useFight } from "../../contexts/FightContext"
 
 import { loadFight } from '../fights/FightDetail'
 
@@ -21,13 +22,12 @@ import { defaultVehicle } from "../../types/types"
 
 interface VehicleDetailsParams {
   character: Vehicle,
-  fight: Fight,
-  setFight: React.Dispatch<React.SetStateAction<Fight>>
   editingCharacter: Vehicle,
   setEditingCharacter: React.Dispatch<React.SetStateAction<Vehicle>> | ((character: Vehicle | null) => void)
 }
 
-export default function VehicleDetails({ character, fight, setFight, editingCharacter, setEditingCharacter }: VehicleDetailsParams) {
+export default function VehicleDetails({ character, editingCharacter, setEditingCharacter }: VehicleDetailsParams) {
+  const [fight, setFight] = useFight()
   const session: any = useSession({ required: true })
   const jwt = session?.data?.authorization
   const client = new Client({ jwt })
@@ -96,21 +96,15 @@ export default function VehicleDetails({ character, fight, setFight, editingChar
         <VehicleActionModal
           open={openAction}
           setOpen={setOpenAction}
-          fight={fight}
           character={character}
-          setFight={setFight}
         />
         <ChasePointsModal open={openChasePoints}
           setOpen={setOpenChasePoints}
-          fight={fight}
           character={character as Vehicle}
-          setFight={setFight}
         />
         <ConditionPointsModal open={openConditionPoints}
           setOpen={setOpenConditionPoints}
-          fight={fight}
           character={character as Vehicle}
-          setFight={setFight}
         />
       </TableCell>
     </TableRow>

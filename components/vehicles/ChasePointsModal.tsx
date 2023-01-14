@@ -4,18 +4,18 @@ import { useSession } from 'next-auth/react'
 import { loadFight } from '../fights/FightDetail'
 import Client from "../Client"
 import { useToast } from "../../contexts/ToastContext"
+import { useFight } from "../../contexts/FightContext"
 
 import type { Vehicle, Character, Fight, Toast, VehicleActionValues } from "../../types/types"
 
 interface ChasePointsModalParams {
   open: boolean,
   setOpen: React.Dispatch<React.SetStateAction<boolean>>
-  fight: Fight,
   character: Vehicle,
-  setFight: React.Dispatch<React.SetStateAction<Fight>>
 }
 
-const ChasePointsModal = ({open, setOpen, fight, character, setFight }: ChasePointsModalParams) => {
+const ChasePointsModal = ({open, setOpen, character }: ChasePointsModalParams) => {
+  const [fight, setFight] = useFight()
   const [chasePoints, setChasePoints] = useState<number>(0)
   const [saving, setSaving] = useState<boolean>(false)
   const { setToast } = useToast()
