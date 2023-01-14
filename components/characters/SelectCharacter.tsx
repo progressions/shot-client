@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useMemo, useState, useEffect } from 'react'
 import { IconButton, Typography, Stack, Popover, Autocomplete, Box, TextField, MenuItem, Dialog, DialogActions, DialogTitle, DialogContent, DialogContentText, Button } from '@mui/material'
 import { useSession } from 'next-auth/react'
 import { loadFight } from '../fights/FightDetail'
@@ -10,35 +10,32 @@ import PersonAddIcon from '@mui/icons-material/PersonAdd'
 import { useToast } from "../../contexts/ToastContext"
 import { useFight } from "../../contexts/FightContext"
 import type { Fight, Character } from "../../types/types"
+import { defaultCharacter } from "../../types/types"
 
 export default function SelectCharacter() {
   const session: any = useSession({ required: true })
   const jwt = session?.data?.authorization
-  const client = new Client({ jwt })
+  const client = useMemo(() => (new Client({ jwt })), [jwt])
 
   const { setToast } = useToast()
   const [fight, setFight] = useFight()
   const [open, setOpen] = useState<boolean>(false)
   const [anchorEl, setAnchorEl] = useState<any>(null)
-  const [value, setValue] = useState({label: "", id: null})
+  const [value, setValue] = useState<Character>(defaultCharacter)
   const [characters, setCharacters] = useState<Character[]>([])
-
-  const fetchCharacters = async () => {
-    const response = await client.getAllCharacters()
-    const chars = await response.json()
-    const ids = fight.characters.map((char: Character) => char.id)
-    const availableChars = chars.filter((char: Character) => {
-      return !ids?.includes(char.id)
-    })
-
-    const options = availableChars.map((character) => {
-      return { label: character.name, id: character.id }
-    })
-    return options
-  }
 
   useEffect(() => {
     if (jwt) {
+      const fetchCharacters = async () => {
+        const response = await client.getAllCharacters()
+        const chars = await response.json()
+        const ids = fight?.characters?.map((char: Character) => char.id)
+        const availableChars = chars.filter((char: Character) => {
+          return !ids?.includes(char.id)
+        })
+
+        return availableChars
+      }
       const getAvailableCharacters = async () => {
         const options = await fetchCharacters()
 
@@ -46,20 +43,20 @@ export default function SelectCharacter() {
       }
 
       getAvailableCharacters()
-        .catch(console.err)
+        .catch(console.error)
     }
-  }, [jwt, fight])
+  }, [jwt, fight, client])
 
-  const handleOpen = async (event) => {
+  const handleOpen = async (event: any) => {
     setOpen(true)
     setAnchorEl(event.target)
   }
 
-  const handleChange = (event, newValue) => {
+  const handleChange = (event: any, newValue: any) => {
     if (newValue) {
       setValue(newValue)
     } else {
-      setValue({label: "", id: ""})
+      setValue(defaultCharacter)
     }
   }
 
@@ -77,7 +74,7 @@ export default function SelectCharacter() {
     const response = await client.addCharacter(fight, {id: id})
     const character = await response.json()
     setToast({ open: true, message: `Character ${character.name} added.`, severity: "success" })
-    setValue({label: "", id: ""})
+    setValue(defaultCharacter)
     await loadFight({jwt, id: fight.id as string, setFight})
   }
 
@@ -107,7 +104,7 @@ export default function SelectCharacter() {
               sx={{ width: 300 }}
               value={value}
               onChange={handleChange}
-              getOptionLabel={({label, id}) => label}
+              getOptionLabel={({name, id}: any) => name}
               renderInput={(params) => <TextField autoFocus {...params} label="Character" />}
             />
             <Button type="submit" size="small" variant="contained">
