@@ -23,27 +23,32 @@ export default function SelectCharacter() {
   const [value, setValue] = useState({label: "", id: null})
   const [characters, setCharacters] = useState<Character[]>([])
 
+  const fetchCharacters = async () => {
+    const response = await client.getAllCharacters()
+    const chars = await response.json()
+    const ids = fight.characters.map((char: Character) => char.id)
+    const availableChars = chars.filter((char: Character) => {
+      return !ids?.includes(char.id)
+    })
+
+    const options = availableChars.map((character) => {
+      return { label: character.name, id: character.id }
+    })
+    return options
+  }
+
   useEffect(() => {
-    const getAvailableCharacters = async () => {
-      const response = await client.getAllCharacters()
-      const chars = await response.json()
-      const ids = fight.characters.map((char: Character) => char.id)
-      const availableChars = chars.filter((char: Character) => {
-        return !ids?.includes(char.id)
-      })
+    if (jwt) {
+      const getAvailableCharacters = async () => {
+        const options = await fetchCharacters()
 
-      const defaultOptions = [{label: "None", id: ""}]
-      const options = availableChars.map((character) => {
-        return { label: character.name, id: character.id }
-      })
+        setCharacters(options)
+      }
 
-      const results = defaultOptions.concat(options)
-      setCharacters(results)
+      getAvailableCharacters()
+        .catch(console.err)
     }
-
-    getAvailableCharacters()
-      .catch(console.err)
-  }, [fight])
+  }, [jwt, fight])
 
   const handleOpen = async (event) => {
     setOpen(true)
@@ -54,7 +59,7 @@ export default function SelectCharacter() {
     if (newValue) {
       setValue(newValue)
     } else {
-      setValue({label: "None", id: ""})
+      setValue({label: "", id: ""})
     }
   }
 
@@ -72,7 +77,7 @@ export default function SelectCharacter() {
     const response = await client.addCharacter(fight, {id: id})
     const character = await response.json()
     setToast({ open: true, message: `Character ${character.name} added.`, severity: "success" })
-    setValue({label: "None", id: ""})
+    setValue({label: "", id: ""})
     await loadFight({jwt, id: fight.id as string, setFight})
   }
 
@@ -94,7 +99,7 @@ export default function SelectCharacter() {
           horizontal: 'center',
         }}>
         <Box component="form" onSubmit={handleSubmit} sx={{width: 400}} p={2}>
-          <Typography variant="h4">Select Character</Typography>
+          <Typography variant="h4" gutterBottom>Select Character</Typography>
           <Stack direction="row" spacing={1}>
             <Autocomplete
               freeSolo
