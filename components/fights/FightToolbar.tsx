@@ -8,18 +8,17 @@ import DiceRoller from '../DiceRoller'
 import MookRolls from '../MookRolls'
 import RollInitiative from "../RollInitiative"
 
-import { useCurrentFight } from "../../contexts/CurrentFight"
-
 import type { Fight, Toast } from "../../types/types"
 
 interface FightToolbarParams {
+  fight: Fight,
+  setFight: React.Dispatch<React.SetStateAction<Fight>>
   showHidden: boolean,
   setShowHidden: React.Dispatch<React.SetStateAction<boolean>>
   setToast: React.Dispatch<React.SetStateAction<Toast>>
 }
 
-export default function FightToolbar({ showHidden, setShowHidden, setToast }: FightToolbarParams) {
-  const [fight, setFight] = useCurrentFight()
+export default function FightToolbar({ fight, setFight, showHidden, setShowHidden, setToast }: FightToolbarParams) {
   const show = (event: React.SyntheticEvent<Element, Event>, checked: boolean) => {
     setShowHidden(checked)
   }
