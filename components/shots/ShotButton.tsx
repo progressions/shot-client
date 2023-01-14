@@ -7,11 +7,10 @@ import type { Fight, Toast } from "../../types/types"
 interface ShotButtonProps {
   fight: Fight
   shot: number
-  setToast: React.Dispatch<React.SetStateAction<Toast>>
   setFight: React.Dispatch<React.SetStateAction<Fight>>
 }
 
-export default function ShotButton({ fight, shot, setToast, setFight }: ShotButtonProps) {
+export default function ShotButton({ fight, shot, setFight }: ShotButtonProps) {
   const label = shot === null ? <VisibilityOffOutlinedIcon sx={{width: 40, height: 40}} />: shot
 
   return (

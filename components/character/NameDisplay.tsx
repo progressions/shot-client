@@ -11,10 +11,9 @@ interface NameDisplayProps {
   character: Character
   editCharacter: (character: Character) => void
   deleteCharacter: (character: Character) => void
-  setToast: React.Dispatch<React.SetStateAction<Toast>>
 }
 
-export default function NameDisplay({ character, editCharacter, deleteCharacter, setToast }: NameDisplayProps) {
+export default function NameDisplay({ character, editCharacter, deleteCharacter }: NameDisplayProps) {
   const [open, setOpen] = useState<boolean>(false)
 
   const showButtons = () => {
@@ -46,7 +45,7 @@ export default function NameDisplay({ character, editCharacter, deleteCharacter,
             { character.name }
           </Typography>
           <Box visibility={open ? "visible" : "hidden"}>
-            <EditButtons character={character} editCharacter={editCharacter} deleteCharacter={deleteCharacter} setToast={setToast} />
+            <EditButtons character={character} editCharacter={editCharacter} deleteCharacter={deleteCharacter} />
           </Box>
         </Stack>
         { subheading() }

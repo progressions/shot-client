@@ -14,6 +14,7 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import EditIcon from '@mui/icons-material/Edit'
 import CheckIcon from '@mui/icons-material/Check'
 
+import { useToast } from "../../contexts/ToastContext"
 import type { User, Toast, ServerSideProps } from "../../types/types"
 
 import { defaultUser } from "../../types/types"
@@ -81,7 +82,7 @@ export default function UsersAdmin({ jwt, users:initialUsers, currentUser }: Use
   const [users, setUsers] = useState<User[]>(initialUsers)
   const [value, setValue] = useState<string>('1')
   const [user, setUser] = useState<User>(defaultUser)
-  const [toast, setToast] = useState<Toast>({ open: false, message: "", severity: "success" })
+  const { setToast } = useToast()
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue)

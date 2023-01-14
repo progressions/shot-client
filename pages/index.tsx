@@ -20,6 +20,8 @@ import { unstable_getServerSession } from "next-auth/next"
 import { GetServerSideProps } from 'next'
 import { InferGetServerSidePropsType } from 'next'
 
+import { useToast } from "../contexts/ToastContext"
+
 import type { Fight, Toast, ServerSideProps } from "../types/types"
 
 interface HomeProps {
@@ -60,13 +62,9 @@ export async function getServerSideProps<GetServerSideProps>({ req, res }: Serve
 }
 
 export default function Home({ fights:initialFights }: HomeProps) {
-  const [toast, setToast] = useState<Toast>({ open: false, message: "", severity: "success" })
   const [fights, setFights] = useState<Fight[]>(initialFights)
   const { status, data }: any = useSession({ required: true })
-
-  const closeToast = (): void => {
-    setToast((prevToast: Toast) => { return { ...prevToast, open: false }})
-  }
+  const { toast, closeToast } = useToast()
 
   if (status !== "authenticated") {
     return <div>Loading...</div>
@@ -83,7 +81,7 @@ export default function Home({ fights:initialFights }: HomeProps) {
         <Layout>
           <Container maxWidth="md">
             <Typography variant="h1" gutterBottom>Fights</Typography>
-            <AddFight setFights={setFights} setToast={setToast} />
+            <AddFight setFights={setFights} />
             <TableContainer>
               <Table size="small">
                 <TableHead>
@@ -95,7 +93,7 @@ export default function Home({ fights:initialFights }: HomeProps) {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {fights.map((fight: Fight) => <FightDetail fight={fight} key={fight.id} setFights={setFights} setToast={setToast} />)}
+                  {fights.map((fight: Fight) => <FightDetail fight={fight} key={fight.id} setFights={setFights} />)}
                 </TableBody>
               </Table>
             </TableContainer>

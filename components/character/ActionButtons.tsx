@@ -11,7 +11,7 @@ import CarCrashIcon from '@mui/icons-material/CarCrash'
 
 import MookRolls from '../MookRolls'
 
-import type { Character, CharacterType, Toast } from "../../types/types"
+import type { Character, CharacterType } from "../../types/types"
 
 interface ActionButtonsParams {
   character: Character,
@@ -21,7 +21,6 @@ interface ActionButtonsParams {
   editCharacter?: (character: Character) => void,
   deleteCharacter?: (character: Character) => void,
   takeDodgeAction?: (character: Character) => void,
-  setToast: React.Dispatch<React.SetStateAction<Toast>>
 }
 
 export default function ActionButtons({ character, takeWounds, takeConditionPoints, takeAction, editCharacter, deleteCharacter, takeDodgeAction }: ActionButtonsParams) {

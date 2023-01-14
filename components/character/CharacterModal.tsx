@@ -13,6 +13,7 @@ import EditActionValues from "./edit/EditActionValues"
 import DeathMarks from "./DeathMarks"
 import PlayerTypeOnly from "../PlayerTypeOnly"
 
+import { useToast } from "../../contexts/ToastContext"
 import { useSession } from 'next-auth/react'
 import { loadFight } from '../fights/FightDetail'
 import Client from "../Client"
@@ -26,13 +27,13 @@ interface CharacterModalParams {
   fight?: Fight,
   setFight?: React.Dispatch<React.SetStateAction<Fight>>
   character: Person | null
-  setToast: React.Dispatch<React.SetStateAction<Toast>>
 }
 
-export default function CharacterModal({ open, setOpen, fight, setFight, character:activeCharacter, setToast }: CharacterModalParams) {
+export default function CharacterModal({ open, setOpen, fight, setFight, character:activeCharacter }: CharacterModalParams) {
   const session: any = useSession({ required: true })
   const jwt = session?.data?.authorization
   const client = new Client({ jwt: jwt })
+  const { setToast } = useToast()
 
   const [saving, setSaving] = useState(false);
 

@@ -12,6 +12,7 @@ import ActionButtons from "../character/ActionButtons"
 import NameDisplay from "../character/NameDisplay"
 import WoundsDisplay from "../vehicles/WoundsDisplay"
 import { useState } from "react"
+import { useToast } from "../../contexts/ToastContext"
 
 import { loadFight } from '../fights/FightDetail'
 
@@ -24,10 +25,9 @@ interface VehicleDetailsParams {
   setFight: React.Dispatch<React.SetStateAction<Fight>>
   editingCharacter: Vehicle,
   setEditingCharacter: React.Dispatch<React.SetStateAction<Vehicle>> | ((character: Vehicle | null) => void)
-  setToast: React.Dispatch<React.SetStateAction<Toast>>
 }
 
-export default function VehicleDetails({ character, fight, setFight, editingCharacter, setEditingCharacter, setToast }: VehicleDetailsParams) {
+export default function VehicleDetails({ character, fight, setFight, editingCharacter, setEditingCharacter }: VehicleDetailsParams) {
   const session: any = useSession({ required: true })
   const jwt = session?.data?.authorization
   const client = new Client({ jwt })
@@ -36,6 +36,7 @@ export default function VehicleDetails({ character, fight, setFight, editingChar
   const [openAction, setOpenAction] = useState(false)
   const [openChasePoints, setOpenChasePoints] = useState(false)
   const [openConditionPoints, setOpenConditionPoints] = useState(false)
+  const { setToast } = useToast()
 
   function closeAction() {
     setOpenAction(false)
@@ -80,7 +81,6 @@ export default function VehicleDetails({ character, fight, setFight, editingChar
           <NameDisplay character={character}
             editCharacter={editCharacter}
             deleteCharacter={deleteCharacter}
-            setToast={setToast}
           />
           <GamemasterOnly user={session?.data?.user} character={character}>
             <Stack direction="row" spacing={1} justifyContent="space-between">
@@ -89,14 +89,29 @@ export default function VehicleDetails({ character, fight, setFight, editingChar
                 takeWounds={takeChasePoints}
                 takeConditionPoints={takeConditionPoints}
                 takeAction={takeAction}
-                setToast={setToast}
               />
             </Stack>
           </GamemasterOnly>
         </Stack>
-      <VehicleActionModal open={openAction} setOpen={setOpenAction} fight={fight} character={character} setFight={setFight} setToast={setToast} />
-      <ChasePointsModal open={openChasePoints} setOpen={setOpenChasePoints} fight={fight} character={character as Vehicle} setFight={setFight} setToast={setToast} />
-      <ConditionPointsModal open={openConditionPoints} setOpen={setOpenConditionPoints} fight={fight} character={character as Vehicle} setFight={setFight} setToast={setToast} />
+        <VehicleActionModal
+          open={openAction}
+          setOpen={setOpenAction}
+          fight={fight}
+          character={character}
+          setFight={setFight}
+        />
+        <ChasePointsModal open={openChasePoints}
+          setOpen={setOpenChasePoints}
+          fight={fight}
+          character={character as Vehicle}
+          setFight={setFight}
+        />
+        <ConditionPointsModal open={openConditionPoints}
+          setOpen={setOpenConditionPoints}
+          fight={fight}
+          character={character as Vehicle}
+          setFight={setFight}
+        />
       </TableCell>
     </TableRow>
   )

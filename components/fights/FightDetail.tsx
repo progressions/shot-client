@@ -6,6 +6,7 @@ import { authOptions } from '../../pages/api/auth/[...nextauth]'
 import { unstable_getServerSession } from "next-auth/next"
 import Client from "../Client"
 
+import { useToast } from "../../contexts/ToastContext"
 import type { Fight, Toast } from "../../types/types"
 import { defaultFight } from "../../types/types"
 
@@ -18,7 +19,6 @@ interface loadFightParams {
 interface FightParams {
   fight: Fight,
   setFights: React.Dispatch<React.SetStateAction<Fight[]>>
-  setToast: React.Dispatch<React.SetStateAction<Toast>>
 }
 
 interface loadFightsParams {
@@ -46,10 +46,11 @@ export async function loadFights({jwt, setFights}: loadFightsParams) {
   }
 }
 
-export default function FightDetail({ fight, setFights, setToast }: FightParams) {
+export default function FightDetail({ fight, setFights }: FightParams) {
   const session: any = useSession({ required: true })
   const jwt = session?.data?.authorization
   const client = new Client({ jwt })
+  const { setToast } = useToast()
 
   async function deleteFight(fight: Fight) {
     const response = await client.deleteFight(fight)

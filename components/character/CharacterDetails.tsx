@@ -18,6 +18,7 @@ import DeathMarks from "./DeathMarks"
 import NameDisplay from "./NameDisplay"
 import WoundsDisplay from "./WoundsDisplay"
 
+import { useToast } from "../../contexts/ToastContext"
 import { loadFight } from '../fights/FightDetail'
 import Client from "../Client"
 
@@ -30,10 +31,9 @@ interface CharacterDetailsParams {
   setFight: React.Dispatch<React.SetStateAction<Fight>>
   editingCharacter: Character,
   setEditingCharacter: React.Dispatch<React.SetStateAction<Character>> | ((character: Character | null) => void)
-  setToast: React.Dispatch<React.SetStateAction<Toast>>
 }
 
-export default function CharacterDetails({ character, fight, setFight, editingCharacter, setEditingCharacter, setToast }: CharacterDetailsParams) {
+export default function CharacterDetails({ character, fight, setFight, editingCharacter, setEditingCharacter }: CharacterDetailsParams) {
   const session: any = useSession({ required: true })
   const jwt = session?.data?.authorization
   const client = new Client({ jwt })
@@ -41,6 +41,7 @@ export default function CharacterDetails({ character, fight, setFight, editingCh
   const [open, setOpen] = useState<Character>(defaultCharacter)
   const [openAction, setOpenAction] = useState(false)
   const [openWounds, setOpenWounds] = useState(false)
+  const { setToast } = useToast()
 
   function closeAction() {
     setOpenAction(false)

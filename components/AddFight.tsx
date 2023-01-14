@@ -6,19 +6,20 @@ import KeyboardDoubleArrowUpIcon from '@mui/icons-material/KeyboardDoubleArrowUp
 import { useSession } from 'next-auth/react'
 import Client from "./Client"
 
+import { useToast } from "../contexts/ToastContext"
 import type { Fight, Toast } from "../types/types"
 import { defaultFight } from "../types/types"
 import { loadFights } from "./fights/FightDetail"
 
 interface AddFightProps {
   setFights: React.Dispatch<React.SetStateAction<Fight[]>>
-  setToast: React.Dispatch<React.SetStateAction<Toast>>
 }
 
-export default function AddFight({ setFights, setToast }: AddFightProps) {
+export default function AddFight({ setFights }: AddFightProps) {
   const session: any = useSession({ required: true })
   const jwt = session?.data?.authorization
   const client = new Client({ jwt })
+  const { setToast } = useToast()
 
   const [open, setOpen] = useState<boolean>(false)
   const [fight, setFight] = useState<Fight>(defaultFight)

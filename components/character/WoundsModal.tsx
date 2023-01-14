@@ -4,6 +4,7 @@ import { useSession } from 'next-auth/react'
 import { loadFight } from '../fights/FightDetail'
 import Client from "../Client"
 
+import { useToast } from "../../contexts/ToastContext"
 import type { Person, Character, Fight, Toast, ActionValues } from "../../types/types"
 
 interface WoundsModalParams {
@@ -12,12 +13,12 @@ interface WoundsModalParams {
   fight: Fight,
   character: Person,
   setFight: React.Dispatch<React.SetStateAction<Fight>>
-  setToast: React.Dispatch<React.SetStateAction<Toast>>
 }
 
-const WoundsModal = ({open, setOpen, fight, character, setFight, setToast}: WoundsModalParams) => {
+const WoundsModal = ({open, setOpen, fight, character, setFight }: WoundsModalParams) => {
   const [smackdown, setSmackdown] = useState<number>(0)
   const [saving, setSaving] = useState<boolean>(false)
+  const { setToast } = useToast()
 
   const session: any = useSession({ required: true })
   const jwt = session?.data?.authorization

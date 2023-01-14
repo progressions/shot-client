@@ -25,6 +25,8 @@ import Client from '../../components/Client'
 import PopupToast from '../../components/PopupToast'
 import Sequence from "../../components/Sequence"
 
+import { useToast } from "../../contexts/ToastContext"
+
 import type { ShotType, Vehicle, Person, Character, Fight, Toast, ID } from "../../types/types"
 import { defaultCharacter, ServerSideProps } from "../../types/types"
 
@@ -77,11 +79,7 @@ export default function Fight({ fight:initialFight, notFound }: FightParams) {
   const [fight, setFight] = useState<Fight>(initialFight as Fight)
   const [editingCharacter, setEditingCharacter] = useState<Person | Vehicle>(defaultCharacter)
   const [showHidden, setShowHidden] = useState<boolean>(false)
-  const [toast, setToast] = useState<Toast>({ open: false, message: "", severity: "success" })
-
-  const closeToast = (): void => {
-    setToast((prevToast: Toast) => { return { ...prevToast, open: false }})
-  }
+  const { toast, setToast, closeToast } = useToast()
 
   const router = useRouter()
   const { id } = router.query
@@ -125,7 +123,6 @@ export default function Fight({ fight:initialFight, notFound }: FightParams) {
                         editingCharacter={editingCharacter}
                         setEditingCharacter={setEditingCharacter}
                         showHidden={showHidden}
-                        setToast={setToast}
                       />)
                   }
                 </TableBody>

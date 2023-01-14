@@ -20,6 +20,7 @@ import CreateCharacter from "../components/character/CreateCharacter"
 import CharacterFilters from "../components/CharacterFilters"
 import PopupToast from "../components/PopupToast"
 
+import { useToast } from "../contexts/ToastContext"
 import type { Person, Vehicle, Character, CharacterFilter, ServerSideProps, Toast } from "../types/types"
 import { defaultCharacter } from "../types/types"
 
@@ -71,7 +72,7 @@ export default function Characters({ characters:initialCharacters, jwt }: Charac
     type: null,
     name: null
   })
-  const [toast, setToast] = useState<Toast>({ open: false, message: "", severity: "success" })
+  const { setToast } = useToast()
 
   function editCharacter(character: Character): void {
     setEditingCharacter(character)
@@ -129,7 +130,7 @@ export default function Characters({ characters:initialCharacters, jwt }: Charac
             <Typography variant="h1" gutterBottom>Characters</Typography>
             <Stack direction="row" spacing={2} alignItems="center">
               <CharacterFilters filters={filters} setFilters={setFilters} />
-              <CreateCharacter setToast={setToast} />
+              <CreateCharacter />
             </Stack>
             <TableContainer>
               <Table size="small">
@@ -152,7 +153,7 @@ export default function Characters({ characters:initialCharacters, jwt }: Charac
                         <TableCell sx={{fontWeight: "bold"}}><Typography variant="h5">{character.name}</Typography></TableCell>
                         <TableCell><ActionValues character={character} /></TableCell>
                         <TableCell>{character.user?.first_name} {character.user?.last_name}</TableCell>
-                        <TableCell><ActionButtons editCharacter={editCharacter} deleteCharacter={deleteCharacter} character={character} setToast={setToast} /></TableCell>
+                        <TableCell><ActionButtons editCharacter={editCharacter} deleteCharacter={deleteCharacter} character={character} /></TableCell>
                       </TableRow>)
                     })
                   }
@@ -160,7 +161,7 @@ export default function Characters({ characters:initialCharacters, jwt }: Charac
               </Table>
             </TableContainer>
             <PopupToast toast={toast} closeToast={closeToast} />
-            <CharacterModal open={editingCharacter} setOpen={setEditingCharacter} character={editingCharacter as Person} setToast={setToast} />
+            <CharacterModal open={editingCharacter} setOpen={setEditingCharacter} character={editingCharacter as Person} />
           </Container>
         </Layout>
       </main>

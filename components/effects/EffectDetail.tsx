@@ -4,6 +4,7 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import { useSession } from 'next-auth/react'
 import Client from "../Client"
 import { loadFight } from '../fights/FightDetail'
+import { useToast } from "../../contexts/ToastContext"
 
 import { useState } from "react"
 import { Button, Tooltip, Alert, AlertTitle, Popover, Box, Stack, Typography, IconButton } from "@mui/material"
@@ -13,11 +14,10 @@ import type { Toast, Effect, Fight } from "../../types/types"
 interface EffectDetailProps {
   effect: Effect
   fight: Fight
-  setToast: React.Dispatch<React.SetStateAction<Toast>>
   setFight: React.Dispatch<React.SetStateAction<Fight>>
 }
 
-export default function EffectDetail({ effect, fight, setFight, setToast }: EffectDetailProps) {
+export default function EffectDetail({ effect, fight, setFight }: EffectDetailProps) {
   const session: any = useSession({ required: true })
   const jwt = session?.data?.authorization
   const client = new Client({ jwt: jwt })
@@ -25,6 +25,7 @@ export default function EffectDetail({ effect, fight, setFight, setToast }: Effe
   const [open, setOpen] = useState<boolean>(false)
   const [anchorEl, setAnchorEl] = useState<any>(null)
   const [timer, setTimer] = useState<any>(null)
+  const { toast, setToast, closeToast } = useToast()
 
   const showEffect = (event: any) => {
     clearTimeout(timer)
