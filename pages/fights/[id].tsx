@@ -1,33 +1,20 @@
+import { Container, Typography } from "@mui/material"
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import { useState } from 'react'
-import { ButtonGroup, IconButton, Switch, Divider, Table, TableContainer, TableBody, TableRow, TableHead, TableCell, Paper, Container, Typography } from '@mui/material'
-import Box from '@mui/material/Box'
-import List from '@mui/material/List'
-import ListItem from '@mui/material/ListItem'
-import ListItemIcon from '@mui/material/ListItemIcon'
-import ListItemText from '@mui/material/ListItemText'
-import FavoriteIcon from '@mui/icons-material/Favorite'
-import TextField from '@mui/material/TextField'
-import Stack from '@mui/material/Stack'
-import Button from '@mui/material/Button'
+import { useState, useEffect } from 'react'
 import Router from "next/router"
 import { authOptions } from '../api/auth/[...nextauth]'
 import { unstable_getServerSession } from "next-auth/next"
 
-import FightToolbar from '../../components/fights/FightToolbar'
 import Layout from '../../components/Layout'
-import Shot from '../../components/shots/Shot'
-import CharacterModal from '../../components/character/CharacterModal'
-import VehicleModal from '../../components/vehicles/VehicleModal'
+import ShotCounter from "../../components/fights/ShotCounter"
 import Api from '../../components/Api'
 import Client from '../../components/Client'
-import Sequence from "../../components/Sequence"
 
-import { useToast } from "../../contexts/ToastContext"
+import { useFight } from "../../contexts/FightContext"
 
-import type { ShotType, Vehicle, Person, Character, Fight, Toast, ID } from "../../types/types"
-import { defaultCharacter, ServerSideProps } from "../../types/types"
+import type { ShotType, Vehicle, Person, Character, Fight, ID } from "../../types/types"
+import { ServerSideProps } from "../../types/types"
 
 interface FightParams {
   fight: Fight | null,
@@ -75,13 +62,12 @@ export async function getServerSideProps({ req, res, params }: ServerSideProps) 
 }
 
 export default function Fight({ fight:initialFight, notFound }: FightParams) {
-  const [fight, setFight] = useState<Fight>(initialFight as Fight)
-  const [editingCharacter, setEditingCharacter] = useState<Person | Vehicle>(defaultCharacter)
-  const [showHidden, setShowHidden] = useState<boolean>(false)
-  const { toast, setToast, closeToast } = useToast()
+  const [fight, setFight] = useFight()
 
-  const router = useRouter()
-  const { id } = router.query
+  useEffect(() => {
+    setFight(initialFight)
+  }, [setFight, initialFight])
+
   if (!fight && !notFound) {
     return <>Loading...</>
   }
@@ -97,50 +83,9 @@ export default function Fight({ fight:initialFight, notFound }: FightParams) {
       <Layout>
         <Container>
           { !fight && <>
-              <Typography sx={{mt: 5}} variant="h3">Fight not found.</Typography>
-            </> }
-          { fight && (<>
-            <Typography variant="h1" gutterBottom>{fight.name}</Typography>
-            <FightToolbar fight={fight} setFight={setFight} showHidden={showHidden} setShowHidden={setShowHidden} />
-            <TableContainer>
-              <Table sx={{minWidth: 900, maxWidth: 1000}}>
-                <TableHead>
-                  <TableRow>
-                    <TableCell colSpan={4}>
-                      <Sequence fight={fight} setFight={setFight} />
-                    </TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {
-                    fight.shot_order.map(([shot, chars]: ShotType) =>
-                      <Shot key={shot}
-                        shot={shot}
-                        characters={chars}
-                        fight={fight}
-                        setFight={setFight}
-                        editingCharacter={editingCharacter}
-                        setEditingCharacter={setEditingCharacter}
-                        showHidden={showHidden}
-                      />)
-                  }
-                </TableBody>
-              </Table>
-            </TableContainer>
-            <CharacterModal open={editingCharacter}
-              setOpen={setEditingCharacter}
-              fight={fight}
-              character={editingCharacter as Person}
-              setFight={setFight}
-            />
-            <VehicleModal
-              open={editingCharacter as Vehicle}
-              setOpen={setEditingCharacter as React.Dispatch<React.SetStateAction<Vehicle>>}
-              fight={fight}
-              character={editingCharacter as Vehicle}
-              setFight={setFight}
-            />
-          </>)}
+            <Typography sx={{mt: 5}} variant="h3">Fight not found.</Typography>
+          </> }
+            { fight && <ShotCounter /> }
         </Container>
       </Layout>
     </>

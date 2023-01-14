@@ -1,6 +1,6 @@
 import { Box, Tooltip, Stack, Typography } from "@mui/material"
 import { SxProps, Theme } from '@mui/material/styles'
-import type { Character } from "../types/types"
+import type { Character } from "../../types/types"
 
 interface ActionValueDisplayParams {
   name: string,

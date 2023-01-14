@@ -4,7 +4,7 @@ import { tableCellClasses } from "@mui/material/TableCell"
 
 import type { Character, ActionValues } from "../../types/types"
 import { SxProps, Theme } from '@mui/material/styles'
-import ActionValueDisplay from "../ActionValueDisplay"
+import ActionValueDisplay from "./ActionValueDisplay"
 
 interface ActionValuesParams {
   character: Character

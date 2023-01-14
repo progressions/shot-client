@@ -4,12 +4,12 @@ import Router from "next/router"
 import KeyboardDoubleArrowDownIcon from '@mui/icons-material/KeyboardDoubleArrowDown';
 import KeyboardDoubleArrowUpIcon from '@mui/icons-material/KeyboardDoubleArrowUp';
 import { useSession } from 'next-auth/react'
-import Client from "./Client"
+import Client from "../Client"
 
-import { useToast } from "../contexts/ToastContext"
-import type { Fight, Toast } from "../types/types"
-import { defaultFight } from "../types/types"
-import { loadFights } from "./fights/FightDetail"
+import { useToast } from "../../contexts/ToastContext"
+import type { Fight, Toast } from "../../types/types"
+import { defaultFight } from "../../types/types"
+import { loadFights } from "./FightDetail"
 
 interface AddFightProps {
   setFights: React.Dispatch<React.SetStateAction<Fight[]>>
