@@ -1,6 +1,6 @@
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { ButtonGroup, IconButton, Switch, Divider, Table, TableContainer, TableBody, TableRow, TableHead, TableCell, Paper, Container, Typography } from '@mui/material'
 import Box from '@mui/material/Box'
 import List from '@mui/material/List'
@@ -24,6 +24,7 @@ import Api from '../../components/Api'
 import Client from '../../components/Client'
 import Sequence from "../../components/Sequence"
 
+import { useFight } from "../../contexts/FightContext"
 import { useToast } from "../../contexts/ToastContext"
 
 import type { ShotType, Vehicle, Person, Character, Fight, Toast, ID } from "../../types/types"
@@ -75,10 +76,15 @@ export async function getServerSideProps({ req, res, params }: ServerSideProps) 
 }
 
 export default function Fight({ fight:initialFight, notFound }: FightParams) {
-  const [fight, setFight] = useState<Fight>(initialFight as Fight)
   const [editingCharacter, setEditingCharacter] = useState<Person | Vehicle>(defaultCharacter)
   const [showHidden, setShowHidden] = useState<boolean>(false)
   const { toast, setToast, closeToast } = useToast()
+
+  const [fight, setFight] = useFight()
+
+  useEffect(() => {
+    setFight(initialFight)
+  }, [initialFight])
 
   const router = useRouter()
   const { id } = router.query
