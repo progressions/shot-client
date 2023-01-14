@@ -51,7 +51,7 @@ export default function CharacterDetails({ character, editingCharacter, setEditi
   async function deleteCharacter(character: Character): Promise<void> {
     const response = await client.deleteCharacter(character, fight)
     if (response.status === 200) {
-      setToast({ open: true, message: `Character ${character.name} removed.`, severity: "success" })
+      setToast({ open: true, message: `${character.name} removed.`, severity: "success" })
       await loadFight({jwt, id: fight.id as string, setFight})
     }
   }
@@ -71,7 +71,7 @@ export default function CharacterDetails({ character, editingCharacter, setEditi
   const takeDodgeAction = async (character: Character) => {
     const response = await client.actCharacter(character, fight, 1)
     if (response.status === 200) {
-      setToast({ open: true, message: `Character ${character.name} dodged for 1 shot.`, severity: "success" })
+      setToast({ open: true, message: `${character.name} dodged for 1 shot.`, severity: "success" })
       await loadFight({jwt, id: fight.id as string, setFight})
     }
   }

@@ -34,7 +34,7 @@ const ActionModal = ({open, setOpen, character }: ActionModalParams) => {
 
       if (response.status === 200) {
         setOpen(false)
-        setToast({ open: true, message: `Vehicle ${character.name} spent ${shots} shots.`, severity: "success" })
+        setToast({ open: true, message: `${character.name} spent ${shots} shots.`, severity: "success" })
         await loadFight({jwt, id: fight.id as string, setFight})
       }
     }

@@ -43,7 +43,7 @@ const ChasePointsModal = ({open, setOpen, character }: ChasePointsModalParams) =
       if (character.action_values["Type"] === "Mook") {
         setToast({ open: true, message: `${character.name} lost ${chasePoints} mooks.`, severity: "success" })
       } else {
-        setToast({ open: true, message: `Vehicle ${character.name} took ${chasePoints} Chase Points.`, severity: "success" })
+        setToast({ open: true, message: `${character.name} took ${chasePoints} Chase Points.`, severity: "success" })
       }
     }
   }

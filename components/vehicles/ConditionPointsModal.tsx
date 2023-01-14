@@ -43,7 +43,7 @@ const ConditionPointsModal = ({open, setOpen, character }: ConditionPointsModalP
       if (character.action_values["Type"] === "Mook") {
         setToast({ open: true, message: `${character.name} lost ${conditionPoints} mooks.`, severity: "success" })
       } else {
-        setToast({ open: true, message: `Vehicle ${character.name} took ${conditionPoints} Condition Points.`, severity: "success" })
+        setToast({ open: true, message: `${character.name} took ${conditionPoints} Condition Points.`, severity: "success" })
       }
     }
   }

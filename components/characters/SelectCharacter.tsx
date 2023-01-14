@@ -6,10 +6,11 @@ import Client from "../Client"
 
 import PersonIcon from '@mui/icons-material/Person'
 import PersonAddIcon from '@mui/icons-material/PersonAdd'
+import DirectionsCarFilledIcon from '@mui/icons-material/DirectionsCarFilled'
 
 import { useToast } from "../../contexts/ToastContext"
 import { useFight } from "../../contexts/FightContext"
-import type { Fight, Character } from "../../types/types"
+import type { Fight, Character, Vehicle } from "../../types/types"
 import { defaultCharacter } from "../../types/types"
 
 export default function SelectCharacter() {
@@ -26,6 +27,18 @@ export default function SelectCharacter() {
 
   useEffect(() => {
     if (jwt) {
+      const fetchVehicles = async () => {
+        const response = await client.getAllVehicles()
+        const vehicles = await response.json()
+
+        const ids = fight?.vehicles?.map((vehicle: Vehicle) => vehicle.id)
+        const availableVehicles = vehicles.filter((vehicle: Vehicle) => {
+          return !ids?.includes(vehicle.id)
+        })
+
+        return availableVehicles
+      }
+
       const fetchCharacters = async () => {
         const response = await client.getAllCharacters()
         const chars = await response.json()
@@ -36,13 +49,15 @@ export default function SelectCharacter() {
 
         return availableChars
       }
-      const getAvailableCharacters = async () => {
-        const options = await fetchCharacters()
 
-        setCharacters(options)
+      const fetchAndSetOptions = async () => {
+        const chars = await fetchCharacters()
+        const vehicles = await fetchVehicles()
+
+        setCharacters(chars.concat(vehicles))
       }
 
-      getAvailableCharacters()
+      fetchAndSetOptions()
         .catch(console.error)
     }
   }, [jwt, fight, client])
@@ -71,16 +86,32 @@ export default function SelectCharacter() {
 
     if (!id) return
 
-    const response = await client.addCharacter(fight, {id: id})
+    let response
+    if (value.category === "character") {
+      response = await client.addCharacter(fight, {id: id})
+    } else {
+      response = await client.addVehicle(fight, {id: id})
+    }
     const character = await response.json()
-    setToast({ open: true, message: `Character ${character.name} added.`, severity: "success" })
+    setToast({ open: true, message: `${character.name} added.`, severity: "success" })
     setValue(defaultCharacter)
     await loadFight({jwt, id: fight.id as string, setFight})
   }
 
+  const getOptionLabel = (character: any) => {
+    if (!character.name) return ""
+
+    const carEmoji = "🚗"
+    const personEmoji = "👤"
+
+    const emoji = (character.category === "vehicle") ? carEmoji : personEmoji
+
+    return `${emoji} ${character.name} (${character.action_values["Type"]})`
+  }
+
   return (
     <>
-      <Button variant="outlined" startIcon={<PersonIcon />} onClick={handleOpen}>Select</Button>
+      <Button variant="outlined" endIcon={<PersonIcon />} startIcon={<DirectionsCarFilledIcon />} onClick={handleOpen}>Select</Button>
       <Popover
         disableAutoFocus={true}
         disableEnforceFocus={true}
@@ -96,7 +127,6 @@ export default function SelectCharacter() {
           horizontal: 'center',
         }}>
         <Box component="form" onSubmit={handleSubmit} sx={{width: 400}} p={2}>
-          <Typography variant="h4" gutterBottom>Select Character</Typography>
           <Stack direction="row" spacing={1}>
             <Autocomplete
               freeSolo
@@ -104,7 +134,7 @@ export default function SelectCharacter() {
               sx={{ width: 300 }}
               value={value}
               onChange={handleChange}
-              getOptionLabel={({name, id}: any) => name}
+              getOptionLabel={getOptionLabel}
               renderInput={(params) => <TextField autoFocus {...params} label="Character" />}
             />
             <Button type="submit" size="small" variant="contained">

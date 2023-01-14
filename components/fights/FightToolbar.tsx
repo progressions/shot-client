@@ -2,7 +2,6 @@ import { ButtonGroup, Switch, FormControlLabel, Stack } from '@mui/material'
 
 import CreateCharacter from '../characters/CreateCharacter'
 import SelectCharacter from '../characters/SelectCharacter'
-import SelectVehicle from '../vehicles/SelectVehicle'
 import CreateVehicle from '../vehicles/CreateVehicle'
 import DiceRoller from '../dice/DiceRoller'
 import MookRolls from '../MookRolls'
@@ -30,10 +29,9 @@ export default function FightToolbar({ showHidden, setShowHidden }: FightToolbar
         <DiceRoller />
         <ButtonGroup>
           <CreateVehicle fight={fight} setFight={setFight} />
-          <SelectVehicle />
+          <CreateCharacter fight={fight} setFight={setFight} />
         </ButtonGroup>
         <ButtonGroup>
-          <CreateCharacter fight={fight} setFight={setFight} />
           <SelectCharacter />
         </ButtonGroup>
         <MookRolls />

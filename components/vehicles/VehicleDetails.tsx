@@ -45,7 +45,7 @@ export default function VehicleDetails({ character, editingCharacter, setEditing
   async function deleteCharacter(character: Character): Promise<void> {
     const response = await client.deleteVehicle(character as Vehicle, fight)
     if (response.status === 200) {
-      setToast({ open: true, message: `Vehicle ${character.name} removed.`, severity: "success" })
+      setToast({ open: true, message: `${character.name} removed.`, severity: "success" })
       await loadFight({jwt, id: fight.id as string, setFight})
     }
   }

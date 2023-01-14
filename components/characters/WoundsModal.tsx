@@ -64,7 +64,7 @@ const WoundsModal = ({open, setOpen, character }: WoundsModalParams) => {
       if (character.action_values["Type"] === "Mook") {
         setToast({ open: true, message: `${character.name} lost ${wounds} mooks.`, severity: "success" })
       } else {
-        setToast({ open: true, message: `Character ${character.name} took a smackdown of ${smackdown}, causing ${wounds} wounds.`, severity: "success" })
+        setToast({ open: true, message: `${character.name} took a smackdown of ${smackdown}, causing ${wounds} wounds.`, severity: "success" })
       }
     }
   }
