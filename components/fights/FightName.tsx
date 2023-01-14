@@ -15,9 +15,6 @@ export default function FightName() {
 
   return (
     <>
-      <Typography sx={{backgroundColor: "secondary.main", color: "white"}} variant="h6" p={1}>
-        {fight?.campaign?.name || ""}
-      </Typography>
       <Typography variant="h2" gutterBottom>
         {fight.name}
       </Typography>
