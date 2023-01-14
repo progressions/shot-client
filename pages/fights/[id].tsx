@@ -1,6 +1,6 @@
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { ButtonGroup, IconButton, Switch, Divider, Table, TableContainer, TableBody, TableRow, TableHead, TableCell, Paper, Container, Typography } from '@mui/material'
 import Box from '@mui/material/Box'
 import List from '@mui/material/List'
@@ -15,6 +15,7 @@ import Router from "next/router"
 import { authOptions } from '../api/auth/[...nextauth]'
 import { unstable_getServerSession } from "next-auth/next"
 
+import FightName from "../../components/fights/FightName"
 import FightToolbar from '../../components/fights/FightToolbar'
 import Layout from '../../components/Layout'
 import Shot from '../../components/shots/Shot'
@@ -103,7 +104,7 @@ export default function Fight({ fight:initialFight, notFound }: FightParams) {
               <Typography sx={{mt: 5}} variant="h3">Fight not found.</Typography>
             </> }
           { fight && (<>
-            <Typography variant="h1" gutterBottom>{fight.name}</Typography>
+            <FightName fight={fight} />
             <FightToolbar fight={fight} setFight={setFight} showHidden={showHidden} setShowHidden={setShowHidden} setToast={setToast} />
             <TableContainer>
               <Table sx={{minWidth: 900, maxWidth: 1000}}>
