@@ -5,7 +5,6 @@ import { Snackbar, Alert, Link, Button, Paper, Container, Table, TableContainer,
 import AddFight from '../components/fights/AddFight'
 import FightDetail from '../components/fights/FightDetail'
 import Layout from '../components/Layout'
-import Api from '../components/Api'
 import Client from '../components/Client'
 import Router from 'next/router'
 import { useSession } from 'next-auth/react'

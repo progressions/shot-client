@@ -87,11 +87,15 @@ export default function Navbar() {
               </Link>
             </Typography>
           )}
+          <Typography variant="h6" component="div" paddingRight={2} sx={{ minWidth: 100 }}>
+            <Link color="inherit" href='/campaigns'>
+              Campaigns
+            </Link>
+          </Typography>
           <Button variant="contained" onClick={handleClick}>Set Campaign</Button>
           <Button variant="contained" onClick={handleClear}>Clear Campaign</Button>
           <Typography color="inherit">Campaign {campaign?.title}</Typography>
           <AuthButton status={status} user={user || {}} />
-
         </Toolbar>
       </AppBar>
     </Box>
