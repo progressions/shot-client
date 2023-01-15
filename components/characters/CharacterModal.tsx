@@ -112,7 +112,7 @@ export default function CharacterModal({ open, setOpen, fight, setFight, charact
   }
 
   const healCharacter = () => {
-    if (character.action_values["Type"] !== "PC") return
+    if (character.action_values["Type"] === "Mook") return
 
     const actionValues = character.action_values
     actionValues["Wounds"] = 0
@@ -170,7 +170,7 @@ export default function CharacterModal({ open, setOpen, fight, setFight, charact
           </DialogContent>
           <DialogActions>
             <Stack spacing={2} direction="row">
-              <PlayerTypeOnly character={character} only="PC">
+              <PlayerTypeOnly character={character} except="Mook">
                 <Tooltip title="Full Heal">
                   <Button variant="outlined" onClick={healCharacter}>
                     <FavoriteIcon color="error" />
