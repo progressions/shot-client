@@ -32,31 +32,13 @@ export default function Navbar() {
   }
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      const value = localStorage.getItem("campaign")
-      if (value) {
-        try {
-          setCampaign(JSON.parse(value))
-        } catch(err) { }
-      }
-      if (!value) {
-        localStorage.setItem("campaign", JSON.stringify(current))
-        setCampaign(current)
-      }
-    }
   }, [])
 
   const handleClick = () => {
     setCampaign(current)
-    if (typeof window !== "undefined") {
-      localStorage.setItem("campaign", JSON.stringify(current))
-    }
   }
   const handleClear = () => {
     setCampaign(null)
-    if (typeof window !== "undefined") {
-      localStorage.setItem("campaign", null)
-    }
   }
 
   return (

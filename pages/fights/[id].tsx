@@ -68,13 +68,6 @@ export default function Fight({ fight:initialFight, notFound }: FightParams) {
     setFight(initialFight)
   }, [setFight, initialFight])
 
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const value = JSON.parse(localStorage.getItem("campaign"))
-      console.log({ value })
-    }
-  })
-
   if (!fight && !notFound) {
     return <>Loading...</>
   }

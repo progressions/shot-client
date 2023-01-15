@@ -14,20 +14,8 @@ class Client {
       this.jwt = params.jwt
     }
     this.api = new Api()
-    this.getCurrentCampaign()
   }
 
-  getCurrentCampaign() {
-    if (typeof window !== "undefined") {
-      const value = localStorage.getItem("campaign")
-      if (value) {
-        try {
-          this.campaign = JSON.parse(value)
-        } catch(err) {
-          console.error(err)
-        }
-      }
-    }
   }
 
   async getFights():Promise<Response> {
