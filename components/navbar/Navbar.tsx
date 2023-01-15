@@ -14,12 +14,12 @@ import { signIn, signOut } from 'next-auth/react'
 import Avatar from '@mui/material/Avatar';
 import Tooltip from '@mui/material/Tooltip'
 import Stack from '@mui/material/Stack'
-import AuthButton from "./navbar/AuthButton"
-import Client from "./Client"
+import AuthButton from "./AuthButton"
+import Client from "../Client"
 
-import type { User } from "../types/types"
+import type { User } from "../../types/types"
 
-import { useCampaign } from "../contexts/CampaignContext"
+import { useCampaign } from "../../contexts/CampaignContext"
 
 export default function Navbar() {
   const session: any = useSession({ required: true })
