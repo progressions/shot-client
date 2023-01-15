@@ -20,6 +20,7 @@ import { GetServerSideProps } from 'next'
 import { InferGetServerSidePropsType } from 'next'
 
 import { useToast } from "../contexts/ToastContext"
+import { useCampaign } from "../contexts/CampaignContext"
 
 import type { Fight, Toast, ServerSideProps } from "../types/types"
 
@@ -64,6 +65,8 @@ export default function Home({ fights:initialFights }: HomeProps) {
   const [fights, setFights] = useState<Fight[]>(initialFights)
   const { status, data }: any = useSession({ required: true })
   const { toast, closeToast } = useToast()
+
+  const [campaign, setCampaign] = useCampaign()
 
   if (status !== "authenticated") {
     return <div>Loading...</div>

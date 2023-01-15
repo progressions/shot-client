@@ -11,7 +11,7 @@ export interface Campaign {
   id?: string
   title: string
   description?: string
-  user: User
+  user?: User
 }
 
 export interface ActionValues {

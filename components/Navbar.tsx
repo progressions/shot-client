@@ -18,9 +18,25 @@ import AuthButton from "./navbar/AuthButton"
 
 import type { User } from "../types/types"
 
+import { useCampaign } from "../contexts/CampaignContext"
+
 export default function Navbar() {
   const { status, data } = useSession()
   const user:any = data?.user
+
+  const [campaign, setCampaign] = useCampaign()
+
+  const current:Campaign = {
+    id: "b107d915-8a46-4515-9e8c-ea4f6f399fa7",
+    title: "Born to Revengeance"
+  }
+
+  const handleClick = () => {
+    setCampaign(current)
+    console.log(campaign)
+  }
+
+  console.log(campaign)
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -52,7 +68,10 @@ export default function Navbar() {
               </Link>
             </Typography>
           )}
+          <Button variant="contained" onClick={handleClick}>Set Campaign</Button>
+          <Typography color="inherit">Campaign {campaign.title}</Typography>
           <AuthButton status={status} user={user || {}} />
+
         </Toolbar>
       </AppBar>
     </Box>
