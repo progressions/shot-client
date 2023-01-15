@@ -33,6 +33,14 @@ export async function getServerSideProps<GetServerSideProps>({ req, res }: Serve
   const jwt = session?.authorization
   const client = new Client({ jwt: jwt })
 
+  const getCurrentCampaign = async () => {
+    const response = await client.getCurrentCampaign()
+    const data = await response.json()
+    return data
+  }
+
+  const currentCampaign = await getCurrentCampaign()
+
   const response = await client.getFights()
 
   if (response.status === 200) {
@@ -40,6 +48,7 @@ export async function getServerSideProps<GetServerSideProps>({ req, res }: Serve
     return {
       props: {
         fights: fights,
+        currentCampaign: currentCampaign
       }, // will be passed to the page component as props
     }
   }
@@ -60,12 +69,16 @@ export async function getServerSideProps<GetServerSideProps>({ req, res }: Serve
   }
 }
 
-export default function Home({ fights:initialFights }: HomeProps) {
+export default function Home({ currentCampaign, fights:initialFights }: HomeProps) {
   const [fights, setFights] = useState<Fight[]>(initialFights)
   const { status, data }: any = useSession({ required: true })
   const { toast, closeToast } = useToast()
 
   const [campaign, setCampaign] = useCampaign()
+
+  useEffect(() => {
+    setCampaign(currentCampaign)
+  }, [currentCampaign])
 
   if (status !== "authenticated") {
     return <div>Loading...</div>
