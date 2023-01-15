@@ -1,5 +1,5 @@
 import { MouseEventHandler, useState, useEffect } from 'react'
-import { Typography, DialogActions, FormControlLabel, MenuItem, Checkbox, InputAdornment, Dialog, DialogTitle, DialogContent, DialogContentText, Box, Stack, TextField, Button, Paper, Popover } from '@mui/material'
+import { Tooltip, Typography, DialogActions, FormControlLabel, MenuItem, Checkbox, InputAdornment, Dialog, DialogTitle, DialogContent, DialogContentText, Box, Stack, TextField, Button, Paper, Popover } from '@mui/material'
 import FavoriteIcon from '@mui/icons-material/Favorite'
 import PeopleIcon from '@mui/icons-material/People'
 
@@ -111,6 +111,16 @@ export default function CharacterModal({ open, setOpen, fight, setFight, charact
     )
   }
 
+  const healCharacter = () => {
+    if (character.action_values["Type"] !== "PC") return
+
+    const actionValues = character.action_values
+    actionValues["Wounds"] = 0
+    actionValues["Fortune"] = actionValues["Max Fortune"]
+    actionValues["Marks of Death"] = 0
+    setCharacter((prev: Character) => ({ ...prev, action_values: actionValues }))
+  }
+
   return (
     <>
       <Dialog
@@ -160,8 +170,17 @@ export default function CharacterModal({ open, setOpen, fight, setFight, charact
           </DialogContent>
           <DialogActions>
             <Stack spacing={2} direction="row">
-              <Button variant="outlined" disabled={saving} onClick={cancelForm}>Cancel</Button>
-              <Button variant="contained" type="submit" disabled={saving}>Save Changes</Button>
+              <PlayerTypeOnly character={character} type="PC">
+                <Tooltip title="Full Heal">
+                  <Button variant="outlined" onClick={healCharacter}>
+                    <FavoriteIcon color="error" />
+                  </Button>
+                </Tooltip>
+              </PlayerTypeOnly>
+              <Stack spacing={2} direction="row">
+                <Button variant="outlined" disabled={saving} onClick={cancelForm}>Cancel</Button>
+                <Button variant="contained" type="submit" disabled={saving}>Save Changes</Button>
+              </Stack>
             </Stack>
           </DialogActions>
         </Box>
