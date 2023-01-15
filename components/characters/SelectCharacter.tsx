@@ -63,6 +63,7 @@ export default function SelectCharacter() {
   }, [jwt, fight, client])
 
   const handleOpen = async (event: any) => {
+    setValue(defaultCharacter)
     setOpen(true)
     setAnchorEl(event.target)
   }
