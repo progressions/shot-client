@@ -10,10 +10,10 @@ interface WoundsDisplayProps {
 
 export default function WoundsDisplay({ character, session }: WoundsDisplayProps) {
   const getColors = (character: Person) =>  {
-    if (["Boss", "Uber-Boss"].includes(character.action_values["Type"]) && character.action_values["Wounds"] > 50) {
+    if (["Boss", "Uber-Boss"].includes(character.action_values["Type"] as string) && character.action_values["Wounds"] > 50) {
       return ["primary.contrastText", "error.main"]
     }
-    if (!["Mook"].includes(character.action_values["Type"]) && character.action_values["Wounds"] > 35) {
+    if (!["Mook"].includes(character.action_values["Type"] as string) && character.action_values["Wounds"] > 35) {
       return ["primary.contrastText", "error.main"]
     }
     return ["primary.contrastText", "primary.light"]
