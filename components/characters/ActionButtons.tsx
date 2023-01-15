@@ -6,10 +6,10 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import NewReleasesIcon from '@mui/icons-material/NewReleases'
 import DirectionsRunIcon from '@mui/icons-material/DirectionsRun'
 import FavoriteIcon from '@mui/icons-material/Favorite'
-
 import CommuteIcon from '@mui/icons-material/Commute'
 import CarCrashIcon from '@mui/icons-material/CarCrash'
 
+import PlayerTypeOnly from "../PlayerTypeOnly"
 import MookRolls from '../MookRolls'
 
 import type { Character, CharacterType } from "../../types/types"
@@ -44,17 +44,19 @@ export default function ActionButtons({ character, healWounds, takeWounds, takeC
         { character.category === "character" && takeWounds && character.action_values["Type"] == "Mook" &&
             <MookRolls count={character.action_values["Wounds"] as number} attack={character.action_values["Guns"] as number} damage={character.action_values["Damage"] as number} icon={<NewReleasesIcon />} /> }
         { takeWounds &&
-        <Tooltip title={woundLabel} arrow>
-          <Button onClick={() => {takeWounds(character)}}>
-            {woundIcon}
-          </Button>
-        </Tooltip> }
+          <Tooltip title={woundLabel} arrow>
+            <Button onClick={() => {takeWounds(character)}}>
+              {woundIcon}
+            </Button>
+          </Tooltip> }
         { healWounds &&
-        <Tooltip title="Heal Wounds" arrow>
-          <Button onClick={() => {healWounds(character)}}>
-            <FavoriteIcon color="error" />
-          </Button>
-        </Tooltip> }
+        <PlayerTypeOnly character={character} except="Mook">
+          <Tooltip title="Heal Wounds" arrow>
+            <Button onClick={() => {healWounds(character)}}>
+              <FavoriteIcon color="error" />
+            </Button>
+          </Tooltip>
+        </PlayerTypeOnly> }
         { takeConditionPoints && character.category === "vehicle" &&
         <Tooltip title="Take Condition Points">
           <Button onClick={() => {takeConditionPoints(character)}}>
