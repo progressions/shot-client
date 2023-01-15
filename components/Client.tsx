@@ -14,6 +14,20 @@ class Client {
       this.jwt = params.jwt
     }
     this.api = new Api()
+    this.getCurrentCampaign()
+  }
+
+  getCurrentCampaign() {
+    if (typeof window !== "undefined") {
+      const value = localStorage.getItem("campaign")
+      if (value) {
+        try {
+          this.campaign = JSON.parse(value)
+        } catch(err) {
+          console.error(err)
+        }
+      }
+    }
   }
 
   async getFights():Promise<Response> {
@@ -130,19 +144,17 @@ class Client {
   }
 
   urlWithCampaign(url):string {
-    const campaign = {id: "b107d915-8a46-4515-9e8c-ea4f6f399fa7"}
-    if (!campaign?.id) {
+    if (!this.campaign?.id) {
       return url
     }
-    return (url + "?" + new URLSearchParams({ campaign_id: campaign.id }))
+    return (url + "?" + new URLSearchParams({ campaign_id: this.campaign.id }))
   }
 
   async request(method:string, url:string, body:any, options?:any):Promise<Response> {
     body ||= {}
-    const campaign = {id: "b107d915-8a46-4515-9e8c-ea4f6f399fa7"}
 
-    if (campaign?.id) {
-      body["campaign_id"] = campaign.id
+    if (this.campaign?.id) {
+      body["campaign_id"] = this.campaign.id
     }
     return await fetch(url, {
       // The method is POST because we are sending data.

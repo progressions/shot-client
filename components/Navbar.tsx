@@ -31,12 +31,33 @@ export default function Navbar() {
     title: "Born to Revengeance"
   }
 
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const value = localStorage.getItem("campaign")
+      if (value) {
+        try {
+          setCampaign(JSON.parse(value))
+        } catch(err) { }
+      }
+      if (!value) {
+        localStorage.setItem("campaign", JSON.stringify(current))
+        setCampaign(current)
+      }
+    }
+  }, [])
+
   const handleClick = () => {
     setCampaign(current)
-    console.log(campaign)
+    if (typeof window !== "undefined") {
+      localStorage.setItem("campaign", JSON.stringify(current))
+    }
   }
-
-  console.log(campaign)
+  const handleClear = () => {
+    setCampaign(null)
+    if (typeof window !== "undefined") {
+      localStorage.setItem("campaign", null)
+    }
+  }
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -69,7 +90,8 @@ export default function Navbar() {
             </Typography>
           )}
           <Button variant="contained" onClick={handleClick}>Set Campaign</Button>
-          <Typography color="inherit">Campaign {campaign.title}</Typography>
+          <Button variant="contained" onClick={handleClear}>Clear Campaign</Button>
+          <Typography color="inherit">Campaign {campaign?.title}</Typography>
           <AuthButton status={status} user={user || {}} />
 
         </Toolbar>
