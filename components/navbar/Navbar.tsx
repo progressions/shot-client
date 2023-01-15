@@ -81,9 +81,7 @@ export default function Navbar() {
               </Link>
             </Typography>
           )}
-          <Button variant="contained" onClick={handleClick}>Set Campaign</Button>
-          <Button variant="contained" onClick={handleClear}>Clear Campaign</Button>
-          <Typography color="inherit">Campaign {campaign?.title}</Typography>
+          <Typography color="inherit">CURRENT CAMPAIGN {campaign?.title}</Typography>
           <AuthButton status={status} user={user || {}} />
         </Toolbar>
       </AppBar>
