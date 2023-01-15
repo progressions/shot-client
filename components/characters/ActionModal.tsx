@@ -26,10 +26,10 @@ const ActionModal = ({open, setOpen, character }: ActionModalParams) => {
   const client = new Client({ jwt: jwt })
 
   useEffect(() => {
-    if (["Boss", "Uber-Boss"].includes(character.action_values["Type"])) {
+    if (["Boss", "Uber-Boss"].includes(character.action_values["Type"] as string)) {
       setShots(2)
     }
-  }, [shots])
+  }, [shots, character.action_values])
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
     setShots(parseInt(event.target.value))

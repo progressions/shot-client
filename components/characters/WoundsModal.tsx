@@ -24,14 +24,14 @@ const WoundsModal = ({open, setOpen, character }: WoundsModalParams) => {
   const jwt = session?.data?.authorization
   const client = new Client({ jwt })
 
-  const calculateImpairments = (originalWounds, newWounds): number => {
+  const calculateImpairments = (originalWounds: number, newWounds: number): number => {
     if (character.action_values["Type"] === "Mook") { return 0 }
 
     // a Boss and an Uber-Boss gain 1 point of Impairment when their Wounds
     // goes from < 40 to between 40 and 44
     // and gain 1 point of Impairment when their Wounds go from
     // between 40 and 44 to > 45
-    if (["Boss", "Uber-Boss"].includes(character.action_values["Type"])) {
+    if (["Boss", "Uber-Boss"].includes(character.action_values["Type"] as string)) {
       if (originalWounds < 40 && newWounds >= 40 && newWounds <= 45) {
         return 1
       }
