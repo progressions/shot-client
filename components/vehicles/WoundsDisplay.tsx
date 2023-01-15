@@ -1,4 +1,4 @@
-import { Box, Stack, Typography } from "@mui/material"
+import { Divider, Box, Stack, Typography } from "@mui/material"
 import GamemasterOnly from "../GamemasterOnly"
 import PlayerTypeOnly from "../PlayerTypeOnly"
 
@@ -14,21 +14,23 @@ export default function WoundsDisplay({ character, session }: WoundsDisplayProps
 
   return (
     <GamemasterOnly user={session?.data?.user} character={character}>
-      <Stack direction="column" sx={{width: 70}} alignItems="center">
-        <Typography variant="h4">{wounds}</Typography>
+      <Stack direction="column" sx={{width: 70}} alignItems="center" spacing={1}>
+        <Stack direction="column" sx={{width: 70}} alignItems="center">
+          <Typography variant="h4">{wounds}</Typography>
+          <PlayerTypeOnly character={character} except="Mook">
+            <Typography variant="subtitle1" sx={{color: 'text.secondary'}}>
+              Chase
+            </Typography>
+          </PlayerTypeOnly>
+          <PlayerTypeOnly character={character} type="Mook">
+            <Typography variant="subtitle1" sx={{color: 'text.secondary'}}>
+              Mooks
+            </Typography>
+          </PlayerTypeOnly>
+        </Stack>
         <PlayerTypeOnly character={character} except="Mook">
+          <Typography variant="h4">{character.action_values["Condition Points"]}</Typography>
           <Typography variant="subtitle1" sx={{color: 'text.secondary'}}>
-            Chase
-          </Typography>
-        </PlayerTypeOnly>
-        <PlayerTypeOnly character={character} type="Mook">
-          <Typography variant="subtitle1" sx={{color: 'text.secondary'}}>
-            Mooks
-          </Typography>
-        </PlayerTypeOnly>
-        <PlayerTypeOnly character={character} except="Mook">
-          <Typography variant="h5">{character.action_values["Condition Points"]}</Typography>
-          <Typography variant="subtitle2" sx={{color: 'text.secondary'}}>
             Cond
           </Typography>
         </PlayerTypeOnly>
