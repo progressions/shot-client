@@ -7,6 +7,13 @@ export interface Toast {
   severity: AlertColor | undefined
 }
 
+export interface Campaign {
+  id?: string
+  title: string
+  description?: string
+  user: User
+}
+
 export interface ActionValues {
   [key: string]: string | number | null | undefined | boolean
   Guns?: number
@@ -199,4 +206,10 @@ export const defaultToast:Toast = {
   open: false,
   message: "",
   severity: "success"
+}
+
+export const defaultCampaign:Campaign = {
+  title: "",
+  description: "",
+  user: defaultUser
 }
