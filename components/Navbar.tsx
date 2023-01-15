@@ -15,13 +15,18 @@ import Avatar from '@mui/material/Avatar';
 import Tooltip from '@mui/material/Tooltip'
 import Stack from '@mui/material/Stack'
 import AuthButton from "./navbar/AuthButton"
+import Client from "./Client"
 
 import type { User } from "../types/types"
 
 import { useCampaign } from "../contexts/CampaignContext"
 
 export default function Navbar() {
-  const { status, data } = useSession()
+  const session: any = useSession({ required: true })
+  const jwt = session?.data?.authorization
+  const client = new Client({ jwt: jwt })
+
+  const { status, data } = session
   const user:any = data?.user
 
   const [campaign, setCampaign] = useCampaign()
@@ -34,10 +39,21 @@ export default function Navbar() {
   useEffect(() => {
   }, [])
 
-  const handleClick = () => {
-    setCampaign(current)
+  const setCurrentCampaign = async (camp) => {
+    const response = await client.setCurrentCampaign(camp)
+    if (response.status === 200) {
+      const data = await response.json()
+      console.log({ data })
+      return data
+    }
   }
-  const handleClear = () => {
+
+  const handleClick = async () => {
+    const newCurrent = await setCurrentCampaign(current)
+    setCampaign(newCurrent)
+  }
+  const handleClear = async () => {
+    const newCurrent = await setCurrentCampaign(null)
     setCampaign(null)
   }
 

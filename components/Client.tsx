@@ -1,5 +1,5 @@
 import Api from "./Api"
-import type { Effect, Vehicle, Character, ID, Fight, User } from "../types/types"
+import type { Campaign, Effect, Vehicle, Character, ID, Fight, User } from "../types/types"
 
 interface ClientParams {
   jwt?: string
@@ -94,6 +94,14 @@ class Client {
 
   async deleteEffect(effect: Effect, fight: Fight):Promise<Response> {
     return await this.delete(this.api.effects(fight, effect))
+  }
+
+  async setCurrentCampaign(campaign?: Campaign) {
+    return await this.post(this.api.currentCampaign(), {"id": campaign?.id})
+  }
+
+  async getCurrentCampaign() {
+    return await this.get(this.api.currentCampaign())
   }
 
   async createUser(user: User):Promise<Response> {

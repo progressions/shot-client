@@ -1,4 +1,4 @@
-import type { Vehicle, Effect, Fight, Character, User, ID } from "../types/types"
+import type { Campaign, Vehicle, Effect, Fight, Character, User, ID } from "../types/types"
 
 class Api {
   base():string { return process.env.NEXT_PUBLIC_SERVER_URL as string }
@@ -72,6 +72,18 @@ class Api {
       return `${this.fights(fight)}/effects/${effect.id}`
     } else {
       return `${this.fights(fight)}/effects`
+    }
+  }
+
+  currentCampaign() {
+    return `${this.campaigns()}/current`
+  }
+
+  campaigns(campaign?: Campaign) {
+    if (campaign) {
+      return `${this.api()}/campaigns/${campaign.id}`
+    } else {
+      return `${this.api()}/campaigns`
     }
   }
 
