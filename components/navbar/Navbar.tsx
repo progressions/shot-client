@@ -22,14 +22,14 @@ import type { User } from "../../types/types"
 import { useCampaign } from "../../contexts/CampaignContext"
 
 export default function Navbar() {
-  const session: any = useSession({ required: true })
+  const session: any = useSession({ required: false })
   const jwt = session?.data?.authorization
   const client = new Client({ jwt: jwt })
 
   const { status, data } = session
   const user:any = data?.user
 
-  const [campaign, setCampaign] = useCampaign()
+  const {campaign, getCurrentCampaign, setCurrentCampaign} = useCampaign()
 
   const current:Campaign = {
     id: "b107d915-8a46-4515-9e8c-ea4f6f399fa7",
@@ -39,22 +39,11 @@ export default function Navbar() {
   useEffect(() => {
   }, [])
 
-  const setCurrentCampaign = async (camp) => {
-    const response = await client.setCurrentCampaign(camp)
-    if (response.status === 200) {
-      const data = await response.json()
-      console.log({ data })
-      return data
-    }
-  }
-
   const handleClick = async () => {
     const newCurrent = await setCurrentCampaign(current)
-    setCampaign(newCurrent)
   }
   const handleClear = async () => {
     const newCurrent = await setCurrentCampaign(null)
-    setCampaign(null)
   }
 
   return (
@@ -80,6 +69,11 @@ export default function Navbar() {
               Characters
             </Link>
           </Typography>
+          <Typography variant="h6" component="div" paddingRight={2} sx={{ minWidth: 100 }}>
+            <Link color="inherit" href='/campaigns'>
+              Campaigns
+            </Link>
+          </Typography>
           { user?.admin && (
             <Typography variant="h6" component="div" paddingRight={2} sx={{ minWidth: 100 }}>
               <Link color="inherit" href='/admin/users'>
@@ -87,11 +81,6 @@ export default function Navbar() {
               </Link>
             </Typography>
           )}
-          <Typography variant="h6" component="div" paddingRight={2} sx={{ minWidth: 100 }}>
-            <Link color="inherit" href='/campaigns'>
-              Campaigns
-            </Link>
-          </Typography>
           <Button variant="contained" onClick={handleClick}>Set Campaign</Button>
           <Button variant="contained" onClick={handleClear}>Clear Campaign</Button>
           <Typography color="inherit">Campaign {campaign?.title}</Typography>

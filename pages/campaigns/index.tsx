@@ -1,9 +1,17 @@
 import Layout from '../../components/Layout'
 import Head from 'next/head'
 
-import { useEffect, useState } from "react"
-import { Link, Container, Typography, TableContainer, Table, TableHead, TableBody, TableRow, TableCell } from "@mui/material"
+import { useMemo, useEffect, useState } from "react"
+import { IconButton, Button, Stack, Link, Container, Typography, TableContainer, Table, TableHead, TableBody, TableRow, TableCell } from "@mui/material"
 import Client from '../../components/Client'
+import DeleteIcon from '@mui/icons-material/Delete'
+import PlayCircleIcon from '@mui/icons-material/PlayCircle'
+import StopCircleIcon from '@mui/icons-material/StopCircle'
+import { useToast } from "../../contexts/ToastContext"
+import { useCampaign } from "../../contexts/CampaignContext"
+import { useSession } from 'next-auth/react'
+
+import CreateCampaign from "../../components/campaigns/CreateCampaign"
 
 import { authOptions } from '../api/auth/[...nextauth]'
 import { unstable_getServerSession } from "next-auth/next"
@@ -18,8 +26,11 @@ export async function getServerSideProps<GetServerSideProps>({ req, res }) {
 
   const getCurrentCampaign = async () => {
     const response = await client.getCurrentCampaign()
-    const data = await response.json()
-    return data
+    if (response.status === 200) {
+      const data = await response.json()
+      return data
+    }
+    return null
   }
 
   const currentCampaign = await getCurrentCampaign()
@@ -52,8 +63,65 @@ export async function getServerSideProps<GetServerSideProps>({ req, res }) {
   }
 }
 
-export default function Campaigns({ currentCampaign, campaigns:initialCampaigns }) {
+export default function Campaigns({ campaigns:initialCampaigns }) {
   const [campaigns, setCampaigns] = useState(initialCampaigns)
+  const session: any = useSession({ required: true })
+  const jwt = session?.data?.authorization
+  const client = useMemo(() => (new Client({ jwt })), [jwt])
+  const { setToast } = useToast()
+  const { campaign:currentCampaign, setCurrentCampaign } = useCampaign()
+
+  const getCampaigns = async () => {
+    const response = await client.getCampaigns()
+    if (response.status === 200) {
+      const data = await response.json()
+      setCampaigns(data)
+    }
+  }
+
+  useEffect(() => {
+    if (jwt) {
+      getCampaigns().catch(console.error)
+    }
+  }, [])
+
+  const deleteCampaign = async (campaign) => {
+    const confirmation = confirm("Delete campaign? This cannot be undone.")
+    if (confirmation) {
+      const response = await client.deleteCampaign(campaign)
+      if (response.status === 200) {
+        setToast({ open: true, message: `${campaign.title} deleted.`, severity: "success" })
+        await getCampaigns()
+      }
+    }
+  }
+
+  const startCampaign = async (camp?) => {
+    await setCurrentCampaign(camp)
+    if (camp) {
+      setToast({ open: true, message: `${camp.title} activated`, severity: "success" })
+    } else {
+      setToast({ open: true, message: `Campaign cleared`, severity: "success" })
+    }
+    await getCampaigns()
+    return ""
+  }
+
+  const startStopCampaignButton = (campaign, current) => {
+    console.log({ current })
+    if (campaign.id === current?.id) {
+      return (
+        <IconButton onClick={() => startCampaign(null)}>
+          <StopCircleIcon />
+        </IconButton>
+      )
+    }
+    return (
+      <IconButton onClick={() => startCampaign(campaign)}>
+        <PlayCircleIcon />
+      </IconButton>
+    )
+  }
 
   return (
     <>
@@ -67,22 +135,30 @@ export default function Campaigns({ currentCampaign, campaigns:initialCampaigns 
         <Layout>
           <Container maxWidth="md">
             <Typography variant="h1" gutterBottom>Campaigns</Typography>
+            <CreateCampaign reload={getCampaigns} />
             <TableContainer>
               <Table size="small">
                 <TableHead>
                   <TableRow>
                     <TableCell>Campaign</TableCell>
+                    <TableCell></TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
                   {
                     campaigns.map((campaign) => {
                       return (
-                        <TableRow>
+                        <TableRow key={campaign.id}>
                           <TableCell>
                             <Link href={`/campaigns/${campaign.id}`}>
                               {campaign.title}
                             </Link>
+                          </TableCell>
+                          <TableCell>
+                            { startStopCampaignButton(campaign, currentCampaign) }
+                            <IconButton onClick={() => deleteCampaign(campaign)}>
+                              <DeleteIcon />
+                            </IconButton>
                           </TableCell>
                         </TableRow>
                       )
