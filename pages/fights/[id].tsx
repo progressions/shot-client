@@ -8,7 +8,6 @@ import { unstable_getServerSession } from "next-auth/next"
 
 import Layout from '../../components/Layout'
 import ShotCounter from "../../components/fights/ShotCounter"
-import Api from '../../components/Api'
 import Client from '../../components/Client'
 
 import { useFight } from "../../contexts/FightContext"

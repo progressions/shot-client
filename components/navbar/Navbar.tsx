@@ -14,13 +14,37 @@ import { signIn, signOut } from 'next-auth/react'
 import Avatar from '@mui/material/Avatar';
 import Tooltip from '@mui/material/Tooltip'
 import Stack from '@mui/material/Stack'
-import AuthButton from "./navbar/AuthButton"
+import AuthButton from "./AuthButton"
+import Client from "../Client"
 
-import type { User } from "../types/types"
+import type { Campaign, User } from "../../types/types"
+
+import { useCampaign } from "../../contexts/CampaignContext"
 
 export default function Navbar() {
-  const { status, data } = useSession()
+  const session: any = useSession({ required: false })
+  const jwt = session?.data?.authorization
+  const client = new Client({ jwt: jwt })
+
+  const { status, data } = session
   const user:any = data?.user
+
+  const {campaign, getCurrentCampaign, setCurrentCampaign}:any = useCampaign()
+
+  const current:Campaign = {
+    id: "b107d915-8a46-4515-9e8c-ea4f6f399fa7",
+    title: "Born to Revengeance"
+  }
+
+  useEffect(() => {
+  }, [])
+
+  const handleClick = async () => {
+    const newCurrent = await setCurrentCampaign(current)
+  }
+  const handleClear = async () => {
+    const newCurrent = await setCurrentCampaign(null)
+  }
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -45,6 +69,11 @@ export default function Navbar() {
               Characters
             </Link>
           </Typography>
+          <Typography variant="h6" component="div" paddingRight={2} sx={{ minWidth: 100 }}>
+            <Link color="inherit" href='/campaigns'>
+              Campaigns
+            </Link>
+          </Typography>
           { user?.admin && (
             <Typography variant="h6" component="div" paddingRight={2} sx={{ minWidth: 100 }}>
               <Link color="inherit" href='/admin/users'>
@@ -52,6 +81,7 @@ export default function Navbar() {
               </Link>
             </Typography>
           )}
+          <Typography color="inherit">CURRENT CAMPAIGN {campaign?.title}</Typography>
           <AuthButton status={status} user={user || {}} />
         </Toolbar>
       </AppBar>

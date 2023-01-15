@@ -5,7 +5,6 @@ import { Snackbar, Alert, Link, Button, Paper, Container, Table, TableContainer,
 import AddFight from '../components/fights/AddFight'
 import FightDetail from '../components/fights/FightDetail'
 import Layout from '../components/Layout'
-import Api from '../components/Api'
 import Client from '../components/Client'
 import Router from 'next/router'
 import { useSession } from 'next-auth/react'
@@ -20,18 +19,21 @@ import { GetServerSideProps } from 'next'
 import { InferGetServerSidePropsType } from 'next'
 
 import { useToast } from "../contexts/ToastContext"
+import { useCampaign } from "../contexts/CampaignContext"
 
-import type { Fight, Toast, ServerSideProps } from "../types/types"
+import type { Campaign, Fight, Toast, ServerSideProps } from "../types/types"
 
 interface HomeProps {
   fights: Fight[]
+  currentCampaign: Campaign | null
 }
 
 export async function getServerSideProps<GetServerSideProps>({ req, res }: ServerSideProps) {
-  const api = new Api()
   const session: any = await unstable_getServerSession(req as any, res as any, authOptions as any)
   const jwt = session?.authorization
   const client = new Client({ jwt: jwt })
+
+  const currentCampaign = null // await getCurrentCampaign()
 
   const response = await client.getFights()
 
@@ -40,6 +42,7 @@ export async function getServerSideProps<GetServerSideProps>({ req, res }: Serve
     return {
       props: {
         fights: fights,
+        currentCampaign: currentCampaign
       }, // will be passed to the page component as props
     }
   }
@@ -60,7 +63,7 @@ export async function getServerSideProps<GetServerSideProps>({ req, res }: Serve
   }
 }
 
-export default function Home({ fights:initialFights }: HomeProps) {
+export default function Home({ currentCampaign, fights:initialFights }: HomeProps) {
   const [fights, setFights] = useState<Fight[]>(initialFights)
   const { status, data }: any = useSession({ required: true })
   const { toast, closeToast } = useToast()

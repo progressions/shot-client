@@ -17,7 +17,7 @@ import ActionButtons from "../components/characters/ActionButtons"
 import CharacterModal from "../components/characters/CharacterModal"
 import AvatarBadge from "../components/characters/AvatarBadge"
 import CreateCharacter from "../components/characters/CreateCharacter"
-import CharacterFilters from "../components/CharacterFilters"
+import CharacterFilters from "../components/characters/CharacterFilters"
 
 import { useToast } from "../contexts/ToastContext"
 import type { Person, Vehicle, Character, CharacterFilter, ServerSideProps, Toast } from "../types/types"

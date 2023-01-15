@@ -1,5 +1,5 @@
 import Api from "./Api"
-import type { Effect, Vehicle, Character, ID, Fight, User } from "../types/types"
+import type { Campaign, Effect, Vehicle, Character, ID, Fight, User } from "../types/types"
 
 interface ClientParams {
   jwt?: string
@@ -96,6 +96,34 @@ class Client {
     return await this.delete(this.api.effects(fight, effect))
   }
 
+  async createCampaign(campaign: Campaign) {
+    return await this.post(this.api.campaigns(), {"campaign": campaign})
+  }
+
+  async getCampaigns() {
+    return await this.get(this.api.campaigns())
+  }
+
+  async getCampaign(campaign: Campaign | ID) {
+    return await this.get(this.api.campaigns(campaign))
+  }
+
+  async updateCampaign(campaign: Campaign) {
+    return await this.patch(this.api.campaigns(campaign), {"campaign": campaign})
+  }
+
+  async deleteCampaign(campaign: Campaign) {
+    return await this.delete(this.api.campaigns(campaign))
+  }
+
+  async setCurrentCampaign(campaign: Campaign | null) {
+    return await this.post(this.api.currentCampaign(), {"id": campaign?.id})
+  }
+
+  async getCurrentCampaign() {
+    return await this.get(this.api.currentCampaign())
+  }
+
   async createUser(user: User):Promise<Response> {
     // override options to exclude JWT, no authentication exists yet for a new user
     return await this.post(this.api.registerUser(), {"user": user}, {
@@ -130,6 +158,8 @@ class Client {
   }
 
   async request(method:string, url:string, body:any, options?:any):Promise<Response> {
+    body ||= {}
+
     return await fetch(url, {
       // The method is POST because we are sending data.
       method: method,
