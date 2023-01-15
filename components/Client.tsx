@@ -129,7 +129,21 @@ class Client {
     return await this.request("POST", url, body, options)
   }
 
+  urlWithCampaign(url):string {
+    const campaign = {id: "b107d915-8a46-4515-9e8c-ea4f6f399fa7"}
+    if (!campaign?.id) {
+      return url
+    }
+    return (url + "?" + new URLSearchParams({ campaign_id: campaign.id }))
+  }
+
   async request(method:string, url:string, body:any, options?:any):Promise<Response> {
+    body ||= {}
+    const campaign = {id: "b107d915-8a46-4515-9e8c-ea4f6f399fa7"}
+
+    if (campaign?.id) {
+      body["campaign_id"] = campaign.id
+    }
     return await fetch(url, {
       // The method is POST because we are sending data.
       method: method,
@@ -146,7 +160,7 @@ class Client {
   }
 
   async get(url:string, options?:any):Promise<Response> {
-    return await fetch(url, {
+    return await fetch(this.urlWithCampaign(url), {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': this.jwt
@@ -155,7 +169,7 @@ class Client {
   }
 
   async delete(url:string):Promise<Response> {
-    return await fetch(url, {
+    return await fetch(this.urlWithCampaign(url), {
       method: "DELETE",
       headers: {
         'Content-Type': 'application/json',
