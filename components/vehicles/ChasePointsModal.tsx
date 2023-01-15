@@ -54,7 +54,7 @@ const ChasePointsModal = ({open, setOpen, character }: ChasePointsModalParams) =
 
     const originalPoints: number = calculateOriginalPoints()
     const newChasePoints: number = calculateNewTotal(originalPoints)
-    const actionValues: ActionValues = character.action_values
+    const actionValues: VehicleActionValues = character.action_values
     actionValues["Chase Points"] = newChasePoints
 
     const response = await client.updateVehicle({ ...character, "action_values": actionValues}, fight)

@@ -54,7 +54,7 @@ const ConditionPointsModal = ({open, setOpen, character }: ConditionPointsModalP
 
     const originalPoints: number = calculateOriginalPoints()
     const newConditionPoints: number = calculateNewTotal(originalPoints)
-    const actionValues: ActionValues = character.action_values
+    const actionValues: VehicleActionValues = character.action_values
     actionValues["Condition Points"] = newConditionPoints
 
     const response = await client.updateVehicle({ ...character, "action_values": actionValues}, fight)
