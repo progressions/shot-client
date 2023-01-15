@@ -96,6 +96,26 @@ class Client {
     return await this.delete(this.api.effects(fight, effect))
   }
 
+  async createCampaign(campaign: Campaign) {
+    return await this.post(this.api.campaigns(), {"campaign": campaign})
+  }
+
+  async getCampaigns() {
+    return await this.get(this.api.campaigns())
+  }
+
+  async getCampaign(campaign: Campaign) {
+    return await this.get(this.api.campaigns(campaign))
+  }
+
+  async updateCampaign(campaign: Campaign) {
+    return await this.patch(this.api.campaigns(campaign), {"campaign": campaign})
+  }
+
+  async deleteCampaign(campaign: Campaign) {
+    return await this.delete(this.api.campaigns(campaign))
+  }
+
   async setCurrentCampaign(campaign?: Campaign) {
     return await this.post(this.api.currentCampaign(), {"id": campaign?.id})
   }
