@@ -2,16 +2,16 @@ import type { Character, CharacterType } from "../types/types"
 
 interface PlayerTypeOnlyProps {
   character: Character
-  type?: CharacterType
-  except?: CharacterType
+  only?: CharacterType | ChararacterType[]
+  except?: CharacterType | CharacterType[]
   children: any
 }
 
 export default function PlayerTypeOnly({ character, type, children, except }: PlayerTypeOnlyProps) {
-  if (type && character.action_values["Type"] === type) {
+  if (only && [only].flat().includes(character.action_values["Type"])) {
     return children
   }
-  if (except && character.action_values["Type"] !== except) {
+  if (except && [except].flat().includes(character.action_values["Type"])) {
     return children
   }
   return (<></>)

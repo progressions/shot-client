@@ -5,6 +5,7 @@ import { tableCellClasses } from "@mui/material/TableCell"
 import type { Character, ActionValues } from "../../types/types"
 import { SxProps, Theme } from '@mui/material/styles'
 import ActionValueDisplay from "./ActionValueDisplay"
+import PlayerTypeOnly from "../PlayerTypeOnly"
 
 interface ActionValuesParams {
   character: Character
@@ -20,7 +21,9 @@ export default function ActionValues({ character }: ActionValuesParams) {
           <ActionValueDisplay name="Defense" description="Defense" label="Defense" character={character} />
         </Stack>
         <Stack direction="row" spacing={1} alignItems="center">
-          <ActionValueDisplay name="Fortune" description={character.action_values["FortuneType"] as string} label={character.action_values["FortuneType"] as string} character={character} />
+          <PlayerTypeOnly character={character} only="PC">
+            <ActionValueDisplay name="Fortune" description={character.action_values["FortuneType"] as string} label={character.action_values["FortuneType"] as string} character={character} />
+          </PlayerTypeOnly>
           <ActionValueDisplay name="Toughness" description="Toughness" label="Toughness" character={character} />
           <ActionValueDisplay name="Speed" description="Speed" label="Speed" character={character} />
         </Stack>

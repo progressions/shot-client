@@ -153,7 +153,7 @@ export default function CharacterModal({ open, setOpen, fight, setFight, charact
                     {startAdornment: woundsAdornment()}
                   }
                 />
-                <PlayerTypeOnly character={character} type="PC">
+                <PlayerTypeOnly character={character} only="PC">
                   <DeathMarks character={character} onChange={handleDeathMarks} />
                 </PlayerTypeOnly>
                 <TextField label="Impairments" type="number" name="impairments" value={character.impairments || ''} onChange={handleChange} />
@@ -161,7 +161,7 @@ export default function CharacterModal({ open, setOpen, fight, setFight, charact
               </Stack>
               <Typography variant="h6">Action Values</Typography>
               <EditActionValues character={character} onChange={handleAVChange} />
-              <PlayerTypeOnly character={character} type="PC">
+              <PlayerTypeOnly character={character} only="PC">
                 <Stack direction="row" spacing={2}>
                   <FortuneSelect character={character} onChange={handleAVChange} />
                 </Stack>
@@ -170,7 +170,7 @@ export default function CharacterModal({ open, setOpen, fight, setFight, charact
           </DialogContent>
           <DialogActions>
             <Stack spacing={2} direction="row">
-              <PlayerTypeOnly character={character} type="PC">
+              <PlayerTypeOnly character={character} only="PC">
                 <Tooltip title="Full Heal">
                   <Button variant="outlined" onClick={healCharacter}>
                     <FavoriteIcon color="error" />

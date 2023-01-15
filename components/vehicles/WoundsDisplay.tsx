@@ -22,7 +22,7 @@ export default function WoundsDisplay({ character, session }: WoundsDisplayProps
               Chase
             </Typography>
           </PlayerTypeOnly>
-          <PlayerTypeOnly character={character} type="Mook">
+          <PlayerTypeOnly character={character} only="Mook">
             <Typography variant="subtitle1" sx={{color: 'text.secondary'}}>
               Mooks
             </Typography>
