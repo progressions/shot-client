@@ -11,6 +11,7 @@ import WhatshotIcon from '@mui/icons-material/Whatshot'
 import ActionValues from './ActionValues'
 import ActionModal from './ActionModal'
 import WoundsModal from './WoundsModal'
+import HealModal from './HealModal'
 import ActionButtons from './ActionButtons'
 import AvatarBadge from './AvatarBadge'
 import GamemasterOnly from '../GamemasterOnly'
@@ -42,6 +43,7 @@ export default function CharacterDetails({ character, editingCharacter, setEditi
   const [open, setOpen] = useState<Character>(defaultCharacter)
   const [openAction, setOpenAction] = useState(false)
   const [openWounds, setOpenWounds] = useState(false)
+  const [openHeal, setOpenHeal] = useState(false)
   const { setToast } = useToast()
 
   function closeAction() {
@@ -66,6 +68,10 @@ export default function CharacterDetails({ character, editingCharacter, setEditi
 
   function takeWounds(character: Character): void {
     setOpenWounds(true)
+  }
+
+  function healWounds(character: Character): void {
+    setOpenHeal(true)
   }
 
   const takeDodgeAction = async (character: Character) => {
@@ -102,6 +108,7 @@ export default function CharacterDetails({ character, editingCharacter, setEditi
             <Stack direction="row" spacing={1} justifyContent="space-between">
               <ActionValues character={character} />
               <ActionButtons character={character}
+                healWounds={healWounds}
                 takeWounds={takeWounds}
                 takeAction={takeAction}
                 takeDodgeAction={takeDodgeAction}
@@ -115,6 +122,10 @@ export default function CharacterDetails({ character, editingCharacter, setEditi
       />
       <WoundsModal open={openWounds}
         setOpen={setOpenWounds}
+        character={character as Person}
+      />
+      <HealModal open={openHeal}
+        setOpen={setOpenHeal}
         character={character as Person}
       />
       </TableCell>

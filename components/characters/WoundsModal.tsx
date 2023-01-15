@@ -27,28 +27,40 @@ const WoundsModal = ({open, setOpen, character }: WoundsModalParams) => {
   const calculateImpairments = (originalWounds: number, newWounds: number): number => {
     if (character.action_values["Type"] === "Mook") { return 0 }
 
-    // a Boss and an Uber-Boss gain 1 point of Impairment when their Wounds
-    // goes from < 40 to between 40 and 44
-    // and gain 1 point of Impairment when their Wounds go from
-    // between 40 and 44 to > 45
     if (["Boss", "Uber-Boss"].includes(character.action_values["Type"] as string)) {
+      // a Boss and an Uber-Boss gain 1 point of Impairment when their Wounds
+      // goes from < 40 to between 40 and 44
       if (originalWounds < 40 && newWounds >= 40 && newWounds <= 45) {
         return 1
       }
+      // and gain 1 point of Impairment when their Wounds go from
+      // between 40 and 44 to > 45
       if (originalWounds >= 40 && originalWounds <= 45 && newWounds > 45) {
         return 1
       }
+      // and gain 2 points of Impairment when their Wounds go from
+      // < 40 to >= 45
+      if (originalWounds < 40 && newWounds >= 45) {
+        return 2
+      }
     }
+
+    console.log({ originalWounds, newWounds })
 
     // A PC, Ally, Featured Foe gain 1 point of Impairment when their Wounds
     // go from < 25 to between 25 and 30
-    // and gain 1 point of Impairment when their Wounds go from
-    // between 25 and 30 to > 30
     if (originalWounds < 25 && newWounds >= 25 && newWounds <= 30) {
       return 1
     }
-    if (originalWounds >= 25 && originalWounds <= 30 && newWounds > 30) {
+    // and gain 1 point of Impairment when their Wounds go from
+    // between 25 and 29 to >= 30
+    if (originalWounds >= 25 && originalWounds < 30 && newWounds >= 30) {
       return 1
+    }
+    // and gain 2 points of Impairment when their Wounds go from
+    // < 25 to >= 35
+    if (originalWounds < 25 && newWounds >= 30) {
+      return 2
     }
 
     return 0
@@ -119,7 +131,7 @@ const WoundsModal = ({open, setOpen, character }: WoundsModalParams) => {
     >
       <Box component="form" onSubmit={submitWounds}>
         <Stack p={4} spacing={2}>
-          <TextField autoFocus type="number" label={label} required name="wounds" value={smackdown} onChange={handleChange} />
+          <TextField autoFocus type="number" label={label} required name="wounds" value={smackdown || ""} onChange={handleChange} />
           <Stack alignItems="flex-end" spacing={2} direction="row">
             <Button variant="outlined" disabled={saving} onClick={cancelForm}>Cancel</Button>
             <Button variant="contained" type="submit" disabled={saving}>Save Changes</Button>

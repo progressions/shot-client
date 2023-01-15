@@ -1,10 +1,11 @@
 import { Stack, Box, ButtonGroup, Button, Tooltip } from '@mui/material'
 import BoltIcon from '@mui/icons-material/Bolt'
-import HeartBrokenIcon from '@mui/icons-material/HeartBroken';
+import HeartBrokenIcon from '@mui/icons-material/HeartBroken'
 import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
 import NewReleasesIcon from '@mui/icons-material/NewReleases'
 import DirectionsRunIcon from '@mui/icons-material/DirectionsRun'
+import FavoriteIcon from '@mui/icons-material/Favorite'
 
 import CommuteIcon from '@mui/icons-material/Commute'
 import CarCrashIcon from '@mui/icons-material/CarCrash'
@@ -15,6 +16,7 @@ import type { Character, CharacterType } from "../../types/types"
 
 interface ActionButtonsParams {
   character: Character,
+  healWounds?: (character: Character) => void,
   takeWounds?: (character: Character) => void,
   takeConditionPoints?: (character: Character) => void,
   takeAction?: (character: Character) => void,
@@ -23,7 +25,7 @@ interface ActionButtonsParams {
   takeDodgeAction?: (character: Character) => void,
 }
 
-export default function ActionButtons({ character, takeWounds, takeConditionPoints, takeAction, editCharacter, deleteCharacter, takeDodgeAction }: ActionButtonsParams) {
+export default function ActionButtons({ character, healWounds, takeWounds, takeConditionPoints, takeAction, editCharacter, deleteCharacter, takeDodgeAction }: ActionButtonsParams) {
   if (!character) return (<></>)
 
   let woundLabel:string
@@ -45,6 +47,12 @@ export default function ActionButtons({ character, takeWounds, takeConditionPoin
         <Tooltip title={woundLabel} arrow>
           <Button onClick={() => {takeWounds(character)}}>
             {woundIcon}
+          </Button>
+        </Tooltip> }
+        { healWounds &&
+        <Tooltip title="Heal Wounds" arrow>
+          <Button onClick={() => {healWounds(character)}}>
+            <FavoriteIcon color="error" />
           </Button>
         </Tooltip> }
         { takeConditionPoints && character.category === "vehicle" &&
