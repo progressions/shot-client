@@ -9,7 +9,7 @@ import PersonAddIcon from '@mui/icons-material/PersonAdd'
 import type { Person, Campaign, Fight, ID } from "../../types/types"
 import { defaultCampaign } from "../../types/types"
 
-export default function CreateCampaign({ reload }) {
+export default function CreateCampaign({ reload }: any) {
   const [newCampaign, setNewCampaign] = useState<Campaign>(defaultCampaign)
 
   const openModal = (): void => {

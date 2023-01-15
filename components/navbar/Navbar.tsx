@@ -17,7 +17,7 @@ import Stack from '@mui/material/Stack'
 import AuthButton from "./AuthButton"
 import Client from "../Client"
 
-import type { User } from "../../types/types"
+import type { Campaign, User } from "../../types/types"
 
 import { useCampaign } from "../../contexts/CampaignContext"
 
@@ -29,7 +29,7 @@ export default function Navbar() {
   const { status, data } = session
   const user:any = data?.user
 
-  const {campaign, getCurrentCampaign, setCurrentCampaign} = useCampaign()
+  const {campaign, getCurrentCampaign, setCurrentCampaign}:any = useCampaign()
 
   const current:Campaign = {
     id: "b107d915-8a46-4515-9e8c-ea4f6f399fa7",

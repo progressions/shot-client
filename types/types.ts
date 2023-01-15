@@ -12,6 +12,7 @@ export interface Campaign {
   title: string
   description?: string
   user?: User
+  new?: boolean
 }
 
 export interface ActionValues {

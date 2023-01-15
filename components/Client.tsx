@@ -104,7 +104,7 @@ class Client {
     return await this.get(this.api.campaigns())
   }
 
-  async getCampaign(campaign: Campaign) {
+  async getCampaign(campaign: Campaign | ID) {
     return await this.get(this.api.campaigns(campaign))
   }
 
@@ -116,7 +116,7 @@ class Client {
     return await this.delete(this.api.campaigns(campaign))
   }
 
-  async setCurrentCampaign(campaign?: Campaign) {
+  async setCurrentCampaign(campaign: Campaign | null) {
     return await this.post(this.api.currentCampaign(), {"id": campaign?.id})
   }
 
@@ -157,19 +157,9 @@ class Client {
     return await this.request("POST", url, body, options)
   }
 
-  urlWithCampaign(url):string {
-    if (!this.campaign?.id) {
-      return url
-    }
-    return (url + "?" + new URLSearchParams({ campaign_id: this.campaign.id }))
-  }
-
   async request(method:string, url:string, body:any, options?:any):Promise<Response> {
     body ||= {}
 
-    if (this.campaign?.id) {
-      body["campaign_id"] = this.campaign.id
-    }
     return await fetch(url, {
       // The method is POST because we are sending data.
       method: method,
@@ -186,7 +176,7 @@ class Client {
   }
 
   async get(url:string, options?:any):Promise<Response> {
-    return await fetch(this.urlWithCampaign(url), {
+    return await fetch(url, {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': this.jwt
@@ -195,7 +185,7 @@ class Client {
   }
 
   async delete(url:string):Promise<Response> {
-    return await fetch(this.urlWithCampaign(url), {
+    return await fetch(url, {
       method: "DELETE",
       headers: {
         'Content-Type': 'application/json',

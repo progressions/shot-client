@@ -21,10 +21,11 @@ import { InferGetServerSidePropsType } from 'next'
 import { useToast } from "../contexts/ToastContext"
 import { useCampaign } from "../contexts/CampaignContext"
 
-import type { Fight, Toast, ServerSideProps } from "../types/types"
+import type { Campaign, Fight, Toast, ServerSideProps } from "../types/types"
 
 interface HomeProps {
   fights: Fight[]
+  currentCampaign: Campaign | null
 }
 
 export async function getServerSideProps<GetServerSideProps>({ req, res }: ServerSideProps) {
@@ -66,12 +67,6 @@ export default function Home({ currentCampaign, fights:initialFights }: HomeProp
   const [fights, setFights] = useState<Fight[]>(initialFights)
   const { status, data }: any = useSession({ required: true })
   const { toast, closeToast } = useToast()
-
-  const {campaign, setCampaign} = useCampaign()
-
-  useEffect(() => {
-    // setCampaign(currentCampaign)
-  }, [])
 
   if (status !== "authenticated") {
     return <div>Loading...</div>

@@ -5,12 +5,13 @@ import { defaultCampaign } from "../types/types"
 import { useSession } from 'next-auth/react'
 import Client from "../components/Client"
 
-export type CampaignContextType = [
-  Campaign,
-  any
-]
+export interface CampaignContextType {
+  campaign: Campaign | null
+  setCurrentCampaign: any
+  getCurrentCampaign: any
+}
 
-const CampaignContext = createContext<CampaignContextType>({})
+const CampaignContext = createContext<CampaignContextType>({ campaign: null, setCurrentCampaign: null, getCurrentCampaign: null })
 
 export function CampaignProvider({ children }: any) {
   const session: any = useSession({ required: false })
@@ -19,7 +20,7 @@ export function CampaignProvider({ children }: any) {
 
   const [campaign, setCampaign] = useState<Campaign>(defaultCampaign)
 
-  const setCurrentCampaign = async (camp) => {
+  const setCurrentCampaign = async (camp: Campaign | null) => {
     const response = await client.setCurrentCampaign(camp)
     if (response.status === 200) {
       const data = await response.json()

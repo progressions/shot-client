@@ -1,7 +1,7 @@
 import { Stack, Box, TextField, MenuItem } from "@mui/material"
 import { useState } from 'react'
 
-import type { CharacterFilter } from "../types/types"
+import type { CharacterFilter } from "../../types/types"
 
 interface CharacterFiltersProps {
   filters: CharacterFilter,

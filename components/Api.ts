@@ -79,7 +79,7 @@ class Api {
     return `${this.campaigns()}/current`
   }
 
-  campaigns(campaign?: Campaign) {
+  campaigns(campaign?: Campaign | ID) {
     if (campaign) {
       return `${this.api()}/campaigns/${campaign.id}`
     } else {

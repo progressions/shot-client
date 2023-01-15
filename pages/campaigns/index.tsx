@@ -1,7 +1,7 @@
 import Layout from '../../components/Layout'
 import Head from 'next/head'
 
-import { useMemo, useEffect, useState } from "react"
+import { useCallback, useMemo, useEffect, useState } from "react"
 import { IconButton, Button, Stack, Link, Container, Typography, TableContainer, Table, TableHead, TableBody, TableRow, TableCell } from "@mui/material"
 import Client from '../../components/Client'
 import DeleteIcon from '@mui/icons-material/Delete'
@@ -16,10 +16,11 @@ import CreateCampaign from "../../components/campaigns/CreateCampaign"
 import { authOptions } from '../api/auth/[...nextauth]'
 import { unstable_getServerSession } from "next-auth/next"
 
+import type { Campaign } from "../../types/types"
 import { GetServerSideProps } from 'next'
 import { InferGetServerSidePropsType } from 'next'
 
-export async function getServerSideProps<GetServerSideProps>({ req, res }) {
+export async function getServerSideProps<GetServerSideProps>({ req, res }: any) {
   const session: any = await unstable_getServerSession(req as any, res as any, authOptions as any)
   const jwt = session?.authorization
   const client = new Client({ jwt: jwt })
@@ -63,7 +64,7 @@ export async function getServerSideProps<GetServerSideProps>({ req, res }) {
   }
 }
 
-export default function Campaigns({ campaigns:initialCampaigns }) {
+export default function Campaigns({ campaigns:initialCampaigns }: any) {
   const [campaigns, setCampaigns] = useState(initialCampaigns)
   const session: any = useSession({ required: true })
   const jwt = session?.data?.authorization
@@ -71,21 +72,21 @@ export default function Campaigns({ campaigns:initialCampaigns }) {
   const { setToast } = useToast()
   const { campaign:currentCampaign, setCurrentCampaign } = useCampaign()
 
-  const getCampaigns = async () => {
+  const getCampaigns = useCallback(async () => {
     const response = await client.getCampaigns()
     if (response.status === 200) {
       const data = await response.json()
       setCampaigns(data)
     }
-  }
+  }, [client])
 
   useEffect(() => {
     if (jwt) {
       getCampaigns().catch(console.error)
     }
-  }, [])
+  }, [jwt, getCampaigns])
 
-  const deleteCampaign = async (campaign) => {
+  const deleteCampaign = async (campaign: Campaign) => {
     const confirmation = confirm("Delete campaign? This cannot be undone.")
     if (confirmation) {
       const response = await client.deleteCampaign(campaign)
@@ -96,7 +97,7 @@ export default function Campaigns({ campaigns:initialCampaigns }) {
     }
   }
 
-  const startCampaign = async (camp?) => {
+  const startCampaign = async (camp?: Campaign | null) => {
     await setCurrentCampaign(camp)
     if (camp) {
       setToast({ open: true, message: `${camp.title} activated`, severity: "success" })
@@ -107,7 +108,7 @@ export default function Campaigns({ campaigns:initialCampaigns }) {
     return ""
   }
 
-  const startStopCampaignButton = (campaign, current) => {
+  const startStopCampaignButton = (campaign: Campaign, current: Campaign | null) => {
     console.log({ current })
     if (campaign.id === current?.id) {
       return (
@@ -146,7 +147,7 @@ export default function Campaigns({ campaigns:initialCampaigns }) {
                 </TableHead>
                 <TableBody>
                   {
-                    campaigns.map((campaign) => {
+                    campaigns.map((campaign: Campaign) => {
                       return (
                         <TableRow key={campaign.id}>
                           <TableCell>

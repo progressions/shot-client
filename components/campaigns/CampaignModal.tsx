@@ -6,7 +6,9 @@ import { defaultCampaign } from "../../types/types"
 import { useToast } from "../../contexts/ToastContext"
 import { useSession } from 'next-auth/react'
 
-export default function CampaignModal({ open, setOpen, campaign:activeCampaign, reload }) {
+import type { Campaign } from "../../types/types"
+
+export default function CampaignModal({ open, setOpen, campaign:activeCampaign, reload }: any) {
   const [campaign, setCampaign] = useState(activeCampaign)
   const [saving, setSaving] = useState(false)
 
@@ -15,7 +17,7 @@ export default function CampaignModal({ open, setOpen, campaign:activeCampaign, 
   const client = new Client({ jwt: jwt })
   const { setToast } = useToast()
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = async (event: any) => {
     event.preventDefault()
     setSaving(true)
 
@@ -39,7 +41,7 @@ export default function CampaignModal({ open, setOpen, campaign:activeCampaign, 
     setCampaign(defaultCampaign)
   }
 
-  const handleChange = (event) => {
+  const handleChange = (event: any) => {
     setCampaign((prevState: Campaign) => ({ ...prevState, [event.target.name]: event.target.value }))
   }
 
