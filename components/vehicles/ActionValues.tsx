@@ -19,7 +19,6 @@ export default function ActionValues({ character }: ActionValuesParams) {
           <ActionValueDisplay name="Squeal" description="Squeal" label="Squeal" character={character} />
         </Stack>
         <Stack direction="row" spacing={1} alignItems="center">
-          <ActionValueDisplay name="Condition Points" description="Condition" label="Condition" character={character} />
           <ActionValueDisplay name="Frame" description="Frame" label="Frame" character={character} />
           <ActionValueDisplay name="Crunch" description="Crunch" label="Crunch" character={character} />
         </Stack>

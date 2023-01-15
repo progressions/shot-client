@@ -27,12 +27,34 @@ const ConditionPointsModal = ({open, setOpen, character }: ConditionPointsModalP
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setConditionPoints(parseInt(event.target.value))
   }
+
+  const calculateOriginalPoints = (): number => {
+    if (character.action_values["Type"] === "Mook") {
+      return conditionPoints
+    }
+
+    const result = conditionPoints - (character.action_values["Frame"] || 0) + (character.impairments)
+
+    if (result >= 0) {
+      return result
+    }
+    return 0
+  }
+
+  const calculateNewTotal = (conditionPoints: number) => {
+    if (character.action_values["Type"] === "Mook") {
+      return (character.action_values["Condition Points"] - conditionPoints)
+    }
+
+    return (character.action_values["Condition Points"] + conditionPoints)
+  }
+
   const submitConditionPoints = async (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault()
-    const newConditionPoints: number = (character.action_values["Type"] === "Mook") ?
-      (character.action_values["Condition Points"] as number) - conditionPoints :
-      (character.action_values["Condition Points"] as number) + conditionPoints
-    const actionValues: VehicleActionValues = character.action_values
+
+    const originalPoints: number = calculateOriginalPoints()
+    const newConditionPoints: number = calculateNewTotal(originalPoints)
+    const actionValues: ActionValues = character.action_values
     actionValues["Condition Points"] = newConditionPoints
 
     const response = await client.updateVehicle({ ...character, "action_values": actionValues}, fight)
@@ -43,7 +65,7 @@ const ConditionPointsModal = ({open, setOpen, character }: ConditionPointsModalP
       if (character.action_values["Type"] === "Mook") {
         setToast({ open: true, message: `${character.name} lost ${conditionPoints} mooks.`, severity: "success" })
       } else {
-        setToast({ open: true, message: `${character.name} took ${conditionPoints} Condition Points.`, severity: "success" })
+        setToast({ open: true, message: `${character.name} took a smackdown of ${conditionPoints}, causing ${originalPoints} Condition Points.`, severity: "success" })
       }
     }
   }

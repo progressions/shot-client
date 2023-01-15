@@ -27,12 +27,34 @@ const ChasePointsModal = ({open, setOpen, character }: ChasePointsModalParams) =
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setChasePoints(parseInt(event.target.value))
   }
+
+  const calculateOriginalPoints = (): number => {
+    if (character.action_values["Type"] === "Mook") {
+      return chasePoints
+    }
+
+    const result = chasePoints - (character.action_values["Handling"] || 0) + (character.impairments)
+
+    if (result >= 0) {
+      return result
+    }
+    return 0
+  }
+
+  const calculateNewTotal = (chasePoints: number) => {
+    if (character.action_values["Type"] === "Mook") {
+      return (character.action_values["Chase Points"] - chasePoints)
+    }
+
+    return (character.action_values["Chase Points"] + chasePoints)
+  }
+
   const submitChasePoints = async (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault()
-    const newChasePoints: number = (character.action_values["Type"] === "Mook") ?
-      (character.action_values["Chase Points"] as number) - chasePoints :
-      (character.action_values["Chase Points"] as number) + chasePoints
-    const actionValues: VehicleActionValues = character.action_values
+
+    const originalPoints: number = calculateOriginalPoints()
+    const newChasePoints: number = calculateNewTotal(originalPoints)
+    const actionValues: ActionValues = character.action_values
     actionValues["Chase Points"] = newChasePoints
 
     const response = await client.updateVehicle({ ...character, "action_values": actionValues}, fight)
@@ -41,9 +63,9 @@ const ChasePointsModal = ({open, setOpen, character }: ChasePointsModalParams) =
       setChasePoints(0)
       setOpen(false)
       if (character.action_values["Type"] === "Mook") {
-        setToast({ open: true, message: `${character.name} lost ${chasePoints} mooks.`, severity: "success" })
+        setToast({ open: true, message: `${character.name} lost ${originalPoints} mooks.`, severity: "success" })
       } else {
-        setToast({ open: true, message: `${character.name} took ${chasePoints} Chase Points.`, severity: "success" })
+        setToast({ open: true, message: `${character.name} took a smackdown of ${chasePoints}, causing ${originalPoints} Chase Points.`, severity: "success" })
       }
     }
   }
