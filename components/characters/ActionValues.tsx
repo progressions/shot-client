@@ -24,7 +24,9 @@ export default function ActionValues({ character }: ActionValuesParams) {
           <PlayerTypeOnly character={character} only="PC">
             <ActionValueDisplay name="Fortune" description={character.action_values["FortuneType"] as string} label={character.action_values["FortuneType"] as string} character={character} />
           </PlayerTypeOnly>
-          <ActionValueDisplay name="Toughness" description="Toughness" label="Toughness" character={character} />
+          <PlayerTypeOnly character={character} except="Mook">
+            <ActionValueDisplay name="Toughness" description="Toughness" label="Toughness" character={character} />
+          </PlayerTypeOnly>
           <ActionValueDisplay name="Speed" description="Speed" label="Speed" character={character} />
         </Stack>
       </Box>

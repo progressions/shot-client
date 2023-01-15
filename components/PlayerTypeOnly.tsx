@@ -7,11 +7,11 @@ interface PlayerTypeOnlyProps {
   children: any
 }
 
-export default function PlayerTypeOnly({ character, type, children, except }: PlayerTypeOnlyProps) {
+export default function PlayerTypeOnly({ character, only, children, except }: PlayerTypeOnlyProps) {
   if (only && [only].flat().includes(character.action_values["Type"])) {
     return children
   }
-  if (except && [except].flat().includes(character.action_values["Type"])) {
+  if (except && ![except].flat().includes(character.action_values["Type"])) {
     return children
   }
   return (<></>)
