@@ -24,6 +24,36 @@ const WoundsModal = ({open, setOpen, character }: WoundsModalParams) => {
   const jwt = session?.data?.authorization
   const client = new Client({ jwt })
 
+  const calculateImpairments = (originalWounds, newWounds): number => {
+    if (character.action_values["Type"] === "Mook") { return 0 }
+
+    // a Boss and an Uber-Boss gain 1 point of Impairment when their Wounds
+    // goes from < 40 to between 40 and 44
+    // and gain 1 point of Impairment when their Wounds go from
+    // between 40 and 44 to > 45
+    if (["Boss", "Uber-Boss"].includes(character.action_values["Type"])) {
+      if (originalWounds < 40 && newWounds >= 40 && newWounds <= 45) {
+        return 1
+      }
+      if (originalWounds >= 40 && originalWounds <= 45 && newWounds > 45) {
+        return 1
+      }
+    }
+
+    // A PC, Ally, Featured Foe gain 1 point of Impairment when their Wounds
+    // go from < 25 to between 25 and 30
+    // and gain 1 point of Impairment when their Wounds go from
+    // between 25 and 30 to > 30
+    if (originalWounds < 25 && newWounds >= 25 && newWounds <= 30) {
+      return 1
+    }
+    if (originalWounds >= 25 && originalWounds <= 30 && newWounds > 30) {
+      return 1
+    }
+
+    return 0
+  }
+
   const calculateWounds = (): number => {
     if (character.action_values["Type"] === "Mook") {
       return smackdown
@@ -51,12 +81,17 @@ const WoundsModal = ({open, setOpen, character }: WoundsModalParams) => {
   const submitWounds = async (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault()
 
+    const originalWounds: number = character.action_values["Wounds"]
+
     const wounds: number = calculateWounds()
     const newWounds: number = calculateNewTotal(wounds)
     const actionValues: ActionValues = character.action_values
     actionValues['Wounds'] = newWounds
 
-    const response = await client.updateCharacter({ ...character, "action_values": actionValues}, fight)
+    const impairments = character.impairments + calculateImpairments(originalWounds, newWounds)
+    console.log({ impairments })
+
+    const response = await client.updateCharacter({ ...character, impairments: impairments, "action_values": actionValues}, fight)
     if (response.status === 200) {
       await loadFight({jwt, id: fight.id as string, setFight})
       setSmackdown(0)

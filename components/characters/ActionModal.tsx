@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Box, Stack, TextField, Button, Dialog } from '@mui/material'
 import { useSession } from 'next-auth/react'
 import { loadFight } from '../fights/FightDetail'
@@ -24,6 +24,12 @@ const ActionModal = ({open, setOpen, character }: ActionModalParams) => {
   const session: any = useSession({ required: true })
   const jwt = session?.data?.authorization
   const client = new Client({ jwt: jwt })
+
+  useEffect(() => {
+    if (["Boss", "Uber-Boss"].includes(character.action_values["Type"])) {
+      setShots(2)
+    }
+  }, [shots])
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
     setShots(parseInt(event.target.value))
