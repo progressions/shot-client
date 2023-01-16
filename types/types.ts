@@ -13,6 +13,8 @@ export interface Campaign {
   description?: string
   user?: User
   new?: boolean
+  players: User[]
+  invitations: Invitation[]
 }
 
 export interface ActionValues {

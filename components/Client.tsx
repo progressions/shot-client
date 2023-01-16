@@ -108,8 +108,8 @@ class Client {
     return await this.delete(url)
   }
 
-  async createInvitation(invitation: Invitation) {
-    return await this.post(this.api.invitations(), {"invitation": invitation})
+  async createInvitation(invitation: Invitation, campaign: Campaign) {
+    return await this.post(this.api.invitations(), {"invitation": { ...invitation, "campaign_id": campaign.id }})
   }
 
   async deleteInvitation(invitation: Invitation) {
