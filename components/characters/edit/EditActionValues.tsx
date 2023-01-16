@@ -42,6 +42,7 @@ export default function EditActionValues({ character, onChange }: EditActionValu
           <TextField label="Toughness" type="number" sx={{width: 100}} name="Toughness" value={character.action_values?.['Toughness'] || ''} onChange={onChange} />
         </PlayerTypeOnly>
         <TextField label="Speed" type="number" sx={{width: 100}} name="Speed" value={character.action_values?.['Speed'] || ''} onChange={onChange} />
+        <TextField label="Damage" type="number" sx={{width: 100}} name="Damage" value={character.action_values?.['Damage'] || ''} onChange={onChange} />
       </Stack>
     </>
   )
