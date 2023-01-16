@@ -49,7 +49,7 @@ export async function getServerSideProps<GetServerSideProps>({ req, res, params 
 }
 
 export default function RedeemInvitation({ invitation }: any) {
-  const [user, setUser] = useState({email: invitation?.email})
+  const [user, setUser] = useState<User>({email: invitation?.email} as User)
   const [saving, setSaving] = useState(false)
   const [success, setSuccess] = useState(false)
   const session: any = useSession({ required: false })
@@ -61,7 +61,7 @@ export default function RedeemInvitation({ invitation }: any) {
     if (session?.data?.user) {
       setUser(session?.data?.user)
     }
-  }, [session.status, invitation])
+  }, [session.status, session?.data?.user, invitation])
 
   const client = new Client()
 
@@ -70,7 +70,7 @@ export default function RedeemInvitation({ invitation }: any) {
   }
 
   const cancelForm = () => {
-    setUser({})
+    setUser({} as User)
   }
 
   const handleSubmit = async (event: any) => {
@@ -112,7 +112,7 @@ export default function RedeemInvitation({ invitation }: any) {
           { !success && session.status === "authenticated" &&
             <Box my={2}>
               <Typography>{session?.data?.user?.email}</Typography>
-              <Typography>You've been invited to the campaign </Typography>
+              <Typography>You&rsquo;ve been invited to the campaign </Typography>
               <Typography variant="h3" gutterBottom>{invitation.campaign.title}</Typography>
               <Box component="form" onSubmit={handleSubmit}>
                 <Stack spacing={2} direction="row">
@@ -122,7 +122,7 @@ export default function RedeemInvitation({ invitation }: any) {
             </Box> }
           { !success && session.status !== "authenticated" && 
             <Box component="form" onSubmit={handleSubmit}>
-              <Typography>You've been invited to </Typography>
+              <Typography>You&rsquo;ve been invited to </Typography>
               <Typography variant="h3" gutterBottom>{invitation.campaign.title}</Typography>
               <Typography>To accept, enter your details to create an account.</Typography>
               <Stack direction="column" spacing={2} mt={4}>

@@ -143,12 +143,13 @@ export interface ServerSideProps {
   req: NextApiRequest,
   res: NextApiResponse,
   params?: any
+  query?: any
 }
 
 export const defaultCharacter:Person = {
   name: '',
   category: "character",
-  current_shot: '',
+  current_shot: 0,
   impairments: 0,
   color: '',
   action_values: {
@@ -227,5 +228,7 @@ export const defaultToast:Toast = {
 export const defaultCampaign:Campaign = {
   title: "",
   description: "",
-  user: defaultUser
+  user: defaultUser,
+  players: [],
+  invitations: []
 }

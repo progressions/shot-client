@@ -28,7 +28,6 @@ interface ActionButtonsParams {
 }
 
 export default function ActionButtons({ character, healWounds, takeWounds, takeConditionPoints, takeAction, editCharacter, deleteCharacter, takeDodgeAction }: ActionButtonsParams) {
-  if (!character) return (<></>)
   const session: any = useSession({ required: true })
 
   let woundLabel:string

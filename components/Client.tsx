@@ -109,7 +109,7 @@ class Client {
   }
 
   async getInvitation(invitation: Invitation | ID) {
-    return await this.get(this.api.invitations(invitation))
+    return await this.get(this.api.invitations(invitation as Invitation))
   }
 
   async createInvitation(invitation: Invitation, campaign: Campaign) {

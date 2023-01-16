@@ -48,8 +48,8 @@ export default function Shot({ shot, characters, editingCharacter, setEditingCha
     })
   }
 
-  const effectsGroupedByType = (eff) => {
-    return eff.reduce((acc, effect) => {
+  const effectsGroupedByType = (eff: any) => {
+    return eff.reduce((acc: any, effect: any) => {
       acc[effect.severity] = effect
       return acc
     }, {})

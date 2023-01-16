@@ -2,7 +2,7 @@ import type { User, Character } from "../types/types"
 
 interface GamemasterOnlyProps {
   user: User,
-  character: Character,
+  character?: Character,
   children: any,
   override?: boolean,
 }

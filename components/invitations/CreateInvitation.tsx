@@ -6,7 +6,9 @@ import Client from "../Client"
 import { useSession } from 'next-auth/react'
 import Router from 'next/router'
 
-export default function CreateInvitation({ campaign:initialCampaign }) {
+import type { Invitation } from "../../types/types"
+
+export default function CreateInvitation({ campaign:initialCampaign }: any) {
   const session: any = useSession({ required: true })
   const jwt = session?.data?.authorization
   const client = new Client({ jwt })
@@ -15,11 +17,11 @@ export default function CreateInvitation({ campaign:initialCampaign }) {
   const [campaign, setCampaign] = useState(initialCampaign)
   const [saving, setSaving] = useState(false)
   const [open, setOpen] = useState(false)
-  const [invitation, setInvitation] = useState({})
+  const [invitation, setInvitation] = useState<Invitation>({} as Invitation)
   const [error, setError] = useState(null)
 
   const handleOpen = () => {
-    setInvitation({})
+    setInvitation({} as Invitation)
     setOpen(true)
   }
 
@@ -31,11 +33,11 @@ export default function CreateInvitation({ campaign:initialCampaign }) {
     event.preventDefault()
     setSaving(true)
 
-    const response = await client.createInvitation(invitation, campaign)
+    const response = await client.createInvitation(invitation as Invitation, campaign)
     if (response.status === 200) {
       const data = await response.json()
       console.log({ data })
-      setToast({ open: true, message: `Invitation created for ${invitation.email}.`, severity: "success" })
+      setToast({ open: true, message: `Invitation created for ${invitation?.email}.`, severity: "success" })
       Router.reload()
     }
     if (response.status === 400) {
@@ -49,7 +51,7 @@ export default function CreateInvitation({ campaign:initialCampaign }) {
   }
 
   const cancelForm = () => {
-    setInvitation({})
+    setInvitation({} as Invitation)
     setOpen(false)
     setError(null)
   }
@@ -65,7 +67,7 @@ export default function CreateInvitation({ campaign:initialCampaign }) {
           <DialogTitle>Create Invitation</DialogTitle>
           <DialogContent>
             <Stack direction="column" mt={1}>
-              <TextField required error={error} helperText={error && `Email ${error}`} label="Email" name="email" value={invitation?.email || ""} onChange={handleChange} />
+              <TextField required error={!!error} helperText={error && `Email ${error}`} label="Email" name="email" value={invitation?.email || ""} onChange={handleChange} />
             </Stack>
           </DialogContent>
           <DialogActions>
