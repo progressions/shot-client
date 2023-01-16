@@ -4,13 +4,15 @@ import { useState } from "react"
 import { useToast } from "../../contexts/ToastContext"
 import Client from "../Client"
 import { useSession } from 'next-auth/react'
+import Router from 'next/router'
 
-export default function CreateInvitation({ campaign }) {
+export default function CreateInvitation({ campaign:initialCampaign }) {
   const session: any = useSession({ required: true })
   const jwt = session?.data?.authorization
   const client = new Client({ jwt })
   const { setToast } = useToast()
 
+  const [campaign, setCampaign] = useState(initialCampaign)
   const [saving, setSaving] = useState(false)
   const [open, setOpen] = useState(false)
   const [invitation, setInvitation] = useState({})
@@ -34,11 +36,12 @@ export default function CreateInvitation({ campaign }) {
       const data = await response.json()
       console.log({ data })
       setToast({ open: true, message: `Invitation created for ${invitation.email}.`, severity: "success" })
+      Router.reload()
     }
     if (response.status === 400) {
       const data = await response.json()
       console.log({ data })
-      setError(data?.email[0])
+      setError(data?.email?.[0])
       setToast({ open: true, message: `Email ${data?.email[0]}`, severity: "error" })
     }
 
