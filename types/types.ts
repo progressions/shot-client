@@ -22,6 +22,7 @@ export interface ActionValues {
   Sorcery?: number
   Scroungetech?: number
   Genome?: number
+  Creature?: number
   Defense?: number
   Toughness?: number
   Speed?: number
@@ -147,6 +148,7 @@ export const defaultCharacter:Person = {
     Sorcery: 0,
     Scroungetech: 0,
     Genome: 0,
+    Creature: 0,
     Defense: 0,
     Toughness: 0,
     Speed: 0,
