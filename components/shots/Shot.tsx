@@ -48,6 +48,16 @@ export default function Shot({ shot, characters, editingCharacter, setEditingCha
     })
   }
 
+  const effectsGroupedByType = (eff) => {
+    return eff.reduce((acc, effect) => {
+      acc[effect.severity] = effect
+      return acc
+    }, {})
+  }
+
+  const finalEffects = effectsGroupedByType(effectsForShot(fight, shot))
+  console.log(finalEffects)
+
   const color = (shot <= 0) ? "#ccc" : ""
   return (
     <>
