@@ -37,12 +37,11 @@ export interface ActionValues {
   Vehicle?: boolean
   "Marks of Death": number
   Archetype: string
-  Damage: number
   Faction: string
 }
 
 export interface VehicleActionValues {
-  [key: string]: number | Position | CharacterType | undefined
+  [key: string]: string | number | Position | CharacterType | undefined
   Acceleration: number
   Handling: number
   Squeal: number
@@ -52,7 +51,6 @@ export interface VehicleActionValues {
   "Condition Points": number
   Position: Position
   Type: CharacterType
-  Damage: number
   Faction: string
 }
 

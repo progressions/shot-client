@@ -104,7 +104,7 @@ class Client {
   }
 
   async removePlayer(user: User, campaign: Campaign) {
-    url = `${this.api.campaignMemberships()}?campaign_id=${campaign.id}&user_id=${user.id}`
+    const url = `${this.api.campaignMemberships()}?campaign_id=${campaign.id}&user_id=${user.id}`
     return await this.delete(url)
   }
 

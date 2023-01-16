@@ -9,6 +9,8 @@ import { unstable_getServerSession } from "next-auth/next"
 import Client from '../../components/Client'
 import { GetServerSideProps } from 'next'
 
+import { User, Campaign } from "../../types/types"
+
 export async function getServerSideProps<GetServerSideProps>({ req, res, params }: any) {
   const session: any = await unstable_getServerSession(req as any, res as any, authOptions as any)
   const jwt = session?.authorization
