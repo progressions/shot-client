@@ -86,7 +86,11 @@ export default function CharacterModal({ open, setOpen, fight, setFight, charact
       cancelForm()
       if (fight && setFight) {
         await loadFight({jwt, id: fight.id as string, setFight})
-        setToast({ open: true, message: `${character.name} updated.`, severity: "success" })
+        if (newCharacter) {
+          setToast({ open: true, message: `${character.name} created.`, severity: "success" })
+        } else {
+          setToast({ open: true, message: `${character.name} updated.`, severity: "success" })
+        }
       } else {
         Router.reload()
       }
