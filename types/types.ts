@@ -126,6 +126,12 @@ export interface User {
   avatar_url?: string
 }
 
+export interface Invitation {
+  id?: string
+  email?: string
+  campaign_id: string
+}
+
 export interface CharacterFilter {
   type: string | null,
   name: string | null
