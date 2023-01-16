@@ -87,6 +87,10 @@ class Api {
     }
   }
 
+  campaignMemberships() {
+    return `${this.api()}/campaign_memberships`
+  }
+
   adminUsers(user?: User | ID): string {
     if (user) {
       return `${this.api()}/users/${user.id}`

@@ -96,6 +96,18 @@ class Client {
     return await this.delete(this.api.effects(fight, effect))
   }
 
+  async addPlayer(user: User, campaign: Campaign) {
+    return await this.post(this.api.campaignMemberships(), {
+      "campaign_id": campaign.id,
+      "user_id": user.id
+    })
+  }
+
+  async removePlayer(user: User, campaign: Campaign) {
+    url = `${this.api.campaignMemberships()}?campaign_id=${campaign.id}&user_id=${user.id}`
+    return await this.delete(url)
+  }
+
   async createCampaign(campaign: Campaign) {
     return await this.post(this.api.campaigns(), {"campaign": campaign})
   }
