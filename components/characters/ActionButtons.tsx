@@ -9,8 +9,10 @@ import FavoriteIcon from '@mui/icons-material/Favorite'
 import CommuteIcon from '@mui/icons-material/Commute'
 import CarCrashIcon from '@mui/icons-material/CarCrash'
 
+import GamemasterOnly from "../GamemasterOnly"
 import PlayerTypeOnly from "../PlayerTypeOnly"
 import MookRolls from '../MookRolls'
+import { useSession } from 'next-auth/react'
 
 import type { Character, CharacterType } from "../../types/types"
 
@@ -26,7 +28,7 @@ interface ActionButtonsParams {
 }
 
 export default function ActionButtons({ character, healWounds, takeWounds, takeConditionPoints, takeAction, editCharacter, deleteCharacter, takeDodgeAction }: ActionButtonsParams) {
-  if (!character) return (<></>)
+  const session: any = useSession({ required: true })
 
   let woundLabel:string
   let woundIcon
@@ -63,18 +65,20 @@ export default function ActionButtons({ character, healWounds, takeWounds, takeC
             <CarCrashIcon color="error" />
           </Button>
         </Tooltip> }
-        { editCharacter &&
-        <Tooltip title="Edit Character" arrow>
-          <Button onClick={() => {editCharacter(character)}}>
-            <EditIcon />
-          </Button>
-        </Tooltip> }
-        { deleteCharacter &&
-        <Tooltip title="Delete Character" arrow>
-          <Button onClick={() => deleteCharacter(character)}>
-            <DeleteIcon />
-          </Button>
-        </Tooltip> }
+        <GamemasterOnly user={session?.data?.user} character={character}>
+          { editCharacter &&
+          <Tooltip title="Edit Character" arrow>
+            <Button onClick={() => {editCharacter(character)}}>
+              <EditIcon />
+            </Button>
+          </Tooltip> }
+          { deleteCharacter &&
+          <Tooltip title="Delete Character" arrow>
+            <Button onClick={() => deleteCharacter(character)}>
+              <DeleteIcon />
+            </Button>
+          </Tooltip> }
+        </GamemasterOnly>
       </ButtonGroup>
       <ButtonGroup variant="outlined" size="small">
         { takeDodgeAction &&

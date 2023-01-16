@@ -1,5 +1,5 @@
 import Api from "./Api"
-import type { Campaign, Effect, Vehicle, Character, ID, Fight, User } from "../types/types"
+import type { Invitation, Campaign, Effect, Vehicle, Character, ID, Fight, User } from "../types/types"
 
 interface ClientParams {
   jwt?: string
@@ -94,6 +94,34 @@ class Client {
 
   async deleteEffect(effect: Effect, fight: Fight):Promise<Response> {
     return await this.delete(this.api.effects(fight, effect))
+  }
+
+  async addPlayer(user: User, campaign: Campaign) {
+    return await this.post(this.api.campaignMemberships(), {
+      "campaign_id": campaign.id,
+      "user_id": user.id
+    })
+  }
+
+  async removePlayer(user: User, campaign: Campaign) {
+    const url = `${this.api.campaignMemberships()}?campaign_id=${campaign.id}&user_id=${user.id}`
+    return await this.delete(url)
+  }
+
+  async getInvitation(invitation: Invitation | ID) {
+    return await this.get(this.api.invitations(invitation as Invitation))
+  }
+
+  async createInvitation(invitation: Invitation, campaign: Campaign) {
+    return await this.post(this.api.invitations(), {"invitation": { ...invitation, "campaign_id": campaign.id }})
+  }
+
+  async deleteInvitation(invitation: Invitation) {
+    return await this.delete(this.api.invitations(invitation))
+  }
+
+  async redeemInvitation(invitation: Invitation, user: any) {
+    return await this.patch(`${this.api.invitations(invitation)}/redeem`, {"user": user})
   }
 
   async createCampaign(campaign: Campaign) {

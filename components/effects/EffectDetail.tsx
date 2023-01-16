@@ -9,6 +9,7 @@ import { useFight } from "../../contexts/FightContext"
 
 import { useState } from "react"
 import { Button, Tooltip, Alert, AlertTitle, Popover, Box, Stack, Typography, IconButton } from "@mui/material"
+import GamemasterOnly from "../GamemasterOnly"
 
 import type { Toast, Effect, Fight } from "../../types/types"
 
@@ -72,7 +73,9 @@ export default function EffectDetail({ effect }: EffectDetailProps) {
           <Typography variant="caption">Until sequence {effect.end_sequence}, shot {effect.end_shot}</Typography>
         </Alert>
         <Stack alignItems="flex-end" sx={{backgroundColor: toolbarColor}}>
-          <IconButton onClick={deleteEffect}><DeleteIcon sx={{color: "white"}} /></IconButton>
+          <GamemasterOnly user={session?.data?.user}>
+            <IconButton onClick={deleteEffect}><DeleteIcon sx={{color: "white"}} /></IconButton>
+          </GamemasterOnly>
         </Stack>
       </Popover>
     </>

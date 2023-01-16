@@ -13,6 +13,8 @@ export interface Campaign {
   description?: string
   user?: User
   new?: boolean
+  players: User[]
+  invitations: Invitation[]
 }
 
 export interface ActionValues {
@@ -22,6 +24,7 @@ export interface ActionValues {
   Sorcery?: number
   Scroungetech?: number
   Genome?: number
+  Creature?: number
   Defense?: number
   Toughness?: number
   Speed?: number
@@ -36,10 +39,11 @@ export interface ActionValues {
   Vehicle?: boolean
   "Marks of Death": number
   Archetype: string
+  Faction: string
 }
 
 export interface VehicleActionValues {
-  [key: string]: number | Position | CharacterType | undefined
+  [key: string]: string | number | Position | CharacterType | undefined
   Acceleration: number
   Handling: number
   Squeal: number
@@ -49,6 +53,7 @@ export interface VehicleActionValues {
   "Condition Points": number
   Position: Position
   Type: CharacterType
+  Faction: string
 }
 
 export type Position = "near" | "far"
@@ -123,6 +128,12 @@ export interface User {
   avatar_url?: string
 }
 
+export interface Invitation {
+  id?: string
+  email?: string
+  campaign_id: string
+}
+
 export interface CharacterFilter {
   type: string | null,
   name: string | null
@@ -132,12 +143,13 @@ export interface ServerSideProps {
   req: NextApiRequest,
   res: NextApiResponse,
   params?: any
+  query?: any
 }
 
 export const defaultCharacter:Person = {
   name: '',
   category: "character",
-  current_shot: '',
+  current_shot: 0,
   impairments: 0,
   color: '',
   action_values: {
@@ -147,6 +159,7 @@ export const defaultCharacter:Person = {
     Sorcery: 0,
     Scroungetech: 0,
     Genome: 0,
+    Creature: 0,
     Defense: 0,
     Toughness: 0,
     Speed: 0,
@@ -158,7 +171,9 @@ export const defaultCharacter:Person = {
     Wounds: 0,
     Type: "PC",
     Vehicle: false,
-    "Marks of Death": 0
+    "Marks of Death": 0,
+    Damage: 0,
+    Faction: ""
   }
 }
 
@@ -177,7 +192,8 @@ export const defaultVehicle:Vehicle = {
     "Chase Points": 0,
     "Condition Points": 0,
     Position: "far",
-    Type: "PC"
+    Type: "PC",
+    Faction: ""
   }
 }
 
@@ -212,5 +228,7 @@ export const defaultToast:Toast = {
 export const defaultCampaign:Campaign = {
   title: "",
   description: "",
-  user: defaultUser
+  user: defaultUser,
+  players: [],
+  invitations: []
 }

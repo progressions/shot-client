@@ -16,12 +16,14 @@ interface Credentials {
   password: string
 }
 
-export async function getServerSideProps({ req }: ServerSideProps) {
+export async function getServerSideProps({ req, query }: ServerSideProps) {
+
+  console.log({ query })
 
   // get CSRF as soon as i figure out how
   return {
     props: {
-      referer: req.headers['referer'] || null
+      referer: null
     },
   }
 }

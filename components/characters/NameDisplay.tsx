@@ -4,8 +4,10 @@ import { IoSkull, IoSkullOutline } from "react-icons/io5"
 import DeathMarks from "./DeathMarks"
 import EditButtons from "./EditButtons"
 
+import GamemasterOnly from "../GamemasterOnly"
 import type { Character, Toast, Person, Vehicle } from "../../types/types"
 import { useState } from "react"
+import { useSession } from 'next-auth/react'
 
 interface NameDisplayProps {
   character: Character
@@ -15,9 +17,16 @@ interface NameDisplayProps {
 
 export default function NameDisplay({ character, editCharacter, deleteCharacter }: NameDisplayProps) {
   const [open, setOpen] = useState<boolean>(false)
+  const session: any = useSession({ required: true })
 
   const showButtons = () => {
-    setOpen(true)
+    if (session?.data?.user?.gamemaster) {
+      setOpen(true)
+      return
+    }
+    if (character?.user?.id == session?.data?.user?.id) {
+      setOpen(true)
+    }
   }
 
   const hideButtons = () => {
@@ -38,18 +47,20 @@ export default function NameDisplay({ character, editCharacter, deleteCharacter 
   }
 
   return (
-    <Box>
-      <Box onMouseEnter={showButtons} onMouseLeave={hideButtons}>
-        <Stack direction="row" spacing={1} alignItems="baseline">
-          <Typography variant="h4" sx={{fontWeight: 'bold', overflow: "hidden", textOverflow: "ellipsis", width: "100%"}}>
-            { character.name }
-          </Typography>
-          <Box visibility={open ? "visible" : "hidden"}>
-            <EditButtons character={character} editCharacter={editCharacter} deleteCharacter={deleteCharacter} />
-          </Box>
-        </Stack>
-        { subheading() }
+      <Box>
+        <Box onMouseEnter={showButtons} onMouseLeave={hideButtons}>
+          <Stack direction="row" spacing={1} alignItems="baseline">
+            <Typography variant="h4" sx={{fontWeight: 'bold', overflow: "hidden", textOverflow: "ellipsis", width: "100%"}}>
+              { character.name }
+            </Typography>
+            <GamemasterOnly user={session?.data?.user} character={character}>
+              <Box visibility={open ? "visible" : "hidden"}>
+                <EditButtons character={character} editCharacter={editCharacter} deleteCharacter={deleteCharacter} />
+              </Box>
+            </GamemasterOnly>
+          </Stack>
+          { subheading() }
+        </Box>
       </Box>
-    </Box>
   )
 }

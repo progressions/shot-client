@@ -6,9 +6,11 @@ import CreateVehicle from '../vehicles/CreateVehicle'
 import DiceRoller from '../dice/DiceRoller'
 import MookRolls from '../MookRolls'
 import RollInitiative from "./RollInitiative"
+import GamemasterOnly from "../GamemasterOnly"
 
 import type { Fight } from "../../types/types"
 
+import { useSession } from 'next-auth/react'
 import { useFight } from "../../contexts/FightContext"
 
 interface FightToolbarParams {
@@ -18,6 +20,7 @@ interface FightToolbarParams {
 
 export default function FightToolbar({ showHidden, setShowHidden }: FightToolbarParams) {
   const [fight, setFight] = useFight()
+  const session: any = useSession({ required: true })
 
   const show = (event: React.SyntheticEvent<Element, Event>, checked: boolean) => {
     setShowHidden(checked)
@@ -25,7 +28,9 @@ export default function FightToolbar({ showHidden, setShowHidden }: FightToolbar
   return (
     <>
       <Stack direction="row" spacing={2} alignItems='center'>
-        <RollInitiative />
+        <GamemasterOnly user={session?.data?.user}>
+          <RollInitiative />
+        </GamemasterOnly>
         <DiceRoller />
         <ButtonGroup>
           <CreateVehicle fight={fight} setFight={setFight} />
@@ -35,7 +40,9 @@ export default function FightToolbar({ showHidden, setShowHidden }: FightToolbar
           <SelectCharacter />
         </ButtonGroup>
         <MookRolls />
-        <FormControlLabel label="Show Hidden" control={<Switch checked={showHidden} />} onChange={show} />
+        <GamemasterOnly user={session?.data?.user}>
+          <FormControlLabel label="Show Hidden" control={<Switch checked={showHidden} />} onChange={show} />
+        </GamemasterOnly>
       </Stack>
     </>
   )

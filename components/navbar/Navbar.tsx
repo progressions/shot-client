@@ -31,16 +31,11 @@ export default function Navbar() {
 
   const {campaign, getCurrentCampaign, setCurrentCampaign}:any = useCampaign()
 
-  const current:Campaign = {
-    id: "b107d915-8a46-4515-9e8c-ea4f6f399fa7",
-    title: "Born to Revengeance"
-  }
-
   useEffect(() => {
   }, [])
 
   const handleClick = async () => {
-    const newCurrent = await setCurrentCampaign(current)
+    const newCurrent = await setCurrentCampaign({})
   }
   const handleClear = async () => {
     const newCurrent = await setCurrentCampaign(null)

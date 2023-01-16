@@ -1,4 +1,4 @@
-import type { Campaign, Vehicle, Effect, Fight, Character, User, ID } from "../types/types"
+import type { Invitation, Campaign, Vehicle, Effect, Fight, Character, User, ID } from "../types/types"
 
 class Api {
   base():string { return process.env.NEXT_PUBLIC_SERVER_URL as string }
@@ -75,6 +75,14 @@ class Api {
     }
   }
 
+  invitations(invitation?: Invitation):string {
+    if (invitation?.id) {
+      return `${this.api()}/invitations/${invitation.id}`
+    } else {
+      return `${this.api()}/invitations`
+    }
+  }
+
   currentCampaign() {
     return `${this.campaigns()}/current`
   }
@@ -85,6 +93,10 @@ class Api {
     } else {
       return `${this.api()}/campaigns`
     }
+  }
+
+  campaignMemberships() {
+    return `${this.api()}/campaign_memberships`
   }
 
   adminUsers(user?: User | ID): string {

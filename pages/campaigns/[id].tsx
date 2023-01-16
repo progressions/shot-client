@@ -1,14 +1,16 @@
-
 import Layout from '../../components/Layout'
 import Head from 'next/head'
 
-import { Container, Typography } from "@mui/material"
+import { Box, Stack, TableContainer, Table, TableRow, TableHead, TableBody, TableCell, Container, Typography } from "@mui/material"
 
 import { authOptions } from '../api/auth/[...nextauth]'
 import { unstable_getServerSession } from "next-auth/next"
 
+import CreateInvitation from "../../components/invitations/CreateInvitation"
 import Client from '../../components/Client'
 import { GetServerSideProps } from 'next'
+
+import { Invitation, User, Campaign } from "../../types/types"
 
 export async function getServerSideProps<GetServerSideProps>({ req, res, params }: any) {
   const session: any = await unstable_getServerSession(req as any, res as any, authOptions as any)
@@ -35,6 +37,7 @@ export async function getServerSideProps<GetServerSideProps>({ req, res, params 
 }
 
 export default function CampaignView({ campaign }: any) {
+  console.log({ campaign })
   return (
     <>
       <Head>
@@ -48,6 +51,62 @@ export default function CampaignView({ campaign }: any) {
           <Container maxWidth="md">
             <Typography variant="h2" gutterBottom>{campaign.title}</Typography>
             <Typography>{campaign.description}</Typography>
+            <Typography>Gamemaster: {campaign.gamemaster.first_name} {campaign.gamemaster.last_name}</Typography>
+            <Stack direction="row">
+              <CreateInvitation campaign={campaign} />
+            </Stack>
+            <Box mt={2}>
+              <Typography variant="h3">Players</Typography>
+              <TableContainer>
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>Email</TableCell>
+                      <TableCell>First</TableCell>
+                      <TableCell>Last</TableCell>
+                      <TableCell />
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {
+                      campaign.players.map((player: User) => (
+                        <TableRow key={player.id}>
+                          <TableCell>{player.email}</TableCell>
+                          <TableCell>{player.first_name}</TableCell>
+                          <TableCell>{player.last_name}</TableCell>
+                          <TableCell>
+                          </TableCell>
+                        </TableRow>
+                      )
+                    ) }
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </Box>
+            <Box mt={2}>
+              <Typography variant="h3">Invitations</Typography>
+              <TableContainer>
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>Email</TableCell>
+                      <TableCell />
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {
+                      campaign.invitations.map((invitation: Invitation) => (
+                        <TableRow key={invitation.id}>
+                          <TableCell>{invitation.email}</TableCell>
+                          <TableCell>
+                          </TableCell>
+                        </TableRow>
+                      )
+                    ) }
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </Box>
           </Container>
         </Layout>
       </main>

@@ -11,8 +11,11 @@ import EffectModal from "../effects/EffectModal"
 
 import type { Vehicle, Character, Fight, Toast } from "../../types/types"
 
+import { useSession } from 'next-auth/react'
 import { useFight } from "../../contexts/FightContext"
 import { useState } from "react"
+
+import GamemasterOnly from "../GamemasterOnly"
 
 interface ShotParams {
   shot: number
@@ -26,6 +29,7 @@ export default function Shot({ shot, characters, editingCharacter, setEditingCha
   const [open, setOpen] = useState<boolean>(false)
   const [openEffectDialog, setOpenEffectDialog] = useState<boolean>(false)
   const [fight, setFight] = useFight()
+  const session: any = useSession({ required: true })
 
   if (!showHidden && (shot === null || shot === undefined)) {
     return null
@@ -44,6 +48,16 @@ export default function Shot({ shot, characters, editingCharacter, setEditingCha
     })
   }
 
+  const effectsGroupedByType = (eff: any) => {
+    return eff.reduce((acc: any, effect: any) => {
+      acc[effect.severity] = effect
+      return acc
+    }, {})
+  }
+
+  const finalEffects = effectsGroupedByType(effectsForShot(fight, shot))
+  console.log(finalEffects)
+
   const color = (shot <= 0) ? "#ccc" : ""
   return (
     <>
@@ -54,9 +68,11 @@ export default function Shot({ shot, characters, editingCharacter, setEditingCha
             {
               effectsForShot(fight, shot).map((effect) => <EffectDetail effect={effect} key={effect.id} />)
             }
-            { shot > 0 && <IconButton onClick={() => { setOpen(false); setOpenEffectDialog(true) }}>
-              <AddCircleOutlineOutlinedIcon />
-            </IconButton> }
+            <GamemasterOnly user={session?.data?.user}>
+              { shot > 0 && <IconButton onClick={() => { setOpen(false); setOpenEffectDialog(true) }}>
+                <AddCircleOutlineOutlinedIcon />
+              </IconButton> }
+            </GamemasterOnly>
             <EffectModal shot={shot} open={openEffectDialog} setOpen={setOpenEffectDialog} />
           </Stack>
         </TableCell>
