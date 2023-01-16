@@ -14,6 +14,7 @@ export default function CreateInvitation({ campaign }) {
   const [saving, setSaving] = useState(false)
   const [open, setOpen] = useState(false)
   const [invitation, setInvitation] = useState({})
+  const [error, setError] = useState(null)
 
   const handleOpen = () => {
     setInvitation({})
@@ -28,11 +29,17 @@ export default function CreateInvitation({ campaign }) {
     event.preventDefault()
     setSaving(true)
 
-    const response = client.createInvitation(invitation, campaign)
+    const response = await client.createInvitation(invitation, campaign)
     if (response.status === 200) {
-      const data = response.json()
+      const data = await response.json()
       console.log({ data })
       setToast({ open: true, message: `Invitation created for ${invitation.email}.`, severity: "success" })
+    }
+    if (response.status === 400) {
+      const data = await response.json()
+      console.log({ data })
+      setError(data?.email[0])
+      setToast({ open: true, message: `Email ${data?.email[0]}`, severity: "error" })
     }
 
     setSaving(false)
@@ -41,6 +48,7 @@ export default function CreateInvitation({ campaign }) {
   const cancelForm = () => {
     setInvitation({})
     setOpen(false)
+    setError(null)
   }
 
   return (
@@ -54,7 +62,7 @@ export default function CreateInvitation({ campaign }) {
           <DialogTitle>Create Invitation</DialogTitle>
           <DialogContent>
             <Stack direction="column" mt={1}>
-              <TextField label="Email" name="email" value={invitation?.email || ""} onChange={handleChange} />
+              <TextField required error={error} helperText={error && `Email ${error}`} label="Email" name="email" value={invitation?.email || ""} onChange={handleChange} />
             </Stack>
           </DialogContent>
           <DialogActions>
