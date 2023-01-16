@@ -18,8 +18,6 @@ interface Credentials {
 
 export async function getServerSideProps({ req, query }: ServerSideProps) {
 
-  console.log({ query })
-
   // get CSRF as soon as i figure out how
   return {
     props: {
