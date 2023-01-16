@@ -37,6 +37,8 @@ export interface ActionValues {
   Vehicle?: boolean
   "Marks of Death": number
   Archetype: string
+  Damage: number
+  Faction: string
 }
 
 export interface VehicleActionValues {
@@ -50,6 +52,8 @@ export interface VehicleActionValues {
   "Condition Points": number
   Position: Position
   Type: CharacterType
+  Damage: number
+  Faction: string
 }
 
 export type Position = "near" | "far"
@@ -160,7 +164,9 @@ export const defaultCharacter:Person = {
     Wounds: 0,
     Type: "PC",
     Vehicle: false,
-    "Marks of Death": 0
+    "Marks of Death": 0,
+    Damage: 0,
+    Faction: ""
   }
 }
 
@@ -179,7 +185,8 @@ export const defaultVehicle:Vehicle = {
     "Chase Points": 0,
     "Condition Points": 0,
     Position: "far",
-    Type: "PC"
+    Type: "PC",
+    Faction: ""
   }
 }
 
