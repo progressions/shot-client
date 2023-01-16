@@ -23,7 +23,7 @@ export async function getServerSideProps({ req, query }: ServerSideProps) {
   // get CSRF as soon as i figure out how
   return {
     props: {
-      referer: query.path || req.headers['referer'] || null
+      referer: null
     },
   }
 }
