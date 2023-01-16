@@ -108,6 +108,10 @@ class Client {
     return await this.delete(url)
   }
 
+  async getInvitation(invitation: Invitation | ID) {
+    return await this.get(this.api.invitations(invitation))
+  }
+
   async createInvitation(invitation: Invitation, campaign: Campaign) {
     return await this.post(this.api.invitations(), {"invitation": { ...invitation, "campaign_id": campaign.id }})
   }
@@ -116,8 +120,8 @@ class Client {
     return await this.delete(this.api.invitations(invitation))
   }
 
-  async redeemInvitation(invitation: Invitation, { first_name, last_name }: any) {
-    return await this.patch(`${this.api.invitations(invitation)}/redeem`, {"user": { first_name, last_name }})
+  async redeemInvitation(invitation: Invitation, user: any) {
+    return await this.patch(`${this.api.invitations(invitation)}/redeem`, {"user": user})
   }
 
   async createCampaign(campaign: Campaign) {
