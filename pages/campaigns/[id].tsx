@@ -98,8 +98,7 @@ export default function CampaignView({ campaign }: any) {
                       campaign.invitations.map((invitation: Invitation) => (
                         <TableRow key={invitation.id}>
                           <TableCell>{invitation.email}</TableCell>
-                          <TableCell>
-                          </TableCell>
+                          <TableCell>{invitation.id}</TableCell>
                         </TableRow>
                       )
                     ) }
