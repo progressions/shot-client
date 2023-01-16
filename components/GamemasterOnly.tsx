@@ -8,7 +8,9 @@ interface GamemasterOnlyProps {
 }
 
 const GamemasterOnly:React.FC<GamemasterOnlyProps> = ({ user, children, character, override }: GamemasterOnlyProps) => {
-  if (override || user?.gamemaster || ["PC", "Ally"].includes(character.action_values['Type'] as string)) {
+  if (character && ["PC", "Ally"].includes(character.action_values['Type'] as string)) {
+    return children
+  } else if (override || user?.gamemaster) {
     return children
   } else {
     return <></>
