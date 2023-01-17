@@ -1,6 +1,7 @@
 import { Button } from "@mui/material"
-import { useState } from "react"
+import { useMemo, useEffect, useState } from "react"
 import { useSession } from 'next-auth/react'
+import PlayArrowIcon from '@mui/icons-material/PlayArrow'
 
 import type { ShotType, Fight, Toast, Character, Person, Vehicle } from "../../types/types"
 
@@ -18,6 +19,18 @@ export default function RollInitiative() {
   const jwt = session?.data?.authorization
   const client = new Client({ jwt: jwt })
   const { setToast } = useToast()
+  const startOfSequence = useMemo(() => (fight?.shot_order?.[0]?.[0] === 0), [fight?.shot_order?.[0]?.[0]])
+
+  const addSequence = async () => {
+    const updatedFight = fight
+    updatedFight.sequence = updatedFight.sequence+1
+
+    const response = await client.updateFight(updatedFight)
+    if (response.status === 200) {
+      await loadFight({jwt, id: updatedFight.id as string, setFight})
+      setToast({ open: true, message: `Sequence increased`, severity: "success" })
+    }
+  }
 
   const handleClick = async () => {
     setProcessing(true)
@@ -25,6 +38,10 @@ export default function RollInitiative() {
       // only roll for characters on shots zero or below
       return (shot <= 0)
     })
+
+    if (startOfSequence) {
+      await addSequence()
+    }
 
     await Promise.all(nonzeroShots.map(rollForShot))
 
@@ -64,7 +81,15 @@ export default function RollInitiative() {
     return (response.status === 200)
   }
 
+  function label() {
+    if (startOfSequence) {
+      return ("Start")
+    } else {
+      return ("Initiative")
+    }
+  }
+
   return (
-    <Button variant="contained" color="secondary" disabled={processing} onClick={handleClick}>Initiative</Button>
+    <Button variant="contained" color="secondary" endIcon={<PlayArrowIcon />} disabled={processing} onClick={handleClick}>{label()}</Button>
   )
 }
