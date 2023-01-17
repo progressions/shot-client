@@ -1,6 +1,8 @@
 import { Tooltip, IconButton } from "@mui/material"
 import Effects from "./Effects"
 
+import type { Fight } from "../../types/types"
+
 const effectsForShot = (fight: Fight, shot: number) => {
   return fight.effects.filter((effect) => {
     return shot > 0 && (
@@ -18,7 +20,7 @@ const effectsGroupedByType = (eff: any) => {
   }, {})
 }
 
-export default function GroupedEffects({ fight, shot }) {
+export default function GroupedEffects({ fight, shot }: any) {
   const finalEffects = effectsGroupedByType(effectsForShot(fight, shot))
   const severities = ["error", "warning", "info", "success"]
 

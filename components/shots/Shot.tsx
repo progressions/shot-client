@@ -5,7 +5,6 @@ import Typography from '@mui/material/Typography'
 import CharacterDetails from '../characters/CharacterDetails'
 import VehicleDetails from '../vehicles/VehicleDetails'
 import ShotButton from "./ShotButton"
-import EffectDetail from "../effects/EffectDetail"
 import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined'
 import EffectModal from "../effects/EffectModal"
 import GroupedEffects from "../effects/GroupedEffects"
@@ -39,8 +38,6 @@ export default function Shot({ shot, characters, editingCharacter, setEditingCha
   const setEditingCharacterWithCurrentShot = (character: Character | null): void => {
     setEditingCharacter({...character, current_shot: shot} as any)
   }
-
-  // const finalEffects = effectsGroupedByType(effectsForShot(fight, shot))
 
   const color = (shot <= 0) ? "#ccc" : ""
   return (

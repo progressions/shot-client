@@ -9,7 +9,7 @@ import Client from "../Client"
 import type { FightContextType } from "../../contexts/FightContext"
 import { loadFight } from '../fights/FightDetail'
 
-export default function Effects({ effects, severity }) {
+export default function Effects({ effects, severity }: any) {
   const [open, setOpen] = useState(false)
   const [anchorEl, setAnchorEl] = useState(null)
 
@@ -29,8 +29,7 @@ export default function Effects({ effects, severity }) {
     setOpen(true)
   }
 
-  const deleteEffect = async (effect) => {
-    console.log(fight)
+  const deleteEffect = async (effect: any) => {
     const response = await client.deleteEffect(effect, fight)
     if (response.status === 200) {
       await loadFight({jwt, id: fight.id as string, setFight})
@@ -50,7 +49,7 @@ export default function Effects({ effects, severity }) {
       <Popover anchorEl={anchorEl} open={open} onClose={closePopover} anchorOrigin={{vertical: 'bottom', horizontal: 'center'}}>
         <Alert severity={severity as any} sx={{paddingRight: 5}}>
           {
-            effects.map((effect) => (<Box key={effect.id}>
+            effects.map((effect: any) => (<Box key={effect.id}>
               <AlertTitle>
                 {effect.title}
               </AlertTitle>
