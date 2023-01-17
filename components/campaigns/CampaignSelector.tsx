@@ -58,7 +58,7 @@ export default function CampaignSelector({ startCampaign }: any) {
     setOpen(true)
   }
 
-  const NameDisplay = ({ camp }) => {
+  const NameDisplay = ({ camp }: any) => {
     return (
       <>
         <Stack direction="row" spacing={1} alignItems="center">
