@@ -1,8 +1,9 @@
-import { IconButton, Box, TextField, MenuItem, Stack, Typography } from "@mui/material"
+import { Button, IconButton, Box, TextField, MenuItem, Stack, Typography } from "@mui/material"
 import { useCampaign } from "../../contexts/CampaignContext"
 import PlayCircleIcon from '@mui/icons-material/PlayCircle'
 import StopCircleIcon from '@mui/icons-material/StopCircle'
 import { useToast } from "../../contexts/ToastContext"
+import CampaignSelector from "./CampaignSelector"
 
 import { Campaign } from "../../types/types"
 
@@ -23,21 +24,31 @@ export default function CurrentCampaign() {
     if (camp?.id === current?.id) {
       return (
         <IconButton onClick={() => startCampaign(null)}>
-          <StopCircleIcon />
+          <StopCircleIcon sx={{color: "white"}} />
         </IconButton>
       )
     }
+    return (<></>)
+  }
+
+  function CampaignName({ campaign }) {
+    if (campaign) {
+      return (<>
+        <Typography color="white">{campaign.title}</Typography>
+        { startStopCampaignButton(campaign, campaign) }
+      </>)
+    }
     return (
-      <IconButton onClick={() => startCampaign(campaign)}>
-        <PlayCircleIcon />
-      </IconButton>
+      <CampaignSelector campaign={campaign} />
     )
   }
 
   return (
     <Stack direction="row" alignItems="center" justifyContent="center" spacing={2}>
-      <Typography color="inherit">Current Campaign: {campaign?.title || "None"}</Typography>
-      {campaign && startStopCampaignButton(campaign, campaign)}
+      <Typography color="inherit">
+        Current Campaign:
+      </Typography>
+      <CampaignName campaign={campaign} />
     </Stack>
   )
 }
