@@ -25,7 +25,7 @@ import { useCampaign } from "../../contexts/CampaignContext"
 import { useClient } from "../../contexts/ClientContext"
 
 export default function Navbar() {
-  const { user, client } = useClient()
+  const { session, user, client } = useClient()
 
   const {campaign, getCurrentCampaign, setCurrentCampaign}:any = useCampaign()
 
@@ -71,7 +71,7 @@ export default function Navbar() {
               </Link>
             </Typography>
           )}
-          <AuthButton status={status} user={user || {}} />
+          <AuthButton status={session?.status} user={user || {}} />
         </Toolbar>
         <Box sx={{ backgroundColor: "secondary.main" }} p={1}>
           <CurrentCampaign />
