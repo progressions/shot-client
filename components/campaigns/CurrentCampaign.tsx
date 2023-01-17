@@ -4,6 +4,7 @@ import PlayCircleIcon from '@mui/icons-material/PlayCircle'
 import StopCircleIcon from '@mui/icons-material/StopCircle'
 import { useToast } from "../../contexts/ToastContext"
 import CampaignSelector from "./CampaignSelector"
+import Router from 'next/router'
 
 import { Campaign } from "../../types/types"
 
@@ -18,6 +19,7 @@ export default function CurrentCampaign() {
     } else {
       setToast({ open: true, message: `Campaign cleared`, severity: "success" })
     }
+    Router.reload()
   }
 
   const startStopCampaignButton = (camp: Campaign, current: Campaign | null) => {
@@ -39,7 +41,7 @@ export default function CurrentCampaign() {
       </>)
     }
     return (
-      <CampaignSelector campaign={campaign} />
+      <CampaignSelector campaign={campaign} startCampaign={startCampaign} />
     )
   }
 
