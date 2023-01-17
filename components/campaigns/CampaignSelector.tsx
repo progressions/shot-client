@@ -1,4 +1,4 @@
-import { Box, Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, TextField, MenuItem, Stack, Typography } from "@mui/material"
+import { IconButton, Box, Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, TextField, MenuItem, Stack, Typography } from "@mui/material"
 import { useCampaign } from "../../contexts/CampaignContext"
 import PlayCircleIcon from '@mui/icons-material/PlayCircle'
 import StopCircleIcon from '@mui/icons-material/StopCircle'
@@ -58,6 +58,19 @@ export default function CampaignSelector({ startCampaign }: any) {
     setOpen(true)
   }
 
+  const NameDisplay = ({ camp }) => {
+    return (
+      <>
+        <Stack direction="row" spacing={1} alignItems="center">
+          <Button variant="contained" startIcon={<PlayCircleIcon />} color="secondary" onClick={() => startCampaign(camp)}>
+            Start
+          </Button>
+          <Typography>{camp.title}</Typography>
+        </Stack>
+      </>
+    )
+  }
+
   if (campaign) {
     return <></>
   }
@@ -71,19 +84,11 @@ export default function CampaignSelector({ startCampaign }: any) {
         <Box component="form" onSubmit={handleSubmit} pb={1} sx={{width: 400}}>
           <DialogTitle>Select Campaign</DialogTitle>
           <DialogContent>
-            <TextField
-              sx={{marginTop: 1}}
-              fullWidth
-              name="campaign"
-              label="Campaign"
-              select
-              value={campaignId || ""}
-              onChange={handleChange}
-            >
+            <Stack spacing={1}>
               {
-                campaigns.map((camp) => (<MenuItem key={camp?.id || ""} value={camp?.id || ""}>{camp?.title}</MenuItem>))
+                campaigns.map((camp) => <NameDisplay key={camp.id} camp={camp} />)
               }
-            </TextField>
+            </Stack>
           </DialogContent>
           <DialogActions>
             <Stack spacing={2} direction="row">
