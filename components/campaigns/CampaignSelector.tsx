@@ -7,14 +7,14 @@ import { useMemo, useCallback, useEffect, useState } from "react"
 import { useSession } from 'next-auth/react'
 import Client from "../Client"
 
-import { Campaign } from "../../types/types"
+import type { Campaign } from "../../types/types"
 
-export default function CampaignSelector({ startCampaign }) {
+export default function CampaignSelector({ startCampaign }: any) {
   const {campaign, getCurrentCampaign, setCurrentCampaign}:any = useCampaign()
   const { setToast } = useToast()
   const [open, setOpen] = useState(false)
   const [saving, setSaving] = useState(false)
-  const [campaigns, setCampaigns] = useState([])
+  const [campaigns, setCampaigns] = useState<Campaign[]>([])
   const [campaignId, setCampaignId] = useState(null)
 
   const session: any = useSession({ required: true })
@@ -81,7 +81,7 @@ export default function CampaignSelector({ startCampaign }) {
               onChange={handleChange}
             >
               {
-                campaigns.map((camp) => (<MenuItem key={camp.id} value={camp.id}>{camp.title}</MenuItem>))
+                campaigns.map((camp) => (<MenuItem key={camp?.id || ""} value={camp?.id || ""}>{camp?.title}</MenuItem>))
               }
             </TextField>
           </DialogContent>

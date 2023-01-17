@@ -33,7 +33,7 @@ export default function CurrentCampaign() {
     return (<></>)
   }
 
-  function CampaignName({ campaign }) {
+  function CampaignName({ campaign }: any) {
     if (campaign) {
       return (<>
         <Typography color="white">{campaign.title}</Typography>
