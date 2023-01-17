@@ -3,7 +3,7 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
 
 import { Stack, Box } from "@mui/material"
 
-export default function PositionDisplay({ character }) {
+export default function PositionDisplay({ character }: any) {
   const spacing = (character.action_values["Position"] === "near") ? 1 : 3
   const pursuer = character.action_values["Pursuer"] == "true"
   const firstColor = pursuer ? (character.color || "secondary.main") : "inherit"
