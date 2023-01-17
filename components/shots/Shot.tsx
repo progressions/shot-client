@@ -5,9 +5,9 @@ import Typography from '@mui/material/Typography'
 import CharacterDetails from '../characters/CharacterDetails'
 import VehicleDetails from '../vehicles/VehicleDetails'
 import ShotButton from "./ShotButton"
-import EffectDetail from "../effects/EffectDetail"
 import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined'
 import EffectModal from "../effects/EffectModal"
+import GroupedEffects from "../effects/GroupedEffects"
 
 import type { Vehicle, Character, Fight, Toast } from "../../types/types"
 
@@ -39,25 +39,6 @@ export default function Shot({ shot, characters, editingCharacter, setEditingCha
     setEditingCharacter({...character, current_shot: shot} as any)
   }
 
-  const effectsForShot = (fight: Fight, shot: number) => {
-    return fight.effects.filter((effect) => {
-      return shot > 0 && (
-        (fight.sequence == effect.start_sequence && shot <= effect.start_shot) ||
-          (fight.sequence == effect.end_sequence && shot > effect.end_shot)
-      )
-    })
-  }
-
-  const effectsGroupedByType = (eff: any) => {
-    return eff.reduce((acc: any, effect: any) => {
-      acc[effect.severity] = effect
-      return acc
-    }, {})
-  }
-
-  const finalEffects = effectsGroupedByType(effectsForShot(fight, shot))
-  console.log(finalEffects)
-
   const color = (shot <= 0) ? "#ccc" : ""
   return (
     <>
@@ -65,9 +46,7 @@ export default function Shot({ shot, characters, editingCharacter, setEditingCha
         <TableCell rowSpan={characters.length + 1} sx={{width: 60, verticalAlign: "top"}}>
           <Stack spacing={0} alignItems="center">
             <ShotButton shot={shot} />
-            {
-              effectsForShot(fight, shot).map((effect) => <EffectDetail effect={effect} key={effect.id} />)
-            }
+            <GroupedEffects key={`effects_${shot}`} fight={fight} shot={shot} />
             <GamemasterOnly user={session?.data?.user}>
               { shot > 0 && <IconButton onClick={() => { setOpen(false); setOpenEffectDialog(true) }}>
                 <AddCircleOutlineOutlinedIcon />
@@ -88,3 +67,9 @@ export default function Shot({ shot, characters, editingCharacter, setEditingCha
     </>
   )
 }
+
+/*
+            {
+              effectsForShot(fight, shot).map((effect) => <EffectDetail effect={effect} key={effect.id} />)
+            }
+            */
