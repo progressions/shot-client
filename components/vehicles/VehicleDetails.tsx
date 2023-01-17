@@ -11,6 +11,7 @@ import ConditionPointsModal from "./ConditionPointsModal"
 import ActionButtons from "../characters/ActionButtons"
 import NameDisplay from "../characters/NameDisplay"
 import WoundsDisplay from "../vehicles/WoundsDisplay"
+import PositionDisplay from "./PositionDisplay"
 import { useState } from "react"
 import { useToast } from "../../contexts/ToastContext"
 import { useFight } from "../../contexts/FightContext"
@@ -68,6 +69,29 @@ export default function VehicleDetails({ character, editingCharacter, setEditing
 
   const wounds = (character?.action_values["Chase Points"])
 
+  const nothing = ({ character: char }: any) => {
+    const pursuer = char.action_values["Pursuer"]
+    console.log("pursuer", pursuer)
+    const spacing = (char.action_values["Position"] === "near") ? 0 : 2
+    const firstColor = pursuer ? "pursuer is true" : "pursuer is false"
+    const secondColor = !pursuer ? "pursuer is false" : "pursuer is true"
+    console.log("pursuer", pursuer)
+
+    console.log({ firstColor })
+    console.log({ secondColor })
+    return (
+      <Stack direction="row" spacing={spacing}>
+        <Box color="inherit">
+          <FaCarSide size={20} />
+        </Box>
+        <ArrowForwardIcon />
+        <Box color="inherit">
+          <FaCarSide size={20} />
+        </Box>
+      </Stack>
+    )
+  }
+
   return (
     <TableRow key={character.id}>
       <TableCell sx={{width: 50, verticalAlign: "top"}}>
@@ -82,6 +106,7 @@ export default function VehicleDetails({ character, editingCharacter, setEditing
             editCharacter={editCharacter}
             deleteCharacter={deleteCharacter}
           />
+          <PositionDisplay character={character} />
           <GamemasterOnly user={session?.data?.user} character={character}>
             <Stack direction="row" spacing={1} justifyContent="space-between">
               <VehicleActionValues character={character} />

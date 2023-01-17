@@ -1,5 +1,5 @@
 import { MouseEventHandler, useState, useEffect } from 'react'
-import { DialogActions, DialogContent, DialogTitle, FormControlLabel, Checkbox, InputAdornment, Dialog, Box, Stack, TextField, Button, Paper, Popover } from '@mui/material'
+import { FormControl, FormLabel, RadioGroup, DialogActions, DialogContent, DialogTitle, FormControlLabel, Checkbox, InputAdornment, Dialog, Box, Stack, TextField, Button, Paper, Popover } from '@mui/material'
 import FavoriteIcon from '@mui/icons-material/Favorite'
 import CommuteIcon from '@mui/icons-material/Commute'
 import CarCrashIcon from '@mui/icons-material/CarCrash'
@@ -12,6 +12,8 @@ import { useSession } from 'next-auth/react'
 import { BlockPicker } from 'react-color'
 import { loadFight } from '../fights/FightDetail'
 import Client from "../Client"
+import PositionSelector from "./PositionSelector"
+import PursuerSelector from "./PursuerSelector"
 
 import { useToast } from "../../contexts/ToastContext"
 import type { Vehicle, Fight, Character, Toast, ID } from "../../types/types"
@@ -55,6 +57,7 @@ export default function CharacterModal({ open, setOpen, fight, setFight, charact
   }
 
   const handleAVChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    console.log("value", event.target.value)
     const { action_values } = character || {}
     setCharacter((prevState: any) => ({ ...prevState, action_values: { ...action_values, [event.target.name]: event.target.value } }))
   }
@@ -155,6 +158,10 @@ export default function CharacterModal({ open, setOpen, fight, setFight, charact
                 <TextField label="Squeal" type="number" sx={{width: 100}} name="Squeal" value={character.action_values?.['Squeal'] || ''} onChange={handleAVChange} />
                 <TextField label="Frame" type="number" sx={{width: 100}} name="Frame" value={character.action_values?.['Frame'] || ''} onChange={handleAVChange} />
                 <TextField label="Crunch" type="number" sx={{width: 100}} name="Crunch" value={character.action_values?.['Crunch'] || ''} onChange={handleAVChange} />
+              </Stack>
+              <Stack direction="row" spacing={2}>
+                <PositionSelector character={character} onChange={handleAVChange} />
+                <PursuerSelector character={character} onChange={handleAVChange} />
               </Stack>
             </Stack>
           </DialogContent>

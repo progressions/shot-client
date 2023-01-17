@@ -169,7 +169,7 @@ export const defaultCharacter:Person = {
     MainAttack: "Guns",
     SecondaryAttack: null,
     Wounds: 0,
-    Type: "PC",
+    Type: "Featured Foe",
     Vehicle: false,
     "Marks of Death": 0,
     Damage: 0,
@@ -191,8 +191,9 @@ export const defaultVehicle:Vehicle = {
     Crunch: 0,
     "Chase Points": 0,
     "Condition Points": 0,
+    Pursuer: "true",
     Position: "far",
-    Type: "PC",
+    Type: "Featured Foe",
     Faction: ""
   }
 }
