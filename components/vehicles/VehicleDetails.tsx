@@ -14,9 +14,8 @@ import WoundsDisplay from "../vehicles/WoundsDisplay"
 import PositionDisplay from "./PositionDisplay"
 import { useState } from "react"
 import { useToast } from "../../contexts/ToastContext"
+import { useClient } from "../../contexts/ClientContext"
 import { useFight } from "../../contexts/FightContext"
-
-import { loadFight } from '../fights/FightDetail'
 
 import type { Character, Person, Vehicle, Fight, Toast, ID } from "../../types/types"
 import { defaultVehicle } from "../../types/types"
@@ -28,10 +27,8 @@ interface VehicleDetailsParams {
 }
 
 export default function VehicleDetails({ character, editingCharacter, setEditingCharacter }: VehicleDetailsParams) {
-  const [fight, setFight] = useFight()
-  const session: any = useSession({ required: true })
-  const jwt = session?.data?.authorization
-  const client = new Client({ jwt })
+  const { fight, setFight, reloadFight } = useFight()
+  const { user, client } = useClient()
 
   const [open, setOpen] = useState<Vehicle>(defaultVehicle)
   const [openAction, setOpenAction] = useState(false)
@@ -46,8 +43,8 @@ export default function VehicleDetails({ character, editingCharacter, setEditing
   async function deleteCharacter(character: Character): Promise<void> {
     const response = await client.deleteVehicle(character as Vehicle, fight)
     if (response.status === 200) {
+      await reloadFight(fight)
       setToast({ open: true, message: `${character.name} removed.`, severity: "success" })
-      await loadFight({jwt, id: fight.id as string, setFight})
     }
   }
 
@@ -72,10 +69,10 @@ export default function VehicleDetails({ character, editingCharacter, setEditing
   return (
     <TableRow key={character.id}>
       <TableCell sx={{width: 50, verticalAlign: "top"}}>
-        <AvatarBadge character={character} session={session} />
+        <AvatarBadge character={character} user={user} />
       </TableCell>
       <TableCell sx={{width: 70, verticalAlign: "top"}}>
-        <WoundsDisplay character={character} session={session} />
+        <WoundsDisplay character={character} user={user} />
       </TableCell>
       <TableCell sx={{verticalAlign: "top"}}>
         <Stack spacing={2}>
@@ -84,7 +81,7 @@ export default function VehicleDetails({ character, editingCharacter, setEditing
             deleteCharacter={deleteCharacter}
           />
           <PositionDisplay character={character} />
-          <GamemasterOnly user={session?.data?.user} character={character}>
+          <GamemasterOnly user={user} character={character}>
             <Stack direction="row" spacing={1} justifyContent="space-between">
               <VehicleActionValues character={character} />
               <ActionButtons character={character}

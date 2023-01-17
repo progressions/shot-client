@@ -61,7 +61,7 @@ export async function getServerSideProps({ req, res, params }: ServerSideProps) 
 }
 
 export default function Fight({ fight:initialFight, notFound }: FightParams) {
-  const [fight, setFight] = useFight()
+  const { fight, setFight } = useFight()
 
   useEffect(() => {
     setFight(initialFight)

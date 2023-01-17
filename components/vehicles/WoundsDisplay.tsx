@@ -2,14 +2,14 @@ import { Divider, Box, Stack, Typography } from "@mui/material"
 import GamemasterOnly from "../GamemasterOnly"
 import PlayerTypeOnly from "../PlayerTypeOnly"
 
-import type { Vehicle } from "../../types/types"
+import type { User, Vehicle } from "../../types/types"
 
 interface WoundsDisplayProps {
   character: Vehicle
-  session: any
+  user: User | null
 }
 
-export default function WoundsDisplay({ character, session }: WoundsDisplayProps) {
+export default function WoundsDisplay({ character, user }: WoundsDisplayProps) {
   const getColors = (character: Vehicle) =>  {
     if (["Boss", "Uber-Boss"].includes(character.action_values["Type"]) && character.action_values["Chase Points"] > 50) {
       return ["primary.contrastText", "error.main"]
@@ -26,7 +26,7 @@ export default function WoundsDisplay({ character, session }: WoundsDisplayProps
   const wounds = character.action_values["Chase Points"] || 0
 
   return (
-    <GamemasterOnly user={session?.data?.user} character={character}>
+    <GamemasterOnly user={user} character={character}>
       <Stack direction="column" sx={{width: 70}} alignItems="center" spacing={1}>
         <Stack direction="column" sx={{width: 70, backgroundColor: backgroundColor, borderRadius: 2}} alignItems="center" p={1}>
           <Typography variant="h4" sx={{color: color}}>{wounds}</Typography>

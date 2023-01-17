@@ -1,10 +1,10 @@
 import type { User, Character } from "../types/types"
 
 interface GamemasterOnlyProps {
-  user: User,
-  character?: Character,
-  children: any,
-  override?: boolean,
+  user: User | null
+  character?: Character
+  children: any
+  override?: boolean
 }
 
 const GamemasterOnly:React.FC<GamemasterOnlyProps> = ({ user, children, character, override }: GamemasterOnlyProps) => {

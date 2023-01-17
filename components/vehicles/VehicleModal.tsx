@@ -10,12 +10,13 @@ import CharacterType from '../characters/edit/CharacterType'
 
 import { useSession } from 'next-auth/react'
 import { BlockPicker } from 'react-color'
-import { loadFight } from '../fights/FightDetail'
 import Client from "../Client"
 import PositionSelector from "./PositionSelector"
 import PursuerSelector from "./PursuerSelector"
 
 import { useToast } from "../../contexts/ToastContext"
+import { useFight } from "../../contexts/FightContext"
+import { useClient } from "../../contexts/ClientContext"
 import type { Vehicle, Fight, Character, Toast, ID } from "../../types/types"
 import { defaultVehicle } from "../../types/types"
 
@@ -27,14 +28,12 @@ interface VehicleModalParams {
   character: Vehicle | null
 }
 
-export default function CharacterModal({ open, setOpen, fight, setFight, character:activeVehicle }: VehicleModalParams) {
+export default function CharacterModal({ open, setOpen, character:activeVehicle }: VehicleModalParams) {
   const [picker, setPicker] = useState<boolean>(false)
   const [anchorEl, setAnchorEl] = useState(null)
   const { setToast } = useToast()
-
-  const session: any = useSession({ required: true })
-  const jwt = session?.data?.authorization
-  const client = new Client({ jwt: jwt })
+  const { client } = useClient()
+  const { fight, setFight, reloadFight } = useFight()
 
   const [saving, setSaving] = useState(false);
 
@@ -87,8 +86,8 @@ export default function CharacterModal({ open, setOpen, fight, setFight, charact
       setCharacter(data)
       setSaving(false)
       cancelForm()
-      if (fight && setFight) {
-        await loadFight({jwt, id: fight.id as string, setFight})
+      if (fight) {
+        await reloadFight(fight)
         if (newVehicle) {
           setToast({ open: true, message: `${character.name} created.`, severity: "success" })
         } else {

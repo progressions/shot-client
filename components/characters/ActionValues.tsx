@@ -35,7 +35,7 @@ export default function ActionValues({ character }: ActionValuesParams) {
             </PlayerTypeOnly>
             <ActionValueDisplay name="Toughness" description="Toughness" label="Toughness" character={character} />
             <ActionValueDisplay name="Speed" description="Speed" label="Speed" character={character} />
-            <ActionValueDisplay name="Damage" description="Damage" label="Damage" character={character} />
+            <ActionValueDisplay name="Damage" description="Damage" label="Damage" character={character} ignoreImpairments />
           </Stack>
         </PlayerTypeOnly>
       </Box>

@@ -2,6 +2,7 @@ import { Stack, Button, Typography, IconButton, ButtonGroup } from "@mui/materia
 
 import { useFight } from "../../contexts/FightContext"
 import { useToast } from "../../contexts/ToastContext"
+import { useClient } from "../../contexts/ClientContext"
 import { useSession } from 'next-auth/react'
 import Client from "../Client"
 
@@ -9,17 +10,12 @@ import AddIcon from '@mui/icons-material/Add'
 import RemoveIcon from '@mui/icons-material/Remove'
 import PlayArrowIcon from '@mui/icons-material/PlayArrow'
 
-import { loadFight } from "./FightDetail"
-
 import { Toast, Fight } from "../../types/types"
 
 export default function Sequence() {
-  const session: any = useSession({ required: true })
-  const jwt = session?.data?.authorization
-  const client = new Client({ jwt })
-
+  const { client } = useClient()
   const { setToast } = useToast()
-  const [fight, setFight] = useFight()
+  const { fight, setFight, reloadFight } = useFight()
 
   const addSequence = async () => {
     const updatedFight = fight
@@ -27,7 +23,7 @@ export default function Sequence() {
 
     const response = await client.updateFight(updatedFight)
     if (response.status === 200) {
-      await loadFight({jwt, id: updatedFight.id as string, setFight})
+      await reloadFight(fight)
       setToast({ open: true, message: `Sequence increased`, severity: "success" })
     }
   }
@@ -38,7 +34,7 @@ export default function Sequence() {
 
     const response = await client.updateFight(updatedFight)
     if (response.status === 200) {
-      await loadFight({jwt, id: updatedFight.id as string, setFight})
+      await reloadFight(fight)
       setToast({ open: true, message: `Sequence decreased`, severity: "success" })
     }
   }

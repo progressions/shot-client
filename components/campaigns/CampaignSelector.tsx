@@ -3,6 +3,7 @@ import { useCampaign } from "../../contexts/CampaignContext"
 import PlayCircleIcon from '@mui/icons-material/PlayCircle'
 import StopCircleIcon from '@mui/icons-material/StopCircle'
 import { useToast } from "../../contexts/ToastContext"
+import { useClient } from "../../contexts/ClientContext"
 import { useMemo, useCallback, useEffect, useState } from "react"
 import { useSession } from 'next-auth/react'
 import Client from "../Client"
@@ -17,9 +18,7 @@ export default function CampaignSelector({ startCampaign }: any) {
   const [campaigns, setCampaigns] = useState<Campaign[]>([])
   const [campaignId, setCampaignId] = useState(null)
 
-  const session: any = useSession({ required: true })
-  const jwt = session?.data?.authorization
-  const client = useMemo(() => (new Client({ jwt })), [jwt])
+  const { user, client } = useClient()
 
   const getCampaigns = useCallback(async () => {
     const response = await client.getCampaigns()
@@ -30,10 +29,10 @@ export default function CampaignSelector({ startCampaign }: any) {
   }, [client])
 
   useEffect(() => {
-    if (jwt) {
+    if (user) {
       getCampaigns().catch(console.error)
     }
-  }, [jwt, getCampaigns])
+  }, [user, getCampaigns])
 
   const handleChange = (event: any) => {
     setCampaignId(event.target.value)

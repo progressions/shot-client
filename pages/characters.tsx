@@ -20,6 +20,7 @@ import CreateCharacter from "../components/characters/CreateCharacter"
 import CharacterFilters from "../components/characters/CharacterFilters"
 
 import { useToast } from "../contexts/ToastContext"
+import { useClient } from "../contexts/ClientContext"
 import type { Person, Vehicle, Character, CharacterFilter, ServerSideProps, Toast } from "../types/types"
 import { defaultCharacter } from "../types/types"
 
@@ -62,9 +63,7 @@ export async function getServerSideProps({ req, res }: ServerSideProps) {
 }
 
 export default function Characters({ characters:initialCharacters, jwt }: CharactersProps) {
-  const client = new Client({ jwt })
-  const session = useSession({ required: true })
-  const { status, data } = session
+  const { client, session, user } = useClient()
   const [editingCharacter, setEditingCharacter] = useState<Character>(defaultCharacter)
   const [characters, setCharacters] = useState<Character[]>(initialCharacters)
   const [filters, setFilters] = useState<CharacterFilter>({
@@ -107,7 +106,7 @@ export default function Characters({ characters:initialCharacters, jwt }: Charac
       .filter(characterMatchesName)
   }
 
-  if (status !== "authenticated") {
+  if (session?.status !== "authenticated") {
     return <div>Loading...</div>
   }
 
@@ -147,7 +146,7 @@ export default function Characters({ characters:initialCharacters, jwt }: Charac
                     filteredCharacters(characters).map((character: Character) => {
                       return (<TableRow key={character.id}>
                         <TableCell sx={{width: 50}}>
-                          <AvatarBadge character={character} session={session} />
+                          <AvatarBadge character={character} user={user} />
                         </TableCell>
                         <TableCell sx={{fontWeight: "bold"}}><Typography variant="h5">{character.name}</Typography></TableCell>
                         <TableCell><ActionValues character={character} /></TableCell>

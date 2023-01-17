@@ -22,19 +22,12 @@ import CurrentCampaign from "../campaigns/CurrentCampaign"
 import type { Campaign, User } from "../../types/types"
 
 import { useCampaign } from "../../contexts/CampaignContext"
+import { useClient } from "../../contexts/ClientContext"
 
 export default function Navbar() {
-  const session: any = useSession({ required: false })
-  const jwt = session?.data?.authorization
-  const client = new Client({ jwt: jwt })
-
-  const { status, data } = session
-  const user:any = data?.user
+  const { user, client } = useClient()
 
   const {campaign, getCurrentCampaign, setCurrentCampaign}:any = useCampaign()
-
-  useEffect(() => {
-  }, [])
 
   const handleClick = async () => {
     const newCurrent = await setCurrentCampaign({})

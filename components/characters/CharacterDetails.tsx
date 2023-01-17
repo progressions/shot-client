@@ -21,10 +21,10 @@ import WoundsDisplay from "./WoundsDisplay"
 
 import { useFight } from "../../contexts/FightContext"
 import { useToast } from "../../contexts/ToastContext"
-import { loadFight } from '../fights/FightDetail'
+import { useClient } from "../../contexts/ClientContext"
 import Client from "../Client"
 
-import type { Person, Character, Fight, Toast, ID } from "../../types/types"
+import type { User, Person, Character, Fight, Toast, ID } from "../../types/types"
 import { defaultCharacter } from "../../types/types"
 
 interface CharacterDetailsParams {
@@ -34,11 +34,9 @@ interface CharacterDetailsParams {
 }
 
 export default function CharacterDetails({ character, editingCharacter, setEditingCharacter }: CharacterDetailsParams) {
-  const [fight, setFight] = useFight()
+  const { fight, setFight, reloadFight } = useFight()
 
-  const session: any = useSession({ required: true })
-  const jwt = session?.data?.authorization
-  const client = new Client({ jwt })
+  const { session, client, user } = useClient()
 
   const [open, setOpen] = useState<Character>(defaultCharacter)
   const [openAction, setOpenAction] = useState(false)
@@ -54,7 +52,7 @@ export default function CharacterDetails({ character, editingCharacter, setEditi
     const response = await client.deleteCharacter(character, fight)
     if (response.status === 200) {
       setToast({ open: true, message: `${character.name} removed.`, severity: "success" })
-      await loadFight({jwt, id: fight.id as string, setFight})
+      await reloadFight(fight)
     }
   }
 
@@ -78,7 +76,7 @@ export default function CharacterDetails({ character, editingCharacter, setEditi
     const response = await client.actCharacter(character, fight, 1)
     if (response.status === 200) {
       setToast({ open: true, message: `${character.name} dodged for 1 shot.`, severity: "success" })
-      await loadFight({jwt, id: fight.id as string, setFight})
+      await reloadFight(fight)
     }
   }
 
@@ -93,10 +91,10 @@ export default function CharacterDetails({ character, editingCharacter, setEditi
   return (
     <TableRow key={key}>
       <TableCell sx={{width: 50, verticalAlign: "top"}}>
-        <AvatarBadge character={character} session={session} />
+        <AvatarBadge character={character} user={user} />
       </TableCell>
       <TableCell sx={{width: 70, verticalAlign: "top"}}>
-        <WoundsDisplay character={character as Person} session={session} />
+        <WoundsDisplay character={character as Person} user={user} />
       </TableCell>
       <TableCell sx={{verticalAlign: "top"}}>
         <Stack spacing={2}>
@@ -104,7 +102,7 @@ export default function CharacterDetails({ character, editingCharacter, setEditi
             editCharacter={editCharacter}
             deleteCharacter={deleteCharacter}
           />
-          <GamemasterOnly user={session?.data?.user} character={character}>
+          <GamemasterOnly user={user} character={character}>
             <Stack direction="row" spacing={1} justifyContent="space-between">
               <ActionValues character={character} />
               <ActionButtons character={character}

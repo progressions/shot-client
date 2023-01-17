@@ -1,11 +1,11 @@
 import { useState } from 'react'
 import { Box, Stack, TextField, Button, Dialog } from '@mui/material'
 import { useSession } from 'next-auth/react'
-import { loadFight } from '../fights/FightDetail'
 import Client from "../Client"
 
 import { useFight } from "../../contexts/FightContext"
 import { useToast } from "../../contexts/ToastContext"
+import { useClient } from "../../contexts/ClientContext"
 import type { Person, Character, Fight, Toast, ActionValues } from "../../types/types"
 
 interface HealModalParams {
@@ -15,14 +15,11 @@ interface HealModalParams {
 }
 
 export default function HealModal({open, setOpen, character }: HealModalParams) {
-  const [fight, setFight] = useFight()
+  const { fight, setFight, reloadFight } = useFight()
   const [healing, setHealing] = useState<number>(0)
   const [saving, setSaving] = useState<boolean>(false)
   const { setToast } = useToast()
-
-  const session: any = useSession({ required: true })
-  const jwt = session?.data?.authorization
-  const client = new Client({ jwt })
+  const { client } = useClient()
 
   const calculateImpairments = (originalWounds: number, newWounds: number): number => {
     if (character.action_values["Type"] === "Mook") { return 0 }
@@ -83,7 +80,7 @@ export default function HealModal({open, setOpen, character }: HealModalParams) 
 
     const response = await client.updateCharacter({ ...character, impairments: impairments, "action_values": actionValues}, fight)
     if (response.status === 200) {
-      await loadFight({jwt, id: fight.id as string, setFight})
+      await reloadFight(fight)
       setHealing(0)
       setOpen(false)
       setToast({ open: true, message: `${character.name} healed ${healing} Wounds.`, severity: "success" })

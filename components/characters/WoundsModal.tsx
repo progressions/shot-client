@@ -1,11 +1,11 @@
 import { useState } from 'react'
 import { Box, Stack, TextField, Button, Dialog } from '@mui/material'
 import { useSession } from 'next-auth/react'
-import { loadFight } from '../fights/FightDetail'
 import Client from "../Client"
 
 import { useFight } from "../../contexts/FightContext"
 import { useToast } from "../../contexts/ToastContext"
+import { useClient } from "../../contexts/ClientContext"
 import type { Person, Character, Fight, Toast, ActionValues } from "../../types/types"
 
 interface WoundsModalParams {
@@ -15,14 +15,11 @@ interface WoundsModalParams {
 }
 
 const WoundsModal = ({open, setOpen, character }: WoundsModalParams) => {
-  const [fight, setFight] = useFight()
+  const { fight, setFight, reloadFight } = useFight()
   const [smackdown, setSmackdown] = useState<number>(0)
   const [saving, setSaving] = useState<boolean>(false)
   const { setToast } = useToast()
-
-  const session: any = useSession({ required: true })
-  const jwt = session?.data?.authorization
-  const client = new Client({ jwt })
+  const { client } = useClient()
 
   const calculateImpairments = (originalWounds: number, newWounds: number): number => {
     if (character.action_values["Type"] === "Mook") { return 0 }
@@ -105,7 +102,7 @@ const WoundsModal = ({open, setOpen, character }: WoundsModalParams) => {
 
     const response = await client.updateCharacter({ ...character, impairments: impairments, "action_values": actionValues}, fight)
     if (response.status === 200) {
-      await loadFight({jwt, id: fight.id as string, setFight})
+      await reloadFight(fight)
       setSmackdown(0)
       setOpen(false)
       if (character.action_values["Type"] === "Mook") {

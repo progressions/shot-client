@@ -19,7 +19,7 @@ interface FightToolbarParams {
 }
 
 export default function FightToolbar({ showHidden, setShowHidden }: FightToolbarParams) {
-  const [fight, setFight] = useFight()
+  const { fight, setFight } = useFight()
   const session: any = useSession({ required: true })
 
   const show = (event: React.SyntheticEvent<Element, Event>, checked: boolean) => {

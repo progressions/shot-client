@@ -1,11 +1,11 @@
 import { useState } from 'react'
 import { Box, Stack, TextField, Button, Dialog } from '@mui/material'
 import { useSession } from 'next-auth/react'
-import { loadFight } from '../fights/FightDetail'
 import Client from "../Client"
 
 import { useFight } from "../../contexts/FightContext"
 import { useToast } from "../../contexts/ToastContext"
+import { useClient } from "../../contexts/ClientContext"
 import type { Vehicle, Character, Fight, Toast } from "../../types/types"
 
 interface ActionModalParams {
@@ -15,14 +15,11 @@ interface ActionModalParams {
 }
 
 const ActionModal = ({open, setOpen, character }: ActionModalParams) => {
-  const [fight, setFight] = useFight()
+  const { fight, setFight, reloadFight } = useFight()
   const [shots, setShots] = useState<number>(3)
   const [saving, setSaving] = useState<boolean>(false)
   const { setToast } = useToast()
-
-  const session: any = useSession({ required: true })
-  const jwt = session?.data?.authorization
-  const client = new Client({ jwt: jwt })
+  const { jwt, client } = useClient()
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
     setShots(parseInt(event.target.value))
@@ -34,8 +31,8 @@ const ActionModal = ({open, setOpen, character }: ActionModalParams) => {
 
       if (response.status === 200) {
         setOpen(false)
+        await reloadFight(fight)
         setToast({ open: true, message: `${character.name} spent ${shots} shots.`, severity: "success" })
-        await loadFight({jwt, id: fight.id as string, setFight})
       }
     }
   }

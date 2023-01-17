@@ -1,9 +1,9 @@
 import { useState } from 'react'
 import { Box, Stack, TextField, Button, Dialog } from '@mui/material'
 import { useSession } from 'next-auth/react'
-import { loadFight } from '../fights/FightDetail'
 import Client from "../Client"
 import { useToast } from "../../contexts/ToastContext"
+import { useClient } from "../../contexts/ClientContext"
 import { useFight } from "../../contexts/FightContext"
 
 import type { Vehicle, Character, Fight, Toast, VehicleActionValues } from "../../types/types"
@@ -15,14 +15,12 @@ interface ChasePointsModalParams {
 }
 
 const ChasePointsModal = ({open, setOpen, character }: ChasePointsModalParams) => {
-  const [fight, setFight] = useFight()
+  const { fight, setFight, reloadFight } = useFight()
   const [chasePoints, setChasePoints] = useState<number>(0)
   const [saving, setSaving] = useState<boolean>(false)
   const { setToast } = useToast()
 
-  const session: any = useSession({ required: true })
-  const jwt = session?.data?.authorization
-  const client = new Client({ jwt })
+  const { jwt, client } = useClient()
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setChasePoints(parseInt(event.target.value))
@@ -59,7 +57,7 @@ const ChasePointsModal = ({open, setOpen, character }: ChasePointsModalParams) =
 
     const response = await client.updateVehicle({ ...character, "action_values": actionValues}, fight)
     if (response.status === 200) {
-      await loadFight({jwt, id: fight.id as string, setFight})
+      await reloadFight(fight)
       setChasePoints(0)
       setOpen(false)
       if (character.action_values["Type"] === "Mook") {

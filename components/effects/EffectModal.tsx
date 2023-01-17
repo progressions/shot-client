@@ -1,12 +1,12 @@
 import { MenuItem, Box, Dialog, DialogTitle, DialogContent, DialogContentText, Stack, Button, TextField } from "@mui/material"
 import { useState } from "react"
 import { useToast } from "../../contexts/ToastContext"
+import { useClient } from "../../contexts/ClientContext"
 import { useFight } from "../../contexts/FightContext"
 
 import type { Toast, Effect, Fight } from "../../types/types"
 import { defaultEffect } from "../../types/types"
 
-import { loadFight } from '../fights/FightDetail'
 import { useSession } from 'next-auth/react'
 import Client from "../Client"
 
@@ -17,7 +17,7 @@ interface EffectModalProps {
 }
 
 export default function EffectModal({ shot, open, setOpen }: EffectModalProps) {
-  const [fight, setFight] = useFight()
+  const { fight, setFight, reloadFight } = useFight()
 
   const initialEffect = { ...defaultEffect, start_sequence: fight.sequence, end_sequence: fight.sequence+1, start_shot: shot, end_shot: shot }
 
@@ -25,9 +25,7 @@ export default function EffectModal({ shot, open, setOpen }: EffectModalProps) {
   const [saving, setSaving] = useState<boolean>(false)
   const { setToast } = useToast()
 
-  const session: any = useSession({ required: true })
-  const jwt = session?.data?.authorization
-  const client = new Client({ jwt: jwt })
+  const { jwt, client } = useClient()
 
   const cancelForm = () => {
     setEffect(initialEffect)
@@ -44,7 +42,7 @@ export default function EffectModal({ shot, open, setOpen }: EffectModalProps) {
       setEffect(data)
       cancelForm()
       if (setFight) {
-        await loadFight({jwt, id: fight.id as string, setFight})
+        await reloadFight(fight)
         setToast({ open: true, message: `Effect ${effect.title} added.`, severity: "success" })
         setSaving(false)
       }

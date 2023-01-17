@@ -7,18 +7,18 @@ import { useSession } from 'next-auth/react'
 import Client from "../Client"
 
 import { useToast } from "../../contexts/ToastContext"
+import { useFight } from "../../contexts/FightContext"
+import { useClient } from "../../contexts/ClientContext"
 import type { Fight, Toast } from "../../types/types"
 import { defaultFight } from "../../types/types"
-import { loadFights } from "./FightDetail"
 
 interface AddFightProps {
   setFights: React.Dispatch<React.SetStateAction<Fight[]>>
 }
 
 export default function AddFight({ setFights }: AddFightProps) {
-  const session: any = useSession({ required: true })
-  const jwt = session?.data?.authorization
-  const client = new Client({ jwt })
+  const { reloadFights } = useFight()
+  const { jwt, client } = useClient()
   const { setToast } = useToast()
 
   const [open, setOpen] = useState<boolean>(false)
@@ -37,8 +37,8 @@ export default function AddFight({ setFights }: AddFightProps) {
     if (response.status === 200) {
       setSaving(false)
       cancelForm()
+      await reloadFights({ setFights })
       setToast({ open: true, message: `Fight ${fight.name} created.`, severity: "success" })
-      loadFights({ jwt, setFights })
     }
   }
 

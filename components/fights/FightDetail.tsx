@@ -7,56 +7,26 @@ import { unstable_getServerSession } from "next-auth/next"
 import Client from "../Client"
 
 import { useToast } from "../../contexts/ToastContext"
+import { useFight } from "../../contexts/FightContext"
+import { useClient } from "../../contexts/ClientContext"
 import type { Fight, Toast } from "../../types/types"
 import { defaultFight } from "../../types/types"
-
-interface loadFightParams {
-  id: string,
-  jwt: string,
-  setFight: React.Dispatch<React.SetStateAction<Fight>>
-}
 
 interface FightParams {
   fight: Fight,
   setFights: React.Dispatch<React.SetStateAction<Fight[]>>
 }
 
-interface loadFightsParams {
-  jwt: string,
-  setFights: React.Dispatch<React.SetStateAction<Fight[]>>
-}
-
-export async function loadFight({ id, jwt, setFight }: loadFightParams) {
-  const client = new Client({ jwt })
-  const response = await client.getFight({ id })
-  if (response.status === 200) {
-    const data = await response.json()
-    setFight(defaultFight)
-    setFight(data)
-  }
-}
-
-export async function loadFights({jwt, setFights}: loadFightsParams) {
-  const client = new Client({ jwt })
-  const response = await client.getFights()
-  if (response.status === 200) {
-    const data = await response.json()
-    setFights([])
-    setFights(data)
-  }
-}
-
 export default function FightDetail({ fight, setFights }: FightParams) {
-  const session: any = useSession({ required: true })
-  const jwt = session?.data?.authorization
-  const client = new Client({ jwt })
+  const { reloadFights } = useFight()
+  const { client } = useClient()
   const { setToast } = useToast()
 
   async function deleteFight(fight: Fight) {
     const response = await client.deleteFight(fight)
     if (response.status === 200) {
       setToast({ open: true, message: `Fight ${fight.name} deleted`, severity: "error" })
-      loadFights({ jwt, setFights })
+      reloadFights({ setFights })
     }
   }
 

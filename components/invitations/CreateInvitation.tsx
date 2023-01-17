@@ -2,6 +2,7 @@ import { Stack, Box, Dialog, DialogTitle, DialogContent, DialogContentText, Dial
 
 import { useState } from "react"
 import { useToast } from "../../contexts/ToastContext"
+import { useClient } from "../../contexts/ClientContext"
 import Client from "../Client"
 import { useSession } from 'next-auth/react'
 import Router from 'next/router'
@@ -9,9 +10,7 @@ import Router from 'next/router'
 import type { Invitation } from "../../types/types"
 
 export default function CreateInvitation({ campaign:initialCampaign }: any) {
-  const session: any = useSession({ required: true })
-  const jwt = session?.data?.authorization
-  const client = new Client({ jwt })
+  const { client } = useClient()
   const { setToast } = useToast()
 
   const [campaign, setCampaign] = useState(initialCampaign)

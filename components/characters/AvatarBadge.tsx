@@ -2,14 +2,14 @@ import { Badge, Avatar, Box, Typography } from "@mui/material"
 import GamemasterOnly from '../GamemasterOnly'
 import DirectionsCarIcon from "@mui/icons-material/DirectionsCar"
 
-import type { Character } from "../../types/types"
+import type { User, Character } from "../../types/types"
 
 interface AvatarBadgeParams {
   character: Character,
-  session: any
+  user: User | null
 }
 
-export default function AvatarBadge({ character, session }: AvatarBadgeParams) {
+export default function AvatarBadge({ character, user }: AvatarBadgeParams) {
   const names = {
     "PC": "PC",
     "Ally": "Ally",
@@ -26,7 +26,7 @@ export default function AvatarBadge({ character, session }: AvatarBadgeParams) {
       <Badge color='error' badgeContent={character.impairments}>
         <Avatar sx={{bgcolor: character.color || 'secondary'}} variant="rounded">{character.name[0]}</Avatar>
       </Badge>
-      <GamemasterOnly user={session?.data?.user} character={character}>
+      <GamemasterOnly user={user} character={character}>
         <Box width={40} sx={{textAlign: 'center'}}>
           <Typography variant="caption" sx={{color: 'text.secondary'}}>{charType && names[charType]}</Typography>
         </Box>

@@ -14,8 +14,9 @@ import DeathMarks from "./DeathMarks"
 import PlayerTypeOnly from "../PlayerTypeOnly"
 
 import { useToast } from "../../contexts/ToastContext"
+import { useFight } from "../../contexts/FightContext"
+import { useClient } from "../../contexts/ClientContext"
 import { useSession } from 'next-auth/react'
-import { loadFight } from '../fights/FightDetail'
 import Client from "../Client"
 
 import type { Person, Fight, Character, Toast, ID } from "../../types/types"
@@ -29,10 +30,9 @@ interface CharacterModalParams {
   character: Person | null
 }
 
-export default function CharacterModal({ open, setOpen, fight, setFight, character:activeCharacter }: CharacterModalParams) {
-  const session: any = useSession({ required: true })
-  const jwt = session?.data?.authorization
-  const client = new Client({ jwt: jwt })
+export default function CharacterModal({ open, setOpen, character:activeCharacter }: CharacterModalParams) {
+  const { fight, setFight, reloadFight } = useFight()
+  const { client } = useClient()
   const { setToast } = useToast()
 
   const [saving, setSaving] = useState(false);
@@ -85,7 +85,7 @@ export default function CharacterModal({ open, setOpen, fight, setFight, charact
       setSaving(false)
       cancelForm()
       if (fight && setFight) {
-        await loadFight({jwt, id: fight.id as string, setFight})
+        await reloadFight(fight)
         if (newCharacter) {
           setToast({ open: true, message: `${character.name} created.`, severity: "success" })
         } else {

@@ -17,7 +17,7 @@ import { useState } from "react"
 export default function ShotCounter() {
   const [editingCharacter, setEditingCharacter] = useState<Person | Vehicle>(defaultCharacter)
   const [showHidden, setShowHidden] = useState<boolean>(false)
-  const [fight, setFight] = useFight()
+  const { fight, setFight } = useFight()
 
   return (
     <>

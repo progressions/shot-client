@@ -3,20 +3,18 @@ import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 import DeleteIcon from '@mui/icons-material/Delete'
 import { useState } from "react"
 import { useToast } from "../../contexts/ToastContext"
+import { useClient } from "../../contexts/ClientContext"
 import { useSession } from 'next-auth/react'
 import { useFight } from "../../contexts/FightContext"
 import Client from "../Client"
 import type { FightContextType } from "../../contexts/FightContext"
-import { loadFight } from '../fights/FightDetail'
 
 export default function Effects({ effects, severity }: any) {
   const [open, setOpen] = useState(false)
   const [anchorEl, setAnchorEl] = useState(null)
 
-  const [fight, setFight]:FightContextType = useFight()
-  const session: any = useSession({ required: true })
-  const jwt = session?.data?.authorization
-  const client = new Client({ jwt })
+  const { fight, setFight, reloadFight } = useFight()
+  const { jwt, client } = useClient()
   const { setToast } = useToast()
 
   const closePopover = () => {
@@ -32,7 +30,7 @@ export default function Effects({ effects, severity }: any) {
   const deleteEffect = async (effect: any) => {
     const response = await client.deleteEffect(effect, fight)
     if (response.status === 200) {
-      await loadFight({jwt, id: fight.id as string, setFight})
+      await reloadFight(fight)
       setToast({ open: true, message: `Effect ${effect.title} deleted.`, severity: "success" })
     }
   }

@@ -4,6 +4,7 @@ import Client from "../Client"
 
 import { defaultCampaign } from "../../types/types"
 import { useToast } from "../../contexts/ToastContext"
+import { useClient } from "../../contexts/ClientContext"
 import { useSession } from 'next-auth/react'
 
 import type { Campaign } from "../../types/types"
@@ -12,9 +13,7 @@ export default function CampaignModal({ open, setOpen, campaign:activeCampaign, 
   const [campaign, setCampaign] = useState(activeCampaign)
   const [saving, setSaving] = useState(false)
 
-  const session: any = useSession({ required: true })
-  const jwt = session?.data?.authorization
-  const client = new Client({ jwt: jwt })
+  const { client } = useClient()
   const { setToast } = useToast()
 
   const handleSubmit = async (event: any) => {

@@ -9,7 +9,7 @@ interface FightNameProps {
 }
 
 export default function FightName() {
-  const [fight, setFight] = useFight()
+  const { fight } = useFight()
 
   return (
     <>

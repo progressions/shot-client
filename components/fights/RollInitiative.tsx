@@ -7,19 +7,17 @@ import type { ShotType, Fight, Toast, Character, Person, Vehicle } from "../../t
 
 import { useFight } from "../../contexts/FightContext"
 import { useToast } from "../../contexts/ToastContext"
-import { loadFight } from './FightDetail'
+import { useClient } from "../../contexts/ClientContext"
 import { rollDie } from "../dice/DiceRoller"
 import Client from "../Client"
 
 export default function RollInitiative() {
-  const [fight, setFight] = useFight()
+  const { fight, setFight, reloadFight } = useFight()
   const [processing, setProcessing] = useState<boolean>(false)
 
-  const session: any = useSession({ required: true })
-  const jwt = session?.data?.authorization
-  const client = new Client({ jwt: jwt })
+  const { client } = useClient()
   const { setToast } = useToast()
-  const startOfSequence = useMemo(() => (fight?.shot_order?.[0]?.[0] === 0), [fight?.shot_order?.[0]?.[0]])
+  const startOfSequence = useMemo(() => (fight?.shot_order?.[0]?.[0] === 0), [fight.shot_order])
 
   const addSequence = async () => {
     const updatedFight = fight
@@ -27,7 +25,7 @@ export default function RollInitiative() {
 
     const response = await client.updateFight(updatedFight)
     if (response.status === 200) {
-      await loadFight({jwt, id: updatedFight.id as string, setFight})
+      await reloadFight(updatedFight)
       setToast({ open: true, message: `Sequence increased`, severity: "success" })
     }
   }
@@ -45,7 +43,7 @@ export default function RollInitiative() {
 
     await Promise.all(nonzeroShots.map(rollForShot))
 
-    await loadFight({jwt, id: fight.id as string, setFight})
+    await reloadFight(fight)
     setToast({ open: true, message: "Initiative updated", severity: "success" })
     setProcessing(false)
   }

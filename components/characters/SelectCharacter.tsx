@@ -1,7 +1,6 @@
 import { useMemo, useState, useEffect } from 'react'
 import { IconButton, Typography, Stack, Popover, Autocomplete, Box, TextField, MenuItem, Dialog, DialogActions, DialogTitle, DialogContent, DialogContentText, Button } from '@mui/material'
 import { useSession } from 'next-auth/react'
-import { loadFight } from '../fights/FightDetail'
 import Client from "../Client"
 
 import PersonIcon from '@mui/icons-material/Person'
@@ -9,21 +8,21 @@ import PersonAddIcon from '@mui/icons-material/PersonAdd'
 import DirectionsCarFilledIcon from '@mui/icons-material/DirectionsCarFilled'
 
 import { useToast } from "../../contexts/ToastContext"
+import { useClient } from "../../contexts/ClientContext"
 import { useFight } from "../../contexts/FightContext"
 import type { Fight, Character, Vehicle } from "../../types/types"
 import { defaultCharacter } from "../../types/types"
 
 export default function SelectCharacter() {
-  const session: any = useSession({ required: true })
-  const jwt = session?.data?.authorization
-  const client = useMemo(() => (new Client({ jwt })), [jwt])
-
+  const { jwt, client } = useClient()
   const { setToast } = useToast()
-  const [fight, setFight] = useFight()
+  const { fight, setFight, reloadFight } = useFight()
+
   const [open, setOpen] = useState<boolean>(false)
   const [anchorEl, setAnchorEl] = useState<any>(null)
   const [value, setValue] = useState<Character>(defaultCharacter)
   const [characters, setCharacters] = useState<Character[]>([])
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     if (jwt) {
@@ -51,10 +50,12 @@ export default function SelectCharacter() {
       }
 
       const fetchAndSetOptions = async () => {
+        setLoading(true)
         const chars = await fetchCharacters()
         const vehicles = await fetchVehicles()
 
         setCharacters(chars.concat(vehicles))
+        setLoading(false)
       }
 
       fetchAndSetOptions()
@@ -96,7 +97,7 @@ export default function SelectCharacter() {
     const character = await response.json()
     setToast({ open: true, message: `${character.name} added.`, severity: "success" })
     setValue(defaultCharacter)
-    await loadFight({jwt, id: fight.id as string, setFight})
+    await reloadFight(fight)
   }
 
   const getOptionLabel = (character: any) => {
@@ -130,6 +131,7 @@ export default function SelectCharacter() {
         <Box component="form" onSubmit={handleSubmit} sx={{width: 400}} p={2}>
           <Stack direction="row" spacing={1}>
             <Autocomplete
+              disabled={loading}
               freeSolo
               options={characters}
               sx={{ width: 300 }}
