@@ -109,7 +109,6 @@ export default function Campaigns({ campaigns:initialCampaigns }: any) {
   }
 
   const startStopCampaignButton = (campaign: Campaign, current: Campaign | null) => {
-    console.log({ current })
     if (campaign.id === current?.id) {
       return (
         <IconButton onClick={() => startCampaign(null)}>

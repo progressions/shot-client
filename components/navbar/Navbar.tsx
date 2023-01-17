@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Container } from "@mui/material"
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -16,6 +17,7 @@ import Tooltip from '@mui/material/Tooltip'
 import Stack from '@mui/material/Stack'
 import AuthButton from "./AuthButton"
 import Client from "../Client"
+import CurrentCampaign from "../campaigns/CurrentCampaign"
 
 import type { Campaign, User } from "../../types/types"
 
@@ -76,9 +78,11 @@ export default function Navbar() {
               </Link>
             </Typography>
           )}
-          <Typography color="inherit">CURRENT CAMPAIGN {campaign?.title}</Typography>
           <AuthButton status={status} user={user || {}} />
         </Toolbar>
+        <Box sx={{ backgroundColor: "secondary.main" }} p={1}>
+          <CurrentCampaign />
+        </Box>
       </AppBar>
     </Box>
   );
