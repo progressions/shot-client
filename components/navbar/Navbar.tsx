@@ -51,7 +51,7 @@ export default function Navbar() {
             <MenuIcon />
           </IconButton>
           <Link color="inherit" href='/'>
-            <Image src="/ChiWar.svg" width="120" height="40" style={{marginTop: 5, marginRight: 10}} />
+            <Image src="/ChiWar.svg" alt="ChiWar" width="120" height="40" style={{marginTop: 5, marginRight: 10}} />
           </Link>
           <Typography variant="h6" component="div" paddingRight={2} sx={{ minWith: 100 }}>
             <Link color="inherit" href='/characters'>
