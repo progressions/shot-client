@@ -48,7 +48,7 @@ export default function Shot({ shot, characters, editingCharacter, setEditingCha
             <ShotButton shot={shot} />
             <GroupedEffects key={`effects_${shot}`} fight={fight} shot={shot} />
             <GamemasterOnly user={session?.data?.user}>
-              { shot > 0 && <IconButton onClick={() => { setOpen(false); setOpenEffectDialog(true) }}>
+              { shot > 0 && <IconButton color="primary" onClick={() => { setOpen(false); setOpenEffectDialog(true) }}>
                 <AddCircleOutlineOutlinedIcon />
               </IconButton> }
             </GamemasterOnly>
@@ -67,9 +67,3 @@ export default function Shot({ shot, characters, editingCharacter, setEditingCha
     </>
   )
 }
-
-/*
-            {
-              effectsForShot(fight, shot).map((effect) => <EffectDetail effect={effect} key={effect.id} />)
-            }
-            */

@@ -63,12 +63,12 @@ export default function FightDetail({ fight, setFights }: FightParams) {
         <GamemasterOnly user={user}>
           <Stack direction="row">
             <Tooltip title={fight.active? "Hide" : "Show"}>
-              <IconButton onClick={() => toggleVisibility(fight)}>
+              <IconButton color="primary" onClick={() => toggleVisibility(fight)}>
                 { !fight.active ? <VisibilityOffIcon /> : <VisibilityIcon /> }
               </IconButton>
             </Tooltip>
             <Tooltip title="Delete">
-              <IconButton onClick={() => deleteFight(fight)}>
+              <IconButton color="primary" onClick={() => deleteFight(fight)}>
                 <DeleteIcon />
               </IconButton>
             </Tooltip>

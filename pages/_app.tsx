@@ -12,7 +12,7 @@ import { GlobalStyles, createTheme, colors, ThemeProvider } from "@mui/material"
 const theme = createTheme({
   palette: {
     primary: {
-      main: colors.deepPurple[800]
+      main: colors.blue[800]
     },
     secondary: {
       main: colors.red[600]
@@ -20,6 +20,15 @@ const theme = createTheme({
     common: {
       black: colors.grey[50],
       white: colors.grey[900]
+    },
+    text: {
+      primary: colors.grey[100],
+      secondary: colors.grey[200],
+      disabled: colors.grey[300]
+    },
+    background: {
+      paper: colors.blueGrey[800],
+      default: colors.blueGrey[900]
     }
   }
 })
@@ -27,7 +36,7 @@ const theme = createTheme({
 export default function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   return (
       <ThemeProvider theme={theme}>
-        <GlobalStyles styles={{zbody: {backgroundColor: "black", color: "white"}}} />
+        <GlobalStyles styles={{body: {backgroundColor: colors.blueGrey[900], color: colors.blueGrey[100]}}} />
         <SessionProvider session={session}>
           <ClientProvider>
             <CampaignProvider>

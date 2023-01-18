@@ -72,7 +72,7 @@ export default function Navbar() {
           )}
           <AuthButton status={session?.status} user={user || {}} />
         </Toolbar>
-        <Box sx={{ backgroundColor: "secondary.main" }} p={1}>
+        <Box sx={{ backgroundColor: "primary.dark" }} p={1}>
           <CurrentCampaign />
         </Box>
       </AppBar>

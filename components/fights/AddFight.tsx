@@ -54,7 +54,7 @@ export default function AddFight({ setFights }: AddFightProps) {
         <Box m={1} mb={4} component="form" onSubmit={handleSubmit}>
           <Stack spacing={1}>
             <Stack direction="row" mb={1}>
-              <Button variant="outlined" endIcon={<KeyboardDoubleArrowUpIcon />} onClick={() => cancelForm()}>Add Fight</Button>
+              <Button color="primary" variant="outlined" endIcon={<KeyboardDoubleArrowUpIcon />} onClick={() => cancelForm()}>Add Fight</Button>
             </Stack>
             <Stack direction="row">
               <Typography variant="h4">Add Fight</Typography>
@@ -64,8 +64,8 @@ export default function AddFight({ setFights }: AddFightProps) {
                 <TextField label="Fight" autoFocus required name="name" value={fight.name} onChange={handleChange} />
               </Stack>
               <Stack spacing={2} direction="row">
-                <Button variant="outlined" disabled={saving} onClick={cancelForm}>Cancel</Button>
-                <Button variant="contained" type="submit" disabled={saving}>Save Changes</Button>
+                <Button color="primary" variant="outlined" disabled={saving} onClick={cancelForm}>Cancel</Button>
+                <Button color="primary" variant="contained" type="submit" disabled={saving}>Save Changes</Button>
               </Stack>
             </Stack>
           </Stack>
@@ -76,7 +76,7 @@ export default function AddFight({ setFights }: AddFightProps) {
     return (
       <>
         <Stack direction="row" mb={1}>
-          <Button color="secondary" variant="outlined" endIcon={<KeyboardDoubleArrowDownIcon />} onClick={() => setOpen(true)}>Add Fight</Button>
+          <Button color="primary" variant="contained" endIcon={<KeyboardDoubleArrowDownIcon />} onClick={() => setOpen(true)}>Add Fight</Button>
         </Stack>
       </>
     )
