@@ -1,5 +1,5 @@
 import { MouseEventHandler, useState, useEffect } from 'react'
-import { Tooltip, Typography, DialogActions, FormControlLabel, MenuItem, Checkbox, InputAdornment, Dialog, DialogTitle, DialogContent, DialogContentText, Box, Stack, TextField, Button, Paper, Popover } from '@mui/material'
+import { Switch, Tooltip, Typography, DialogActions, FormControlLabel, MenuItem, Checkbox, InputAdornment, Dialog, DialogTitle, DialogContent, DialogContentText, Box, Stack, TextField, Button, Paper, Popover } from '@mui/material'
 import FavoriteIcon from '@mui/icons-material/Favorite'
 import PeopleIcon from '@mui/icons-material/People'
 
@@ -54,6 +54,10 @@ export default function CharacterModal({ open, setOpen, character:activeCharacte
     setCharacter((prevState: Person) => ({ ...prevState, [event.target.name]: event.target.value }))
   }
 
+  const handleCheck = (event: any) => {
+    setCharacter((prevState: Person) => ({ ...prevState, [event.target.name]: event.target.checked }))
+  }
+
   const handleAVChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { action_values } = character || {}
     setCharacter((prevState: Person) => ({ ...prevState, action_values: { ...action_values, [event.target.name]: event.target.value } }))
@@ -84,13 +88,13 @@ export default function CharacterModal({ open, setOpen, character:activeCharacte
       setCharacter(data)
       setSaving(false)
       cancelForm()
-      if (fight && setFight) {
+      if (newCharacter) {
+        setToast({ open: true, message: `${character.name} created.`, severity: "success" })
+      } else {
+        setToast({ open: true, message: `${character.name} updated.`, severity: "success" })
+      }
+      if (fight?.id && setFight) {
         await reloadFight(fight)
-        if (newCharacter) {
-          setToast({ open: true, message: `${character.name} created.`, severity: "success" })
-        } else {
-          setToast({ open: true, message: `${character.name} updated.`, severity: "success" })
-        }
       } else {
         Router.reload()
       }
@@ -141,11 +145,12 @@ export default function CharacterModal({ open, setOpen, character:activeCharacte
               <Stack direction="row" spacing={2}>
                 <CharacterType value={character.action_values?.['Type'] as string || ''} onChange={handleAVChange} />
                 { character.action_values["Type"] === "PC" && <TextField name="Archetype" label="Archetype" fullWidth value={character.action_values["Archetype"]} onChange={handleAVChange} /> }
+                <FormControlLabel label="Active" name="active" control={<Switch checked={character.active} />} onChange={handleCheck} />
               </Stack>
               <Stack direction="row" spacing={2}>
                 <TextField autoFocus label="Name" variant="filled" size="medium" sx={{paddingBottom: 2}} fullWidth required name="name" value={character.name} onChange={handleChange} />
                 { fight &&
-                <TextField label="Shot" type="number" name="current_shot" value={character.current_shot === null ? '' : character.current_shot} onChange={handleChange} sx={{width: 80}} /> }
+                <TextField label="Shot" type="number" name="current_shot" value={character.current_shot === null ? '' : (character.current_shot || '')} onChange={handleChange} sx={{width: 80}} /> }
               </Stack>
               <Stack spacing={2} direction="row" alignItems='center'>
                 <TextField label={woundsLabel}

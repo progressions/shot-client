@@ -6,7 +6,7 @@ class Api {
   api():string { return `${this.base()}/api/v1` }
 
   fights(fight?: Fight | ID | undefined): string {
-    if (fight) {
+    if (fight?.id) {
       return `${this.api()}/fights/${fight.id}`
     } else {
       return `${this.api()}/fights`
@@ -14,7 +14,7 @@ class Api {
   }
 
   characters(fight?: Fight | null, character?: Character | ID): string {
-    if (!fight) {
+    if (!fight?.id) {
       return this.allCharacters(character)
     }
     if (character?.id) {
@@ -25,7 +25,7 @@ class Api {
   }
 
   vehicles(fight?: Fight | null, vehicle?: Vehicle | ID): string {
-    if (!fight) {
+    if (!fight?.id) {
       return this.allVehicles(vehicle)
     }
     if (vehicle?.id) {

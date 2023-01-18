@@ -5,7 +5,7 @@ import Client from "../components/Client"
 import { useState } from "react"
 import Router from "next/router"
 
-import { Stack, Avatar, Box, TableContainer, Table, TableHead, TableBody, TableRow, TableCell, Container, Typography } from "@mui/material"
+import { Switch, FormControlLabel, Stack, Avatar, Box, TableContainer, Table, TableHead, TableBody, TableRow, TableCell, Container, Typography } from "@mui/material"
 
 import { authOptions } from "./api/auth/[...nextauth]"
 import { unstable_getServerSession } from "next-auth/next"
@@ -18,6 +18,7 @@ import CharacterModal from "../components/characters/CharacterModal"
 import AvatarBadge from "../components/characters/AvatarBadge"
 import CreateCharacter from "../components/characters/CreateCharacter"
 import CharacterFilters from "../components/characters/CharacterFilters"
+import GamemasterOnly from "../components/GamemasterOnly"
 
 import { useToast } from "../contexts/ToastContext"
 import { useClient } from "../contexts/ClientContext"
@@ -71,9 +72,14 @@ export default function Characters({ characters:initialCharacters, jwt }: Charac
     name: null
   })
   const { setToast } = useToast()
+  const [showHidden, setShowHidden] = useState<boolean>(false)
 
   function editCharacter(character: Character): void {
     setEditingCharacter(character)
+  }
+
+  const show = (event: React.SyntheticEvent<Element, Event>, checked: boolean) => {
+    setShowHidden(checked)
   }
 
   async function deleteCharacter(character: Character): Promise<void> {
@@ -100,8 +106,13 @@ export default function Characters({ characters:initialCharacters, jwt }: Charac
     }
   }
 
+  const characterVisibility = (character: Character): boolean => {
+    return (showHidden || character.active)
+  }
+
   const filteredCharacters = (characters: Character[]): Character[] => {
     return characters
+      .filter(characterVisibility)
       .filter(characterMatchesType)
       .filter(characterMatchesName)
   }
@@ -126,10 +137,13 @@ export default function Characters({ characters:initialCharacters, jwt }: Charac
         <Layout>
           <Container maxWidth="lg">
             <Typography variant="h1" gutterBottom>Characters</Typography>
-            <Stack direction="row" spacing={2} alignItems="center">
-              <CharacterFilters filters={filters} setFilters={setFilters} />
-              <CreateCharacter />
-            </Stack>
+            <GamemasterOnly user={user}>
+              <Stack direction="row" spacing={2} alignItems="center">
+                <CharacterFilters filters={filters} setFilters={setFilters} />
+                <CreateCharacter />
+                <FormControlLabel label="Show Hidden" control={<Switch checked={showHidden} />} onChange={show} />
+              </Stack>
+            </GamemasterOnly>
             <TableContainer>
               <Table size="small">
                 <TableHead>
