@@ -69,6 +69,7 @@ export type Character = Vehicle | Person
 export interface Vehicle {
   id?: string,
   name: string,
+  active: active,
   current_shot?: number | string,
   impairments: number,
   color: string,
@@ -83,6 +84,7 @@ export interface Vehicle {
 export interface Person {
   id?: string,
   name: string,
+  active: boolean,
   current_shot?: number | string,
   impairments: number,
   color: string,
@@ -150,6 +152,7 @@ export interface ServerSideProps {
 export const defaultCharacter:Person = {
   name: '',
   category: "character",
+  active: true,
   current_shot: 0,
   impairments: 0,
   color: '',
@@ -180,6 +183,7 @@ export const defaultCharacter:Person = {
 
 export const defaultVehicle:Vehicle = {
   name: '',
+  active: true,
   category: "vehicle",
   current_shot: '',
   impairments: 0,
