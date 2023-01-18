@@ -12,7 +12,7 @@ export default function EditActionValues({ character, onChange }: EditActionValu
   return (
     <>
       <Stack direction="row" spacing={2}>
-        <TextField select fullWidth label="Main Attack" name="MainAttack" value={character.action_values["MainAttack"]} onChange={onChange}>
+        <TextField select fullWidth label="Main Attack" name="MainAttack" value={character.action_values["MainAttack"] || "Guns"} onChange={onChange}>
           <MenuItem value="Guns">Guns</MenuItem>
           <MenuItem value="Martial Arts">Martial Arts</MenuItem>
           <MenuItem value="Scroungetech">Scroungetech</MenuItem>

@@ -1,5 +1,5 @@
 import { MouseEventHandler, useState, useEffect } from 'react'
-import { FormControl, FormLabel, RadioGroup, DialogActions, DialogContent, DialogTitle, FormControlLabel, Checkbox, InputAdornment, Dialog, Box, Stack, TextField, Button, Paper, Popover } from '@mui/material'
+import { Switch, FormControl, FormLabel, RadioGroup, DialogActions, DialogContent, DialogTitle, FormControlLabel, Checkbox, InputAdornment, Dialog, Box, Stack, TextField, Button, Paper, Popover } from '@mui/material'
 import FavoriteIcon from '@mui/icons-material/Favorite'
 import CommuteIcon from '@mui/icons-material/Commute'
 import CarCrashIcon from '@mui/icons-material/CarCrash'
@@ -55,6 +55,10 @@ export default function CharacterModal({ open, setOpen, character:activeVehicle 
     setCharacter((prevState: Vehicle) => ({ ...prevState, [event.target.name]: event.target.value }))
   }
 
+  const handleCheck = (event: any) => {
+    setCharacter((prevState: Person) => ({ ...prevState, [event.target.name]: event.target.checked }))
+  }
+
   const handleAVChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     console.log("value", event.target.value)
     const { action_values } = character || {}
@@ -86,13 +90,13 @@ export default function CharacterModal({ open, setOpen, character:activeVehicle 
       setCharacter(data)
       setSaving(false)
       cancelForm()
-      if (fight) {
+      if (newVehicle) {
+        setToast({ open: true, message: `${character.name} created.`, severity: "success" })
+      } else {
+        setToast({ open: true, message: `${character.name} updated.`, severity: "success" })
+      }
+      if (fight?.id) {
         await reloadFight(fight)
-        if (newVehicle) {
-          setToast({ open: true, message: `${character.name} created.`, severity: "success" })
-        } else {
-          setToast({ open: true, message: `${character.name} updated.`, severity: "success" })
-        }
       } else {
         Router.reload()
       }
@@ -131,6 +135,7 @@ export default function CharacterModal({ open, setOpen, character:activeVehicle 
             <Stack spacing={2}>
               <Stack direction="row" spacing={2}>
                 <CharacterType value={character.action_values?.['Type'] as string || ''} onChange={handleAVChange} />
+                <FormControlLabel label="Active" name="active" control={<Switch checked={character.active} />} onChange={handleCheck} />
               </Stack>
               <Stack direction="row" spacing={2}>
                 <TextField autoFocus label="Name" variant="filled" size="medium" sx={{paddingBottom: 2}} fullWidth required name="name" value={character.name} onChange={handleChange} />
