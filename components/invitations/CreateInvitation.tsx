@@ -57,7 +57,7 @@ export default function CreateInvitation({ campaign:initialCampaign }: any) {
 
   return (
     <>
-      <Button variant="contained" onClick={handleOpen}>Create Invitation</Button>
+      <Button variant="contained" onClick={handleOpen}>Invite User</Button>
       <Dialog
         open={open}
         onClose={cancelForm}

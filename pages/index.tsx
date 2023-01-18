@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import Image from 'next/image'
 import { Inter } from '@next/font/google'
-import { Snackbar, Alert, Link, Button, Paper, Container, Table, TableContainer, TableBody, TableHead, TableRow, TableCell, Typography } from '@mui/material'
+import { Switch, FormControlLabel, Stack, Snackbar, Alert, Link, Button, Paper, Container, Table, TableContainer, TableBody, TableHead, TableRow, TableCell, Typography } from '@mui/material'
 import AddFight from '../components/fights/AddFight'
 import FightDetail from '../components/fights/FightDetail'
 import Layout from '../components/Layout'
@@ -19,7 +19,9 @@ import { GetServerSideProps } from 'next'
 import { InferGetServerSidePropsType } from 'next'
 
 import { useToast } from "../contexts/ToastContext"
+import { useClient } from "../contexts/ClientContext"
 import { useCampaign } from "../contexts/CampaignContext"
+import GamemasterOnly from "../components/GamemasterOnly"
 
 import type { Campaign, Fight, Toast, ServerSideProps } from "../types/types"
 
@@ -67,6 +69,17 @@ export default function Home({ currentCampaign, fights:initialFights }: HomeProp
   const [fights, setFights] = useState<Fight[]>(initialFights)
   const { status, data }: any = useSession({ required: true })
   const { toast, closeToast } = useToast()
+  const [showHidden, setShowHidden] = useState<boolean>(false)
+  const { user } = useClient()
+
+  const filterFights = (fights: Fight[], showHidden: boolean) => {
+    if (showHidden) return fights
+    return fights.filter((fight: Fight) => (fight.active))
+  }
+
+  const show = (event: React.SyntheticEvent<Element, Event>, checked: boolean) => {
+    setShowHidden(checked)
+  }
 
   if (status !== "authenticated") {
     return <div>Loading...</div>
@@ -83,7 +96,12 @@ export default function Home({ currentCampaign, fights:initialFights }: HomeProp
         <Layout>
           <Container maxWidth="md">
             <Typography variant="h1" gutterBottom>Fights</Typography>
-            <AddFight setFights={setFights} />
+            <Stack direction="row" spacing={2}>
+              <GamemasterOnly user={user}>
+                <AddFight setFights={setFights} />
+                <FormControlLabel label="Show Hidden" control={<Switch checked={showHidden} />} onChange={show} />
+              </GamemasterOnly>
+            </Stack>
             <TableContainer>
               <Table size="small">
                 <TableHead>
@@ -95,7 +113,7 @@ export default function Home({ currentCampaign, fights:initialFights }: HomeProp
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {fights.map((fight: Fight) => <FightDetail fight={fight} key={fight.id} setFights={setFights} />)}
+                  {filterFights(fights, showHidden).map((fight: Fight) => <FightDetail fight={fight} key={fight.id} setFights={setFights} />)}
                 </TableBody>
               </Table>
             </TableContainer>
