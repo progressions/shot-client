@@ -1,7 +1,8 @@
 import { useMemo, useState, useEffect } from 'react'
-import { IconButton, Typography, Stack, Popover, Autocomplete, Box, TextField, MenuItem, Dialog, DialogActions, DialogTitle, DialogContent, DialogContentText, Button } from '@mui/material'
+import { FormControlLabel, Switch, IconButton, Typography, Stack, Popover, Autocomplete, Box, TextField, MenuItem, Dialog, DialogActions, DialogTitle, DialogContent, DialogContentText, Button } from '@mui/material'
 import { useSession } from 'next-auth/react'
 import Client from "../Client"
+import GamemasterOnly from "../GamemasterOnly"
 
 import PersonIcon from '@mui/icons-material/Person'
 import PersonAddIcon from '@mui/icons-material/PersonAdd'
@@ -14,7 +15,7 @@ import type { Fight, Character, Vehicle } from "../../types/types"
 import { defaultCharacter } from "../../types/types"
 
 export default function SelectCharacter() {
-  const { jwt, client } = useClient()
+  const { user, client } = useClient()
   const { setToast } = useToast()
   const { fight, setFight, reloadFight } = useFight()
 
@@ -23,9 +24,14 @@ export default function SelectCharacter() {
   const [value, setValue] = useState<Character>(defaultCharacter)
   const [characters, setCharacters] = useState<Character[]>([])
   const [loading, setLoading] = useState(false)
+  const [showHidden, setShowHidden] = useState(false)
 
   useEffect(() => {
-    if (jwt) {
+    if (user) {
+      const characterVisibility = (character: Character) => {
+        return (showHidden || character.active)
+      }
+
       const fetchVehicles = async () => {
         const response = await client.getAllVehicles()
         const vehicles = await response.json()
@@ -33,7 +39,7 @@ export default function SelectCharacter() {
         const ids = fight?.vehicles?.map((vehicle: Vehicle) => vehicle.id)
         const availableVehicles = vehicles.filter((vehicle: Vehicle) => {
           return !ids?.includes(vehicle.id)
-        })
+        }).filter(characterVisibility)
 
         return availableVehicles
       }
@@ -44,7 +50,7 @@ export default function SelectCharacter() {
         const ids = fight?.characters?.map((char: Character) => char.id)
         const availableChars = chars.filter((char: Character) => {
           return !ids?.includes(char.id)
-        })
+        }).filter(characterVisibility)
 
         return availableChars
       }
@@ -61,12 +67,16 @@ export default function SelectCharacter() {
       fetchAndSetOptions()
         .catch(console.error)
     }
-  }, [jwt, fight, client])
+  }, [user, fight, client, showHidden])
 
   const handleOpen = async (event: any) => {
     setValue(defaultCharacter)
     setOpen(true)
     setAnchorEl(event.target)
+  }
+
+  const show = (event: React.SyntheticEvent<Element, Event>, checked: boolean) => {
+    setShowHidden(checked)
   }
 
   const handleChange = (event: any, newValue: any) => {
@@ -143,6 +153,9 @@ export default function SelectCharacter() {
             <Button type="submit" size="small" variant="contained">
               <PersonAddIcon />
             </Button>
+            <GamemasterOnly user={user}>
+              <FormControlLabel label="All" control={<Switch checked={showHidden} />} onChange={show} />
+            </GamemasterOnly>
           </Stack>
         </Box>
       </Popover>
