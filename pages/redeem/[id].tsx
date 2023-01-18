@@ -5,7 +5,7 @@ import URL from "node:url"
 import Router from 'next/router'
 import { useEffect, useState } from "react"
 
-import { TextField, Button, Box, Stack, TableContainer, Table, TableRow, TableHead, TableBody, TableCell, Container, Typography } from "@mui/material"
+import { Link, TextField, Button, Box, Stack, TableContainer, Table, TableRow, TableHead, TableBody, TableCell, Container, Typography } from "@mui/material"
 
 import { useSession } from 'next-auth/react'
 import { authOptions } from '../api/auth/[...nextauth]'
@@ -17,6 +17,7 @@ import { GetServerSideProps } from 'next'
 import Navbar from "../../components/navbar/Navbar"
 import * as cookie from 'cookie'
 import { signIn, signOut } from 'next-auth/react'
+import { useClient } from "../../contexts/ClientContext"
 
 import { Invitation, User, Campaign } from "../../types/types"
 
@@ -52,14 +53,11 @@ export default function RedeemInvitation({ invitation }: any) {
   const [user, setUser] = useState<User>({email: invitation?.email} as User)
   const [saving, setSaving] = useState(false)
   const [success, setSuccess] = useState(false)
-  const session: any = useSession({ required: false })
+  const { user:currentUser, session } = useClient()
 
   useEffect(() => {
-    if (invitation.pending_user.id && session.status !== "authenticated") {
-      Router.replace("/auth/signin")
-    }
-    if (session?.data?.user) {
-      setUser(session?.data?.user)
+    if (invitation.pending_user?.id) {
+      setUser(invitation.pending_user)
     }
   }, [session.status, session?.data?.user, invitation])
 
@@ -105,14 +103,19 @@ export default function RedeemInvitation({ invitation }: any) {
           <Typography variant="h2" gutterBottom>Welcome</Typography>
           { success &&
             <Box my={2}>
-              <Typography>{session?.data?.user?.email}</Typography>
-              <Typography>You have joined the campaign </Typography>
+              <Typography variant="h5">{session?.data?.user?.email}</Typography>
+              <Typography>
+                You have joined the campaign.
+              </Typography>
+              <Link href="/auth/signin">Click here</Link> to sign in.
               <Typography variant="h3" gutterBottom>{invitation.campaign.title}</Typography>
             </Box> }
-          { !success && session.status === "authenticated" &&
+          { !success && invitation.pending_user?.id &&
             <Box my={2}>
-              <Typography>{session?.data?.user?.email}</Typography>
-              <Typography>You&rsquo;ve been invited to the campaign </Typography>
+              <Typography>{invitation.email}</Typography>
+              <Typography>
+                You&rsquo;ve been invited to the campaign.
+              </Typography>
               <Typography variant="h3" gutterBottom>{invitation.campaign.title}</Typography>
               <Box component="form" onSubmit={handleSubmit}>
                 <Stack spacing={2} direction="row">
@@ -120,7 +123,7 @@ export default function RedeemInvitation({ invitation }: any) {
                 </Stack>
               </Box>
             </Box> }
-          { !success && session.status !== "authenticated" && 
+          { !success && !invitation.pending_user && session.status !== "authenticated" && 
             <Box component="form" onSubmit={handleSubmit}>
               <Typography>You&rsquo;ve been invited to </Typography>
               <Typography variant="h3" gutterBottom>{invitation.campaign.title}</Typography>
