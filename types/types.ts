@@ -109,6 +109,7 @@ export type ShotType = [number, Character[]]
 
 export interface Fight {
   id?: string
+  active: boolean
   name?: string
   sequence: number
   effects: Effect[]
@@ -200,6 +201,7 @@ export const defaultVehicle:Vehicle = {
 
 export const defaultFight:Fight = {
   name: '',
+  active: true,
   sequence: 1,
   effects: [],
   characters: [],

@@ -37,7 +37,7 @@ export default function FightDetail({ fight, setFights }: FightParams) {
   }
 
   async function toggleVisibility(fight: Fight) {
-    const response = await client.updateFight({ ...fight, active: !fight.active })
+    const response = await client.updateFight({ ...fight, "active": !fight.active })
     if (response.status === 200) {
       setToast({ open: true, message: `Fight ${fight.name} updated`, severity: "success" })
       reloadFights({ setFights })
