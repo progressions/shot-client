@@ -2,7 +2,7 @@ import Layout from '../../components/Layout'
 import Head from 'next/head'
 
 import { useCallback, useMemo, useEffect, useState } from "react"
-import { IconButton, Button, Stack, Link, Container, Typography, TableContainer, Table, TableHead, TableBody, TableRow, TableCell } from "@mui/material"
+import { Paper, IconButton, Button, Stack, Link, Container, Typography, TableContainer, Table, TableHead, TableBody, TableRow, TableCell } from "@mui/material"
 import Client from '../../components/Client'
 import DeleteIcon from '@mui/icons-material/Delete'
 import PlayCircleIcon from '@mui/icons-material/PlayCircle'
@@ -111,13 +111,13 @@ export default function Campaigns({ campaigns:initialCampaigns }: any) {
   const startStopCampaignButton = (campaign: Campaign, current: Campaign | null) => {
     if (campaign.id === current?.id) {
       return (
-        <IconButton onClick={() => startCampaign(null)}>
+        <IconButton color="primary" onClick={() => startCampaign(null)}>
           <StopCircleIcon />
         </IconButton>
       )
     }
     return (
-      <IconButton onClick={() => startCampaign(campaign)}>
+      <IconButton color="primary" onClick={() => startCampaign(campaign)}>
         <PlayCircleIcon />
       </IconButton>
     )
@@ -137,7 +137,7 @@ export default function Campaigns({ campaigns:initialCampaigns }: any) {
             <Typography variant="h1" gutterBottom>Campaigns</Typography>
             <CreateCampaign reload={getCampaigns} />
             <TableContainer>
-              <Table size="small">
+              <Table size="small" component={Paper}>
                 <TableHead>
                   <TableRow>
                     <TableCell>Campaign</TableCell>
@@ -156,7 +156,7 @@ export default function Campaigns({ campaigns:initialCampaigns }: any) {
                           </TableCell>
                           <TableCell>
                             { startStopCampaignButton(campaign, currentCampaign) }
-                            <IconButton onClick={() => deleteCampaign(campaign)}>
+                            <IconButton color="primary" onClick={() => deleteCampaign(campaign)}>
                               <DeleteIcon />
                             </IconButton>
                           </TableCell>

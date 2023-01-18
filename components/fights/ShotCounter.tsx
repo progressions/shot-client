@@ -1,4 +1,4 @@
-import { TableContainer, Table, TableHead, TableBody, TableRow, TableCell } from "@mui/material"
+import { Paper, TableContainer, Table, TableHead, TableBody, TableRow, TableCell } from "@mui/material"
 
 import { useFight } from "../../contexts/FightContext"
 import FightName from "./FightName"
@@ -23,8 +23,8 @@ export default function ShotCounter() {
     <>
       <FightName />
       <FightToolbar showHidden={showHidden} setShowHidden={setShowHidden} />
-      <TableContainer>
-        <Table sx={{minWidth: 900, maxWidth: 1000}}>
+      <TableContainer component={Paper}>
+        <Table>
           <TableHead>
             <TableRow>
               <TableCell colSpan={4}>

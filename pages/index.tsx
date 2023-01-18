@@ -105,7 +105,7 @@ export default function Home({ currentCampaign, fights:initialFights }: HomeProp
               </GamemasterOnly>
             </Stack>
             { !!filteredFights.length &&
-              <TableContainer>
+              <TableContainer component={Paper}>
                 <Table size="small">
                   <TableHead>
                     <TableRow sx={{"& th": { color: "text.secondary" }}}>
