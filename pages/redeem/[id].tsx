@@ -89,6 +89,12 @@ export default function RedeemInvitation({ invitation }: any) {
     // redirect to the login page
   }
 
+  console.log({
+    success: success,
+    pending_user: invitation.pending_user,
+    session_status: session.status
+  })
+
   return (
     <>
       <Head>
@@ -107,7 +113,9 @@ export default function RedeemInvitation({ invitation }: any) {
               <Typography>
                 You have joined the campaign.
               </Typography>
-              <Link href="/auth/signin">Click here</Link> to sign in.
+              <Typography>
+                <Link href="/auth/signin">Click here</Link> to sign in.
+              </Typography>
               <Typography variant="h3" gutterBottom>{invitation.campaign.title}</Typography>
             </Box> }
           { !success && invitation.pending_user?.id &&
@@ -123,7 +131,7 @@ export default function RedeemInvitation({ invitation }: any) {
                 </Stack>
               </Box>
             </Box> }
-          { !success && !invitation.pending_user && session.status !== "authenticated" && 
+          { !success && !invitation.pending_user?.id && session.status !== "authenticated" &&
             <Box component="form" onSubmit={handleSubmit}>
               <Typography>You&rsquo;ve been invited to </Typography>
               <Typography variant="h3" gutterBottom>{invitation.campaign.title}</Typography>
