@@ -56,7 +56,7 @@ export default function CharacterModal({ open, setOpen, character:activeVehicle 
   }
 
   const handleCheck = (event: any) => {
-    setCharacter((prevState: Person) => ({ ...prevState, [event.target.name]: event.target.checked }))
+    setCharacter((prevState: Vehicle) => ({ ...prevState, [event.target.name]: event.target.checked }))
   }
 
   const handleAVChange = (event: React.ChangeEvent<HTMLInputElement>) => {

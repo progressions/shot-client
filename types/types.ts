@@ -67,31 +67,31 @@ export interface ID {
 export type Character = Vehicle | Person
 
 export interface Vehicle {
-  id?: string,
-  name: string,
-  active: active,
-  current_shot?: number | string,
-  impairments: number,
-  color: string,
-  action_values: VehicleActionValues,
-  user?: User,
-  created_at?: string,
-  updated_at?: string,
+  id?: string
+  name: string
+  active: boolean
+  current_shot?: number | string
+  impairments: number
+  color: string
+  action_values: VehicleActionValues
+  user?: User
+  created_at?: string
+  updated_at?: string
   new?: boolean
   category: "character" | "vehicle"
 }
 
 export interface Person {
-  id?: string,
-  name: string,
-  active: boolean,
-  current_shot?: number | string,
-  impairments: number,
-  color: string,
-  action_values: ActionValues,
-  user?: User,
-  created_at?: string,
-  updated_at?: string,
+  id?: string
+  name: string
+  active: boolean
+  current_shot?: number | string
+  impairments: number
+  color: string
+  action_values: ActionValues
+  user?: User
+  created_at?: string
+  updated_at?: string
   new?: boolean
   category: "character" | "vehicle"
 }
