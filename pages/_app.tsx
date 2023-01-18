@@ -15,7 +15,7 @@ const theme = createTheme({
       main: colors.deepPurple[800]
     },
     secondary: {
-      main: colors.red[400]
+      main: colors.red[600]
     },
     common: {
       black: colors.grey[50],
