@@ -9,7 +9,7 @@ import Client from '../components/Client'
 import Router from 'next/router'
 import { useSession } from 'next-auth/react'
 import { getToken } from 'next-auth/jwt'
-import { useState, useEffect } from 'react'
+import { useMemo, useState, useEffect } from 'react'
 import { signIn, signOut } from 'next-auth/react'
 
 import { authOptions } from './api/auth/[...nextauth]'
@@ -77,6 +77,8 @@ export default function Home({ currentCampaign, fights:initialFights }: HomeProp
     return fights.filter((fight: Fight) => (fight.active))
   }
 
+  const filteredFights = useMemo(() => filterFights(fights, showHidden), [fights, showHidden])
+
   const show = (event: React.SyntheticEvent<Element, Event>, checked: boolean) => {
     setShowHidden(checked)
   }
@@ -102,21 +104,23 @@ export default function Home({ currentCampaign, fights:initialFights }: HomeProp
                 <FormControlLabel label="Show Hidden" control={<Switch checked={showHidden} />} onChange={show} />
               </GamemasterOnly>
             </Stack>
-            <TableContainer>
-              <Table size="small">
-                <TableHead>
-                  <TableRow>
-                    <TableCell>Fight</TableCell>
-                    <TableCell>Characters</TableCell>
-                    <TableCell>Shot</TableCell>
-                    <TableCell></TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {filterFights(fights, showHidden).map((fight: Fight) => <FightDetail fight={fight} key={fight.id} setFights={setFights} />)}
-                </TableBody>
-              </Table>
-            </TableContainer>
+            { !!filteredFights.length &&
+              <TableContainer>
+                <Table size="small">
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>Fight</TableCell>
+                      <TableCell>Characters</TableCell>
+                      <TableCell>Shot</TableCell>
+                      <TableCell></TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {filteredFights.map((fight: Fight) => <FightDetail fight={fight} key={fight.id} setFights={setFights} />)}
+                  </TableBody>
+                </Table>
+              </TableContainer> }
+            { !filteredFights.length && <Typography pt={5}>There are no available fights. Some fights might be hidden by the gamemaster.</Typography> }
           </Container>
         </Layout>
       </main>
