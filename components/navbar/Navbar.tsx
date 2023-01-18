@@ -1,18 +1,19 @@
-import * as React from 'react';
+import * as React from 'react'
+import Image from "next/image"
 import { Container } from "@mui/material"
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
-import Link from '@mui/material/Link';
+import AppBar from '@mui/material/AppBar'
+import Box from '@mui/material/Box'
+import Toolbar from '@mui/material/Toolbar'
+import Typography from '@mui/material/Typography'
+import Button from '@mui/material/Button'
+import IconButton from '@mui/material/IconButton'
+import MenuIcon from '@mui/icons-material/Menu'
+import Link from '@mui/material/Link'
 import { useSession } from 'next-auth/react'
 import { useEffect } from 'react'
 import Router from 'next/router'
 import { signIn, signOut } from 'next-auth/react'
-import Avatar from '@mui/material/Avatar';
+import Avatar from '@mui/material/Avatar'
 import Tooltip from '@mui/material/Tooltip'
 import Stack from '@mui/material/Stack'
 import AuthButton from "./AuthButton"
@@ -38,7 +39,7 @@ export default function Navbar() {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
+      <AppBar position="static" sx={{backgroundColor: "black"}}>
         <Toolbar>
           <IconButton
             size="large"
@@ -49,11 +50,9 @@ export default function Navbar() {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" component="div" paddingRight={2} sx={{ minWith: 100 }}>
-            <Link color="inherit" href='/'>
-              Home
-            </Link>
-          </Typography>
+          <Link color="inherit" href='/'>
+            <Image src="/ChiWar.svg" width="120" height="40" style={{marginTop: 5, marginRight: 10}} />
+          </Link>
           <Typography variant="h6" component="div" paddingRight={2} sx={{ minWith: 100 }}>
             <Link color="inherit" href='/characters'>
               Characters
@@ -67,7 +66,7 @@ export default function Navbar() {
           { user?.admin && (
             <Typography variant="h6" component="div" paddingRight={2} sx={{ minWidth: 100 }}>
               <Link color="inherit" href='/admin/users'>
-                Admin
+                Users
               </Link>
             </Typography>
           )}
@@ -78,5 +77,5 @@ export default function Navbar() {
         </Box>
       </AppBar>
     </Box>
-  );
+  )
 }
