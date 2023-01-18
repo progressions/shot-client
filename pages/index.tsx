@@ -108,14 +108,14 @@ export default function Home({ currentCampaign, fights:initialFights }: HomeProp
               <TableContainer>
                 <Table size="small">
                   <TableHead>
-                    <TableRow>
+                    <TableRow sx={{"& th": { color: "text.secondary" }}}>
                       <TableCell>Fight</TableCell>
                       <TableCell>Characters</TableCell>
                       <TableCell>Shot</TableCell>
                       <TableCell></TableCell>
                     </TableRow>
                   </TableHead>
-                  <TableBody>
+                  <TableBody sx={{"& tr": { "& td": { color: "text.primary" }}}}>
                     {filteredFights.map((fight: Fight) => <FightDetail fight={fight} key={fight.id} setFights={setFights} />)}
                   </TableBody>
                 </Table>

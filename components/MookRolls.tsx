@@ -88,7 +88,7 @@ export default function MookRolls({ count, attack, damage, icon }: MookRollsPara
 
   return (
     <>
-      <Button variant="outlined" onClick={() => setOpen(true)}>{ buttonWithTooltip(icon) }</Button>
+      <Button variant="outlined" color="primary" onClick={() => setOpen(true)}>{ buttonWithTooltip(icon) }</Button>
       <Dialog
         open={open}
         onClose={handleClose}

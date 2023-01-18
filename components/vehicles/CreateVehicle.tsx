@@ -23,7 +23,7 @@ export default function CreateVehicle({ fight, setFight }: CreateVehicleParams) 
 
   return (
     <>
-      <Button variant="outlined" startIcon={<DirectionsCarFilledIcon />} onClick={openModal}>
+      <Button variant="outlined" color="primary" startIcon={<DirectionsCarFilledIcon />} onClick={openModal}>
         New
       </Button>
       <VehicleModal open={newVehicle} setOpen={setNewVehicle} fight={fight} character={newVehicle} setFight={setFight} />

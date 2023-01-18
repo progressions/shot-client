@@ -76,7 +76,7 @@ export default function AddFight({ setFights }: AddFightProps) {
     return (
       <>
         <Stack direction="row" mb={1}>
-          <Button variant="outlined" endIcon={<KeyboardDoubleArrowDownIcon />} onClick={() => setOpen(true)}>Add Fight</Button>
+          <Button color="secondary" variant="outlined" endIcon={<KeyboardDoubleArrowDownIcon />} onClick={() => setOpen(true)}>Add Fight</Button>
         </Stack>
       </>
     )

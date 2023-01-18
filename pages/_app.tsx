@@ -7,19 +7,39 @@ import { ClientProvider } from "../contexts/ClientContext"
 import { ToastProvider } from "../contexts/ToastContext"
 import PopupToast from "../components/PopupToast"
 
+import { GlobalStyles, createTheme, colors, ThemeProvider } from "@mui/material"
+
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: colors.deepPurple[800]
+    },
+    secondary: {
+      main: colors.red[400]
+    },
+    common: {
+      black: colors.grey[50],
+      white: colors.grey[900]
+    }
+  }
+})
+
 export default function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   return (
-    <SessionProvider session={session}>
-      <ClientProvider>
-        <CampaignProvider>
-          <FightProvider>
-            <ToastProvider>
-              <Component {...pageProps} />
-              <PopupToast />
-            </ToastProvider>
-          </FightProvider>
-        </CampaignProvider>
-      </ClientProvider>
-    </SessionProvider>
+      <ThemeProvider theme={theme}>
+        <GlobalStyles styles={{zbody: {backgroundColor: "black", color: "white"}}} />
+        <SessionProvider session={session}>
+          <ClientProvider>
+            <CampaignProvider>
+              <FightProvider>
+                <ToastProvider>
+                  <Component {...pageProps} />
+                  <PopupToast />
+                </ToastProvider>
+              </FightProvider>
+            </CampaignProvider>
+          </ClientProvider>
+        </SessionProvider>
+      </ThemeProvider>
   )
 }

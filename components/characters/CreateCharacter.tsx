@@ -23,7 +23,7 @@ export default function CreateCharacter({ fight, setFight }: CreateCharacterPara
 
   return (
     <>
-      <Button variant="outlined" startIcon={<PersonAddIcon />} onClick={openModal}>
+      <Button color="primary" variant="outlined" startIcon={<PersonAddIcon />} onClick={openModal}>
         New
       </Button>
       <CharacterModal open={newCharacter} setOpen={setNewCharacter} fight={fight} character={newCharacter as Person} setFight={setFight} />

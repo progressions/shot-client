@@ -48,7 +48,7 @@ export default function FightDetail({ fight, setFights }: FightParams) {
     <TableRow key={fight.id} >
       <TableCell>
         <Link href={`/fights/${fight.id}`}>
-          <Typography>
+          <Typography color="text.primary">
            {fight.name}
           </Typography>
         </Link>

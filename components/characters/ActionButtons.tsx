@@ -68,13 +68,13 @@ export default function ActionButtons({ character, healWounds, takeWounds, takeC
         <GamemasterOnly user={session?.data?.user} character={character}>
           { editCharacter &&
           <Tooltip title="Edit Character" arrow>
-            <Button onClick={() => {editCharacter(character)}}>
+            <Button color="secondary" onClick={() => {editCharacter(character)}}>
               <EditIcon />
             </Button>
           </Tooltip> }
           { deleteCharacter &&
           <Tooltip title="Delete Character" arrow>
-            <Button onClick={() => deleteCharacter(character)}>
+            <Button color="secondary" onClick={() => deleteCharacter(character)}>
               <DeleteIcon />
             </Button>
           </Tooltip> }
@@ -82,11 +82,11 @@ export default function ActionButtons({ character, healWounds, takeWounds, takeC
       </ButtonGroup>
       <ButtonGroup variant="outlined" size="small">
         { takeDodgeAction &&
-        <Button color="secondary" onClick={() => takeDodgeAction(character)}>
+        <Button color="primary" onClick={() => takeDodgeAction(character)}>
           <DirectionsRunIcon />
         </Button> }
         { takeAction && <Tooltip title="Take Action" arrow>
-          <Button variant="contained" color="secondary" onClick={() => {takeAction(character)}}>
+          <Button variant="contained" color="primary" onClick={() => {takeAction(character)}}>
             <BoltIcon />
           </Button>
         </Tooltip> }
