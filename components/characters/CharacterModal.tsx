@@ -28,7 +28,7 @@ interface CharacterModalParams {
   fight?: Fight,
   setFight?: React.Dispatch<React.SetStateAction<Fight>>
   character: Person | null
-  reloadCharacters: any
+  reloadCharacters?: any
 }
 
 export default function CharacterModal({ open, setOpen, character:activeCharacter, reloadCharacters }: CharacterModalParams) {

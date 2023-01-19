@@ -26,7 +26,7 @@ interface VehicleModalParams {
   fight?: Fight,
   setFight?: React.Dispatch<React.SetStateAction<Fight>>
   character: Vehicle | null
-  reloadCharacters: any
+  reloadCharacters?: any
 }
 
 export default function CharacterModal({ open, setOpen, character:activeVehicle, reloadCharacters }: VehicleModalParams) {

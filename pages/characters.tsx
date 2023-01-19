@@ -35,7 +35,7 @@ const characterVisibility = (character: Character) => {
   return (character.active)
 }
 
-const fetchVehicles = async (client) => {
+const fetchVehicles = async (client: any) => {
   const response = await client.getAllVehicles()
   const vehicles = await response.json()
 
@@ -44,7 +44,7 @@ const fetchVehicles = async (client) => {
   return [response, availableVehicles]
 }
 
-const fetchCharacters = async (client) => {
+const fetchCharacters = async (client: any) => {
   const response = await client.getAllCharacters()
   const chars = await response.json()
   const availableChars = chars.filter(characterVisibility)
@@ -52,11 +52,11 @@ const fetchCharacters = async (client) => {
   return [response, availableChars]
 }
 
-const fetchCharactersAndVehicles = async (client) => {
+const fetchCharactersAndVehicles = async (client: any) => {
   const [characterResponse, characters] = await fetchCharacters(client)
   const [vehicleResponse, vehicles] = await fetchVehicles(client)
 
-  const allCharacters = characters.concat(vehicles).sort((a, b) => a.name.localeCompare(b.name))
+  const allCharacters = characters.concat(vehicles).sort((a: Character, b: Character) => a.name.localeCompare(b.name))
 
   return [characterResponse, vehicleResponse, allCharacters]
 }
@@ -215,7 +215,7 @@ export default function Characters({ characters:initialCharacters, jwt }: Charac
               </Table>
             </TableContainer>
             <CharacterModal open={editingCharacter} setOpen={setEditingCharacter} character={editingCharacter as Person} reloadCharacters={reloadCharacters} />
-            <VehicleModal open={editingCharacter} setOpen={setEditingCharacter} character={editingCharacter as Vehicle} reloadCharacters={reloadCharacters} />
+            <VehicleModal open={editingCharacter as Vehicle} setOpen={setEditingCharacter as any} character={editingCharacter as Vehicle} reloadCharacters={reloadCharacters} />
           </Container>
         </Layout>
       </main>
