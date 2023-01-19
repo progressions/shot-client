@@ -55,11 +55,12 @@ export default function Navbar() {
             <Image src="/ChiWar.svg" alt="ChiWar" width="120" height="40" style={{marginTop: 5, marginRight: 10}} />
           </Link>
           { user && <>
-          <Typography variant="h6" component="div" paddingRight={2} sx={{ minWith: 100 }}>
-            <Link color="inherit" href='/characters'>
-              Characters
-            </Link>
-          </Typography>
+            { campaign?.id &&
+            <Typography variant="h6" component="div" paddingRight={2} sx={{ minWith: 100 }}>
+              <Link color="inherit" href='/characters'>
+                Characters
+              </Link>
+            </Typography> }
           <Typography variant="h6" component="div" paddingRight={2} sx={{ minWidth: 100 }}>
             <Link color="inherit" href='/campaigns'>
               Campaigns
