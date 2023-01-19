@@ -37,19 +37,28 @@ const characterVisibility = (character: Character) => {
 
 const fetchVehicles = async (client: any) => {
   const response = await client.getAllVehicles()
-  const vehicles = await response.json()
+  if (response.status === 200) {
+    const vehicles = await response.json()
+    const availableVehicles = vehicles.filter(characterVisibility)
 
-  const availableVehicles = vehicles.filter(characterVisibility)
-
-  return [response, availableVehicles]
+    return [response, availableVehicles]
+  } else {
+    response.log(response)
+    return [response, []]
+  }
 }
 
 const fetchCharacters = async (client: any) => {
   const response = await client.getAllCharacters()
-  const chars = await response.json()
-  const availableChars = chars.filter(characterVisibility)
+  if (response.status === 200) {
+    const chars = await response.json()
+    const availableChars = chars.filter(characterVisibility)
 
-  return [response, availableChars]
+    return [response, availableChars]
+  } else {
+    console.log(response)
+    return [response, []]
+  }
 }
 
 const fetchCharactersAndVehicles = async (client: any) => {
@@ -68,7 +77,8 @@ export async function getServerSideProps({ req, res }: ServerSideProps) {
 
   const [characterResponse, vehicleResponse, allCharacters] = await fetchCharactersAndVehicles(client)
 
-  if (characterResponse.status === 200 && vehicleResponse === 200) {
+  if ([characterResponse.status, vehicleResponse.status].includes(200)) {
+    console.log("YES")
     return {
       props: {
         characters: allCharacters,
@@ -76,7 +86,7 @@ export async function getServerSideProps({ req, res }: ServerSideProps) {
       }, // will be passed to the page component as props
     }
   }
-  if (characterResponse.status === 401 || vehicleResponse === 401) {
+  if ([characterResponse.status, vehicleResponse.status].includes(401)) {
     return {
       redirect: {
         permanent: false,
