@@ -136,8 +136,8 @@ export default function Campaigns({ campaigns:initialCampaigns }: any) {
           <Container maxWidth="md">
             <Typography variant="h1" gutterBottom>Campaigns</Typography>
             <CreateCampaign reload={getCampaigns} />
-            <TableContainer>
-              <Table size="small" component={Paper}>
+            <TableContainer component={Paper}>
+              <Table size="small">
                 <TableHead>
                   <TableRow>
                     <TableCell>Campaign</TableCell>

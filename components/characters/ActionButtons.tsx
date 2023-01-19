@@ -42,7 +42,7 @@ export default function ActionButtons({ character, healWounds, takeWounds, takeC
 
   return (
     <Stack direction="row" spacing={1} sx={{height: 30}}>
-      <ButtonGroup variant="outlined" size="small">
+      <ButtonGroup variant="contained" size="small">
         { character.category === "character" && takeWounds && character.action_values["Type"] == "Mook" &&
             <MookRolls count={character.action_values["Wounds"] as number} attack={character.action_values["Guns"] as number} damage={character.action_values["Damage"] as number} icon={<NewReleasesIcon />} /> }
         { takeWounds &&
@@ -54,14 +54,14 @@ export default function ActionButtons({ character, healWounds, takeWounds, takeC
         { healWounds &&
         <PlayerTypeOnly character={character} except="Mook">
           <Tooltip title="Heal Wounds" arrow>
-            <Button onClick={() => {healWounds(character)}}>
+            <Button variant="contained" onClick={() => {healWounds(character)}}>
               <FavoriteIcon color="error" />
             </Button>
           </Tooltip>
         </PlayerTypeOnly> }
         { takeConditionPoints && character.category === "vehicle" &&
         <Tooltip title="Take Condition Points">
-          <Button onClick={() => {takeConditionPoints(character)}}>
+          <Button variant="contained" onClick={() => {takeConditionPoints(character)}}>
             <CarCrashIcon color="error" />
           </Button>
         </Tooltip> }
@@ -82,11 +82,11 @@ export default function ActionButtons({ character, healWounds, takeWounds, takeC
       </ButtonGroup>
       <ButtonGroup variant="outlined" size="small">
         { takeDodgeAction &&
-        <Button color="primary" onClick={() => takeDodgeAction(character)}>
+        <Button variant="contained" color="secondary" onClick={() => takeDodgeAction(character)}>
           <DirectionsRunIcon />
         </Button> }
         { takeAction && <Tooltip title="Take Action" arrow>
-          <Button variant="contained" color="primary" onClick={() => {takeAction(character)}}>
+          <Button variant="contained" color="secondary" onClick={() => {takeAction(character)}}>
             <BoltIcon />
           </Button>
         </Tooltip> }

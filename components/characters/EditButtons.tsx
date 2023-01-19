@@ -14,13 +14,13 @@ export default function EditButtons({ character, editCharacter, deleteCharacter 
   return (
     <ButtonGroup size="small">
       <Tooltip title="Edit Character" arrow>
-        <Button color="primary" onClick={() => {editCharacter(character)}}>
+        <Button variant="contained" color="primary" onClick={() => {editCharacter(character)}}>
           <EditIcon />
         </Button>
       </Tooltip>
       { deleteCharacter &&
       <Tooltip title="Delete Character" arrow>
-        <Button color="primary" onClick={() => deleteCharacter(character)}>
+        <Button variant="contained" color="primary" onClick={() => deleteCharacter(character)}>
           <DeleteIcon />
         </Button>
       </Tooltip> }

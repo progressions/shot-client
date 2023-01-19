@@ -1,4 +1,4 @@
-import { Paper, TableContainer, Table, TableHead, TableBody, TableRow, TableCell } from "@mui/material"
+import { colors, Paper, TableContainer, Table, TableHead, TableBody, TableRow, TableCell } from "@mui/material"
 
 import { useFight } from "../../contexts/FightContext"
 import FightName from "./FightName"
