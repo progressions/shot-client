@@ -2,7 +2,7 @@ import Layout from '../../components/Layout'
 import Head from 'next/head'
 
 import { useCallback, useMemo, useEffect, useState } from "react"
-import { Paper, IconButton, Button, Stack, Link, Container, Typography, TableContainer, Table, TableHead, TableBody, TableRow, TableCell } from "@mui/material"
+import { Box, Paper, IconButton, Button, Stack, Link, Container, Typography, TableContainer, Table, TableHead, TableBody, TableRow, TableCell } from "@mui/material"
 import { useToast } from "../../contexts/ToastContext"
 import { useClient } from "../../contexts/ClientContext"
 import { useCampaign } from "../../contexts/CampaignContext"
@@ -10,6 +10,7 @@ import { useSession } from 'next-auth/react'
 
 import CreateCampaign from "../../components/campaigns/CreateCampaign"
 import Campaigns from "../../components/campaigns/Campaigns"
+import GamemasterOnly from "../../components/GamemasterOnly"
 
 import { authOptions } from '../api/auth/[...nextauth]'
 import { unstable_getServerSession } from "next-auth/next"
@@ -97,7 +98,11 @@ export default function CampaignsIndex({ campaigns:initialCampaigns }: any) {
         <Layout>
           <Container maxWidth="md">
             <Typography variant="h1" gutterBottom>Campaigns</Typography>
-            { user?.gamemaster && <CreateCampaign reload={getCampaigns} /> }
+            <GamemasterOnly user={user}>
+              <Box component={Paper} p={1} mb={1}>
+                <CreateCampaign reload={getCampaigns} />
+              </Box>
+            </GamemasterOnly>
             <Typography mt={2} variant="h3" gutterBottom>As Gamemaster</Typography>
             <Campaigns campaigns={campaigns} getCampaigns={getCampaigns} />
             <Typography mt={2} variant="h3" gutterBottom>As Player</Typography>

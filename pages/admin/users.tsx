@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import { IconButton, Typography, Container, Table, TableContainer, TableBody, TableHead, TableRow, TableCell } from '@mui/material'
+import { Box, Paper, IconButton, Typography, Container, Table, TableContainer, TableBody, TableHead, TableRow, TableCell } from '@mui/material'
 import { useState } from 'react'
 import Layout from '../../components/Layout'
 import Client from "../../components/Client"
@@ -119,7 +119,7 @@ export default function UsersAdmin({ jwt, users:initialUsers, currentUser }: Use
         <Layout>
           <Container maxWidth="md">
             <Typography variant="h1">Users</Typography>
-            <TableContainer>
+            <TableContainer component={Paper}>
               <Table>
                 <TableHead>
                   <TableRow>
@@ -142,10 +142,10 @@ export default function UsersAdmin({ jwt, users:initialUsers, currentUser }: Use
                           <TableCell>{ user.admin && <CheckIcon />}</TableCell>
                           <TableCell>{ user.gamemaster && <CheckIcon />}</TableCell>
                           <TableCell>
-                            <IconButton onClick={() => setUser(user)}>
+                            <IconButton color="primary" onClick={() => setUser(user)}>
                               <EditIcon />
                             </IconButton>
-                            <IconButton onClick={() => deleteUser(user)}>
+                            <IconButton color="primary" onClick={() => deleteUser(user)}>
                               <DeleteIcon />
                             </IconButton>
                           </TableCell>

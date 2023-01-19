@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import Image from 'next/image'
 import { Inter } from '@next/font/google'
-import { Switch, FormControlLabel, Stack, Snackbar, Alert, Link, Button, Paper, Container, Table, TableContainer, TableBody, TableHead, TableRow, TableCell, Typography } from '@mui/material'
+import { Box, Switch, FormControlLabel, Stack, Snackbar, Alert, Link, Button, Paper, Container, Table, TableContainer, TableBody, TableHead, TableRow, TableCell, Typography } from '@mui/material'
 import AddFight from '../components/fights/AddFight'
 import FightDetail from '../components/fights/FightDetail'
 import Layout from '../components/Layout'
@@ -98,12 +98,14 @@ export default function Home({ currentCampaign, fights:initialFights }: HomeProp
         <Layout>
           <Container maxWidth="md">
             <Typography variant="h1" gutterBottom>Fights</Typography>
-            <Stack direction="row" spacing={2}>
-              <GamemasterOnly user={user}>
-                <AddFight setFights={setFights} />
-                <FormControlLabel label="Show Hidden" control={<Switch checked={showHidden} />} onChange={show} />
-              </GamemasterOnly>
-            </Stack>
+            <GamemasterOnly user={user}>
+              <Box component={Paper} p={1} mb={1}>
+                <Stack direction="row" spacing={2}>
+                  <AddFight setFights={setFights} />
+                  <FormControlLabel label="Show Hidden" control={<Switch checked={showHidden} />} onChange={show} />
+                </Stack>
+              </Box>
+            </GamemasterOnly>
             { !!filteredFights.length &&
               <TableContainer component={Paper}>
                 <Table size="small">

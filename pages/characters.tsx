@@ -5,7 +5,7 @@ import Client from "../components/Client"
 import { useState } from "react"
 import Router from "next/router"
 
-import { Switch, FormControlLabel, Stack, Avatar, Box, TableContainer, Table, TableHead, TableBody, TableRow, TableCell, Container, Typography } from "@mui/material"
+import { Paper, Switch, FormControlLabel, Stack, Avatar, Box, TableContainer, Table, TableHead, TableBody, TableRow, TableCell, Container, Typography } from "@mui/material"
 
 import { authOptions } from "./api/auth/[...nextauth]"
 import { unstable_getServerSession } from "next-auth/next"
@@ -201,14 +201,16 @@ export default function Characters({ characters:initialCharacters, jwt }: Charac
           <Container maxWidth="lg">
             <Typography variant="h1" gutterBottom>Characters</Typography>
             <GamemasterOnly user={user}>
-              <Stack direction="row" spacing={2} alignItems="center">
-                <CharacterFilters filters={filters} setFilters={setFilters} />
-                <CreateCharacter reload={reloadCharacters} />
-                <CreateVehicle reload={reloadCharacters} />
-                <FormControlLabel label="Show Hidden" control={<Switch checked={showHidden} />} onChange={show} />
-              </Stack>
+              <Box component={Paper} p={1} mb={1}>
+                <Stack direction="row" spacing={2} alignItems="center">
+                  <CharacterFilters filters={filters} setFilters={setFilters} />
+                  <CreateCharacter reload={reloadCharacters} />
+                  <CreateVehicle reload={reloadCharacters} />
+                  <FormControlLabel label="Show Hidden" control={<Switch checked={showHidden} />} onChange={show} />
+                </Stack>
+              </Box>
             </GamemasterOnly>
-            <TableContainer>
+            <TableContainer component={Paper}>
               <Table size="small">
                 <TableHead>
                   <TableRow>

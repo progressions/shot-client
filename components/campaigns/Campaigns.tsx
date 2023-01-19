@@ -67,7 +67,7 @@ export default function Campaigns({ campaigns, getCampaigns }: any) {
                 <TableRow key={campaign.id}>
                   <TableCell>
                     <Typography variant="h6">
-                      <Link href={`/campaigns/${campaign.id}`}>
+                      <Link color="text.primary" href={`/campaigns/${campaign.id}`}>
                         {campaign.title}
                       </Link>
                     </Typography>

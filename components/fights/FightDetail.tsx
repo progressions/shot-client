@@ -47,11 +47,11 @@ export default function FightDetail({ fight, setFights }: FightParams) {
   return (
     <TableRow key={fight.id} >
       <TableCell>
-        <Link href={`/fights/${fight.id}`}>
-          <Typography color="text.primary">
+        <Typography color="text.primary" variant="h6">
+          <Link color="text.primary" href={`/fights/${fight.id}`}>
            {fight.name}
-          </Typography>
-        </Link>
+          </Link>
+        </Typography>
       </TableCell>
       <TableCell>
         {fight.characters?.length}
