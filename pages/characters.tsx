@@ -15,6 +15,7 @@ import { useSession } from "next-auth/react"
 import ActionValues from "../components/characters/ActionValues"
 import ActionButtons from "../components/characters/ActionButtons"
 import CharacterModal from "../components/characters/CharacterModal"
+import VehicleModal from "../components/vehicles/VehicleModal"
 import AvatarBadge from "../components/characters/AvatarBadge"
 import CreateCharacter from "../components/characters/CreateCharacter"
 import CharacterFilters from "../components/characters/CharacterFilters"
@@ -30,18 +31,39 @@ interface CharactersProps {
   jwt: string
 }
 
+const characterVisibility = (character: Character) => {
+  return (character.active)
+}
+
+const fetchVehicles = async (client) => {
+  const response = await client.getAllVehicles()
+  const vehicles = await response.json()
+
+  const availableVehicles = vehicles.filter(characterVisibility)
+
+  return [response, availableVehicles]
+}
+
+const fetchCharacters = async (client) => {
+  const response = await client.getAllCharacters()
+  const chars = await response.json()
+  const availableChars = chars.filter(characterVisibility)
+
+  return [response, availableChars]
+}
+
 export async function getServerSideProps({ req, res }: ServerSideProps) {
   const session: any = await unstable_getServerSession(req as any, res as any, authOptions as any)
   const jwt = session?.authorization
   const client = new Client({ jwt })
 
-  const response = await client.getAllCharacters()
+  const [characterResponse, characters] = await fetchCharacters(client)
+  const [vehicleResponse, vehicles] = await fetchVehicles(client)
 
-  if (response.status === 200) {
-    const characters = await response.json()
+  if (characterResponse.status === 200) {
     return {
       props: {
-        characters: characters,
+        characters: characters.concat(vehicles),
         jwt: jwt
       }, // will be passed to the page component as props
     }
@@ -82,11 +104,24 @@ export default function Characters({ characters:initialCharacters, jwt }: Charac
     setShowHidden(checked)
   }
 
+  async function reloadCharacters() {
+    const [characterResponse, characters] = await fetchCharacters(client)
+    const [vehicleResponse, vehicles] = await fetchVehicles(client)
+
+    if (characterResponse.status === 200 && vehicleResponse.status === 200) {
+      setCharacters(characters.concat(vehicles))
+    } else {
+      setToast({ open: true, message: "There was an error.", severity: "error" })
+    }
+  }
+
   async function deleteCharacter(character: Character): Promise<void> {
     const response = await client.deleteCharacter(character)
 
     if (response.status === 200) {
-      Router.reload()
+      reloadCharacters()
+    } else {
+      setToast({ open: true, message: "There was an error.", severity: "error" })
     }
   }
 
@@ -172,7 +207,8 @@ export default function Characters({ characters:initialCharacters, jwt }: Charac
                 </TableBody>
               </Table>
             </TableContainer>
-            <CharacterModal open={editingCharacter} setOpen={setEditingCharacter} character={editingCharacter as Person} />
+            <CharacterModal open={editingCharacter} setOpen={setEditingCharacter} character={editingCharacter as Person} reloadCharacters={reloadCharacters} />
+            <VehicleModal open={editingCharacter} setOpen={setEditingCharacter} character={editingCharacter as Vehicle} reloadCharacters={reloadCharacters} />
           </Container>
         </Layout>
       </main>

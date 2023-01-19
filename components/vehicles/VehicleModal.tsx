@@ -26,9 +26,10 @@ interface VehicleModalParams {
   fight?: Fight,
   setFight?: React.Dispatch<React.SetStateAction<Fight>>
   character: Vehicle | null
+  reloadCharacters: any
 }
 
-export default function CharacterModal({ open, setOpen, character:activeVehicle }: VehicleModalParams) {
+export default function CharacterModal({ open, setOpen, character:activeVehicle, reloadCharacters }: VehicleModalParams) {
   const [picker, setPicker] = useState<boolean>(false)
   const [anchorEl, setAnchorEl] = useState(null)
   const { setToast } = useToast()
@@ -98,7 +99,7 @@ export default function CharacterModal({ open, setOpen, character:activeVehicle 
       if (fight?.id) {
         await reloadFight(fight)
       } else {
-        Router.reload()
+        reloadCharacters()
       }
     } else {
       setToast({ open: true, message: `There was an error`, severity: "error" })
@@ -139,7 +140,7 @@ export default function CharacterModal({ open, setOpen, character:activeVehicle 
               </Stack>
               <Stack direction="row" spacing={2}>
                 <TextField autoFocus label="Name" variant="filled" size="medium" sx={{paddingBottom: 2}} fullWidth required name="name" value={character.name} onChange={handleChange} />
-                { fight &&
+                { fight?.id &&
                 <TextField label="Shot" type="number" name="current_shot" value={character.current_shot === null ? '' : character.current_shot} onChange={handleChange} sx={{width: 80}} /> }
               </Stack>
               <Stack spacing={2} direction="row" alignItems='center'>

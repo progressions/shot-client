@@ -28,9 +28,10 @@ interface CharacterModalParams {
   fight?: Fight,
   setFight?: React.Dispatch<React.SetStateAction<Fight>>
   character: Person | null
+  reloadCharacters: any
 }
 
-export default function CharacterModal({ open, setOpen, character:activeCharacter }: CharacterModalParams) {
+export default function CharacterModal({ open, setOpen, character:activeCharacter, reloadCharacters }: CharacterModalParams) {
   const { fight, setFight, reloadFight } = useFight()
   const { client } = useClient()
   const { setToast } = useToast()
@@ -96,7 +97,7 @@ export default function CharacterModal({ open, setOpen, character:activeCharacte
       if (fight?.id && setFight) {
         await reloadFight(fight)
       } else {
-        Router.reload()
+        reloadCharacters()
       }
     } else {
       setToast({ open: true, message: `There was an error`, severity: "error" })
@@ -149,7 +150,7 @@ export default function CharacterModal({ open, setOpen, character:activeCharacte
               </Stack>
               <Stack direction="row" spacing={2}>
                 <TextField autoFocus label="Name" variant="filled" size="medium" sx={{paddingBottom: 2}} fullWidth required name="name" value={character.name} onChange={handleChange} />
-                { fight &&
+                { fight?.id &&
                 <TextField label="Shot" type="number" name="current_shot" value={character.current_shot === null ? '' : (character.current_shot || '')} onChange={handleChange} sx={{width: 80}} /> }
               </Stack>
               <Stack spacing={2} direction="row" alignItems='center'>
