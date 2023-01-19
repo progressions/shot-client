@@ -59,7 +59,7 @@ export default function RedeemInvitation({ invitation }: any) {
     if (invitation.pending_user?.id) {
       setUser(invitation.pending_user)
     }
-  }, [session.status, session?.data?.user, invitation])
+  }, [session.status, currentUser, invitation])
 
   const client = new Client()
 
@@ -109,13 +109,14 @@ export default function RedeemInvitation({ invitation }: any) {
           <Typography variant="h2" gutterBottom>Welcome</Typography>
           { success &&
             <Box my={2}>
-              <Typography variant="h5">{session?.data?.user?.email}</Typography>
+              <Typography variant="h5">{invitation.email}</Typography>
               <Typography>
                 You have joined the campaign.
               </Typography>
-              <Typography>
-                <Link href="/auth/signin">Click here</Link> to sign in.
-              </Typography>
+                { !currentUser?.id &&
+                <Typography>
+                  <Link href="/auth/signin">Click here</Link> to sign in.
+                </Typography> }
               <Typography variant="h3" gutterBottom>{invitation.campaign.title}</Typography>
             </Box> }
           { !success && invitation.pending_user?.id &&
