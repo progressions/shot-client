@@ -19,6 +19,7 @@ import Stack from '@mui/material/Stack'
 import AuthButton from "./AuthButton"
 import Client from "../Client"
 import CurrentCampaign from "../campaigns/CurrentCampaign"
+import GamemasterOnly from "../GamemasterOnly"
 
 import type { Campaign, User } from "../../types/types"
 
@@ -53,6 +54,7 @@ export default function Navbar() {
           <Link color="inherit" href='/'>
             <Image src="/ChiWar.svg" alt="ChiWar" width="120" height="40" style={{marginTop: 5, marginRight: 10}} />
           </Link>
+          { user && <>
           <Typography variant="h6" component="div" paddingRight={2} sx={{ minWith: 100 }}>
             <Link color="inherit" href='/characters'>
               Characters
@@ -70,11 +72,14 @@ export default function Navbar() {
               </Link>
             </Typography>
           )}
+        </>
+          }
           <AuthButton status={session?.status} user={user || {}} />
         </Toolbar>
+        { user &&
         <Box sx={{ backgroundColor: "primary.dark" }} p={1}>
           <CurrentCampaign />
-        </Box>
+        </Box> }
       </AppBar>
     </Box>
   )

@@ -49,10 +49,13 @@ export default function CharacterDetails({ character, editingCharacter, setEditi
   }
 
   async function deleteCharacter(character: Character): Promise<void> {
-    const response = await client.deleteCharacter(character, fight)
-    if (response.status === 200) {
-      setToast({ open: true, message: `${character.name} removed.`, severity: "success" })
-      await reloadFight(fight)
+    const doit = confirm(`Remove ${character.name} from the fight?`)
+    if (doit) {
+      const response = await client.deleteCharacter(character, fight)
+      if (response.status === 200) {
+        setToast({ open: true, message: `${character.name} removed.`, severity: "success" })
+        await reloadFight(fight)
+      }
     }
   }
 
