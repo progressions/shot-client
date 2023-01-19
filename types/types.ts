@@ -11,7 +11,7 @@ export interface Campaign {
   id?: string
   title: string
   description?: string
-  user?: User
+  gamemaster?: User
   new?: boolean
   players: User[]
   invitations: Invitation[]
@@ -235,7 +235,7 @@ export const defaultToast:Toast = {
 export const defaultCampaign:Campaign = {
   title: "",
   description: "",
-  user: defaultUser,
+  gamemaster: defaultUser,
   players: [],
   invitations: []
 }

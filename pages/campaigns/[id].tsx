@@ -75,7 +75,7 @@ export default function CampaignView({ campaign:initialCampaign }: any) {
           <Container maxWidth="md">
             <Typography variant="h2" gutterBottom>{campaign.title}</Typography>
             <Typography>{campaign.description}</Typography>
-            <Typography>Gamemaster: {campaign.gamemaster.first_name} {campaign.gamemaster.last_name}</Typography>
+            <Typography>Gamemaster: {campaign?.gamemaster?.first_name} {campaign?.gamemaster?.last_name}</Typography>
             <Stack direction="row">
               <CreateInvitation campaign={campaign} />
             </Stack>
