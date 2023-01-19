@@ -44,7 +44,6 @@ const fetchVehicles = async (client: any) => {
 
     return [response, availableVehicles]
   } else {
-    response.log(response)
     return [response, []]
   }
 }
@@ -57,7 +56,6 @@ const fetchCharacters = async (client: any) => {
 
     return [response, availableChars]
   } else {
-    console.log(response)
     return [response, []]
   }
 }
@@ -76,9 +74,22 @@ export async function getServerSideProps({ req, res }: ServerSideProps) {
   const jwt = session?.authorization
   const client = new Client({ jwt })
 
+  const campaignResponse = await client.getCurrentCampaign()
+  const currentCampaign = campaignResponse.status === 200 ? await campaignResponse.json() : null
   const [characterResponse, vehicleResponse, allCharacters] = await fetchCharactersAndVehicles(client)
 
+  if (!currentCampaign) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/"
+      },
+      props: {
+      }
+    }
+  }
   if ([characterResponse.status, vehicleResponse.status].includes(200)) {
+
     return {
       props: {
         characters: allCharacters,

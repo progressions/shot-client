@@ -34,7 +34,7 @@ export default function CurrentCampaign() {
   }
 
   function CampaignName({ campaign }: any) {
-    if (campaign) {
+    if (campaign?.id) {
       return (<>
         <Typography color="white">{campaign.title}</Typography>
         { startStopCampaignButton(campaign, campaign) }

@@ -15,7 +15,7 @@ export default function CampaignSelector({ startCampaign }: any) {
   const { setToast } = useToast()
   const [open, setOpen] = useState(false)
   const [saving, setSaving] = useState(false)
-  const [campaigns, setCampaigns] = useState<Campaign[]>([])
+  const [campaigns, setCampaigns] = useState<any>({})
   const [campaignId, setCampaignId] = useState(null)
 
   const { user, client } = useClient()
@@ -30,7 +30,7 @@ export default function CampaignSelector({ startCampaign }: any) {
 
   useEffect(() => {
     if (user) {
-      getCampaigns().catch(console.error)
+      getCampaigns().catch(alert)
     }
   }, [user, getCampaigns])
 
@@ -46,7 +46,8 @@ export default function CampaignSelector({ startCampaign }: any) {
     event.preventDefault()
     setSaving(true)
 
-    const camp = campaigns.find((c: any) => (campaignId === c.id))
+    const camp = campaigns?.["gamemaster"]?.find((c: any) => (campaignId === c.id)) ||
+      campaigns?.["player"]?.find((c: any) => (campaignId === c.id))
     await startCampaign(camp)
 
     setSaving(false)
@@ -56,6 +57,8 @@ export default function CampaignSelector({ startCampaign }: any) {
   const handleOpen = () => {
     setOpen(true)
   }
+
+  console.log(campaigns)
 
   const NameDisplay = ({ camp }: any) => {
     return (
@@ -70,7 +73,7 @@ export default function CampaignSelector({ startCampaign }: any) {
     )
   }
 
-  if (campaign) {
+  if (campaign?.id) {
     return <></>
   }
   return (
@@ -85,7 +88,10 @@ export default function CampaignSelector({ startCampaign }: any) {
           <DialogContent>
             <Stack spacing={1}>
               {
-                campaigns.map((camp) => <NameDisplay key={camp.id} camp={camp} />)
+                campaigns?.["gamemaster"]?.map((camp: Campaign) => <NameDisplay key={camp.id} camp={camp} />)
+              }
+              {
+                campaigns?.["player"]?.map((camp: Campaign) => <NameDisplay key={camp.id} camp={camp} />)
               }
             </Stack>
           </DialogContent>
