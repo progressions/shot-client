@@ -10,6 +10,10 @@ import CreateInvitation from "../../components/invitations/CreateInvitation"
 import Client from '../../components/Client'
 import { GetServerSideProps } from 'next'
 
+import PlayerDetails from "../../components/campaigns/PlayerDetails"
+import { useClient } from "../../contexts/ClientContext"
+
+import { useState } from "react"
 import { Invitation, User, Campaign } from "../../types/types"
 
 export async function getServerSideProps<GetServerSideProps>({ req, res, params }: any) {
@@ -29,6 +33,15 @@ export async function getServerSideProps<GetServerSideProps>({ req, res, params 
     }
   }
 
+  if (response.status === 401) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/auth/signin"
+      }
+    }
+  }
+
   return {
     props: {
       campaign: {}
@@ -36,7 +49,19 @@ export async function getServerSideProps<GetServerSideProps>({ req, res, params 
   }
 }
 
-export default function CampaignView({ campaign }: any) {
+export default function CampaignView({ campaign:initialCampaign }: any) {
+  const { client } = useClient()
+  const [campaign, setCampaign] = useState<Campaign>(initialCampaign)
+
+  async function reloadCampaign(camp:Campaign) {
+    const response = await client.getCampaign(camp)
+    if (response.status === 200) {
+      const data = await response.json()
+      console.log("campaign", data)
+      setCampaign(data)
+    }
+  }
+
   return (
     <>
       <Head>
@@ -68,16 +93,8 @@ export default function CampaignView({ campaign }: any) {
                   </TableHead>
                   <TableBody>
                     {
-                      campaign.players.map((player: User) => (
-                        <TableRow key={player.id}>
-                          <TableCell>{player.email}</TableCell>
-                          <TableCell>{player.first_name}</TableCell>
-                          <TableCell>{player.last_name}</TableCell>
-                          <TableCell>
-                          </TableCell>
-                        </TableRow>
-                      )
-                    ) }
+                      campaign.players.map((player: User) => <PlayerDetails key={player?.id} player={player} campaign={campaign} reload={reloadCampaign} />)
+                    }
                   </TableBody>
                 </Table>
               </TableContainer>
