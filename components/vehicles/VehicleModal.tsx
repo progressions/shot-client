@@ -26,10 +26,10 @@ interface VehicleModalParams {
   fight?: Fight,
   setFight?: React.Dispatch<React.SetStateAction<Fight>>
   character: Vehicle | null
-  reloadCharacters?: any
+  reload?: any
 }
 
-export default function CharacterModal({ open, setOpen, character:activeVehicle, reloadCharacters }: VehicleModalParams) {
+export default function CharacterModal({ open, setOpen, character:activeVehicle, reload }: VehicleModalParams) {
   const [picker, setPicker] = useState<boolean>(false)
   const [anchorEl, setAnchorEl] = useState(null)
   const { setToast } = useToast()
@@ -99,7 +99,7 @@ export default function CharacterModal({ open, setOpen, character:activeVehicle,
       if (fight?.id) {
         await reloadFight(fight)
       } else {
-        reloadCharacters()
+        await reload()
       }
     } else {
       setToast({ open: true, message: `There was an error`, severity: "error" })

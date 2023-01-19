@@ -12,9 +12,10 @@ import { defaultCharacter } from "../../types/types"
 interface CreateCharacterParams {
   fight?: Fight,
   setFight?: React.Dispatch<React.SetStateAction<Fight>>
+  reload?: any
 }
 
-export default function CreateCharacter({ fight, setFight }: CreateCharacterParams) {
+export default function CreateCharacter({ fight, setFight, reload }: CreateCharacterParams) {
   const [newCharacter, setNewCharacter] = useState<Character>(defaultCharacter)
 
   const openModal = (): void => {
@@ -23,10 +24,10 @@ export default function CreateCharacter({ fight, setFight }: CreateCharacterPara
 
   return (
     <>
-      <Button color="primary" variant="outlined" startIcon={<PersonAddIcon />} onClick={openModal}>
+      <Button color="primary" variant="contained" startIcon={<PersonAddIcon />} onClick={openModal}>
         New
       </Button>
-      <CharacterModal open={newCharacter} setOpen={setNewCharacter} fight={fight} character={newCharacter as Person} setFight={setFight} />
+      <CharacterModal open={newCharacter} setOpen={setNewCharacter} fight={fight} character={newCharacter as Person} setFight={setFight} reload={reload} />
     </>
   )
 }

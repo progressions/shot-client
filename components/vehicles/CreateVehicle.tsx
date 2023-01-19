@@ -12,9 +12,10 @@ import { defaultVehicle } from "../../types/types"
 interface CreateVehicleParams {
   fight?: Fight,
   setFight?: React.Dispatch<React.SetStateAction<Fight>>
+  reload?: any
 }
 
-export default function CreateVehicle({ fight, setFight }: CreateVehicleParams) {
+export default function CreateVehicle({ fight, setFight, reload }: CreateVehicleParams) {
   const [newVehicle, setNewVehicle] = useState<Vehicle>(defaultVehicle)
 
   const openModal = (): void => {
@@ -23,10 +24,10 @@ export default function CreateVehicle({ fight, setFight }: CreateVehicleParams) 
 
   return (
     <>
-      <Button variant="outlined" color="primary" startIcon={<DirectionsCarFilledIcon />} onClick={openModal}>
+      <Button variant="contained" color="primary" startIcon={<DirectionsCarFilledIcon />} onClick={openModal}>
         New
       </Button>
-      <VehicleModal open={newVehicle} setOpen={setNewVehicle} fight={fight} character={newVehicle} setFight={setFight} />
+      <VehicleModal open={newVehicle} setOpen={setNewVehicle} fight={fight} character={newVehicle} setFight={setFight} reload={reload} />
     </>
   )
 }

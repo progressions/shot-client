@@ -18,6 +18,7 @@ import CharacterModal from "../components/characters/CharacterModal"
 import VehicleModal from "../components/vehicles/VehicleModal"
 import AvatarBadge from "../components/characters/AvatarBadge"
 import CreateCharacter from "../components/characters/CreateCharacter"
+import CreateVehicle from "../components/vehicles/CreateVehicle"
 import CharacterFilters from "../components/characters/CharacterFilters"
 import GamemasterOnly from "../components/GamemasterOnly"
 
@@ -78,7 +79,6 @@ export async function getServerSideProps({ req, res }: ServerSideProps) {
   const [characterResponse, vehicleResponse, allCharacters] = await fetchCharactersAndVehicles(client)
 
   if ([characterResponse.status, vehicleResponse.status].includes(200)) {
-    console.log("YES")
     return {
       props: {
         characters: allCharacters,
@@ -192,7 +192,8 @@ export default function Characters({ characters:initialCharacters, jwt }: Charac
             <GamemasterOnly user={user}>
               <Stack direction="row" spacing={2} alignItems="center">
                 <CharacterFilters filters={filters} setFilters={setFilters} />
-                <CreateCharacter />
+                <CreateCharacter reload={reloadCharacters} />
+                <CreateVehicle reload={reloadCharacters} />
                 <FormControlLabel label="Show Hidden" control={<Switch checked={showHidden} />} onChange={show} />
               </Stack>
             </GamemasterOnly>

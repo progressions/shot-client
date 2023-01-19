@@ -28,10 +28,10 @@ interface CharacterModalParams {
   fight?: Fight,
   setFight?: React.Dispatch<React.SetStateAction<Fight>>
   character: Person | null
-  reloadCharacters?: any
+  reload?: any
 }
 
-export default function CharacterModal({ open, setOpen, character:activeCharacter, reloadCharacters }: CharacterModalParams) {
+export default function CharacterModal({ open, setOpen, character:activeCharacter, reload }: CharacterModalParams) {
   const { fight, setFight, reloadFight } = useFight()
   const { client } = useClient()
   const { setToast } = useToast()
@@ -97,7 +97,7 @@ export default function CharacterModal({ open, setOpen, character:activeCharacte
       if (fight?.id && setFight) {
         await reloadFight(fight)
       } else {
-        reloadCharacters()
+        await reload()
       }
     } else {
       setToast({ open: true, message: `There was an error`, severity: "error" })
