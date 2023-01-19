@@ -52,23 +52,31 @@ const fetchCharacters = async (client) => {
   return [response, availableChars]
 }
 
+const fetchCharactersAndVehicles = async (client) => {
+  const [characterResponse, characters] = await fetchCharacters(client)
+  const [vehicleResponse, vehicles] = await fetchVehicles(client)
+
+  const allCharacters = characters.concat(vehicles).sort((a, b) => a.name.localeCompare(b.name))
+
+  return [characterResponse, vehicleResponse, allCharacters]
+}
+
 export async function getServerSideProps({ req, res }: ServerSideProps) {
   const session: any = await unstable_getServerSession(req as any, res as any, authOptions as any)
   const jwt = session?.authorization
   const client = new Client({ jwt })
 
-  const [characterResponse, characters] = await fetchCharacters(client)
-  const [vehicleResponse, vehicles] = await fetchVehicles(client)
+  const [characterResponse, vehicleResponse, allCharacters] = await fetchCharactersAndVehicles(client)
 
-  if (characterResponse.status === 200) {
+  if (characterResponse.status === 200 && vehicleResponse === 200) {
     return {
       props: {
-        characters: characters.concat(vehicles),
+        characters: allCharacters,
         jwt: jwt
       }, // will be passed to the page component as props
     }
   }
-  if (response.status === 401) {
+  if (characterResponse.status === 401 || vehicleResponse === 401) {
     return {
       redirect: {
         permanent: false,
@@ -105,11 +113,10 @@ export default function Characters({ characters:initialCharacters, jwt }: Charac
   }
 
   async function reloadCharacters() {
-    const [characterResponse, characters] = await fetchCharacters(client)
-    const [vehicleResponse, vehicles] = await fetchVehicles(client)
+  const [characterResponse, vehicleResponse, allCharacters] = await fetchCharactersAndVehicles(client)
 
     if (characterResponse.status === 200 && vehicleResponse.status === 200) {
-      setCharacters(characters.concat(vehicles))
+      setCharacters(allCharacters)
     } else {
       setToast({ open: true, message: "There was an error.", severity: "error" })
     }
