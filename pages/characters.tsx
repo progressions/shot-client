@@ -225,8 +225,8 @@ export default function Characters({ characters:initialCharacters, jwt }: Charac
                 </TableBody>
               </Table>
             </TableContainer>
-            <CharacterModal open={editingCharacter} setOpen={setEditingCharacter} character={editingCharacter as Person} reloadCharacters={reloadCharacters} />
-            <VehicleModal open={editingCharacter as Vehicle} setOpen={setEditingCharacter as any} character={editingCharacter as Vehicle} reloadCharacters={reloadCharacters} />
+            <CharacterModal open={editingCharacter} setOpen={setEditingCharacter} character={editingCharacter as Person} reload={reloadCharacters} />
+            <VehicleModal open={editingCharacter as Vehicle} setOpen={setEditingCharacter as any} character={editingCharacter as Vehicle} reload={reloadCharacters} />
           </Container>
         </Layout>
       </main>
