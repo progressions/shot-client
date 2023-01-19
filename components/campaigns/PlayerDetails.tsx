@@ -1,4 +1,4 @@
-import { IconButton, TableRow, TableCell } from "@mui/material"
+import { Tooltip, IconButton, TableRow, TableCell } from "@mui/material"
 import { useClient } from "../../contexts/ClientContext"
 import { useToast } from "../../contexts/ToastContext"
 import DeleteIcon from '@mui/icons-material/Delete'
@@ -30,9 +30,11 @@ export default function PlayerDetails({ campaign, player, reload }: PlayerDetail
       <TableCell>{player.first_name}</TableCell>
       <TableCell>{player.last_name}</TableCell>
       <TableCell>
-        <IconButton color="primary" onClick={async () => await removePlayer(player, campaign)}>
-          <DeleteIcon />
-        </IconButton>
+        <Tooltip title="Remove from campaign">
+          <IconButton color="primary" onClick={async () => await removePlayer(player, campaign)}>
+            <DeleteIcon />
+          </IconButton>
+        </Tooltip>
       </TableCell>
     </TableRow>
   )
