@@ -3,18 +3,17 @@ import Head from 'next/head'
 
 import { useCallback, useMemo, useEffect, useState } from "react"
 import { Paper, IconButton, Button, Stack, Link, Container, Typography, TableContainer, Table, TableHead, TableBody, TableRow, TableCell } from "@mui/material"
-import Client from '../../components/Client'
-import DeleteIcon from '@mui/icons-material/Delete'
-import PlayCircleIcon from '@mui/icons-material/PlayCircle'
-import StopCircleIcon from '@mui/icons-material/StopCircle'
 import { useToast } from "../../contexts/ToastContext"
+import { useClient } from "../../contexts/ClientContext"
 import { useCampaign } from "../../contexts/CampaignContext"
 import { useSession } from 'next-auth/react'
 
 import CreateCampaign from "../../components/campaigns/CreateCampaign"
+import Campaigns from "../../components/campaigns/Campaigns"
 
 import { authOptions } from '../api/auth/[...nextauth]'
 import { unstable_getServerSession } from "next-auth/next"
+import Client from "../../components/Client"
 
 import type { Campaign } from "../../types/types"
 import { GetServerSideProps } from 'next'
@@ -64,64 +63,27 @@ export async function getServerSideProps<GetServerSideProps>({ req, res }: any) 
   }
 }
 
-export default function Campaigns({ campaigns:initialCampaigns }: any) {
-  const [campaigns, setCampaigns] = useState(initialCampaigns)
-  const session: any = useSession({ required: true })
-  const jwt = session?.data?.authorization
-  const client = useMemo(() => (new Client({ jwt })), [jwt])
+export default function CampaignsIndex({ campaigns:initialCampaigns }: any) {
+  const [campaigns, setCampaigns] = useState(initialCampaigns["gamemaster"])
+  const [playerCampaigns, setPlayerCampaigns] = useState(initialCampaigns["player"])
   const { setToast } = useToast()
+  const { client, user } = useClient()
   const { campaign:currentCampaign, setCurrentCampaign } = useCampaign()
 
   const getCampaigns = useCallback(async () => {
     const response = await client.getCampaigns()
     if (response.status === 200) {
       const data = await response.json()
-      setCampaigns(data)
+      setCampaigns(data["gamemaster"])
+      setPlayerCampaigns(data["player"])
     }
   }, [client])
 
   useEffect(() => {
-    if (jwt) {
+    if (user) {
       getCampaigns().catch(console.error)
     }
-  }, [jwt, getCampaigns])
-
-  const deleteCampaign = async (campaign: Campaign) => {
-    const confirmation = confirm("Delete campaign? This cannot be undone.")
-    if (confirmation) {
-      const response = await client.deleteCampaign(campaign)
-      if (response.status === 200) {
-        setToast({ open: true, message: `${campaign.title} deleted.`, severity: "success" })
-        await getCampaigns()
-      }
-    }
-  }
-
-  const startCampaign = async (camp?: Campaign | null) => {
-    await setCurrentCampaign(camp)
-    if (camp) {
-      setToast({ open: true, message: `${camp.title} activated`, severity: "success" })
-    } else {
-      setToast({ open: true, message: `Campaign cleared`, severity: "success" })
-    }
-    await getCampaigns()
-    return ""
-  }
-
-  const startStopCampaignButton = (campaign: Campaign, current: Campaign | null) => {
-    if (campaign.id === current?.id) {
-      return (
-        <IconButton color="primary" onClick={() => startCampaign(null)}>
-          <StopCircleIcon />
-        </IconButton>
-      )
-    }
-    return (
-      <IconButton color="primary" onClick={() => startCampaign(campaign)}>
-        <PlayCircleIcon />
-      </IconButton>
-    )
-  }
+  }, [user, getCampaigns])
 
   return (
     <>
@@ -135,38 +97,11 @@ export default function Campaigns({ campaigns:initialCampaigns }: any) {
         <Layout>
           <Container maxWidth="md">
             <Typography variant="h1" gutterBottom>Campaigns</Typography>
-            <CreateCampaign reload={getCampaigns} />
-            <TableContainer component={Paper}>
-              <Table size="small">
-                <TableHead>
-                  <TableRow>
-                    <TableCell>Campaign</TableCell>
-                    <TableCell></TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {
-                    campaigns.map((campaign: Campaign) => {
-                      return (
-                        <TableRow key={campaign.id}>
-                          <TableCell>
-                            <Link href={`/campaigns/${campaign.id}`}>
-                              {campaign.title}
-                            </Link>
-                          </TableCell>
-                          <TableCell>
-                            { startStopCampaignButton(campaign, currentCampaign) }
-                            <IconButton color="primary" onClick={() => deleteCampaign(campaign)}>
-                              <DeleteIcon />
-                            </IconButton>
-                          </TableCell>
-                        </TableRow>
-                      )
-                    })
-                  }
-                </TableBody>
-              </Table>
-            </TableContainer>
+            { user?.gamemaster && <CreateCampaign reload={getCampaigns} /> }
+            <Typography mt={2} variant="h3" gutterBottom>As Gamemaster</Typography>
+            <Campaigns campaigns={campaigns} getCampaigns={getCampaigns} />
+            <Typography mt={2} variant="h3" gutterBottom>As Player</Typography>
+            <Campaigns campaigns={playerCampaigns} />
           </Container>
         </Layout>
       </main>

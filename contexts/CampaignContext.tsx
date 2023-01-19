@@ -24,7 +24,6 @@ export function CampaignProvider({ children }: any) {
     const response = await client.setCurrentCampaign(camp)
     if (response.status === 200) {
       const data = await response.json()
-      console.log({ data })
       setCampaign(data)
       return data
     }
@@ -34,7 +33,6 @@ export function CampaignProvider({ children }: any) {
     const response = await client.getCurrentCampaign()
     if (response.status === 200) {
       const data = await response.json()
-      console.log("DATA", { data })
       setCampaign(data)
       return data
     }

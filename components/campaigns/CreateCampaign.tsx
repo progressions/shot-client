@@ -18,7 +18,7 @@ export default function CreateCampaign({ reload }: any) {
 
   return (
     <>
-      <Button variant="outlined" onClick={openModal}>
+      <Button variant="contained" color="primary" onClick={openModal}>
         Create Campaign
       </Button>
       <CampaignModal open={newCampaign} setOpen={setNewCampaign} campaign={newCampaign as Campaign} reload={reload} />

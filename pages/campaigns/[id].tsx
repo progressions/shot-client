@@ -37,7 +37,6 @@ export async function getServerSideProps<GetServerSideProps>({ req, res, params 
 }
 
 export default function CampaignView({ campaign }: any) {
-  console.log({ campaign })
   return (
     <>
       <Head>
