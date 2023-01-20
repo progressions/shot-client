@@ -125,7 +125,7 @@ class Client {
   }
 
   async resendInvitation(invitation: Invitation, user: any) {
-    return await this.patch(`${this.api.invitations(invitation)}/resend`, {"user": user})
+    return await this.post(`${this.api.invitations(invitation)}/resend`, {"user": user})
   }
 
   async createCampaign(campaign: Campaign) {

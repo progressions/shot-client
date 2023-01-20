@@ -1,6 +1,7 @@
 import Layout from '../../components/Layout'
 import Head from 'next/head'
 import DeleteIcon from '@mui/icons-material/Delete'
+import SendIcon from '@mui/icons-material/Send'
 
 import { Tooltip, IconButton, Box, Stack, TableContainer, Table, TableRow, TableHead, TableBody, TableCell, Container, Typography } from "@mui/material"
 
@@ -64,6 +65,17 @@ export default function CampaignView({ campaign:initialCampaign }: any) {
       const data = await response.json()
       console.log("campaign", data)
       setCampaign(data)
+    }
+  }
+
+  async function resendInvitation(invitation) {
+    const response = await client.resendInvitation(invitation)
+    if (response.status === 200) {
+      await reloadCampaign(campaign)
+      setToast({ open: true, message: `Invitation re-sent.`, severity: "success" })
+    } else {
+      await reloadCampaign(campaign)
+      setToast({ open: true, message: `There was an error.`, severity: "error" })
     }
   }
 
@@ -140,6 +152,11 @@ export default function CampaignView({ campaign:initialCampaign }: any) {
                           <TableCell>{invitation.maximum_count}</TableCell>
                           <TableCell>{invitation.remaining_count}</TableCell>
                           <TableCell>
+                            { invitation.email && <Tooltip title="Re-send invitation">
+                              <IconButton color="primary" onClick={async () => await resendInvitation(invitation)}>
+                                <SendIcon />
+                              </IconButton>
+                            </Tooltip> }
                             <Tooltip title="Delete invitation">
                               <IconButton color="primary" onClick={async () => await deleteInvitation(invitation)}>
                                 <DeleteIcon />
