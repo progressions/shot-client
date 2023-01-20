@@ -1,4 +1,4 @@
-import type { Invitation, Campaign, Vehicle, Effect, Fight, Character, User, ID } from "../types/types"
+import type { CharacterEffect, Invitation, Campaign, Vehicle, Effect, Fight, Character, User, ID } from "../types/types"
 
 class Api {
   base():string { return process.env.NEXT_PUBLIC_SERVER_URL as string }
@@ -72,6 +72,14 @@ class Api {
       return `${this.fights(fight)}/effects/${effect.id}`
     } else {
       return `${this.fights(fight)}/effects`
+    }
+  }
+
+  characterEffects(fight: Fight, characterEffect: CharacterEffect | ID): string {
+    if (characterEffect.id) {
+      return `${this.fights(fight)}/character_effects/${characterEffect.id}`
+    } else {
+      return `${this.fights(fight)}/character_effects`
     }
   }
 

@@ -111,6 +111,8 @@ export interface CharacterEffect {
   id?: string
   title: string
   description: string
+  character_id?: string
+  vehicle_id?: string
 }
 
 export type ShotType = [number, Character[]]
