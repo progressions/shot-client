@@ -74,9 +74,10 @@ export default function Campaigns({ campaigns, getCampaigns }: any) {
                   </TableCell>
                   <TableCell>
                     { startStopCampaignButton(campaign, currentCampaign) }
+                    { campaign?.gamemaster?.id === user?.id &&
                     <IconButton color="primary" onClick={() => deleteCampaign(campaign)}>
                       <DeleteIcon />
-                    </IconButton>
+                    </IconButton> }
                   </TableCell>
                 </TableRow>
               )
