@@ -65,14 +65,14 @@ export default function Campaigns({ campaigns, getCampaigns }: any) {
             campaigns.map((campaign: Campaign) => {
               return (
                 <TableRow key={campaign.id}>
-                  <TableCell>
+                  <TableCell sx={{width: 400}}>
                     <Typography variant="h6">
                       <Link color="text.primary" href={`/campaigns/${campaign.id}`}>
                         {campaign.title}
                       </Link>
                     </Typography>
                   </TableCell>
-                  <TableCell>
+                  <TableCell sx={{width: 100}}>
                     { startStopCampaignButton(campaign, currentCampaign) }
                     { campaign?.gamemaster?.id === user?.id &&
                     <IconButton color="primary" onClick={() => deleteCampaign(campaign)}>
