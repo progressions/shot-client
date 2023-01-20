@@ -82,11 +82,11 @@ export default function ActionButtons({ character, healWounds, takeWounds, takeC
       </ButtonGroup>
       <ButtonGroup variant="outlined" size="small">
         { takeDodgeAction &&
-        <Button variant="outlined" color="secondary" onClick={() => takeDodgeAction(character)}>
+        <Button variant="contained" color="highlight" onClick={() => takeDodgeAction(character)}>
           <DirectionsRunIcon />
         </Button> }
         { takeAction && <Tooltip title="Take Action" arrow>
-          <Button sx={{width: 60}} variant="contained" color="secondary" onClick={() => {takeAction(character)}}>
+          <Button sx={{width: 60}} variant="contained" color="highlight" onClick={() => {takeAction(character)}}>
             <BoltIcon sx={{width: 50, height: 50}} />
           </Button>
         </Tooltip> }

@@ -123,7 +123,7 @@ export default function SelectCharacter() {
 
   return (
     <>
-      <Button variant="outlined" color="primary" endIcon={<PersonIcon />} startIcon={<DirectionsCarFilledIcon />} onClick={handleOpen}>Select</Button>
+      <Button variant="contained" color="secondary" endIcon={<PersonIcon />} startIcon={<DirectionsCarFilledIcon />} onClick={handleOpen}>Select</Button>
       <Popover
         disableAutoFocus={true}
         disableEnforceFocus={true}

@@ -12,6 +12,7 @@ import { unstable_getServerSession } from "next-auth/next"
 
 import { useSession } from "next-auth/react"
 
+import ButtonBar from "../components/ButtonBar"
 import ActionValues from "../components/characters/ActionValues"
 import ActionButtons from "../components/characters/ActionButtons"
 import CharacterModal from "../components/characters/CharacterModal"
@@ -201,14 +202,14 @@ export default function Characters({ characters:initialCharacters, jwt }: Charac
           <Container maxWidth="lg">
             <Typography variant="h1" gutterBottom>Characters</Typography>
             <GamemasterOnly user={user}>
-              <Box component={Paper} p={1} mb={1}>
+              <ButtonBar>
                 <Stack direction="row" spacing={2} alignItems="center">
                   <CharacterFilters filters={filters} setFilters={setFilters} />
                   <CreateCharacter reload={reloadCharacters} />
                   <CreateVehicle reload={reloadCharacters} />
                   <FormControlLabel label="Show Hidden" control={<Switch checked={showHidden} />} onChange={show} />
                 </Stack>
-              </Box>
+              </ButtonBar>
             </GamemasterOnly>
             <TableContainer component={Paper}>
               <Table size="small">

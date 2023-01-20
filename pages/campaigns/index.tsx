@@ -8,6 +8,7 @@ import { useClient } from "../../contexts/ClientContext"
 import { useCampaign } from "../../contexts/CampaignContext"
 import { useSession } from 'next-auth/react'
 
+import ButtonBar from "../../components/ButtonBar"
 import CreateCampaign from "../../components/campaigns/CreateCampaign"
 import Campaigns from "../../components/campaigns/Campaigns"
 import GamemasterOnly from "../../components/GamemasterOnly"
@@ -99,9 +100,9 @@ export default function CampaignsIndex({ campaigns:initialCampaigns }: any) {
           <Container maxWidth="md">
             <Typography variant="h1" gutterBottom>Campaigns</Typography>
             <GamemasterOnly user={user}>
-              <Box component={Paper} p={1} mb={1}>
+              <ButtonBar>
                 <CreateCampaign reload={getCampaigns} />
-              </Box>
+              </ButtonBar>
             </GamemasterOnly>
             <Typography mt={2} variant="h3" gutterBottom>As Gamemaster</Typography>
             <Campaigns campaigns={campaigns} getCampaigns={getCampaigns} />

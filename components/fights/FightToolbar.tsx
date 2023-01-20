@@ -1,5 +1,6 @@
-import { ButtonGroup, Switch, FormControlLabel, Stack } from '@mui/material'
+import { colors, Box, Paper, ButtonGroup, Switch, FormControlLabel, Stack } from '@mui/material'
 
+import ButtonBar from "../ButtonBar"
 import CreateCharacter from '../characters/CreateCharacter'
 import SelectCharacter from '../characters/SelectCharacter'
 import CreateVehicle from '../vehicles/CreateVehicle'
@@ -27,23 +28,25 @@ export default function FightToolbar({ showHidden, setShowHidden }: FightToolbar
   }
   return (
     <>
-      <Stack direction="row" spacing={2} alignItems='center'>
-        <GamemasterOnly user={session?.data?.user}>
-          <RollInitiative />
-        </GamemasterOnly>
-        <DiceRoller />
-        <ButtonGroup>
-          <CreateVehicle fight={fight} setFight={setFight} />
-          <CreateCharacter fight={fight} setFight={setFight} />
-        </ButtonGroup>
-        <ButtonGroup>
-          <SelectCharacter />
-        </ButtonGroup>
-        <MookRolls />
-        <GamemasterOnly user={session?.data?.user}>
-          <FormControlLabel label="Show Hidden" control={<Switch checked={showHidden} />} onChange={show} />
-        </GamemasterOnly>
-      </Stack>
+      <ButtonBar>
+        <Stack direction="row" spacing={2} alignItems='center'>
+          <GamemasterOnly user={session?.data?.user}>
+            <RollInitiative />
+          </GamemasterOnly>
+          <DiceRoller />
+          <ButtonGroup>
+            <CreateVehicle fight={fight} setFight={setFight} />
+            <CreateCharacter fight={fight} setFight={setFight} />
+          </ButtonGroup>
+          <ButtonGroup>
+            <SelectCharacter />
+          </ButtonGroup>
+          <MookRolls />
+          <GamemasterOnly user={session?.data?.user}>
+            <FormControlLabel label="Show Hidden" control={<Switch checked={showHidden} />} onChange={show} />
+          </GamemasterOnly>
+        </Stack>
+      </ButtonBar>
     </>
   )
 }

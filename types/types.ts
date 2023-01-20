@@ -135,6 +135,8 @@ export interface Invitation {
   id?: string
   email?: string
   campaign_id: string
+  maximum_count: number
+  remaining_count: number
 }
 
 export interface CharacterFilter {
