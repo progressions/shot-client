@@ -124,8 +124,8 @@ class Client {
     return await this.patch(`${this.api.invitations(invitation)}/redeem`, {"user": user})
   }
 
-  async resendInvitation(invitation: Invitation, user: any) {
-    return await this.post(`${this.api.invitations(invitation)}/resend`, {"user": user})
+  async resendInvitation(invitation: Invitation) {
+    return await this.post(`${this.api.invitations(invitation)}/resend`)
   }
 
   async createCampaign(campaign: Campaign) {
@@ -185,7 +185,7 @@ class Client {
     return await this.request("PATCH", url, body, options)
   }
 
-  async post(url:string, body:any, options?:any):Promise<Response> {
+  async post(url:string, body?:any, options?:any):Promise<Response> {
     return await this.request("POST", url, body, options)
   }
 

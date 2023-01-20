@@ -68,7 +68,7 @@ export default function CampaignView({ campaign:initialCampaign }: any) {
     }
   }
 
-  async function resendInvitation(invitation) {
+  async function resendInvitation(invitation: Invitation) {
     const response = await client.resendInvitation(invitation)
     if (response.status === 200) {
       await reloadCampaign(campaign)
@@ -79,7 +79,7 @@ export default function CampaignView({ campaign:initialCampaign }: any) {
     }
   }
 
-  async function deleteInvitation(invitation) {
+  async function deleteInvitation(invitation: Invitation) {
     const response = await client.deleteInvitation(invitation)
     if (response.status === 200) {
       await reloadCampaign(campaign)
