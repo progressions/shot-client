@@ -30,7 +30,7 @@ export default function CampaignSelector({ startCampaign }: any) {
 
   useEffect(() => {
     if (user) {
-      getCampaigns().catch(alert)
+      getCampaigns().catch(console.error)
     }
   }, [user, getCampaigns])
 
@@ -97,8 +97,7 @@ export default function CampaignSelector({ startCampaign }: any) {
           </DialogContent>
           <DialogActions>
             <Stack spacing={2} direction="row">
-              <Button variant="outlined" disabled={saving} onClick={cancelForm}>Cancel</Button>
-              <Button variant="contained" type="submit" disabled={saving}>Select</Button>
+              <Button variant="contained" color="highlight" disabled={saving} onClick={cancelForm}>Cancel</Button>
             </Stack>
           </DialogActions>
         </Box>

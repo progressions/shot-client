@@ -6,7 +6,9 @@ import { Box, Stack, TableContainer, Table, TableRow, TableHead, TableBody, Tabl
 import { authOptions } from '../api/auth/[...nextauth]'
 import { unstable_getServerSession } from "next-auth/next"
 
+import ButtonBar from "../../components/ButtonBar"
 import CreateInvitation from "../../components/invitations/CreateInvitation"
+import CreateOpenInvitation from "../../components/invitations/CreateOpenInvitation"
 import Client from '../../components/Client'
 import { GetServerSideProps } from 'next'
 
@@ -76,9 +78,12 @@ export default function CampaignView({ campaign:initialCampaign }: any) {
             <Typography variant="h2" gutterBottom>{campaign.title}</Typography>
             <Typography>{campaign.description}</Typography>
             <Typography>Gamemaster: {campaign?.gamemaster?.first_name} {campaign?.gamemaster?.last_name}</Typography>
-            <Stack direction="row">
-              <CreateInvitation campaign={campaign} />
-            </Stack>
+            <ButtonBar>
+              <Stack direction="row" spacing={1}>
+                <CreateInvitation campaign={campaign} />
+                <CreateOpenInvitation campaign={campaign} />
+              </Stack>
+            </ButtonBar>
             <Box mt={2}>
               <Typography variant="h3">Players</Typography>
               <TableContainer>
@@ -105,16 +110,20 @@ export default function CampaignView({ campaign:initialCampaign }: any) {
                 <Table>
                   <TableHead>
                     <TableRow>
-                      <TableCell>Email</TableCell>
                       <TableCell />
+                      <TableCell>Email</TableCell>
+                      <TableCell>Maximum Count</TableCell>
+                      <TableCell>Remaining Count</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
                     {
                       campaign.invitations.map((invitation: Invitation) => (
                         <TableRow key={invitation.id}>
-                          <TableCell>{invitation.email}</TableCell>
                           <TableCell>{invitation.id}</TableCell>
+                          <TableCell>{invitation.email}</TableCell>
+                          <TableCell>{invitation.maximum_count}</TableCell>
+                          <TableCell>{invitation.remaining_count}</TableCell>
                         </TableRow>
                       )
                     ) }
