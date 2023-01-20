@@ -54,6 +54,7 @@ export default function RedeemInvitation({ invitation }: any) {
   const [saving, setSaving] = useState(false)
   const [success, setSuccess] = useState(false)
   const { user:currentUser, session } = useClient()
+  const [errors, setErrors] = useState<any>({})
 
   useEffect(() => {
     if (invitation.pending_user?.id) {
@@ -82,7 +83,7 @@ export default function RedeemInvitation({ invitation }: any) {
     } else {
       const data = await response.json()
       console.error(data)
-      alert("error")
+      setErrors(data)
     }
 
     setSaving(false)
@@ -138,8 +139,8 @@ export default function RedeemInvitation({ invitation }: any) {
               <Typography variant="h3" gutterBottom>{invitation.campaign.title}</Typography>
               <Typography>To accept, enter your details to create an account.</Typography>
               <Stack direction="column" spacing={2} mt={4}>
-                <TextField name="email" label="Email" value={user?.email || ""} InputProps={{
-                  readOnly: true,
+                <TextField name="email" label="Email" required error={errors["email"]} helperText={errors["email"]} value={user?.email || ""} onChange={handleChange} InputProps={{
+                  readOnly: invitation.email,
                 }} />
                 <TextField name="first_name" label="First name" value={user?.first_name || ""} onChange={handleChange} />
                 <TextField name="last_name" label="Last name" value={user?.last_name || ""} onChange={handleChange} />
