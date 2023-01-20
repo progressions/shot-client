@@ -1,7 +1,8 @@
 import Layout from '../../components/Layout'
 import Head from 'next/head'
+import DeleteIcon from '@mui/icons-material/Delete'
 
-import { Box, Stack, TableContainer, Table, TableRow, TableHead, TableBody, TableCell, Container, Typography } from "@mui/material"
+import { Tooltip, IconButton, Box, Stack, TableContainer, Table, TableRow, TableHead, TableBody, TableCell, Container, Typography } from "@mui/material"
 
 import { authOptions } from '../api/auth/[...nextauth]'
 import { unstable_getServerSession } from "next-auth/next"
@@ -14,6 +15,7 @@ import { GetServerSideProps } from 'next'
 
 import PlayerDetails from "../../components/campaigns/PlayerDetails"
 import { useClient } from "../../contexts/ClientContext"
+import { useToast } from "../../contexts/ToastContext"
 
 import { useState } from "react"
 import { Invitation, User, Campaign } from "../../types/types"
@@ -53,6 +55,7 @@ export async function getServerSideProps<GetServerSideProps>({ req, res, params 
 
 export default function CampaignView({ campaign:initialCampaign }: any) {
   const { client } = useClient()
+  const { setToast } = useToast()
   const [campaign, setCampaign] = useState<Campaign>(initialCampaign)
 
   async function reloadCampaign(camp:Campaign) {
@@ -61,6 +64,17 @@ export default function CampaignView({ campaign:initialCampaign }: any) {
       const data = await response.json()
       console.log("campaign", data)
       setCampaign(data)
+    }
+  }
+
+  async function deleteInvitation(invitation) {
+    const response = await client.deleteInvitation(invitation)
+    if (response.status === 200) {
+      await reloadCampaign(campaign)
+      setToast({ open: true, message: `Invitation deleted.`, severity: "success" })
+    } else {
+      await reloadCampaign(campaign)
+      setToast({ open: true, message: `There was an error.`, severity: "error" })
     }
   }
 
@@ -114,6 +128,7 @@ export default function CampaignView({ campaign:initialCampaign }: any) {
                       <TableCell>Email</TableCell>
                       <TableCell>Maximum Count</TableCell>
                       <TableCell>Remaining Count</TableCell>
+                      <TableCell />
                     </TableRow>
                   </TableHead>
                   <TableBody>
@@ -124,6 +139,13 @@ export default function CampaignView({ campaign:initialCampaign }: any) {
                           <TableCell>{invitation.email}</TableCell>
                           <TableCell>{invitation.maximum_count}</TableCell>
                           <TableCell>{invitation.remaining_count}</TableCell>
+                          <TableCell>
+                            <Tooltip title="Delete invitation">
+                              <IconButton color="primary" onClick={async () => await deleteInvitation(invitation)}>
+                                <DeleteIcon />
+                              </IconButton>
+                            </Tooltip>
+                          </TableCell>
                         </TableRow>
                       )
                     ) }
