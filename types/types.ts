@@ -79,7 +79,6 @@ export interface Vehicle {
   updated_at?: string
   new?: boolean
   category: "character" | "vehicle"
-  character_effects: CharacterEffect[]
 }
 
 export interface Person {
@@ -95,7 +94,6 @@ export interface Person {
   updated_at?: string
   new?: boolean
   category: "character" | "vehicle"
-  character_effects: CharacterEffect[]
 }
 
 export interface Effect {
@@ -126,6 +124,7 @@ export interface Fight {
   characters?: Character[]
   vehicles?: Vehicle[]
   shot_order: ShotType[]
+  character_effects: CharacterEffect[]
 }
 
 export interface User {
@@ -188,8 +187,7 @@ export const defaultCharacter:Person = {
     "Marks of Death": 0,
     Damage: 0,
     Faction: ""
-  },
-  character_effects: []
+  }
 }
 
 export const defaultVehicle:Vehicle = {
@@ -211,8 +209,7 @@ export const defaultVehicle:Vehicle = {
     Position: "far",
     Type: "Featured Foe",
     Faction: ""
-  },
-  character_effects: []
+  }
 }
 
 export const defaultFight:Fight = {
@@ -221,7 +218,8 @@ export const defaultFight:Fight = {
   sequence: 1,
   effects: [],
   characters: [],
-  shot_order: []
+  shot_order: [],
+  character_effects: []
 }
 
 export const defaultUser:User = {
