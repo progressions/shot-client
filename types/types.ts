@@ -79,6 +79,7 @@ export interface Vehicle {
   updated_at?: string
   new?: boolean
   category: "character" | "vehicle"
+  character_effects: CharacterEffect[]
 }
 
 export interface Person {
@@ -94,6 +95,7 @@ export interface Person {
   updated_at?: string
   new?: boolean
   category: "character" | "vehicle"
+  character_effects: CharacterEffect[]
 }
 
 export interface Effect {
@@ -105,6 +107,12 @@ export interface Effect {
   end_sequence: number
   start_shot: number
   end_shot: number
+}
+
+export interface CharacterEffect {
+  id?: string
+  title: string
+  description: string
 }
 
 export type ShotType = [number, Character[]]
@@ -180,7 +188,8 @@ export const defaultCharacter:Person = {
     "Marks of Death": 0,
     Damage: 0,
     Faction: ""
-  }
+  },
+  character_effects: []
 }
 
 export const defaultVehicle:Vehicle = {
@@ -202,7 +211,8 @@ export const defaultVehicle:Vehicle = {
     Position: "far",
     Type: "Featured Foe",
     Faction: ""
-  }
+  },
+  character_effects: []
 }
 
 export const defaultFight:Fight = {
