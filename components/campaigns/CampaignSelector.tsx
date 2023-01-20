@@ -10,6 +10,21 @@ import Client from "../Client"
 
 import type { Campaign } from "../../types/types"
 
+declare module "@mui/material/styles" {
+  interface CustomPalette {
+    highlight: {
+      main: string
+    }
+  }
+  interface Palette extends CustomPalette {}
+  interface PaletteOptions extends CustomPalette {}
+}
+declare module "@mui/material/Button" {
+  interface ButtonPropsColorOverrides {
+    highlight: true
+  }
+}
+
 export default function CampaignSelector({ startCampaign }: any) {
   const {campaign, getCurrentCampaign, setCurrentCampaign}:any = useCampaign()
   const { setToast } = useToast()
