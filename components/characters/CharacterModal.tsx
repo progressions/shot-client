@@ -151,7 +151,7 @@ export default function CharacterModal({ open, setOpen, character:activeCharacte
               <Stack direction="row" spacing={2}>
                 <TextField autoFocus label="Name" variant="filled" size="medium" sx={{paddingBottom: 2}} fullWidth required name="name" value={character.name} onChange={handleChange} />
                 { fight?.id &&
-                <TextField label="Shot" type="number" name="current_shot" value={character.current_shot === null ? '' : (character.current_shot || '')} onChange={handleChange} sx={{width: 80}} /> }
+                <TextField label="Shot" type="number" name="current_shot" value={character.current_shot === null ? "" : character.current_shot} onChange={handleChange} sx={{width: 80}} /> }
               </Stack>
               <Stack spacing={2} direction="row" alignItems='center'>
                 <TextField label={woundsLabel}
