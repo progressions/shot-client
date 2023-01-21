@@ -1,7 +1,7 @@
 import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined'
 import { Button, Dialog, DialogTitle, Box, TextField, MenuItem, DialogContent, DialogActions, Tooltip, IconButton, Stack } from "@mui/material"
 
-import { useState } from "react"
+import { useMemo, useState } from "react"
 import { useToast } from "../../contexts/ToastContext"
 import { useClient } from "../../contexts/ClientContext"
 import { useFight } from "../../contexts/FightContext"
@@ -19,10 +19,23 @@ export default function EffectsModal({ character }: any) {
   const { setToast } = useToast()
   const { client } = useClient()
 
+  const characterActionValues = [
+    { label: "Attack", value: "MainAttack" },
+    { label: "Defense", value: "Defense" }
+  ]
+
   const cancelForm = () => {
     setEffect(initialEffect)
     setOpen(false)
   }
+
+  const actionValues = useMemo(() => {
+    if (character.category === "character") {
+      return characterActionValues
+    } else {
+      return []
+    }
+  }, [character])
 
   const handleSubmit = async (event: any) => {
     setSaving(true)
@@ -71,6 +84,15 @@ export default function EffectsModal({ character }: any) {
                 </TextField>
               </Stack>
               <TextField label="Description" fullWidth name="description" value={effect.description} onChange={handleChange} />
+            </Stack>
+            <Stack spacing={2} sx={{paddingTop: 2}} direction="row">
+              <TextField label="Action Value" name="action_value" select fullWidth value={effect.action_value || ""} onChange={handleChange}>
+                <MenuItem value="">None</MenuItem>
+                {
+                  actionValues.map(({label, value}) => <MenuItem key={value} value={value}>{label}</MenuItem>)
+                }
+              </TextField>
+              <TextField label="Change" fullWidth name="change" value={effect.change || ""} onChange={handleChange} />
             </Stack>
           </DialogContent>
           <DialogActions>
