@@ -24,7 +24,7 @@ export default function ShotCounter() {
       return <FightToolbar showHidden={showHidden} setShowHidden={setShowHidden} />
     }
     return <></>
-  }, [fight?.id])
+  }, [fight?.id, showHidden])
 
   return (
     <>

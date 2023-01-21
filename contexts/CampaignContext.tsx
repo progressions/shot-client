@@ -3,7 +3,7 @@ import { useEffect, useMemo, createContext, useContext, useState } from "react"
 import type { Campaign } from "../types/types"
 import { defaultCampaign } from "../types/types"
 import { useSession } from 'next-auth/react'
-import Client from "../components/Client"
+import { useClient } from "./ClientContext"
 
 export interface CampaignContextType {
   campaign: Campaign | null
@@ -14,21 +14,19 @@ export interface CampaignContextType {
 const CampaignContext = createContext<CampaignContextType>({ campaign: null, setCurrentCampaign: null, getCurrentCampaign: null })
 
 export function CampaignProvider({ children }: any) {
-  const session: any = useSession({ required: false })
-  const jwt = session?.data?.authorization
-  const client = useMemo(() => (new Client({ jwt })), [jwt])
+  const { user, client } = useClient()
 
   const [campaign, setCampaign] = useState<Campaign>(defaultCampaign)
 
-  function saveLocally(key, value) {
+  function saveLocally(key: string, value: any) {
     if (typeof localStorage !== "undefined") {
-      localStorage.setItem(key, JSON.stringify(value))
+      localStorage.setItem(key, JSON.stringify(value) as string)
     }
   }
 
-  function getLocally(key) {
+  function getLocally(key: string) {
     if (typeof localStorage !== "undefined") {
-      return JSON.parse(localStorage.getItem(key))
+      return JSON.parse(localStorage.getItem(key) as string)
     }
     return null
   }
@@ -59,7 +57,7 @@ export function CampaignProvider({ children }: any) {
   }
 
   useEffect(() => {
-    if (jwt) {
+    if (user) {
       const data = getLocally("currentCampaign")
       if (data) {
         setCampaign(data)
@@ -68,7 +66,7 @@ export function CampaignProvider({ children }: any) {
         saveLocally("currentCampaign", data)
       }
     }
-  }, [jwt])
+  }, [user])
 
   return (
     <CampaignContext.Provider value={{campaign, setCurrentCampaign, getCurrentCampaign}}>
