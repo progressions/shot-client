@@ -7,6 +7,8 @@ import { useFight } from "../../contexts/FightContext"
 
 import { useMemo, useState } from "react"
 
+import type { CharacterEffect, Character } from "../../types/types"
+
 export default function Effects({ effects, severity }: any) {
   const [open, setOpen] = useState<boolean>(false)
   const [anchorEl, setAnchorEl] = useState<any>(null)
@@ -35,7 +37,7 @@ export default function Effects({ effects, severity }: any) {
 
   const toolbarColor = `${severity}.dark`
 
-  const actionValueLabel = (effect) => {
+  const actionValueLabel = (effect: CharacterEffect) => {
     if (effect.action_value === "MainAttack") {
       return "Attack"
     } else {

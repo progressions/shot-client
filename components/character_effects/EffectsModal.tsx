@@ -35,7 +35,7 @@ export default function EffectsModal({ character }: any) {
     } else {
       return []
     }
-  }, [character])
+  }, [characterActionValues, character])
 
   const handleSubmit = async (event: any) => {
     setSaving(true)
