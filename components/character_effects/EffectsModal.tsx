@@ -19,23 +19,23 @@ export default function EffectsModal({ character }: any) {
   const { setToast } = useToast()
   const { client } = useClient()
 
-  const characterActionValues = [
-    { label: "Attack", value: "MainAttack" },
-    { label: "Defense", value: "Defense" }
-  ]
-
   const cancelForm = () => {
     setEffect(initialEffect)
     setOpen(false)
   }
 
   const actionValues = useMemo(() => {
+    const characterActionValues = [
+      { label: "Attack", value: "MainAttack" },
+      { label: "Defense", value: "Defense" }
+    ]
+
     if (character.category === "character") {
       return characterActionValues
     } else {
       return []
     }
-  }, [characterActionValues, character])
+  }, [character])
 
   const handleSubmit = async (event: any) => {
     setSaving(true)

@@ -1,6 +1,6 @@
 import { Box, Tooltip, Stack, Typography } from "@mui/material"
 import { SxProps, Theme } from '@mui/material/styles'
-import type { Character } from "../../types/types"
+import type { Fight, CharacterEffect, Character } from "../../types/types"
 import { useFight } from "../../contexts/FightContext"
 
 interface ActionValueDisplayParams {
@@ -12,8 +12,8 @@ interface ActionValueDisplayParams {
   sx?: SxProps<Theme>
 }
 
-const effectForCharacter = (fight, character, name) => {
-  const effects = fight.character_effects[character.id] || []
+const effectForCharacter = (fight: Fight, character: Character, name: String): CharacterEffect | null => {
+  const effects = fight.character_effects[character.id as string] || []
   const effect = effects.find((e: any) => {
     if (e.action_value === name) {
       return true
@@ -27,32 +27,34 @@ const effectForCharacter = (fight, character, name) => {
   return effect
 }
 
-const valueChange = (original, newValue) => {
+const valueChange = (original: number, newValue: number): number => {
   if (newValue > original) return 1
-  if (newValue === original) return 0
   if (newValue < original) return -1
+
+  return 0
 }
 
-const adjustedReturnValue = (original, newValue) => {
+const adjustedReturnValue = (original: number, newValue: number): any => {
   return [valueChange(original, newValue), newValue]
 }
 
-const colorForValue = (changed) => {
+const colorForValue = (changed: number): string => {
   if (changed === -1) return "red"
-  if (changed === 0) return "inherit"
   if (changed == 1) return "green"
+
+  return "inherit"
 }
 
-const adjustedValue = (character, name, fight, impairments) => {
+const adjustedValue = (character: Character, name: string, fight: Fight, impairments: number) => {
   const effect = effectForCharacter(fight, character, name)
-  const original = character.action_values[name]
+  const original = (character.action_values[name] || 0) as number
 
   if (effect) {
-    if (["+", "-"].includes(effect.change[0])) {
-      const newValue = original + parseInt(effect.change)
+    if (["+", "-"].includes(effect.change?.[0] as string)) {
+      const newValue = original + parseInt(effect.change as string)
       return adjustedReturnValue(original, newValue)
     }
-    const newValue = effect.change
+    const newValue = (effect.change || 0) as number
     return adjustedReturnValue(original, newValue)
   }
 

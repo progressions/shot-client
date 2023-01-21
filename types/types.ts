@@ -129,7 +129,7 @@ export interface Fight {
   characters?: Character[]
   vehicles?: Vehicle[]
   shot_order: ShotType[]
-  character_effects: CharacterEffect[]
+  character_effects: any
 }
 
 export interface User {
