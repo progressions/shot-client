@@ -17,7 +17,7 @@ export default function RollInitiative() {
 
   const { client } = useClient()
   const { toastSuccess } = useToast()
-  const startOfSequence = useMemo(() => (fight?.shot_order?.[0]?.[0] === 0), [fight.shot_order])
+  const startOfSequence = useMemo(() => ((fight?.shot_order?.[0]?.[0] || 0) === 0), [fight.shot_order])
 
   const addSequence = async () => {
     const updatedFight = fight
