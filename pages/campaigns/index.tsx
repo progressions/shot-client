@@ -105,7 +105,7 @@ export default function CampaignsIndex({ campaigns:initialCampaigns }: any) {
             <Typography mt={2} variant="h3" gutterBottom>As Gamemaster</Typography>
             <Campaigns campaigns={campaigns} getCampaigns={getCampaigns} />
             <Typography mt={2} variant="h3" gutterBottom>As Player</Typography>
-            <Campaigns campaigns={playerCampaigns} />
+            <Campaigns campaigns={playerCampaigns} getCampaigns={getCampaigns} />
           </Container>
         </Layout>
       </main>
