@@ -14,7 +14,7 @@ export default function CampaignModal({ open, setOpen, campaign:activeCampaign, 
   const [saving, setSaving] = useState(false)
 
   const { client } = useClient()
-  const { setToast } = useToast()
+  const { toastSuccess, toastError } = useToast()
 
   const handleSubmit = async (event: any) => {
     event.preventDefault()
@@ -27,9 +27,10 @@ export default function CampaignModal({ open, setOpen, campaign:activeCampaign, 
       setSaving(false)
       cancelForm()
 
-      setToast({ open: true, message: `${campaign.title} created.`, severity: "success" })
+      toastSuccess(`${campaign.title} created.`)
       await reload()
     } else {
+      toastError()
       setSaving(false)
       cancelForm()
     }

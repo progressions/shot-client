@@ -34,7 +34,7 @@ export default function VehicleDetails({ character, editingCharacter, setEditing
   const [openAction, setOpenAction] = useState(false)
   const [openChasePoints, setOpenChasePoints] = useState(false)
   const [openConditionPoints, setOpenConditionPoints] = useState(false)
-  const { setToast } = useToast()
+  const { toastSuccess, toastError } = useToast()
 
   function closeAction() {
     setOpenAction(false)
@@ -44,8 +44,10 @@ export default function VehicleDetails({ character, editingCharacter, setEditing
     const response = await client.deleteVehicle(character as Vehicle, fight)
     if (response.status === 200) {
       await reloadFight(fight)
-      setToast({ open: true, message: `${character.name} removed.`, severity: "success" })
+      toastSuccess(`${character.name} removed.`)
+      return
     }
+    toastError()
   }
 
   function editCharacter(character: Character): void {

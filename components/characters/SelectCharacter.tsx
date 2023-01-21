@@ -16,7 +16,7 @@ import { defaultCharacter } from "../../types/types"
 
 export default function SelectCharacter() {
   const { user, client } = useClient()
-  const { setToast } = useToast()
+  const { toastSuccess, toastError } = useToast()
   const { fight, setFight, reloadFight } = useFight()
 
   const [open, setOpen] = useState<boolean>(false)
@@ -98,15 +98,17 @@ export default function SelectCharacter() {
 
     if (!id) return
 
-    let response
-    if (value.category === "character") {
-      response = await client.addCharacter(fight, {id: id})
+    const response = (value.category === "character") ?
+      await client.addCharacter(fight, {id: id})
+    : await client.addVehicle(fight, {id: id})
+
+    if (response.status === 200) {
+      const character = await response.json()
+      toastSuccess(`${character.name} added.`)
+      setValue(defaultCharacter)
     } else {
-      response = await client.addVehicle(fight, {id: id})
+      toastError()
     }
-    const character = await response.json()
-    setToast({ open: true, message: `${character.name} added.`, severity: "success" })
-    setValue(defaultCharacter)
     await reloadFight(fight)
   }
 

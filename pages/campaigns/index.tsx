@@ -3,7 +3,6 @@ import Head from 'next/head'
 
 import { useCallback, useMemo, useEffect, useState } from "react"
 import { Box, Paper, IconButton, Button, Stack, Link, Container, Typography, TableContainer, Table, TableHead, TableBody, TableRow, TableCell } from "@mui/material"
-import { useToast } from "../../contexts/ToastContext"
 import { useClient } from "../../contexts/ClientContext"
 import { useCampaign } from "../../contexts/CampaignContext"
 import { useSession } from 'next-auth/react'
@@ -68,7 +67,6 @@ export async function getServerSideProps<GetServerSideProps>({ req, res }: any) 
 export default function CampaignsIndex({ campaigns:initialCampaigns }: any) {
   const [campaigns, setCampaigns] = useState(initialCampaigns["gamemaster"])
   const [playerCampaigns, setPlayerCampaigns] = useState(initialCampaigns["player"])
-  const { setToast } = useToast()
   const { client, user } = useClient()
   const { campaign:currentCampaign, setCurrentCampaign } = useCampaign()
 

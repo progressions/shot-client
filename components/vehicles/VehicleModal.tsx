@@ -32,7 +32,7 @@ interface VehicleModalParams {
 export default function CharacterModal({ open, setOpen, character:activeVehicle, reload }: VehicleModalParams) {
   const [picker, setPicker] = useState<boolean>(false)
   const [anchorEl, setAnchorEl] = useState(null)
-  const { setToast } = useToast()
+  const { toastSuccess, toastError } = useToast()
   const { client } = useClient()
   const { fight, setFight, reloadFight } = useFight()
 
@@ -92,9 +92,9 @@ export default function CharacterModal({ open, setOpen, character:activeVehicle,
       setSaving(false)
       cancelForm()
       if (newVehicle) {
-        setToast({ open: true, message: `${character.name} created.`, severity: "success" })
+        toastSuccess(`${character.name} created.`)
       } else {
-        setToast({ open: true, message: `${character.name} updated.`, severity: "success" })
+        toastSuccess(`${character.name} updated.`)
       }
       if (fight?.id) {
         await reloadFight(fight)
@@ -102,7 +102,7 @@ export default function CharacterModal({ open, setOpen, character:activeVehicle,
         await reload()
       }
     } else {
-      setToast({ open: true, message: `There was an error`, severity: "error" })
+      toastError()
       setSaving(false)
       cancelForm()
     }

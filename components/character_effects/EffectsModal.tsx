@@ -16,7 +16,7 @@ export default function EffectsModal({ character }: any) {
   const [open, setOpen] = useState(false)
   const [effect, setEffect] = useState<CharacterEffect>(initialEffect)
   const [saving, setSaving] = useState<boolean>(false)
-  const { setToast } = useToast()
+  const { toastSuccess, toastError } = useToast()
   const { client } = useClient()
 
   const cancelForm = () => {
@@ -48,9 +48,10 @@ export default function EffectsModal({ character }: any) {
       cancelForm()
       if (reloadFight) {
         await reloadFight(fight)
-        setToast({ open: true, message: `Effect ${effect.title} added.`, severity: "success" })
+        toastSuccess(`Effect ${effect.title} added.`)
       }
     } else {
+      toastError()
       cancelForm()
     }
     setSaving(false)

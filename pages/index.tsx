@@ -70,7 +70,7 @@ export async function getServerSideProps<GetServerSideProps>({ req, res }: Serve
 export default function Home({ currentCampaign, fights:initialFights }: HomeProps) {
   const [fights, setFights] = useState<Fight[]>(initialFights)
   const { status, data }: any = useSession({ required: true })
-  const { toast, closeToast } = useToast()
+  const { toast } = useToast()
   const [showHidden, setShowHidden] = useState<boolean>(false)
   const { user } = useClient()
 

@@ -44,7 +44,7 @@ export default function CharacterDetails({ character, editingCharacter, setEditi
   const [openAction, setOpenAction] = useState(false)
   const [openWounds, setOpenWounds] = useState(false)
   const [openHeal, setOpenHeal] = useState(false)
-  const { setToast } = useToast()
+  const { toastSuccess, toastError } = useToast()
 
   function closeAction() {
     setOpenAction(false)
@@ -55,8 +55,10 @@ export default function CharacterDetails({ character, editingCharacter, setEditi
     if (doit) {
       const response = await client.deleteCharacter(character, fight)
       if (response.status === 200) {
-        setToast({ open: true, message: `${character.name} removed.`, severity: "success" })
+        toastSuccess(`${character.name} removed.`)
         await reloadFight(fight)
+      } else {
+        toastError()
       }
     }
   }
@@ -93,18 +95,18 @@ export default function CharacterDetails({ character, editingCharacter, setEditi
       return true
     } else {
       const data = await response.json()
-      setToast({ open: true, message: `There was an error.`, severity: "error" })
+      toastError()
     }
   }
 
   const takeDodgeAction = async (character: Character) => {
     const response = await client.actCharacter(character, fight, 1)
     if (response.status === 200) {
-      setToast({ open: true, message: `${character.name} dodged for 1 shot.`, severity: "success" })
+      toastSuccess(`${character.name} dodged for 1 shot.`)
       await addDodgeEffect(character)
       await reloadFight(fight)
     } else {
-      setToast({ open: true, message: `There was an error.`, severity: "error" })
+      toastError()
     }
   }
 

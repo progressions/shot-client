@@ -24,14 +24,14 @@ interface FightParams {
 export default function FightDetail({ fight, setFights }: FightParams) {
   const { reloadFights } = useFight()
   const { user, client } = useClient()
-  const { setToast } = useToast()
+  const { toastSuccess, toastError } = useToast()
 
   async function deleteFight(fight: Fight) {
     const doit = confirm(`Permanently delete ${fight.name}?`)
     if (!doit) return
     const response = await client.deleteFight(fight)
     if (response.status === 200) {
-      setToast({ open: true, message: `Fight ${fight.name} deleted`, severity: "error" })
+      toastError(`Fight ${fight.name} deleted`)
       reloadFights({ setFights })
     }
   }
@@ -39,7 +39,7 @@ export default function FightDetail({ fight, setFights }: FightParams) {
   async function toggleVisibility(fight: Fight) {
     const response = await client.updateFight({ ...fight, "active": !fight.active })
     if (response.status === 200) {
-      setToast({ open: true, message: `Fight ${fight.name} updated`, severity: "success" })
+      toastSuccess(`Fight ${fight.name} updated`)
       reloadFights({ setFights })
     }
   }

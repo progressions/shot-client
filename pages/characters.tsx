@@ -123,7 +123,7 @@ export default function Characters({ characters:initialCharacters, jwt }: Charac
     type: null,
     name: null
   })
-  const { setToast } = useToast()
+  const { toastError, toastSuccess } = useToast()
   const [showHidden, setShowHidden] = useState<boolean>(false)
 
   function editCharacter(character: Character): void {
@@ -140,7 +140,7 @@ export default function Characters({ characters:initialCharacters, jwt }: Charac
     if (characterResponse.status === 200 && vehicleResponse.status === 200) {
       setCharacters(allCharacters)
     } else {
-      setToast({ open: true, message: "There was an error.", severity: "error" })
+      toastError()
     }
   }
 
@@ -150,7 +150,7 @@ export default function Characters({ characters:initialCharacters, jwt }: Charac
     if (response.status === 200) {
       reloadCharacters()
     } else {
-      setToast({ open: true, message: "There was an error.", severity: "error" })
+      toastError()
     }
   }
 
@@ -183,10 +183,6 @@ export default function Characters({ characters:initialCharacters, jwt }: Charac
 
   if (session?.status !== "authenticated") {
     return <div>Loading...</div>
-  }
-
-  const closeToast = (): void => {
-    setToast((prevToast: Toast) => { return { ...prevToast, open: false }})
   }
 
   return (

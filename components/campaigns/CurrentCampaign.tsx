@@ -10,14 +10,14 @@ import { Campaign } from "../../types/types"
 
 export default function CurrentCampaign() {
   const {campaign, getCurrentCampaign, setCurrentCampaign}:any = useCampaign()
-  const { setToast } = useToast()
+  const { toastSuccess } = useToast()
 
   const startCampaign = async (camp?: Campaign | null) => {
     await setCurrentCampaign(camp)
     if (camp) {
-      setToast({ open: true, message: `${camp.title} activated`, severity: "success" })
+      toastSuccess(`${camp.title} activated`)
     } else {
-      setToast({ open: true, message: `Campaign cleared`, severity: "success" })
+      toastSuccess(`Campaign cleared`)
     }
     Router.reload()
   }

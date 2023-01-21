@@ -81,28 +81,24 @@ export default function UsersAdmin({ jwt, users:initialUsers, currentUser }: Use
   const [users, setUsers] = useState<User[]>(initialUsers)
   const [value, setValue] = useState<string>('1')
   const [user, setUser] = useState<User>(defaultUser)
-  const { setToast } = useToast()
+  const { toastSuccess, toastError } = useToast()
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue)
   }
 
-  const closeToast = (): void => {
-    setToast((prevToast: Toast) => { return { ...prevToast, open: false }})
-  }
-
   async function deleteUser(user: User): Promise<void> {
     if (user.email === currentUser.email) {
-      setToast({ open: true, message: "You can't delete yourself!", severity: "error" })
+      toastError("You can't delete yourself.")
       return
     }
     if (users.length === 1) {
-      setToast({ open: true, message: "You can't delete the last user!", severity: "error" })
+      toastError("You can't delete the last user.")
       return
     }
     const response = await client.deleteUser(user)
     if (response.status === 200) {
-      setToast({ open: true, message: `User ${user.email} deleted.`, severity: "error" })
+      toastSuccess(`User ${user.email} deleted.`)
       loadUsers({ jwt, setUsers })
     }
   }

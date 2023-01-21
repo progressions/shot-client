@@ -56,14 +56,13 @@ export async function getServerSideProps<GetServerSideProps>({ req, res, params 
 
 export default function CampaignView({ campaign:initialCampaign }: any) {
   const { client } = useClient()
-  const { setToast } = useToast()
+  const { toastError, toastSuccess } = useToast()
   const [campaign, setCampaign] = useState<Campaign>(initialCampaign)
 
   async function reloadCampaign(camp:Campaign) {
     const response = await client.getCampaign(camp)
     if (response.status === 200) {
       const data = await response.json()
-      console.log("campaign", data)
       setCampaign(data)
     }
   }
@@ -72,10 +71,10 @@ export default function CampaignView({ campaign:initialCampaign }: any) {
     const response = await client.resendInvitation(invitation)
     if (response.status === 200) {
       await reloadCampaign(campaign)
-      setToast({ open: true, message: `Invitation re-sent.`, severity: "success" })
+      toastSuccess("Invitation re-sent.")
     } else {
       await reloadCampaign(campaign)
-      setToast({ open: true, message: `There was an error.`, severity: "error" })
+      toastError()
     }
   }
 
@@ -83,10 +82,10 @@ export default function CampaignView({ campaign:initialCampaign }: any) {
     const response = await client.deleteInvitation(invitation)
     if (response.status === 200) {
       await reloadCampaign(campaign)
-      setToast({ open: true, message: `Invitation deleted.`, severity: "success" })
+      toastSuccess("Invitation deleted.")
     } else {
       await reloadCampaign(campaign)
-      setToast({ open: true, message: `There was an error.`, severity: "error" })
+      toastError()
     }
   }
 

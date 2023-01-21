@@ -18,7 +18,7 @@ export default function HealModal({open, setOpen, character }: HealModalParams) 
   const { fight, setFight, reloadFight } = useFight()
   const [healing, setHealing] = useState<number>(0)
   const [saving, setSaving] = useState<boolean>(false)
-  const { setToast } = useToast()
+  const { toastSuccess, toastError } = useToast()
   const { client } = useClient()
 
   const calculateImpairments = (originalWounds: number, newWounds: number): number => {
@@ -83,7 +83,9 @@ export default function HealModal({open, setOpen, character }: HealModalParams) 
       await reloadFight(fight)
       setHealing(0)
       setOpen(false)
-      setToast({ open: true, message: `${character.name} healed ${healing} Wounds.`, severity: "success" })
+      toastSuccess(`${character.name} healed ${healing} Wounds.`)
+    } else {
+      toastError()
     }
   }
   const cancelForm = () => {

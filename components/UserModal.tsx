@@ -12,6 +12,7 @@ import { useSession } from 'next-auth/react'
 import Client from "./Client"
 
 import { useClient } from "../contexts/ClientContext"
+import { useToast } from "../contexts/ToastContext"
 import { defaultUser } from "../types/types"
 import type { User } from "../types/types"
 import { loadUsers } from "../pages/admin/users"
@@ -24,6 +25,7 @@ interface UserModalParams {
 
 export default function UserModal({ user, setUser, setUsers }: UserModalParams) {
   const { jwt, client } = useClient()
+  const { toastSuccess, toastError } = useToast()
 
   const [saving, setSaving] = useState<boolean>(false);
 
@@ -47,11 +49,22 @@ export default function UserModal({ user, setUser, setUsers }: UserModalParams) 
     setSaving(true)
     event.preventDefault()
 
-    const response = user.id ?
-      await client.updateUser(user)
-    : await client.createUser(user as User)
+    if (user.id) {
+      const response = await client.updateUser(user)
+      if (response.status === 200) {
+        toastSuccess("User updated.")
+      } else {
+        toastError()
+      }
+    } else {
+      const response = await client.createUser(user)
+      if (response.status === 200) {
+        toastSuccess("User created.")
+      } else {
+        toastError()
+      }
+    }
 
-    const data = await response.json()
     setSaving(false)
     cancelForm()
     loadUsers({ jwt, setUsers })

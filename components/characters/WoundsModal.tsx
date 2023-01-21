@@ -18,7 +18,7 @@ const WoundsModal = ({open, setOpen, character }: WoundsModalParams) => {
   const { fight, setFight, reloadFight } = useFight()
   const [smackdown, setSmackdown] = useState<number>(0)
   const [saving, setSaving] = useState<boolean>(false)
-  const { setToast } = useToast()
+  const { toastSuccess } = useToast()
   const { client } = useClient()
 
   const calculateImpairments = (originalWounds: number, newWounds: number): number => {
@@ -106,9 +106,9 @@ const WoundsModal = ({open, setOpen, character }: WoundsModalParams) => {
       setSmackdown(0)
       setOpen(false)
       if (character.action_values["Type"] === "Mook") {
-        setToast({ open: true, message: `${character.name} lost ${wounds} mooks.`, severity: "success" })
+        toastSuccess(`${character.name} lost ${wounds} mooks.`)
       } else {
-        setToast({ open: true, message: `${character.name} took a smackdown of ${smackdown}, causing ${wounds} wounds.`, severity: "success" })
+        toastSuccess(`${character.name} took a smackdown of ${smackdown}, causing ${wounds} wounds.`)
       }
     }
   }

@@ -18,7 +18,7 @@ const ActionModal = ({open, setOpen, character }: ActionModalParams) => {
   const { fight, setFight, reloadFight } = useFight()
   const [shots, setShots] = useState<number>(3)
   const [saving, setSaving] = useState<boolean>(false)
-  const { setToast } = useToast()
+  const { toastSuccess, toastError } = useToast()
   const { jwt, client } = useClient()
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
@@ -32,7 +32,9 @@ const ActionModal = ({open, setOpen, character }: ActionModalParams) => {
       if (response.status === 200) {
         setOpen(false)
         await reloadFight(fight)
-        setToast({ open: true, message: `${character.name} spent ${shots} shots.`, severity: "success" })
+        toastSuccess(`${character.name} spent ${shots} shots.`)
+      } else {
+        toastError()
       }
     }
   }

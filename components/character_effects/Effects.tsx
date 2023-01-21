@@ -15,7 +15,7 @@ export default function Effects({ effects, severity }: any) {
 
   const { fight, setFight, reloadFight } = useFight()
   const { jwt, client } = useClient()
-  const { setToast } = useToast()
+  const { toastSuccess, toastError } = useToast()
 
   const closePopover = () => {
     setAnchorEl(null)
@@ -31,7 +31,9 @@ export default function Effects({ effects, severity }: any) {
     const response = await client.deleteCharacterEffect(effect, fight)
     if (response.status === 200) {
       await reloadFight(fight)
-      setToast({ open: true, message: `Effect ${effect.title} deleted.`, severity: "success" })
+      toastSuccess(`Effect ${effect.title} deleted.`)
+    } else {
+      toastError()
     }
   }
 

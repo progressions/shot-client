@@ -2,7 +2,6 @@ import { IconButton, Box, Button, Dialog, DialogTitle, DialogContent, DialogCont
 import { useCampaign } from "../../contexts/CampaignContext"
 import PlayCircleIcon from '@mui/icons-material/PlayCircle'
 import StopCircleIcon from '@mui/icons-material/StopCircle'
-import { useToast } from "../../contexts/ToastContext"
 import { useClient } from "../../contexts/ClientContext"
 import { useMemo, useCallback, useEffect, useState } from "react"
 import { useSession } from 'next-auth/react'
@@ -27,7 +26,6 @@ declare module "@mui/material/Button" {
 
 export default function CampaignSelector({ startCampaign }: any) {
   const {campaign, getCurrentCampaign, setCurrentCampaign}:any = useCampaign()
-  const { setToast } = useToast()
   const [open, setOpen] = useState(false)
   const [saving, setSaving] = useState(false)
   const [campaigns, setCampaigns] = useState<any>({})

@@ -18,7 +18,7 @@ const ChasePointsModal = ({open, setOpen, character }: ChasePointsModalParams) =
   const { fight, setFight, reloadFight } = useFight()
   const [chasePoints, setChasePoints] = useState<number>(0)
   const [saving, setSaving] = useState<boolean>(false)
-  const { setToast } = useToast()
+  const { toastSuccess } = useToast()
 
   const { jwt, client } = useClient()
 
@@ -61,9 +61,9 @@ const ChasePointsModal = ({open, setOpen, character }: ChasePointsModalParams) =
       setChasePoints(0)
       setOpen(false)
       if (character.action_values["Type"] === "Mook") {
-        setToast({ open: true, message: `${character.name} lost ${originalPoints} mooks.`, severity: "success" })
+        toastSuccess(`${character.name} lost ${originalPoints} mooks.`)
       } else {
-        setToast({ open: true, message: `${character.name} took a smackdown of ${chasePoints}, causing ${originalPoints} Chase Points.`, severity: "success" })
+        toastSuccess(`${character.name} took a smackdown of ${chasePoints}, causing ${originalPoints} Chase Points.`)
       }
     }
   }

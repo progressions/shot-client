@@ -19,7 +19,7 @@ interface AddFightProps {
 export default function AddFight({ setFights }: AddFightProps) {
   const { reloadFights } = useFight()
   const { jwt, client } = useClient()
-  const { setToast } = useToast()
+  const { toastSuccess, toastError } = useToast()
 
   const [open, setOpen] = useState<boolean>(false)
   const [fight, setFight] = useState<Fight>(defaultFight)
@@ -38,13 +38,14 @@ export default function AddFight({ setFights }: AddFightProps) {
       setSaving(false)
       cancelForm()
       await reloadFights({ setFights })
-      setToast({ open: true, message: `Fight ${fight.name} created.`, severity: "success" })
+      toastSuccess(`Fight ${fight.name} created.`)
+    } else {
+      toastError()
     }
   }
 
   const cancelForm = (): void => {
     setFight(defaultFight)
-    setToast((prevToast: Toast) => { return { ...prevToast, open: false }})
     setOpen(false)
   }
 

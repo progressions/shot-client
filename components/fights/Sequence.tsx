@@ -14,7 +14,7 @@ import { Toast, Fight } from "../../types/types"
 
 export default function Sequence() {
   const { client } = useClient()
-  const { setToast } = useToast()
+  const { toastSuccess } = useToast()
   const { fight, setFight, reloadFight } = useFight()
 
   const addSequence = async () => {
@@ -24,7 +24,7 @@ export default function Sequence() {
     const response = await client.updateFight(updatedFight)
     if (response.status === 200) {
       await reloadFight(fight)
-      setToast({ open: true, message: `Sequence increased`, severity: "success" })
+      toastSuccess(`Sequence increased.`)
     }
   }
 
@@ -35,7 +35,7 @@ export default function Sequence() {
     const response = await client.updateFight(updatedFight)
     if (response.status === 200) {
       await reloadFight(fight)
-      setToast({ open: true, message: `Sequence decreased`, severity: "success" })
+      toastSuccess(`Sequence decreased.`)
     }
   }
 

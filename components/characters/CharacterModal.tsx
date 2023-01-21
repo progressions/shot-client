@@ -34,7 +34,7 @@ interface CharacterModalParams {
 export default function CharacterModal({ open, setOpen, character:activeCharacter, reload }: CharacterModalParams) {
   const { fight, setFight, reloadFight } = useFight()
   const { client } = useClient()
-  const { setToast } = useToast()
+  const { toastSuccess, toastError } = useToast()
 
   const [saving, setSaving] = useState(false);
 
@@ -90,9 +90,9 @@ export default function CharacterModal({ open, setOpen, character:activeCharacte
       setSaving(false)
       cancelForm()
       if (newCharacter) {
-        setToast({ open: true, message: `${character.name} created.`, severity: "success" })
+        toastSuccess(`${character.name} created.`)
       } else {
-        setToast({ open: true, message: `${character.name} updated.`, severity: "success" })
+        toastSuccess(`${character.name} updated.`)
       }
       if (fight?.id && setFight) {
         await reloadFight(fight)
@@ -100,7 +100,7 @@ export default function CharacterModal({ open, setOpen, character:activeCharacte
         await reload()
       }
     } else {
-      setToast({ open: true, message: `There was an error`, severity: "error" })
+      toastError()
       setSaving(false)
       cancelForm()
     }

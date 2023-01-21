@@ -10,7 +10,7 @@ import { useClient } from "../../contexts/ClientContext"
 import type { Campaign } from "../../types/types"
 
 export default function Campaigns({ campaigns, getCampaigns }: any) {
-  const { setToast } = useToast()
+  const { toastSuccess } = useToast()
   const { client, user } = useClient()
   const { campaign:currentCampaign, getCurrentCampaign, setCurrentCampaign }:any = useCampaign()
 
@@ -19,7 +19,7 @@ export default function Campaigns({ campaigns, getCampaigns }: any) {
     if (confirmation) {
       const response = await client.deleteCampaign(campaign)
       if (response.status === 200) {
-        setToast({ open: true, message: `${campaign.title} deleted.`, severity: "success" })
+        toastSuccess(`${campaign.title} deleted.`)
         await getCampaigns()
       }
     }
@@ -28,9 +28,9 @@ export default function Campaigns({ campaigns, getCampaigns }: any) {
   const startCampaign = async (camp?: Campaign | null) => {
     await setCurrentCampaign(camp)
     if (camp) {
-      setToast({ open: true, message: `${camp.title} activated`, severity: "success" })
+      toastSuccess(`${camp.title} activated`)
     } else {
-      setToast({ open: true, message: `Campaign cleared`, severity: "success" })
+      toastSuccess(`Campaign cleared`)
     }
     await getCampaigns()
     return ""

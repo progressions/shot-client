@@ -13,14 +13,16 @@ interface PlayerDetailsProps {
 
 export default function PlayerDetails({ campaign, player, reload }: PlayerDetailsProps) {
   const { client } = useClient()
-  const { setToast } = useToast()
+  const { toastSuccess, toastError } = useToast()
 
   async function removePlayer(user: User, camp: Campaign) {
     const response = await client.removePlayer(user, camp)
     if (response.status === 200) {
       await reload(camp)
 
-      setToast({ open: true, message: `${user.email} removed.`, severity: "success" })
+      toastSuccess(`${user.email} removed.`)
+    } else {
+      toastError()
     }
   }
 

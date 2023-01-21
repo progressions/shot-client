@@ -11,7 +11,7 @@ import type { Invitation } from "../../types/types"
 
 export default function CreateOpenInvitation({ campaign }: any) {
   const { client } = useClient()
-  const { setToast } = useToast()
+  const { toastError, toastSuccess } = useToast()
 
   const [saving, setSaving] = useState(false)
   const [open, setOpen] = useState(false)
@@ -35,14 +35,14 @@ export default function CreateOpenInvitation({ campaign }: any) {
     if (response.status === 200) {
       const data = await response.json()
       console.log({ data })
-      setToast({ open: true, message: `Invitation created.`, severity: "success" })
+      toastSuccess(`Invitation created.`)
       Router.reload()
     }
     if (response.status === 400) {
       const data = await response.json()
       console.error({ data })
       setError(data?.email?.[0])
-      setToast({ open: true, message: `There was an error.`, severity: "error" })
+      toastError()
     }
 
     setSaving(false)

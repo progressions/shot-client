@@ -18,7 +18,7 @@ const ConditionPointsModal = ({open, setOpen, character }: ConditionPointsModalP
   const { fight, setFight, reloadFight } = useFight()
   const [conditionPoints, setConditionPoints] = useState<number>(0)
   const [saving, setSaving] = useState<boolean>(false)
-  const { setToast } = useToast()
+  const { toastSuccess, toastError } = useToast()
 
   const { jwt, client } = useClient()
 
@@ -61,12 +61,15 @@ const ConditionPointsModal = ({open, setOpen, character }: ConditionPointsModalP
       setConditionPoints(0)
       setOpen(false)
       if (character.action_values["Type"] === "Mook") {
-        setToast({ open: true, message: `${character.name} lost ${conditionPoints} mooks.`, severity: "success" })
+        toastSuccess(`${character.name} lost ${conditionPoints} mooks.`)
       } else {
-        setToast({ open: true, message: `${character.name} took a smackdown of ${conditionPoints}, causing ${originalPoints} Condition Points.`, severity: "success" })
+        toastSuccess(`${character.name} took a smackdown of ${conditionPoints}, causing ${originalPoints} Condition Points.`)
       }
+      return
     }
+    toastError()
   }
+
   const cancelForm = () => {
     setConditionPoints(0)
     setOpen(false)

@@ -20,7 +20,7 @@ export default function EffectModal({ shot, open, setOpen }: EffectModalProps) {
 
   const [effect, setEffect] = useState<Effect>(initialEffect)
   const [saving, setSaving] = useState<boolean>(false)
-  const { setToast } = useToast()
+  const { toastSuccess, toastError } = useToast()
 
   const { client } = useClient()
 
@@ -37,13 +37,15 @@ export default function EffectModal({ shot, open, setOpen }: EffectModalProps) {
     if (response.status === 200) {
       const data = await response.json()
       setEffect(data)
-      cancelForm()
       if (reloadFight) {
         await reloadFight(fight)
-        setToast({ open: true, message: `Effect ${effect.title} added.`, severity: "success" })
-        setSaving(false)
+        toastSuccess(`Effect ${effect.title} added.`)
       }
+    } else {
+      toastError()
     }
+    cancelForm()
+    setSaving(false)
   }
 
   const handleChange = (event: any) => {

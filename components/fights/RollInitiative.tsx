@@ -16,7 +16,7 @@ export default function RollInitiative() {
   const [processing, setProcessing] = useState<boolean>(false)
 
   const { client } = useClient()
-  const { setToast } = useToast()
+  const { toastSuccess } = useToast()
   const startOfSequence = useMemo(() => (fight?.shot_order?.[0]?.[0] === 0), [fight.shot_order])
 
   const addSequence = async () => {
@@ -26,7 +26,7 @@ export default function RollInitiative() {
     const response = await client.updateFight(updatedFight)
     if (response.status === 200) {
       await reloadFight(updatedFight)
-      setToast({ open: true, message: `Sequence increased`, severity: "success" })
+      toastSuccess(`Sequence increased`)
     }
   }
 
@@ -44,7 +44,7 @@ export default function RollInitiative() {
     await Promise.all(nonzeroShots.map(rollForShot))
 
     await reloadFight(fight)
-    setToast({ open: true, message: "Initiative updated", severity: "success" })
+    toastSuccess("Initiative updated")
     setProcessing(false)
   }
 
