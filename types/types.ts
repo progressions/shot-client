@@ -110,7 +110,7 @@ export interface Effect {
 export interface CharacterEffect {
   id?: string
   title: string
-  description: string
+  description?: string
   character_id?: string
   vehicle_id?: string
   severity: AlertColor | undefined

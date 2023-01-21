@@ -68,7 +68,6 @@ export default function ActionValueDisplay({ name, description, label, character
   const { fight } = useFight()
 
   const [changed, actionValue] = adjustedValue(character, name, fight, impairments)
-  console.log(name, changed, actionValue)
 
   const color = colorForValue(changed)
 
