@@ -15,10 +15,10 @@ const GamemasterOnly:React.FC<GamemasterOnlyProps> = ({ user, children, characte
   if (character && ["PC", "Ally"].includes(character.action_values['Type'] as string)) {
     // if the character is a PC or Ally, show the content
     return children
-  } else if (campaign && campaign.gamemaster?.id === user?.id && user?.gamemaster) {
+  } else if (campaign?.id && campaign.gamemaster?.id === user?.id && user?.gamemaster) {
     // if the current user is the gamemaster of the current campaign
     return children
-  } else if (!campaign && user?.gamemaster) {
+  } else if (!campaign?.id && user?.gamemaster) {
     // if there is no current campaign and the user is a gamemaster
     return children
   } else if (override) {

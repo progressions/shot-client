@@ -37,7 +37,16 @@ export async function getServerSideProps<GetServerSideProps>({ req, res }: Serve
   const jwt = session?.authorization
   const client = new Client({ jwt: jwt })
 
-  const currentCampaign = null // await getCurrentCampaign()
+  const getCurrentCampaign = async () => {
+    const response = await client.getCurrentCampaign()
+    if (response.status === 200) {
+      const data = await response.json()
+      return data
+    }
+    return null
+  }
+
+  const currentCampaign = await getCurrentCampaign()
 
   const response = await client.getFights()
 
@@ -103,7 +112,7 @@ export default function Home({ currentCampaign, fights:initialFights }: HomeProp
             <GamemasterOnly user={user}>
               <ButtonBar>
                 <Stack direction="row" spacing={2}>
-                  <AddFight setFights={setFights} />
+                  { currentCampaign?.id && <AddFight setFights={setFights} /> }
                   <FormControlLabel label="Show Hidden" control={<Switch checked={showHidden} />} onChange={show} />
                 </Stack>
               </ButtonBar>

@@ -71,8 +71,6 @@ export default function CampaignSelector({ startCampaign }: any) {
     setOpen(true)
   }
 
-  console.log(campaigns)
-
   const NameDisplay = ({ camp }: any) => {
     return (
       <>
