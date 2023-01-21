@@ -100,11 +100,22 @@ export interface Effect {
   id?: string
   title: string
   description: string
-  severity: string
+  severity: AlertColor | undefined
   start_sequence: number
   end_sequence: number
   start_shot: number
   end_shot: number
+}
+
+export interface CharacterEffect {
+  id?: string
+  title: string
+  description?: string
+  character_id?: string
+  vehicle_id?: string
+  severity: AlertColor | undefined
+  change?: string
+  action_value?: string
 }
 
 export type ShotType = [number, Character[]]
@@ -118,6 +129,7 @@ export interface Fight {
   characters?: Character[]
   vehicles?: Vehicle[]
   shot_order: ShotType[]
+  character_effects: any
 }
 
 export interface User {
@@ -211,7 +223,8 @@ export const defaultFight:Fight = {
   sequence: 1,
   effects: [],
   characters: [],
-  shot_order: []
+  shot_order: [],
+  character_effects: []
 }
 
 export const defaultUser:User = {
@@ -240,4 +253,11 @@ export const defaultCampaign:Campaign = {
   gamemaster: defaultUser,
   players: [],
   invitations: []
+}
+
+export const defaultCharacterEffect:CharacterEffect = {
+  title: "",
+  description: "",
+  severity: "info",
+  character_id: ""
 }

@@ -4,6 +4,7 @@ import { TableHead, TableContainer, Table, TableBody, TableRow, TableCell } from
 import Typography from '@mui/material/Typography'
 import IconButton from '@mui/material/IconButton'
 import { useSession } from 'next-auth/react'
+import { AlertColor } from "@mui/material"
 
 import BloodtypeIcon from '@mui/icons-material/Bloodtype'
 import WhatshotIcon from '@mui/icons-material/Whatshot'
@@ -18,13 +19,14 @@ import GamemasterOnly from '../GamemasterOnly'
 import DeathMarks from "./DeathMarks"
 import NameDisplay from "./NameDisplay"
 import WoundsDisplay from "./WoundsDisplay"
+import GroupedEffects from "../character_effects/GroupedEffects"
 
 import { useFight } from "../../contexts/FightContext"
 import { useToast } from "../../contexts/ToastContext"
 import { useClient } from "../../contexts/ClientContext"
 import Client from "../Client"
 
-import type { User, Person, Character, Fight, Toast, ID } from "../../types/types"
+import type { CharacterEffect, User, Person, Character, Fight, Toast, ID } from "../../types/types"
 import { defaultCharacter } from "../../types/types"
 
 interface CharacterDetailsParams {
@@ -75,11 +77,34 @@ export default function CharacterDetails({ character, editingCharacter, setEditi
     setOpenHeal(true)
   }
 
+  const dodge = (character: Character): CharacterEffect => {
+    return {
+      title: "Dodge",
+      action_value: "Defense",
+      change: "+3",
+      severity: "success",
+      [`${character.category}_id`]: character.id
+    } as CharacterEffect
+  }
+
+  const addDodgeEffect = async (character: Character) => {
+    const response = await client.createCharacterEffect(dodge(character), fight)
+    if (response.status === 200) {
+      return true
+    } else {
+      const data = await response.json()
+      setToast({ open: true, message: `There was an error.`, severity: "error" })
+    }
+  }
+
   const takeDodgeAction = async (character: Character) => {
     const response = await client.actCharacter(character, fight, 1)
     if (response.status === 200) {
       setToast({ open: true, message: `${character.name} dodged for 1 shot.`, severity: "success" })
+      await addDodgeEffect(character)
       await reloadFight(fight)
+    } else {
+      setToast({ open: true, message: `There was an error.`, severity: "error" })
     }
   }
 
@@ -115,6 +140,7 @@ export default function CharacterDetails({ character, editingCharacter, setEditi
                 takeDodgeAction={takeDodgeAction}
               />
             </Stack>
+            <GroupedEffects character={character} />
           </GamemasterOnly>
         </Stack>
       <ActionModal open={openAction}

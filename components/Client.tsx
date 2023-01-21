@@ -1,5 +1,5 @@
 import Api from "./Api"
-import type { Invitation, Campaign, Effect, Vehicle, Character, ID, Fight, User } from "../types/types"
+import type { CharacterEffect, Invitation, Campaign, Effect, Vehicle, Character, ID, Fight, User } from "../types/types"
 
 interface ClientParams {
   jwt?: string
@@ -84,16 +84,28 @@ class Client {
     return await this.get(this.api.allCharacters())
   }
 
-  async updateEffect(effect: Effect, fight: Fight):Promise<Response> {
-    return await this.patch(this.api.effects(fight, effect), {"effect": effect})
-  }
-
   async createEffect(effect: Effect, fight: Fight):Promise<Response> {
     return await this.post(this.api.effects(fight, effect), {"effect": effect})
   }
 
+  async updateEffect(effect: Effect, fight: Fight):Promise<Response> {
+    return await this.patch(this.api.effects(fight, effect), {"effect": effect})
+  }
+
   async deleteEffect(effect: Effect, fight: Fight):Promise<Response> {
     return await this.delete(this.api.effects(fight, effect))
+  }
+
+  async createCharacterEffect(characterEffect: CharacterEffect, fight: Fight):Promise<Response> {
+    return await this.post(this.api.characterEffects(fight), {"character_effect": characterEffect})
+  }
+
+  async updateCharacterEffect(characterEffect: CharacterEffect, fight: Fight):Promise<Response> {
+    return await this.patch(this.api.characterEffects(fight, characterEffect), {"character_effect": characterEffect})
+  }
+
+  async deleteCharacterEffect(characterEffect: CharacterEffect, fight: Fight):Promise<Response> {
+    return await this.delete(this.api.characterEffects(fight, characterEffect))
   }
 
   async addPlayer(user: User, campaign: Campaign) {

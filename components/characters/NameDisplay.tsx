@@ -37,6 +37,9 @@ export default function NameDisplay({ character, editCharacter, deleteCharacter 
     if (character.category !== "character" || character.action_values["Type"] !== "PC") {
       return null
     }
+    if (!character.action_values["Archetype"] && !character.action_values["Death Marks"]) {
+      return null
+    }
     return (
       <Typography variant="caption" sx={{textTransform: "uppercase", color: "text.secondary"}}>
         { character.action_values["Archetype"] }

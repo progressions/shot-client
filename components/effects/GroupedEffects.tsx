@@ -2,6 +2,7 @@ import { Tooltip, IconButton } from "@mui/material"
 import Effects from "./Effects"
 
 import type { Fight } from "../../types/types"
+import { useMemo } from "react"
 
 const effectsForShot = (fight: Fight, shot: number) => {
   return fight.effects.filter((effect) => {
@@ -12,7 +13,7 @@ const effectsForShot = (fight: Fight, shot: number) => {
   })
 }
 
-const effectsGroupedByType = (eff: any) => {
+export const effectsGroupedByType = (eff: any) => {
   return eff.reduce((acc: any, effect: any) => {
     acc[effect.severity] ||= []
     acc[effect.severity].push(effect)
@@ -21,7 +22,7 @@ const effectsGroupedByType = (eff: any) => {
 }
 
 export default function GroupedEffects({ fight, shot }: any) {
-  const finalEffects = effectsGroupedByType(effectsForShot(fight, shot))
+  const finalEffects = useMemo(() => effectsGroupedByType(effectsForShot(fight, shot)), [fight, shot])
   const severities = ["error", "warning", "info", "success"]
 
   return (
