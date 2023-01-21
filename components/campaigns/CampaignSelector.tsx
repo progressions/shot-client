@@ -41,12 +41,6 @@ export default function CampaignSelector({ startCampaign }: any) {
     }
   }, [client])
 
-  useEffect(() => {
-    if (user) {
-      getCampaigns().catch(console.error)
-    }
-  }, [user, getCampaigns])
-
   const handleChange = (event: any) => {
     setCampaignId(event.target.value)
   }
@@ -67,7 +61,10 @@ export default function CampaignSelector({ startCampaign }: any) {
     setOpen(false)
   }
 
-  const handleOpen = () => {
+  const handleOpen = async () => {
+    if (user) {
+      await getCampaigns()
+    }
     setOpen(true)
   }
 

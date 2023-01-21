@@ -84,7 +84,7 @@ export default function Fight({ fight:initialFight, notFound }: FightParams) {
           { !fight && <>
             <Typography sx={{mt: 5}} variant="h3">Fight not found.</Typography>
           </> }
-            { fight && <ShotCounter /> }
+          { fight && <ShotCounter /> }
         </Container>
       </Layout>
     </>

@@ -12,17 +12,24 @@ import { defaultCharacter, ServerSideProps } from "../../types/types"
 
 import type { Person, Vehicle, ShotType, Character, Fight } from "../../types/types"
 
-import { useState } from "react"
+import { useMemo, useState } from "react"
 
 export default function ShotCounter() {
   const [editingCharacter, setEditingCharacter] = useState<Person | Vehicle>(defaultCharacter)
   const [showHidden, setShowHidden] = useState<boolean>(false)
   const { fight, setFight } = useFight()
 
+  const toolbar = useMemo(() => {
+    if (fight?.id) {
+      return <FightToolbar showHidden={showHidden} setShowHidden={setShowHidden} />
+    }
+    return <></>
+  }, [fight?.id])
+
   return (
     <>
       <FightName />
-      <FightToolbar showHidden={showHidden} setShowHidden={setShowHidden} />
+      { toolbar }
       <TableContainer component={Paper}>
         <Table>
           <TableHead>

@@ -26,6 +26,9 @@ export default function FightToolbar({ showHidden, setShowHidden }: FightToolbar
   const show = (event: React.SyntheticEvent<Element, Event>, checked: boolean) => {
     setShowHidden(checked)
   }
+  if (!fight?.id) {
+    return <></>
+  }
   return (
     <>
       <ButtonBar>

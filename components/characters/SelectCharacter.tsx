@@ -1,4 +1,4 @@
-import { useMemo, useState, useEffect } from 'react'
+import { useCallback, useMemo, useState, useEffect } from 'react'
 import { FormControlLabel, Switch, IconButton, Typography, Stack, Popover, Autocomplete, Box, TextField, MenuItem, Dialog, DialogActions, DialogTitle, DialogContent, DialogContentText, Button } from '@mui/material'
 import { useSession } from 'next-auth/react'
 import Client from "../Client"
@@ -26,7 +26,7 @@ export default function SelectCharacter() {
   const [loading, setLoading] = useState(false)
   const [showHidden, setShowHidden] = useState(false)
 
-  useEffect(() => {
+  const loadCharacters = useCallback(() => {
     if (user) {
       const characterVisibility = (character: Character) => {
         return (showHidden || character.active)
@@ -70,6 +70,7 @@ export default function SelectCharacter() {
   }, [user, fight, client, showHidden])
 
   const handleOpen = async (event: any) => {
+    loadCharacters()
     setValue(defaultCharacter)
     setOpen(true)
     setAnchorEl(event.target)

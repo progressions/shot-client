@@ -18,14 +18,33 @@ export function CampaignProvider({ children }: any) {
   const jwt = session?.data?.authorization
   const client = useMemo(() => (new Client({ jwt })), [jwt])
 
+  function saveLocally(key, value) {
+    if (typeof localStorage !== "undefined") {
+      localStorage.setItem(key, value)
+    }
+  }
+
+  function getLocally(key) {
+    if (typeof localStorage !== "undefined") {
+      return localStorage.getItem(key)
+    }
+    return null
+  }
+
   const [campaign, setCampaign] = useState<Campaign>(defaultCampaign)
 
   const setCurrentCampaign = async (camp: Campaign | null) => {
-    const response = await client.setCurrentCampaign(camp)
-    if (response.status === 200) {
-      const data = await response.json()
-      setCampaign(data)
-      return data
+    const current = getLocally("currentCampaign")
+    if (false && current) {
+      setCampaign(current)
+    } else {
+      const response = await client.setCurrentCampaign(camp)
+      if (response.status === 200) {
+        const data = await response.json()
+        saveLocally("currentCampaign", data)
+        setCampaign(data)
+        return data
+      }
     }
   }
 
