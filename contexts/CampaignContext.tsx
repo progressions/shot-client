@@ -18,37 +18,37 @@ export function CampaignProvider({ children }: any) {
   const jwt = session?.data?.authorization
   const client = useMemo(() => (new Client({ jwt })), [jwt])
 
+  const [campaign, setCampaign] = useState<Campaign>(defaultCampaign)
+
   function saveLocally(key, value) {
     if (typeof localStorage !== "undefined") {
-      localStorage.setItem(key, value)
+      localStorage.setItem(key, JSON.stringify(value))
     }
   }
 
   function getLocally(key) {
     if (typeof localStorage !== "undefined") {
-      return localStorage.getItem(key)
+      return JSON.parse(localStorage.getItem(key))
     }
     return null
   }
 
-  const [campaign, setCampaign] = useState<Campaign>(defaultCampaign)
-
   const setCurrentCampaign = async (camp: Campaign | null) => {
-    const current = getLocally("currentCampaign")
-    if (false && current) {
-      setCampaign(current)
-    } else {
-      const response = await client.setCurrentCampaign(camp)
-      if (response.status === 200) {
-        const data = await response.json()
-        saveLocally("currentCampaign", data)
-        setCampaign(data)
-        return data
-      }
+    const response = await client.setCurrentCampaign(camp)
+    if (response.status === 200) {
+      const data = await response.json()
+      setCampaign(data)
+      saveLocally("currentCampaign", data)
+      return data
     }
   }
 
   const getCurrentCampaign = async () => {
+    const data = getLocally("currentCampaign")
+    if (data) {
+      setCampaign(data)
+      return data
+    }
     const response = await client.getCurrentCampaign()
     if (response.status === 200) {
       const data = await response.json()
@@ -60,11 +60,13 @@ export function CampaignProvider({ children }: any) {
 
   useEffect(() => {
     if (jwt) {
-      const getIt = async () => {
-        return await getCurrentCampaign()
+      const data = getLocally("currentCampaign")
+      if (data) {
+        setCampaign(data)
+      } else {
+        const data = getCurrentCampaign().catch(console.error)
+        saveLocally("currentCampaign", data)
       }
-
-      getIt().catch(console.error)
     }
   }, [jwt])
 
