@@ -76,7 +76,7 @@ class Api {
   }
 
   characterEffects(fight: Fight, characterEffect: CharacterEffect | ID): string {
-    if (characterEffect.id) {
+    if (characterEffect?.id) {
       return `${this.fights(fight)}/character_effects/${characterEffect.id}`
     } else {
       return `${this.fights(fight)}/character_effects`

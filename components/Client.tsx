@@ -104,6 +104,10 @@ class Client {
     return await this.patch(this.api.characterEffects(fight, characterEffect), {"character_effect": characterEffect})
   }
 
+  async deleteCharacterEffect(characterEffect: CharacterEffect, fight: Fight):Promise<Response> {
+    return await this.delete(this.api.characterEffects(fight, characterEffect))
+  }
+
   async addPlayer(user: User, campaign: Campaign) {
     return await this.post(this.api.campaignMemberships(), {
       "campaign_id": campaign.id,

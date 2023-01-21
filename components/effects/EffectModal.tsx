@@ -7,9 +7,6 @@ import { useFight } from "../../contexts/FightContext"
 import type { Toast, Effect, Fight } from "../../types/types"
 import { defaultEffect } from "../../types/types"
 
-import { useSession } from 'next-auth/react'
-import Client from "../Client"
-
 interface EffectModalProps {
   shot: number
   open: boolean
@@ -17,7 +14,7 @@ interface EffectModalProps {
 }
 
 export default function EffectModal({ shot, open, setOpen }: EffectModalProps) {
-  const { fight, setFight, reloadFight } = useFight()
+  const { fight, reloadFight } = useFight()
 
   const initialEffect = { ...defaultEffect, start_sequence: fight.sequence, end_sequence: fight.sequence+1, start_shot: shot, end_shot: shot }
 
@@ -25,7 +22,7 @@ export default function EffectModal({ shot, open, setOpen }: EffectModalProps) {
   const [saving, setSaving] = useState<boolean>(false)
   const { setToast } = useToast()
 
-  const { jwt, client } = useClient()
+  const { client } = useClient()
 
   const cancelForm = () => {
     setEffect(initialEffect)
@@ -41,7 +38,7 @@ export default function EffectModal({ shot, open, setOpen }: EffectModalProps) {
       const data = await response.json()
       setEffect(data)
       cancelForm()
-      if (setFight) {
+      if (reloadFight) {
         await reloadFight(fight)
         setToast({ open: true, message: `Effect ${effect.title} added.`, severity: "success" })
         setSaving(false)
@@ -50,7 +47,7 @@ export default function EffectModal({ shot, open, setOpen }: EffectModalProps) {
   }
 
   const handleChange = (event: any) => {
-    setEffect((prev) => { return { ...prev, [event.target.name]: event.target.value } })
+    setEffect((prev: Effect) => { return { ...prev, [event.target.name]: event.target.value } })
   }
 
   return (

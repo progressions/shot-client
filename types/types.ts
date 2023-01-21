@@ -100,7 +100,7 @@ export interface Effect {
   id?: string
   title: string
   description: string
-  severity: string
+  severity: AlertColor | undefined
   start_sequence: number
   end_sequence: number
   start_shot: number
@@ -113,6 +113,7 @@ export interface CharacterEffect {
   description: string
   character_id?: string
   vehicle_id?: string
+  severity: AlertColor | undefined
 }
 
 export type ShotType = [number, Character[]]
@@ -250,4 +251,11 @@ export const defaultCampaign:Campaign = {
   gamemaster: defaultUser,
   players: [],
   invitations: []
+}
+
+export const defaultCharacterEffect:CharacterEffect = {
+  title: "",
+  description: "",
+  severity: "info",
+  character_id: ""
 }
