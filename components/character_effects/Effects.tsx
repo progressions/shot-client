@@ -7,7 +7,7 @@ import { useFight } from "../../contexts/FightContext"
 
 import { useState } from "react"
 
-export default function EffectsDisplay({ effects, severity }) {
+export default function Effects({ effects, severity }: any) {
   const [open, setOpen] = useState<boolean>(false)
   const [anchorEl, setAnchorEl] = useState<any>(null)
 

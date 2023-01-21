@@ -114,6 +114,8 @@ export interface CharacterEffect {
   character_id?: string
   vehicle_id?: string
   severity: AlertColor | undefined
+  change?: string
+  action_value?: ActionValues | VehicleActionValues
 }
 
 export type ShotType = [number, Character[]]

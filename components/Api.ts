@@ -75,7 +75,7 @@ class Api {
     }
   }
 
-  characterEffects(fight: Fight, characterEffect: CharacterEffect | ID): string {
+  characterEffects(fight: Fight, characterEffect?: CharacterEffect | ID): string {
     if (characterEffect?.id) {
       return `${this.fights(fight)}/character_effects/${characterEffect.id}`
     } else {

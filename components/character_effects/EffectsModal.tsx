@@ -6,10 +6,10 @@ import { useToast } from "../../contexts/ToastContext"
 import { useClient } from "../../contexts/ClientContext"
 import { useFight } from "../../contexts/FightContext"
 
-import type { Toast, Effect, Fight } from "../../types/types"
+import type { CharacterEffect, Toast, Effect, Fight } from "../../types/types"
 import { defaultCharacterEffect } from "../../types/types"
 
-export default function EffectsModal({ character }) {
+export default function EffectsModal({ character }: any) {
   const initialEffect = { ...defaultCharacterEffect, character_id: character?.id }
   const { fight, reloadFight } = useFight()
 
