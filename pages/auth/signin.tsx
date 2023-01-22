@@ -1,13 +1,11 @@
 import Head from 'next/head'
 import { Typography, Link, Alert, Box, Stack, TextField, Button } from '@mui/material'
-import { useState, useEffect } from 'react'
+import { useReducer, useEffect } from 'react'
 import { signIn, signOut } from 'next-auth/react'
 import Router from 'next/router'
 
 import Layout from '../../components/Layout'
 import type { ServerSideProps } from "../../types/types"
-
-impot { useClient } from "../../ClientContext"
 
 interface SignInPageProps {
   referer: string | null
@@ -19,8 +17,7 @@ interface Credentials {
 }
 
 export async function getServerSideProps({ req, query }: ServerSideProps) {
-
-  // get CSRF as soon as i figure out how
+  // get referer as soon as i figure out how
   return {
     props: {
       referer: null
@@ -28,26 +25,57 @@ export async function getServerSideProps({ req, query }: ServerSideProps) {
   }
 }
 
+const initialState = {
+  error: false,
+  loading: false,
+  email: "",
+  password: ""
+}
+
+const loginReducer = (state, action) => {
+  switch (action.type) {
+    case "update":
+      return {
+        ...state,
+        [action.name]: action.value
+      }
+    case "login":
+      return {
+        ...state,
+        loading: true,
+        error: false
+      }
+    case "error":
+      return {
+        ...state,
+        error: true,
+        loading: false
+      }
+    case "success":
+      return {
+        error: false,
+        loading: false,
+        email: "",
+        password: ""
+      }
+    default:
+      return state
+  }
+}
+
 export default function SignInPage({ referer }: SignInPageProps) {
-  const [error, setError] = useState<boolean>(false)
-  const { client ] = useClient()
+  const [state, dispatch] = useReducer(loginReducer, initialState)
+  const { error, loading, email, password } = state
 
   useEffect(() => {
     signOut({ redirect: false })
   })
 
-  const [credentials, setCredentials] = useState<Credentials>(
-    {
-      email: '',
-      password: ''
-    }
-  )
-
   const handleSubmit = async (event: React.ChangeEvent<HTMLInputElement>): Promise<void> => {
     event.preventDefault()
     const result = await signIn('credentials', {
-      email: credentials.email,
-      password: credentials.password,
+      email: email,
+      password: password,
       redirect: false
     })
     if (result?.status === 200) {
@@ -58,12 +86,12 @@ export default function SignInPage({ referer }: SignInPageProps) {
       }
     }
     if (result?.status === 401) {
-      setError(true)
+      dispatch({ type: "error" })
     }
   }
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
-    setCredentials((prevState: Credentials) => ({ ...prevState, [event.target.name]: event.target.value }))
+    dispatch({ type: "update", name: event.target.name, value: event.target.value })
   }
 
   return (
@@ -79,10 +107,10 @@ export default function SignInPage({ referer }: SignInPageProps) {
           <Box margin="auto" sx={{width: 300}} p={4} component="form" onSubmit={handleSubmit}>
             <Stack spacing={1}>
               { error && (<Alert severity={'error'}>You have entered an invalid email or password.</Alert>) }
-              <TextField autoFocus required error={error} id="email" label="Email Address" name="email" value={credentials.email} onChange={handleChange} />
-              <TextField required id="password" error={error} label="Password" name="password" value={credentials.password} onChange={handleChange} type="password" />
+              <TextField autoFocus required error={error} id="email" label="Email Address" name="email" value={email} onChange={handleChange} />
+              <TextField required id="password" error={error} label="Password" name="password" value={password} onChange={handleChange} type="password" />
               <Typography><Link>Forgot your password?</Link></Typography>
-              <Button variant="contained" type="submit">Sign In</Button>
+              <Button disabled={loading} variant="contained" type="submit">Sign In</Button>
             </Stack>
           </Box>
         </Layout>
