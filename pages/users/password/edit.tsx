@@ -40,6 +40,7 @@ export default function ResetPasswordView({ reset_password_token }: any) {
   }
 
   async function handleSubmit(event: any) {
+    event.preventDefault()
     setSaving(true)
 
     const response = await client.resetUserPassword(reset_password_token, state)
@@ -104,6 +105,9 @@ export default function ResetPasswordView({ reset_password_token }: any) {
               </Stack>
             </Stack>
           </Box>
+        </> }
+        { success && <>
+        <Typography>Your password has been reset. <Link href="/auth/signin">Click here</Link> to sign in.</Typography>
         </> }
         </Container>
       </main>
