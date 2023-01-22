@@ -193,6 +193,12 @@ class Client {
     return await this.post(this.api.confirmUser(), { "confirmation_token": confirmation_token })
   }
 
+  async sendResetPasswordLink(user: User):Promise<Response> {
+    return await this.post(this.api.resetUserPassword(), {
+      "user": user
+    })
+  }
+
   async resetUserPassword(reset_password_token: string, password: any):Promise<Response> {
     return await this.patch(this.api.resetUserPassword(), {
       "user": { ...password, "reset_password_token": reset_password_token }

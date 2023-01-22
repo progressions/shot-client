@@ -1,11 +1,13 @@
 import Head from 'next/head'
-import { Alert, Snackbar, Box, Stack, TextField, Button } from '@mui/material'
+import { Typography, Link, Alert, Box, Stack, TextField, Button } from '@mui/material'
 import { useState, useEffect } from 'react'
 import { signIn, signOut } from 'next-auth/react'
 import Router from 'next/router'
 
 import Layout from '../../components/Layout'
 import type { ServerSideProps } from "../../types/types"
+
+impot { useClient } from "../../ClientContext"
 
 interface SignInPageProps {
   referer: string | null
@@ -28,6 +30,8 @@ export async function getServerSideProps({ req, query }: ServerSideProps) {
 
 export default function SignInPage({ referer }: SignInPageProps) {
   const [error, setError] = useState<boolean>(false)
+  const { client ] = useClient()
+
   useEffect(() => {
     signOut({ redirect: false })
   })
@@ -77,6 +81,7 @@ export default function SignInPage({ referer }: SignInPageProps) {
               { error && (<Alert severity={'error'}>You have entered an invalid email or password.</Alert>) }
               <TextField autoFocus required error={error} id="email" label="Email Address" name="email" value={credentials.email} onChange={handleChange} />
               <TextField required id="password" error={error} label="Password" name="password" value={credentials.password} onChange={handleChange} type="password" />
+              <Typography><Link>Forgot your password?</Link></Typography>
               <Button variant="contained" type="submit">Sign In</Button>
             </Stack>
           </Box>
