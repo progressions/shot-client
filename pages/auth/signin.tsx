@@ -109,7 +109,7 @@ export default function SignInPage({ referer }: SignInPageProps) {
               { error && (<Alert severity={'error'}>You have entered an invalid email or password.</Alert>) }
               <TextField autoFocus required error={error} id="email" label="Email Address" name="email" value={email} onChange={handleChange} />
               <TextField required id="password" error={error} label="Password" name="password" value={password} onChange={handleChange} type="password" />
-              <Typography><Link>Forgot your password?</Link></Typography>
+              <Typography><Link href="/users/password/reset">Forgot your password?</Link></Typography>
               <Button disabled={loading} variant="contained" type="submit">Sign In</Button>
             </Stack>
           </Box>

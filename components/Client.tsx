@@ -193,9 +193,9 @@ class Client {
     return await this.post(this.api.confirmUser(), { "confirmation_token": confirmation_token })
   }
 
-  async sendResetPasswordLink(user: User):Promise<Response> {
+  async sendResetPasswordLink(email: string):Promise<Response> {
     return await this.post(this.api.resetUserPassword(), {
-      "user": user
+      "user": { "email": email }
     })
   }
 
