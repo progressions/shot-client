@@ -38,9 +38,15 @@ export async function getServerSideProps<GetServerSideProps>({ req, res, params,
     }
   }
 
-  const user = await response.json()
+  if (response.status === 404) {
+    return {
+      props: {
+        not_found: true,
+      }
+    }
+  }
 
-  console.log({ user })
+  const user = await response.json()
 
   return {
     props: {
@@ -49,7 +55,7 @@ export async function getServerSideProps<GetServerSideProps>({ req, res, params,
   }
 }
 
-export default function ConfirmationView({ user, errors }: any) {
+export default function ConfirmationView({ user, errors, not_found }: any) {
   return (
     <>
       <Head>
@@ -62,6 +68,9 @@ export default function ConfirmationView({ user, errors }: any) {
         <Navbar />
         <Container maxWidth="md">
           <Typography variant="h2" gutterBottom>Welcome</Typography>
+          { not_found && <>
+            <Typography>That account could not be found.</Typography>
+          </> }
           { errors && <>
             <Stack spacing={2}>
               <Typography>Your account {errors.email}</Typography>
