@@ -40,7 +40,7 @@ export default function ActionButtons({ character, healWounds, takeWounds, takeC
     woundIcon = <CommuteIcon color="error" />
   }
 
-  const mainAttack = character?.action_values?.[character?.action_values?.["MainAttack"]]
+  const mainAttack = character?.action_values?.[character?.action_values?.["MainAttack"] as string]
 
   return (
     <Stack direction="row" spacing={1} sx={{height: 30}}>
