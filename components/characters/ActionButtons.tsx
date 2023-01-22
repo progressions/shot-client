@@ -40,11 +40,13 @@ export default function ActionButtons({ character, healWounds, takeWounds, takeC
     woundIcon = <CommuteIcon color="error" />
   }
 
+  const mainAttack = character?.action_values?.[character?.action_values?.["MainAttack"]]
+
   return (
     <Stack direction="row" spacing={1} sx={{height: 30}}>
       <ButtonGroup variant="contained" size="small">
         { character.category === "character" && takeWounds && character.action_values["Type"] == "Mook" &&
-            <MookRolls count={character.action_values["Wounds"] as number} attack={character.action_values["Guns"] as number} damage={character.action_values["Damage"] as number} icon={<NewReleasesIcon />} /> }
+            <MookRolls count={character.action_values["Wounds"] as number} attack={mainAttack as number} damage={character.action_values["Damage"] as number} icon={<NewReleasesIcon />} /> }
         { takeWounds &&
           <Tooltip title={woundLabel} arrow>
             <Button onClick={() => {takeWounds(character)}}>
