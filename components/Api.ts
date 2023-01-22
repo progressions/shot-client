@@ -115,6 +115,10 @@ class Api {
     }
   }
 
+  confirmUser(): string {
+    return `${this.base()}/users/confirmation`
+  }
+
   signIn(): string {
     return `${this.base()}/users/sign_in`
   }

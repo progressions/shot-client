@@ -189,6 +189,10 @@ class Client {
     return await this.get(this.api.adminUsers(user))
   }
 
+  async confirmUser(confirmation_token: string):Promise<Response> {
+    return await this.post(this.api.confirmUser(), { "confirmation_token": confirmation_token })
+  }
+
   async getUsers():Promise<Response> {
     return await this.get(this.api.adminUsers())
   }
