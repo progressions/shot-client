@@ -119,6 +119,10 @@ class Api {
     return `${this.base()}/users/confirmation`
   }
 
+  resetUserPassword(): string {
+    return `${this.base()}/users/password`
+  }
+
   signIn(): string {
     return `${this.base()}/users/sign_in`
   }
