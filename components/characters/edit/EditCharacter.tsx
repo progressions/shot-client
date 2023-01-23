@@ -111,7 +111,7 @@ export default function EditCharacter({ character:initialCharacter }: any) {
     dispatch({ type: "update", name: event.target.name, value: event.target.checked })
   }
 
-  function handleAVChange(event: any, newValue) {
+  function handleAVChange(event: any, newValue: any) {
     dispatch({ type: "action_value", name: event.target.name, value: event.target.value || newValue })
   }
 
@@ -155,19 +155,19 @@ export default function EditCharacter({ character:initialCharacter }: any) {
         <Stack spacing={2}>
           <Stack direction="row" spacing={1}>
             <TextField name="name" label="Name" required autoFocus fullWidth onChange={handleChange} value={character.name} />
-            <Faction faction={action_values["Faction"]} onChange={handleAVChange} />
+            <Faction faction={action_values["Faction"]} onChange={handleAVChange as any} />
             <FormControlLabel label="Active" name="active" control={<Switch checked={character.active} />} onChange={handleCheck} />
           </Stack>
           <Stack direction="row" spacing={1}>
             <CharacterType value={action_values.Type} onChange={handleAVChange} />
-            <TextField name="Archetype" label="Archetype" autoFocus fullWidth onChange={handleAVChange} value={action_values.Archetype} />
+            <TextField name="Archetype" label="Archetype" autoFocus fullWidth onChange={handleAVChange as React.ChangeEventHandler} value={action_values.Archetype} />
           </Stack>
           <Stack spacing={2} direction="row" alignItems='center'>
             <TextField label={woundsLabel}
               type="number"
               name="Wounds"
               value={character.action_values?.['Wounds'] || ''}
-              onChange={handleAVChange}
+              onChange={handleAVChange as React.ChangeEventHandler}
               InputProps={
                 {startAdornment: woundsAdornment()}
               }
@@ -179,9 +179,9 @@ export default function EditCharacter({ character:initialCharacter }: any) {
             <ColorPicker character={character} onChange={handleChange} dispatch={dispatch} />
           </Stack>
           <Typography variant="h6">Action Values</Typography>
-          <EditActionValues character={character} onChange={handleAVChange} />
+          <EditActionValues character={character} onChange={handleAVChange as React.ChangeEventHandler} />
           <Stack direction="row" spacing={2}>
-            <FortuneSelect character={character} onChange={handleAVChange} />
+            <FortuneSelect character={character} onChange={handleAVChange as React.ChangeEventHandler} />
           </Stack>
           <Description description={description} onChange={handleDescriptionChange} />
           <Stack spacing={2} direction="row">

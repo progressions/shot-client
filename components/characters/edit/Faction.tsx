@@ -11,7 +11,7 @@ const initialState = {
   factions: []
 }
 
-function factionReducer(state, action) {
+function factionReducer(state: any, action: any) {
   switch(action.type) {
     case "replace":
       return {
@@ -34,12 +34,6 @@ export default function Faction({ faction, onChange }: any) {
       const data = await response.json()
       dispatch({ type: "replace", factions: data })
     }
-  }
-
-  function handleChange(event: any, newValue: any) {
-    console.log("change", newValue)
-    console.log(event.target.name)
-    dispatchCharacter({ type: "action_value", name: "Faction", value: newValue })
   }
 
   function getOptionLabel(option: any) {
