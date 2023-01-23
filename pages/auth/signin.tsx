@@ -32,7 +32,7 @@ const initialState = {
   password: ""
 }
 
-const loginReducer = (state, action) => {
+const loginReducer = (state: any, action: any) => {
   switch (action.type) {
     case "update":
       return {

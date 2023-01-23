@@ -18,7 +18,7 @@ const initialState = {
   email: ""
 }
 
-const resetReducer = (state, action) => {
+const resetReducer = (state: any, action: any) => {
   switch (action.type) {
     case "submit":
       return {
