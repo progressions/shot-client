@@ -56,6 +56,11 @@ export interface VehicleActionValues {
   Faction: string
 }
 
+export interface Schtick {
+  title: string
+  description: string
+}
+
 export type Position = "near" | "far"
 
 export type CharacterType = "" | "PC" | "Ally" | "Mook" | "Featured Foe" | "Boss" | "Uber-Boss"
@@ -74,6 +79,8 @@ export interface Vehicle {
   impairments: number
   color: string
   action_values: VehicleActionValues
+  description: any
+  schticks: Schtick[]
   user?: User
   created_at?: string
   updated_at?: string
@@ -90,6 +97,7 @@ export interface Person {
   color: string
   action_values: ActionValues
   description: any
+  schticks: Schtick[]
   user?: User
   created_at?: string
   updated_at?: string
@@ -204,7 +212,8 @@ export const defaultCharacter:Person = {
     "Style of Dress": "",
     "Appearance": "",
     "Background": ""
-  }
+  },
+  schticks: []
 }
 
 export const defaultVehicle:Vehicle = {
@@ -226,7 +235,9 @@ export const defaultVehicle:Vehicle = {
     Position: "far",
     Type: "Featured Foe",
     Faction: ""
-  }
+  },
+  description: {},
+  schticks: []
 }
 
 export const defaultFight:Fight = {
