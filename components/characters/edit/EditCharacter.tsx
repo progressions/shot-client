@@ -7,6 +7,7 @@ import CharacterType from "./CharacterType"
 import FortuneSelect from "./FortuneSelect"
 import Description from "./Description"
 import Faction from "./Faction"
+import Schticks from "./Schticks"
 
 import { useMemo, useReducer, useCallback } from "react"
 
@@ -86,7 +87,7 @@ export default function EditCharacter({ character:initialCharacter }: any) {
 
   const [state, dispatch] = useReducer(characterReducer, initialState)
   const { edited, saving, character } = state
-  const { description, action_values } = character
+  const { schticks, description, action_values } = character
 
   async function handleSubmit(event: any) {
     event.preventDefault()
@@ -149,6 +150,8 @@ export default function EditCharacter({ character:initialCharacter }: any) {
     )
   }
 
+  console.log({ character })
+
   return (
     <>
       <Box component="form" onSubmit={handleSubmit}>
@@ -184,6 +187,7 @@ export default function EditCharacter({ character:initialCharacter }: any) {
             <FortuneSelect character={character} onChange={handleAVChange as React.ChangeEventHandler} />
           </Stack>
           <Description description={description} onChange={handleDescriptionChange} />
+          <Schticks schticks={schticks} dispatch={dispatch} />
           <Stack spacing={2} direction="row">
             <Button variant="outlined" color="secondary" disabled={saving || !edited} onClick={cancelForm}>Cancel</Button>
             <Button variant="contained" color="primary" type="submit" disabled={saving || !edited}>Save Changes</Button>

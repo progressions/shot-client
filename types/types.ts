@@ -57,8 +57,13 @@ export interface VehicleActionValues {
 }
 
 export interface Schtick {
+  id?: string
   title: string
   description: string
+  campaign_id: string
+  category: string
+  path: string
+  schtick_id: string
 }
 
 export type Position = "near" | "far"
