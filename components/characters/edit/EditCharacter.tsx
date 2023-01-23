@@ -6,6 +6,7 @@ import EditActionValues from "./EditActionValues"
 import CharacterType from "./CharacterType"
 import FortuneSelect from "./FortuneSelect"
 import Description from "./Description"
+import Faction from "./Faction"
 
 import { useReducer, useCallback } from "react"
 
@@ -154,6 +155,7 @@ export default function EditCharacter({ character:initialCharacter }: any) {
         <Stack spacing={2}>
           <Stack direction="row" spacing={1}>
             <TextField name="name" label="Name" required autoFocus fullWidth onChange={handleChange} value={character.name} />
+            <Faction faction={action_values["Faction"]} onChange={handleAVChange} />
             <FormControlLabel label="Active" name="active" control={<Switch checked={character.active} />} onChange={handleCheck} />
           </Stack>
           <Stack direction="row" spacing={1}>
