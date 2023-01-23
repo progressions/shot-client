@@ -3,7 +3,7 @@ import { useState } from 'react'
 
 interface CharacterTypeParams {
   value: string
-  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void
+  onChange: (event: React.ChangeEvent<HTMLInputElement>, newValue?: any) => void
 }
 
 export default function CharacterType({ value, onChange }: CharacterTypeParams) {
