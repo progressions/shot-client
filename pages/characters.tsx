@@ -188,7 +188,7 @@ export default function Characters({ characters:initialCharacters, jwt }: Charac
   return (
     <>
       <Head>
-        <title>Characters</title>
+        <title>Characters - Chi War</title>
         <meta name="description" content="Feng Shui 2 Shot Counter" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />

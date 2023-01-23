@@ -97,7 +97,7 @@ export default function SignInPage({ referer }: SignInPageProps) {
   return (
     <>
       <Head>
-        <title>Sign In | Shot Counter</title>
+        <title>Sign In | Chi War</title>
         <meta name="description" content="Feng Shui 2 Shot Counter" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />

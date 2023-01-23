@@ -74,7 +74,7 @@ export default function Fight({ fight:initialFight, notFound }: FightParams) {
   return (
     <>
       <Head>
-        <title>{fight ? fight.name : "Fight not found"}</title>
+        <title>{fight ? fight.name : "Fight not found"} - Chi War</title>
         <meta name="description" content="Feng Shui 2 Shot Counter" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />

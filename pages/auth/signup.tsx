@@ -48,7 +48,7 @@ export default function SignUp() {
   return (
     <>
       <Head>
-        <title>Sign Up | Shot Counter</title>
+        <title>Sign Up | Chi War</title>
         <meta name="description" content="Feng Shui 2 Shot Counter" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />

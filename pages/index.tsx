@@ -100,7 +100,7 @@ export default function Home({ currentCampaign, fights:initialFights }: HomeProp
   return (
     <>
       <Head>
-        <title>Shot Counter</title>
+        <title>Chi War - Feng Shui 2 Shot Counter and Character Manager</title>
         <meta name="description" content="Feng Shui 2 Shot Counter" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />

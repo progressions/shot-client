@@ -99,7 +99,7 @@ export default function RedeemInvitation({ invitation }: any) {
   return (
     <>
       <Head>
-        <title>Shot Counter</title>
+        <title>Redeem Invitation - Chi War</title>
         <meta name="description" content="Feng Shui 2 Shot Counter" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />

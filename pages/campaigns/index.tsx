@@ -88,7 +88,7 @@ export default function CampaignsIndex({ campaigns:initialCampaigns }: any) {
   return (
     <>
       <Head>
-        <title>Campaigns</title>
+        <title>Campaigns - Chi War</title>
         <meta name="description" content="Feng Shui 2 Shot Counter" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />

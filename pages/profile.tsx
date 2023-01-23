@@ -63,7 +63,7 @@ export default function Profile({ jwt, user:initialUser }: ProfileProps) {
   return (
     <>
       <Head>
-        <title>Profile</title>
+        <title>Profile - Chi War</title>
         <meta name="description" content="Feng Shui 2 Shot Counter" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
