@@ -189,6 +189,10 @@ class Client {
     return await this.get(this.api.adminUsers(user))
   }
 
+  async unlockUser(unlock_token: string):Promise<Response> {
+    return await this.get(`${this.api.unlockUser()}?unlock_token=${unlock_token}`)
+  }
+
   async confirmUser(confirmation_token: string):Promise<Response> {
     return await this.post(this.api.confirmUser(), { "confirmation_token": confirmation_token })
   }

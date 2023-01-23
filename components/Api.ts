@@ -115,6 +115,10 @@ class Api {
     }
   }
 
+  unlockUser(): string {
+    return `${this.base()}/users/unlock`
+  }
+
   confirmUser(): string {
     return `${this.base()}/users/confirmation`
   }
