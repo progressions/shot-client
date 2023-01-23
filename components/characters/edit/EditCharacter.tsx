@@ -88,8 +88,6 @@ export default function EditCharacter({ character:initialCharacter }: any) {
   const { edited, saving, character } = state
   const { description, action_values } = character
 
-  console.log({ description })
-
   async function handleSubmit(event: any) {
     event.preventDefault()
     dispatch({ type: "submit" })
@@ -113,8 +111,8 @@ export default function EditCharacter({ character:initialCharacter }: any) {
     dispatch({ type: "update", name: event.target.name, value: event.target.checked })
   }
 
-  function handleAVChange(event: any) {
-    dispatch({ type: "action_value", name: event.target.name, value: event.target.value })
+  function handleAVChange(event: any, newValue) {
+    dispatch({ type: "action_value", name: event.target.name, value: event.target.value || newValue })
   }
 
   function handleDescriptionChange(event: any) {

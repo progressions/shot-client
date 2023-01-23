@@ -135,6 +135,10 @@ class Api {
     return `${this.base()}/users`
   }
 
+  factions(): string {
+    return `${this.api()}/factions`
+  }
+
 }
 
 export default Api

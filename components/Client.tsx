@@ -217,6 +217,10 @@ class Client {
     return await this.get(this.api.adminUsers())
   }
 
+  async getFactions():Promise<Response> {
+    return await this.get(this.api.factions())
+  }
+
   async patch(url:string, body:any, options?:any):Promise<Response> {
     return await this.request("PATCH", url, body, options)
   }
