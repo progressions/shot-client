@@ -193,6 +193,17 @@ export const defaultCharacter:Person = {
     "Marks of Death": 0,
     Damage: 0,
     Faction: ""
+  },
+  description: {
+    "Nicknames": "",
+    "Age": "",
+    "Height": "",
+    "Weight": "",
+    "Hair Color": "",
+    "Eye Color": "",
+    "Style of Dress": "",
+    "Appearance": "",
+    "Background": ""
   }
 }
 

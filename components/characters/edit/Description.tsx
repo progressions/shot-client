@@ -1,6 +1,6 @@
 import { Typography, Stack, TextField } from "@mui/material"
 
-export default function Description({ description, onChange }) {
+export default function Description({ description, onChange }: any) {
   return (
     <>
       <Typography variant="h6">Description</Typography>

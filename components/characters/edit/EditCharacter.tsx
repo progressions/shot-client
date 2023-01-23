@@ -8,21 +8,23 @@ import FortuneSelect from "./FortuneSelect"
 import Description from "./Description"
 import Faction from "./Faction"
 
-import { useReducer, useCallback } from "react"
+import { useMemo, useReducer, useCallback } from "react"
 
 import { Typography, Box, Stack, TextField, FormControlLabel, Switch, Button, InputAdornment } from "@mui/material"
 import FavoriteIcon from '@mui/icons-material/Favorite'
+import PeopleIcon from '@mui/icons-material/People'
+
 import PlayerTypeOnly from "../../PlayerTypeOnly"
 import DeathMarks from "../DeathMarks"
 
 export default function EditCharacter({ character:initialCharacter }: any) {
   const { client } = useClient()
   const { toastError, toastSuccess } = useToast()
-  const initialState = {
+  const initialState = useMemo(() => ({
     edited: false,
     saving: false,
     character: initialCharacter
-  }
+  }), [initialCharacter])
 
   const characterReducer = useCallback((state: any, action: any) => {
     switch(action.type) {

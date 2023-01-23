@@ -127,7 +127,7 @@ export default function CharacterModal({ open, setOpen, character:activeCharacte
     actionValues["Wounds"] = 0
     actionValues["Fortune"] = actionValues["Max Fortune"]
     actionValues["Marks of Death"] = 0
-    setCharacter((prev: Character) => ({ ...prev, impairments: 0, action_values: actionValues }))
+    setCharacter((prev: any) => ({ ...prev, impairments: 0, action_values: actionValues }))
   }
 
   return (
