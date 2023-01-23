@@ -36,6 +36,10 @@ class Client {
     return await this.delete(this.api.fights(fight))
   }
 
+  async getCharacter(character: Character | ID):Promise<Response> {
+    return await this.get(this.api.characters(null, character))
+  }
+
   async updateCharacter(character: Character, fight?: Fight | null):Promise<Response> {
     return await this.patch(this.api.characters(fight, character), {"character": character})
   }

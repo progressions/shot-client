@@ -89,6 +89,7 @@ export interface Person {
   impairments: number
   color: string
   action_values: ActionValues
+  description: any
   user?: User
   created_at?: string
   updated_at?: string
@@ -192,6 +193,17 @@ export const defaultCharacter:Person = {
     "Marks of Death": 0,
     Damage: 0,
     Faction: ""
+  },
+  description: {
+    "Nicknames": "",
+    "Age": "",
+    "Height": "",
+    "Weight": "",
+    "Hair Color": "",
+    "Eye Color": "",
+    "Style of Dress": "",
+    "Appearance": "",
+    "Background": ""
   }
 }
 

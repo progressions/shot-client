@@ -1,32 +1,32 @@
 import Head from "next/head"
-import Layout from "../components/Layout"
-import Client from "../components/Client"
+import Layout from "../../components/Layout"
+import Client from "../../components/Client"
 
 import { useState } from "react"
 import Router from "next/router"
 
-import { Paper, Switch, FormControlLabel, Stack, Avatar, Box, TableContainer, Table, TableHead, TableBody, TableRow, TableCell, Container, Typography } from "@mui/material"
+import { Link, Paper, Switch, FormControlLabel, Stack, Avatar, Box, TableContainer, Table, TableHead, TableBody, TableRow, TableCell, Container, Typography } from "@mui/material"
 
-import { authOptions } from "./api/auth/[...nextauth]"
+import { authOptions } from "../api/auth/[...nextauth]"
 import { unstable_getServerSession } from "next-auth/next"
 
 import { useSession } from "next-auth/react"
 
-import ButtonBar from "../components/ButtonBar"
-import ActionValues from "../components/characters/ActionValues"
-import ActionButtons from "../components/characters/ActionButtons"
-import CharacterModal from "../components/characters/CharacterModal"
-import VehicleModal from "../components/vehicles/VehicleModal"
-import AvatarBadge from "../components/characters/AvatarBadge"
-import CreateCharacter from "../components/characters/CreateCharacter"
-import CreateVehicle from "../components/vehicles/CreateVehicle"
-import CharacterFilters from "../components/characters/CharacterFilters"
-import GamemasterOnly from "../components/GamemasterOnly"
+import ButtonBar from "../../components/ButtonBar"
+import ActionValues from "../../components/characters/ActionValues"
+import ActionButtons from "../../components/characters/ActionButtons"
+import CharacterModal from "../../components/characters/CharacterModal"
+import VehicleModal from "../../components/vehicles/VehicleModal"
+import AvatarBadge from "../../components/characters/AvatarBadge"
+import CreateCharacter from "../../components/characters/CreateCharacter"
+import CreateVehicle from "../../components/vehicles/CreateVehicle"
+import CharacterFilters from "../../components/characters/CharacterFilters"
+import GamemasterOnly from "../../components/GamemasterOnly"
 
-import { useToast } from "../contexts/ToastContext"
-import { useClient } from "../contexts/ClientContext"
-import type { Person, Vehicle, Character, CharacterFilter, ServerSideProps, Toast } from "../types/types"
-import { defaultCharacter } from "../types/types"
+import { useToast } from "../../contexts/ToastContext"
+import { useClient } from "../../contexts/ClientContext"
+import type { Person, Vehicle, Character, CharacterFilter, ServerSideProps, Toast } from "../../types/types"
+import { defaultCharacter } from "../../types/types"
 
 interface CharactersProps {
   characters: Character[],
@@ -213,9 +213,9 @@ export default function Characters({ characters:initialCharacters, jwt }: Charac
                   <TableRow>
                     <TableCell />
                     <TableCell>Name</TableCell>
-                    <TableCell />
+                    <TableCell>Type</TableCell>
+                    <TableCell>Action Values</TableCell>
                     <TableCell>Creator</TableCell>
-                    <TableCell />
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -225,18 +225,25 @@ export default function Characters({ characters:initialCharacters, jwt }: Charac
                         <TableCell sx={{width: 50}}>
                           <AvatarBadge character={character} user={user} />
                         </TableCell>
-                        <TableCell sx={{fontWeight: "bold"}}><Typography variant="h5">{character.name}</Typography></TableCell>
+                        <TableCell sx={{width: 200}}>
+                          <Typography variant="h5">
+                            { character.category === "character" &&
+                            <Link color="text.primary" href={`/characters/${character.id}`}>
+                              {character.name}
+                            </Link> }
+                            { character.category === "vehicle" &&
+                              character.name }
+                          </Typography>
+                        </TableCell>
+                        <TableCell>{character.action_values["Type"]}</TableCell>
                         <TableCell><ActionValues character={character} /></TableCell>
                         <TableCell>{character.user?.first_name} {character.user?.last_name}</TableCell>
-                        <TableCell><ActionButtons editCharacter={editCharacter} deleteCharacter={deleteCharacter} character={character} /></TableCell>
                       </TableRow>)
                     })
                   }
                 </TableBody>
               </Table>
             </TableContainer>
-            <CharacterModal open={editingCharacter} setOpen={setEditingCharacter} character={editingCharacter as Person} reload={reloadCharacters} />
-            <VehicleModal open={editingCharacter as Vehicle} setOpen={setEditingCharacter as any} character={editingCharacter as Vehicle} reload={reloadCharacters} />
           </Container>
         </Layout>
       </main>
