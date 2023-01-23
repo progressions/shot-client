@@ -89,6 +89,7 @@ export interface Person {
   impairments: number
   color: string
   action_values: ActionValues
+  description: any
   user?: User
   created_at?: string
   updated_at?: string

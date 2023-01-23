@@ -8,10 +8,11 @@ import type { Character } from "../../../types/types"
 interface ColorPickerProps {
   character: Character
   onChange: any
-  setCharacter: any
+  setCharacter?: any
+  dispatch?: any
 }
 
-export default function ColorPicker({ character, onChange, setCharacter }: ColorPickerProps) {
+export default function ColorPicker({ character, onChange, setCharacter, dispatch }: ColorPickerProps) {
   const [picker, setPicker] = useState<boolean>(false)
   const [anchorEl, setAnchorEl] = useState(null)
 
@@ -26,7 +27,12 @@ export default function ColorPicker({ character, onChange, setCharacter }: Color
   }
 
   const handleColor = (color: any) => {
-    setCharacter((prevState: Character) => ({ ...prevState, color: color?.hex }))
+    if (dispatch) {
+      dispatch({ type: "update", name: "color", value: color?.hex })
+    }
+    if (setCharacter) {
+      setCharacter((prevState: Character) => ({ ...prevState, color: color?.hex }))
+    }
     setPicker(false)
     setAnchorEl(null)
   }
