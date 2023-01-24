@@ -25,7 +25,7 @@ function schtickReducer(state: any, action: any) {
 export default function SchtickModal({ open, setOpen }: any) {
   const { toastSuccess, toastError } = useToast()
   const { client } = useClient()
-  const [state, dispatch] = useReducer(schtickReducer, { ...initialState })
+  const [state, dispatch] = useReducer(schtickReducer, initialState)
   const [schticks, setSchticks] = useState([])
   const { loading, saving, schtick } = state
 
@@ -78,19 +78,17 @@ export default function SchtickModal({ open, setOpen }: any) {
       disableRestoreFocus
     >
       <Stack p={4} spacing={2}>
-        <Stack direction="row" spacing={2}>
-          <Autocomplete
-            disabled={loading}
-            options={schticks}
-            sx={{ width: 300 }}
-            onChange={handleSelect}
-            onOpen={getSchticks}
-            openOnFocus
-            getOptionLabel={getOptionLabel}
-            isOptionEqualToValue={(option, value) => option?.id === value?.id}
-            renderInput={(params) => <TextField autoFocus name="Schtick" {...params} label="Schtick" />}
-          />
-        </Stack>
+        <Autocomplete
+          disabled={loading}
+          options={schticks}
+          sx={{ width: 300 }}
+          onChange={handleSelect}
+          onOpen={getSchticks}
+          openOnFocus
+          getOptionLabel={getOptionLabel}
+          isOptionEqualToValue={(option, value) => option?.id === value?.id}
+          renderInput={(params) => <TextField autoFocus name="Schtick" {...params} label="Schtick" />}
+        />
         <TextField name="title" label="Title" value={schtick?.title || ""} InputProps={{readOnly: true}} />
         <TextField name="category" label="Category" value={schtick?.category || ""} InputProps={{readOnly: true}} />
         <TextField name="path" label="Path" value={schtick?.path || ""} InputProps={{readOnly: true}} />

@@ -31,7 +31,7 @@ export default function Schticks({ schticks, state, dispatch }: any) {
   // If not, add a new row with the New Schtick card.
   //
   const outputRows = useMemo(() => {
-    const newSchtick = <NewSchtick characterState={state} dispatchCharacter={dispatch} />
+    const newSchtick = <NewSchtick />
     const output = (
       rowsOfData.map((row: any, index: number) => (
         <Stack spacing={1} direction="row" key={`row_${index}`}>
@@ -58,7 +58,9 @@ export default function Schticks({ schticks, state, dispatch }: any) {
   return (
     <>
       <Typography variant="h3">Schticks</Typography>
-      { outputRows }
+      <Stack spacing={1}>
+        { outputRows }
+      </Stack>
     </>
   )
 }
