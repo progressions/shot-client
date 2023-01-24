@@ -36,10 +36,6 @@ export default function Faction({ faction, onChange }: any) {
     }
   }
 
-  function getOptionLabel(option: any) {
-    return option.label || ""
-  }
-
   return (
     <>
       <Stack direction="row" spacing={1}>

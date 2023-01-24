@@ -1,5 +1,6 @@
 import { Box, Stack, Typography } from "@mui/material"
 import SchtickCard from "../schticks/SchtickCard"
+import NewSchtick from "../schticks/NewSchtick"
 
 import { useMemo } from "react"
 
@@ -21,26 +22,42 @@ function rowMap(array, itemsPerRow) {
 
 export default function Schticks({ schticks, dispatch }: any) {
 
-  const rowsOfSchticks = useMemo(() => (
+  const rowsOfData = useMemo(() => (
     rowMap(schticks)
   ), [schticks])
+
+  // Add the "New Schtick" card to the last entry in the list.
+  // If there's an empty space in the last row, add it there.
+  // If not, add a new row with the New Schtick card.
+  //
+  const outputRows = useMemo(() => {
+    const output = (
+      rowsOfData.map((row: any, index: number) => (
+        <Stack spacing={1} direction="row" key={index}>
+          { row.map((schtick: any) => (
+            <SchtickCard key={schtick?.id} schtick={schtick} />
+          )) }
+          { index == rowsOfData.length-1 && schticks.length % 3 != 0 &&
+          <NewSchtick /> }
+        </Stack>
+      ))
+    )
+    if (schticks.length % 3 === 0) {
+      output.push(
+        <Stack spacing={1} direction="row" key={schticks.length}>
+          <NewSchtick />
+        </Stack>
+      )
+    }
+    return output
+  }, [rowsOfData])
 
   if (!schticks) return (<></>)
 
   return (
     <>
       <Typography variant="h3">Schticks</Typography>
-      { !schticks.length &&
-      <Typography>You have no schticks.</Typography> }
-
-      { !!schticks.length && rowsOfSchticks.map((row: any, index: number) => (
-      <Stack spacing={1} direction="row" key={index}>
-        {
-          !!schticks.length && row.map((schtick: any) => (
-            <SchtickCard key={schtick.id} schtick={schtick} />
-          ))
-        }
-      </Stack>)) }
+      { outputRows }
     </>
   )
 }
