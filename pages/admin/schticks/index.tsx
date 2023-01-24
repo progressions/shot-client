@@ -36,6 +36,14 @@ export async function getServerSideProps<GetServerSideProps>({ req, res }: any) 
       }
     }
   }
+  if (response.status === 500) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/"
+      }
+    }
+  }
   if (response.status === 401) {
     return {
       redirect: {

@@ -72,11 +72,12 @@ export default function Navbar() {
                 Users
               </Link>
             </Typography>
-            <Typography variant="h6" component="div" paddingRight={2}>
-              <Link color="inherit" href='/admin/schticks'>
-                Schticks
-              </Link>
-            </Typography>
+            { campaign?.id &&
+              <Typography variant="h6" component="div" paddingRight={2}>
+                <Link color="inherit" href='/admin/schticks'>
+                  Schticks
+                </Link>
+              </Typography> }
           </>)}
         </>
           }
