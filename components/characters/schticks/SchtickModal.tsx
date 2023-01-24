@@ -2,6 +2,7 @@ import { Autocomplete, Box, Stack, TextField, Button, Dialog } from '@mui/materi
 import { useState, useEffect, useReducer } from "react"
 import { defaultSchtick } from "../../../types/types"
 import { useClient } from "../../../contexts/ClientContext"
+import { useToast } from "../../../contexts/ToastContext"
 
 const initialState = {
   loading: false,
@@ -21,10 +22,12 @@ function schtickReducer(state: any, action: any) {
 }
 
 export default function SchtickModal({ open, setOpen, characterState, dispatchCharacter }) {
+  const { toastSuccess, toastError } = useToast()
   const { user, client } = useClient()
   const [state, dispatch] = useReducer(schtickReducer, { ...initialState })
   const [schticks, setSchticks] = useState([])
   const { loading, saving, schtick } = state
+  const { character } = characterState
 
   async function getSchticks() {
     const response = await client.getSchticks()
@@ -39,6 +42,14 @@ export default function SchtickModal({ open, setOpen, characterState, dispatchCh
   }
 
   async function handleSubmit(event: any) {
+    const response = await client.addSchtick(schtick, character)
+    if (response.status === 200) {
+      const data = await response.json()
+      dispatchCharacter({ type: "replace", character: data })
+      toastSuccess("Character updated.")
+    } else {
+      toastError()
+    }
     cancelForm()
   }
 

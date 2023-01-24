@@ -245,6 +245,16 @@ class Client {
     return await this.delete(this.api.schticks(schtick))
   }
 
+  async addSchtick(schtick: Schtick | ID, character: Character | ID):Promise<Response> {
+    return await this.post(this.api.schticks(null, character), {
+      "schtick": schtick
+    })
+  }
+
+  async removeSchtick(schtick: Schtick | ID, character: Character | ID):Promise<Response> {
+    return await this.delete(this.api.schticks(schtick, character))
+  }
+
   async patch(url:string, body:any, options?:any):Promise<Response> {
     return await this.request("PATCH", url, body, options)
   }

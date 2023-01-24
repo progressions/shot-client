@@ -131,7 +131,7 @@ export default function EditCharacter({ character:initialCharacter }: any) {
             </Stack>
           </PlayerTypeOnly>
           <Description description={description} onChange={handleDescriptionChange} />
-          <Schticks schticks={schticks} dispatch={dispatch} />
+          <Schticks schticks={schticks} state={state} dispatch={dispatch} />
           <Stack spacing={2} direction="row">
             <Button variant="outlined" color="secondary" disabled={saving || !edited} onClick={cancelForm}>Cancel</Button>
             <Button variant="contained" color="primary" type="submit" disabled={saving || !edited}>Save Changes</Button>

@@ -4,7 +4,7 @@ import SchtickModal from "./SchtickModal"
 
 import { useState } from "react"
 
-export default function NewSchtick({ dispatchCharacter }) {
+export default function NewSchtick({ characterState, dispatchCharacter }) {
   const [open, setOpen] = useState(false)
 
   return (
@@ -26,7 +26,7 @@ export default function NewSchtick({ dispatchCharacter }) {
           New Schtick
         </Button>
       </SchtickCardBase>
-      <SchtickModal open={open} setOpen={setOpen} dispatchCharacter={dispatchCharacter} />
+      <SchtickModal open={open} setOpen={setOpen} characterState={characterState} dispatchCharacter={dispatchCharacter} />
     </>
   )
 }
