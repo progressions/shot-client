@@ -245,8 +245,8 @@ class Client {
     return await this.delete(this.api.schticks(schtick))
   }
 
-  async addSchtick(schtick: Schtick | ID, character: Character | ID):Promise<Response> {
-    return await this.post(this.api.schticks(null, character), {
+  async addSchtick(character: Character | ID, schtick: Schtick):Promise<Response> {
+    return await this.post(this.api.characterSchticks(character), {
       "schtick": schtick
     })
   }

@@ -139,12 +139,16 @@ class Api {
     return `${this.api()}/factions`
   }
 
-  schticks(schtick?: Schtick | ID, character?: Character | ID): string {
-    if (schtick?.id && character?.id) {
+  characterSchticks(character: Character | ID, schtick?: Schtick): string {
+    if (schtick?.id) {
       return `${this.allCharacters(character)}/schticks/${schtick.id}`
-    } else if (character?.id) {
-      return `${this.allCharacters(character)}/schticks/`
-    } else if (schtick?.id) {
+    } else {
+      return `${this.allCharacters(character)}/schticks`
+    }
+  }
+
+  schticks(schtick?: Schtick | ID): string {
+    if (schtick?.id) {
       return `${this.api()}/schticks/${schtick.id}`
     } else {
       return `${this.api()}/schticks`

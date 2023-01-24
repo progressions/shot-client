@@ -3,6 +3,7 @@ import { useState, useEffect, useReducer } from "react"
 import { defaultSchtick } from "../../../types/types"
 import { useClient } from "../../../contexts/ClientContext"
 import { useToast } from "../../../contexts/ToastContext"
+import { useCharacter } from "../../../contexts/CharacterContext"
 
 const initialState = {
   loading: false,
@@ -21,13 +22,16 @@ function schtickReducer(state: any, action: any) {
   }
 }
 
-export default function SchtickModal({ open, setOpen, characterState, dispatchCharacter }) {
+export default function SchtickModal({ open, setOpen }) {
   const { toastSuccess, toastError } = useToast()
   const { user, client } = useClient()
   const [state, dispatch] = useReducer(schtickReducer, { ...initialState })
   const [schticks, setSchticks] = useState([])
   const { loading, saving, schtick } = state
+
+  const { state:characterState, dispatch:dispatchCharacter } = useCharacter()
   const { character } = characterState
+  console.log({ character })
 
   async function getSchticks() {
     const response = await client.getSchticks()
@@ -46,7 +50,7 @@ export default function SchtickModal({ open, setOpen, characterState, dispatchCh
   }
 
   async function handleSubmit(event: any) {
-    const response = await client.addSchtick(schtick, character)
+    const response = await client.addSchtick(character, schtick)
     if (response.status === 200) {
       const data = await response.json()
       dispatchCharacter({ type: "replace", character: data })

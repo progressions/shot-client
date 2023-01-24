@@ -25,11 +25,7 @@ export const initialState = {
 const CharacterContext = createContext<CharacterContextParams>({state: {}, dispatch: () => {}})
 
 export function CharacterProvider({ character, children }: any) {
-  const [state, dispatch] = useReducer(characterReducer, initialState)
-
-  useEffect(() => {
-    dispatch({ type: "replace", character: character })
-  }, [])
+  const [state, dispatch] = useReducer(characterReducer, {...initialState, character: character})
 
   return (
     <CharacterContext.Provider value={{state, dispatch}}>
