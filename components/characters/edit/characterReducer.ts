@@ -1,3 +1,11 @@
+import { defaultCharacter } from "../../../types/types"
+
+export const initialState = {
+  edited: false,
+  saving: false,
+  character: defaultCharacter
+}
+
 export const characterReducer = (state: any, action: any) => {
   switch(action.type) {
     case "update":

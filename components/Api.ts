@@ -139,7 +139,7 @@ class Api {
     return `${this.api()}/factions`
   }
 
-  characterSchticks(character: Character | ID, schtick?: Schtick): string {
+  characterSchticks(character: Character | ID, schtick?: Schtick | ID): string {
     if (schtick?.id) {
       return `${this.allCharacters(character)}/schticks/${schtick.id}`
     } else {

@@ -4,7 +4,7 @@ import NewSchtick from "../schticks/NewSchtick"
 
 import { useMemo } from "react"
 
-function rowMap(array, itemsPerRow) {
+function rowMap(array: any[]) {
   const rows = []
   for (let i=0; i <= array.length; i+=3) {
     const row = []
@@ -51,7 +51,7 @@ export default function Schticks({ schticks, state, dispatch }: any) {
       )
     }
     return output
-  }, [rowsOfData])
+  }, [dispatch, schticks.length, state, rowsOfData])
 
   if (!schticks) return (<></>)
 

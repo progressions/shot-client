@@ -289,3 +289,13 @@ export const defaultCharacterEffect:CharacterEffect = {
   severity: "info",
   character_id: ""
 }
+
+export const defaultSchtick:Schtick = {
+  title: "",
+  description: "",
+  campaign_id: "",
+  category: "",
+  path: "",
+  schtick_id: ""
+}
+

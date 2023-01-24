@@ -22,7 +22,7 @@ function schtickReducer(state: any, action: any) {
   }
 }
 
-export default function SchtickModal({ open, setOpen }) {
+export default function SchtickModal({ open, setOpen }: any) {
   const { toastSuccess, toastError } = useToast()
   const { client } = useClient()
   const [state, dispatch] = useReducer(schtickReducer, { ...initialState })
@@ -44,10 +44,6 @@ export default function SchtickModal({ open, setOpen }) {
     }
   }
 
-  function getOptionLabel(option: any) {
-    return option.label || ""
-  }
-
   async function handleSubmit(event: any) {
     const response = await client.addSchtick(character, schtick)
     if (response.status === 200) {
@@ -65,14 +61,13 @@ export default function SchtickModal({ open, setOpen }) {
     setOpen(false)
   }
 
-  function handleSelect(event: any, newValue) {
+  function handleSelect(event: any, newValue: any) {
     dispatch({ type: "replace", schtick: newValue })
   }
 
-  function getOptionLabel(option) {
+  function getOptionLabel(option: any) {
     return option.title
   }
-
 
   return (
     <Dialog
@@ -96,7 +91,7 @@ export default function SchtickModal({ open, setOpen }) {
             renderInput={(params) => <TextField autoFocus name="Schtick" {...params} label="Schtick" />}
           />
         </Stack>
-        <TextField name="title" label="Title" value={schtick?.title || ""} readOnly />
+        <TextField name="title" label="Title" value={schtick?.title || ""} InputProps={{readOnly: true}} />
         <Stack alignItems="flex-end" spacing={2} direction="row">
           <Button variant="outlined" color="secondary" disabled={saving} onClick={cancelForm}>Cancel</Button>
           <Button variant="contained" color="primary" onClick={handleSubmit} disabled={saving}>Save</Button>

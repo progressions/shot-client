@@ -11,7 +11,7 @@ export default function SchtickCard({ schtick }: any) {
   const { state, dispatch } = useCharacter()
   const { character } = state
 
-  async function reloadCharacter(char) {
+  async function reloadCharacter(char: any) {
     const response = await client.getCharacter(char)
     if (response.status === 200) {
       const data = await response.json()
