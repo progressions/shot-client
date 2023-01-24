@@ -29,7 +29,7 @@ function schtickReducer(state: any, action: any) {
   }
 }
 
-export default function CreateSchtick({ open, setOpen, setSchticks }) {
+export default function CreateSchtick({ open, setOpen, setSchticks }: any) {
   const { toastSuccess, toastError } = useToast()
   const { client } = useClient()
   const [state, dispatch] = useReducer(schtickReducer, initialState)

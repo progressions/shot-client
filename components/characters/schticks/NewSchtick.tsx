@@ -6,7 +6,7 @@ import { useCharacter } from "../../../contexts/CharacterContext"
 
 import { useState } from "react"
 
-export default function NewSchtick({ setSchticks }) {
+export default function NewSchtick({ setSchticks }: any) {
   const [open, setOpen] = useState(false)
   const { state } = useCharacter()
   const contextPresent = (!!state.character)

@@ -63,7 +63,7 @@ export default function Schticks({ schticks: initialSchticks, state, dispatch }:
       )
     }
     return output
-  }, [dispatch, schticks.length, state, rowsOfData])
+  }, [schticks.length, rowsOfData])
 
   if (!schticks) return (<></>)
 
