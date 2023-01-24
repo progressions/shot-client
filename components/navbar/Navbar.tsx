@@ -66,15 +66,16 @@ export default function Navbar() {
               Campaigns
             </Link>
           </Typography>
+          { user?.gamemaster && campaign?.id &&
+            <Typography variant="h6" component="div" paddingRight={2}>
+              <Link color="inherit" href='/admin/schticks'>
+                Schticks
+              </Link>
+            </Typography> }
           { user?.admin && (<>
             <Typography variant="h6" component="div" paddingRight={2}>
               <Link color="inherit" href='/admin/users'>
                 Users
-              </Link>
-            </Typography>
-            <Typography variant="h6" component="div" paddingRight={2}>
-              <Link color="inherit" href='/admin/schticks'>
-                Schticks
               </Link>
             </Typography>
           </>)}

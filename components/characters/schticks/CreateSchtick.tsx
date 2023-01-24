@@ -29,16 +29,25 @@ function schtickReducer(state: any, action: any) {
   }
 }
 
-export default function CreateSchtick({ open, setOpen }) {
+export default function CreateSchtick({ open, setOpen, setSchticks }: any) {
   const { toastSuccess, toastError } = useToast()
   const { client } = useClient()
   const [state, dispatch] = useReducer(schtickReducer, initialState)
   const { saving, schtick } = state
 
+  async function reloadSchticks() {
+    const response = await client.getSchticks()
+    if (response.status === 200) {
+      const data = await response.json()
+      console.log("SCHTICKS", data)
+      setSchticks(data)
+    }
+  }
+
   async function handleSubmit(event: any) {
     const response = await client.createSchtick(schtick)
     if (response.status === 200) {
-      const data = await response.json()
+      await reloadSchticks()
       toastSuccess("Schtick updated.")
     } else {
       toastError()
