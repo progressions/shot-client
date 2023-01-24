@@ -6,7 +6,7 @@ import { useCharacter } from "../../../contexts/CharacterContext"
 
 import { useState } from "react"
 
-export default function NewSchtick() {
+export default function NewSchtick({ setSchticks }) {
   const [open, setOpen] = useState(false)
   const { state } = useCharacter()
   const contextPresent = (!!state.character)
@@ -31,7 +31,7 @@ export default function NewSchtick() {
         </Button>
       </SchtickCardBase>
       { contextPresent && <SchtickModal open={open} setOpen={setOpen} /> }
-      { !contextPresent && <CreateSchtick open={open} setOpen={setOpen} /> }
+      { !contextPresent && <CreateSchtick open={open} setOpen={setOpen} setSchticks={setSchticks} /> }
     </>
   )
 }

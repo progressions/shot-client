@@ -5,11 +5,13 @@ import { useClient } from "../../../contexts/ClientContext"
 import { useToast } from "../../../contexts/ToastContext"
 import { useCharacter } from "../../../contexts/CharacterContext"
 
-export default function SchtickCard({ schtick }: any) {
+export default function SchtickCard({ schtick, setSchticks }: any) {
   const { toastSuccess, toastError } = useToast()
-  const { client } = useClient()
+  const { user, client } = useClient()
   const { state, dispatch } = useCharacter()
   const { character } = state
+
+  console.log("card", { user })
 
   async function reloadCharacter(char: any) {
     const response = await client.getCharacter(char)
@@ -18,6 +20,15 @@ export default function SchtickCard({ schtick }: any) {
       dispatch({ type: "replace", character: data })
     } else {
       toastError()
+    }
+  }
+
+  async function reloadSchticks() {
+    const response = await client.getSchticks()
+    if (response.status === 200) {
+      const data = await response.json()
+      console.log("SCHTICKS", data)
+      setSchticks(data)
     }
   }
 
@@ -31,6 +42,18 @@ export default function SchtickCard({ schtick }: any) {
     }
   }
 
+  async function deleteSchtick() {
+    const response = await client.deleteSchtick(schtick)
+    if (response.status === 200) {
+      await reloadSchticks()
+      toastSuccess("Schtick deleted.")
+    } else {
+      toastError()
+    }
+  }
+
+  const deleteFunction = (typeof character === "undefined") ? deleteSchtick : removeSchtick
+
   if (!schtick) return <></>
   // Include an icon for the schtick's category
   //
@@ -38,7 +61,7 @@ export default function SchtickCard({ schtick }: any) {
   const avatar = <Avatar sx={{bgcolor: schtick.color || 'secondary'}} variant="rounded">{schtick.category[0]}</Avatar>
   const deleteButton = (
     <Tooltip title="Delete">
-      <IconButton onClick={removeSchtick}>
+      <IconButton onClick={deleteFunction}>
         <DeleteIcon sx={{color: "text.primary"}} />
       </IconButton>
     </Tooltip>
