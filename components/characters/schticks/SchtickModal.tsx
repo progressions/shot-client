@@ -24,14 +24,13 @@ function schtickReducer(state: any, action: any) {
 
 export default function SchtickModal({ open, setOpen }) {
   const { toastSuccess, toastError } = useToast()
-  const { user, client } = useClient()
+  const { client } = useClient()
   const [state, dispatch] = useReducer(schtickReducer, { ...initialState })
   const [schticks, setSchticks] = useState([])
   const { loading, saving, schtick } = state
 
   const { state:characterState, dispatch:dispatchCharacter } = useCharacter()
   const { character } = characterState
-  console.log({ character })
 
   async function getSchticks() {
     const response = await client.getSchticks()

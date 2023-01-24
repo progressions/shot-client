@@ -37,6 +37,7 @@ class Client {
   }
 
   async getCharacter(character: Character | ID):Promise<Response> {
+    console.log("getCharacter", { character })
     return await this.get(this.api.characters(null, character))
   }
 
@@ -251,8 +252,8 @@ class Client {
     })
   }
 
-  async removeSchtick(schtick: Schtick | ID, character: Character | ID):Promise<Response> {
-    return await this.delete(this.api.schticks(schtick, character))
+  async removeSchtick(character: Character | ID, schtick: Schtick | ID):Promise<Response> {
+    return await this.delete(this.api.characterSchticks(character, schtick))
   }
 
   async patch(url:string, body:any, options?:any):Promise<Response> {
