@@ -18,6 +18,8 @@ import PeopleIcon from '@mui/icons-material/People'
 import PlayerTypeOnly from "../../PlayerTypeOnly"
 import DeathMarks from "../DeathMarks"
 
+import { characterReducer } from "./characterReducer"
+
 export default function EditCharacter({ character:initialCharacter }: any) {
   const { client } = useClient()
   const { toastError, toastSuccess } = useToast()
@@ -26,64 +28,6 @@ export default function EditCharacter({ character:initialCharacter }: any) {
     saving: false,
     character: initialCharacter
   }), [initialCharacter])
-
-  const characterReducer = useCallback((state: any, action: any) => {
-    switch(action.type) {
-      case "update":
-        return {
-          ...state,
-          edited: true,
-          character: {
-            ...state.character,
-            [action.name]: action.value
-          }
-        }
-      case "action_value":
-        return {
-          ...state,
-          edited: true,
-          character: {
-            ...state.character,
-            action_values: {
-              ...state.character.action_values,
-              [action.name]: action.value
-            }
-          }
-        }
-      case "description":
-        return {
-          ...state,
-          edited: true,
-          character: {
-            ...state.character,
-            description: {
-              ...state.character.description,
-              [action.name]: action.value
-            }
-          }
-        }
-      case "submit":
-        return {
-          ...state,
-          edited: false,
-          saving: true,
-        }
-      case "replace":
-        return {
-          ...state,
-          saving: false,
-          edited: false,
-          character: action.character
-        }
-      case "reset":
-        return {
-          ...state,
-          saving: false
-        }
-      default:
-        return initialState
-    }
-  }, [initialState])
 
   const [state, dispatch] = useReducer(characterReducer, initialState)
   const { edited, saving, character } = state
@@ -150,8 +94,6 @@ export default function EditCharacter({ character:initialCharacter }: any) {
     )
   }
 
-  console.log({ character })
-
   return (
     <>
       <Box component="form" onSubmit={handleSubmit}>
@@ -183,9 +125,11 @@ export default function EditCharacter({ character:initialCharacter }: any) {
           </Stack>
           <Typography variant="h6">Action Values</Typography>
           <EditActionValues character={character} onChange={handleAVChange as React.ChangeEventHandler} />
-          <Stack direction="row" spacing={2}>
-            <FortuneSelect character={character} onChange={handleAVChange as React.ChangeEventHandler} />
-          </Stack>
+          <PlayerTypeOnly character={character} only="PC">
+            <Stack direction="row" spacing={2}>
+              <FortuneSelect character={character} onChange={handleAVChange as React.ChangeEventHandler} />
+            </Stack>
+          </PlayerTypeOnly>
           <Description description={description} onChange={handleDescriptionChange} />
           <Schticks schticks={schticks} dispatch={dispatch} />
           <Stack spacing={2} direction="row">
