@@ -37,7 +37,6 @@ class Client {
   }
 
   async getCharacter(character: Character | ID):Promise<Response> {
-    console.log("getCharacter", { character })
     return await this.get(this.api.characters(null, character))
   }
 

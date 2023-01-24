@@ -34,9 +34,9 @@ export default function Schticks({ schticks, state, dispatch }: any) {
     const newSchtick = <NewSchtick characterState={state} dispatchCharacter={dispatch} />
     const output = (
       rowsOfData.map((row: any, index: number) => (
-        <Stack spacing={1} direction="row" key={index}>
+        <Stack spacing={1} direction="row" key={`row_${index}`}>
           { row.map((schtick: any) => (
-            <SchtickCard key={schtick?.id} schtick={schtick} />
+            <SchtickCard key={`schtick_${schtick?.id}`} schtick={schtick} />
           )) }
           { index == rowsOfData.length-1 && schticks.length % 3 != 0 &&
             newSchtick }
@@ -45,7 +45,7 @@ export default function Schticks({ schticks, state, dispatch }: any) {
     )
     if (schticks.length % 3 === 0) {
       output.push(
-        <Stack spacing={1} direction="row" key={schticks.length}>
+        <Stack spacing={1} direction="row" key="new_schtick">
           { newSchtick }
         </Stack>
       )
