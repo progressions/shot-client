@@ -1,5 +1,5 @@
 import Api from "./Api"
-import type { CharacterEffect, Invitation, Campaign, Effect, Vehicle, Character, ID, Fight, User } from "../types/types"
+import type { Schtick, CharacterEffect, Invitation, Campaign, Effect, Vehicle, Character, ID, Fight, User } from "../types/types"
 
 interface ClientParams {
   jwt?: string
@@ -219,6 +219,40 @@ class Client {
 
   async getFactions():Promise<Response> {
     return await this.get(this.api.factions())
+  }
+
+  async getSchticks():Promise<Response> {
+    return await this.get(this.api.schticks())
+  }
+
+  async getSchtick(schtick: Schtick | ID):Promise<Response> {
+    return await this.get(this.api.schticks(schtick))
+  }
+
+  async createSchtick(schtick: Schtick):Promise<Response> {
+    return await this.post(this.api.schticks(), {
+      "schtick": schtick
+    })
+  }
+
+  async updateSchtick(schtick: Schtick):Promise<Response> {
+    return await this.patch(this.api.schticks(schtick), {
+      "schtick": schtick
+    })
+  }
+
+  async deleteSchtick(schtick: Schtick):Promise<Response> {
+    return await this.delete(this.api.schticks(schtick))
+  }
+
+  async addSchtick(character: Character | ID, schtick: Schtick):Promise<Response> {
+    return await this.post(this.api.characterSchticks(character), {
+      "schtick": schtick
+    })
+  }
+
+  async removeSchtick(character: Character | ID, schtick: Schtick | ID):Promise<Response> {
+    return await this.delete(this.api.characterSchticks(character, schtick))
   }
 
   async patch(url:string, body:any, options?:any):Promise<Response> {

@@ -1,4 +1,4 @@
-import type { CharacterEffect, Invitation, Campaign, Vehicle, Effect, Fight, Character, User, ID } from "../types/types"
+import type { Schtick, CharacterEffect, Invitation, Campaign, Vehicle, Effect, Fight, Character, User, ID } from "../types/types"
 
 class Api {
   base():string { return process.env.NEXT_PUBLIC_SERVER_URL as string }
@@ -137,6 +137,22 @@ class Api {
 
   factions(): string {
     return `${this.api()}/factions`
+  }
+
+  characterSchticks(character: Character | ID, schtick?: Schtick | ID): string {
+    if (schtick?.id) {
+      return `${this.allCharacters(character)}/schticks/${schtick.id}`
+    } else {
+      return `${this.allCharacters(character)}/schticks`
+    }
+  }
+
+  schticks(schtick?: Schtick | ID): string {
+    if (schtick?.id) {
+      return `${this.api()}/schticks/${schtick.id}`
+    } else {
+      return `${this.api()}/schticks`
+    }
   }
 
 }

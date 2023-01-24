@@ -1,5 +1,6 @@
 import { useClient } from "../../../contexts/ClientContext"
 import { useToast } from "../../../contexts/ToastContext"
+import { useCharacter } from "../../../contexts/CharacterContext"
 
 import ColorPicker from "./ColorPicker"
 import EditActionValues from "./EditActionValues"
@@ -7,8 +8,9 @@ import CharacterType from "./CharacterType"
 import FortuneSelect from "./FortuneSelect"
 import Description from "./Description"
 import Faction from "./Faction"
+import Schticks from "./Schticks"
 
-import { useMemo, useReducer, useCallback } from "react"
+import { useEffect } from "react"
 
 import { Typography, Box, Stack, TextField, FormControlLabel, Switch, Button, InputAdornment } from "@mui/material"
 import FavoriteIcon from '@mui/icons-material/Favorite'
@@ -20,73 +22,10 @@ import DeathMarks from "../DeathMarks"
 export default function EditCharacter({ character:initialCharacter }: any) {
   const { client } = useClient()
   const { toastError, toastSuccess } = useToast()
-  const initialState = useMemo(() => ({
-    edited: false,
-    saving: false,
-    character: initialCharacter
-  }), [initialCharacter])
+  const { state, dispatch } = useCharacter()
 
-  const characterReducer = useCallback((state: any, action: any) => {
-    switch(action.type) {
-      case "update":
-        return {
-          ...state,
-          edited: true,
-          character: {
-            ...state.character,
-            [action.name]: action.value
-          }
-        }
-      case "action_value":
-        return {
-          ...state,
-          edited: true,
-          character: {
-            ...state.character,
-            action_values: {
-              ...state.character.action_values,
-              [action.name]: action.value
-            }
-          }
-        }
-      case "description":
-        return {
-          ...state,
-          edited: true,
-          character: {
-            ...state.character,
-            description: {
-              ...state.character.description,
-              [action.name]: action.value
-            }
-          }
-        }
-      case "submit":
-        return {
-          ...state,
-          edited: false,
-          saving: true,
-        }
-      case "replace":
-        return {
-          ...state,
-          saving: false,
-          edited: false,
-          character: action.character
-        }
-      case "reset":
-        return {
-          ...state,
-          saving: false
-        }
-      default:
-        return initialState
-    }
-  }, [initialState])
-
-  const [state, dispatch] = useReducer(characterReducer, initialState)
   const { edited, saving, character } = state
-  const { description, action_values } = character
+  const { schticks, description, action_values } = character
 
   async function handleSubmit(event: any) {
     event.preventDefault()
@@ -180,10 +119,13 @@ export default function EditCharacter({ character:initialCharacter }: any) {
           </Stack>
           <Typography variant="h6">Action Values</Typography>
           <EditActionValues character={character} onChange={handleAVChange as React.ChangeEventHandler} />
-          <Stack direction="row" spacing={2}>
-            <FortuneSelect character={character} onChange={handleAVChange as React.ChangeEventHandler} />
-          </Stack>
+          <PlayerTypeOnly character={character} only="PC">
+            <Stack direction="row" spacing={2}>
+              <FortuneSelect character={character} onChange={handleAVChange as React.ChangeEventHandler} />
+            </Stack>
+          </PlayerTypeOnly>
           <Description description={description} onChange={handleDescriptionChange} />
+          <Schticks schticks={schticks} state={state} dispatch={dispatch} />
           <Stack spacing={2} direction="row">
             <Button variant="outlined" color="secondary" disabled={saving || !edited} onClick={cancelForm}>Cancel</Button>
             <Button variant="contained" color="primary" type="submit" disabled={saving || !edited}>Save Changes</Button>
