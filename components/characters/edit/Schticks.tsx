@@ -38,14 +38,14 @@ export default function Schticks({ schticks, dispatch }: any) {
             <SchtickCard key={schtick?.id} schtick={schtick} />
           )) }
           { index == rowsOfData.length-1 && schticks.length % 3 != 0 &&
-          <NewSchtick /> }
+          <NewSchtick dispatchCharacter={dispatch} /> }
         </Stack>
       ))
     )
     if (schticks.length % 3 === 0) {
       output.push(
         <Stack spacing={1} direction="row" key={schticks.length}>
-          <NewSchtick />
+          <NewSchtick dispatchCharacter={dispatch} />
         </Stack>
       )
     }

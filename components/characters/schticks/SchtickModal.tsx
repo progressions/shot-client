@@ -11,6 +11,8 @@ const initialState = {
 
 function schtickReducer(state: any, action: any) {
   switch(action.type) {
+    case "replace":
+      return { ...state, schtick: action.schtick }
     case "reset":
       return initialState
     default:
@@ -18,7 +20,7 @@ function schtickReducer(state: any, action: any) {
   }
 }
 
-export default function SchtickModal({ open, setOpen }) {
+export default function SchtickModal({ open, setOpen, characterState, dispatchCharacter }) {
   const { user, client } = useClient()
   const [state, dispatch] = useReducer(schtickReducer, { ...initialState })
   const [schticks, setSchticks] = useState([])
@@ -37,6 +39,7 @@ export default function SchtickModal({ open, setOpen }) {
   }
 
   async function handleSubmit(event: any) {
+    cancelForm()
   }
 
   function cancelForm() {
@@ -44,12 +47,14 @@ export default function SchtickModal({ open, setOpen }) {
     setOpen(false)
   }
 
-  function handleChange(event: any) {
+  function handleSelect(event: any, newValue) {
+    dispatch({ type: "replace", schtick: newValue })
   }
 
   function getOptionLabel(option) {
     return option.title
   }
+
 
   return (
     <Dialog
@@ -59,25 +64,26 @@ export default function SchtickModal({ open, setOpen }) {
       aria-describedby="modal-modal-description"
       disableRestoreFocus
     >
-      <Box component="form" onSubmit={handleSubmit} sx={{width: 500}}>
-        <Stack p={4} spacing={2}>
+      <Stack p={4} spacing={2}>
+        <Stack direction="row" spacing={2}>
           <Autocomplete
             disabled={loading}
             options={schticks}
             sx={{ width: 300 }}
-            value={schtick?.id}
-            onChange={handleChange}
+            onChange={handleSelect}
             onOpen={getSchticks}
             openOnFocus
             getOptionLabel={getOptionLabel}
-            renderInput={(params) => <TextField autoFocus name="Faction" {...params} label="Faction" />}
+            isOptionEqualToValue={(option, value) => option?.id === value?.id}
+            renderInput={(params) => <TextField autoFocus name="Schtick" {...params} label="Schtick" />}
           />
-          <Stack alignItems="flex-end" spacing={2} direction="row">
-            <Button variant="outlined" disabled={saving} onClick={cancelForm}>Cancel</Button>
-            <Button variant="contained" type="submit" disabled={saving}>Save Changes</Button>
-          </Stack>
         </Stack>
-      </Box>
+        <TextField name="title" label="Title" value={schtick?.title || ""} readOnly />
+        <Stack alignItems="flex-end" spacing={2} direction="row">
+          <Button variant="outlined" color="secondary" disabled={saving} onClick={cancelForm}>Cancel</Button>
+          <Button variant="contained" color="primary" onClick={handleSubmit} disabled={saving}>Save</Button>
+        </Stack>
+      </Stack>
     </Dialog>
   )
 }
