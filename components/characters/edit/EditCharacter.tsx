@@ -1,5 +1,6 @@
 import { useClient } from "../../../contexts/ClientContext"
 import { useToast } from "../../../contexts/ToastContext"
+import { useCharacter } from "../../../contexts/CharacterContext"
 
 import ColorPicker from "./ColorPicker"
 import EditActionValues from "./EditActionValues"
@@ -9,7 +10,7 @@ import Description from "./Description"
 import Faction from "./Faction"
 import Schticks from "./Schticks"
 
-import { useMemo, useReducer, useCallback } from "react"
+import { useEffect } from "react"
 
 import { Typography, Box, Stack, TextField, FormControlLabel, Switch, Button, InputAdornment } from "@mui/material"
 import FavoriteIcon from '@mui/icons-material/Favorite'
@@ -18,18 +19,11 @@ import PeopleIcon from '@mui/icons-material/People'
 import PlayerTypeOnly from "../../PlayerTypeOnly"
 import DeathMarks from "../DeathMarks"
 
-import { characterReducer } from "./characterReducer"
-
 export default function EditCharacter({ character:initialCharacter }: any) {
   const { client } = useClient()
   const { toastError, toastSuccess } = useToast()
-  const initialState = useMemo(() => ({
-    edited: false,
-    saving: false,
-    character: initialCharacter
-  }), [initialCharacter])
+  const { state, dispatch } = useCharacter()
 
-  const [state, dispatch] = useReducer(characterReducer, initialState)
   const { edited, saving, character } = state
   const { schticks, description, action_values } = character
 
