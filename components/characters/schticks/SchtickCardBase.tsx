@@ -2,7 +2,7 @@ import { colors, Card, CardHeader, CardContent, CardActions, Typography } from "
 
 export default function SchtickCardBase({ title, subheader, avatar, action, children }: any) {
   return (
-    <Card sx={{backgroundColor: colors.blueGrey["A700"], width: 275, minHeight: 200}}>
+    <Card sx={{backgroundColor: colors.blueGrey["A700"], width: 425, minHeight: 200}}>
       <CardHeader
         title={title}
         subheader={subheader}

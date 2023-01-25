@@ -8,14 +8,11 @@ import { useState, useMemo } from "react"
 
 function rowMap(array: any[]) {
   const rows = []
-  for (let i=0; i <= array.length; i+=3) {
+  for (let i=0; i <= array.length; i+=2) {
     const row = []
     row.push(array[i])
     if (i+1 < array.length) {
       row.push(array[i+1])
-    }
-    if (i+2 < array.length) {
-      row.push(array[i+2])
     }
     rows.push(row)
   }

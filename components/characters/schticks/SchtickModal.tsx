@@ -33,9 +33,9 @@ export default function SchtickModal({ open, setOpen }: any) {
   const { character } = characterState
 
   async function getSchticks() {
-    const response = await client.getSchticks()
+    const response = await client.getSchticks({ character_id: character.id})
     if (response.status === 200) {
-      const data = await response.json()
+      const { schticks:data } = await response.json()
       const ids = character.schticks.map((s: any) => (s.id))
       const availableSchticks = data.filter((s: any) => {
         return !ids?.includes(s.id)
