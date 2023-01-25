@@ -1,6 +1,7 @@
 import { Box, Stack, Typography } from "@mui/material"
 import SchtickCard from "../schticks/SchtickCard"
 import NewSchtick from "../schticks/NewSchtick"
+import CreateSchtickButton from "../schticks/CreateSchtickButton"
 import { useClient } from "../../../contexts/ClientContext"
 
 import { useState, useMemo } from "react"
@@ -21,7 +22,7 @@ function rowMap(array: any[]) {
   return rows
 }
 
-export default function Schticks({ schticks }: any) {
+export default function Schticks({ schticks, setSchticks, noNewCard }: any) {
   const { user, client } = useClient()
 
   const rowsOfData = useMemo(() => (
@@ -38,14 +39,14 @@ export default function Schticks({ schticks }: any) {
       rowsOfData.map((row: any, index: number) => (
         <Stack spacing={1} direction="row" key={`row_${index}`}>
           { row.map((schtick: any) => (
-            <SchtickCard key={`schtick_${schtick?.id}`} schtick={schtick} />
+            <SchtickCard key={`schtick_${schtick?.id}`} schtick={schtick} setSchticks={setSchticks} />
           )) }
-          { index == rowsOfData.length-1 && schticks.length % 3 != 0 &&
+          { !noNewCard && index == rowsOfData.length-1 && schticks.length % 3 != 0 &&
             newSchtick }
         </Stack>
       ))
     )
-    if (schticks.length % 3 === 0) {
+    if (!noNewCard && schticks.length % 3 === 0) {
       output.push(
         <Stack spacing={1} direction="row" key="new_schtick">
           { newSchtick }
@@ -61,6 +62,7 @@ export default function Schticks({ schticks }: any) {
     <>
       <Typography variant="h3">Schticks</Typography>
       <Stack spacing={1}>
+        { noNewCard && <CreateSchtickButton setSchticks={setSchticks} /> }
         { outputRows }
       </Stack>
     </>

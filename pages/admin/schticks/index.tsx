@@ -1,7 +1,7 @@
 import Layout from '../../../components/Layout'
 import Head from 'next/head'
 
-import { useCallback, useMemo, useEffect, useState } from "react"
+import { useState } from "react"
 import { Box, Paper, IconButton, Button, Stack, Link, Container, Typography, TableContainer, Table, TableHead, TableBody, TableRow, TableCell } from "@mui/material"
 import { useClient } from "../../../contexts/ClientContext"
 import { useCampaign } from "../../../contexts/CampaignContext"
@@ -61,7 +61,9 @@ export async function getServerSideProps<GetServerSideProps>({ req, res }: any) 
   }
 }
 
-export default function CampaignsIndex({ schticks }: any) {
+export default function CampaignsIndex({ schticks:initialSchticks }: any) {
+  const [schticks, setSchticks] = useState(initialSchticks)
+
   return (
     <>
       <Head>
@@ -74,7 +76,7 @@ export default function CampaignsIndex({ schticks }: any) {
         <Layout>
           <Container maxWidth="md">
             <Typography variant="h1" gutterBottom>Schticks</Typography>
-            <Schticks schticks={schticks} />
+            <Schticks schticks={schticks} setSchticks={setSchticks} noNewCard />
           </Container>
         </Layout>
       </main>
