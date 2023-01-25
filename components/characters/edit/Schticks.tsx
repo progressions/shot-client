@@ -60,9 +60,7 @@ export default function Schticks({ schticks, setSchticks, noNewCard }: any) {
 
   return (
     <>
-      <Typography variant="h3">Schticks</Typography>
       <Stack spacing={1}>
-        { noNewCard && <CreateSchtickButton setSchticks={setSchticks} /> }
         { outputRows }
       </Stack>
     </>

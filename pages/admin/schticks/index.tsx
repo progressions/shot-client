@@ -11,6 +11,7 @@ import ButtonBar from "../../../components/ButtonBar"
 import CreateCampaign from "../../../components/campaigns/CreateCampaign"
 import Campaigns from "../../../components/campaigns/Campaigns"
 import GamemasterOnly from "../../../components/GamemasterOnly"
+import CreateSchtickButton from "../../../components/characters/schticks/CreateSchtickButton"
 
 import { authOptions } from '../../api/auth/[...nextauth]'
 import { unstable_getServerSession } from "next-auth/next"
@@ -76,6 +77,9 @@ export default function CampaignsIndex({ schticks:initialSchticks }: any) {
         <Layout>
           <Container maxWidth="md">
             <Typography variant="h1" gutterBottom>Schticks</Typography>
+            <ButtonBar>
+              <CreateSchtickButton setSchticks={setSchticks} />
+            </ButtonBar>
             <Schticks schticks={schticks} setSchticks={setSchticks} noNewCard />
           </Container>
         </Layout>
