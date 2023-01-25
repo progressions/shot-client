@@ -12,6 +12,7 @@ import CreateCampaign from "../../../components/campaigns/CreateCampaign"
 import Campaigns from "../../../components/campaigns/Campaigns"
 import GamemasterOnly from "../../../components/GamemasterOnly"
 import CreateSchtickButton from "../../../components/characters/schticks/CreateSchtickButton"
+import FilterSchticks from "../../../components/characters/schticks/FilterSchticks"
 
 import { authOptions } from '../../api/auth/[...nextauth]'
 import { unstable_getServerSession } from "next-auth/next"
@@ -30,10 +31,12 @@ export async function getServerSideProps<GetServerSideProps>({ req, res }: any) 
   const response = await client.getSchticks()
 
   if (response.status === 200) {
-    const schticks = await response.json()
+    const { schticks, meta, paths } = await response.json()
     return {
       props: {
-        schticks: schticks
+        schticks: schticks,
+        meta: meta,
+        paths: paths
       }
     }
   }
@@ -62,8 +65,9 @@ export async function getServerSideProps<GetServerSideProps>({ req, res }: any) 
   }
 }
 
-export default function CampaignsIndex({ schticks:initialSchticks }: any) {
-  const [schticks, setSchticks] = useState(initialSchticks)
+export default function CampaignsIndex(initialState: any) {
+  const [state, setState] = useState(initialState)
+  const { schticks } = state
 
   return (
     <>
@@ -78,9 +82,10 @@ export default function CampaignsIndex({ schticks:initialSchticks }: any) {
           <Container maxWidth="md">
             <Typography variant="h1" gutterBottom>Schticks</Typography>
             <ButtonBar>
-              <CreateSchtickButton setSchticks={setSchticks} />
+              <FilterSchticks state={state} setState={setState} />
+              <CreateSchtickButton setSchticks={setState} />
             </ButtonBar>
-            <Schticks schticks={schticks} setSchticks={setSchticks} noNewCard />
+            <Schticks schticks={schticks} setSchticks={setState} noNewCard />
           </Container>
         </Layout>
       </main>

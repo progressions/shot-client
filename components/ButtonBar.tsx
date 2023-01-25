@@ -1,4 +1,4 @@
-import { Box, Paper } from "@mui/material"
+import { Stack, Box, Paper } from "@mui/material"
 
 interface ButtonBarProps {
   sx?: any
@@ -7,7 +7,9 @@ interface ButtonBarProps {
 export default function ButtonBar({ children, sx }: any) {
   return (
     <Box component={Paper} p={1} mb={1} sx={sx}>
-      { children }
+      <Stack direction="row" spacing={2} alignItems="center">
+        { children }
+      </Stack>
     </Box>
   )
 }

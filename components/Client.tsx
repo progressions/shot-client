@@ -221,8 +221,9 @@ class Client {
     return await this.get(this.api.factions())
   }
 
-  async getSchticks():Promise<Response> {
-    return await this.get(this.api.schticks())
+  async getSchticks({ category="", path="", title="" }={}):Promise<Response> {
+    const query = `category=${category}&path=${path}&title=${title}`
+    return await this.get(`${this.api.schticks()}?${query}`)
   }
 
   async getSchtick(schtick: Schtick | ID):Promise<Response> {

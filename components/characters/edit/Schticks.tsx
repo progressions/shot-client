@@ -27,7 +27,7 @@ export default function Schticks({ schticks, setSchticks, noNewCard }: any) {
 
   const rowsOfData = useMemo(() => (
     rowMap(schticks)
-  ), [schticks, noNewCard, setSchticks])
+  ), [schticks])
 
   // Add the "New Schtick" card to the last entry in the list.
   // If there's an empty space in the last row, add it there.
@@ -54,7 +54,7 @@ export default function Schticks({ schticks, setSchticks, noNewCard }: any) {
       )
     }
     return output
-  }, [schticks.length, rowsOfData])
+  }, [noNewCard, setSchticks, schticks.length, rowsOfData])
 
   if (!schticks) return (<></>)
 

@@ -9,13 +9,15 @@ export default function CreateSchtickButton({ setSchticks }: any) {
 
   return (
     <>
-      <Button
-        onClick={() => setOpen(true)}
-        variant="contained"
-        color="primary"
-      >
-        New Schtick
-      </Button>
+      <Typography>
+        <Button
+          onClick={() => setOpen(true)}
+          variant="contained"
+          color="primary"
+        >
+          New Schtick
+        </Button>
+      </Typography>
       <CreateSchtick open={open} setOpen={setOpen} setSchticks={setSchticks} />
     </>
   )
