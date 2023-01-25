@@ -25,7 +25,6 @@ export default function SchtickCard({ schtick, setSchticks }: any) {
     const response = await client.getSchticks()
     if (response.status === 200) {
       const data = await response.json()
-      console.log("SCHTICKS", data)
       setSchticks(data)
     }
   }
