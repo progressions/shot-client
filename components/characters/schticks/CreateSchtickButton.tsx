@@ -4,7 +4,7 @@ import CreateSchtick from "./CreateSchtick"
 import SchtickModal from "./SchtickModal"
 import { useState } from "react"
 
-export default function CreateSchtickButton({ setSchticks }) {
+export default function CreateSchtickButton({ setSchticks }: any) {
   const [open, setOpen] = useState(false)
 
   return (

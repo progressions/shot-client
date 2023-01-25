@@ -155,6 +155,10 @@ class Api {
     }
   }
 
+  importSchticks() {
+    return `${this.schticks()}/import`
+  }
+
 }
 
 export default Api

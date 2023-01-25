@@ -251,6 +251,12 @@ class Client {
     })
   }
 
+  async uploadSchticks(content: string):Promise<Response> {
+    return await this.post(this.api.importSchticks(), {
+      "schtick": { "yaml": content }
+    })
+  }
+
   async removeSchtick(character: Character | ID, schtick: Schtick | ID):Promise<Response> {
     return await this.delete(this.api.characterSchticks(character, schtick))
   }
