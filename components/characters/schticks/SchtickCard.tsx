@@ -63,6 +63,7 @@ export default function SchtickCard({ schtick, setSchticks }: any) {
       </IconButton>
     </Tooltip>
   )
+
   return (
     <SchtickCardBase
       title={schtick.title}
@@ -70,9 +71,13 @@ export default function SchtickCard({ schtick, setSchticks }: any) {
       avatar={avatar}
       action={deleteButton}
     >
-      <Typography variant="body2">
+      <Typography variant="body2" gutterBottom>
         {schtick.description}
       </Typography>
+      { schtick.prerequisite.title &&
+        <Typography variant="subtitle2">
+          Requires: {schtick.prerequisite.title}
+        </Typography> }
     </SchtickCardBase>
   )
 }
