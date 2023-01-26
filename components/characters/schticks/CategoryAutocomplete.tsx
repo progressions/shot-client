@@ -21,7 +21,7 @@ export default function CategoryAutocomplete({ filter, dispatchFilter }: any) {
       <Autocomplete
         value={category || null}
         disabled={loading || !categories?.length}
-        options={categories}
+        options={categories || []}
         sx={{ width: 300 }}
         onChange={selectCategory}
         openOnFocus

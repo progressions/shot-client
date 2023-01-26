@@ -29,11 +29,17 @@ function schtickReducer(state: any, action: any) {
   }
 }
 
-export default function CreateSchtick({ open, setOpen, dispatchFilter }: any) {
+export default function CreateSchtick({ open, setOpen, filter, dispatchFilter }: any) {
   const { toastSuccess, toastError } = useToast()
   const { client } = useClient()
   const [state, dispatch] = useReducer(schtickReducer, initialState)
   const { saving, schtick } = state
+  const { category, path } = filter
+
+  useEffect(() => {
+    dispatch({ type: "update", name: "category", value: category })
+    dispatch({ type: "update", name: "path", value: path })
+  }, [category, path])
 
   async function reloadSchticks() {
     const response = await client.getSchticks()
