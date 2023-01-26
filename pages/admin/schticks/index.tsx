@@ -68,9 +68,6 @@ export async function getServerSideProps<GetServerSideProps>({ req, res }: any) 
 export default function CampaignsIndex(data: any) {
   const [filter, dispatchFilter] = useReducer(filterReducer, initialFilter)
   const schticks = filter?.data?.schticks || []
-  const setState = (schticks) => {
-    dispatchFilter({ type: "schticks", payload: { schticks: schticks, meta: {}, paths: [], categories: [] }})
-  }
 
   useEffect(() => {
     dispatchFilter({ type: "schticks", payload: data })
@@ -92,7 +89,7 @@ export default function CampaignsIndex(data: any) {
               <FilterSchticks filter={filter} dispatchFilter={dispatchFilter} />
               <CreateSchtickButton filter={filter} dispatchFilter={dispatchFilter} />
             </ButtonBar>
-            <Schticks schticks={schticks} setSchticks={setState} dispatchFilter={dispatchFilter} />
+            <Schticks schticks={schticks} dispatchFilter={dispatchFilter} />
           </Container>
         </Layout>
       </main>
