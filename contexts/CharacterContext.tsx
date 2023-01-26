@@ -18,7 +18,7 @@ export function CharacterProvider({ character, children }: any) {
   const [state, dispatch] = useReducer(characterReducer, {...initialState, character: character})
 
   return (
-    <CharacterContext.Provider value={{state, dispatch}}>
+    <CharacterContext.Provider value={{state, character, dispatch}}>
       {children}
     </CharacterContext.Provider>
   )

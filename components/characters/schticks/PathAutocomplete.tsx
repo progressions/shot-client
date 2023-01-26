@@ -11,16 +11,18 @@ export default function PathAutocomplete({ filter, dispatchFilter }) {
     return option || ""
   }
 
+  const helperText = (paths.length) ? "" : "There are no available paths."
+
   return (
     <Autocomplete
       value={path || null}
-      disabled={loading}
+      disabled={loading || !paths.length}
       options={paths}
       sx={{ width: 300 }}
       onChange={selectPath}
       openOnFocus
       getOptionLabel={getOptionLabel}
-      renderInput={(params) => <TextField autoFocus name="Path" {...params} label="Path" />}
+      renderInput={(params) => <TextField autoFocus helperText={helperText} {...params} label="Path" />}
     />
   )
 }

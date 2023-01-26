@@ -8,32 +8,30 @@ import FilterSchticks, { initialFilter, filterReducer } from "./FilterSchticks"
 
 export default function SchtickSelector({ }) {
   const [filter, dispatchFilter] = useReducer(filterReducer, initialFilter)
+  const { character, dispatch:dispatchCharacter } = useCharacter()
   const { user, client } = useClient()
   const { toastSuccess, toastError } = useToast()
   const [open, setOpen] = useState(false)
-  const [saving, setSaving] = useState(false)
-
-  const { schtick, schticks } = filter
-
-  useEffect(() => {
-    async function getSchticks() {
-      const response = await client.getSchticks()
-      if (response.status === 200) {
-        const data = await response.json()
-        dispatchFilter({ type: "schticks", payload: data })
-      }
-    }
-
-    if (user) {
-      getSchticks().catch(toastError)
-    }
-  }, [client, toastError, user, dispatchFilter])
+  const { saving, schtick, schticks } = filter
 
   function toggleOpen() {
     setOpen(prev => (!prev))
   }
 
   async function handleSubmit(event: any) {
+    event.preventDefault()
+    dispatchFilter({ type: "saving" })
+
+    const response = await client.addSchtick(character, schtick)
+    if (response.status === 200) {
+      const data = await response.json()
+      dispatchCharacter({ type: "replace", character: data })
+      toastSuccess("Schtick added.")
+    } else {
+      toastError()
+    }
+
+    dispatchFilter({ type: "success" })
   }
 
   function cancelForm() {
@@ -52,6 +50,7 @@ export default function SchtickSelector({ }) {
           <TextField name="category" label="Category" value={schtick?.category || ""} InputProps={{readOnly: true}} />
           <TextField name="path" label="Path" value={schtick?.path || ""} InputProps={{readOnly: true}} />
           <TextField name="description" multiline rows={8} label="Description" value={schtick?.description || ""} InputProps={{readOnly: true}} />
+          <TextField name="prerequisite" label="Prerequisite" value={schtick?.prerequisite?.title || ""} InputProps={{readOnly: true}} />
           <Stack alignItems="flex-end" spacing={2} direction="row">
             <Button variant="outlined" color="secondary" disabled={saving} onClick={cancelForm}>Cancel</Button>
             <Button variant="contained" color="primary" onClick={handleSubmit} disabled={saving}>Save</Button>

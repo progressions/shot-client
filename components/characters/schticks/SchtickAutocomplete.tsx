@@ -11,16 +11,20 @@ export default function SchtickAutocomplete({ filter, dispatchFilter }: any) {
     return option.title
   }
 
+  const helperText = (data.schticks.length) ? "" : "There are no available schticks."
+
   return (
     <Autocomplete
-      disabled={loading}
+      freeSolo
+      value={schtick || {id: null, title: ""}}
+      disabled={loading || !data.schticks.length}
       options={data.schticks || []}
       sx={{ width: 300 }}
       onChange={handleSelect}
       openOnFocus
       getOptionLabel={getOptionLabel}
-      isOptionEqualToValue={(option, value) => option?.id === value?.id}
-      renderInput={(params) => <TextField autoFocus name="Schtick" {...params} label="Schtick" />}
+      isOptionEqualToValue={(option, value) => option.id === value.id}
+      renderInput={(params) => <TextField autoFocus helperText={helperText} {...params} label="Schtick" />}
     />
   )
 }
