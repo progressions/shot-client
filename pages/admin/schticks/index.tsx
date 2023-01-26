@@ -1,7 +1,7 @@
 import Layout from '../../../components/Layout'
 import Head from 'next/head'
 
-import { useReducer, useState } from "react"
+import { useEffect, useReducer } from "react"
 import { Box, Paper, IconButton, Button, Stack, Link, Container, Typography, TableContainer, Table, TableHead, TableBody, TableRow, TableCell } from "@mui/material"
 import { useClient } from "../../../contexts/ClientContext"
 import { useCampaign } from "../../../contexts/CampaignContext"
@@ -65,10 +65,16 @@ export async function getServerSideProps<GetServerSideProps>({ req, res }: any) 
   }
 }
 
-export default function CampaignsIndex(initialState: any) {
+export default function CampaignsIndex(data: any) {
   const [filter, dispatchFilter] = useReducer(filterReducer, initialFilter)
-  const [state, setState] = useState(initialState)
-  const { schticks } = state
+  const schticks = filter?.data?.schticks || []
+  const setState = (schticks) => {
+    dispatchFilter({ type: "schticks", payload: { schticks: schticks, meta: {}, paths: [], categories: [] }})
+  }
+
+  useEffect(() => {
+    dispatchFilter({ type: "schticks", payload: data })
+  }, [data])
 
   return (
     <>
@@ -84,9 +90,9 @@ export default function CampaignsIndex(initialState: any) {
             <Typography variant="h1" gutterBottom>Schticks</Typography>
             <ButtonBar>
               <FilterSchticks filter={filter} dispatchFilter={dispatchFilter} />
-              <CreateSchtickButton setSchticks={setState} />
+              <CreateSchtickButton filter={filter} dispatchFilter={dispatchFilter} />
             </ButtonBar>
-            <Schticks schticks={schticks} setSchticks={setState} noNewCard />
+            <Schticks schticks={schticks} setSchticks={setState} dispatchFilter={dispatchFilter} />
           </Container>
         </Layout>
       </main>

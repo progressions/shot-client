@@ -77,7 +77,6 @@ export default function FilterSchticks({ filter, dispatchFilter }: any) {
       if (response.status === 200) {
         const data = await response.json()
         dispatchFilter({ type: "schticks", payload: data })
-        dispatchFilter({ type: "paths", payload: data.paths })
       }
     }
 

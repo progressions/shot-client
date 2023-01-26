@@ -8,7 +8,7 @@ import { useMemo } from "react"
 
 import { Schtick } from "../../../types/types"
 
-export default function SchtickCard({ schtick, setSchticks }: any) {
+export default function SchtickCard({ schtick, dispatchFilter }: any) {
   const { toastSuccess, toastError } = useToast()
   const { user, client } = useClient()
   const { state, dispatch } = useCharacter()
@@ -28,7 +28,7 @@ export default function SchtickCard({ schtick, setSchticks }: any) {
     const response = await client.getSchticks()
     if (response.status === 200) {
       const data = await response.json()
-      setSchticks(data)
+      dispatchFilter({ type: "schticks", payload: data })
     }
   }
 

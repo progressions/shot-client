@@ -19,7 +19,7 @@ function rowMap(array: any[]) {
   return rows
 }
 
-export default function Schticks({ schticks, setSchticks, noNewCard }: any) {
+export default function Schticks({ schticks, dispatchFilter }: any) {
   const { user, client } = useClient()
 
   const rowsOfData = useMemo(() => (
@@ -32,13 +32,13 @@ export default function Schticks({ schticks, setSchticks, noNewCard }: any) {
       rowsOfData.map((row: any, index: number) => (
         <Stack spacing={1} direction="row" key={`row_${index}`}>
           { row.map((schtick: any) => (
-            <SchtickCard key={`schtick_${schtick?.id}`} schtick={schtick} setSchticks={setSchticks} />
+            <SchtickCard key={`schtick_${schtick?.id}`} schtick={schtick} dispatchFilter={dispatchFilter} />
           )) }
         </Stack>
       ))
     )
     return output
-  }, [setSchticks, rowsOfData])
+  }, [dispatchFilter, rowsOfData])
 
   if (!schticks) return (<></>)
 

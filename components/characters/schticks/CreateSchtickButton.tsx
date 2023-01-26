@@ -3,7 +3,7 @@ import ButtonBar from "../../ButtonBar"
 import CreateSchtick from "./CreateSchtick"
 import { useState } from "react"
 
-export default function CreateSchtickButton({ setSchticks }: any) {
+export default function CreateSchtickButton({ dispatchFilter }: any) {
   const [open, setOpen] = useState(false)
 
   return (
@@ -17,7 +17,7 @@ export default function CreateSchtickButton({ setSchticks }: any) {
           New Schtick
         </Button>
       </Typography>
-      <CreateSchtick open={open} setOpen={setOpen} setSchticks={setSchticks} />
+      <CreateSchtick open={open} setOpen={setOpen} dispatchFilter={dispatchFilter} />
     </>
   )
 }

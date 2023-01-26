@@ -29,7 +29,7 @@ function schtickReducer(state: any, action: any) {
   }
 }
 
-export default function CreateSchtick({ open, setOpen, setSchticks }: any) {
+export default function CreateSchtick({ open, setOpen, dispatchFilter }: any) {
   const { toastSuccess, toastError } = useToast()
   const { client } = useClient()
   const [state, dispatch] = useReducer(schtickReducer, initialState)
@@ -39,8 +39,7 @@ export default function CreateSchtick({ open, setOpen, setSchticks }: any) {
     const response = await client.getSchticks()
     if (response.status === 200) {
       const data = await response.json()
-      console.log("SCHTICKS", data)
-      setSchticks(data)
+      dispatchFilter({ type: "schticks", payload: data })
     }
   }
 
