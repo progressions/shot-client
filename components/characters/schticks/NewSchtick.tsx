@@ -1,6 +1,5 @@
 import { Tooltip, Button, Typography } from "@mui/material"
 import SchtickCardBase from "./SchtickCardBase"
-import SchtickModal from "./SchtickModal"
 import CreateSchtick from "./CreateSchtick"
 import { useCharacter } from "../../../contexts/CharacterContext"
 
@@ -30,7 +29,6 @@ export default function NewSchtick({ setSchticks }: any) {
           New Schtick
         </Button>
       </SchtickCardBase>
-      { contextPresent && <SchtickModal open={open} setOpen={setOpen} /> }
       { !contextPresent && <CreateSchtick open={open} setOpen={setOpen} setSchticks={setSchticks} /> }
     </>
   )
