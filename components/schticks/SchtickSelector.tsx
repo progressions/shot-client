@@ -37,13 +37,14 @@ export default function SchtickSelector({ }) {
 
   function cancelForm() {
     dispatchFilter({ type: "schtick" })
+    setOpen(false)
   }
 
   return (
     <>
       <Button variant="contained" color="primary" onClick={toggleOpen}>Add Schtick</Button>
       <Box sx={{display: open ? "block" : "none"}}>
-        <Stack direction="row" spacing={1}>
+        <Stack direction="row" spacing={1} alignItems="top" sx={{height: 60}}>
           <FilterSchticks filter={filter} dispatchFilter={dispatchFilter} />
         </Stack>
 
