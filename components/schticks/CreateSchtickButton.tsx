@@ -1,5 +1,5 @@
 import { Tooltip, Button, Typography } from "@mui/material"
-import ButtonBar from "../../ButtonBar"
+import ButtonBar from "../ButtonBar"
 import CreateSchtick from "./CreateSchtick"
 import { useState } from "react"
 

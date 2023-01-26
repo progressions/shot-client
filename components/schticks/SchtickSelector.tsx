@@ -1,9 +1,9 @@
 import { Typography, TextField, MenuItem, Box, Stack, Button } from "@mui/material"
 import { useReducer, useEffect, useState } from "react"
 
-import { useClient } from "../../../contexts/ClientContext"
-import { useToast } from "../../../contexts/ToastContext"
-import { useCharacter } from "../../../contexts/CharacterContext"
+import { useClient } from "../../contexts/ClientContext"
+import { useToast } from "../../contexts/ToastContext"
+import { useCharacter } from "../../contexts/CharacterContext"
 import FilterSchticks, { initialFilter, filterReducer } from "./FilterSchticks"
 
 export default function SchtickSelector({ }) {

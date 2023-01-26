@@ -1,7 +1,7 @@
 import { Box, Stack, Typography } from "@mui/material"
-import SchtickCard from "../schticks/SchtickCard"
-import NewSchtick from "../schticks/NewSchtick"
-import { useClient } from "../../../contexts/ClientContext"
+import SchtickCard from "./SchtickCard"
+import NewSchtick from "./NewSchtick"
+import { useClient } from "../../contexts/ClientContext"
 
 import { useState, useMemo } from "react"
 

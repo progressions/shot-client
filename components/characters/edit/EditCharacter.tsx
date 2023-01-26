@@ -8,8 +8,8 @@ import CharacterType from "./CharacterType"
 import FortuneSelect from "./FortuneSelect"
 import Description from "./Description"
 import Faction from "./Faction"
-import Schticks from "./Schticks"
-import SchtickSelector from "../schticks/SchtickSelector"
+import Schticks from "../../schticks/Schticks"
+import SchtickSelector from "../../schticks/SchtickSelector"
 
 import { useEffect } from "react"
 

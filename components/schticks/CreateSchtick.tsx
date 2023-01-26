@@ -1,8 +1,8 @@
 import { Autocomplete, Box, Stack, TextField, Button, Dialog } from '@mui/material'
 import { useState, useEffect, useReducer } from "react"
-import { defaultSchtick } from "../../../types/types"
-import { useClient } from "../../../contexts/ClientContext"
-import { useToast } from "../../../contexts/ToastContext"
+import { defaultSchtick } from "../../types/types"
+import { useClient } from "../../contexts/ClientContext"
+import { useToast } from "../../contexts/ToastContext"
 
 const initialState = {
   loading: false,

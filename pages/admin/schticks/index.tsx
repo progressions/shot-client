@@ -11,13 +11,13 @@ import ButtonBar from "../../../components/ButtonBar"
 import CreateCampaign from "../../../components/campaigns/CreateCampaign"
 import Campaigns from "../../../components/campaigns/Campaigns"
 import GamemasterOnly from "../../../components/GamemasterOnly"
-import CreateSchtickButton from "../../../components/characters/schticks/CreateSchtickButton"
-import FilterSchticks, { initialFilter, filterReducer } from "../../../components/characters/schticks/FilterSchticks"
+import CreateSchtickButton from "../../../components/schticks/CreateSchtickButton"
+import FilterSchticks, { initialFilter, filterReducer } from "../../../components/schticks/FilterSchticks"
 
 import { authOptions } from '../../api/auth/[...nextauth]'
 import { unstable_getServerSession } from "next-auth/next"
 import Client from "../../../components/Client"
-import Schticks from "../../../components/characters/edit/Schticks"
+import Schticks from "../../../components/schticks/Schticks"
 
 import type { Campaign } from "../../../types/types"
 import { GetServerSideProps } from 'next'

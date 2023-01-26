@@ -1,12 +1,12 @@
 import { colors, Avatar, Tooltip, IconButton, Card, CardHeader, CardContent, CardActions, Stack, Typography } from "@mui/material"
 import DeleteIcon from "@mui/icons-material/Delete"
 import SchtickCardBase from "./SchtickCardBase"
-import { useClient } from "../../../contexts/ClientContext"
-import { useToast } from "../../../contexts/ToastContext"
-import { useCharacter } from "../../../contexts/CharacterContext"
+import { useClient } from "../../contexts/ClientContext"
+import { useToast } from "../../contexts/ToastContext"
+import { useCharacter } from "../../contexts/CharacterContext"
 import { useMemo } from "react"
 
-import { Schtick } from "../../../types/types"
+import { Schtick } from "../../types/types"
 
 export default function SchtickCard({ schtick, dispatchFilter }: any) {
   const { toastSuccess, toastError } = useToast()

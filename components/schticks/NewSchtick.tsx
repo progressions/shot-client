@@ -1,7 +1,7 @@
 import { Tooltip, Button, Typography } from "@mui/material"
 import SchtickCardBase from "./SchtickCardBase"
 import CreateSchtick from "./CreateSchtick"
-import { useCharacter } from "../../../contexts/CharacterContext"
+import { useCharacter } from "../../contexts/CharacterContext"
 
 import { useState } from "react"
 
