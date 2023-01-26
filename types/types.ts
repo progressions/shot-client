@@ -64,6 +64,10 @@ export interface Schtick {
   category: string
   path: string
   schtick_id: string
+  prerequisite: {
+    id?: string
+    title?: string
+  }
 }
 
 export type Position = "near" | "far"
@@ -296,6 +300,10 @@ export const defaultSchtick:Schtick = {
   campaign_id: "",
   category: "",
   path: "",
-  schtick_id: ""
+  schtick_id: "",
+  prerequisite: {
+    id: "",
+    title: ""
+  }
 }
 

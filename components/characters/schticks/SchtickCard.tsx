@@ -4,6 +4,9 @@ import SchtickCardBase from "./SchtickCardBase"
 import { useClient } from "../../../contexts/ClientContext"
 import { useToast } from "../../../contexts/ToastContext"
 import { useCharacter } from "../../../contexts/CharacterContext"
+import { useMemo } from "react"
+
+import { Schtick } from "../../../types/types"
 
 export default function SchtickCard({ schtick, setSchticks }: any) {
   const { toastSuccess, toastError } = useToast()
@@ -49,20 +52,27 @@ export default function SchtickCard({ schtick, setSchticks }: any) {
     }
   }
 
+
   const deleteFunction = (typeof character === "undefined") ? deleteSchtick : removeSchtick
+
+  const deleteButton = useMemo(() => {
+    const prereqIds = character.schticks.map((s: Schtick) => s.prerequisite.id)
+    const schtickHasPrereq = prereqIds.includes(schtick?.id)
+
+    return !schtickHasPrereq ? (
+      <Tooltip title="Delete">
+        <IconButton onClick={deleteFunction}>
+          <DeleteIcon sx={{color: "text.primary"}} />
+        </IconButton>
+      </Tooltip>
+    ) : ""
+  }, [character, schtick, deleteFunction])
 
   if (!schtick) return <></>
   // Include an icon for the schtick's category
   //
   // Maybe a specific color for each "path"
   const avatar = <Avatar sx={{bgcolor: schtick.color || 'secondary'}} variant="rounded">{schtick.category[0]}</Avatar>
-  const deleteButton = (
-    <Tooltip title="Delete">
-      <IconButton onClick={deleteFunction}>
-        <DeleteIcon sx={{color: "text.primary"}} />
-      </IconButton>
-    </Tooltip>
-  )
 
   return (
     <SchtickCardBase

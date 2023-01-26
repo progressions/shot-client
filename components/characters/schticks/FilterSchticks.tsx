@@ -1,85 +1,96 @@
 import { useEffect, useState, useMemo, useReducer } from "react"
 import { Autocomplete, Button, Stack, Typography, TextField, MenuItem, Box } from "@mui/material"
 import { useClient } from "../../../contexts/ClientContext"
+import { useCharacter } from "../../../contexts/CharacterContext"
 import { useToast } from "../../../contexts/ToastContext"
+import SchtickAutocomplete from "./SchtickAutocomplete"
+import CategoryAutocomplete from "./CategoryAutocomplete"
+import PathAutocomplete from "./PathAutocomplete"
 
-export const initialState = {
+export const initialFilter = {
   loading: false,
-  category: "",
+  saving: false,
   path: "",
-  title: ""
+  paths: [],
+  category: "",
+  categories: [],
+  schtick: { id: null, title: "" },
+  data: {
+    schticks: [],
+    meta: {}
+  }
 }
 
 export function filterReducer (state: any, action: any) {
   switch(action.type) {
-    case "update":
+    case "saving":
       return {
         ...state,
-        [action.name]: action.value || ""
+        saving: true
+      }
+    case "success":
+      return {
+        ...state,
+        loading: false,
+        saving: false
+      }
+    case "category":
+      return {
+        ...state,
+        category: action.payload || initialFilter.category,
+        path: initialFilter.path,
+        schtick: initialFilter.schtick
+      }
+    case "path":
+      return {
+        ...state,
+        path: action.payload || initialFilter.path,
+      }
+    case "schtick":
+      return {
+        ...state,
+        schtick: action.payload || initialFilter.schtick,
+      }
+    case "schticks":
+      const { paths, categories } = action.payload
+      return {
+        ...state,
+        data: action.payload || initialFilter.data,
+        paths: paths,
+        categories: categories,
+        schtick: initialFilter.schtick
       }
     default:
       return state
   }
 }
 
-export default function FilterSchticks({ setState, state:schticksState }: any) {
-  const [state, dispatch] = useReducer(filterReducer, initialState)
+export default function FilterSchticks({ filter, dispatchFilter }: any) {
+  const { character } = useCharacter()
   const { user, client } = useClient()
   const { toastSuccess, toastError } = useToast()
-  const { loading, category, path } = state
-  const { paths } = schticksState
-
-  const categories = useMemo(() => (["Guns", "Martial Arts", "Transformed Animal", "Creature", "Cyborg", "Driving", "Foe", "Mutant", "Sorcery"]), [])
+  const { loading, category, path } = filter
 
   useEffect(() => {
     async function getSchticks() {
-      const response = await client.getSchticks({ category, path })
+      const response = await client.getSchticks({ category, path, character_id: character?.id })
       if (response.status === 200) {
         const data = await response.json()
-        setState(data)
+        dispatchFilter({ type: "schticks", payload: data })
+        dispatchFilter({ type: "paths", payload: data.paths })
       }
     }
 
-    if (user) {
+    if (user?.id) {
       getSchticks().catch(toastError)
     }
-  }, [client, toastError, user, setState, category, path])
-
-  function getOptionLabel(option: any) {
-    return option || ""
-  }
-
-  function selectCategory(event: any, newValue: any) {
-    dispatch({ type: "update", name: "category", value: newValue })
-    dispatch({ type: "update", name: "path", value: "" })
-  }
-
-  function selectPath(event: any, newValue: any) {
-    dispatch({ type: "update", name: "path", value: newValue })
-  }
+  }, [character?.id, dispatchFilter, user?.id, category, path, toastError, client])
 
   return (
-    <Stack direction="row" spacing={1} sx={{marginTop: 2}}>
-      <Autocomplete
-        value={category || null}
-        disabled={loading}
-        options={categories}
-        sx={{ width: 300 }}
-        onChange={selectCategory}
-        openOnFocus
-        getOptionLabel={getOptionLabel}
-        renderInput={(params) => <TextField autoFocus name="Category" {...params} label="Category" />}
-      />
-      <Autocomplete
-        value={path || null}
-        disabled={loading}
-        options={paths}
-        sx={{ width: 300 }}
-        onChange={selectPath}
-        openOnFocus
-        getOptionLabel={getOptionLabel}
-        renderInput={(params) => <TextField autoFocus name="Path" {...params} label="Path" />}
-      />
-    </Stack>
+    <>
+      <CategoryAutocomplete filter={filter} dispatchFilter={dispatchFilter} />
+      <PathAutocomplete filter={filter} dispatchFilter={dispatchFilter} />
+      <SchtickAutocomplete filter={filter} dispatchFilter={dispatchFilter} />
+    </>
   )
 }

@@ -9,6 +9,7 @@ import FortuneSelect from "./FortuneSelect"
 import Description from "./Description"
 import Faction from "./Faction"
 import Schticks from "./Schticks"
+import SchtickSelector from "../schticks/SchtickSelector"
 
 import { useEffect } from "react"
 
@@ -126,6 +127,7 @@ export default function EditCharacter({ character:initialCharacter }: any) {
           </PlayerTypeOnly>
           <Description description={description} onChange={handleDescriptionChange} />
           <Schticks schticks={schticks} state={state} dispatch={dispatch} />
+          <SchtickSelector />
           <Stack spacing={2} direction="row">
             <Button variant="outlined" color="secondary" disabled={saving || !edited} onClick={cancelForm}>Cancel</Button>
             <Button variant="contained" color="primary" type="submit" disabled={saving || !edited}>Save Changes</Button>

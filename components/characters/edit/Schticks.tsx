@@ -26,10 +26,6 @@ export default function Schticks({ schticks, setSchticks, noNewCard }: any) {
     rowMap(schticks)
   ), [schticks])
 
-  // Add the "New Schtick" card to the last entry in the list.
-  // If there's an empty space in the last row, add it there.
-  // If not, add a new row with the New Schtick card.
-  //
   const outputRows = useMemo(() => {
     const newSchtick = <NewSchtick />
     const output = (
@@ -38,20 +34,11 @@ export default function Schticks({ schticks, setSchticks, noNewCard }: any) {
           { row.map((schtick: any) => (
             <SchtickCard key={`schtick_${schtick?.id}`} schtick={schtick} setSchticks={setSchticks} />
           )) }
-          { !noNewCard && index == rowsOfData.length-1 && schticks.length % 3 != 0 &&
-            newSchtick }
         </Stack>
       ))
     )
-    if (!noNewCard && schticks.length % 3 === 0) {
-      output.push(
-        <Stack spacing={1} direction="row" key="new_schtick">
-          { newSchtick }
-        </Stack>
-      )
-    }
     return output
-  }, [noNewCard, setSchticks, schticks.length, rowsOfData])
+  }, [setSchticks, rowsOfData])
 
   if (!schticks) return (<></>)
 
