@@ -2,7 +2,7 @@ import Layout from '../../../components/Layout'
 import Head from 'next/head'
 
 import { useEffect, useReducer } from "react"
-import { Box, Paper, IconButton, Button, Stack, Link, Container, Typography, TableContainer, Table, TableHead, TableBody, TableRow, TableCell } from "@mui/material"
+import { Skeleton, Box, Paper, IconButton, Button, Stack, Link, Container, Typography, TableContainer, Table, TableHead, TableBody, TableRow, TableCell } from "@mui/material"
 import { useClient } from "../../../contexts/ClientContext"
 import { useCampaign } from "../../../contexts/CampaignContext"
 import { useSession } from 'next-auth/react'
@@ -68,6 +68,7 @@ export async function getServerSideProps<GetServerSideProps>({ req, res }: any) 
 export default function CampaignsIndex(data: any) {
   const [filter, dispatchFilter] = useReducer(filterReducer, initialFilter)
   const schticks = filter?.data?.schticks || []
+  const { loading } = filter
 
   useEffect(() => {
     dispatchFilter({ type: "schticks", payload: data })
@@ -85,11 +86,21 @@ export default function CampaignsIndex(data: any) {
         <Layout>
           <Container maxWidth="md">
             <Typography variant="h1" gutterBottom>Schticks</Typography>
-            <ButtonBar>
-              <FilterSchticks filter={filter} dispatchFilter={dispatchFilter} />
-              <CreateSchtickButton filter={filter} dispatchFilter={dispatchFilter} />
-            </ButtonBar>
-            <Schticks schticks={schticks} dispatchFilter={dispatchFilter} />
+            { !loading && <>
+              <ButtonBar>
+                <FilterSchticks filter={filter} dispatchFilter={dispatchFilter} />
+                <CreateSchtickButton filter={filter} dispatchFilter={dispatchFilter} />
+              </ButtonBar>
+              <Schticks schticks={schticks} dispatchFilter={dispatchFilter} />
+            </> }
+            { loading && <>
+              <Skeleton animation="wave" height={50} />
+              <Skeleton animation="wave" height={50} />
+              <Skeleton animation="wave" height={50} />
+              <Skeleton animation="wave" height={50} />
+              <Skeleton animation="wave" height={50} />
+              <Skeleton animation="wave" height={50} />
+            </>}
           </Container>
         </Layout>
       </main>

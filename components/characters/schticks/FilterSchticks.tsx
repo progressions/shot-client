@@ -8,7 +8,7 @@ import CategoryAutocomplete from "./CategoryAutocomplete"
 import PathAutocomplete from "./PathAutocomplete"
 
 export const initialFilter = {
-  loading: false,
+  loading: true,
   saving: false,
   path: "",
   paths: [],
@@ -55,6 +55,7 @@ export function filterReducer (state: any, action: any) {
       const { paths, categories } = action.payload
       return {
         ...state,
+        loading: false,
         data: action.payload || initialFilter.data,
         paths: paths,
         categories: categories,
