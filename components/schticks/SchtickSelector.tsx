@@ -4,7 +4,8 @@ import { useReducer, useEffect, useState } from "react"
 import { useClient } from "../../contexts/ClientContext"
 import { useToast } from "../../contexts/ToastContext"
 import { useCharacter } from "../../contexts/CharacterContext"
-import FilterSchticks, { initialFilter, filterReducer } from "./FilterSchticks"
+import FilterSchticks from "./FilterSchticks"
+import { initialFilter, filterReducer } from "./filterReducer"
 
 export default function SchtickSelector({ }) {
   const [filter, dispatchFilter] = useReducer(filterReducer, initialFilter)
