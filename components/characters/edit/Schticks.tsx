@@ -38,7 +38,7 @@ export default function Schticks({ schticks, setSchticks, noNewCard }: any) {
       ))
     )
     return output
-  }, [noNewCard, setSchticks, schticks.length, rowsOfData])
+  }, [setSchticks, rowsOfData])
 
   if (!schticks) return (<></>)
 

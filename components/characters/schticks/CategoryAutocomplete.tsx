@@ -1,7 +1,7 @@
 import { Autocomplete, TextField } from "@mui/material"
 import { useMemo } from "react"
 
-export default function CategoryAutocomplete({ filter, dispatchFilter }) {
+export default function CategoryAutocomplete({ filter, dispatchFilter }: any) {
   const { loading, category, categories, path } = filter
 
   // const categories = useMemo(() => (["Guns", "Martial Arts", "Transformed Animal", "Creature", "Cyborg", "Driving", "Foe", "Mutant", "Sorcery"]), [])

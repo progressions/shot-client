@@ -84,7 +84,7 @@ export default function FilterSchticks({ filter, dispatchFilter }: any) {
     if (user?.id) {
       getSchticks().catch(toastError)
     }
-  }, [user?.id, category, path, toastError, client])
+  }, [character?.id, dispatchFilter, user?.id, category, path, toastError, client])
 
   return (
     <>

@@ -1,6 +1,6 @@
 import { Autocomplete, TextField } from "@mui/material"
 
-export default function PathAutocomplete({ filter, dispatchFilter }) {
+export default function PathAutocomplete({ filter, dispatchFilter }: any) {
   const { loading, path, paths } = filter
 
   function selectPath(event: any, newValue: any) {
