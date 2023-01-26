@@ -67,7 +67,7 @@ export async function getServerSideProps<GetServerSideProps>({ req, res }: any) 
 
 export default function CampaignsIndex(data: any) {
   const [filter, dispatchFilter] = useReducer(filterReducer, initialFilter)
-  const schticks = filter?.data?.schticks || []
+  const schticks = filter?.schticks || []
   const { loading } = filter
 
   useEffect(() => {

@@ -16,10 +16,7 @@ export const initialFilter = {
   category: "",
   categories: [],
   schtick: { id: null, title: "" },
-  data: {
-    schticks: [],
-    meta: {}
-  }
+  schticks: [],
 }
 
 export function filterReducer (state: any, action: any) {
@@ -27,12 +24,12 @@ export function filterReducer (state: any, action: any) {
     case "previous":
       return {
         ...state,
-        page: state.data.meta["prev_page"]
+        page: state.meta["prev_page"]
       }
     case "next":
       return {
         ...state,
-        page: state.data.meta["next_page"]
+        page: state.meta["next_page"]
       }
     case "saving":
       return {
@@ -63,14 +60,15 @@ export function filterReducer (state: any, action: any) {
         schtick: action.payload || initialFilter.schtick,
       }
     case "schticks":
-      const { paths, categories } = action.payload
+      const { schticks, meta, paths, categories } = action.payload
       return {
         ...state,
         loading: false,
-        data: action.payload || initialFilter.data,
-        paths: paths,
-        categories: categories,
         schtick: initialFilter.schtick,
+        schticks: schticks,
+        meta: meta,
+        paths: paths,
+        categories: categories
       }
     default:
       return state

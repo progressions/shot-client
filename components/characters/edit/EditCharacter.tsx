@@ -90,10 +90,8 @@ export default function EditCharacter({ character:initialCharacter }: any) {
   }
 
   const filter = {
-    data: {
-      schticks: schticks,
-      meta: {}
-    }
+    schticks: schticks,
+    meta: {}
   }
 
   return (
