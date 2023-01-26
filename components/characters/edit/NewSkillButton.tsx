@@ -13,7 +13,7 @@ export default function NewSkillButton({ }) {
   const skills = useMemo(() => {
     const all = ["Deceit", "Detective", "Driving", "Fix-It", "Gambling", "Intimidation", "Intrusion", "Leadership", "Medicine", "Police", "Sabotage", "Seduction"]
     return all.filter((name) => (character.skills[name] <= 7))
-  }, [edited, character.skills])
+  }, [character.skills])
 
   function selectSkill(event: any, newValue: any) {
     setSkill((prev) => ({ ...prev, name: newValue }))

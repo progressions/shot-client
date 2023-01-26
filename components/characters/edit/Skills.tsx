@@ -18,10 +18,10 @@ function rowMap(array: any[], itemsPerRow: number) {
   return rows
 }
 
-export default function Skills({ skills, onChange }) {
+export default function Skills({ skills, onChange }: any) {
 
   const knownSkills = useMemo(() => {
-    return Object.entries(skills).filter(([name, value]) => (value > 7))
+    return Object.entries(skills).filter(([name, value]: any) => (value > 7))
   }, [skills])
 
   const rowsOfData = rowMap(knownSkills, 6)
@@ -30,14 +30,14 @@ export default function Skills({ skills, onChange }) {
     const output = (
       rowsOfData.map((row: any, index: number) => (
         <Stack spacing={1} direction="row" key={`row_${index}`}>
-          { row.map(([name, value]) => (
+          { row.map(([name, value]: any) => (
             <SkillField key={name} name={name} value={value} onChange={onChange} />
           )) }
         </Stack>
       ))
     )
     return output
-  }, [rowsOfData])
+  }, [onChange, rowsOfData])
 
   return (
     <>

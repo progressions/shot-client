@@ -1,6 +1,6 @@
 import { Typography, TextField } from "@mui/material"
 
-export default function SkillField({ name, value, onChange }) {
+export default function SkillField({ name, value, onChange }: any) {
 
   return (
     <>
