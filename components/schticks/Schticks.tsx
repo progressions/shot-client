@@ -21,9 +21,8 @@ function rowMap(array: any[]) {
 export default function Schticks({ filter, dispatchFilter }: any) {
   const { user, client } = useClient()
 
-  const { schticks, meta } = filter?.data
-
-  console.log(meta)
+  const schticks = filter?.data?.schticks || []
+  const meta = filter?.data?.meta || {}
 
   const rowsOfData = useMemo(() => (
     rowMap(schticks)

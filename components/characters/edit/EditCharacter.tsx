@@ -89,6 +89,13 @@ export default function EditCharacter({ character:initialCharacter }: any) {
     )
   }
 
+  const filter = {
+    data: {
+      schticks: schticks,
+      meta: {}
+    }
+  }
+
   return (
     <>
       <Box component="form" onSubmit={handleSubmit}>
@@ -126,7 +133,7 @@ export default function EditCharacter({ character:initialCharacter }: any) {
             </Stack>
           </PlayerTypeOnly>
           <Description description={description} onChange={handleDescriptionChange} />
-          <Schticks schticks={schticks} state={state} dispatch={dispatch} />
+          <Schticks schticks={schticks} filter={filter} state={state} dispatch={dispatch} />
           <SchtickSelector />
           <Stack spacing={2} direction="row">
             <Button variant="outlined" color="secondary" disabled={saving || !edited} onClick={cancelForm}>Cancel</Button>
