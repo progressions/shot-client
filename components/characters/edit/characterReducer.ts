@@ -41,6 +41,18 @@ export const characterReducer = (state: any, action: any) => {
           }
         }
       }
+    case "skills":
+      return {
+        ...state,
+        edited: true,
+        character: {
+          ...state.character,
+          skills: {
+            ...state.character.skills,
+            [action.name]: action.value
+          }
+        }
+      }
     case "submit":
       return {
         ...state,

@@ -12,7 +12,8 @@ import CreateCampaign from "../../../components/campaigns/CreateCampaign"
 import Campaigns from "../../../components/campaigns/Campaigns"
 import GamemasterOnly from "../../../components/GamemasterOnly"
 import CreateSchtickButton from "../../../components/schticks/CreateSchtickButton"
-import FilterSchticks, { initialFilter, filterReducer } from "../../../components/schticks/FilterSchticks"
+import FilterSchticks from "../../../components/schticks/FilterSchticks"
+import { initialFilter, filterReducer } from "../../../components/schticks/filterReducer"
 
 import { authOptions } from '../../api/auth/[...nextauth]'
 import { unstable_getServerSession } from "next-auth/next"
