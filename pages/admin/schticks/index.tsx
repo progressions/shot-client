@@ -1,7 +1,7 @@
 import Layout from '../../../components/Layout'
 import Head from 'next/head'
 
-import { useState } from "react"
+import { useReducer, useState } from "react"
 import { Box, Paper, IconButton, Button, Stack, Link, Container, Typography, TableContainer, Table, TableHead, TableBody, TableRow, TableCell } from "@mui/material"
 import { useClient } from "../../../contexts/ClientContext"
 import { useCampaign } from "../../../contexts/CampaignContext"
@@ -12,7 +12,7 @@ import CreateCampaign from "../../../components/campaigns/CreateCampaign"
 import Campaigns from "../../../components/campaigns/Campaigns"
 import GamemasterOnly from "../../../components/GamemasterOnly"
 import CreateSchtickButton from "../../../components/characters/schticks/CreateSchtickButton"
-import FilterSchticks from "../../../components/characters/schticks/FilterSchticks"
+import FilterSchticks, { initialFilter, filterReducer } from "../../../components/characters/schticks/FilterSchticks"
 
 import { authOptions } from '../../api/auth/[...nextauth]'
 import { unstable_getServerSession } from "next-auth/next"
@@ -66,6 +66,7 @@ export async function getServerSideProps<GetServerSideProps>({ req, res }: any) 
 }
 
 export default function CampaignsIndex(initialState: any) {
+  const [filter, dispatchFilter] = useReducer(filterReducer, initialFilter)
   const [state, setState] = useState(initialState)
   const { schticks } = state
 
@@ -82,7 +83,7 @@ export default function CampaignsIndex(initialState: any) {
           <Container maxWidth="md">
             <Typography variant="h1" gutterBottom>Schticks</Typography>
             <ButtonBar>
-              <FilterSchticks state={state} setState={setState} />
+              <FilterSchticks filter={filter} dispatchFilter={dispatchFilter} />
               <CreateSchtickButton setSchticks={setState} />
             </ButtonBar>
             <Schticks schticks={schticks} setSchticks={setState} noNewCard />

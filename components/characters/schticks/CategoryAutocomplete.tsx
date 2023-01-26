@@ -14,13 +14,13 @@ export default function CategoryAutocomplete({ filter, dispatchFilter }: any) {
     return option || ""
   }
 
-  const helperText = (categories.length) ? "" : "There are no available categories."
+  const helperText = (categories?.length) ? "" : "There are no available categories."
 
   return (
     <>
       <Autocomplete
         value={category || null}
-        disabled={loading || !categories.length}
+        disabled={loading || !categories?.length}
         options={categories}
         sx={{ width: 300 }}
         onChange={selectCategory}

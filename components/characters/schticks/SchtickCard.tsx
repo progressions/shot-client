@@ -56,7 +56,7 @@ export default function SchtickCard({ schtick, setSchticks }: any) {
   const deleteFunction = (typeof character === "undefined") ? deleteSchtick : removeSchtick
 
   const deleteButton = useMemo(() => {
-    const prereqIds = character.schticks.map((s: Schtick) => s.prerequisite.id)
+    const prereqIds = character?.schticks?.map((s: Schtick) => s.prerequisite.id) || []
     const schtickHasPrereq = prereqIds.includes(schtick?.id)
 
     return !schtickHasPrereq ? (
