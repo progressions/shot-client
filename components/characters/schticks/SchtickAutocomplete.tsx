@@ -11,7 +11,7 @@ export default function SchtickAutocomplete({ filter, dispatchFilter }: any) {
     return option.title
   }
 
-  const helperText = (data.schticks.length) ? "" : "There are no available schticks."
+  const helperText = (data.schticks.length) ? "": "There are no available schticks."
 
   return (
     <Autocomplete
