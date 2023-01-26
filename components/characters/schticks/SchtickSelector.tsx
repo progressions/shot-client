@@ -35,6 +35,7 @@ export default function SchtickSelector({ }) {
   }
 
   function cancelForm() {
+    dispatchFilter({ type: "schtick" })
   }
 
   return (
