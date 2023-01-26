@@ -1,4 +1,4 @@
-import { Box, Stack, Typography } from "@mui/material"
+import { Button, Box, Stack, Typography } from "@mui/material"
 import SchtickCard from "./SchtickCard"
 import NewSchtick from "./NewSchtick"
 import { useClient } from "../../contexts/ClientContext"
@@ -18,8 +18,12 @@ function rowMap(array: any[]) {
   return rows
 }
 
-export default function Schticks({ schticks, dispatchFilter }: any) {
+export default function Schticks({ filter, dispatchFilter }: any) {
   const { user, client } = useClient()
+
+  const { schticks, meta } = filter?.data
+
+  console.log(meta)
 
   const rowsOfData = useMemo(() => (
     rowMap(schticks)
@@ -39,12 +43,22 @@ export default function Schticks({ schticks, dispatchFilter }: any) {
     return output
   }, [dispatchFilter, rowsOfData])
 
+  function loadPrevious() {
+    dispatchFilter({ type: "previous" })
+  }
+
+  function loadNext() {
+    dispatchFilter({ type: "next" })
+  }
+
   if (!schticks) return (<></>)
 
   return (
     <>
       <Stack spacing={1}>
+        { meta?.prev_page && <Box width="100%"><Button sx={{width: "100%"}} onClick={loadPrevious} variant="contained" color="primary">Previous</Button></Box> }
         { outputRows }
+        { meta?.next_page && <Box width="100%"><Button sx={{width: "100%"}} onClick={loadNext} variant="contained" color="primary">Next</Button></Box> }
       </Stack>
     </>
   )

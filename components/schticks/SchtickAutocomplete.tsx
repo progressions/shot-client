@@ -23,7 +23,7 @@ export default function SchtickAutocomplete({ filter, dispatchFilter }: any) {
       onChange={handleSelect}
       getOptionLabel={getOptionLabel}
       isOptionEqualToValue={(option, value) => option.id === value.id}
-      renderInput={(params) => <TextField autoFocus helperText={helperText} {...params} label="Schtick" />}
+      renderInput={(params) => <TextField helperText={helperText} {...params} label="Schtick" />}
     />
   )
 }

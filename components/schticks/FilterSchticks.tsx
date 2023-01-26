@@ -10,6 +10,7 @@ import PathAutocomplete from "./PathAutocomplete"
 export const initialFilter = {
   loading: true,
   saving: false,
+  page: 1,
   path: "",
   paths: [],
   category: "",
@@ -23,6 +24,16 @@ export const initialFilter = {
 
 export function filterReducer (state: any, action: any) {
   switch(action.type) {
+    case "previous":
+      return {
+        ...state,
+        page: state.data.meta["prev_page"]
+      }
+    case "next":
+      return {
+        ...state,
+        page: state.data.meta["next_page"]
+      }
     case "saving":
       return {
         ...state,
@@ -59,7 +70,7 @@ export function filterReducer (state: any, action: any) {
         data: action.payload || initialFilter.data,
         paths: paths,
         categories: categories,
-        schtick: initialFilter.schtick
+        schtick: initialFilter.schtick,
       }
     default:
       return state
@@ -70,11 +81,11 @@ export default function FilterSchticks({ filter, dispatchFilter }: any) {
   const { character } = useCharacter()
   const { user, client } = useClient()
   const { toastSuccess, toastError } = useToast()
-  const { loading, category, path } = filter
+  const { page, loading, category, path } = filter
 
   useEffect(() => {
     async function getSchticks() {
-      const response = await client.getSchticks({ category, path, character_id: character?.id })
+      const response = await client.getSchticks({ page, category, path, character_id: character?.id as string })
       if (response.status === 200) {
         const data = await response.json()
         dispatchFilter({ type: "schticks", payload: data })
@@ -84,7 +95,7 @@ export default function FilterSchticks({ filter, dispatchFilter }: any) {
     if (user?.id) {
       getSchticks().catch(toastError)
     }
-  }, [character?.id, dispatchFilter, user?.id, category, path, toastError, client])
+  }, [character?.id, dispatchFilter, user?.id, category, path, toastError, client, page])
 
   return (
     <>

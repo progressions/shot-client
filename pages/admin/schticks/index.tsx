@@ -91,7 +91,7 @@ export default function CampaignsIndex(data: any) {
                 <FilterSchticks filter={filter} dispatchFilter={dispatchFilter} />
                 <CreateSchtickButton filter={filter} dispatchFilter={dispatchFilter} />
               </ButtonBar>
-              <Schticks schticks={schticks} dispatchFilter={dispatchFilter} />
+              <Schticks filter={filter} dispatchFilter={dispatchFilter} />
             </> }
             { loading && <>
               <Skeleton animation="wave" height={50} />
