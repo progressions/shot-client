@@ -10,6 +10,7 @@ import Description from "./Description"
 import Faction from "./Faction"
 import Schticks from "../../schticks/Schticks"
 import SchtickSelector from "../../schticks/SchtickSelector"
+import Skills from "./Skills"
 
 import { useEffect } from "react"
 
@@ -26,7 +27,7 @@ export default function EditCharacter({ character:initialCharacter }: any) {
   const { state, dispatch } = useCharacter()
 
   const { edited, saving, character } = state
-  const { schticks, description, action_values } = character
+  const { schticks, skills, description, action_values } = character
 
   async function handleSubmit(event: any) {
     event.preventDefault()
@@ -53,6 +54,10 @@ export default function EditCharacter({ character:initialCharacter }: any) {
 
   function handleAVChange(event: any, newValue: any) {
     dispatch({ type: "action_value", name: event.target.name, value: event.target.value || newValue })
+  }
+
+  function handleSkillsChange(event: any) {
+    dispatch({ type: "skills", name: event.target.name, value: event.target.value })
   }
 
   function handleDescriptionChange(event: any) {
@@ -130,6 +135,7 @@ export default function EditCharacter({ character:initialCharacter }: any) {
               <FortuneSelect character={character} onChange={handleAVChange as React.ChangeEventHandler} />
             </Stack>
           </PlayerTypeOnly>
+          <Skills skills={skills} onChange={handleSkillsChange} />
           <Description description={description} onChange={handleDescriptionChange} />
           <Schticks schticks={schticks} filter={filter} state={state} dispatch={dispatch} />
           <SchtickSelector />

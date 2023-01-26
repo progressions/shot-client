@@ -5,13 +5,14 @@ import { useClient } from "../../contexts/ClientContext"
 
 import { useState, useMemo } from "react"
 
-function rowMap(array: any[]) {
+function rowMap(array: any[], itemsPerRow: number) {
   const rows = []
-  for (let i=0; i <= array.length; i+=2) {
+  for (let i=0; i <= array.length; i+=itemsPerRow) {
     const row = []
-    row.push(array[i])
-    if (i+1 < array.length) {
-      row.push(array[i+1])
+    for (let j=0; j < itemsPerRow; j++) {
+      if (i+j < array.length) {
+        row.push(array[i+j])
+      }
     }
     rows.push(row)
   }
@@ -25,11 +26,10 @@ export default function Schticks({ filter, dispatchFilter }: any) {
   const meta = filter?.meta || {}
 
   const rowsOfData = useMemo(() => (
-    rowMap(schticks)
+    rowMap(schticks, 2)
   ), [schticks])
 
   const outputRows = useMemo(() => {
-    const newSchtick = <NewSchtick />
     const output = (
       rowsOfData.map((row: any, index: number) => (
         <Stack spacing={1} direction="row" key={`row_${index}`}>
