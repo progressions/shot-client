@@ -1,13 +1,13 @@
 import { Autocomplete, TextField } from "@mui/material"
 import { useMemo } from "react"
 
-export default function CategoryAutocomplete({ state, dispatch }) {
-  const { loading, category, path } = state
+export default function CategoryAutocomplete({ filter, dispatchFilter }) {
+  const { loading, category, path } = filter
 
   const categories = useMemo(() => (["Guns", "Martial Arts", "Transformed Animal", "Creature", "Cyborg", "Driving", "Foe", "Mutant", "Sorcery"]), [])
 
   function selectCategory(event: any, newValue: any) {
-    dispatch({ type: "update", name: "category", value: newValue })
+    dispatchFilter({ type: "category", payload: newValue })
   }
 
   function getOptionLabel(option: any) {

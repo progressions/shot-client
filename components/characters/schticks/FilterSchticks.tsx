@@ -6,30 +6,49 @@ import SchtickAutocomplete from "./SchtickAutocomplete"
 import CategoryAutocomplete from "./CategoryAutocomplete"
 import PathAutocomplete from "./PathAutocomplete"
 
-export const initialFilterState = {
+export const initialFilter = {
   loading: false,
   category: "",
   path: "",
-  title: ""
+  paths: [],
+  schtick: "",
+  data: {}
 }
 
 export function filterReducer (state: any, action: any) {
   switch(action.type) {
-    case "update":
+    case "category":
       return {
         ...state,
-        [action.name]: action.value || ""
+        category: action.payload || "",
+        path: ""
+      }
+    case "path":
+      return {
+        ...state,
+        path: action.payload || "",
+      }
+    case "schtick":
+      return {
+        ...state,
+        schtick: action.payload || "",
+      }
+    case "schticks":
+      const { paths } = action.payload
+      return {
+        ...state,
+        data: action.payload || {},
+        paths: paths
       }
     default:
       return state
   }
 }
 
-export default function FilterSchticks({ dispatch:schticksDispatch, state:schticksState }: any) {
-  const [state, dispatch] = useReducer(filterReducer, initialFilterState)
+export default function FilterSchticks({ filter, dispatchFilter }: any) {
   const { user, client } = useClient()
   const { toastSuccess, toastError } = useToast()
-  const { loading, category, path } = state
+  const { loading, category, path } = filter
 
   useEffect(() => {
     async function getSchticks() {
@@ -37,20 +56,20 @@ export default function FilterSchticks({ dispatch:schticksDispatch, state:schtic
       if (response.status === 200) {
         const data = await response.json()
         console.log("getSchticks", data)
-        schticksDispatch({ type: "replace_schticks", payload: data })
+        dispatchFilter({ type: "schticks", payload: data })
       }
     }
 
     if (user) {
       getSchticks().catch(toastError)
     }
-  }, [client, toastError, user, schticksDispatch, category, path])
+  }, [client, toastError, user, dispatchFilter, category, path])
 
   return (
     <>
-      <CategoryAutocomplete state={state} dispatch={dispatch} />
-      <PathAutocomplete state={state} dispatch={dispatch} schticksState={schticksState} />
-      <SchtickAutocomplete schticksState={schticksState} schticksDispatch={schticksDispatch} />
-  </>
+      <CategoryAutocomplete filter={filter} dispatchFilter={dispatchFilter} />
+      <PathAutocomplete filter={filter} dispatchFilter={dispatchFilter} />
+      <SchtickAutocomplete filter={filter} dispatchFilter={dispatchFilter} />
+    </>
   )
 }

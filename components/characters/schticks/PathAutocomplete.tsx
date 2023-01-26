@@ -1,11 +1,10 @@
 import { Autocomplete, TextField } from "@mui/material"
 
-export default function PathAutocomplete({ state, dispatch, schticksState }) {
-  const { loading, path } = state
-  const { paths } = schticksState
+export default function PathAutocomplete({ filter, dispatchFilter }) {
+  const { loading, path, paths } = filter
 
   function selectPath(event: any, newValue: any) {
-    dispatch({ type: "update", name: "path", value: newValue })
+    dispatchFilter({ type: "path", payload: newValue })
   }
 
   function getOptionLabel(option: any) {

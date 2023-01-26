@@ -4,50 +4,30 @@ import { useReducer, useEffect, useState } from "react"
 import { useClient } from "../../../contexts/ClientContext"
 import { useToast } from "../../../contexts/ToastContext"
 import { useCharacter } from "../../../contexts/CharacterContext"
-import FilterSchticks from "./FilterSchticks"
-
-const schtickSelectorState = {
-  schticks: [],
-  meta: {},
-  paths: []
-}
-
-export function schtickSelectorReducer(state: any, action: any) {
-  switch(action.type) {
-    case "replace_schticks":
-      return {
-      ...state,
-      ...action.payload
-    }
-    default:
-      return state
-  }
-}
+import FilterSchticks, { initialFilter, filterReducer } from "./FilterSchticks"
 
 export default function SchtickSelector({ }) {
+  const [filter, dispatchFilter] = useReducer(filterReducer, initialFilter)
   const { user, client } = useClient()
   const { toastSuccess, toastError } = useToast()
   const [open, setOpen] = useState(false)
   const [saving, setSaving] = useState(false)
 
-  const [schtick, setSchtick] = useState({})
-
-  const [state, dispatch] = useReducer(schtickSelectorReducer, schtickSelectorState)
-  const { schticks } = state
+  const { schtick, schticks } = filter
 
   useEffect(() => {
     async function getSchticks() {
       const response = await client.getSchticks()
       if (response.status === 200) {
         const data = await response.json()
-        dispatch({ type: "replace_schticks", payload: data })
+        dispatchFilter({ type: "schticks", payload: data })
       }
     }
 
     if (user) {
       getSchticks().catch(toastError)
     }
-  }, [client, toastError, user, dispatch])
+  }, [client, toastError, user, dispatchFilter])
 
   function toggleOpen() {
     setOpen(prev => (!prev))
@@ -64,7 +44,7 @@ export default function SchtickSelector({ }) {
       <Button variant="contained" color="primary" onClick={toggleOpen}>Add Schtick</Button>
       <Box sx={{display: open ? "block" : "none"}}>
         <Stack direction="row" spacing={1}>
-          <FilterSchticks state={state} dispatch={dispatch} />
+          <FilterSchticks filter={filter} dispatchFilter={dispatchFilter} />
         </Stack>
 
         <Stack p={4} spacing={2}>
