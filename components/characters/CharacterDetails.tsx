@@ -19,7 +19,9 @@ import GamemasterOnly from '../GamemasterOnly'
 import DeathMarks from "./DeathMarks"
 import NameDisplay from "./NameDisplay"
 import WoundsDisplay from "./WoundsDisplay"
-import GroupedEffects from "../character_effects/GroupedEffects"
+import GroupedEffects from "../state_effects/GroupedEffects"
+import SkillsDisplay from "./SkillsDisplay"
+import SchticksDisplay from "./SchticksDisplay"
 
 import { useFight } from "../../contexts/FightContext"
 import { useToast } from "../../contexts/ToastContext"
@@ -142,7 +144,11 @@ export default function CharacterDetails({ character, editingCharacter, setEditi
                 takeDodgeAction={takeDodgeAction}
               />
             </Stack>
-            <GroupedEffects character={character} />
+            <Stack direction="row" spacing={1} alignItems="center">
+              <SchticksDisplay schticks={character.schticks} />
+              <SkillsDisplay skills={character.skills} />
+              <GroupedEffects character={character} />
+            </Stack>
           </GamemasterOnly>
         </Stack>
       <ActionModal open={openAction}

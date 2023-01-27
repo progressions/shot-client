@@ -52,7 +52,7 @@ export default function EditCharacter({ character:initialCharacter }: any) {
 
       return () => clearTimeout(timer)
     }
-  }, [edited, character, dispatch, toastSuccess, toastError])
+  }, [edited, character, dispatch, toastSuccess, toastError, client])
 
   async function handleSubmit(event: any) {
     event.preventDefault()

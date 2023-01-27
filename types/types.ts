@@ -90,6 +90,7 @@ export interface Vehicle {
   action_values: VehicleActionValues
   description: any
   schticks: Schtick[]
+  skills: any
   user?: User
   created_at?: string
   updated_at?: string
@@ -107,6 +108,7 @@ export interface Person {
   action_values: ActionValues
   description: any
   schticks: Schtick[]
+  skills: any
   user?: User
   created_at?: string
   updated_at?: string
@@ -222,7 +224,8 @@ export const defaultCharacter:Person = {
     "Appearance": "",
     "Background": ""
   },
-  schticks: []
+  schticks: [],
+  skills: {}
 }
 
 export const defaultVehicle:Vehicle = {
@@ -246,7 +249,8 @@ export const defaultVehicle:Vehicle = {
     Faction: ""
   },
   description: {},
-  schticks: []
+  schticks: [],
+  skills: {}
 }
 
 export const defaultFight:Fight = {

@@ -14,7 +14,7 @@ export default function Effects({ effects, severity }: any) {
   const [anchorEl, setAnchorEl] = useState(null)
 
   const { fight, setFight, reloadFight } = useFight()
-  const { jwt, client } = useClient()
+  const { client } = useClient()
   const { toastError, toastSuccess } = useToast()
 
   const closePopover = () => {
