@@ -32,7 +32,7 @@ export default function EditCharacter({ character:initialCharacter }: any) {
 
   useEffect(() => {
     if (edited) {
-      async function saveCharacter() {
+      const saveCharacter = async () => {
         dispatch({ type: "submit" })
 
         const response = await client.updateCharacter(character)

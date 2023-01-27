@@ -36,7 +36,7 @@ export default function Faction({ faction, onChange }: any) {
     }
   }
 
-  function changeFaction(event: any, newValue) {
+  function changeFaction(event: any, newValue: any) {
     onChange({...event, target: {...event.target, name: "Faction", value: newValue}}, newValue)
   }
 
