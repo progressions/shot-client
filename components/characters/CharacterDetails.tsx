@@ -19,7 +19,7 @@ import GamemasterOnly from '../GamemasterOnly'
 import DeathMarks from "./DeathMarks"
 import NameDisplay from "./NameDisplay"
 import WoundsDisplay from "./WoundsDisplay"
-import GroupedEffects from "../character_effects/GroupedEffects"
+import GroupedEffects from "../state_effects/GroupedEffects"
 
 import { useFight } from "../../contexts/FightContext"
 import { useToast } from "../../contexts/ToastContext"
