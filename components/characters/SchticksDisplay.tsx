@@ -26,7 +26,7 @@ export default function SchticksDisplay({ schticks }: any) {
         </IconButton>
       </Tooltip>
       <Popover anchorEl={anchorEl} open={open} onClose={closePopover} anchorOrigin={{vertical: 'bottom', horizontal: 'center'}}>
-        <Box p={2} sx={{backgroundColor: colors.lightBlue[100]}}>
+        <Box p={2} sx={{width: 500, backgroundColor: colors.lightBlue[100]}}>
           {
             schticks.map((schtick: any) => (
               <Typography key={schtick.id} gutterBottom sx={{color: "primary.dark"}}><strong>{schtick.title}</strong>: {schtick.description}</Typography>
