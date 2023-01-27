@@ -88,7 +88,7 @@ export default function CampaignsIndex(data: any) {
           <Container maxWidth="md">
             <Typography variant="h1" gutterBottom>Schticks</Typography>
             { !loading && <>
-              <ButtonBar>
+              <ButtonBar sx={{height: 80}}>
                 <FilterSchticks filter={filter} dispatchFilter={dispatchFilter} />
                 <CreateSchtickButton filter={filter} dispatchFilter={dispatchFilter} />
               </ButtonBar>
