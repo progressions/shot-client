@@ -29,7 +29,9 @@ export default function SchticksDisplay({ schticks }: any) {
         <Box p={2} sx={{width: 500, backgroundColor: colors.lightBlue[100]}}>
           {
             schticks.map((schtick: any) => (
-              <Typography key={schtick.id} gutterBottom sx={{color: "primary.dark"}}><strong>{schtick.title}</strong>: {schtick.description}</Typography>
+              <Typography key={schtick.id} gutterBottom sx={{color: "primary.dark"}}>
+                <Box component="span" sx={{color: schtick.color, fontWeight: "bold"}}>{schtick.title}</Box>: {schtick.description}
+              </Typography>
             ))
           }
         </Box>
