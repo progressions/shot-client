@@ -19,6 +19,10 @@ function rowMap(array: any[], itemsPerRow: number) {
   return rows
 }
 
+export function knownSkills(skills) {
+  return Object.entries(skills).filter(([name, value]: any) => (value > 0))
+}
+
 export default function Skills({ skills, onChange }: any) {
 
   const knownSkills = useMemo(() => {
