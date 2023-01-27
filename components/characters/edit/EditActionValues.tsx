@@ -26,7 +26,7 @@ export default function EditActionValues({ character, onChange }: EditActionValu
           </StyledSelect>
           <PlayerTypeOnly character={character} except="Mook">
             <StyledSelect select fullWidth label="Secondary Attack" name="SecondaryAttack" value={character.action_values["SecondaryAttack"] || ""} onChange={onChange}>
-              <MenuItem value="">None</MenuItem>
+              <MenuItem value="null">None</MenuItem>
               <MenuItem value="Guns">Guns</MenuItem>
               <MenuItem value="Martial Arts">Martial Arts</MenuItem>
               <MenuItem value="Scroungetech">Scroungetech</MenuItem>
