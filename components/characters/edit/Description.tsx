@@ -1,9 +1,10 @@
 import { Typography, Stack, TextField } from "@mui/material"
+import Subhead from "./Subhead"
 
 export default function Description({ description, onChange }: any) {
   return (
     <>
-      <Typography variant="h6">Description</Typography>
+      <Subhead>Description</Subhead>
       <TextField name="Nicknames" label="Nicknames" value={description["Nicknames"]} onChange={onChange} />
       <Stack direction="row" spacing={1}>
         <TextField name="Age" label="Age" value={description["Age"]} onChange={onChange} />

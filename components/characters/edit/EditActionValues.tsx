@@ -1,5 +1,6 @@
 import { Stack, TextField, MenuItem } from "@mui/material"
 import PlayerTypeOnly from "../../PlayerTypeOnly"
+import Subhead from "./Subhead"
 
 import type { Character } from "../../../types/types"
 
@@ -11,6 +12,7 @@ interface EditActionValuesProps {
 export default function EditActionValues({ character, onChange }: EditActionValuesProps) {
   return (
     <>
+      <Subhead>Action Values</Subhead>
       <Stack direction="row" spacing={2}>
         <TextField select fullWidth label="Main Attack" name="MainAttack" value={character.action_values["MainAttack"] || "Guns"} onChange={onChange}>
           <MenuItem value="Guns">Guns</MenuItem>

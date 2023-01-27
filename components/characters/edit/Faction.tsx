@@ -36,6 +36,10 @@ export default function Faction({ faction, onChange }: any) {
     }
   }
 
+  function changeFaction(event: any, newValue) {
+    onChange({...event, target: {...event.target, name: "Faction", value: newValue}}, newValue)
+  }
+
   return (
     <>
       <Stack direction="row" spacing={1}>
@@ -45,7 +49,7 @@ export default function Faction({ faction, onChange }: any) {
           options={factions}
           sx={{ width: 300 }}
           value={faction}
-          onChange={onChange}
+          onChange={changeFaction}
           onOpen={getFactions}
           openOnFocus
           renderInput={(params) => <TextField autoFocus name="Faction" {...params} label="Faction" />}

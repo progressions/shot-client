@@ -2,6 +2,7 @@ import { Button, Box, Stack, Typography } from "@mui/material"
 import SchtickCard from "./SchtickCard"
 import NewSchtick from "./NewSchtick"
 import { useClient } from "../../contexts/ClientContext"
+import Subhead from "../characters/edit/Subhead"
 
 import { useState, useMemo } from "react"
 
@@ -54,6 +55,7 @@ export default function Schticks({ filter, dispatchFilter }: any) {
 
   return (
     <>
+      <Subhead>Schticks</Subhead>
       <Stack spacing={1}>
         { meta?.prev_page && <Box width="100%"><Button sx={{width: "100%"}} onClick={loadPrevious} variant="contained" color="primary">Previous</Button></Box> }
         { outputRows }

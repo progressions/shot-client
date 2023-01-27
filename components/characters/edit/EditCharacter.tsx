@@ -14,6 +14,7 @@ import Skills from "./Skills"
 
 import { useEffect } from "react"
 
+import Subhead from "./Subhead"
 import { Typography, Box, Stack, TextField, FormControlLabel, Switch, Button, InputAdornment } from "@mui/material"
 import FavoriteIcon from '@mui/icons-material/Favorite'
 import PeopleIcon from '@mui/icons-material/People'
@@ -28,6 +29,30 @@ export default function EditCharacter({ character:initialCharacter }: any) {
 
   const { edited, saving, character } = state
   const { schticks, skills, description, action_values } = character
+
+  useEffect(() => {
+    if (edited) {
+      async function saveCharacter() {
+        dispatch({ type: "submit" })
+
+        const response = await client.updateCharacter(character)
+        if (response.status === 200) {
+          const data = await response.json()
+          dispatch({ type: "replace", character: data })
+          toastSuccess("Character updated.")
+        } else {
+          dispatch({ type: "reset" })
+          toastError()
+        }
+      }
+
+      const timer = setTimeout(() => {
+        saveCharacter().catch(console.error)
+      }, 5000)
+
+      return () => clearTimeout(timer)
+    }
+  }, [edited, character, dispatch, toastSuccess, toastError])
 
   async function handleSubmit(event: any) {
     event.preventDefault()
@@ -128,21 +153,14 @@ export default function EditCharacter({ character:initialCharacter }: any) {
             <TextField label="Impairments" type="number" name="impairments" value={character.impairments || ''} onChange={handleChange} />
             <ColorPicker character={character} onChange={handleChange} dispatch={dispatch} />
           </Stack>
-          <Typography variant="h6">Action Values</Typography>
           <EditActionValues character={character} onChange={handleAVChange as React.ChangeEventHandler} />
           <PlayerTypeOnly character={character} only="PC">
-            <Stack direction="row" spacing={2}>
-              <FortuneSelect character={character} onChange={handleAVChange as React.ChangeEventHandler} />
-            </Stack>
+          <FortuneSelect character={character} onChange={handleAVChange as React.ChangeEventHandler} />
           </PlayerTypeOnly>
           <Skills skills={skills} onChange={handleSkillsChange} />
           <Description description={description} onChange={handleDescriptionChange} />
           <Schticks schticks={schticks} filter={filter} state={state} dispatch={dispatch} />
           <SchtickSelector />
-          <Stack spacing={2} direction="row">
-            <Button variant="outlined" color="secondary" disabled={saving || !edited} onClick={cancelForm}>Cancel</Button>
-            <Button variant="contained" color="primary" type="submit" disabled={saving || !edited}>Save Changes</Button>
-          </Stack>
         </Stack>
       </Box>
     </>

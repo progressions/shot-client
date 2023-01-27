@@ -1,6 +1,7 @@
 import { Typography, Box, Stack, Autocomplete, TextField } from "@mui/material"
 import SkillField from "./SkillField"
 import NewSkillButton from "./NewSkillButton"
+import Subhead from "./Subhead"
 
 import { useMemo } from "react"
 
@@ -21,7 +22,7 @@ function rowMap(array: any[], itemsPerRow: number) {
 export default function Skills({ skills, onChange }: any) {
 
   const knownSkills = useMemo(() => {
-    return Object.entries(skills).filter(([name, value]: any) => (value > 7))
+    return Object.entries(skills).filter(([name, value]: any) => (value > 0))
   }, [skills])
 
   const rowsOfData = rowMap(knownSkills, 6)
@@ -42,13 +43,13 @@ export default function Skills({ skills, onChange }: any) {
   return (
     <>
       <Box>
-        <Typography variant="h5" gutterBottom>Skills</Typography>
-          <Stack spacing={2}>
-            {
-              outputRows
-            }
-            <NewSkillButton />
-          </Stack>
+        <Subhead>Skills</Subhead>
+        <Stack spacing={2}>
+          {
+            outputRows
+          }
+          <NewSkillButton />
+        </Stack>
       </Box>
     </>
   )
