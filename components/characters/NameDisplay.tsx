@@ -1,4 +1,4 @@
-import { Stack, Box, Typography } from "@mui/material"
+import { Link, Stack, Box, Typography } from "@mui/material"
 import DirectionsCarIcon from "@mui/icons-material/DirectionsCar"
 import { IoSkull, IoSkullOutline } from "react-icons/io5"
 import DeathMarks from "./DeathMarks"
@@ -54,7 +54,9 @@ export default function NameDisplay({ character, editCharacter, deleteCharacter 
         <Box onMouseEnter={showButtons} onMouseLeave={hideButtons}>
           <Stack direction="row" spacing={1} alignItems="baseline">
             <Typography variant="h4" sx={{fontWeight: 'bold', overflow: "hidden", textOverflow: "ellipsis", width: "100%"}}>
-              { character.name }
+              <Link color="inherit" href={`/characters/${character.id}`} target="_blank">
+                { character.name }
+              </Link>
             </Typography>
             <GamemasterOnly user={session?.data?.user} character={character}>
               <Box visibility={open ? "visible" : "hidden"}>
