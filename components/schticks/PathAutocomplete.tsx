@@ -23,7 +23,7 @@ export default function PathAutocomplete({ filter, dispatchFilter }: any) {
       onChange={selectPath}
       openOnFocus
       getOptionLabel={getOptionLabel}
-      renderInput={(params) => <StyledSelect autoFocus helperText={helperText} {...params} label="Path" />}
+      renderInput={(params: any) => <StyledSelect autoFocus helperText={helperText} {...params} label="Path" />}
     />
   )
 }

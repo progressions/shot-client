@@ -23,8 +23,8 @@ export default function SchtickAutocomplete({ filter, dispatchFilter }: any) {
       sx={{ width: 300 }}
       onChange={handleSelect}
       getOptionLabel={getOptionLabel}
-      isOptionEqualToValue={(option, value) => option.id === value.id}
-      renderInput={(params) => <StyledSelect helperText={helperText} {...params} label="Schtick" />}
+      isOptionEqualToValue={(option: any, value: any) => option.id === value.id}
+      renderInput={(params: any) => <StyledSelect helperText={helperText} {...params} label="Schtick" />}
     />
   )
 }

@@ -12,7 +12,7 @@ const SelectProps = {
   }
 }
 
-const PaperComponent=({ children }) => (
+const PaperComponent=({ children }: any) => (
   <Paper style={{ background: colors.blueGrey[100], color: "black" }}><Typography>{children}</Typography></Paper>
 )
 

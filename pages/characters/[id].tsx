@@ -45,7 +45,7 @@ export async function getServerSideProps<GetServerSideProps>({ req, res, params 
   }
 }
 
-const PaperComponent=({ children }) => (
+const PaperComponent=({ children }: any) => (
   <Paper style={{ background: colors.blueGrey[100], color: "black" }}><Typography>{children}</Typography></Paper>
 )
 
