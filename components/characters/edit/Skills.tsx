@@ -19,7 +19,7 @@ function rowMap(array: any[], itemsPerRow: number) {
   return rows
 }
 
-export function knownSkills(skills) {
+export function knownSkills(skills: any) {
   return Object.entries(skills).filter(([name, value]: any) => (value > 0))
 }
 

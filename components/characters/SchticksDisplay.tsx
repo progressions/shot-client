@@ -1,9 +1,8 @@
+import LightbulbIcon from '@mui/icons-material/Lightbulb'
 import { colors, Typography, Box, Popover, Tooltip, IconButton } from "@mui/material"
-import ArticleIcon from '@mui/icons-material/Article'
 import { useState } from "react"
-import { knownSkills } from "./edit/Skills"
 
-export default function SkillsDisplay({ skills }: any) {
+export default function SchticksDisplay({ schticks }: any) {
   const [anchorEl, setAnchorEl] = useState(null)
   const [open, setOpen] = useState(false)
 
@@ -12,27 +11,25 @@ export default function SkillsDisplay({ skills }: any) {
     setOpen(false)
   }
 
-  function showSkills(event: any) {
+  function showSchticks(event: any) {
     setAnchorEl(event.target)
     setOpen(true)
   }
 
-  const skillValues = knownSkills(skills)
-
-  if (!skillValues.length) return <></>
+  if (!schticks.length) return <></>
 
   return (
     <>
-      <Tooltip title="Skills">
-        <IconButton onMouseEnter={showSkills} color="inherit">
-          <ArticleIcon />
+      <Tooltip title="Schticks">
+        <IconButton onMouseEnter={showSchticks} color="inherit">
+          <LightbulbIcon />
         </IconButton>
       </Tooltip>
       <Popover anchorEl={anchorEl} open={open} onClose={closePopover} anchorOrigin={{vertical: 'bottom', horizontal: 'center'}}>
         <Box p={2} sx={{backgroundColor: colors.lightBlue[100]}}>
           {
-            skillValues.map(([name, value]: any) => (
-              <Typography key={name} gutterBottom sx={{color: "primary.dark"}}><strong>{name}</strong>: {value}</Typography>
+            schticks.map((schtick: any) => (
+              <Typography key={schtick.id} gutterBottom sx={{color: "primary.dark"}}><strong>{schtick.title}</strong>: {schtick.description}</Typography>
             ))
           }
         </Box>
