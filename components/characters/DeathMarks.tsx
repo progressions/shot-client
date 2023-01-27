@@ -5,13 +5,16 @@ import { IoSkull, IoSkullOutline } from "react-icons/io5"
 import type { Character } from "../../types/types"
 
 const StyledRating = styled(Rating)({
+  '& .MuiRating-icon': {
+    color: '#fff',
+  },
   '& .MuiRating-iconFilled': {
-    color: '#000',
+    color: '#fff',
   },
   '& .MuiRating-iconHover': {
-    color: '#333',
+    color: '#ddd',
   },
-});
+})
 
 interface DeathMarksProps {
   character: Character

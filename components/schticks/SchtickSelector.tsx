@@ -6,6 +6,7 @@ import { useToast } from "../../contexts/ToastContext"
 import { useCharacter } from "../../contexts/CharacterContext"
 import FilterSchticks from "./FilterSchticks"
 import { initialFilter, filterReducer } from "./filterReducer"
+import { StyledTextField } from "../characters/edit/StyledFields"
 
 export default function SchtickSelector({ }) {
   const [filter, dispatchFilter] = useReducer(filterReducer, initialFilter)
@@ -49,11 +50,11 @@ export default function SchtickSelector({ }) {
         </Stack>
 
         <Stack p={4} spacing={2}>
-          <TextField name="title" label="Title" value={schtick?.title || ""} InputProps={{readOnly: true}} />
-          <TextField name="category" label="Category" value={schtick?.category || ""} InputProps={{readOnly: true}} />
-          <TextField name="path" label="Path" value={schtick?.path || ""} InputProps={{readOnly: true}} />
-          <TextField name="description" multiline rows={8} label="Description" value={schtick?.description || ""} InputProps={{readOnly: true}} />
-          <TextField name="prerequisite" label="Prerequisite" value={schtick?.prerequisite?.title || ""} InputProps={{readOnly: true}} />
+          <StyledTextField name="title" label="Title" value={schtick?.title || ""} InputProps={{readOnly: true}} />
+          <StyledTextField name="category" label="Category" value={schtick?.category || ""} InputProps={{readOnly: true}} />
+          <StyledTextField name="path" label="Path" value={schtick?.path || ""} InputProps={{readOnly: true}} />
+          <StyledTextField name="description" multiline rows={8} label="Description" value={schtick?.description || ""} InputProps={{readOnly: true}} />
+          <StyledTextField name="prerequisite" label="Prerequisite" value={schtick?.prerequisite?.title || ""} InputProps={{readOnly: true}} />
           <Stack alignItems="flex-end" spacing={2} direction="row">
             <Button variant="outlined" color="secondary" disabled={saving} onClick={cancelForm}>Cancel</Button>
             <Button variant="contained" color="primary" onClick={handleSubmit} disabled={saving}>Save</Button>

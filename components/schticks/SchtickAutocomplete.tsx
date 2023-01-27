@@ -1,4 +1,5 @@
-import { Autocomplete, TextField } from '@mui/material'
+import { Paper, Autocomplete, TextField } from '@mui/material'
+import { StyledAutocomplete, StyledSelect } from "../characters/edit/StyledFields"
 
 export default function SchtickAutocomplete({ filter, dispatchFilter }: any) {
   const { loading, schtick, schticks } = filter
@@ -14,7 +15,7 @@ export default function SchtickAutocomplete({ filter, dispatchFilter }: any) {
   const helperText = (schticks.length) ? "": "There are no available schticks."
 
   return (
-    <Autocomplete
+    <StyledAutocomplete
       freeSolo
       value={schtick || {id: null, title: ""}}
       disabled={loading || !schticks.length}
@@ -23,7 +24,7 @@ export default function SchtickAutocomplete({ filter, dispatchFilter }: any) {
       onChange={handleSelect}
       getOptionLabel={getOptionLabel}
       isOptionEqualToValue={(option, value) => option.id === value.id}
-      renderInput={(params) => <TextField helperText={helperText} {...params} label="Schtick" />}
+      renderInput={(params) => <StyledSelect helperText={helperText} {...params} label="Schtick" />}
     />
   )
 }

@@ -15,12 +15,13 @@ import Skills from "./Skills"
 import { useEffect } from "react"
 
 import Subhead from "./Subhead"
-import { Typography, Box, Stack, TextField, FormControlLabel, Switch, Button, InputAdornment } from "@mui/material"
+import { colors, Typography, Box, Stack, TextField, FormControlLabel, Switch, Button, InputAdornment } from "@mui/material"
 import FavoriteIcon from '@mui/icons-material/Favorite'
 import PeopleIcon from '@mui/icons-material/People'
 
 import PlayerTypeOnly from "../../PlayerTypeOnly"
 import DeathMarks from "../DeathMarks"
+import { StyledTextField } from "./StyledFields"
 
 export default function EditCharacter({ character:initialCharacter }: any) {
   const { client } = useClient()
@@ -129,16 +130,16 @@ export default function EditCharacter({ character:initialCharacter }: any) {
       <Box component="form" onSubmit={handleSubmit}>
         <Stack spacing={2}>
           <Stack direction="row" spacing={1}>
-            <TextField name="name" label="Name" required autoFocus fullWidth onChange={handleChange} value={character.name} />
+            <StyledTextField name="name" label="Name" required autoFocus fullWidth onChange={handleChange} value={character.name} />
             <Faction faction={action_values["Faction"]} onChange={handleAVChange as any} />
             <FormControlLabel label="Active" name="active" control={<Switch checked={character.active} />} onChange={handleCheck} />
           </Stack>
           <Stack direction="row" spacing={1}>
             <CharacterType value={action_values.Type} onChange={handleAVChange} />
-            <TextField name="Archetype" label="Archetype" autoFocus fullWidth onChange={handleAVChange as React.ChangeEventHandler} value={action_values.Archetype} />
+            <StyledTextField name="Archetype" label="Archetype" autoFocus fullWidth onChange={handleAVChange as React.ChangeEventHandler} value={action_values.Archetype} />
           </Stack>
           <Stack spacing={2} direction="row" alignItems='center'>
-            <TextField label={woundsLabel}
+            <StyledTextField label={woundsLabel}
               type="number"
               name="Wounds"
               value={character.action_values?.['Wounds'] || ''}
@@ -150,12 +151,12 @@ export default function EditCharacter({ character:initialCharacter }: any) {
             <PlayerTypeOnly character={character} only="PC">
               <DeathMarks character={character} onChange={handleDeathMarks} />
             </PlayerTypeOnly>
-            <TextField label="Impairments" type="number" name="impairments" value={character.impairments || ''} onChange={handleChange} />
+            <StyledTextField label="Impairments" type="number" name="impairments" value={character.impairments || ''} onChange={handleChange} />
             <ColorPicker character={character} onChange={handleChange} dispatch={dispatch} />
           </Stack>
           <EditActionValues character={character} onChange={handleAVChange as React.ChangeEventHandler} />
           <PlayerTypeOnly character={character} only="PC">
-          <FortuneSelect character={character} onChange={handleAVChange as React.ChangeEventHandler} />
+            <FortuneSelect character={character} onChange={handleAVChange as React.ChangeEventHandler} />
           </PlayerTypeOnly>
           <Skills skills={skills} onChange={handleSkillsChange} />
           <Description description={description} onChange={handleDescriptionChange} />

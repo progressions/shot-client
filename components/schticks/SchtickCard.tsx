@@ -74,8 +74,6 @@ export default function SchtickCard({ schtick, dispatchFilter }: any) {
   // Maybe a specific color for each "path"
   const avatar = <Avatar sx={{bgcolor: schtick.color || 'secondary', color: "white"}} variant="rounded">{schtick.category[0]}</Avatar>
 
-  console.log(schtick.color)
-
   return (
     <SchtickCardBase
       title={schtick.title}

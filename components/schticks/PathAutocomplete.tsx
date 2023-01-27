@@ -1,4 +1,5 @@
 import { Autocomplete, TextField } from "@mui/material"
+import { StyledAutocomplete, StyledSelect } from "../characters/edit/StyledFields"
 
 export default function PathAutocomplete({ filter, dispatchFilter }: any) {
   const { loading, path, paths } = filter
@@ -14,7 +15,7 @@ export default function PathAutocomplete({ filter, dispatchFilter }: any) {
   const helperText = (paths.length) ? "" : "There are no available paths."
 
   return (
-    <Autocomplete
+    <StyledAutocomplete
       value={path || null}
       disabled={loading || !paths.length}
       options={paths}
@@ -22,7 +23,7 @@ export default function PathAutocomplete({ filter, dispatchFilter }: any) {
       onChange={selectPath}
       openOnFocus
       getOptionLabel={getOptionLabel}
-      renderInput={(params) => <TextField autoFocus helperText={helperText} {...params} label="Path" />}
+      renderInput={(params) => <StyledSelect autoFocus helperText={helperText} {...params} label="Path" />}
     />
   )
 }

@@ -3,7 +3,7 @@ import Head from 'next/head'
 
 import { authOptions } from '../api/auth/[...nextauth]'
 import { unstable_getServerSession } from "next-auth/next"
-import { Typography, Paper, Container } from "@mui/material"
+import { colors, Typography, Paper, Container } from "@mui/material"
 
 import { CharacterProvider } from "../../contexts/CharacterContext"
 import EditCharacter from "../../components/characters/edit/EditCharacter"
@@ -45,6 +45,10 @@ export async function getServerSideProps<GetServerSideProps>({ req, res, params 
   }
 }
 
+const PaperComponent=({ children }) => (
+  <Paper style={{ background: colors.blueGrey[100], color: "black" }}><Typography>{children}</Typography></Paper>
+)
+
 export default function CharacterView({ character }: any) {
   return (
     <>
@@ -56,7 +60,7 @@ export default function CharacterView({ character }: any) {
       </Head>
       <main>
         <Layout>
-          <Container maxWidth="md" component={Paper} sx={{marginTop: 2, py: 2}}>
+          <Container maxWidth="md" component={Paper} sx={{backgroundColor: colors.blueGrey[300], color: "black", marginTop: 2, py: 2}}>
             <Typography variant="h2" gutterBottom>Edit Character</Typography>
             <CharacterProvider character={character}>
               <EditCharacter character={character} />

@@ -1,8 +1,7 @@
 import { useClient } from "../../../contexts/ClientContext"
-
 import { TextField, Stack, Autocomplete } from "@mui/material"
-
 import { useEffect, useReducer } from "react"
+import { StyledAutocomplete, StyledTextField } from "./StyledFields"
 
 const initialState = {
   loading: false,
@@ -43,7 +42,7 @@ export default function Faction({ faction, onChange }: any) {
   return (
     <>
       <Stack direction="row" spacing={1}>
-        <Autocomplete
+        <StyledAutocomplete
           disabled={loading}
           freeSolo
           options={factions}
@@ -52,7 +51,7 @@ export default function Faction({ faction, onChange }: any) {
           onChange={changeFaction}
           onOpen={getFactions}
           openOnFocus
-          renderInput={(params) => <TextField autoFocus name="Faction" {...params} label="Faction" />}
+          renderInput={(params) => <StyledTextField autoFocus name="Faction" {...params} label="Faction" />}
         />
       </Stack>
     </>

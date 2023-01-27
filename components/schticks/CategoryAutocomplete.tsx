@@ -1,5 +1,6 @@
 import { Autocomplete, TextField } from "@mui/material"
 import { useMemo } from "react"
+import { StyledAutocomplete, StyledSelect } from "../characters/edit/StyledFields"
 
 export default function CategoryAutocomplete({ filter, dispatchFilter }: any) {
   const { loading, category, categories, path } = filter
@@ -18,7 +19,7 @@ export default function CategoryAutocomplete({ filter, dispatchFilter }: any) {
 
   return (
     <>
-      <Autocomplete
+      <StyledAutocomplete
         value={category || null}
         disabled={loading || !categories?.length}
         options={categories || []}
@@ -26,7 +27,7 @@ export default function CategoryAutocomplete({ filter, dispatchFilter }: any) {
         onChange={selectCategory}
         openOnFocus
         getOptionLabel={getOptionLabel}
-        renderInput={(params) => <TextField autoFocus helperText={helperText} {...params} label="Category" />}
+        renderInput={(params) => <StyledSelect autoFocus helperText={helperText} {...params} label="Category" />}
       />
     </>
   )

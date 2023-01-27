@@ -1,5 +1,6 @@
 import { IconButton, Typography, TextField } from "@mui/material"
 import ClearIcon from '@mui/icons-material/Clear'
+import { StyledTextField } from "./StyledFields"
 
 export default function SkillField({ name, value, onChange }: any) {
 
@@ -17,9 +18,9 @@ export default function SkillField({ name, value, onChange }: any) {
 
   return (
     <>
-      <TextField type="number" disabled={!valid} onChange={handleChange} label={name} name={name} value={value} sx={{width: 80}} />
+      <StyledTextField type="number" disabled={!valid} onChange={handleChange} label={name} name={name} value={value} sx={{width: 80}} />
       <IconButton onClick={removeSkill}>
-        <ClearIcon />
+        <ClearIcon sx={{color: "white"}} />
       </IconButton>
     </>
   )
