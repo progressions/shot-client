@@ -152,7 +152,7 @@ export default function SelectCharacter() {
               value={value}
               onChange={handleChange}
               getOptionLabel={getOptionLabel}
-              renderInput={(params) => <StyledTextField autoFocus {...params} label="Character" />}
+              renderInput={(params: any) => <StyledTextField autoFocus {...params} label="Character" />}
             />
             <Button type="submit" size="small" variant="contained">
               <PersonAddIcon />

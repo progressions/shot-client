@@ -62,7 +62,7 @@ export default function NewSkillButton({ }) {
             onChange={selectSkill}
             openOnFocus
             getOptionLabel={getOptionLabel}
-            renderInput={(params) => <StyledTextField autoFocus helperText={helperText} {...params} label="Skill" error={!valid} />}
+            renderInput={(params: any) => <StyledTextField autoFocus helperText={helperText} {...params} label="Skill" error={!valid} />}
           />
         <StyledTextField value={skill?.value || ""} type="number" name="value" label="Value" onChange={handleValue} sx={{width: 80}} />
         <Typography sx={{paddingTop: 1}}>
