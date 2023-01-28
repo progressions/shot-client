@@ -1,9 +1,11 @@
 import { createContext, useContext } from "react"
 
 export interface LocalStorageContextType {
+  saveLocally: (key: string, value: any) => any
+  getLocally: (key: string) => any
 }
 
-const LocalStorageContext = createContext<LocalStorageContextType>()
+const LocalStorageContext = createContext<LocalStorageContextType>({saveLocally: () => true, getLocally: () => true})
 
 export function LocalStorageProvider({ children }: any) {
 

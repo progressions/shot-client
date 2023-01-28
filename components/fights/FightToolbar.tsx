@@ -31,7 +31,7 @@ export default function FightToolbar({ showHidden, setShowHidden }: FightToolbar
   useEffect(() => {
     const showHiddenShots = getLocally("showHiddenShots") || false
     setShowHidden(showHiddenShots)
-  }, [])
+  }, [getLocally, setShowHidden])
 
   const show = (event: React.SyntheticEvent<Element, Event>, checked: boolean) => {
     saveLocally("showHiddenShots", checked)

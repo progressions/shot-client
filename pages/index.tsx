@@ -88,7 +88,7 @@ export default function Home({ currentCampaign, fights:initialFights }: HomeProp
   useEffect(() => {
     const showHiddenFights = getLocally("showHiddenFights") || false
     setShowHidden(showHiddenFights)
-  }, [])
+  }, [getLocally, setShowHidden])
 
   const filterFights = (fights: Fight[], showHidden: boolean) => {
     if (showHidden) return fights
