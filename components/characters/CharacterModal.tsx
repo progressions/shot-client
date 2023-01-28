@@ -1,7 +1,9 @@
 import { MouseEventHandler, useState, useEffect } from 'react'
-import { FormControl, Switch, Tooltip, Typography, DialogActions, FormControlLabel, MenuItem, Checkbox, InputAdornment, Dialog, DialogTitle, DialogContent, DialogContentText, Box, Stack, TextField, Button, Paper, Popover } from '@mui/material'
+import { colors, FormControl, Switch, Tooltip, Typography, DialogActions, FormControlLabel, MenuItem, Checkbox, InputAdornment, Dialog, DialogTitle, DialogContent, DialogContentText, Box, Stack, TextField, Button, Paper, Popover } from '@mui/material'
 import FavoriteIcon from '@mui/icons-material/Favorite'
 import PeopleIcon from '@mui/icons-material/People'
+import { StyledTextField, StyledSelect } from "./edit/StyledFields"
+import { SaveCancelButtons, SaveButton, CancelButton, StyledDialog } from "../StyledDialog"
 
 import Router from 'next/router'
 
@@ -132,69 +134,61 @@ export default function CharacterModal({ open, setOpen, character:activeCharacte
 
   return (
     <>
-      <Dialog
+      <StyledDialog
         open={!!(open.id || open.new) && open.category === "character"}
         onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-        disableRestoreFocus
+        title={dialogTitle}
       >
-        <DialogTitle>{dialogTitle}</DialogTitle>
-        <Box component="form" onSubmit={handleSubmit} pb={1}>
-          <DialogContent>
-            <Stack spacing={2}>
-              <Stack direction="row" spacing={2}>
-                <CharacterType value={character.action_values?.['Type'] as string || ''} onChange={handleAVChange} />
-                { character.action_values["Type"] === "PC" && <TextField name="Archetype" label="Archetype" fullWidth value={character.action_values["Archetype"]} onChange={handleAVChange} /> }
-                <FormControlLabel label="Active" name="active" control={<Switch checked={character.active} />} onChange={handleCheck} />
-              </Stack>
-              <Stack direction="row" spacing={2}>
-                <TextField autoFocus label="Name" variant="filled" size="medium" sx={{paddingBottom: 2}} fullWidth required name="name" value={character.name} onChange={handleChange} />
-                { fight?.id &&
-                <TextField label="Shot" type="number" name="current_shot" value={character.current_shot === null ? "" : character.current_shot} onChange={handleChange} sx={{width: 80}} /> }
-              </Stack>
-              <Stack spacing={2} direction="row" alignItems='center'>
-                <TextField label={woundsLabel}
-                  type="number"
-                  name="Wounds"
-                  value={character.action_values?.['Wounds'] || ''}
-                  onChange={handleAVChange}
-                  InputProps={
-                    {startAdornment: woundsAdornment()}
-                  }
-                />
-                <PlayerTypeOnly character={character} only="PC">
-                  <DeathMarks character={character} onChange={handleDeathMarks} />
-                </PlayerTypeOnly>
-                <TextField label="Impairments" type="number" name="impairments" value={character.impairments || ''} onChange={handleChange} />
-                <ColorPicker character={character} onChange={handleChange} setCharacter={setCharacter} />
-              </Stack>
-              <Typography variant="h6">Action Values</Typography>
-              <EditActionValues character={character} onChange={handleAVChange} />
+        <DialogContent>
+          <Stack spacing={2}>
+            <Stack direction="row" spacing={2}>
+              <CharacterType value={character.action_values?.['Type'] as string || ''} onChange={handleAVChange} />
+              { character.action_values["Type"] === "PC" && <StyledTextField name="Archetype" label="Archetype" fullWidth value={character.action_values["Archetype"]} onChange={handleAVChange} /> }
+              <FormControlLabel label="Active" name="active" control={<Switch checked={character.active} />} onChange={handleCheck} />
+            </Stack>
+            <Stack direction="row" spacing={2}>
+              <StyledTextField autoFocus label="Name" size="medium" sx={{paddingBottom: 2}} fullWidth required name="name" value={character.name} onChange={handleChange} />
+              { fight?.id &&
+              <StyledTextField label="Shot" type="number" name="current_shot" value={character.current_shot === null ? "" : character.current_shot} onChange={handleChange} sx={{width: 80}} /> }
+            </Stack>
+            <Stack spacing={2} direction="row" alignItems='center'>
+              <StyledTextField label={woundsLabel}
+                type="number"
+                name="Wounds"
+                value={character.action_values?.['Wounds'] || ''}
+                onChange={handleAVChange}
+                InputProps={
+                  {startAdornment: woundsAdornment()}
+                }
+              />
               <PlayerTypeOnly character={character} only="PC">
-                <Stack direction="row" spacing={2}>
-                  <FortuneSelect character={character} onChange={handleAVChange} />
-                </Stack>
+                <DeathMarks character={character} onChange={handleDeathMarks} />
               </PlayerTypeOnly>
+              <StyledTextField label="Impairments" type="number" name="impairments" value={character.impairments || ''} onChange={handleChange} />
+              <ColorPicker character={character} onChange={handleChange} setCharacter={setCharacter} />
             </Stack>
-          </DialogContent>
-          <DialogActions>
-            <Stack spacing={2} direction="row">
-              <PlayerTypeOnly character={character} except="Mook">
-                <Tooltip title="Full Heal">
-                  <Button variant="outlined" onClick={healCharacter}>
-                    <FavoriteIcon color="error" />
-                  </Button>
-                </Tooltip>
-              </PlayerTypeOnly>
-              <Stack spacing={2} direction="row">
-                <Button variant="outlined" disabled={saving} onClick={cancelForm}>Cancel</Button>
-                <Button variant="contained" type="submit" disabled={saving}>Save Changes</Button>
+            <Typography variant="h6">Action Values</Typography>
+            <EditActionValues character={character} onChange={handleAVChange} />
+            <PlayerTypeOnly character={character} only="PC">
+              <Stack direction="row" spacing={2}>
+                <FortuneSelect character={character} onChange={handleAVChange} />
               </Stack>
-            </Stack>
-          </DialogActions>
-        </Box>
-      </Dialog>
+            </PlayerTypeOnly>
+          </Stack>
+        </DialogContent>
+        <DialogActions>
+          <Stack spacing={2} direction="row">
+            <PlayerTypeOnly character={character} except="Mook">
+              <Tooltip title="Full Heal">
+                <Button variant="outlined" onClick={healCharacter}>
+                  <FavoriteIcon color="error" />
+                </Button>
+              </Tooltip>
+            </PlayerTypeOnly>
+            <SaveCancelButtons disabled={saving} onCancel={cancelForm} />
+          </Stack>
+        </DialogActions>
+      </StyledDialog>
     </>
   )
 }

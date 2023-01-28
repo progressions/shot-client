@@ -2,6 +2,8 @@ import { Tooltip, Divider, Grid, Stack, Dialog, DialogTitle, DialogContent, Dial
 import { useState } from 'react'
 import { rollDie, rollExplodingDie } from './dice/DiceRoller'
 import CasinoIcon from '@mui/icons-material/Casino'
+import { StyledTextField } from "./characters/edit/StyledFields"
+import { SaveCancelButtons, StyledDialog } from "./StyledDialog"
 
 interface MookRollsParams {
   count?: number,
@@ -89,13 +91,12 @@ export default function MookRolls({ count, attack, damage, icon }: MookRollsPara
   return (
     <>
       <Button variant="contained" color="primary" onClick={() => setOpen(true)}>{ buttonWithTooltip(icon) }</Button>
-      <Dialog
+      <StyledDialog
         open={open}
         onClose={handleClose}
-        disableRestoreFocus
+        onSubmit={generateRolls}
+        title="Mook Rolls"
       >
-        <Box component="form" onSubmit={generateRolls}>
-        <DialogTitle>Mook Rolls</DialogTitle>
         <DialogContent>
           <DialogContentText>
             Generate some mook rolls
@@ -103,10 +104,10 @@ export default function MookRolls({ count, attack, damage, icon }: MookRollsPara
           <Box py={2} sx={{width: 400}}>
             <Stack spacing={2}>
               <Stack direction="row" spacing={2}>
-                <TextField name="count" type="number" autoFocus value={value.count} onChange={handleChange} label="Count" required sx={{width: 150}} />
-                <TextField name="attack" type="number" value={value.attack} onChange={handleChange} label="Attack" required sx={{width: 150}} />
-                <TextField name="defense" type="number" value={value.defense} onChange={handleChange} label="Defense" required sx={{width: 150}} />
-                <TextField name="damage" type="number" value={value.damage} onChange={handleChange} label="Damage" required sx={{width: 150}} />
+                <StyledTextField name="count" type="number" autoFocus value={value.count} onChange={handleChange} label="Count" required sx={{width: 150}} />
+                <StyledTextField name="attack" type="number" value={value.attack} onChange={handleChange} label="Attack" required sx={{width: 150}} />
+                <StyledTextField name="defense" type="number" value={value.defense} onChange={handleChange} label="Defense" required sx={{width: 150}} />
+                <StyledTextField name="damage" type="number" value={value.damage} onChange={handleChange} label="Damage" required sx={{width: 150}} />
               </Stack>
             </Stack>
             <Box py={2}>
@@ -125,11 +126,9 @@ export default function MookRolls({ count, attack, damage, icon }: MookRollsPara
           </Box>
         </DialogContent>
         <DialogActions>
-          <Button variant="outlined" onClick={handleClose}>Cancel</Button>
-          <Button type="submit" variant="contained">Roll!</Button>
+          <SaveCancelButtons onCancel={handleClose} saveText="Roll!" />
         </DialogActions>
-        </Box>
-      </Dialog>
+      </StyledDialog>
     </>
   )
 }

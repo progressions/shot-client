@@ -1,6 +1,7 @@
-import { Typography, Button, Stack, Box, TextField, Autocomplete, Tooltip, IconButton } from "@mui/material"
+import { Typography, Button, Stack, Box, Tooltip, IconButton } from "@mui/material"
 import { useCharacter } from "../../../contexts/CharacterContext"
 import AddIcon from '@mui/icons-material/Add'
+import { StyledTextField, StyledAutocomplete } from "./StyledFields"
 
 import { useMemo, useState } from "react"
 
@@ -53,7 +54,7 @@ export default function NewSkillButton({ }) {
       </Box> }
       { open &&
         <Stack direction="row" spacing={2}>
-          <Autocomplete
+          <StyledAutocomplete
             value={skill?.name || null}
             disabled={!skills?.length}
             options={skills || []}
@@ -61,16 +62,16 @@ export default function NewSkillButton({ }) {
             onChange={selectSkill}
             openOnFocus
             getOptionLabel={getOptionLabel}
-            renderInput={(params) => <TextField autoFocus helperText={helperText} {...params} label="Skill" error={!valid} />}
+            renderInput={(params) => <StyledTextField autoFocus helperText={helperText} {...params} label="Skill" error={!valid} />}
           />
-        <TextField value={skill?.value || ""} type="number" name="value" label="Value" onChange={handleValue} sx={{width: 80}} />
+        <StyledTextField value={skill?.value || ""} type="number" name="value" label="Value" onChange={handleValue} sx={{width: 80}} />
         <Typography sx={{paddingTop: 1}}>
           <Button variant="contained" color="primary" onClick={addSkill}>
             Add
           </Button>
         </Typography>
         <Typography sx={{paddingTop: 1}}>
-          <Button variant="outlined" color="secondary" onClick={cancelForm}>
+          <Button variant="contained" color="secondary" onClick={cancelForm}>
             Cancel
           </Button>
         </Typography>

@@ -1,5 +1,5 @@
 import { MouseEventHandler, useState, useEffect } from 'react'
-import { Switch, FormControl, FormLabel, RadioGroup, DialogActions, DialogContent, DialogTitle, FormControlLabel, Checkbox, InputAdornment, Dialog, Box, Stack, TextField, Button, Paper, Popover } from '@mui/material'
+import { colors, Switch, FormControl, FormLabel, RadioGroup, DialogActions, DialogContent, DialogTitle, FormControlLabel, Checkbox, InputAdornment, Dialog, Box, Stack, TextField, Button, Paper, Popover } from '@mui/material'
 import FavoriteIcon from '@mui/icons-material/Favorite'
 import CommuteIcon from '@mui/icons-material/Commute'
 import CarCrashIcon from '@mui/icons-material/CarCrash'
@@ -19,6 +19,8 @@ import { useFight } from "../../contexts/FightContext"
 import { useClient } from "../../contexts/ClientContext"
 import type { Vehicle, Fight, Character, Toast, ID } from "../../types/types"
 import { defaultVehicle } from "../../types/types"
+import { StyledTextField } from "../characters/edit/StyledFields"
+import { SaveCancelButtons, StyledDialog } from "../StyledDialog"
 
 interface VehicleModalParams {
   open: Vehicle,
@@ -123,61 +125,53 @@ export default function CharacterModal({ open, setOpen, character:activeVehicle,
 
   return (
     <>
-      <Dialog
+      <StyledDialog
         open={!!(open.id || open.new) && open.category === "vehicle"}
         onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-        disableRestoreFocus
+        title={dialogTitle}
       >
-        <DialogTitle>{dialogTitle}</DialogTitle>
-        <Box component="form" onSubmit={handleSubmit} pb={1}>
-          <DialogContent>
-            <Stack spacing={2}>
-              <Stack direction="row" spacing={2}>
-                <CharacterType value={character.action_values?.['Type'] as string || ''} onChange={handleAVChange} />
-                <FormControlLabel label="Active" name="active" control={<Switch checked={character.active} />} onChange={handleCheck} />
-              </Stack>
-              <Stack direction="row" spacing={2}>
-                <TextField autoFocus label="Name" variant="filled" size="medium" sx={{paddingBottom: 2}} fullWidth required name="name" value={character.name} onChange={handleChange} />
-                { fight?.id &&
-                <TextField label="Shot" type="number" name="current_shot" value={character.current_shot === null ? '' : character.current_shot} onChange={handleChange} sx={{width: 80}} /> }
-              </Stack>
-              <Stack spacing={2} direction="row" alignItems='center'>
-                <TextField label={woundsLabel} type="number" name="Chase Points" value={character.action_values?.['Chase Points'] || ''} onChange={handleAVChange}
-                  InputProps={{startAdornment: <InputAdornment position="start"><CommuteIcon color='error' /></InputAdornment>}} />
-                <TextField label="Condition" type="number" name="Condition Points" value={character.action_values?.['Condition Points'] || ''} onChange={handleAVChange}
-                  InputProps={{startAdornment: <InputAdornment position="start"><CarCrashIcon color='error' /></InputAdornment>}} />
-                <TextField label="Impairments" type="number" name="impairments" value={character.impairments || ''} onChange={handleChange} />
-                <Button sx={{width: 2, height: 50, bgcolor: character.color, borderColor: 'primary', border: 1, borderRadius: 2}} onClick={togglePicker} />
-                <TextField id="colorPicker" label="Color" name="color" value={character.color || ''} onChange={handleChange} />
-              </Stack>
-              <Popover anchorEl={anchorEl} open={picker} onClose={() => setPicker(false)} anchorOrigin={{vertical: 'bottom', horizontal: 'center'}}>
-                <Paper>
-                  <BlockPicker color={character.color || ''} onChangeComplete={handleColor} colors={['#D0021B', '#F5A623', '#F8E71C', '#8B572A', '#7ED321', '#417505', '#BD10E0', '#9013FE', '#4A90E2', '#50E3C2', '#B8E986', '#000000', '#4A4A4A', '#9B9B9B', '#FFFFFF']} />
-                </Paper>
-              </Popover>
-              <Stack direction="row" spacing={2}>
-                <TextField label="Acceleration" type="number" sx={{width: 100}} name="Acceleration" value={character.action_values?.['Acceleration'] || ''} onChange={handleAVChange} />
-                <TextField label="Handling" type="number" sx={{width: 100}} name="Handling" value={character.action_values?.['Handling'] || ''} onChange={handleAVChange} />
-                <TextField label="Squeal" type="number" sx={{width: 100}} name="Squeal" value={character.action_values?.['Squeal'] || ''} onChange={handleAVChange} />
-                <TextField label="Frame" type="number" sx={{width: 100}} name="Frame" value={character.action_values?.['Frame'] || ''} onChange={handleAVChange} />
-                <TextField label="Crunch" type="number" sx={{width: 100}} name="Crunch" value={character.action_values?.['Crunch'] || ''} onChange={handleAVChange} />
-              </Stack>
-              <Stack direction="row" spacing={2}>
-                <PositionSelector character={character} onChange={handleAVChange} />
-                <PursuerSelector character={character} onChange={handleAVChange} />
-              </Stack>
+        <DialogContent>
+          <Stack spacing={2}>
+            <Stack direction="row" spacing={2}>
+              <CharacterType value={character.action_values?.['Type'] as string || ''} onChange={handleAVChange} />
+              <FormControlLabel label="Active" name="active" control={<Switch checked={character.active} />} onChange={handleCheck} />
             </Stack>
-          </DialogContent>
-          <DialogActions>
-            <Stack spacing={2} direction="row">
-              <Button variant="outlined" disabled={saving} onClick={cancelForm}>Cancel</Button>
-              <Button variant="contained" type="submit" disabled={saving}>Save Changes</Button>
+            <Stack direction="row" spacing={2}>
+              <StyledTextField autoFocus label="Name" variant="filled" size="medium" sx={{paddingBottom: 2}} fullWidth required name="name" value={character.name} onChange={handleChange} />
+              { fight?.id &&
+              <StyledTextField label="Shot" type="number" name="current_shot" value={character.current_shot === null ? '' : character.current_shot} onChange={handleChange} sx={{width: 80}} /> }
             </Stack>
-          </DialogActions>
-        </Box>
-      </Dialog>
+            <Stack spacing={2} direction="row" alignItems='center'>
+              <StyledTextField label={woundsLabel} type="number" name="Chase Points" value={character.action_values?.['Chase Points'] || ''} onChange={handleAVChange}
+                InputProps={{startAdornment: <InputAdornment position="start"><CommuteIcon color='error' /></InputAdornment>}} />
+              <StyledTextField label="Condition" type="number" name="Condition Points" value={character.action_values?.['Condition Points'] || ''} onChange={handleAVChange}
+                InputProps={{startAdornment: <InputAdornment position="start"><CarCrashIcon color='error' /></InputAdornment>}} />
+              <StyledTextField label="Impairments" type="number" name="impairments" value={character.impairments || ''} onChange={handleChange} />
+              <Button sx={{width: 2, height: 50, bgcolor: character.color, borderColor: 'primary', border: 1, borderRadius: 2}} onClick={togglePicker} />
+              <StyledTextField id="colorPicker" label="Color" name="color" value={character.color || ''} onChange={handleChange} />
+            </Stack>
+            <Popover anchorEl={anchorEl} open={picker} onClose={() => setPicker(false)} anchorOrigin={{vertical: 'bottom', horizontal: 'center'}}>
+              <Paper>
+                <BlockPicker color={character.color || ''} onChangeComplete={handleColor} colors={['#D0021B', '#F5A623', '#F8E71C', '#8B572A', '#7ED321', '#417505', '#BD10E0', '#9013FE', '#4A90E2', '#50E3C2', '#B8E986', '#000000', '#4A4A4A', '#9B9B9B', '#FFFFFF']} />
+              </Paper>
+            </Popover>
+            <Stack direction="row" spacing={2}>
+              <StyledTextField label="Acceleration" type="number" sx={{width: 100}} name="Acceleration" value={character.action_values?.['Acceleration'] || ''} onChange={handleAVChange} />
+              <StyledTextField label="Handling" type="number" sx={{width: 100}} name="Handling" value={character.action_values?.['Handling'] || ''} onChange={handleAVChange} />
+              <StyledTextField label="Squeal" type="number" sx={{width: 100}} name="Squeal" value={character.action_values?.['Squeal'] || ''} onChange={handleAVChange} />
+              <StyledTextField label="Frame" type="number" sx={{width: 100}} name="Frame" value={character.action_values?.['Frame'] || ''} onChange={handleAVChange} />
+              <StyledTextField label="Crunch" type="number" sx={{width: 100}} name="Crunch" value={character.action_values?.['Crunch'] || ''} onChange={handleAVChange} />
+            </Stack>
+            <Stack direction="row" spacing={2}>
+              <PositionSelector character={character} onChange={handleAVChange} />
+              <PursuerSelector character={character} onChange={handleAVChange} />
+            </Stack>
+          </Stack>
+        </DialogContent>
+        <DialogActions>
+          <SaveCancelButtons disabled={saving} onCancel={cancelForm} />
+        </DialogActions>
+      </StyledDialog>
     </>
   )
 }
