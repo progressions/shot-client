@@ -85,6 +85,11 @@ export default function Home({ currentCampaign, fights:initialFights }: HomeProp
   const { user } = useClient()
   const { saveLocally, getLocally } = useLocalStorage()
 
+  useEffect(() => {
+    const showHiddenFights = getLocally("showHiddenFights") || false
+    setShowHidden(showHiddenFights)
+  }, [])
+
   const filterFights = (fights: Fight[], showHidden: boolean) => {
     if (showHidden) return fights
     return fights.filter((fight: Fight) => (fight.active))
@@ -93,6 +98,7 @@ export default function Home({ currentCampaign, fights:initialFights }: HomeProp
   const filteredFights = filterFights(fights, showHidden)
 
   const show = (event: React.SyntheticEvent<Element, Event>, checked: boolean) => {
+    saveLocally("showHiddenFights", checked)
     setShowHidden(checked)
   }
 

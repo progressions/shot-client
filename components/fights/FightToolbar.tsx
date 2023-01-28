@@ -13,6 +13,9 @@ import type { Fight } from "../../types/types"
 
 import { useSession } from 'next-auth/react'
 import { useFight } from "../../contexts/FightContext"
+import { useLocalStorage } from "../../contexts/LocalStorageContext"
+
+import { useEffect } from "react"
 
 interface FightToolbarParams {
   showHidden: boolean,
@@ -21,9 +24,17 @@ interface FightToolbarParams {
 
 export default function FightToolbar({ showHidden, setShowHidden }: FightToolbarParams) {
   const { fight, setFight } = useFight()
+  const { saveLocally, getLocally } = useLocalStorage()
+
   const session: any = useSession({ required: true })
 
+  useEffect(() => {
+    const showHiddenShots = getLocally("showHiddenShots") || false
+    setShowHidden(showHiddenShots)
+  }, [])
+
   const show = (event: React.SyntheticEvent<Element, Event>, checked: boolean) => {
+    saveLocally("showHiddenShots", checked)
     setShowHidden(checked)
   }
   if (!fight?.id) {
