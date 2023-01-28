@@ -62,20 +62,22 @@ export default function SchtickCard({ schtick, filter, dispatchFilter }: any) {
 
   const deleteFunction = (typeof character === "undefined") ? deleteSchtick : removeSchtick
 
-  const editButton = (
+  const editButton = (typeof character === "undefined") ? (
     <Tooltip title="Edit" key="edit">
       <IconButton onClick={editSchtick}>
         <EditIcon sx={{color: "text.primary"}} />
       </IconButton>
     </Tooltip>
-  )
+  ) : null
 
   const deleteButton = useMemo(() => {
     const prereqIds = character?.schticks?.map((s: Schtick) => s.prerequisite.id) || []
     const schtickHasPrereq = prereqIds.includes(schtick?.id)
 
+    const tooltip = typeof character === "undefined" ? "Delete" : "Remove"
+
     return !schtickHasPrereq ? (
-      <Tooltip title="Delete" key="delete">
+      <Tooltip title={tooltip} key="delete">
         <IconButton onClick={deleteFunction}>
           <DeleteIcon sx={{color: "text.primary"}} />
         </IconButton>
