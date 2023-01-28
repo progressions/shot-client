@@ -137,6 +137,7 @@ export default function CharacterModal({ open, setOpen, character:activeCharacte
         open={!!(open.id || open.new) && open.category === "character"}
         onClose={handleClose}
         title={dialogTitle}
+        onSubmit={handleSubmit}
       >
         <DialogContent>
           <Stack spacing={2}>
