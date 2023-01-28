@@ -103,7 +103,7 @@ export function SaveCancelButtons(props: any) {
   return (
     <Stack spacing={2} direction="row">
       <CancelButton disabled={props.disabled} onClick={props.onCancel}>{props.cancelText}</CancelButton>
-      <SaveButton disabled={props.disabled}>{props.saveText}</SaveButton>
+      <SaveButton disabled={props.disabled} onClick={props.onSave}>{props.saveText}</SaveButton>
     </Stack>
   )
 }

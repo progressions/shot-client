@@ -41,7 +41,7 @@ export default function Schticks({ filter, dispatchFilter }: any) {
       ))
     )
     return output
-  }, [dispatchFilter, rowsOfData])
+  }, [filter, dispatchFilter, rowsOfData])
 
   function loadPrevious() {
     dispatchFilter({ type: "previous" })
