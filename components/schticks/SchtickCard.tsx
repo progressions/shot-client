@@ -1,14 +1,18 @@
 import { colors, Avatar, Tooltip, IconButton, Card, CardHeader, CardContent, CardActions, Stack, Typography } from "@mui/material"
 import DeleteIcon from "@mui/icons-material/Delete"
+import EditIcon from '@mui/icons-material/Edit'
+
 import SchtickCardBase from "./SchtickCardBase"
 import { useClient } from "../../contexts/ClientContext"
 import { useToast } from "../../contexts/ToastContext"
 import { useCharacter } from "../../contexts/CharacterContext"
-import { useMemo } from "react"
+import { useState, useMemo } from "react"
+import SchtickModal from "./SchtickModal"
 
 import { Schtick } from "../../types/types"
 
-export default function SchtickCard({ schtick, dispatchFilter }: any) {
+export default function SchtickCard({ schtick, filter, dispatchFilter }: any) {
+  const [open, setOpen] = useState(false)
   const { toastSuccess, toastError } = useToast()
   const { user, client } = useClient()
   const { state, dispatch } = useCharacter()
@@ -52,15 +56,26 @@ export default function SchtickCard({ schtick, dispatchFilter }: any) {
     }
   }
 
+  function editSchtick() {
+    setOpen(true)
+  }
 
   const deleteFunction = (typeof character === "undefined") ? deleteSchtick : removeSchtick
+
+  const editButton = (
+    <Tooltip title="Edit" key="edit">
+      <IconButton onClick={editSchtick}>
+        <EditIcon sx={{color: "text.primary"}} />
+      </IconButton>
+    </Tooltip>
+  )
 
   const deleteButton = useMemo(() => {
     const prereqIds = character?.schticks?.map((s: Schtick) => s.prerequisite.id) || []
     const schtickHasPrereq = prereqIds.includes(schtick?.id)
 
     return !schtickHasPrereq ? (
-      <Tooltip title="Delete">
+      <Tooltip title="Delete" key="delete">
         <IconButton onClick={deleteFunction}>
           <DeleteIcon sx={{color: "text.primary"}} />
         </IconButton>
@@ -75,19 +90,22 @@ export default function SchtickCard({ schtick, dispatchFilter }: any) {
   const avatar = <Avatar sx={{bgcolor: schtick.color || 'secondary', color: "white"}} variant="rounded">{schtick.category[0]}</Avatar>
 
   return (
-    <SchtickCardBase
-      title={schtick.title}
-      subheader={schtick.path}
-      avatar={avatar}
-      action={deleteButton}
-    >
-      <Typography variant="body2" gutterBottom>
-        {schtick.description}
-      </Typography>
-      { schtick.prerequisite.title &&
-        <Typography variant="subtitle2">
-          Requires: {schtick.prerequisite.title}
-        </Typography> }
-    </SchtickCardBase>
+    <>
+      <SchtickCardBase
+        title={schtick.title}
+        subheader={schtick.path}
+        avatar={avatar}
+        action={[editButton, deleteButton]}
+      >
+        <Typography variant="body2" gutterBottom>
+          {schtick.description}
+        </Typography>
+        { schtick.prerequisite.title &&
+          <Typography variant="subtitle2">
+            Requires: {schtick.prerequisite.title}
+          </Typography> }
+      </SchtickCardBase>
+      <SchtickModal schtick={schtick} filter={filter} dispatchFilter={dispatchFilter} open={open} setOpen={setOpen} />
+    </>
   )
 }

@@ -3,6 +3,7 @@ import { useState, useEffect, useReducer } from "react"
 import { defaultSchtick } from "../../types/types"
 import { useClient } from "../../contexts/ClientContext"
 import { useToast } from "../../contexts/ToastContext"
+import { StyledTextField, StyledDialog, SaveCancelButtons } from "../StyledFields"
 
 const initialState = {
   loading: false,
@@ -29,12 +30,16 @@ function schtickReducer(state: any, action: any) {
   }
 }
 
-export default function CreateSchtick({ open, setOpen, filter, dispatchFilter }: any) {
+export default function SchtickModal({ open, setOpen, filter, dispatchFilter, schtick:initialSchtick }: any) {
   const { toastSuccess, toastError } = useToast()
   const { client } = useClient()
   const [state, dispatch] = useReducer(schtickReducer, initialState)
   const { saving, schtick } = state
   const { category, path } = filter
+
+  useEffect(() => {
+    dispatch({ type: "replace", schtick: initialSchtick })
+  }, [initialSchtick])
 
   useEffect(() => {
     dispatch({ type: "update", name: "category", value: category })
@@ -50,7 +55,8 @@ export default function CreateSchtick({ open, setOpen, filter, dispatchFilter }:
   }
 
   async function handleSubmit(event: any) {
-    const response = await client.createSchtick(schtick)
+    event.preventDefault()
+    const response = schtick?.id ? await client.updateSchtick(schtick) : await client.createSchtick(schtick)
     if (response.status === 200) {
       await reloadSchticks()
       toastSuccess("Schtick updated.")
@@ -70,25 +76,19 @@ export default function CreateSchtick({ open, setOpen, filter, dispatchFilter }:
   }
 
   return (
-    <Dialog
+    <StyledDialog
       open={open}
       onClose={() => setOpen(false)}
-      aria-labelledby="modal-modal-title"
-      aria-describedby="modal-modal-description"
-      disableRestoreFocus
+      title="Schtick"
+      onSubmit={handleSubmit}
     >
-      <Box sx={{width: 400}}>
-        <Stack p={4} spacing={2}>
-          <TextField name="title" label="Title" value={schtick?.title || ""} onChange={handleChange} />
-          <TextField name="category" label="Category" value={schtick?.category || ""} onChange={handleChange} />
-          <TextField name="path" label="Path" value={schtick?.path || ""} onChange={handleChange} />
-          <TextField name="description" multiline rows={8} label="Description" value={schtick?.description || ""} onChange={handleChange} />
-          <Stack alignItems="flex-end" spacing={2} direction="row">
-            <Button variant="outlined" color="secondary" disabled={saving} onClick={cancelForm}>Cancel</Button>
-            <Button variant="contained" color="primary" onClick={handleSubmit} disabled={saving}>Save</Button>
-          </Stack>
-        </Stack>
-      </Box>
-    </Dialog>
+      <Stack p={4} spacing={2} sx={{width: 400}}>
+        <StyledTextField name="title" label="Title" value={schtick?.title || ""} onChange={handleChange} />
+        <StyledTextField name="category" label="Category" value={schtick?.category || ""} onChange={handleChange} />
+        <StyledTextField name="path" label="Path" value={schtick?.path || ""} onChange={handleChange} />
+        <StyledTextField name="description" multiline rows={8} label="Description" value={schtick?.description || ""} onChange={handleChange} />
+        <SaveCancelButtons disabled={saving} onCancel={cancelForm} />
+      </Stack>
+    </StyledDialog>
   )
 }

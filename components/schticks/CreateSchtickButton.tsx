@@ -1,6 +1,6 @@
 import { Tooltip, Button, Typography } from "@mui/material"
 import ButtonBar from "../ButtonBar"
-import CreateSchtick from "./CreateSchtick"
+import SchtickModal from "./SchtickModal"
 import { useState } from "react"
 
 export default function CreateSchtickButton({ filter, dispatchFilter }: any) {
@@ -17,7 +17,7 @@ export default function CreateSchtickButton({ filter, dispatchFilter }: any) {
           New
         </Button>
       </Typography>
-      <CreateSchtick filter={filter} open={open} setOpen={setOpen} dispatchFilter={dispatchFilter} />
+      <SchtickModal filter={filter} open={open} setOpen={setOpen} dispatchFilter={dispatchFilter} />
     </>
   )
 }

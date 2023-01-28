@@ -35,7 +35,7 @@ export default function Schticks({ filter, dispatchFilter }: any) {
       rowsOfData.map((row: any, index: number) => (
         <Stack spacing={1} direction="row" key={`row_${index}`}>
           { row.map((schtick: any) => (
-            <SchtickCard key={`schtick_${schtick?.id}`} schtick={schtick} dispatchFilter={dispatchFilter} />
+            <SchtickCard key={`schtick_${schtick?.id}`} schtick={schtick} filter={filter} dispatchFilter={dispatchFilter} />
           )) }
         </Stack>
       ))
