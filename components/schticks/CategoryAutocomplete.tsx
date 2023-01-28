@@ -27,7 +27,7 @@ export default function CategoryAutocomplete({ filter, dispatchFilter }: any) {
         onChange={selectCategory}
         openOnFocus
         getOptionLabel={getOptionLabel}
-        renderInput={(params) => <StyledSelect autoFocus helperText={helperText} {...params} label="Category" />}
+        renderInput={(params: any) => <StyledSelect autoFocus helperText={helperText} {...params} label="Category" />}
       />
     </>
   )

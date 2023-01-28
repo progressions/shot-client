@@ -1,8 +1,9 @@
 import { useCallback, useMemo, useState, useEffect } from 'react'
-import { FormControlLabel, Switch, IconButton, Typography, Stack, Popover, Autocomplete, Box, TextField, MenuItem, Dialog, DialogActions, DialogTitle, DialogContent, DialogContentText, Button } from '@mui/material'
+import { FormControlLabel, Switch, IconButton, Typography, Stack, Popover, Box, Dialog, DialogActions, DialogTitle, DialogContent, DialogContentText, Button } from '@mui/material'
 import { useSession } from 'next-auth/react'
 import Client from "../Client"
 import GamemasterOnly from "../GamemasterOnly"
+import { StyledTextField, StyledAutocomplete } from "./edit/StyledFields"
 
 import PersonIcon from '@mui/icons-material/Person'
 import PersonAddIcon from '@mui/icons-material/PersonAdd'
@@ -143,7 +144,7 @@ export default function SelectCharacter() {
         }}>
         <Box component="form" onSubmit={handleSubmit} sx={{width: 400}} p={2}>
           <Stack direction="row" spacing={1}>
-            <Autocomplete
+            <StyledAutocomplete
               disabled={loading}
               freeSolo
               options={characters}
@@ -151,7 +152,7 @@ export default function SelectCharacter() {
               value={value}
               onChange={handleChange}
               getOptionLabel={getOptionLabel}
-              renderInput={(params) => <TextField autoFocus {...params} label="Character" />}
+              renderInput={(params) => <StyledTextField autoFocus {...params} label="Character" />}
             />
             <Button type="submit" size="small" variant="contained">
               <PersonAddIcon />

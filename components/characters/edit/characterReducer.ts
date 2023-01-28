@@ -18,6 +18,7 @@ export const characterReducer = (state: any, action: any) => {
         }
       }
     case "action_value":
+      const value = action.value === "null" ? null : action.value
       return {
         ...state,
         edited: true,
@@ -25,7 +26,7 @@ export const characterReducer = (state: any, action: any) => {
           ...state.character,
           action_values: {
             ...state.character.action_values,
-            [action.name]: action.value
+            [action.name]: value
           }
         }
       }
