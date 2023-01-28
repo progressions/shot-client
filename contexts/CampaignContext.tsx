@@ -4,6 +4,7 @@ import type { Campaign } from "../types/types"
 import { defaultCampaign } from "../types/types"
 import { useSession } from 'next-auth/react'
 import { useClient } from "./ClientContext"
+import { useLocalStorage } from "./LocalStorageContext"
 
 export interface CampaignContextType {
   campaign: Campaign | null
@@ -15,21 +16,9 @@ const CampaignContext = createContext<CampaignContextType>({ campaign: null, set
 
 export function CampaignProvider({ children }: any) {
   const { user, client } = useClient()
+  const { saveLocally, getLocally } = useLocalStorage()
 
   const [campaign, setCampaign] = useState<Campaign>(defaultCampaign)
-
-  function saveLocally(key: string, value: any) {
-    if (typeof localStorage !== "undefined") {
-      localStorage.setItem(key, JSON.stringify(value) as string)
-    }
-  }
-
-  function getLocally(key: string) {
-    if (typeof localStorage !== "undefined") {
-      return JSON.parse(localStorage.getItem(key) as string)
-    }
-    return null
-  }
 
   const setCurrentCampaign = async (camp: Campaign | null) => {
     const response = await client.setCurrentCampaign(camp)
