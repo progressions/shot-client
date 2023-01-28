@@ -21,6 +21,7 @@ import { GetServerSideProps } from 'next'
 import { InferGetServerSidePropsType } from 'next'
 
 import { useToast } from "../contexts/ToastContext"
+import { useLocalStorage } from "../contexts/LocalStorageContext"
 import { useClient } from "../contexts/ClientContext"
 import { useCampaign } from "../contexts/CampaignContext"
 import GamemasterOnly from "../components/GamemasterOnly"
@@ -82,13 +83,14 @@ export default function Home({ currentCampaign, fights:initialFights }: HomeProp
   const { toast } = useToast()
   const [showHidden, setShowHidden] = useState<boolean>(false)
   const { user } = useClient()
+  const { saveLocally, getLocally } = useLocalStorage()
 
   const filterFights = (fights: Fight[], showHidden: boolean) => {
     if (showHidden) return fights
     return fights.filter((fight: Fight) => (fight.active))
   }
 
-  const filteredFights = useMemo(() => filterFights(fights, showHidden), [fights, showHidden])
+  const filteredFights = filterFights(fights, showHidden)
 
   const show = (event: React.SyntheticEvent<Element, Event>, checked: boolean) => {
     setShowHidden(checked)
