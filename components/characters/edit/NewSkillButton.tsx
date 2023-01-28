@@ -1,7 +1,7 @@
 import { Typography, Button, Stack, Box, Tooltip, IconButton } from "@mui/material"
 import { useCharacter } from "../../../contexts/CharacterContext"
 import AddIcon from '@mui/icons-material/Add'
-import { StyledTextField, StyledAutocomplete } from "./StyledFields"
+import { StyledTextField, StyledAutocomplete } from "../../StyledFields"
 
 import { useMemo, useState } from "react"
 

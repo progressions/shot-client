@@ -1,6 +1,6 @@
 import { IconButton, Typography, TextField } from "@mui/material"
 import ClearIcon from '@mui/icons-material/Clear'
-import { StyledTextField } from "./StyledFields"
+import { StyledTextField } from "../../StyledFields"
 
 export default function SkillField({ name, value, onChange }: any) {
 

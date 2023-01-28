@@ -2,7 +2,7 @@ import { Button, Box, Stack, Typography } from "@mui/material"
 import SchtickCard from "./SchtickCard"
 import NewSchtick from "./NewSchtick"
 import { useClient } from "../../contexts/ClientContext"
-import Subhead from "../characters/edit/Subhead"
+import { Subhead } from "../StyledFields"
 
 import { useState, useMemo } from "react"
 

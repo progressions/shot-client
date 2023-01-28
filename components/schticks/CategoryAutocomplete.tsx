@@ -1,6 +1,6 @@
 import { Autocomplete, TextField } from "@mui/material"
 import { useMemo } from "react"
-import { StyledAutocomplete, StyledSelect } from "../characters/edit/StyledFields"
+import { StyledAutocomplete, StyledSelect } from "../StyledFields"
 
 export default function CategoryAutocomplete({ filter, dispatchFilter }: any) {
   const { loading, category, categories, path } = filter

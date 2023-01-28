@@ -14,14 +14,13 @@ import Skills from "./Skills"
 
 import { useEffect } from "react"
 
-import Subhead from "./Subhead"
 import { colors, Typography, Box, Stack, TextField, FormControlLabel, Switch, Button, InputAdornment } from "@mui/material"
 import FavoriteIcon from '@mui/icons-material/Favorite'
 import PeopleIcon from '@mui/icons-material/People'
 
 import PlayerTypeOnly from "../../PlayerTypeOnly"
 import DeathMarks from "../DeathMarks"
-import { StyledTextField } from "./StyledFields"
+import { Subhead, StyledTextField } from "../../StyledFields"
 
 export default function EditCharacter({ character:initialCharacter }: any) {
   const { client } = useClient()

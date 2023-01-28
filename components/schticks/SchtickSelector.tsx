@@ -6,7 +6,7 @@ import { useToast } from "../../contexts/ToastContext"
 import { useCharacter } from "../../contexts/CharacterContext"
 import FilterSchticks from "./FilterSchticks"
 import { initialFilter, filterReducer } from "./filterReducer"
-import { StyledTextField } from "../characters/edit/StyledFields"
+import { StyledTextField } from "../StyledFields"
 
 export default function SchtickSelector({ }) {
   const [filter, dispatchFilter] = useReducer(filterReducer, initialFilter)

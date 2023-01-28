@@ -1,6 +1,6 @@
 import { Button, TextField, Popover, Paper } from "@mui/material"
 import { BlockPicker } from 'react-color'
-import { StyledTextField } from "./StyledFields"
+import { StyledTextField } from "../../StyledFields"
 
 import { useState } from "react"
 

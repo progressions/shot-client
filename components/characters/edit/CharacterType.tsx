@@ -1,6 +1,6 @@
 import { Box, TextField, MenuItem } from '@mui/material'
 import { useState } from 'react'
-import { StyledSelect } from "./StyledFields"
+import { StyledSelect } from "../../StyledFields"
 
 interface CharacterTypeParams {
   value: string

@@ -1,7 +1,7 @@
 import { useClient } from "../../../contexts/ClientContext"
 import { TextField, Stack, Autocomplete } from "@mui/material"
 import { useEffect, useReducer } from "react"
-import { StyledAutocomplete, StyledTextField } from "./StyledFields"
+import { StyledAutocomplete, StyledTextField } from "../../StyledFields"
 
 const initialState = {
   loading: false,

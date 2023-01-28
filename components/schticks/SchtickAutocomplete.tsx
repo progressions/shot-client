@@ -1,5 +1,5 @@
 import { Paper, Autocomplete, TextField } from '@mui/material'
-import { StyledAutocomplete, StyledSelect } from "../characters/edit/StyledFields"
+import { StyledAutocomplete, StyledSelect } from "../StyledFields"
 
 export default function SchtickAutocomplete({ filter, dispatchFilter }: any) {
   const { loading, schtick, schticks } = filter

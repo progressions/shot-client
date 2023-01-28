@@ -2,8 +2,7 @@ import { Tooltip, Divider, Grid, Stack, Dialog, DialogTitle, DialogContent, Dial
 import { useState } from 'react'
 import { rollDie, rollExplodingDie } from './dice/DiceRoller'
 import CasinoIcon from '@mui/icons-material/Casino'
-import { StyledTextField } from "./characters/edit/StyledFields"
-import { SaveCancelButtons, StyledDialog } from "./StyledDialog"
+import { StyledTextField, SaveCancelButtons, StyledDialog } from "./StyledFields"
 
 interface MookRollsParams {
   count?: number,

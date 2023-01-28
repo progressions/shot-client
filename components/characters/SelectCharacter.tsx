@@ -3,7 +3,7 @@ import { FormControlLabel, Switch, IconButton, Typography, Stack, Popover, Box, 
 import { useSession } from 'next-auth/react'
 import Client from "../Client"
 import GamemasterOnly from "../GamemasterOnly"
-import { StyledTextField, StyledAutocomplete } from "./edit/StyledFields"
+import { StyledTextField, StyledAutocomplete } from "../StyledFields"
 
 import PersonIcon from '@mui/icons-material/Person'
 import PersonAddIcon from '@mui/icons-material/PersonAdd'

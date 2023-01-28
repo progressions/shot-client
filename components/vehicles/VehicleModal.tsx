@@ -19,8 +19,7 @@ import { useFight } from "../../contexts/FightContext"
 import { useClient } from "../../contexts/ClientContext"
 import type { Vehicle, Fight, Character, Toast, ID } from "../../types/types"
 import { defaultVehicle } from "../../types/types"
-import { StyledTextField } from "../characters/edit/StyledFields"
-import { SaveCancelButtons, StyledDialog } from "../StyledDialog"
+import { StyledTextField, SaveCancelButtons, StyledDialog } from "../StyledFields"
 
 interface VehicleModalParams {
   open: Vehicle,

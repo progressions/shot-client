@@ -2,8 +2,7 @@ import { MouseEventHandler, useState, useEffect } from 'react'
 import { colors, FormControl, Switch, Tooltip, Typography, DialogActions, FormControlLabel, MenuItem, Checkbox, InputAdornment, Dialog, DialogTitle, DialogContent, DialogContentText, Box, Stack, TextField, Button, Paper, Popover } from '@mui/material'
 import FavoriteIcon from '@mui/icons-material/Favorite'
 import PeopleIcon from '@mui/icons-material/People'
-import { StyledTextField, StyledSelect } from "./edit/StyledFields"
-import { SaveCancelButtons, SaveButton, CancelButton, StyledDialog } from "../StyledDialog"
+import { StyledTextField, SaveCancelButtons, SaveButton, CancelButton, StyledDialog } from "../StyledFields"
 
 import Router from 'next/router'
 

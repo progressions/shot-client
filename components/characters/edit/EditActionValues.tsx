@@ -1,7 +1,6 @@
 import { Box, Stack, TextField, MenuItem } from "@mui/material"
 import PlayerTypeOnly from "../../PlayerTypeOnly"
-import Subhead from "./Subhead"
-import { StyledSelect, StyledTextField } from "./StyledFields"
+import { Subhead, StyledSelect, StyledTextField } from "../../StyledFields"
 
 import type { Character } from "../../../types/types"
 

@@ -1,7 +1,6 @@
 import { Stack, Box, TextField, MenuItem } from "@mui/material"
-import Subhead from "./Subhead"
 import type { Character } from "../../../types/types"
-import { StyledSelect, StyledTextField } from "./StyledFields"
+import { Subhead, StyledSelect, StyledTextField } from "../../StyledFields"
 
 interface FortuneSelectProps {
   character: Character

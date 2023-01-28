@@ -1,5 +1,5 @@
 import { Autocomplete, TextField } from "@mui/material"
-import { StyledAutocomplete, StyledSelect } from "../characters/edit/StyledFields"
+import { StyledAutocomplete, StyledSelect } from "../StyledFields"
 
 export default function PathAutocomplete({ filter, dispatchFilter }: any) {
   const { loading, path, paths } = filter

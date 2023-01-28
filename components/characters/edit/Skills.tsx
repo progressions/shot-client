@@ -1,7 +1,7 @@
 import { Typography, Box, Stack, Autocomplete, TextField } from "@mui/material"
 import SkillField from "./SkillField"
 import NewSkillButton from "./NewSkillButton"
-import Subhead from "./Subhead"
+import { Subhead } from "../../StyledFields"
 
 import { useMemo } from "react"
 

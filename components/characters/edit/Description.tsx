@@ -1,6 +1,5 @@
 import { Typography, Stack, TextField } from "@mui/material"
-import Subhead from "./Subhead"
-import { StyledTextField } from "./StyledFields"
+import { Subhead, StyledTextField } from "../../StyledFields"
 
 export default function Description({ description, onChange }: any) {
   return (
