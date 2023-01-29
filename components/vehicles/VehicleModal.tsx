@@ -128,6 +128,7 @@ export default function CharacterModal({ open, setOpen, character:activeVehicle,
         open={!!(open.id || open.new) && open.category === "vehicle"}
         onClose={handleClose}
         title={dialogTitle}
+        onSubmit={handleSubmit}
       >
         <DialogContent>
           <Stack spacing={2}>

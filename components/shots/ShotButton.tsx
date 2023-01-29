@@ -1,4 +1,4 @@
-import { Stack, TextField, MenuItem, Dialog, DialogTitle, DialogContent, DialogContentText, Button, IconButton, Typography, Box, Popover } from "@mui/material"
+import { colors, Stack, TextField, MenuItem, Dialog, DialogTitle, DialogContent, DialogContentText, Button, IconButton, Typography, Box, Popover } from "@mui/material"
 import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined'
 
 interface ShotButtonProps {
@@ -10,7 +10,7 @@ export default function ShotButton({ shot }: ShotButtonProps) {
 
   return (
     <>
-      <Typography variant="h2" sx={{fontWeight: "bold", color: "text.disabled"}}>
+      <Typography variant="h2" sx={{fontWeight: "bold", color: colors.blueGrey[300]}}>
         {label}
       </Typography>
     </>

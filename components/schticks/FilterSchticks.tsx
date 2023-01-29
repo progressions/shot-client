@@ -6,7 +6,6 @@ import { useToast } from "../../contexts/ToastContext"
 import SchtickAutocomplete from "./SchtickAutocomplete"
 import CategoryAutocomplete from "./CategoryAutocomplete"
 import PathAutocomplete from "./PathAutocomplete"
-import SchtickSearch from "./SchtickSearch"
 
 export default function FilterSchticks({ filter, dispatchFilter }: any) {
   const { character } = useCharacter()
@@ -36,8 +35,3 @@ export default function FilterSchticks({ filter, dispatchFilter }: any) {
     </>
   )
 }
-
-/*
-
-      <SchtickSearch filter={filter} dispatchFilter={dispatchFilter} />
-*/

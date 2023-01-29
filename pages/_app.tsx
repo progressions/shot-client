@@ -28,7 +28,7 @@ const theme = createTheme({
     text: {
       primary: colors.grey[100],
       secondary: colors.grey[200],
-      disabled: colors.grey[300]
+      disabled: colors.blueGrey[600]
     },
     background: {
       paper: colors.blueGrey[800],

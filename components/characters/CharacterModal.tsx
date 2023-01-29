@@ -108,7 +108,7 @@ export default function CharacterModal({ open, setOpen, character:activeCharacte
   }
 
   const woundsLabel = character.action_values["Type"] === "Mook" ? "Mooks" : "Wounds"
-  const dialogTitle = newCharacter ? "Create Character" : "Update Character"
+  const dialogTitle = newCharacter ? "Create Character" : `${character.name}`
 
   const woundsAdornment = () => {
     if (character.action_values["Type"] === "Mook") {
@@ -142,12 +142,13 @@ export default function CharacterModal({ open, setOpen, character:activeCharacte
         <DialogContent>
           <Stack spacing={2}>
             <Stack direction="row" spacing={2}>
-              <CharacterType value={character.action_values?.['Type'] as string || ''} onChange={handleAVChange} />
-              { character.action_values["Type"] === "PC" && <StyledTextField name="Archetype" label="Archetype" fullWidth value={character.action_values["Archetype"]} onChange={handleAVChange} /> }
+              { !character?.id &&
+              <CharacterType value={character.action_values?.['Type'] as string || ''} onChange={handleAVChange} /> }
+              { !character?.id && character.action_values["Type"] === "PC" && <StyledTextField name="Archetype" label="Archetype" fullWidth value={character.action_values["Archetype"]} onChange={handleAVChange} /> }
               <FormControlLabel label="Active" name="active" control={<Switch checked={character.active} />} onChange={handleCheck} />
             </Stack>
             <Stack direction="row" spacing={2}>
-              <StyledTextField autoFocus label="Name" size="medium" sx={{paddingBottom: 2}} fullWidth required name="name" value={character.name} onChange={handleChange} />
+              <StyledTextField autoFocus label="Name" size="medium" sx={{paddingBottom: 2}} fullWidth required name="name" value={character.name} onChange={handleChange} InputProps={{readOnly: !!character?.id}} />
               { fight?.id &&
               <StyledTextField label="Shot" type="number" name="current_shot" value={character.current_shot === null ? "" : character.current_shot} onChange={handleChange} sx={{width: 80}} /> }
             </Stack>
@@ -167,11 +168,10 @@ export default function CharacterModal({ open, setOpen, character:activeCharacte
               <StyledTextField label="Impairments" type="number" name="impairments" value={character.impairments || ''} onChange={handleChange} />
               <ColorPicker character={character} onChange={handleChange} setCharacter={setCharacter} />
             </Stack>
-            <Typography variant="h6">Action Values</Typography>
-            <EditActionValues character={character} onChange={handleAVChange} />
+            { !character?.id && <EditActionValues character={character} onChange={handleAVChange} /> }
             <PlayerTypeOnly character={character} only="PC">
               <Stack direction="row" spacing={2}>
-                <FortuneSelect character={character} onChange={handleAVChange} />
+                <FortuneSelect character={character} onChange={handleAVChange} readOnly={!!character?.id} />
               </Stack>
             </PlayerTypeOnly>
           </Stack>

@@ -15,7 +15,7 @@ export default function SchtickAutocomplete({ filter, dispatchFilter }: any) {
     }, 1000)
 
     return () => clearTimeout(timer)
-  }, [search])
+  }, [search, dispatchFilter])
 
   function handleSelect(event: any, newValue: any) {
     dispatchFilter({ type: "schtick", payload: newValue })

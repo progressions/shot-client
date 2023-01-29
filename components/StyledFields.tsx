@@ -36,6 +36,9 @@ export const StyledTextField = styled(TextField)({
     '&.Mui-focused fieldset': {
       borderColor: 'yellow',
     },
+    '&:disabled fieldset': {
+      borderColor: 'green',
+    },
   },
   '& label.Mui-focused': {
     color: 'yellow',

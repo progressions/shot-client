@@ -155,7 +155,7 @@ export default function EditCharacter({ character:initialCharacter }: any) {
           </Stack>
           <EditActionValues character={character} onChange={handleAVChange as React.ChangeEventHandler} />
           <PlayerTypeOnly character={character} only="PC">
-            <FortuneSelect character={character} onChange={handleAVChange as React.ChangeEventHandler} />
+            <FortuneSelect character={character} onChange={handleAVChange as React.ChangeEventHandler} readOnly={false} />
           </PlayerTypeOnly>
           <Skills skills={skills} onChange={handleSkillsChange} />
           <Description description={description} onChange={handleDescriptionChange} />
