@@ -1,6 +1,6 @@
 import { colors, Box, Paper, ButtonGroup, Switch, FormControlLabel, Stack } from '@mui/material'
 
-import ButtonBar from "../ButtonBar"
+import { ButtonBar } from "../StyledFields"
 import CreateCharacter from '../characters/CreateCharacter'
 import SelectCharacter from '../characters/SelectCharacter'
 import CreateVehicle from '../vehicles/CreateVehicle'

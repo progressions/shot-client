@@ -12,7 +12,7 @@ import { unstable_getServerSession } from "next-auth/next"
 
 import { useSession } from "next-auth/react"
 
-import ButtonBar from "../../components/ButtonBar"
+import { ButtonBar } from "../../components/StyledFields"
 import ActionValues from "../../components/characters/ActionValues"
 import ActionButtons from "../../components/characters/ActionButtons"
 import CharacterModal from "../../components/characters/CharacterModal"

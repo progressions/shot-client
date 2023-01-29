@@ -7,7 +7,7 @@ import { useClient } from "../../contexts/ClientContext"
 import { useCampaign } from "../../contexts/CampaignContext"
 import { useSession } from 'next-auth/react'
 
-import ButtonBar from "../../components/ButtonBar"
+import { ButtonBar } from "../../components/StyledFields"
 import CreateCampaign from "../../components/campaigns/CreateCampaign"
 import Campaigns from "../../components/campaigns/Campaigns"
 import GamemasterOnly from "../../components/GamemasterOnly"

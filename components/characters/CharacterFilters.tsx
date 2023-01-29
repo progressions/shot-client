@@ -2,6 +2,7 @@ import { Stack, Box, TextField, MenuItem } from "@mui/material"
 import { useState } from 'react'
 
 import type { CharacterFilter } from "../../types/types"
+import { StyledTextField, StyledSelect } from "../StyledFields"
 
 interface CharacterFiltersProps {
   filters: CharacterFilter,
@@ -21,7 +22,7 @@ export default function CharacterFilters({ filters, setFilters }: CharacterFilte
     <>
       <Stack direction="row" spacing={1}>
         <Box sx={{width: 200}}>
-          <TextField fullWidth name='Type' label='Character Type' select value={filters.type || ''} onChange={handleTypeChange}>
+          <StyledSelect fullWidth name='Type' label='Character Type' select value={filters.type || ''} onChange={handleTypeChange}>
             <MenuItem value=''>All</MenuItem>
             <MenuItem value='PC'>Player Character</MenuItem>
             <MenuItem value='Ally'>Ally</MenuItem>
@@ -29,10 +30,10 @@ export default function CharacterFilters({ filters, setFilters }: CharacterFilte
             <MenuItem value='Featured Foe'>Featured Foe</MenuItem>
             <MenuItem value='Boss'>Boss</MenuItem>
             <MenuItem value='Uber-Boss'>Uber-Boss</MenuItem>
-          </TextField>
+          </StyledSelect>
         </Box>
         <Box sx={{width: 200}}>
-          <TextField fullWidth name='Name' label='Name' value={filters.name || ''} onChange={handleNameChange} />
+          <StyledTextField fullWidth name='Name' label='Name' value={filters.name || ''} onChange={handleNameChange} />
         </Box>
       </Stack>
     </>

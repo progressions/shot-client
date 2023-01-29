@@ -8,7 +8,7 @@ import { Tooltip, IconButton, Box, Stack, TableContainer, Table, TableRow, Table
 import { authOptions } from '../api/auth/[...nextauth]'
 import { unstable_getServerSession } from "next-auth/next"
 
-import ButtonBar from "../../components/ButtonBar"
+import { ButtonBar } from "../../components/StyledFields"
 import CreateInvitation from "../../components/invitations/CreateInvitation"
 import CreateOpenInvitation from "../../components/invitations/CreateOpenInvitation"
 import Client from '../../components/Client'
