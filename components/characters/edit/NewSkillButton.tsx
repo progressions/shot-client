@@ -1,20 +1,24 @@
-import { Typography, Button, Stack, Box, Tooltip, IconButton } from "@mui/material"
+import { createFilterOptions, Typography, Button, Stack, Box, Tooltip, IconButton } from "@mui/material"
 import { useCharacter } from "../../../contexts/CharacterContext"
 import AddIcon from '@mui/icons-material/Add'
 import { StyledTextField, StyledAutocomplete } from "../../StyledFields"
 
-import { useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 
-export default function NewSkillButton({ }) {
+const filter = createFilterOptions<string>();
+
+export default function NewSkillButton() {
   const [skill, setSkill] = useState({ name: "", value: 8 })
   const { state, dispatch } = useCharacter()
   const { edited, character } = state
   const [open, setOpen] = useState(false)
 
-  const skills = useMemo(() => {
+  const initialSkills = useMemo(() => {
     const all = ["Deceit", "Detective", "Driving", "Fix-It", "Gambling", "Intimidation", "Intrusion", "Leadership", "Medicine", "Police", "Sabotage", "Seduction"]
     return all.filter((name) => (character.skills[name] <= 7))
   }, [character.skills])
+
+  const [skills, setSkills] = useState(initialSkills)
 
   function selectSkill(event: any, newValue: any) {
     setSkill((prev) => ({ ...prev, name: newValue }))
@@ -25,6 +29,7 @@ export default function NewSkillButton({ }) {
   }
 
   function addSkill() {
+    console.log("adding skill", skill)
     dispatch({ type: "skills", ...skill })
     cancelForm()
   }
@@ -35,7 +40,16 @@ export default function NewSkillButton({ }) {
   }
 
   function getOptionLabel(option: any) {
-    return option || ""
+    // Value selected with enter, right from the input
+    if (typeof option === 'string') {
+      return option;
+    }
+    // Add "xxx" option created dynamically
+    if (option.inputValue) {
+      return option.inputValue;
+    }
+    // Regular option
+    return option
   }
 
   const valid = !!(skill?.name)
@@ -55,6 +69,7 @@ export default function NewSkillButton({ }) {
       { open &&
         <Stack direction="row" spacing={2}>
           <StyledAutocomplete
+            freeSolo
             value={skill?.name || null}
             disabled={!skills?.length}
             options={skills || []}
@@ -62,6 +77,20 @@ export default function NewSkillButton({ }) {
             onChange={selectSkill}
             openOnFocus
             getOptionLabel={getOptionLabel}
+            filterOptions={(options: any, params: any) => {
+              const filtered = filter(options, params);
+
+              const { inputValue } = params;
+              // Suggest the creation of a new value
+              const isExisting = options.some((option: any) => inputValue === option);
+              if (inputValue !== '' && !isExisting) {
+                filtered.push(
+                  inputValue,
+                );
+              }
+
+              return filtered;
+            }}
             renderInput={(params: any) => <StyledTextField autoFocus helperText={helperText} {...params} label="Skill" error={!valid} />}
           />
         <StyledTextField value={skill?.value || ""} type="number" name="value" label="Value" onChange={handleValue} sx={{width: 80}} />
