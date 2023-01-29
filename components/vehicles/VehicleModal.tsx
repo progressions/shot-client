@@ -137,7 +137,18 @@ export default function CharacterModal({ open, setOpen, character:activeVehicle,
               <FormControlLabel label="Active" name="active" control={<Switch checked={character.active} />} onChange={handleCheck} />
             </Stack>
             <Stack direction="row" spacing={2}>
-              <StyledTextField autoFocus label="Name" variant="filled" size="medium" sx={{paddingBottom: 2}} fullWidth required name="name" value={character.name} onChange={handleChange} />
+              <StyledTextField
+                autoFocus
+                label="Name"
+                variant="filled"
+                size="medium"
+                sx={{paddingBottom: 2}}
+                fullWidth
+                required
+                name="name"
+                value={character.name}
+                onChange={handleChange}
+              />
               { fight?.id &&
               <StyledTextField label="Shot" type="number" name="current_shot" value={character.current_shot === null ? '' : character.current_shot} onChange={handleChange} sx={{width: 80}} /> }
             </Stack>

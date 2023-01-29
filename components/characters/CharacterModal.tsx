@@ -142,13 +142,12 @@ export default function CharacterModal({ open, setOpen, character:activeCharacte
         <DialogContent>
           <Stack spacing={2}>
             <Stack direction="row" spacing={2}>
-              { !character?.id &&
-              <CharacterType value={character.action_values?.['Type'] as string || ''} onChange={handleAVChange} /> }
-              { !character?.id && character.action_values["Type"] === "PC" && <StyledTextField name="Archetype" label="Archetype" fullWidth value={character.action_values["Archetype"]} onChange={handleAVChange} /> }
+              <CharacterType value={character.action_values?.['Type'] as string || ''} onChange={handleAVChange} />
+              { character.action_values["Type"] === "PC" && <StyledTextField name="Archetype" label="Archetype" fullWidth value={character.action_values["Archetype"]} onChange={handleAVChange} /> }
               <FormControlLabel label="Active" name="active" control={<Switch checked={character.active} />} onChange={handleCheck} />
             </Stack>
             <Stack direction="row" spacing={2}>
-              <StyledTextField autoFocus label="Name" size="medium" sx={{paddingBottom: 2}} fullWidth required name="name" value={character.name} onChange={handleChange} InputProps={{readOnly: !!character?.id}} />
+              <StyledTextField autoFocus label="Name" size="medium" sx={{paddingBottom: 2}} fullWidth required name="name" value={character.name} onChange={handleChange} />
               { fight?.id &&
               <StyledTextField label="Shot" type="number" name="current_shot" value={character.current_shot === null ? "" : character.current_shot} onChange={handleChange} sx={{width: 80}} /> }
             </Stack>
@@ -168,10 +167,10 @@ export default function CharacterModal({ open, setOpen, character:activeCharacte
               <StyledTextField label="Impairments" type="number" name="impairments" value={character.impairments || ''} onChange={handleChange} />
               <ColorPicker character={character} onChange={handleChange} setCharacter={setCharacter} />
             </Stack>
-            { !character?.id && <EditActionValues character={character} onChange={handleAVChange} /> }
+            <EditActionValues character={character} onChange={handleAVChange} />
             <PlayerTypeOnly character={character} only="PC">
               <Stack direction="row" spacing={2}>
-                <FortuneSelect character={character} onChange={handleAVChange} readOnly={!!character?.id} />
+                <FortuneSelect character={character} onChange={handleAVChange} />
               </Stack>
             </PlayerTypeOnly>
           </Stack>
