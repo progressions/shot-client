@@ -25,11 +25,7 @@ export function knownSkills(skills: any) {
 
 export default function Skills({ skills, onChange }: any) {
 
-  const knownSkills = useMemo(() => {
-    return Object.entries(skills).filter(([name, value]: any) => (value > 0))
-  }, [skills])
-
-  const rowsOfData = rowMap(knownSkills, 6)
+  const rowsOfData = rowMap(knownSkills(skills), 6)
 
   const outputRows = useMemo(() => {
     const output = (
