@@ -6,6 +6,7 @@ export const initialFilter = {
   paths: [],
   category: "",
   categories: [],
+  title: "",
   schtick: { id: null, title: "" },
   schticks: [],
 }
@@ -45,6 +46,11 @@ export function filterReducer (state: any, action: any) {
         ...state,
         path: action.payload || initialFilter.path,
       }
+    case "title":
+      return {
+        ...state,
+        title: action.payload || initialFilter.title,
+      }
     case "schtick":
       return {
         ...state,
@@ -55,7 +61,6 @@ export function filterReducer (state: any, action: any) {
       return {
         ...state,
         loading: false,
-        schtick: initialFilter.schtick,
         schticks: schticks,
         meta: meta,
         paths: paths,

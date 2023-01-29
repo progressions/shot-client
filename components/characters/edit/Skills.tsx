@@ -1,6 +1,6 @@
 import { Typography, Box, Stack, Autocomplete, TextField } from "@mui/material"
 import SkillField from "./SkillField"
-import NewSkillButton from "./NewSkillButton"
+import NewSkill from "./NewSkill"
 import { Subhead } from "../../StyledFields"
 
 import { useMemo } from "react"
@@ -48,7 +48,7 @@ export default function Skills({ skills, onChange }: any) {
           {
             outputRows
           }
-          <NewSkillButton />
+          <NewSkill />
         </Stack>
       </Box>
     </>

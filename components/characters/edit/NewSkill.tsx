@@ -7,7 +7,7 @@ import { useEffect, useMemo, useState } from "react"
 
 const filter = createFilterOptions<string>();
 
-export default function NewSkillButton() {
+export default function NewSkill() {
   const [skill, setSkill] = useState({ name: "", value: 8 })
   const { state, dispatch } = useCharacter()
   const { edited, character } = state
@@ -29,7 +29,6 @@ export default function NewSkillButton() {
   }
 
   function addSkill() {
-    console.log("adding skill", skill)
     dispatch({ type: "skills", ...skill })
     cancelForm()
   }

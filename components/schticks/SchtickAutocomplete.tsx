@@ -1,11 +1,28 @@
-import { Paper, Autocomplete, TextField } from '@mui/material'
 import { StyledAutocomplete, StyledSelect } from "../StyledFields"
+import { createFilterOptions } from "@mui/material"
+
+import { useState, useEffect } from "react"
+
+const filterOptions = createFilterOptions<string>();
 
 export default function SchtickAutocomplete({ filter, dispatchFilter }: any) {
   const { loading, schtick, schticks } = filter
+  const [search, setSearch] = useState(null)
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      dispatchFilter({ type: "title", payload: search })
+    }, 1000)
+
+    return () => clearTimeout(timer)
+  }, [search])
 
   function handleSelect(event: any, newValue: any) {
     dispatchFilter({ type: "schtick", payload: newValue })
+  }
+
+  function handleInputChange(event: any, newValue: any) {
+    setSearch(newValue)
   }
 
   function getOptionLabel(option: any) {
@@ -18,9 +35,10 @@ export default function SchtickAutocomplete({ filter, dispatchFilter }: any) {
     <StyledAutocomplete
       freeSolo
       value={schtick || {id: null, title: ""}}
-      disabled={loading || !schticks.length}
+      disabled={loading}
       options={schticks || []}
       sx={{ width: 300 }}
+      onInputChange={handleInputChange}
       onChange={handleSelect}
       getOptionLabel={getOptionLabel}
       isOptionEqualToValue={(option: any, value: any) => option.id === value.id}
