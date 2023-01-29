@@ -13,7 +13,11 @@ const SelectProps = {
 }
 
 const PaperComponent=({ children }: any) => (
-  <Paper style={{ background: colors.blueGrey[100], color: "black" }}><Typography>{children}</Typography></Paper>
+  <Paper style={{ background: colors.blueGrey[100], color: "black" }}>
+    <Typography component="span">
+      {children}
+    </Typography>
+  </Paper>
 )
 
 export const StyledTextField = styled(TextField)({

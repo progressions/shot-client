@@ -22,6 +22,7 @@ export default function SchtickSelector({ }) {
 
   async function handleSubmit(event: any) {
     event.preventDefault()
+    if (!schtick?.id) return
     dispatchFilter({ type: "saving" })
 
     const response = await client.addSchtick(character, schtick)
