@@ -5,6 +5,7 @@ export default function Description({ description, onChange }: any) {
   return (
     <>
       <Subhead>Description</Subhead>
+      <StyledTextField name="Melodramatic Hook" label="Melodramatic Hook" value={description["Melodramatic Hook"]} onChange={onChange} multiline rows={4} />
       <StyledTextField name="Nicknames" label="Nicknames" value={description["Nicknames"]} onChange={onChange} />
       <Stack direction="row" spacing={1}>
         <StyledTextField name="Age" label="Age" value={description["Age"]} onChange={onChange} />

@@ -17,6 +17,20 @@ export interface Campaign {
   invitations: Invitation[]
 }
 
+export interface DescriptionValues {
+  [key: string]: string
+  Nicknames: string
+  Age: string
+  Height: string
+  Weight: string
+  "Hair Color": string
+  "Eye Color": string
+  "Style of Dress": string
+  Appearance: string
+  Background: string
+  "Melodramatic Hook": string
+}
+
 export interface ActionValues {
   [key: string]: string | number | null | undefined | boolean
   Guns?: number
@@ -108,7 +122,7 @@ export interface Person {
   impairments: number
   color: string
   action_values: ActionValues
-  description: any
+  description: DescriptionValues
   schticks: Schtick[]
   skills: any
   advancements: Advancement[]
@@ -236,7 +250,8 @@ export const defaultCharacter:Person = {
     "Eye Color": "",
     "Style of Dress": "",
     "Appearance": "",
-    "Background": ""
+    "Background": "",
+    "Melodramatic Hook": ""
   },
   schticks: [],
   skills: {},
