@@ -88,6 +88,10 @@ class Client {
     return await this.get(this.api.allCharacters())
   }
 
+  async createAdvancement(character: Character, advancement: Advancement):Promise<Response> {
+    return await this.post(this.api.advancements(character), {"advancement": advancement})
+  }
+
   async createEffect(effect: Effect, fight: Fight):Promise<Response> {
     return await this.post(this.api.effects(fight, effect), {"effect": effect})
   }

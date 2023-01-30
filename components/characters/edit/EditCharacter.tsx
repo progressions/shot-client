@@ -11,6 +11,7 @@ import Faction from "./Faction"
 import Schticks from "../../schticks/Schticks"
 import SchtickSelector from "../../schticks/SchtickSelector"
 import Skills from "./Skills"
+import Advancements from "../../advancements/Advancements"
 
 import { useEffect } from "react"
 
@@ -25,48 +26,15 @@ import { Subhead, StyledTextField } from "../../StyledFields"
 export default function EditCharacter({ character:initialCharacter }: any) {
   const { client } = useClient()
   const { toastError, toastSuccess } = useToast()
-  const { state, dispatch } = useCharacter()
+  const { state, dispatch, updateCharacter } = useCharacter()
 
   const { edited, saving, character } = state
   const { schticks, skills, description, action_values } = character
 
-  useEffect(() => {
-    if (edited) {
-      const saveCharacter = async () => {
-        dispatch({ type: "submit" })
-
-        const response = await client.updateCharacter(character)
-        if (response.status === 200) {
-          const data = await response.json()
-          dispatch({ type: "replace", character: data })
-          toastSuccess("Character updated.")
-        } else {
-          dispatch({ type: "reset" })
-          toastError()
-        }
-      }
-
-      const timer = setTimeout(() => {
-        saveCharacter().catch(console.error)
-      }, 5000)
-
-      return () => clearTimeout(timer)
-    }
-  }, [edited, character, dispatch, toastSuccess, toastError, client])
-
   async function handleSubmit(event: any) {
     event.preventDefault()
-    dispatch({ type: "submit" })
 
-    const response = await client.updateCharacter(character)
-    if (response.status === 200) {
-      const data = await response.json()
-      dispatch({ type: "replace", character: data })
-      toastSuccess("Character updated.")
-    } else {
-      dispatch({ type: "reset" })
-      toastError()
-    }
+    await updateCharacter()
   }
 
   function handleChange(event: any) {
@@ -158,6 +126,7 @@ export default function EditCharacter({ character:initialCharacter }: any) {
             <FortuneSelect character={character} onChange={handleAVChange as React.ChangeEventHandler} readOnly={false} />
           </PlayerTypeOnly>
           <Skills skills={skills} onChange={handleSkillsChange} />
+          <Advancements character={character} dispatch={dispatch} handleSubmit={handleSubmit} />
           <Description description={description} onChange={handleDescriptionChange} />
           <Schticks schticks={schticks} filter={filter} state={state} dispatch={dispatch} />
           <SchtickSelector />
