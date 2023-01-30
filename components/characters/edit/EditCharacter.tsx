@@ -127,8 +127,10 @@ export default function EditCharacter({ character:initialCharacter }: any) {
             <FortuneSelect character={character} onChange={handleAVChange as React.ChangeEventHandler} readOnly={false} />
           </PlayerTypeOnly>
           <Skills skills={skills} onChange={handleSkillsChange} />
-          <Advancements character={character} />
-          <Sites character={character} />
+          <PlayerTypeOnly character={character} only="PC">
+            <Advancements character={character} />
+            <Sites character={character} />
+          </PlayerTypeOnly>
           <Description description={description} onChange={handleDescriptionChange} />
           <Schticks schticks={schticks} filter={filter} state={state} dispatch={dispatch} />
           <SchtickSelector />
