@@ -29,9 +29,9 @@ class Api {
       return this.allVehicles(vehicle)
     }
     if (vehicle?.id) {
-      return `${this.fights(fight)}/vehicles/${vehicle.id}`
+      return `${this.fights(fight)}/drivers/${vehicle.id}`
     } else {
-      return `${this.fights(fight)}/vehicles`
+      return `${this.fights(fight)}/drivers`
     }
   }
 
@@ -53,17 +53,17 @@ class Api {
 
   allVehicles(vehicle?: Vehicle | ID): string {
     if (vehicle?.id) {
-      return `${this.api()}/all_vehicles/${vehicle.id}`
+      return `${this.api()}/vehicles/${vehicle.id}`
     } else {
-      return `${this.api()}/all_vehicles`
+      return `${this.api()}/vehicles`
     }
   }
 
   allCharacters(character?: Character | ID): string {
     if (character?.id) {
-      return `${this.api()}/all_characters/${character.id}`
+      return `${this.api()}/characters/${character.id}`
     } else {
-      return `${this.api()}/all_characters`
+      return `${this.api()}/characters`
     }
   }
 
