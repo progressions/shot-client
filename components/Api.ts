@@ -1,4 +1,18 @@
-import type { Site, Advancement, Schtick, CharacterEffect, Invitation, Campaign, Vehicle, Effect, Fight, Character, User, ID } from "../types/types"
+import type {
+  Weapon,
+  Site,
+  Advancement,
+  Schtick,
+  CharacterEffect,
+  Invitation,
+  Campaign,
+  Vehicle,
+  Effect,
+  Fight,
+  Character,
+  User,
+  ID
+} from "../types/types"
 
 class Api {
   base():string { return process.env.NEXT_PUBLIC_SERVER_URL as string }
@@ -163,6 +177,22 @@ class Api {
     }
   }
 
+  characterWeapons(character: Character | ID, weapon?: Weapon | ID): string {
+    if (weapon?.id) {
+      return `${this.allCharacters(character)}/weapons/${weapon.id}`
+    } else {
+      return `${this.allCharacters(character)}/weapons`
+    }
+  }
+
+  weapons(weapon?: Weapon | ID): string {
+    if (weapon?.id) {
+      return `${this.api()}/weapons/${weapon.id}`
+    } else {
+      return `${this.api()}/weapons`
+    }
+  }
+
   schticks(schtick?: Schtick | ID): string {
     if (schtick?.id) {
       return `${this.api()}/schticks/${schtick.id}`
@@ -173,6 +203,10 @@ class Api {
 
   importSchticks() {
     return `${this.schticks()}/import`
+  }
+
+  importWeapons() {
+    return `${this.weapons()}/import`
   }
 
 }

@@ -1,5 +1,19 @@
 import Api from "./Api"
-import type { Site, Advancement, Schtick, CharacterEffect, Invitation, Campaign, Effect, Vehicle, Character, ID, Fight, User } from "../types/types"
+import type {
+  Weapon,
+  Site,
+  Advancement,
+  Schtick,
+  CharacterEffect,
+  Invitation,
+  Campaign,
+  Effect,
+  Vehicle,
+  Character,
+  ID,
+  Fight,
+  User
+} from "../types/types"
 
 interface ClientParams {
   jwt?: string
@@ -276,6 +290,47 @@ class Client {
 
   async removeSchtick(character: Character | ID, schtick: Schtick | ID):Promise<Response> {
     return await this.delete(this.api.characterSchticks(character, schtick))
+  }
+
+  async getWeapons(params={}):Promise<Response> {
+    const query = Object.entries(params).map(([key, value]) => `${key}=${value || ""}`).join("&")
+    return await this.get(`${this.api.weapons()}?${query}`)
+  }
+
+  async getWeapon(weapon: Weapon | ID):Promise<Response> {
+    return await this.get(this.api.weapons(weapon))
+  }
+
+  async createWeapon(weapon: Weapon):Promise<Response> {
+    return await this.post(this.api.weapons(), {
+      "weapon": weapon
+    })
+  }
+
+  async updateWeapon(weapon: Weapon):Promise<Response> {
+    return await this.patch(this.api.weapons(weapon), {
+      "weapon": weapon
+    })
+  }
+
+  async deleteWeapon(weapon: Weapon):Promise<Response> {
+    return await this.delete(this.api.weapons(weapon))
+  }
+
+  async addWeapon(character: Character | ID, weapon: Weapon):Promise<Response> {
+    return await this.post(this.api.characterWeapons(character), {
+      "weapon": weapon
+    })
+  }
+
+  async uploadWeapons(content: string):Promise<Response> {
+    return await this.post(this.api.importWeapons(), {
+      "weapon": { "yaml": content }
+    })
+  }
+
+  async removeWeapon(character: Character | ID, weapon: Weapon | ID):Promise<Response> {
+    return await this.delete(this.api.characterWeapons(character, weapon))
   }
 
   async patch(url:string, body:any, options?:any):Promise<Response> {

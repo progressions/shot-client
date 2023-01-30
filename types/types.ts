@@ -17,6 +17,16 @@ export interface Campaign {
   invitations: Invitation[]
 }
 
+export interface Weapon {
+  id?: string
+  name: string
+  description: string
+  damage: number
+  concealment: number
+  reload_value: number
+  juncture: string
+}
+
 export interface DescriptionValues {
   [key: string]: string
   Nicknames: string
@@ -106,6 +116,7 @@ export interface Vehicle {
   schticks: Schtick[]
   advancements: Advancement[]
   sites: Site[]
+  weapons: Weapon[]
   skills: any
   user?: User
   created_at?: string
@@ -127,6 +138,7 @@ export interface Person {
   skills: any
   advancements: Advancement[]
   sites: Site[]
+  weapons: Weapon[]
   user?: User
   created_at?: string
   updated_at?: string
@@ -256,7 +268,8 @@ export const defaultCharacter:Person = {
   schticks: [],
   skills: {},
   advancements: [],
-  sites: []
+  sites: [],
+  weapons: []
 }
 
 export const defaultVehicle:Vehicle = {
@@ -283,7 +296,8 @@ export const defaultVehicle:Vehicle = {
   schticks: [],
   skills: {},
   advancements: [],
-  sites: []
+  sites: [],
+  weapons: []
 }
 
 export const defaultFight:Fight = {
@@ -350,4 +364,13 @@ export const defaultAdvancement:Advancement = {
 
 export const defaultSite:Site = {
   description: ""
+}
+
+export const defaultWeapon:Weapon = {
+  name: "",
+  description: "",
+  damage: 7,
+  concealment: 0,
+  reload_value: 0,
+  juncture: ""
 }
