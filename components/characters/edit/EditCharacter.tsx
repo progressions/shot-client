@@ -13,6 +13,7 @@ import SchtickSelector from "../../schticks/SchtickSelector"
 import Skills from "./Skills"
 import Advancements from "../../advancements/Advancements"
 import Sites from "../../sites/Sites"
+import Weapons from "../../weapons/Weapons"
 
 import { useEffect } from "react"
 
@@ -127,6 +128,7 @@ export default function EditCharacter({ character:initialCharacter }: any) {
             <FortuneSelect character={character} onChange={handleAVChange as React.ChangeEventHandler} readOnly={false} />
           </PlayerTypeOnly>
           <Skills skills={skills} onChange={handleSkillsChange} />
+          <Weapons character={character} />
           <PlayerTypeOnly character={character} only="PC">
             <Advancements character={character} />
             <Sites character={character} />
