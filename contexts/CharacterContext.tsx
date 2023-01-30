@@ -13,9 +13,11 @@ interface CharacterContextParams {
   state: any
   dispatch: any
   character: Character
+  updateCharacter: any
+  reloadCharacter: any
 }
 
-const CharacterContext = createContext<CharacterContextParams>({state: {}, dispatch: () => {}, character: defaultCharacter})
+const CharacterContext = createContext<CharacterContextParams>({state: {}, dispatch: () => {}, updateCharacter: () => {}, reloadCharacter: () => {}, character: defaultCharacter})
 
 export function CharacterProvider({ character, children }: any) {
   const { client } = useClient()

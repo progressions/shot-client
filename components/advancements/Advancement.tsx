@@ -4,7 +4,7 @@ import { useToast } from "../../contexts/ToastContext"
 import { useCharacter } from "../../contexts/CharacterContext"
 import ClearIcon from '@mui/icons-material/Clear'
 
-export default function Advancement({ advancement }) {
+export default function Advancement({ advancement }: any) {
   const { client } = useClient()
   const { toastError } = useToast()
   const { character, reloadCharacter } = useCharacter()

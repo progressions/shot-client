@@ -7,7 +7,13 @@ import Advancement from "./Advancement"
 
 import { Stack, Typography } from "@mui/material"
 
-export default function Advancements({ character, handleSubmit }) {
+import type { Advancement as AdvancementType, Character } from "../../types/types"
+
+interface AdvancementsProps {
+  character: Character
+}
+
+export default function Advancements({ character }: AdvancementsProps) {
   const { advancements } = character
 
   return (
@@ -15,7 +21,7 @@ export default function Advancements({ character, handleSubmit }) {
       <Subhead>Advancements ({advancements.length})</Subhead>
       <Stack spacing={2}>
         {
-          advancements.map((advancement) => (
+          advancements.map((advancement: AdvancementType) => (
             <Advancement key={advancement.id} advancement={advancement} />
           ))
         }

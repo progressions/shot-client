@@ -1,5 +1,5 @@
 import Api from "./Api"
-import type { Schtick, CharacterEffect, Invitation, Campaign, Effect, Vehicle, Character, ID, Fight, User } from "../types/types"
+import type { Advancement, Schtick, CharacterEffect, Invitation, Campaign, Effect, Vehicle, Character, ID, Fight, User } from "../types/types"
 
 interface ClientParams {
   jwt?: string
