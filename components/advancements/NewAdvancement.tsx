@@ -2,6 +2,7 @@ import { StyledTextField, SaveButton, CancelButton } from "../StyledFields"
 import { Stack, Typography } from "@mui/material"
 import { useClient } from "../../contexts/ClientContext"
 import { useToast } from "../../contexts/ToastContext"
+import { useCharacter } from "../../contexts/CharacterContext"
 
 import type { Character, Advancement } from "../../types/types"
 import { defaultAdvancement } from "../../types/types"
@@ -36,7 +37,8 @@ function advancementReducer(state: any, action: any) {
   }
 }
 
-export default function NewAdvancement({ character, dispatch:dispatchCharacter, handleSubmit }) {
+export default function NewAdvancement() {
+  const { character, dispatch:dispatchCharacter, reloadCharacter } = useCharacter()
   const [state, dispatchAdvancement] = useReducer(advancementReducer, initialState)
   const { toastSuccess, toastError } = useToast()
   const { client } = useClient()
@@ -52,8 +54,8 @@ export default function NewAdvancement({ character, dispatch:dispatchCharacter, 
 
     const response = await client.createAdvancement(character, advancement)
     if (response.status === 200) {
-      await handleSubmit(event)
-      // dispatchCharacter({ type: "edited" })
+      await reloadCharacter()
+      dispatchAdvancement({ type: "reset" })
     } else {
       toastError()
     }

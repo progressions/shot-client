@@ -1,12 +1,13 @@
-import { useClient } from "../../../contexts/ClientContext"
-import { useToast } from "../../../contexts/ToastContext"
-import { useCharacter } from "../../../contexts/CharacterContext"
+import { useClient } from "../../contexts/ClientContext"
+import { useToast } from "../../contexts/ToastContext"
+import { useCharacter } from "../../contexts/CharacterContext"
 import { Subhead } from "../StyledFields"
 import NewAdvancement from "./NewAdvancement"
+import Advancement from "./Advancement"
 
 import { Stack, Typography } from "@mui/material"
 
-export default function Advancements({ character, dispatch, handleSubmit }) {
+export default function Advancements({ character, handleSubmit }) {
   const { advancements } = character
 
   return (
@@ -15,10 +16,10 @@ export default function Advancements({ character, dispatch, handleSubmit }) {
       <Stack spacing={2}>
         {
           advancements.map((advancement) => (
-            <Typography key={advancement.id}>{advancement.description}</Typography>
+            <Advancement key={advancement.id} advancement={advancement} />
           ))
         }
-        <NewAdvancement character={character} dispatch={dispatch} handleSubmit={handleSubmit} />
+        <NewAdvancement />
       </Stack>
     </>
   )

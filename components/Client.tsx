@@ -92,6 +92,10 @@ class Client {
     return await this.post(this.api.advancements(character), {"advancement": advancement})
   }
 
+  async deleteAdvancement(character: Character, advancement: Advancement):Promise<Response> {
+    return await this.delete(this.api.advancements(character, advancement))
+  }
+
   async createEffect(effect: Effect, fight: Fight):Promise<Response> {
     return await this.post(this.api.effects(fight, effect), {"effect": effect})
   }

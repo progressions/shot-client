@@ -20,7 +20,7 @@ export default function SkillField({ name, value, onChange }: any) {
     <>
       <StyledTextField type="number" disabled={!valid} onChange={handleChange} label={name} name={name} value={value} sx={{width: 80}} />
       <IconButton onClick={removeSkill}>
-        <ClearIcon sx={{color: "white"}} />
+        <ClearIcon />
       </IconButton>
     </>
   )
