@@ -8,6 +8,11 @@ export const initialState = {
 
 export const characterReducer = (state: any, action: any) => {
   switch(action.type) {
+    case "edited":
+      return {
+        ...state,
+        edited: true
+      }
     case "update":
       return {
         ...state,

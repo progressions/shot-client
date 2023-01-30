@@ -1,4 +1,4 @@
-import type { Schtick, CharacterEffect, Invitation, Campaign, Vehicle, Effect, Fight, Character, User, ID } from "../types/types"
+import type { Advancement, Schtick, CharacterEffect, Invitation, Campaign, Vehicle, Effect, Fight, Character, User, ID } from "../types/types"
 
 class Api {
   base():string { return process.env.NEXT_PUBLIC_SERVER_URL as string }
@@ -29,9 +29,9 @@ class Api {
       return this.allVehicles(vehicle)
     }
     if (vehicle?.id) {
-      return `${this.fights(fight)}/vehicles/${vehicle.id}`
+      return `${this.fights(fight)}/drivers/${vehicle.id}`
     } else {
-      return `${this.fights(fight)}/vehicles`
+      return `${this.fights(fight)}/drivers`
     }
   }
 
@@ -53,17 +53,25 @@ class Api {
 
   allVehicles(vehicle?: Vehicle | ID): string {
     if (vehicle?.id) {
-      return `${this.api()}/all_vehicles/${vehicle.id}`
+      return `${this.api()}/vehicles/${vehicle.id}`
     } else {
-      return `${this.api()}/all_vehicles`
+      return `${this.api()}/vehicles`
     }
   }
 
   allCharacters(character?: Character | ID): string {
     if (character?.id) {
-      return `${this.api()}/all_characters/${character.id}`
+      return `${this.api()}/characters/${character.id}`
     } else {
-      return `${this.api()}/all_characters`
+      return `${this.api()}/characters`
+    }
+  }
+
+  advancements(character: Character, advancement?: Advancement | ID): string {
+    if (advancement?.id) {
+      return `${this.allCharacters(character)}/advancements/${advancement.id}`
+    } else {
+      return `${this.allCharacters(character)}/advancements`
     }
   }
 
