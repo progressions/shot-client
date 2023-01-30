@@ -18,9 +18,9 @@ class Api {
       return this.allCharacters(character)
     }
     if (character?.id) {
-      return `${this.fights(fight)}/characters/${character.id}`
+      return `${this.fights(fight)}/actors/${character.id}`
     } else {
-      return `${this.fights(fight)}/characters`
+      return `${this.fights(fight)}/actors`
     }
   }
 
