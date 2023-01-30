@@ -1,4 +1,4 @@
-import type { Advancement, Schtick, CharacterEffect, Invitation, Campaign, Vehicle, Effect, Fight, Character, User, ID } from "../types/types"
+import type { Site, Advancement, Schtick, CharacterEffect, Invitation, Campaign, Vehicle, Effect, Fight, Character, User, ID } from "../types/types"
 
 class Api {
   base():string { return process.env.NEXT_PUBLIC_SERVER_URL as string }
@@ -72,6 +72,14 @@ class Api {
       return `${this.allCharacters(character)}/advancements/${advancement.id}`
     } else {
       return `${this.allCharacters(character)}/advancements`
+    }
+  }
+
+  sites(character: Character, site?: Site | ID): string {
+    if (site?.id) {
+      return `${this.allCharacters(character)}/sites/${site.id}`
+    } else {
+      return `${this.allCharacters(character)}/sites`
     }
   }
 

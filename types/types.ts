@@ -91,6 +91,7 @@ export interface Vehicle {
   description: any
   schticks: Schtick[]
   advancements: Advancement[]
+  sites: Site[]
   skills: any
   user?: User
   created_at?: string
@@ -110,7 +111,8 @@ export interface Person {
   description: any
   schticks: Schtick[]
   skills: any
-  advancements: Advancement[],
+  advancements: Advancement[]
+  sites: Site[]
   user?: User
   created_at?: string
   updated_at?: string
@@ -119,6 +121,11 @@ export interface Person {
 }
 
 export interface Advancement {
+  id?: string
+  description: string
+}
+
+export interface Site {
   id?: string
   description: string
 }
@@ -233,7 +240,8 @@ export const defaultCharacter:Person = {
   },
   schticks: [],
   skills: {},
-  advancements: []
+  advancements: [],
+  sites: []
 }
 
 export const defaultVehicle:Vehicle = {
@@ -259,7 +267,8 @@ export const defaultVehicle:Vehicle = {
   description: {},
   schticks: [],
   skills: {},
-  advancements: []
+  advancements: [],
+  sites: []
 }
 
 export const defaultFight:Fight = {
@@ -321,5 +330,9 @@ export const defaultSchtick:Schtick = {
 }
 
 export const defaultAdvancement:Advancement = {
+  description: ""
+}
+
+export const defaultSite:Site = {
   description: ""
 }

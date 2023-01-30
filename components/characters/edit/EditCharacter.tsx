@@ -12,6 +12,7 @@ import Schticks from "../../schticks/Schticks"
 import SchtickSelector from "../../schticks/SchtickSelector"
 import Skills from "./Skills"
 import Advancements from "../../advancements/Advancements"
+import Sites from "../../sites/Sites"
 
 import { useEffect } from "react"
 
@@ -127,6 +128,7 @@ export default function EditCharacter({ character:initialCharacter }: any) {
           </PlayerTypeOnly>
           <Skills skills={skills} onChange={handleSkillsChange} />
           <Advancements character={character} />
+          <Sites character={character} />
           <Description description={description} onChange={handleDescriptionChange} />
           <Schticks schticks={schticks} filter={filter} state={state} dispatch={dispatch} />
           <SchtickSelector />

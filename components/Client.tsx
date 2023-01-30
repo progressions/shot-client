@@ -1,5 +1,5 @@
 import Api from "./Api"
-import type { Advancement, Schtick, CharacterEffect, Invitation, Campaign, Effect, Vehicle, Character, ID, Fight, User } from "../types/types"
+import type { Site, Advancement, Schtick, CharacterEffect, Invitation, Campaign, Effect, Vehicle, Character, ID, Fight, User } from "../types/types"
 
 interface ClientParams {
   jwt?: string
@@ -94,6 +94,14 @@ class Client {
 
   async deleteAdvancement(character: Character, advancement: Advancement):Promise<Response> {
     return await this.delete(this.api.advancements(character, advancement))
+  }
+
+  async createSite(character: Character, site: Site):Promise<Response> {
+    return await this.post(this.api.sites(character), {"site": site})
+  }
+
+  async deleteSite(character: Character, site: Site):Promise<Response> {
+    return await this.delete(this.api.sites(character, site))
   }
 
   async createEffect(effect: Effect, fight: Fight):Promise<Response> {
