@@ -1,11 +1,16 @@
 import { Typography, Stack, TextField } from "@mui/material"
 import { Subhead, StyledTextField } from "../../StyledFields"
+import PlayerTypeOnly from "../../PlayerTypeOnly"
 
-export default function Description({ description, onChange }: any) {
+export default function Description({ character, onChange }: any) {
+  const { description } = character
+
   return (
     <>
       <Subhead>Description</Subhead>
-      <StyledTextField name="Melodramatic Hook" label="Melodramatic Hook" value={description["Melodramatic Hook"]} onChange={onChange} multiline rows={4} />
+      <PlayerTypeOnly character={character} only="PC">
+        <StyledTextField name="Melodramatic Hook" label="Melodramatic Hook" value={description["Melodramatic Hook"]} onChange={onChange} multiline rows={4} />
+      </PlayerTypeOnly>
       <StyledTextField name="Nicknames" label="Nicknames" value={description["Nicknames"]} onChange={onChange} />
       <Stack direction="row" spacing={1}>
         <StyledTextField name="Age" label="Age" value={description["Age"]} onChange={onChange} />
