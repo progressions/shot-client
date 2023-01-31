@@ -4,7 +4,7 @@ import { useToast } from "../../contexts/ToastContext"
 import { useCharacter } from "../../contexts/CharacterContext"
 import ClearIcon from '@mui/icons-material/Clear'
 
-export default function Weapon({ weapon }: any) {
+export default function Weapon({ weapon, filter, dispatchFilter }: any) {
   const { client } = useClient()
   const { toastError } = useToast()
   const { character, reloadCharacter } = useCharacter()
@@ -22,7 +22,7 @@ export default function Weapon({ weapon }: any) {
     const doit = confirm("Delete this weapon? This cannot be undone.")
     const response = await client.deleteWeapon(weapon)
     if (response.status === 200) {
-      await reloadCharacter()
+      dispatchFilter({ type: "edit" })
     } else {
       toastError()
     }
@@ -36,7 +36,7 @@ export default function Weapon({ weapon }: any) {
     <Stack direction="row" spacing={1} alignItems="center">
       <Typography sx={{fontWeight: "bold"}}>{weapon.name}</Typography>
       <Typography>{stats}</Typography>
-      <IconButton onClick={deleteWeapon}>
+      <IconButton onClick={deleteFunction}>
         <ClearIcon />
       </IconButton>
     </Stack>

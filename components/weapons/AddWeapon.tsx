@@ -64,6 +64,8 @@ export default function AddWeapon() {
   }, [character])
 
   useEffect(() => {
+    if (!open) return
+
     async function getWeapons() {
       const response = await client.getWeapons()
       if (response.status === 200) {
@@ -75,7 +77,7 @@ export default function AddWeapon() {
     if (user?.id) {
       getWeapons().catch(toastError)
     }
-  }, [user?.id, client, dispatchWeapon])
+  }, [open, user?.id, client, dispatchWeapon])
 
   async function addWeapon(event: any) {
     event.preventDefault()

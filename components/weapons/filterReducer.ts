@@ -1,4 +1,5 @@
 export const initialFilter = {
+  edited: true,
   loading: true,
   saving: false,
   page: 1,
@@ -11,6 +12,11 @@ export const initialFilter = {
 
 export function filterReducer (state: any, action: any) {
   switch(action.type) {
+    case "edit":
+      return {
+        ...state,
+        edited: true
+      }
     case "previous":
       return {
         ...state,
@@ -24,13 +30,15 @@ export function filterReducer (state: any, action: any) {
     case "saving":
       return {
         ...state,
-        saving: true
+        saving: true,
+        edited: false
       }
     case "success":
       return {
         ...state,
         loading: false,
-        saving: false
+        saving: false,
+        edited: false
       }
     case "juncture":
       return {
@@ -55,6 +63,7 @@ export function filterReducer (state: any, action: any) {
         loading: false,
         weapons: weapons,
         meta: meta,
+        edited: false,
         junctures: junctures
       }
     default:

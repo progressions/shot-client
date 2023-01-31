@@ -37,28 +37,28 @@ function weaponReducer(state: any, action: any) {
   }
 }
 
-export default function AddWeapon() {
-  const { character, dispatch:dispatchCharacter, reloadCharacter } = useCharacter()
+export default function AddWeapon({ filter, dispatchFilter, open, setOpen }) {
   const [state, dispatchWeapon] = useReducer(weaponReducer, initialState)
   const { toastSuccess, toastError } = useToast()
   const { client } = useClient()
   const { loading, weapon } = state
 
-  useEffect(() => {
-    dispatchWeapon({ type: "reset" })
-  }, [character])
-
   async function addWeapon(event: any) {
     event.preventDefault()
     dispatchWeapon({ type: "saving" })
 
-    const response = await client.createWeapon(character, weapon)
+    const response = await client.createWeapon(weapon)
     if (response.status === 200) {
-      await reloadCharacter()
-      dispatchWeapon({ type: "reset" })
+      dispatchFilter({ type: "edit" })
+      setOpen(false)
     } else {
       toastError()
     }
+  }
+
+  function cancelForm() {
+    dispatchWeapon({ type: "reset" })
+    setOpen(false)
   }
 
   function handleChange(event: any) {
@@ -122,7 +122,7 @@ export default function AddWeapon() {
         />
       </Stack>
       <Stack direction="row" spacing={1} alignItems="center">
-        <CancelButton disabled={loading} />
+        <CancelButton disabled={loading} onClick={cancelForm} />
         <SaveButton disabled={loading} onClick={addWeapon}>Add</SaveButton>
       </Stack>
     </>

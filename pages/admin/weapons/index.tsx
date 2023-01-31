@@ -4,7 +4,9 @@ import Head from 'next/head'
 import { useEffect, useReducer } from "react"
 import { Skeleton, Box, Paper, IconButton, Button, Stack, Link, Container, Typography, TableContainer, Table, TableHead, TableBody, TableRow, TableCell } from "@mui/material"
 import { useClient } from "../../../contexts/ClientContext"
+import { useCharacter } from "../../../contexts/CharacterContext"
 import { useCampaign } from "../../../contexts/CampaignContext"
+import { useToast } from "../../../contexts/ToastContext"
 import { useSession } from 'next-auth/react'
 
 import { ButtonBar } from "../../../components/StyledFields"
@@ -17,63 +19,33 @@ import { initialFilter, filterReducer } from "../../../components/weapons/filter
 
 import { authOptions } from '../../api/auth/[...nextauth]'
 import { unstable_getServerSession } from "next-auth/next"
-import Client from "../../../components/Client"
 import Weapons from "../../../components/weapons/Weapons"
 
 import type { Campaign } from "../../../types/types"
 import { GetServerSideProps } from 'next'
 import { InferGetServerSidePropsType } from 'next'
 
-export async function getServerSideProps<GetServerSideProps>({ req, res }: any) {
-  const session: any = await unstable_getServerSession(req as any, res as any, authOptions as any)
-  const jwt = session?.authorization
-  const client = new Client({ jwt: jwt })
-
-  const response = await client.getWeapons()
-
-  if (response.status === 200) {
-    const { weapons, meta, junctures } = await response.json()
-    return {
-      props: {
-        weapons: weapons,
-        meta: meta,
-        junctures: junctures
-      }
-    }
-  }
-  if (response.status === 500) {
-    return {
-      redirect: {
-        permanent: false,
-        destination: "/"
-      }
-    }
-  }
-  if (response.status === 401) {
-    return {
-      redirect: {
-        permanent: false,
-        destination: "/auth/signin"
-      },
-      props: {
-      }
-    }
-  }
-  return {
-    props: {
-      fights: [],
-    }
-  }
-}
-
 export default function WeaponsIndex(data: any) {
+  const { character } = useCharacter()
+  const { user, client } = useClient()
   const [filter, dispatchFilter] = useReducer(filterReducer, initialFilter)
   const weapons = filter?.weapons || []
-  const { loading } = filter
+  const { edited, page, loading, juncture, name } = filter
+  const { toastSuccess, toastError } = useToast()
 
   useEffect(() => {
-    dispatchFilter({ type: "weapons", payload: data })
-  }, [data])
+    async function getWeapons() {
+      const response = await client.getWeapons({ page, juncture, name, character_id: character?.id as string })
+      if (response.status === 200) {
+        const data = await response.json()
+        dispatchFilter({ type: "weapons", payload: data })
+      }
+    }
+
+    if (user?.id && edited) {
+      getWeapons().catch(toastError)
+    }
+  }, [edited, character?.id, dispatchFilter, user?.id, juncture, toastError, client, page, name])
 
   return (
     <>
