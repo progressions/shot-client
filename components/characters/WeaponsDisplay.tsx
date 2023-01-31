@@ -21,6 +21,8 @@ export default function WeaponsDisplay({ weapons }: any) {
 
   const stats = (weapon: Weapon) => (`(${weapon.damage || "-"}/${weapon.concealment || "-"}/${weapon.reload_value || "-"})`)
 
+  if (!weapons.length) return <></>
+
   return (
     <>
       <Tooltip title="Weapons">
