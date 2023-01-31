@@ -23,7 +23,7 @@ export default function CategoryAutocomplete({ filter, dispatchFilter }: any) {
         value={category || null}
         disabled={loading || !categories?.length}
         options={categories || []}
-        sx={{ width: 200 }}
+        sx={{ width: 250 }}
         onChange={selectCategory}
         getOptionLabel={getOptionLabel}
         renderInput={(params: any) => <StyledSelect helperText={helperText} {...params} label="Category" />}
