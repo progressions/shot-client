@@ -24,7 +24,10 @@ export interface Weapon {
   damage: number
   concealment: number
   reload_value: number
+  category: string
   juncture: string
+  mook_bonus: number
+  kachunk: boolean
 }
 
 export interface DescriptionValues {
@@ -372,5 +375,8 @@ export const defaultWeapon:Weapon = {
   damage: 7,
   concealment: 0,
   reload_value: 0,
-  juncture: ""
+  juncture: "",
+  category: "",
+  mook_bonus: 0,
+  kachunk: false
 }
