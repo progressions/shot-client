@@ -38,7 +38,6 @@ function weaponReducer(state: any, action: any) {
         weapon: action.payload
       }
     case "weapons":
-      console.log("weapons", action.payload)
       return {
         ...state,
         weapons: action.payload.weapons,

@@ -32,6 +32,8 @@ export default function Weapon({ weapon, filter, dispatchFilter }: any) {
 
   const deleteFunction = character?.id ? removeWeapon : deleteWeapon
 
+  // TODO: Make this a Card
+
   return (
     <>
       <Stack direction="row" spacing={1} alignItems="center">

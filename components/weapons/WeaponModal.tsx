@@ -1,5 +1,5 @@
-import { StyledTextField, SaveButton, CancelButton } from "../StyledFields"
-import { Stack, Typography } from "@mui/material"
+import { StyledSelect, StyledTextField, SaveButton, CancelButton } from "../StyledFields"
+import { MenuItem, Box, Stack, Typography } from "@mui/material"
 import { useClient } from "../../contexts/ClientContext"
 import { useToast } from "../../contexts/ToastContext"
 import { useCharacter } from "../../contexts/CharacterContext"
@@ -37,11 +37,12 @@ function weaponReducer(state: any, action: any) {
   }
 }
 
-export default function AddWeapon({ filter, dispatchFilter, open, setOpen }) {
+export default function WeaponModal({ filter, dispatchFilter, open, setOpen }) {
   const [state, dispatchWeapon] = useReducer(weaponReducer, initialState)
   const { toastSuccess, toastError } = useToast()
   const { client } = useClient()
   const { loading, weapon } = state
+  const { junctures } = filter
 
   async function addWeapon(event: any) {
     event.preventDefault()
@@ -65,6 +66,10 @@ export default function AddWeapon({ filter, dispatchFilter, open, setOpen }) {
     dispatchWeapon({ type: "update", name: event.target.name, value: event.target.value })
   }
 
+  function changeJuncture(event: any) {
+    dispatchWeapon({ type: "update", name: "juncture", value: event.target.value })
+  }
+
   return (
     <>
       <Stack direction="row" spacing={1} alignItems="center">
@@ -77,6 +82,25 @@ export default function AddWeapon({ filter, dispatchFilter, open, setOpen }) {
           onChange={handleChange}
           disabled={loading}
         />
+        <Box sx={{width: 300}}>
+          <StyledSelect
+            value={weapon?.juncture}
+            name="juncture"
+            label="Juncture"
+            onChange={changeJuncture}
+            disabled={loading}
+            fullWidth
+            select
+          >
+            {
+              junctures.map((juncture) => (
+                <MenuItem key={juncture} value={juncture}>{juncture}</MenuItem>
+              ))
+            }
+          </StyledSelect>
+        </Box>
+      </Stack>
+      <Stack direction="row" spacing={1} alignItems="center">
         <StyledTextField
           sx={{width: 80}}
           type="number"
