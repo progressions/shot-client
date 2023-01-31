@@ -49,7 +49,7 @@ export default function Weapon({ weapon, filter, dispatchFilter }: any) {
         <Typography variant="body2" gutterBottom>
           {weapon.description}
         </Typography>
-        <Typography variant="caption">Mook Bonus: {weapon.mook_bonus}</Typography>
+        { weapon.mook_bonus > 0 && <Typography variant="subtitle2">+{weapon.mook_bonus} Attack vs Mooks</Typography> }
       </WeaponCardBase>
     </>
   )
