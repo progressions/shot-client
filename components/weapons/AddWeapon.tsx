@@ -61,10 +61,6 @@ export default function AddWeapon() {
   const { weapons, weapon, edited, page, loading, juncture, category, name } = weaponsFilter
 
   useEffect(() => {
-    dispatchWeapons({ type: "reset" })
-  }, [character])
-
-  useEffect(() => {
     async function getWeapons() {
       const response = await client.getWeapons({ page, juncture, category, name, character_id: character?.id as string })
       if (response.status === 200) {
@@ -97,7 +93,7 @@ export default function AddWeapon() {
 
   function handleClose() {
     setOpen(false)
-    dispatchWeapons({ type: "reset" })
+    dispatchWeapons({ type: "weapon" })
   }
 
   function selectWeapon(event: any, newValue: any) {

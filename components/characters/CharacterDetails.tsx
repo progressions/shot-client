@@ -22,6 +22,7 @@ import WoundsDisplay from "./WoundsDisplay"
 import GroupedEffects from "../state_effects/GroupedEffects"
 import SkillsDisplay from "./SkillsDisplay"
 import SchticksDisplay from "./SchticksDisplay"
+import WeaponsDisplay from "./WeaponsDisplay"
 
 import { useFight } from "../../contexts/FightContext"
 import { useToast } from "../../contexts/ToastContext"
@@ -147,6 +148,7 @@ export default function CharacterDetails({ character, editingCharacter, setEditi
             <Stack direction="row" spacing={1} alignItems="center">
               <SchticksDisplay schticks={character.schticks} />
               <SkillsDisplay skills={character.skills} />
+              <WeaponsDisplay weapons={character.weapons} />
               <GroupedEffects character={character} />
             </Stack>
           </GamemasterOnly>

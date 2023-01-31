@@ -81,6 +81,8 @@ export function filterReducer (state: any, action: any) {
         junctures: junctures,
         categories: categories
       }
+    case "reset":
+      return initialFilter
     default:
       return state
   }

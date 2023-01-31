@@ -288,12 +288,6 @@ class Client {
     })
   }
 
-  async uploadWeapons(content: string):Promise<Response> {
-    return await this.post(this.api.importWeapons(), {
-      "weapon": { "yaml": content }
-    })
-  }
-
   async removeSchtick(character: Character | ID, schtick: Schtick | ID):Promise<Response> {
     return await this.delete(this.api.characterSchticks(character, schtick))
   }
