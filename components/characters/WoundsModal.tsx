@@ -42,8 +42,6 @@ const WoundsModal = ({open, setOpen, character }: WoundsModalParams) => {
       }
     }
 
-    console.log({ originalWounds, newWounds })
-
     // A PC, Ally, Featured Foe gain 1 point of Impairment when their Wounds
     // go from < 25 to between 25 and 30
     if (originalWounds < 25 && newWounds >= 25 && newWounds <= 30) {
@@ -98,7 +96,6 @@ const WoundsModal = ({open, setOpen, character }: WoundsModalParams) => {
     actionValues['Wounds'] = newWounds
 
     const impairments = character.impairments + calculateImpairments(originalWounds, newWounds)
-    console.log({ impairments })
 
     const response = await client.updateCharacter({ ...character, impairments: impairments, "action_values": actionValues}, fight)
     if (response.status === 200) {

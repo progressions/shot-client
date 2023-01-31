@@ -32,8 +32,6 @@ export default function Weapons({ filter, dispatchFilter }: any) {
 
   if (!weapons) return (<></>)
 
-  console.log(meta)
-
   return (
     <>
     <Subhead>Weapons</Subhead>

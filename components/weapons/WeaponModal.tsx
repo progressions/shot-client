@@ -69,8 +69,6 @@ export default function WeaponModal({ filter, dispatchFilter, open, setOpen }: a
   }
 
   function changeJuncture(event: any, newValue: string) {
-    console.log("event.target.name", event.target.name)
-    console.log("newValue", newValue)
     dispatchWeapon({ type: "update", name: "juncture", value: newValue })
   }
 
@@ -86,8 +84,6 @@ export default function WeaponModal({ filter, dispatchFilter, open, setOpen }: a
     // Regular option
     return option
   }
-
-  console.log(weapon)
 
   return (
     <>

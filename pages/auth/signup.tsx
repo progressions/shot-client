@@ -32,10 +32,8 @@ export default function SignUp() {
 
   const handleSubmit = async (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault()
-    console.log(user)
     const response = await client.createUser(user)
     if (response.status === 200) {
-      console.log("worked")
       Router.replace("/auth/signin")
     }
   }
