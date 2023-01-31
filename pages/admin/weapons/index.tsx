@@ -34,6 +34,7 @@ export default function WeaponsIndex(data: any) {
   const { toastSuccess, toastError } = useToast()
 
   useEffect(() => {
+    console.log("page", page)
     async function getWeapons() {
       console.log("getWeapons", juncture)
       const response = await client.getWeapons({ page, juncture, name, character_id: character?.id as string })

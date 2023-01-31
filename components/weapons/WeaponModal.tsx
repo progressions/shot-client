@@ -1,5 +1,5 @@
-import { StyledSelect, StyledTextField, SaveButton, CancelButton } from "../StyledFields"
-import { MenuItem, Box, Stack, Typography } from "@mui/material"
+import { StyledAutocomplete, StyledSelect, StyledTextField, SaveButton, CancelButton } from "../StyledFields"
+import { createFilterOptions, MenuItem, Box, Stack, Typography } from "@mui/material"
 import { useClient } from "../../contexts/ClientContext"
 import { useToast } from "../../contexts/ToastContext"
 import { useCharacter } from "../../contexts/CharacterContext"
@@ -8,6 +8,8 @@ import type { Character, Weapon } from "../../types/types"
 import { defaultWeapon } from "../../types/types"
 
 import { useEffect, useReducer } from "react"
+
+const filterOptions = createFilterOptions<string>();
 
 const initialState = {
   error: false,
@@ -66,9 +68,26 @@ export default function WeaponModal({ filter, dispatchFilter, open, setOpen }) {
     dispatchWeapon({ type: "update", name: event.target.name, value: event.target.value })
   }
 
-  function changeJuncture(event: any) {
-    dispatchWeapon({ type: "update", name: "juncture", value: event.target.value })
+  function changeJuncture(event: any, newValue: string) {
+    console.log("event.target.name", event.target.name)
+    console.log("newValue", newValue)
+    dispatchWeapon({ type: "update", name: "juncture", value: newValue })
   }
+
+  function getOptionLabel(option: any) {
+    // Value selected with enter, right from the input
+    if (typeof option === 'string') {
+      return option;
+    }
+    // Add "xxx" option created dynamically
+    if (option.inputValue) {
+      return option.inputValue;
+    }
+    // Regular option
+    return option
+  }
+
+  console.log(weapon)
 
   return (
     <>
@@ -83,21 +102,31 @@ export default function WeaponModal({ filter, dispatchFilter, open, setOpen }) {
           disabled={loading}
         />
         <Box sx={{width: 300}}>
-          <StyledSelect
-            value={weapon?.juncture}
-            name="juncture"
-            label="Juncture"
-            onChange={changeJuncture}
+          <StyledAutocomplete
+            freeSolo
+            value={weapon?.juncture || null}
             disabled={loading}
-            fullWidth
-            select
-          >
-            {
-              junctures.map((juncture) => (
-                <MenuItem key={juncture} value={juncture}>{juncture}</MenuItem>
-              ))
-            }
-          </StyledSelect>
+            options={junctures || []}
+            sx={{ width: 200 }}
+            onChange={changeJuncture}
+            openOnFocus
+            getOptionLabel={getOptionLabel}
+            filterOptions={(options: any, params: any) => {
+              const filtered = filterOptions(options, params);
+
+              const { inputValue } = params;
+              // Suggest the creation of a new value
+              const isExisting = options.some((option: any) => inputValue === option);
+              if (inputValue !== '' && !isExisting) {
+                filtered.push(
+                  inputValue,
+                );
+              }
+
+              return filtered;
+            }}
+            renderInput={(params: any) => <StyledTextField {...params} label="Juncture" />}
+          />
         </Box>
       </Stack>
       <Stack direction="row" spacing={1} alignItems="center">

@@ -20,11 +20,13 @@ export function filterReducer (state: any, action: any) {
     case "previous":
       return {
         ...state,
+        edited: true,
         page: state.meta["prev_page"]
       }
     case "next":
       return {
         ...state,
+        edited: true,
         page: state.meta["next_page"]
       }
     case "saving":

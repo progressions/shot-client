@@ -6,7 +6,7 @@ import { Subhead } from "../StyledFields"
 
 import { useState, useMemo } from "react"
 
-function rowMap(array: any[], itemsPerRow: number) {
+export function rowMap(array: any[], itemsPerRow: number) {
   const rows = []
   for (let i=0; i <= array.length; i+=itemsPerRow) {
     const row = []

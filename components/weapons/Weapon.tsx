@@ -3,6 +3,7 @@ import { useClient } from "../../contexts/ClientContext"
 import { useToast } from "../../contexts/ToastContext"
 import { useCharacter } from "../../contexts/CharacterContext"
 import ClearIcon from '@mui/icons-material/Clear'
+import WeaponCardBase from "./WeaponCardBase"
 
 export default function Weapon({ weapon, filter, dispatchFilter }: any) {
   const { client } = useClient()
@@ -20,6 +21,8 @@ export default function Weapon({ weapon, filter, dispatchFilter }: any) {
 
   async function deleteWeapon(event: any) {
     const doit = confirm("Delete this weapon? This cannot be undone.")
+    if (!doit) return
+
     const response = await client.deleteWeapon(weapon)
     if (response.status === 200) {
       dispatchFilter({ type: "edit" })
@@ -32,18 +35,30 @@ export default function Weapon({ weapon, filter, dispatchFilter }: any) {
 
   const deleteFunction = character?.id ? removeWeapon : deleteWeapon
 
-  // TODO: Make this a Card
+  const deleteButton = (<IconButton key="delete" onClick={deleteFunction}>
+          <ClearIcon />
+        </IconButton>)
 
   return (
     <>
-      <Stack direction="row" spacing={1} alignItems="center">
-        <Typography sx={{fontWeight: "bold"}}>{weapon.name}</Typography>
-        <Typography>{stats}</Typography>
-        <IconButton onClick={deleteFunction}>
-          <ClearIcon />
-        </IconButton>
-      </Stack>
-      <Typography>{weapon.description}</Typography>
+      <WeaponCardBase
+        title={`${weapon.name} ${stats}`}
+        subheader={weapon.juncture}
+        action={[deleteButton]}
+      >
+        <Typography variant="body2" gutterBottom>
+          {weapon.description}
+        </Typography>
+      </WeaponCardBase>
     </>
   )
 }
+
+/*
+ *
+      <Stack direction="row" spacing={1} alignItems="center">
+        <Typography variant="caption">{weapon.juncture}</Typography>
+        <Typography sx={{fontWeight: "bold"}}>{weapon.name}</Typography>
+        <Typography>{stats}</Typography>
+      </Stack>
+    */
