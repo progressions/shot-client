@@ -35,6 +35,7 @@ export default function WeaponsIndex(data: any) {
 
   useEffect(() => {
     async function getWeapons() {
+      console.log("getWeapons", juncture)
       const response = await client.getWeapons({ page, juncture, name, character_id: character?.id as string })
       if (response.status === 200) {
         const data = await response.json()

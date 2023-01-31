@@ -43,6 +43,7 @@ export function filterReducer (state: any, action: any) {
     case "juncture":
       return {
         ...state,
+        edited: true,
         juncture: action.payload || initialFilter.juncture,
         weapon: initialFilter.weapon
       }
@@ -55,6 +56,7 @@ export function filterReducer (state: any, action: any) {
     case "weapon":
       return {
         ...state,
+        edited: true,
         weapon: action.payload || initialFilter.weapon,
       }
     case "weapons":
