@@ -55,9 +55,9 @@ export async function getServerSideProps<GetServerSideProps>({ req, res }: any) 
   }
 }
 
-export default function UploadSchticks({ schticks:initialSchticks }: any) {
+export default function UploadWeapons({ weapons:initialWeapons }: any) {
   const [saving, setSaving] = useState(false)
-  const [schticks, setSchticks] = useState(initialSchticks)
+  const [weapons, setWeapons] = useState(initialWeapons)
   const [content, setContent] = useState("")
   const { toastSuccess, toastError } = useToast()
   const { client } = useClient()
@@ -66,9 +66,9 @@ export default function UploadSchticks({ schticks:initialSchticks }: any) {
     event.preventDefault()
     setSaving(true)
 
-    const response = await client.uploadSchticks(content)
+    const response = await client.uploadWeapons(content)
     if (response.status === 200) {
-      toastSuccess("Schticks uploaded.")
+      toastSuccess("Weapons uploaded.")
       cancelForm()
     } else {
       toastError()
@@ -88,7 +88,7 @@ export default function UploadSchticks({ schticks:initialSchticks }: any) {
   return (
     <>
       <Head>
-        <title>Schticks - Chi War</title>
+        <title>Weapons - Chi War</title>
         <meta name="description" content="Feng Shui 2 Shot Counter" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
@@ -96,7 +96,7 @@ export default function UploadSchticks({ schticks:initialSchticks }: any) {
       <main>
         <Layout>
           <Container maxWidth="md">
-            <Typography variant="h1" gutterBottom>Schticks</Typography>
+            <Typography variant="h1" gutterBottom>Weapons</Typography>
             <Box component="form" onSubmit={handleSubmit} sx={{width: 900}}>
               <Stack spacing={2}>
                 <TextField name="file" onChange={handleChange} fullWidth required multiline rows={30} sx={{backgroundColor: "white", color: "black"}} InputProps={{sx: {color: "black"}}} />
@@ -112,5 +112,3 @@ export default function UploadSchticks({ schticks:initialSchticks }: any) {
     </>
   )
 }
-
-
