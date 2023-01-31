@@ -18,7 +18,7 @@ export default function Weapon({ weapon }: any) {
     }
   }
 
-  const stats = `(${weapon.damage}/${weapon.concealment}/${weapon.reload_value})`
+  const stats = `(${weapon.damage || "-"}/${weapon.concealment || "-"}/${weapon.reload_value || "-"})`
 
   return (
     <Stack direction="row" spacing={1} alignItems="center">

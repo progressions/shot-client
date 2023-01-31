@@ -158,7 +158,7 @@ export default function AddWeapon() {
                 sx={{width: 80}}
                 type="number"
                 required
-                value={weapon?.damage}
+                value={weapon?.damage || ""}
                 name="damage"
                 label="Damage"
                 disabled={loading}
@@ -168,7 +168,7 @@ export default function AddWeapon() {
                 sx={{width: 80}}
                 type="number"
                 required
-                value={weapon?.concealment}
+                value={weapon?.concealment || ""}
                 name="concealment"
                 label="Concealment"
                 disabled={loading}
@@ -178,7 +178,7 @@ export default function AddWeapon() {
                 sx={{width: 80}}
                 type="number"
                 required
-                value={weapon?.reload_value}
+                value={weapon?.reload_value || ""}
                 name="reload_value"
                 label="Reload"
                 disabled={loading}

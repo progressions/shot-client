@@ -5,8 +5,8 @@ import Weapon from "./Weapon"
 import AddWeapon from "./AddWeapon"
 import { useCharacter } from "../../contexts/CharacterContext"
 
-export default function Weapons({ character }) {
-  const { weapons } = character
+export default function Weapons({ filter, dispatchFilter }) {
+  const { weapons } = filter
 
   return (
     <Stack spacing={1}>

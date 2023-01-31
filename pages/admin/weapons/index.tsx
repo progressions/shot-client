@@ -11,14 +11,14 @@ import { ButtonBar } from "../../../components/StyledFields"
 import CreateCampaign from "../../../components/campaigns/CreateCampaign"
 import Campaigns from "../../../components/campaigns/Campaigns"
 import GamemasterOnly from "../../../components/GamemasterOnly"
-import CreateSchtickButton from "../../../components/schticks/CreateSchtickButton"
-import FilterSchticks from "../../../components/schticks/FilterSchticks"
-import { initialFilter, filterReducer } from "../../../components/schticks/filterReducer"
+import CreateWeaponButton from "../../../components/weapons/CreateWeaponButton"
+import FilterWeapons from "../../../components/weapons/FilterWeapons"
+import { initialFilter, filterReducer } from "../../../components/weapons/filterReducer"
 
 import { authOptions } from '../../api/auth/[...nextauth]'
 import { unstable_getServerSession } from "next-auth/next"
 import Client from "../../../components/Client"
-import Schticks from "../../../components/schticks/Schticks"
+import Weapons from "../../../components/weapons/Weapons"
 
 import type { Campaign } from "../../../types/types"
 import { GetServerSideProps } from 'next'
@@ -29,15 +29,15 @@ export async function getServerSideProps<GetServerSideProps>({ req, res }: any) 
   const jwt = session?.authorization
   const client = new Client({ jwt: jwt })
 
-  const response = await client.getSchticks()
+  const response = await client.getWeapons()
 
   if (response.status === 200) {
-    const { schticks, meta, paths } = await response.json()
+    const { weapons, meta, junctures } = await response.json()
     return {
       props: {
-        schticks: schticks,
+        weapons: weapons,
         meta: meta,
-        paths: paths
+        junctures: junctures
       }
     }
   }
@@ -66,19 +66,19 @@ export async function getServerSideProps<GetServerSideProps>({ req, res }: any) 
   }
 }
 
-export default function SchticksIndex(data: any) {
+export default function WeaponsIndex(data: any) {
   const [filter, dispatchFilter] = useReducer(filterReducer, initialFilter)
-  const schticks = filter?.schticks || []
+  const weapons = filter?.weapons || []
   const { loading } = filter
 
   useEffect(() => {
-    dispatchFilter({ type: "schticks", payload: data })
+    dispatchFilter({ type: "weapons", payload: data })
   }, [data])
 
   return (
     <>
       <Head>
-        <title>Schticks - Chi War</title>
+        <title>Weapons - Chi War</title>
         <meta name="description" content="Feng Shui 2 Shot Counter" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
@@ -86,13 +86,12 @@ export default function SchticksIndex(data: any) {
       <main>
         <Layout>
           <Container maxWidth="md">
-            <Typography variant="h1" gutterBottom>Schticks</Typography>
+            <Typography variant="h1" gutterBottom>Weapons</Typography>
             { !loading && <>
               <ButtonBar sx={{height: 80}}>
-                <FilterSchticks filter={filter} dispatchFilter={dispatchFilter} />
-                <CreateSchtickButton filter={filter} dispatchFilter={dispatchFilter} />
+                <FilterWeapons filter={filter} dispatchFilter={dispatchFilter} />
               </ButtonBar>
-              <Schticks filter={filter} dispatchFilter={dispatchFilter} />
+              <Weapons filter={filter} dispatchFilter={dispatchFilter} />
             </> }
             { loading && <>
               <Skeleton animation="wave" height={50} />
@@ -109,3 +108,4 @@ export default function SchticksIndex(data: any) {
   )
 }
 
+// <CreateWeaponButton filter={filter} dispatchFilter={dispatchFilter} />

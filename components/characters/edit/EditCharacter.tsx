@@ -31,7 +31,7 @@ export default function EditCharacter({ character:initialCharacter }: any) {
   const { state, dispatch, updateCharacter } = useCharacter()
 
   const { edited, saving, character } = state
-  const { schticks, skills, description, action_values } = character
+  const { weapons, schticks, skills, description, action_values } = character
 
   async function handleSubmit(event: any) {
     event.preventDefault()
@@ -89,8 +89,13 @@ export default function EditCharacter({ character:initialCharacter }: any) {
     )
   }
 
-  const filter = {
+  const schticksFilter = {
     schticks: schticks,
+    meta: {}
+  }
+
+  const weaponsFilter = {
+    weapons: weapons,
     meta: {}
   }
 
@@ -128,13 +133,13 @@ export default function EditCharacter({ character:initialCharacter }: any) {
             <FortuneSelect character={character} onChange={handleAVChange as React.ChangeEventHandler} readOnly={false} />
           </PlayerTypeOnly>
           <Skills skills={skills} onChange={handleSkillsChange} />
-          <Weapons character={character} />
+          <Weapons filter={weaponsFilter} />
           <PlayerTypeOnly character={character} only="PC">
             <Advancements character={character} />
             <Sites character={character} />
           </PlayerTypeOnly>
           <Description character={character} onChange={handleDescriptionChange} />
-          <Schticks schticks={schticks} filter={filter} state={state} dispatch={dispatch} />
+          <Schticks schticks={schticks} filter={schticksFilter} state={state} dispatch={dispatch} />
           <SchtickSelector />
         </Stack>
       </Box>
