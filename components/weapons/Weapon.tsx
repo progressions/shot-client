@@ -1,4 +1,4 @@
-import { IconButton, Stack, Typography } from "@mui/material"
+import { Box, IconButton, Stack, Typography } from "@mui/material"
 import { useClient } from "../../contexts/ClientContext"
 import { useToast } from "../../contexts/ToastContext"
 import { useCharacter } from "../../contexts/CharacterContext"
@@ -33,12 +33,15 @@ export default function Weapon({ weapon, filter, dispatchFilter }: any) {
   const deleteFunction = character?.id ? removeWeapon : deleteWeapon
 
   return (
-    <Stack direction="row" spacing={1} alignItems="center">
-      <Typography sx={{fontWeight: "bold"}}>{weapon.name}</Typography>
-      <Typography>{stats}</Typography>
-      <IconButton onClick={deleteFunction}>
-        <ClearIcon />
-      </IconButton>
-    </Stack>
+    <>
+      <Stack direction="row" spacing={1} alignItems="center">
+        <Typography sx={{fontWeight: "bold"}}>{weapon.name}</Typography>
+        <Typography>{stats}</Typography>
+        <IconButton onClick={deleteFunction}>
+          <ClearIcon />
+        </IconButton>
+      </Stack>
+      <Typography>{weapon.description}</Typography>
+    </>
   )
 }

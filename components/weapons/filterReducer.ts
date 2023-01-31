@@ -49,6 +49,7 @@ export function filterReducer (state: any, action: any) {
     case "name":
       return {
         ...state,
+        edited: true,
         name: action.payload || initialFilter.name,
       }
     case "weapon":

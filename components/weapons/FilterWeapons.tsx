@@ -5,6 +5,8 @@ import { useCharacter } from "../../contexts/CharacterContext"
 import { useToast } from "../../contexts/ToastContext"
 import WeaponAutocomplete from "./WeaponAutocomplete"
 import JunctureAutocomplete from "./JunctureAutocomplete"
+import AddWeapon from "./AddWeapon"
+import CreateWeapon from "./CreateWeapon"
 
 export default function FilterWeapons({ filter, dispatchFilter }: any) {
   const { character } = useCharacter()
@@ -14,8 +16,12 @@ export default function FilterWeapons({ filter, dispatchFilter }: any) {
 
   return (
     <>
-      <JunctureAutocomplete filter={filter} dispatchFilter={dispatchFilter} />
-      <WeaponAutocomplete filter={filter} dispatchFilter={dispatchFilter} />
+      <Stack spacing={2} direction="row" alignItems="top">
+        <JunctureAutocomplete filter={filter} dispatchFilter={dispatchFilter} />
+        <WeaponAutocomplete filter={filter} dispatchFilter={dispatchFilter} />
+        { character?.id && <AddWeapon filter={filter} dispatchFilter={dispatchFilter} /> }
+        { !character?.id && <CreateWeapon filter={filter} dispatchFilter={dispatchFilter} /> }
+      </Stack>
     </>
   )
 }

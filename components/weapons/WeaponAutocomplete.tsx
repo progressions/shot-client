@@ -1,15 +1,12 @@
 import { StyledAutocomplete, StyledSelect } from "../StyledFields"
-import { createFilterOptions } from "@mui/material"
-
 import { useState, useEffect } from "react"
-
-const filterOptions = createFilterOptions<string>();
 
 export default function WeaponAutocomplete({ filter, dispatchFilter }: any) {
   const { loading, weapon, weapons } = filter
   const [search, setSearch] = useState(null)
 
   useEffect(() => {
+    console.log("searching")
     const timer = setTimeout(() => {
       dispatchFilter({ type: "name", payload: search })
     }, 1000)
