@@ -82,19 +82,12 @@ export default function RedeemInvitation({ invitation }: any) {
       setSuccess(true)
     } else {
       const data = await response.json()
-      console.error(data)
       setErrors(data)
     }
 
     setSaving(false)
     // redirect to the login page
   }
-
-  console.log({
-    success: success,
-    pending_user: invitation.pending_user,
-    session_status: session.status
-  })
 
   return (
     <>

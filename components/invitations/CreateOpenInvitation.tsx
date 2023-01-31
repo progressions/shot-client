@@ -34,13 +34,11 @@ export default function CreateOpenInvitation({ campaign }: any) {
     const response = await client.createInvitation(invitation as Invitation, campaign)
     if (response.status === 200) {
       const data = await response.json()
-      console.log({ data })
       toastSuccess(`Invitation created.`)
       Router.reload()
     }
     if (response.status === 400) {
       const data = await response.json()
-      console.error({ data })
       setError(data?.email?.[0])
       toastError()
     }

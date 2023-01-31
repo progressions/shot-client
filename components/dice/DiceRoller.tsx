@@ -24,7 +24,6 @@ const rollSwerve = (): number => {
   const [negRolls, negative] = rollExplodingDie(rollDie)
 
   const result = positive - negative
-  console.log({ result })
 
   return result
 }

@@ -5,6 +5,8 @@ export const initialFilter = {
   page: 1,
   juncture: "",
   junctures: [],
+  category: "",
+  categories: [],
   name: "",
   weapon: { id: null, name: "" },
   weapons: [],
@@ -49,6 +51,13 @@ export function filterReducer (state: any, action: any) {
         juncture: action.payload || initialFilter.juncture,
         weapon: initialFilter.weapon
       }
+    case "category":
+      return {
+        ...state,
+        edited: true,
+        category: action.payload || initialFilter.category,
+        weapon: initialFilter.weapon
+      }
     case "name":
       return {
         ...state,
@@ -62,15 +71,18 @@ export function filterReducer (state: any, action: any) {
         weapon: action.payload || initialFilter.weapon,
       }
     case "weapons":
-      const { weapons, meta, junctures } = action.payload
+      const { weapons, meta, junctures, categories } = action.payload
       return {
         ...state,
         loading: false,
         weapons: weapons,
         meta: meta,
         edited: false,
-        junctures: junctures
+        junctures: junctures,
+        categories: categories
       }
+    case "reset":
+      return initialFilter
     default:
       return state
   }

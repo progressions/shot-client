@@ -4,6 +4,7 @@ import type { Weapon as WeaponType } from "../../types/types"
 import Weapon from "./Weapon"
 import { useCharacter } from "../../contexts/CharacterContext"
 import { rowMap } from "../schticks/Schticks"
+import AddWeapon from "./AddWeapon"
 
 export default function Weapons({ filter, dispatchFilter }: any) {
   const { character } = useCharacter()
@@ -31,8 +32,6 @@ export default function Weapons({ filter, dispatchFilter }: any) {
 
   if (!weapons) return (<></>)
 
-  console.log(meta)
-
   return (
     <>
     <Subhead>Weapons</Subhead>
@@ -41,6 +40,7 @@ export default function Weapons({ filter, dispatchFilter }: any) {
       { outputRows }
       { meta?.next_page && <Box width="100%"><Button sx={{width: "100%"}} onClick={loadNext} variant="contained" color="primary">Next</Button></Box> }
     </Stack>
+    { character?.id && <AddWeapon /> }
     </>
   )
 }

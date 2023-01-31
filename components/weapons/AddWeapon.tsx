@@ -3,6 +3,8 @@ import { Box, DialogContent, DialogContentText, DialogActions, Button, Stack, Ty
 import { useClient } from "../../contexts/ClientContext"
 import { useToast } from "../../contexts/ToastContext"
 import { useCharacter } from "../../contexts/CharacterContext"
+import FilterWeapons from "./FilterWeapons"
+import { initialFilter, filterReducer } from "./filterReducer"
 
 import type { Character, Weapon } from "../../types/types"
 import { defaultWeapon } from "../../types/types"
@@ -52,35 +54,29 @@ function weaponReducer(state: any, action: any) {
 
 export default function AddWeapon() {
   const { character, dispatch:dispatchCharacter, reloadCharacter } = useCharacter()
-  const [state, dispatchWeapon] = useReducer(weaponReducer, initialState)
   const { toastSuccess, toastError } = useToast()
   const { user, client } = useClient()
-  const { loading, weapon, weapons } = state
   const [open, setOpen] = useState(false)
+  const [weaponsFilter, dispatchWeapons] = useReducer(filterReducer, initialFilter)
+  const { weapons, weapon, edited, page, loading, juncture, category, name } = weaponsFilter
 
   useEffect(() => {
-    dispatchWeapon({ type: "reset" })
-  }, [character])
-
-  useEffect(() => {
-    if (!open) return
-
     async function getWeapons() {
-      const response = await client.getWeapons()
+      const response = await client.getWeapons({ page, juncture, category, name, character_id: character?.id as string })
       if (response.status === 200) {
         const data = await response.json()
-        dispatchWeapon({ type: "weapons", payload: data })
+        dispatchWeapons({ type: "weapons", payload: data })
       }
     }
 
-    if (user?.id) {
+    if (user?.id && edited) {
       getWeapons().catch(toastError)
     }
-  }, [open, user?.id, client, dispatchWeapon, toastError])
+  }, [edited, character?.id, dispatchWeapons, user?.id, juncture, category, toastError, client, page, name])
 
   async function addWeapon(event: any) {
     event.preventDefault()
-    dispatchWeapon({ type: "saving" })
+    dispatchWeapons({ type: "saving" })
 
     const response = await client.addWeapon(character, weapon)
     if (response.status === 200) {
@@ -92,16 +88,16 @@ export default function AddWeapon() {
   }
 
   function handleChange(event: any) {
-    dispatchWeapon({ type: "update", name: event.target.name, value: event.target.value })
+    dispatchWeapons({ type: "update", name: event.target.name, value: event.target.value })
   }
 
   function handleClose() {
     setOpen(false)
-    dispatchWeapon({ type: "reset" })
+    dispatchWeapons({ type: "weapon" })
   }
 
   function selectWeapon(event: any, newValue: any) {
-    dispatchWeapon({ type: "weapon", payload: newValue })
+    dispatchWeapons({ type: "weapon", payload: newValue })
   }
 
   function getOptionLabel(option: any) {
@@ -128,22 +124,9 @@ export default function AddWeapon() {
         title="Add Weapon"
       >
         <DialogContent>
-          <DialogContentText>
-            Select a weapon
-          </DialogContentText>
           <Stack spacing={2}>
             <Box mt={3}>
-              <StyledAutocomplete
-                freeSolo
-                value={weapon || null}
-                disabled={loading || !weapons?.length}
-                options={weapons || []}
-                sx={{ width: 300 }}
-                onChange={selectWeapon}
-                openOnFocus
-                getOptionLabel={getOptionLabel}
-                renderInput={(params: any) => <StyledSelect autoFocus helperText={helperText} {...params} label="Weapon" />}
-              />
+              <FilterWeapons filter={weaponsFilter} dispatchFilter={dispatchWeapons} />
             </Box>
             <Stack direction="row" spacing={1} alignItems="center">
               <StyledTextField
@@ -192,7 +175,7 @@ export default function AddWeapon() {
                 multiline
                 rows={3}
                 required
-                value={weapon?.description}
+                value={weapon?.description || ""}
                 name="description"
                 label="Description"
                 onChange={handleChange}

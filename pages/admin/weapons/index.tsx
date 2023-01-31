@@ -29,14 +29,12 @@ export default function WeaponsIndex(data: any) {
   const { user, client } = useClient()
   const [filter, dispatchFilter] = useReducer(filterReducer, initialFilter)
   const weapons = filter?.weapons || []
-  const { edited, page, loading, juncture, name } = filter
+  const { edited, page, loading, juncture, category, name } = filter
   const { toastSuccess, toastError } = useToast()
 
   useEffect(() => {
-    console.log("page", page)
     async function getWeapons() {
-      console.log("getWeapons", juncture)
-      const response = await client.getWeapons({ page, juncture, name, character_id: character?.id as string })
+      const response = await client.getWeapons({ page, juncture, category, name, character_id: character?.id as string })
       if (response.status === 200) {
         const data = await response.json()
         dispatchFilter({ type: "weapons", payload: data })
@@ -46,7 +44,7 @@ export default function WeaponsIndex(data: any) {
     if (user?.id && edited) {
       getWeapons().catch(toastError)
     }
-  }, [edited, character?.id, dispatchFilter, user?.id, juncture, toastError, client, page, name])
+  }, [edited, character?.id, dispatchFilter, user?.id, juncture, category, toastError, client, page, name])
 
   return (
     <>

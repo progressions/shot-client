@@ -33,7 +33,7 @@ export default function WeaponAutocomplete({ filter, dispatchFilter }: any) {
       value={weapon || {id: null, name: ""}}
       disabled={loading}
       options={weapons || []}
-      sx={{ width: 300 }}
+      sx={{ width: 250 }}
       onInputChange={handleInputChange}
       onChange={handleSelect}
       getOptionLabel={getOptionLabel}

@@ -43,22 +43,14 @@ export default function Weapon({ weapon, filter, dispatchFilter }: any) {
     <>
       <WeaponCardBase
         title={`${weapon.name} ${stats}`}
-        subheader={weapon.juncture}
+        subheader={`${weapon.juncture} ${weapon.category}`}
         action={[deleteButton]}
       >
         <Typography variant="body2" gutterBottom>
           {weapon.description}
         </Typography>
+        { weapon.mook_bonus > 0 && <Typography variant="subtitle2">+{weapon.mook_bonus} Attack vs Mooks</Typography> }
       </WeaponCardBase>
     </>
   )
 }
-
-/*
- *
-      <Stack direction="row" spacing={1} alignItems="center">
-        <Typography variant="caption">{weapon.juncture}</Typography>
-        <Typography sx={{fontWeight: "bold"}}>{weapon.name}</Typography>
-        <Typography>{stats}</Typography>
-      </Stack>
-    */

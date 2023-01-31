@@ -23,7 +23,7 @@ export default function JunctureAutocomplete({ filter, dispatchFilter }: any) {
         value={juncture || null}
         disabled={loading || !junctures?.length}
         options={junctures || []}
-        sx={{ width: 300 }}
+        sx={{ width: 200 }}
         onChange={selectJuncture}
         getOptionLabel={getOptionLabel}
         renderInput={(params: any) => <StyledSelect helperText={helperText} {...params} label="Juncture" />}
