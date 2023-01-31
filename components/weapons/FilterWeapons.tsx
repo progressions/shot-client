@@ -21,7 +21,6 @@ export default function FilterWeapons({ filter, dispatchFilter }: any) {
         <JunctureAutocomplete filter={filter} dispatchFilter={dispatchFilter} />
         <CategoryAutocomplete filter={filter} dispatchFilter={dispatchFilter} />
         <WeaponAutocomplete filter={filter} dispatchFilter={dispatchFilter} />
-        { character?.id && <AddWeapon /> }
         { !character?.id && <CreateWeapon filter={filter} dispatchFilter={dispatchFilter} /> }
       </Stack>
     </>

@@ -3,6 +3,7 @@ import { Box, DialogContent, DialogContentText, DialogActions, Button, Stack, Ty
 import { useClient } from "../../contexts/ClientContext"
 import { useToast } from "../../contexts/ToastContext"
 import { useCharacter } from "../../contexts/CharacterContext"
+import FilterWeapons from "./FilterWeapons"
 
 import type { Character, Weapon } from "../../types/types"
 import { defaultWeapon } from "../../types/types"
