@@ -3,12 +3,26 @@ import { Stack, Avatar, Tooltip, Button, IconButton, Dialog, DialogTitle, Dialog
 import CasinoIcon from '@mui/icons-material/Casino'
 import { useState } from 'react'
 
+interface RollsType {
+  result: number
+  positiveRolls: number[]
+  negativeRolls: number[]
+  positive: number | null
+  negative: number | null
+  boxcars: boolean
+}
+
+type ExplodingDiceRolls = [
+  number[],
+  number
+]
+
 export const rollDie = (): number => {
   const result = Math.floor(Math.random() * 6) + 1
   return result
 }
 
-export const rollExplodingDie = (rollDie: () => number): [number[], number] => {
+export function rollExplodingDie(rollDie: () => number): ExplodingDiceRolls {
   let result = rollDie()
   let total = []
   do {
@@ -20,7 +34,7 @@ export const rollExplodingDie = (rollDie: () => number): [number[], number] => {
   return [total, total.reduce((sum, num) => {return (sum + num)}, 0)]
 }
 
-const rollSwerve = (): number => {
+export function rollSwerve(): RollsType {
   const [positiveRolls, positive] = rollExplodingDie(rollDie)
   const [negativeRolls, negative] = rollExplodingDie(rollDie)
 
@@ -28,13 +42,13 @@ const rollSwerve = (): number => {
 
   const boxcars = (positiveRolls[0] === 6 && negativeRolls[0] === 6)
 
-  return { result, positiveRolls, negativeRolls, negative, boxcars }
+  return { result, positiveRolls, negativeRolls, positive, negative, boxcars }
 }
 
 export default function DiceRoller() {
-  const [open, setOpen] = useState(false)
-  const [rolls, setRolls] = useState({ result: null, positiveRolls: [], negativeRolls: [], positive: null, negative: null, boxcars: false })
-  const [title, setTitle] = useState('')
+  const [open, setOpen] = useState<boolean>(false)
+  const [rolls, setRolls] = useState<RollsType>({ result: 0, positiveRolls: [], negativeRolls: [], positive: null, negative: null, boxcars: false })
+  const [title, setTitle] = useState<string>('')
 
   const showExplodingRoll = (): void => {
     const rolls = rollSwerve()
@@ -46,7 +60,7 @@ export default function DiceRoller() {
   const showSingleRoll = (): void => {
     const sum = rollDie()
     setTitle("Single Die Roll")
-    setRolls({ result: sum })
+    setRolls((rolls) => ({ ...rolls, result: sum }))
     setOpen(true)
   }
 
