@@ -14,14 +14,15 @@ export default function NewSkill() {
   const [open, setOpen] = useState(false)
 
   const initialSkills = useMemo(() => {
-    const all = ["Deceit", "Detective", "Driving", "Fix-It", "Gambling", "Intimidation", "Intrusion", "Leadership", "Medicine", "Police", "Sabotage", "Seduction"]
+    const all = ["Deceit", "Detective", "Driving", "Fix-It", "Gambling", "Intimidation", "Intrusion", "Leadership", "Medicine", "Police", "Sabotage", "Seduction", "Constituion", "Will", "Notice", "Strength"]
     return all.filter((name) => (character.skills[name] <= 7))
   }, [character.skills])
 
   const [skills, setSkills] = useState(initialSkills)
 
   function selectSkill(event: any, newValue: any) {
-    setSkill((prev) => ({ ...prev, name: newValue }))
+    const value = newValue.replace('Add "', "").replace('"', "");
+    setSkill((prev) => ({ ...prev, name: value }))
   }
 
   function handleValue(event: any) {
@@ -41,11 +42,11 @@ export default function NewSkill() {
   function getOptionLabel(option: any) {
     // Value selected with enter, right from the input
     if (typeof option === 'string') {
-      return option;
+      return option
     }
     // Add "xxx" option created dynamically
     if (option.inputValue) {
-      return option.inputValue;
+      return option.inputValue
     }
     // Regular option
     return option
@@ -84,7 +85,7 @@ export default function NewSkill() {
               const isExisting = options.some((option: any) => inputValue === option);
               if (inputValue !== '' && !isExisting) {
                 filtered.push(
-                  inputValue,
+                  `Add "${inputValue}"`
                 );
               }
 

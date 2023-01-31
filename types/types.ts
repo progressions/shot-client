@@ -69,6 +69,29 @@ export interface ActionValues {
   Faction: string
 }
 
+export interface SkillValues {
+  [key: string]: number | unknown
+  Deceit?: number
+  Detective?: number
+  Driving?: number
+  "Fix-It"?: number
+  Gambling?: number
+  Intimidation?: number
+  Intrusion?: number
+  Leadership?: number
+  Medicine?: number
+  Police?: number
+  Sabotage?: number
+  Seduction?: number
+  Constitution?: number
+  Defense?: number
+  Melodrama?: number
+  Will?: number
+  Notice?: number
+  Strength?: number
+}
+
+
 export interface VehicleActionValues {
   [key: string]: string | number | Position | CharacterType | undefined
   Acceleration: number
