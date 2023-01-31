@@ -6,7 +6,6 @@ export default function WeaponAutocomplete({ filter, dispatchFilter }: any) {
   const [search, setSearch] = useState(null)
 
   useEffect(() => {
-    console.log("searching")
     const timer = setTimeout(() => {
       dispatchFilter({ type: "name", payload: search })
     }, 1000)
