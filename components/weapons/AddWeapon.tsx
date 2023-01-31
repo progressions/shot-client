@@ -131,7 +131,6 @@ export default function AddWeapon() {
             <Stack direction="row" spacing={1} alignItems="center">
               <StyledTextField
                 sx={{width: 400}}
-                required
                 value={weapon?.name}
                 name="name"
                 label="Name"
@@ -141,7 +140,6 @@ export default function AddWeapon() {
               <StyledTextField
                 sx={{width: 80}}
                 type="number"
-                required
                 value={weapon?.damage || ""}
                 name="damage"
                 label="Damage"
@@ -151,7 +149,6 @@ export default function AddWeapon() {
               <StyledTextField
                 sx={{width: 80}}
                 type="number"
-                required
                 value={weapon?.concealment || ""}
                 name="concealment"
                 label="Concealment"
@@ -161,9 +158,7 @@ export default function AddWeapon() {
               <StyledTextField
                 sx={{width: 80}}
                 type="number"
-                required
                 value={weapon?.reload_value || ""}
-                name="reload_value"
                 label="Reload"
                 disabled={loading}
                 InputProps={{readOnly: true}}
@@ -174,12 +169,10 @@ export default function AddWeapon() {
                 fullWidth
                 multiline
                 rows={3}
-                required
                 value={weapon?.description || ""}
-                name="description"
                 label="Description"
-                onChange={handleChange}
                 disabled={loading}
+                InputProps={{readOnly: true}}
               />
             </Stack>
           </Stack>
