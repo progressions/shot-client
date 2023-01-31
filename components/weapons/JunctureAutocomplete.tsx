@@ -25,9 +25,8 @@ export default function JunctureAutocomplete({ filter, dispatchFilter }: any) {
         options={junctures || []}
         sx={{ width: 300 }}
         onChange={selectJuncture}
-        openOnFocus
         getOptionLabel={getOptionLabel}
-        renderInput={(params: any) => <StyledSelect autoFocus helperText={helperText} {...params} label="Juncture" />}
+        renderInput={(params: any) => <StyledSelect helperText={helperText} {...params} label="Juncture" />}
       />
     </>
   )

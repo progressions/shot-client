@@ -9,7 +9,7 @@ export default function Weapon({ weapon }: any) {
   const { toastError } = useToast()
   const { character, reloadCharacter } = useCharacter()
 
-  async function deleteWeapon(event: any) {
+  async function removeWeapon(event: any) {
     const response = await client.removeWeapon(character, weapon)
     if (response.status === 200) {
       await reloadCharacter()
@@ -18,7 +18,19 @@ export default function Weapon({ weapon }: any) {
     }
   }
 
+  async function deleteWeapon(event: any) {
+    const doit = confirm("Delete this weapon? This cannot be undone.")
+    const response = await client.deleteWeapon(weapon)
+    if (response.status === 200) {
+      await reloadCharacter()
+    } else {
+      toastError()
+    }
+  }
+
   const stats = `(${weapon.damage || "-"}/${weapon.concealment || "-"}/${weapon.reload_value || "-"})`
+
+  const deleteFunction = character?.id ? removeWeapon : deleteWeapon
 
   return (
     <Stack direction="row" spacing={1} alignItems="center">
