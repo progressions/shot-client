@@ -1,4 +1,5 @@
-import { Tooltip, Button, IconButton, Dialog, DialogTitle, DialogContent, Box, Typography} from '@mui/material'
+import { StyledDialog } from "../StyledFields"
+import { Stack, Avatar, Tooltip, Button, IconButton, Dialog, DialogTitle, DialogContent, Box, Typography} from '@mui/material'
 import CasinoIcon from '@mui/icons-material/Casino'
 import { useState } from 'react'
 
@@ -20,30 +21,32 @@ export const rollExplodingDie = (rollDie: () => number): [number[], number] => {
 }
 
 const rollSwerve = (): number => {
-  const [posRolls, positive] = rollExplodingDie(rollDie)
-  const [negRolls, negative] = rollExplodingDie(rollDie)
+  const [positiveRolls, positive] = rollExplodingDie(rollDie)
+  const [negativeRolls, negative] = rollExplodingDie(rollDie)
 
   const result = positive - negative
 
-  return result
+  const boxcars = (positiveRolls[0] === 6 && negativeRolls[0] === 6)
+
+  return { result, positiveRolls, negativeRolls, negative, boxcars }
 }
 
 export default function DiceRoller() {
   const [open, setOpen] = useState(false)
-  const [result, setResult] = useState<number | null>(null)
+  const [rolls, setRolls] = useState({ result: null, positiveRolls: [], negativeRolls: [], positive: null, negative: null, boxcars: false })
   const [title, setTitle] = useState('')
 
   const showExplodingRoll = (): void => {
-    const sum = rollSwerve()
+    const rolls = rollSwerve()
     setTitle("Swerve")
-    setResult(sum)
+    setRolls(rolls)
     setOpen(true)
   }
 
   const showSingleRoll = (): void => {
     const sum = rollDie()
     setTitle("Single Die Roll")
-    setResult(sum)
+    setRolls({ result: sum })
     setOpen(true)
   }
 
@@ -64,16 +67,24 @@ export default function DiceRoller() {
           </Box>
         </Button>
       </Tooltip>
-      <Dialog open={open} onClose={() => setOpen(false)}>
-        <DialogTitle>{title}</DialogTitle>
+      <StyledDialog open={open} onClose={() => setOpen(false)} title={title}>
         <DialogContent>
           <Box p={4}>
-            <Typography align='center' variant="h3">
-              {result}
-            </Typography>
+            <Stack spacing={1}>
+              { rolls.boxcars && <Typography variant="h4">Boxcars!</Typography> }
+              <Stack direction="row" spacing={1}>
+                { rolls.positiveRolls?.map((roll, index) => <Avatar key={"positive" + index} sx={{ backgroundColor: "red", color: "black", width: 40, height: 40 }} variant="rounded">{roll}</Avatar>) }
+              </Stack>
+              <Stack direction="row" spacing={1}>
+                { rolls.negativeRolls?.map((roll, index) => <Avatar key={"negative" + index} sx={{ backgroundColor: "white", color: "black", width: 40, height: 40 }} variant="rounded">{roll}</Avatar>) }
+              </Stack>
+              <Typography align='center' variant="h3">
+                { rolls.result }
+              </Typography>
+            </Stack>
           </Box>
         </DialogContent>
-      </Dialog>
+      </StyledDialog>
     </>
   )
 }
