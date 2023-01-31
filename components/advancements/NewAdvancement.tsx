@@ -68,6 +68,7 @@ export default function NewAdvancement() {
   return (
     <Stack direction="row" spacing={1} alignItems="center">
       <StyledTextField
+        fullWidth
         required
         value={advancement?.description}
         name="description"

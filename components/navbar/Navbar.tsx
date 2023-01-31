@@ -68,6 +68,12 @@ export default function Navbar() {
           </Typography>
           { user?.gamemaster && campaign?.id &&
             <Typography variant="h6" component="div" paddingRight={2}>
+              <Link color="inherit" href='/admin/weapons'>
+                Weapons
+              </Link>
+            </Typography> }
+          { user?.gamemaster && campaign?.id &&
+            <Typography variant="h6" component="div" paddingRight={2}>
               <Link color="inherit" href='/admin/schticks'>
                 Schticks
               </Link>

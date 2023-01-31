@@ -68,6 +68,7 @@ export default function NewSite() {
   return (
     <Stack direction="row" spacing={1} alignItems="center">
       <StyledTextField
+        fullWidth
         required
         value={site?.description}
         name="description"
