@@ -1,11 +1,11 @@
 import { Button, Box, Stack } from "@mui/material"
 import { Subhead } from "../StyledFields"
-import type { Weapon as WeaponType } from "../types/types"
+import type { Weapon as WeaponType } from "../../types/types"
 import Weapon from "./Weapon"
 import { useCharacter } from "../../contexts/CharacterContext"
-import { rowMap } from "../schticks/Schticks.tsx"
+import { rowMap } from "../schticks/Schticks"
 
-export default function Weapons({ filter, dispatchFilter }) {
+export default function Weapons({ filter, dispatchFilter }: any) {
   const { character } = useCharacter()
   const { weapons, meta } = filter
 

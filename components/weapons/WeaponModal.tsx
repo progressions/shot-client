@@ -39,7 +39,7 @@ function weaponReducer(state: any, action: any) {
   }
 }
 
-export default function WeaponModal({ filter, dispatchFilter, open, setOpen }) {
+export default function WeaponModal({ filter, dispatchFilter, open, setOpen }: any) {
   const [state, dispatchWeapon] = useReducer(weaponReducer, initialState)
   const { toastSuccess, toastError } = useToast()
   const { client } = useClient()

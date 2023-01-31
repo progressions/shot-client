@@ -76,7 +76,7 @@ export default function AddWeapon() {
     if (user?.id) {
       getWeapons().catch(toastError)
     }
-  }, [open, user?.id, client, dispatchWeapon])
+  }, [open, user?.id, client, dispatchWeapon, toastError])
 
   async function addWeapon(event: any) {
     event.preventDefault()

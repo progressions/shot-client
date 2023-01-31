@@ -13,7 +13,6 @@ import { ButtonBar } from "../../../components/StyledFields"
 import CreateCampaign from "../../../components/campaigns/CreateCampaign"
 import Campaigns from "../../../components/campaigns/Campaigns"
 import GamemasterOnly from "../../../components/GamemasterOnly"
-import CreateWeaponButton from "../../../components/weapons/CreateWeaponButton"
 import FilterWeapons from "../../../components/weapons/FilterWeapons"
 import { initialFilter, filterReducer } from "../../../components/weapons/filterReducer"
 
@@ -81,5 +80,3 @@ export default function WeaponsIndex(data: any) {
     </>
   )
 }
-
-// <CreateWeaponButton filter={filter} dispatchFilter={dispatchFilter} />
