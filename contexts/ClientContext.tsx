@@ -1,5 +1,6 @@
 import { useEffect, useMemo, createContext, useContext, useState } from "react"
 
+import { Session } from "next-auth"
 import { useSession } from 'next-auth/react'
 import Client from "../components/Client"
 
