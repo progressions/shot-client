@@ -10,9 +10,9 @@ import { unstable_getServerSession } from "next-auth/next"
 import { useRouter } from 'next/router'
 
 import Client from '../../components/Client'
-import { User } from "../../types/types"
+import { ServerSideProps, User } from "../../types/types"
 
-export async function getServerSideProps<GetServerSideProps>({ req, res, params, query }: any) {
+export async function getServerSideProps<GetServerSideProps>({ req, res, params, query }: ServerSideProps) {
   const session: any = await unstable_getServerSession(req as any, res as any, authOptions as any)
   const jwt = session?.authorization
   const client = new Client({ jwt: jwt })
@@ -33,7 +33,9 @@ export async function getServerSideProps<GetServerSideProps>({ req, res, params,
     const errors = await response.json()
     return {
       props: {
-        errors: errors
+        user: null,
+        errors: errors,
+        not_found: false
       }
     }
   }
@@ -41,6 +43,7 @@ export async function getServerSideProps<GetServerSideProps>({ req, res, params,
   if (response.status === 404) {
     return {
       props: {
+        user: null,
         not_found: true,
       }
     }
@@ -50,12 +53,19 @@ export async function getServerSideProps<GetServerSideProps>({ req, res, params,
 
   return {
     props: {
-      user: user
+      user: user,
+      not_found: false
     }
   }
 }
 
-export default function ConfirmationView({ user, errors, not_found }: any) {
+interface ConfirmationViewProps {
+  user: User
+  errors: { email?: string }
+  not_found: boolean
+}
+
+export default function ConfirmationView({ user, errors, not_found }: ConfirmationViewProps) {
   return (
     <>
       <Head>

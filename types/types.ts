@@ -17,6 +17,11 @@ export type SchtickCategory = string
 export type SchtickPath = string
 export type Juncture = string
 
+export interface CampaignsResponse {
+  gamemaster: Campaign[]
+  player: Campaign[]
+}
+
 export interface PaginationMeta {
   current_page: number
   next_page: number | null
@@ -270,9 +275,11 @@ export interface User {
 export interface Invitation {
   id?: string
   email?: string
-  campaign_id: string
+  campaign_id?: string
+  campaign?: Campaign
   maximum_count: number
   remaining_count: number
+  pending_user: User
 }
 
 export interface CharacterFilter {

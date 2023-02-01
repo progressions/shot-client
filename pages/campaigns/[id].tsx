@@ -19,9 +19,9 @@ import { useClient } from "../../contexts/ClientContext"
 import { useToast } from "../../contexts/ToastContext"
 
 import { useState } from "react"
-import { Invitation, User, Campaign } from "../../types/types"
+import { ServerSideProps, Invitation, User, Campaign } from "../../types/types"
 
-export async function getServerSideProps<GetServerSideProps>({ req, res, params }: any) {
+export async function getServerSideProps<GetServerSideProps>({ req, res, params }: ServerSideProps) {
   const session: any = await unstable_getServerSession(req as any, res as any, authOptions as any)
   const jwt = session?.authorization
   const client = new Client({ jwt: jwt })
@@ -54,7 +54,11 @@ export async function getServerSideProps<GetServerSideProps>({ req, res, params 
   }
 }
 
-export default function CampaignView({ campaign:initialCampaign }: any) {
+interface CampaignViewProps {
+  campaign: Campaign
+}
+
+export default function CampaignView({ campaign:initialCampaign }: CampaignViewProps) {
   const { client } = useClient()
   const { toastError, toastSuccess } = useToast()
   const [campaign, setCampaign] = useState<Campaign>(initialCampaign)

@@ -12,11 +12,11 @@ import { authOptions } from '../../api/auth/[...nextauth]'
 import { unstable_getServerSession } from "next-auth/next"
 import Client from "../../../components/Client"
 
-import type { Campaign } from "../../../types/types"
+import type { Weapon, ServerSideProps, Campaign } from "../../../types/types"
 import { GetServerSideProps } from 'next'
 import { InferGetServerSidePropsType } from 'next'
 
-export async function getServerSideProps<GetServerSideProps>({ req, res }: any) {
+export async function getServerSideProps<GetServerSideProps>({ req, res }: ServerSideProps) {
   const session: any = await unstable_getServerSession(req as any, res as any, authOptions as any)
   const jwt = session?.authorization
   const client = new Client({ jwt: jwt })
@@ -55,9 +55,8 @@ export async function getServerSideProps<GetServerSideProps>({ req, res }: any) 
   }
 }
 
-export default function UploadWeapons({ weapons:initialWeapons }: any) {
+export default function UploadWeapons() {
   const [saving, setSaving] = useState(false)
-  const [weapons, setWeapons] = useState(initialWeapons)
   const [content, setContent] = useState("")
   const { toastSuccess, toastError } = useToast()
   const { client } = useClient()

@@ -20,11 +20,12 @@ import { unstable_getServerSession } from "next-auth/next"
 import Client from "../../../components/Client"
 import Schticks from "../../../components/schticks/Schticks"
 
-import type { Campaign } from "../../../types/types"
+import type { ServerSideProps, Campaign } from "../../../types/types"
+import type { SchticksResponse } from "../../../components/schticks/filterReducer"
 import { GetServerSideProps } from 'next'
 import { InferGetServerSidePropsType } from 'next'
 
-export async function getServerSideProps<GetServerSideProps>({ req, res }: any) {
+export async function getServerSideProps<GetServerSideProps>({ req, res }: ServerSideProps) {
   const session: any = await unstable_getServerSession(req as any, res as any, authOptions as any)
   const jwt = session?.authorization
   const client = new Client({ jwt: jwt })
@@ -66,7 +67,7 @@ export async function getServerSideProps<GetServerSideProps>({ req, res }: any) 
   }
 }
 
-export default function SchticksIndex(data: any) {
+export default function SchticksIndex(data: SchticksResponse) {
   const [filter, dispatchFilter] = useReducer(filterReducer, initialFilter)
   const schticks = filter?.schticks || []
   const { loading } = filter

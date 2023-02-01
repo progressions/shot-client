@@ -9,13 +9,13 @@ import { authOptions } from '../../api/auth/[...nextauth]'
 import { unstable_getServerSession } from "next-auth/next"
 import { useRouter } from 'next/router'
 import Client from '../../../components/Client'
-import { PasswordWithConfirmation, User } from "../../../types/types"
+import { ServerSideProps, PasswordWithConfirmation, User } from "../../../types/types"
 import { useClient } from "../../../contexts/ClientContext"
 import { useToast } from "../../../contexts/ToastContext"
 
 import { useState } from "react"
 
-export async function getServerSideProps<GetServerSideProps>({ req, res, params, query }: any) {
+export async function getServerSideProps<GetServerSideProps>({ req, res, params, query }: ServerSideProps) {
   const session: any = await unstable_getServerSession(req as any, res as any, authOptions as any)
   const jwt = session?.authorization
   const client = new Client({ jwt: jwt })
@@ -28,7 +28,11 @@ export async function getServerSideProps<GetServerSideProps>({ req, res, params,
   }
 }
 
-export default function ResetPasswordView({ reset_password_token }: any) {
+interface ResetPasswordView {
+  reset_password_token: string
+}
+
+export default function ResetPasswordView({ reset_password_token }: ResetPasswordView) {
   const [state, setState] = useState<PasswordWithConfirmation>({password: "", password_confirmation: ""})
   const [saving, setSaving] = useState(false)
   const [success, setSuccess] = useState(false)

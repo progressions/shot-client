@@ -17,14 +17,11 @@ import FilterWeapons from "../../../components/weapons/FilterWeapons"
 import { initialFilter, filterReducer } from "../../../components/weapons/filterReducer"
 
 import { authOptions } from '../../api/auth/[...nextauth]'
-import { unstable_getServerSession } from "next-auth/next"
 import Weapons from "../../../components/weapons/Weapons"
 
 import type { Campaign } from "../../../types/types"
-import { GetServerSideProps } from 'next'
-import { InferGetServerSidePropsType } from 'next'
 
-export default function WeaponsIndex(data: any) {
+export default function WeaponsIndex() {
   const { character } = useCharacter()
   const { user, client } = useClient()
   const [filter, dispatchFilter] = useReducer(filterReducer, initialFilter)

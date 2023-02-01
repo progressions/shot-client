@@ -10,9 +10,9 @@ import EditCharacter from "../../components/characters/edit/EditCharacter"
 import Client from '../../components/Client'
 import { GetServerSideProps } from 'next'
 
-import { User, Character } from "../../types/types"
+import { ServerSideProps, User, Character } from "../../types/types"
 
-export async function getServerSideProps<GetServerSideProps>({ req, res, params }: any) {
+export async function getServerSideProps<GetServerSideProps>({ req, res, params }: ServerSideProps) {
   const session: any = await unstable_getServerSession(req as any, res as any, authOptions as any)
   const jwt = session?.authorization
   const client = new Client({ jwt: jwt })
@@ -54,7 +54,11 @@ export async function getServerSideProps<GetServerSideProps>({ req, res, params 
   }
 }
 
-export default function CharacterView({ character }: any) {
+interface CharacterViewProps {
+  character: Character
+}
+
+export default function CharacterView({ character }: CharacterViewProps) {
   return (
     <>
       <Head>

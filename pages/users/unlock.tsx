@@ -10,9 +10,9 @@ import { unstable_getServerSession } from "next-auth/next"
 import { useRouter } from 'next/router'
 
 import Client from '../../components/Client'
-import { User } from "../../types/types"
+import { ServerSideProps, User } from "../../types/types"
 
-export async function getServerSideProps<GetServerSideProps>({ req, res, params, query }: any) {
+export async function getServerSideProps<GetServerSideProps>({ req, res, params, query }: ServerSideProps) {
   const session: any = await unstable_getServerSession(req as any, res as any, authOptions as any)
   const jwt = session?.authorization
   const client = new Client({ jwt: jwt })
@@ -33,7 +33,9 @@ export async function getServerSideProps<GetServerSideProps>({ req, res, params,
     const errors = await response.json()
     return {
       props: {
-        errors: errors
+        success: false,
+        errors: errors,
+        not_found: false
       }
     }
   }
@@ -41,19 +43,29 @@ export async function getServerSideProps<GetServerSideProps>({ req, res, params,
   if (response.status === 404) {
     return {
       props: {
-        not_found: true,
+        success: false,
+        errors: {},
+        not_found: true
       }
     }
   }
 
   return {
     props: {
-      success: true
+      success: true,
+      errors: {},
+      not_found: false
     }
   }
 }
 
-export default function UnlockUser({ success, errors, not_found }: any) {
+interface UnlockUserProps {
+  success: boolean
+  errors: {}
+  not_found: boolean
+}
+
+export default function UnlockUser({ success, errors, not_found }: UnlockUserProps) {
   return (
     <>
       <Head>

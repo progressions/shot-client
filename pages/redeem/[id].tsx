@@ -19,9 +19,9 @@ import * as cookie from 'cookie'
 import { signIn, signOut } from 'next-auth/react'
 import { useClient } from "../../contexts/ClientContext"
 
-import { Invitation, User, Campaign } from "../../types/types"
+import { ServerSideProps, Invitation, User, Campaign } from "../../types/types"
 
-export async function getServerSideProps<GetServerSideProps>({ req, res, params }: any) {
+export async function getServerSideProps<GetServerSideProps>({ req, res, params }: ServerSideProps) {
   const session: any = await unstable_getServerSession(req as any, res as any, authOptions as any)
   const jwt = session?.authorization
   const client = new Client({ jwt: jwt })
@@ -49,7 +49,11 @@ export async function getServerSideProps<GetServerSideProps>({ req, res, params 
   }
 }
 
-export default function RedeemInvitation({ invitation }: any) {
+interface RedeemInvitationProps {
+  invitation: Invitation
+}
+
+export default function RedeemInvitation({ invitation }: RedeemInvitationProps) {
   const [user, setUser] = useState<User>({email: invitation?.email} as User)
   const [saving, setSaving] = useState(false)
   const [success, setSuccess] = useState(false)
@@ -111,7 +115,7 @@ export default function RedeemInvitation({ invitation }: any) {
                 <Typography>
                   <Link href="/auth/signin">Click here</Link> to sign in.
                 </Typography> }
-              <Typography variant="h3" gutterBottom>{invitation.campaign.title}</Typography>
+              <Typography variant="h3" gutterBottom>{invitation.campaign?.title}</Typography>
             </Box> }
           { !success && invitation.pending_user?.id &&
             <Box my={2}>
@@ -119,7 +123,7 @@ export default function RedeemInvitation({ invitation }: any) {
               <Typography>
                 You&rsquo;ve been invited to the campaign.
               </Typography>
-              <Typography variant="h3" gutterBottom>{invitation.campaign.title}</Typography>
+              <Typography variant="h3" gutterBottom>{invitation.campaign?.title}</Typography>
               <Box component="form" onSubmit={handleSubmit}>
                 <Stack spacing={2} direction="row">
                   <Button variant="contained" type="submit" disabled={saving}>Accept</Button>
@@ -129,11 +133,11 @@ export default function RedeemInvitation({ invitation }: any) {
           { !success && !invitation.pending_user?.id && session.status !== "authenticated" &&
             <Box component="form" onSubmit={handleSubmit}>
               <Typography>You&rsquo;ve been invited to </Typography>
-              <Typography variant="h3" gutterBottom>{invitation.campaign.title}</Typography>
+              <Typography variant="h3" gutterBottom>{invitation.campaign?.title}</Typography>
               <Typography>To accept, enter your details to create an account.</Typography>
               <Stack direction="column" spacing={2} mt={4}>
                 <TextField name="email" label="Email" required error={errors["email"]} helperText={errors["email"]} value={user?.email || ""} onChange={handleChange} InputProps={{
-                  readOnly: invitation.email,
+                  readOnly: !!invitation.email,
                 }} />
                 <TextField name="first_name" label="First name" value={user?.first_name || ""} onChange={handleChange} />
                 <TextField name="last_name" label="Last name" value={user?.last_name || ""} onChange={handleChange} />
