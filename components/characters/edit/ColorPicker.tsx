@@ -9,7 +9,7 @@ import type { Character } from "../../../types/types"
 
 interface ColorPickerProps {
   character: Character
-  onChange: any
+  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void
   setCharacter?: React.Dispatch<React.SetStateAction<Character>>
   dispatch?: React.Dispatch<CharacterStateAction>
 }

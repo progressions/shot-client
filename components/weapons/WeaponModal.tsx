@@ -4,51 +4,28 @@ import { useClient } from "../../contexts/ClientContext"
 import { useToast } from "../../contexts/ToastContext"
 import { useCharacter } from "../../contexts/CharacterContext"
 
-import type { InputParamsType, Character, Weapon } from "../../types/types"
+import type { FilterParamsType, OptionType, Juncture, InputParamsType, Character, Weapon } from "../../types/types"
 import { defaultWeapon } from "../../types/types"
-
 import { useEffect, useReducer } from "react"
+import type { WeaponsStateType, WeaponsActionType } from "./filterReducer"
 
-const filterOptions = createFilterOptions<string>();
+const filterOptions = createFilterOptions<Juncture>();
 
-const initialState = {
-  error: false,
-  loading: false,
-  weapon: defaultWeapon
+interface WeaponModalProps {
+  filter: WeaponsStateType
+  dispatchFilter: React.Dispatch<WeaponsActionType>
+  open: boolean
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-function weaponReducer(state: any, action: any) {
-  switch(action.type) {
-    case "update":
-      return {
-        ...state,
-        weapon: {
-          ...state.weapon,
-          [action.name]: action.value
-        }
-      }
-    case "saving":
-      return {
-        ...state,
-        loading: true
-      }
-    case "reset":
-      return initialState
-    default:
-      return state
-  }
-}
-
-export default function WeaponModal({ filter, dispatchFilter, open, setOpen }: any) {
-  const [state, dispatchWeapon] = useReducer(weaponReducer, initialState)
+export default function WeaponModal({ filter, dispatchFilter, open, setOpen }: WeaponModalProps) {
   const { toastSuccess, toastError } = useToast()
   const { client } = useClient()
-  const { loading, weapon } = state
-  const { junctures } = filter
+  const { loading, weapon, junctures } = filter
 
-  async function addWeapon(event: any) {
+  async function addWeapon(event: React.ChangeEvent<HTMLInputElement>) {
     event.preventDefault()
-    dispatchWeapon({ type: "saving" })
+    dispatchFilter({ type: "saving" })
 
     const response = await client.createWeapon(weapon)
     if (response.status === 200) {
@@ -60,19 +37,19 @@ export default function WeaponModal({ filter, dispatchFilter, open, setOpen }: a
   }
 
   function cancelForm() {
-    dispatchWeapon({ type: "reset" })
+    dispatchFilter({ type: "reset" })
     setOpen(false)
   }
 
-  function handleChange(event: any) {
-    dispatchWeapon({ type: "update", name: event.target.name, value: event.target.value })
+  function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
+    dispatchFilter({ type: "update", name: event.target.name, value: event.target.value })
   }
 
-  function changeJuncture(event: any, newValue: string) {
-    dispatchWeapon({ type: "update", name: "juncture", value: newValue })
+  function changeJuncture(event: any, newValue: Juncture) {
+    dispatchFilter({ type: "update", name: "juncture", value: newValue })
   }
 
-  function getOptionLabel(option: any) {
+  function getOptionLabel(option: Juncture | OptionType) {
     // Value selected with enter, right from the input
     if (typeof option === 'string') {
       return option;
@@ -107,12 +84,12 @@ export default function WeaponModal({ filter, dispatchFilter, open, setOpen }: a
             onChange={changeJuncture}
             openOnFocus
             getOptionLabel={getOptionLabel}
-            filterOptions={(options: any, params: any) => {
+            filterOptions={(options: Juncture[], params: FilterParamsType) => {
               const filtered = filterOptions(options, params);
 
               const { inputValue } = params;
               // Suggest the creation of a new value
-              const isExisting = options.some((option: any) => inputValue === option);
+              const isExisting = options.some((option: Juncture) => inputValue === option);
               if (inputValue !== '' && !isExisting) {
                 filtered.push(
                   inputValue,

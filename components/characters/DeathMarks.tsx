@@ -19,7 +19,7 @@ const StyledRating = styled(Rating)({
 interface DeathMarksProps {
   character: Character
   readOnly?: boolean
-  onChange?: any
+  onChange?: (event: React.SyntheticEvent<Element, Event>, newValue: number | null) => void
 }
 
 export const deathMarkIcons = (character: Character) => {

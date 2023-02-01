@@ -2,8 +2,14 @@ import { Stack, DialogContent, Tooltip, Button, Typography } from "@mui/material
 import { StyledDialog, ButtonBar } from "../StyledFields"
 import WeaponModal from "./WeaponModal"
 import { useState } from "react"
+import type { WeaponsStateType, WeaponsActionType } from "./filterReducer"
 
-export default function CreateWeapon({ filter, dispatchFilter }: any) {
+interface CreateWeaponProps {
+  filter: WeaponsStateType
+  dispatchFilter: React.Dispatch<WeaponsActionType>
+}
+
+export default function CreateWeapon({ filter, dispatchFilter }: CreateWeaponProps) {
   const [open, setOpen] = useState(false)
 
   return (

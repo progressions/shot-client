@@ -1,4 +1,4 @@
-import type { PaginationMeta, Weapon } from "../../types/types"
+import type { WeaponCategory, Juncture, PaginationMeta, Weapon } from "../../types/types"
 import { defaultPaginationMeta, defaultWeapon } from "../../types/types"
 
 export interface WeaponsStateType {
@@ -6,10 +6,10 @@ export interface WeaponsStateType {
   loading: boolean
   saving: boolean
   page: number
-  juncture: string
-  junctures: string[]
-  category: string
-  categories: string[]
+  juncture: Juncture
+  junctures: Juncture[]
+  category: WeaponCategory
+  categories: WeaponCategory[]
   name: string
   weapon: Weapon
   weapons: Weapon[]
@@ -34,8 +34,8 @@ export interface UpdateAction {
 export interface WeaponsResponse {
   weapons: Weapon[]
   meta: PaginationMeta
-  junctures: string[]
-  categories: string[]
+  junctures: Juncture[]
+  categories: WeaponCategory[]
 }
 
 export type WeaponsActionType = ActionNoPayload | UpdateAction | PayloadAction

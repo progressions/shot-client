@@ -23,7 +23,12 @@ export default function Weapons({ filter, dispatchFilter }: WeaponsProps) {
     rowsOfData.map((row: any, index: number) => (
       <Stack spacing={1} direction="row" key={`row_${index}`}>
         { row.map((weapon: WeaponType, index: number) => (
-          <Weapon key={`weapon_${weapon?.id}_${index}`} weapon={weapon} filter={filter} dispatchFilter={dispatchFilter} />
+          <Weapon
+            key={`weapon_${weapon?.id}_${index}`}
+            weapon={weapon}
+            filter={filter}
+            dispatchFilter={dispatchFilter}
+          />
         )) }
       </Stack>
     ))

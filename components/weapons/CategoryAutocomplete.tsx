@@ -1,7 +1,7 @@
 import { Autocomplete, TextField } from "@mui/material"
 import { useMemo } from "react"
 import { StyledAutocomplete, StyledSelect } from "../StyledFields"
-import type { InputParamsType } from "../../types/types"
+import type { WeaponCategory, InputParamsType } from "../../types/types"
 
 import type { WeaponsStateType, WeaponsActionType } from "./filterReducer"
 
@@ -13,13 +13,11 @@ interface CategoryAutocompleteProps {
 export default function CategoryAutocomplete({ filter, dispatchFilter }: CategoryAutocompleteProps) {
   const { loading, category, categories } = filter
 
-  // const categories = useMemo(() => (["Guns", "Martial Arts", "Transformed Animal", "Creature", "Cyborg", "Driving", "Foe", "Mutant", "Sorcery"]), [])
-
-  function selectCategory(event: any, newValue: any) {
+  function selectCategory(event: any, newValue: WeaponCategory) {
     dispatchFilter({ type: "category", payload: newValue })
   }
 
-  function getOptionLabel(option: any) {
+  function getOptionLabel(option: WeaponCategory) {
     return option || ""
   }
 
