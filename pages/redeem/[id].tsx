@@ -68,15 +68,15 @@ export default function RedeemInvitation({ invitation }: RedeemInvitationProps) 
 
   const client = new Client()
 
-  const handleChange = (event: any) => {
-    setUser((prev: any) => ({ ...prev, [event.target.name]: event.target.value }))
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setUser((prev: User) => ({ ...prev, [event.target.name]: event.target.value }))
   }
 
   const cancelForm = () => {
     setUser({} as User)
   }
 
-  const handleSubmit = async (event: any) => {
+  const handleSubmit = async (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault()
     setSaving(true)
 

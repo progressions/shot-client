@@ -39,11 +39,11 @@ export default function ResetPasswordView({ reset_password_token }: ResetPasswor
   const { client } = useClient()
   const { toastSuccess, toastError } = useToast()
 
-  function handleChange(event: any) {
-    setState((prev: any) => ({ ...prev, [event.target.name]: event.target.value }))
+  function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
+    setState((prev: PasswordWithConfirmation) => ({ ...prev, [event.target.name]: event.target.value }))
   }
 
-  async function handleSubmit(event: any) {
+  async function handleSubmit(event: React.ChangeEvent<HTMLInputElement>) {
     event.preventDefault()
     setSaving(true)
 

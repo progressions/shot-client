@@ -34,7 +34,7 @@ export default function NewSite() {
     }
   }
 
-  function handleChange(event: any) {
+  function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     dispatchSite({ type: "update", name: event.target.name, value: event.target.value })
   }
 

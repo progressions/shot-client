@@ -63,7 +63,7 @@ export default function CharacterModal({ open, setOpen, character:activeVehicle,
 
   const handleAVChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { action_values } = character || {}
-    setCharacter((prevState: any) => ({ ...prevState, action_values: { ...action_values, [event.target.name]: event.target.value } }))
+    setCharacter((prevState: Vehicle) => ({ ...prevState, action_values: { ...action_values, [event.target.name]: event.target.value } }))
   }
 
   const handleColor = (color: any) => {

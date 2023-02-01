@@ -37,7 +37,7 @@ const characterVisibility = (character: Character) => {
   return (character.active)
 }
 
-const fetchVehicles = async (client: any) => {
+const fetchVehicles = async (client: Client) => {
   const response = await client.getAllVehicles()
   if (response.status === 200) {
     const vehicles = await response.json()
@@ -49,7 +49,7 @@ const fetchVehicles = async (client: any) => {
   }
 }
 
-const fetchCharacters = async (client: any) => {
+const fetchCharacters = async (client: Client) => {
   const response = await client.getAllCharacters()
   if (response.status === 200) {
     const chars = await response.json()
@@ -61,7 +61,7 @@ const fetchCharacters = async (client: any) => {
   }
 }
 
-const fetchCharactersAndVehicles = async (client: any) => {
+const fetchCharactersAndVehicles = async (client: Client) => {
   const [characterResponse, characters] = await fetchCharacters(client)
   const [vehicleResponse, vehicles] = await fetchVehicles(client)
 

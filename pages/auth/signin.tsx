@@ -6,6 +6,7 @@ import Router from 'next/router'
 
 import Layout from '../../components/Layout'
 import type { ServerSideProps } from "../../types/types"
+import { initialState, loginReducer } from "../../components/auth/loginReducer"
 
 interface SignInPageProps {
   referer: string | null
@@ -22,44 +23,6 @@ export async function getServerSideProps({ req, query }: ServerSideProps) {
     props: {
       referer: null
     },
-  }
-}
-
-const initialState = {
-  error: false,
-  loading: false,
-  email: "",
-  password: ""
-}
-
-const loginReducer = (state: any, action: any) => {
-  switch (action.type) {
-    case "update":
-      return {
-        ...state,
-        [action.name]: action.value
-      }
-    case "login":
-      return {
-        ...state,
-        loading: true,
-        error: false
-      }
-    case "error":
-      return {
-        ...state,
-        error: true,
-        loading: false
-      }
-    case "success":
-      return {
-        error: false,
-        loading: false,
-        email: "",
-        password: ""
-      }
-    default:
-      return state
   }
 }
 

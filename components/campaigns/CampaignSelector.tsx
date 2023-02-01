@@ -1,5 +1,5 @@
 import { IconButton, Box, Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, TextField, MenuItem, Stack, Typography } from "@mui/material"
-import { useCampaign } from "../../contexts/CampaignContext"
+import { CampaignContextType, useCampaign } from "../../contexts/CampaignContext"
 import PlayCircleIcon from '@mui/icons-material/PlayCircle'
 import StopCircleIcon from '@mui/icons-material/StopCircle'
 import { useClient } from "../../contexts/ClientContext"
@@ -7,10 +7,15 @@ import { useMemo, useCallback, useEffect, useState } from "react"
 import { useSession } from 'next-auth/react'
 import Client from "../Client"
 
-import type { Campaign } from "../../types/types"
+import type { Campaign, CampaignsResponse } from "../../types/types"
+import { defaultCampaign } from "../../types/types"
 
 interface CampaignSelectorProps {
   startCampaign: (campaign: Campaign) => Promise<void>
+}
+
+interface NameDisplayProps {
+  camp: Campaign
 }
 
 declare module "@mui/material/styles" {
@@ -29,10 +34,13 @@ declare module "@mui/material/Button" {
 }
 
 export default function CampaignSelector({ startCampaign }: CampaignSelectorProps) {
-  const {campaign, getCurrentCampaign, setCurrentCampaign}:any = useCampaign()
+  const {campaign, getCurrentCampaign, setCurrentCampaign}: CampaignContextType = useCampaign()
   const [open, setOpen] = useState(false)
   const [saving, setSaving] = useState(false)
-  const [campaigns, setCampaigns] = useState<any>({})
+  const [campaigns, setCampaigns] = useState<CampaignsResponse>({
+    gamemaster: [],
+    player: []
+  })
   const [campaignId, setCampaignId] = useState(null)
 
   const { user, client } = useClient()
@@ -45,21 +53,17 @@ export default function CampaignSelector({ startCampaign }: CampaignSelectorProp
     }
   }, [client])
 
-  const handleChange = (event: any) => {
-    setCampaignId(event.target.value)
-  }
-
   const cancelForm = () => {
     setOpen(false)
   }
 
-  const handleSubmit = async (event: any) => {
+  const handleSubmit = async (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault()
     setSaving(true)
 
-    const camp = campaigns?.["gamemaster"]?.find((c: any) => (campaignId === c.id)) ||
-      campaigns?.["player"]?.find((c: any) => (campaignId === c.id))
-    await startCampaign(camp)
+    const camp = campaigns?.["gamemaster"]?.find((c: Campaign) => (campaignId === c.id)) ||
+      campaigns?.["player"]?.find((c: Campaign) => (campaignId === c.id))
+    await startCampaign(camp as Campaign)
 
     setSaving(false)
     setOpen(false)
@@ -72,7 +76,7 @@ export default function CampaignSelector({ startCampaign }: CampaignSelectorProp
     setOpen(true)
   }
 
-  const NameDisplay = ({ camp }: any) => {
+  const NameDisplay = ({ camp }: NameDisplayProps) => {
     return (
       <>
         <Stack direction="row" spacing={1} alignItems="center">

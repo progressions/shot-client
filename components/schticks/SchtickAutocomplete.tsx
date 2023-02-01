@@ -33,7 +33,7 @@ export default function SchtickAutocomplete({ filter, dispatchFilter }: SchtickA
     setSearch(newValue)
   }
 
-  function getOptionLabel(option: any) {
+  function getOptionLabel(option: Schtick) {
     return option.title
   }
 

@@ -8,38 +8,8 @@ import { useRouter } from 'next/router'
 import { User } from "../../../types/types"
 import { useClient } from "../../../contexts/ClientContext"
 import { useToast } from "../../../contexts/ToastContext"
-
 import { useReducer } from "react"
-
-const initialState = {
-  loading: false,
-  error: false,
-  success: false,
-  email: ""
-}
-
-const resetReducer = (state: any, action: any) => {
-  switch (action.type) {
-    case "submit":
-      return {
-        ...state,
-        loading: true,
-        error: false
-      }
-    case "update":
-      return {
-        ...state,
-        [action.name]: action.value
-      }
-    case "success":
-      return {
-        ...initialState,
-        success: true
-      }
-    default:
-      return state
-  }
-}
+import { resetReducer, initialState } from "../../../components/passwords/resetReducer"
 
 export default function SendResetPasswordView() {
   const { client } = useClient()
@@ -47,7 +17,7 @@ export default function SendResetPasswordView() {
   const [state, dispatch] = useReducer(resetReducer, initialState)
   const { success, error, loading, email } = state
 
-  async function handleSubmit(event: any) {
+  async function handleSubmit(event: React.ChangeEvent<HTMLInputElement>) {
     event.preventDefault()
     dispatch({ type: "submit" })
 
@@ -59,7 +29,7 @@ export default function SendResetPasswordView() {
     }
   }
 
-  function handleChange(event: any) {
+  function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     dispatch({ type: "update", name: event.target.name, value: event.target.value })
   }
 

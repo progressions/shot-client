@@ -61,7 +61,7 @@ export default function UploadWeapons() {
   const { toastSuccess, toastError } = useToast()
   const { client } = useClient()
 
-  async function handleSubmit(event: any) {
+  async function handleSubmit(event: React.ChangeEvent<HTMLInputElement>) {
     event.preventDefault()
     setSaving(true)
 
@@ -80,7 +80,7 @@ export default function UploadWeapons() {
     setSaving(false)
   }
 
-  function handleChange(event: any) {
+  function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     setContent(event.target.value)
   }
 

@@ -11,7 +11,7 @@ interface WeaponAutocompleteProps {
 
 export default function WeaponAutocomplete({ filter, dispatchFilter }: WeaponAutocompleteProps) {
   const { loading, weapon, weapons } = filter
-  const [search, setSearch] = useState(null)
+  const [search, setSearch] = useState("")
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -21,11 +21,11 @@ export default function WeaponAutocomplete({ filter, dispatchFilter }: WeaponAut
     return () => clearTimeout(timer)
   }, [search, dispatchFilter])
 
-  function handleSelect(event: any, newValue: Weapon) {
+  function handleSelect(event: React.ChangeEvent<HTMLInputElement>, newValue: Weapon) {
     dispatchFilter({ type: "weapon", payload: newValue })
   }
 
-  function handleInputChange(event: any, newValue: any) {
+  function handleInputChange(event: React.ChangeEvent<HTMLInputElement>, newValue: string) {
     setSearch(newValue)
   }
 
