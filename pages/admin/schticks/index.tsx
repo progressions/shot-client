@@ -16,7 +16,7 @@ import FilterSchticks from "../../../components/schticks/FilterSchticks"
 import { initialFilter, filterReducer } from "../../../components/schticks/filterReducer"
 
 import { authOptions } from '../../api/auth/[...nextauth]'
-import { unstable_getServerSession } from "next-auth/next"
+import { getServerSession } from "next-auth/next"
 import Client from "../../../components/Client"
 import Schticks from "../../../components/schticks/Schticks"
 
@@ -26,7 +26,7 @@ import { GetServerSideProps } from 'next'
 import { InferGetServerSidePropsType } from 'next'
 
 export async function getServerSideProps<GetServerSideProps>({ req, res }: ServerSideProps) {
-  const session: any = await unstable_getServerSession(req as any, res as any, authOptions as any)
+  const session: any = await getServerSession(req as any, res as any, authOptions as any)
   const jwt = session?.authorization
   const client = new Client({ jwt: jwt })
 

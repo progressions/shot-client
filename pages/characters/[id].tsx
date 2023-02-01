@@ -2,7 +2,7 @@ import Layout from '../../components/Layout'
 import Head from 'next/head'
 
 import { authOptions } from '../api/auth/[...nextauth]'
-import { unstable_getServerSession } from "next-auth/next"
+import { getServerSession } from "next-auth/next"
 import { colors, Typography, Paper, Container } from "@mui/material"
 
 import { CharacterProvider } from "../../contexts/CharacterContext"
@@ -13,7 +13,7 @@ import { GetServerSideProps } from 'next'
 import { ServerSideProps, User, Character } from "../../types/types"
 
 export async function getServerSideProps<GetServerSideProps>({ req, res, params }: ServerSideProps) {
-  const session: any = await unstable_getServerSession(req as any, res as any, authOptions as any)
+  const session: any = await getServerSession(req as any, res as any, authOptions as any)
   const jwt = session?.authorization
   const client = new Client({ jwt: jwt })
   const { id } = params

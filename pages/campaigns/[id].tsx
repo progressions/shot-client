@@ -6,7 +6,7 @@ import SendIcon from '@mui/icons-material/Send'
 import { Tooltip, IconButton, Box, Stack, TableContainer, Table, TableRow, TableHead, TableBody, TableCell, Container, Typography } from "@mui/material"
 
 import { authOptions } from '../api/auth/[...nextauth]'
-import { unstable_getServerSession } from "next-auth/next"
+import { getServerSession } from "next-auth/next"
 
 import { ButtonBar } from "../../components/StyledFields"
 import CreateInvitation from "../../components/invitations/CreateInvitation"
@@ -22,7 +22,7 @@ import { useState } from "react"
 import { ServerSideProps, Invitation, User, Campaign } from "../../types/types"
 
 export async function getServerSideProps<GetServerSideProps>({ req, res, params }: ServerSideProps) {
-  const session: any = await unstable_getServerSession(req as any, res as any, authOptions as any)
+  const session: any = await getServerSession(req as any, res as any, authOptions as any)
   const jwt = session?.authorization
   const client = new Client({ jwt: jwt })
   const { id } = params

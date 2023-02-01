@@ -6,14 +6,14 @@ import Navbar from "../../components/navbar/Navbar"
 import { Stack, Link, Container, Typography, Box } from "@mui/material"
 
 import { authOptions } from '../api/auth/[...nextauth]'
-import { unstable_getServerSession } from "next-auth/next"
+import { getServerSession } from "next-auth/next"
 import { useRouter } from 'next/router'
 
 import Client from '../../components/Client'
 import { ServerSideProps, User } from "../../types/types"
 
 export async function getServerSideProps<GetServerSideProps>({ req, res, params, query }: ServerSideProps) {
-  const session: any = await unstable_getServerSession(req as any, res as any, authOptions as any)
+  const session: any = await getServerSession(req as any, res as any, authOptions as any)
   const jwt = session?.authorization
   const client = new Client({ jwt: jwt })
   const { unlock_token } = query

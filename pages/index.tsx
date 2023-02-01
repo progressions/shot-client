@@ -15,7 +15,7 @@ import { useMemo, useState, useEffect } from 'react'
 import { signIn, signOut } from 'next-auth/react'
 
 import { authOptions } from './api/auth/[...nextauth]'
-import { unstable_getServerSession } from "next-auth/next"
+import { getServerSession } from "next-auth/next"
 
 import { GetServerSideProps } from 'next'
 import { InferGetServerSidePropsType } from 'next'
@@ -34,7 +34,7 @@ interface HomeProps {
 }
 
 export async function getServerSideProps<GetServerSideProps>({ req, res }: ServerSideProps) {
-  const session: any = await unstable_getServerSession(req as any, res as any, authOptions as any)
+  const session: any = await getServerSession(req as any, res as any, authOptions as any)
   const jwt = session?.authorization
   const client = new Client({ jwt: jwt })
 

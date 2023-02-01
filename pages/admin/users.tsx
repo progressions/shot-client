@@ -7,7 +7,7 @@ import UserModal from '../../components/UserModal'
 import Router from 'next/router'
 
 import { authOptions } from '../api/auth/[...nextauth]'
-import { unstable_getServerSession } from "next-auth/next"
+import { getServerSession } from "next-auth/next"
 
 import DeleteIcon from '@mui/icons-material/Delete'
 import EditIcon from '@mui/icons-material/Edit'
@@ -40,7 +40,7 @@ export async function loadUsers({ jwt, setUsers }: loadUsersParams) {
 }
 
 export async function getServerSideProps({ req, res }: ServerSideProps) {
-  const session: any = await unstable_getServerSession(req as any, res as any, authOptions as any)
+  const session: any = await getServerSession(req as any, res as any, authOptions as any)
   const jwt = session?.authorization
   const client = new Client({ jwt })
   const id = session?.id

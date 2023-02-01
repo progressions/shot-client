@@ -4,7 +4,7 @@ import Layout from '../components/Layout'
 import Client from '../components/Client'
 import { useSession } from 'next-auth/react'
 import { authOptions } from './api/auth/[...nextauth]'
-import { unstable_getServerSession } from "next-auth/next"
+import { getServerSession } from "next-auth/next"
 import { useState } from 'react'
 import Router from "next/router"
 
@@ -16,7 +16,7 @@ interface ProfileProps {
 }
 
 export async function getServerSideProps({ req, res, params }: ServerSideProps) {
-  const session: any = await unstable_getServerSession(req as any, res as any, authOptions as any)
+  const session: any = await getServerSession(req as any, res as any, authOptions as any)
   const jwt = session?.authorization
   const client = new Client({ jwt })
   const id = session?.id

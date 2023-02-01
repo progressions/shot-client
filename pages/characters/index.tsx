@@ -8,7 +8,7 @@ import Router from "next/router"
 import { Link, Paper, Switch, FormControlLabel, Stack, Avatar, Box, TableContainer, Table, TableHead, TableBody, TableRow, TableCell, Container, Typography } from "@mui/material"
 
 import { authOptions } from "../api/auth/[...nextauth]"
-import { unstable_getServerSession } from "next-auth/next"
+import { getServerSession } from "next-auth/next"
 
 import { useSession } from "next-auth/react"
 
@@ -71,7 +71,7 @@ const fetchCharactersAndVehicles = async (client: any) => {
 }
 
 export async function getServerSideProps({ req, res }: ServerSideProps) {
-  const session: any = await unstable_getServerSession(req as any, res as any, authOptions as any)
+  const session: any = await getServerSession(req as any, res as any, authOptions as any)
   const jwt = session?.authorization
   const client = new Client({ jwt })
 

@@ -13,7 +13,7 @@ import Campaigns from "../../components/campaigns/Campaigns"
 import GamemasterOnly from "../../components/GamemasterOnly"
 
 import { authOptions } from '../api/auth/[...nextauth]'
-import { unstable_getServerSession } from "next-auth/next"
+import { getServerSession } from "next-auth/next"
 import Client from "../../components/Client"
 
 import type { CampaignsResponse, ServerSideProps, Campaign } from "../../types/types"
@@ -21,7 +21,7 @@ import { GetServerSideProps } from 'next'
 import { InferGetServerSidePropsType } from 'next'
 
 export async function getServerSideProps<GetServerSideProps>({ req, res }: ServerSideProps) {
-  const session: any = await unstable_getServerSession(req as any, res as any, authOptions as any)
+  const session: any = await getServerSession(req as any, res as any, authOptions as any)
   const jwt = session?.authorization
   const client = new Client({ jwt: jwt })
 
