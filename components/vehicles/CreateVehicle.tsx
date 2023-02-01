@@ -12,7 +12,7 @@ import { defaultVehicle } from "../../types/types"
 interface CreateVehicleParams {
   fight?: Fight,
   setFight?: React.Dispatch<React.SetStateAction<Fight>>
-  reload?: any
+  reload?: () => Promise<void>
 }
 
 export default function CreateVehicle({ fight, setFight, reload }: CreateVehicleParams) {

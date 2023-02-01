@@ -6,6 +6,7 @@ import { rowMap } from "../../utils/rowMap"
 
 import { useState, useMemo } from "react"
 import { SchticksStateType, SchticksActionType } from "./filterReducer"
+import { Schtick } from "../../types/types"
 
 interface SchticksProps {
   filter: SchticksStateType
@@ -26,7 +27,7 @@ export default function Schticks({ filter, dispatchFilter }: SchticksProps) {
     const output = (
       rowsOfData.map((row: any, index: number) => (
         <Stack spacing={1} direction="row" key={`row_${index}`}>
-          { row.map((schtick: any) => (
+          { row.map((schtick: Schtick) => (
             <SchtickCard key={`schtick_${schtick?.id}`} schtick={schtick} filter={filter} dispatchFilter={dispatchFilter} />
           )) }
         </Stack>

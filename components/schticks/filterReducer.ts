@@ -1,4 +1,4 @@
-import type { PaginationMeta, Schtick } from "../../types/types"
+import type { SchtickCategory, SchtickPath, PaginationMeta, Schtick } from "../../types/types"
 import { defaultPaginationMeta, defaultSchtick } from "../../types/types"
 
 export interface ActionNoPayload {
@@ -20,10 +20,10 @@ export interface SchticksStateType {
   loading: boolean
   saving: boolean
   page: number
-  path: string
-  paths: string[]
-  category: string
-  categories: string[]
+  path: SchtickPath
+  paths: SchtickPath[]
+  category: SchtickCategory
+  categories: SchtickCategory[]
   title: string
   schtick: Schtick
   schticks: Schtick[]
@@ -33,8 +33,8 @@ export interface SchticksStateType {
 export interface SchticksResponse {
   schticks: Schtick[]
   meta: PaginationMeta
-  paths: string[]
-  categories: string[]
+  paths: SchtickPath[]
+  categories: SchtickCategory[]
 }
 
 export type SchticksActionType = ActionNoPayload | UpdateAction | PayloadAction

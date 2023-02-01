@@ -29,7 +29,7 @@ interface CharacterModalParams {
   fight?: Fight,
   setFight?: React.Dispatch<React.SetStateAction<Fight>>
   character: Person | null
-  reload?: any
+  reload?: () => Promise<void>
 }
 
 export default function CharacterModal({ open, setOpen, character:activeCharacter, reload }: CharacterModalParams) {
@@ -97,7 +97,7 @@ export default function CharacterModal({ open, setOpen, character:activeCharacte
       }
       if (fight?.id && setFight) {
         await reloadFight(fight)
-      } else {
+      } else if (reload) {
         await reload()
       }
     } else {
@@ -128,7 +128,7 @@ export default function CharacterModal({ open, setOpen, character:activeCharacte
     actionValues["Wounds"] = 0
     actionValues["Fortune"] = actionValues["Max Fortune"]
     actionValues["Marks of Death"] = 0
-    setCharacter((prev: any) => ({ ...prev, impairments: 0, action_values: actionValues }))
+    setCharacter((prev: Character) => ({ ...prev, impairments: 0, action_values: actionValues }))
   }
 
   return (

@@ -5,37 +5,10 @@ import { useToast } from "../../contexts/ToastContext"
 import { useCharacter } from "../../contexts/CharacterContext"
 
 import type { Character, Site } from "../../types/types"
-import { defaultSite } from "../../types/types"
 
 import { useEffect, useReducer } from "react"
-
-const initialState = {
-  error: false,
-  loading: false,
-  site: defaultSite
-}
-
-function siteReducer(state: any, action: any) {
-  switch(action.type) {
-    case "update":
-      return {
-        ...state,
-        site: {
-          ...state.site,
-          [action.name]: action.value
-        }
-      }
-    case "saving":
-      return {
-        ...state,
-        loading: true
-      }
-    case "reset":
-      return initialState
-    default:
-      return state
-  }
-}
+import { initialState, siteReducer } from "./siteReducer"
+import type { SiteStateType, SiteActionType } from "./siteReducer"
 
 export default function NewSite() {
   const { character, dispatch:dispatchCharacter, reloadCharacter } = useCharacter()

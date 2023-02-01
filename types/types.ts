@@ -12,6 +12,11 @@ export interface FilterParamsType {
 
 export type Severity = 'error' | 'info' | 'success' | 'warning'
 
+export type WeaponCategory = string
+export type SchtickCategory = string
+export type SchtickPath = string
+export type Juncture = string
+
 export interface PaginationMeta {
   current_page: number
   next_page: number | null
@@ -52,8 +57,8 @@ export interface Weapon {
   damage: number
   concealment: number
   reload_value: number
-  category: string
-  juncture: string
+  category: WeaponCategory
+  juncture: Juncture
   mook_bonus: number
   kachunk: boolean
 }
@@ -138,8 +143,8 @@ export interface Schtick {
   title: string
   description: string
   campaign_id: string
-  category: string
-  path: string
+  category: SchtickCategory
+  path: SchtickPath
   schtick_id: string
   prerequisite: {
     id?: string
@@ -157,6 +162,7 @@ export interface ID {
 }
 
 export type Character = Vehicle | Person
+export type CharacterCategory = "character" | "vehicle"
 
 export interface Vehicle {
   id?: string
@@ -176,7 +182,7 @@ export interface Vehicle {
   created_at?: string
   updated_at?: string
   new?: boolean
-  category: "character" | "vehicle"
+  category: CharacterCategory
 }
 
 export interface Person {
@@ -197,7 +203,7 @@ export interface Person {
   created_at?: string
   updated_at?: string
   new?: boolean
-  category: "character" | "vehicle"
+  category: CharacterCategory
 }
 
 export interface Advancement {

@@ -27,7 +27,7 @@ interface VehicleModalParams {
   fight?: Fight,
   setFight?: React.Dispatch<React.SetStateAction<Fight>>
   character: Vehicle | null
-  reload?: any
+  reload?: () => Promise<void>
 }
 
 export default function CharacterModal({ open, setOpen, character:activeVehicle, reload }: VehicleModalParams) {
@@ -98,7 +98,7 @@ export default function CharacterModal({ open, setOpen, character:activeVehicle,
       }
       if (fight?.id) {
         await reloadFight(fight)
-      } else {
+      } else if (reload) {
         await reload()
       }
     } else {

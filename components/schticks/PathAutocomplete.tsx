@@ -1,6 +1,6 @@
 import { Autocomplete, TextField } from "@mui/material"
 import { StyledAutocomplete, StyledSelect } from "../StyledFields"
-import type { InputParamsType } from "../../types/types"
+import type { SchtickPath, InputParamsType } from "../../types/types"
 
 import { SchticksStateType, SchticksActionType } from "./filterReducer"
 
@@ -16,7 +16,7 @@ export default function PathAutocomplete({ filter, dispatchFilter }: PathAutocom
     dispatchFilter({ type: "path", payload: newValue })
   }
 
-  function getOptionLabel(option: any) {
+  function getOptionLabel(option: SchtickPath) {
     return option || ""
   }
 
