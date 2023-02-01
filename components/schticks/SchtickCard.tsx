@@ -13,6 +13,17 @@ import SchtickModal from "./SchtickModal"
 import type { Schtick } from "../../types/types"
 import type { SchticksStateType, SchticksActionType } from "./filterReducer"
 
+/*
+
+Guns: GiPistolGun
+Martial Arts: FaFistRaised
+Creature: GiFangs
+Transformed Animal: GiFlatPawPrint
+Mutant: FaDna
+Scroungetech: GiGears
+
+*/
+
 interface SchtickCardProps {
   schtick: Schtick
   filter: SchticksStateType
