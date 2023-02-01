@@ -9,14 +9,21 @@ import { useSession } from 'next-auth/react'
 
 import type { Campaign } from "../../types/types"
 
-export default function CampaignModal({ open, setOpen, campaign:activeCampaign, reload }: any) {
+interface CampaignModalProps {
+  open: Campaign
+  setOpen: React.Dispatch<React.SetStateAction<Campaign>>
+  campaign: Campaign
+  reload: () => Promise<void>
+}
+
+export default function CampaignModal({ open, setOpen, campaign:activeCampaign, reload }: CampaignModalProps) {
   const [campaign, setCampaign] = useState(activeCampaign)
   const [saving, setSaving] = useState(false)
 
   const { client } = useClient()
   const { toastSuccess, toastError } = useToast()
 
-  const handleSubmit = async (event: any) => {
+  const handleSubmit = async (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault()
     setSaving(true)
 
@@ -41,7 +48,7 @@ export default function CampaignModal({ open, setOpen, campaign:activeCampaign, 
     setCampaign(defaultCampaign)
   }
 
-  const handleChange = (event: any) => {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setCampaign((prevState: Campaign) => ({ ...prevState, [event.target.name]: event.target.value }))
   }
 

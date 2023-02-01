@@ -38,6 +38,15 @@ export async function getServerSideProps<GetServerSideProps>({ req, res, params 
     }
   }
 
+  if (response.status === 500) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/"
+      }
+    }
+  }
+
   return {
     props: {
       character: {}

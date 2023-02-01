@@ -1,5 +1,6 @@
 import { colors, Avatar, Tooltip, IconButton, Card, CardHeader, CardContent, CardActions, Stack, Typography } from "@mui/material"
 import DeleteIcon from "@mui/icons-material/Delete"
+import ClearIcon from '@mui/icons-material/Clear'
 import EditIcon from '@mui/icons-material/Edit'
 
 import SchtickCardBase from "./SchtickCardBase"
@@ -9,9 +10,16 @@ import { useCharacter } from "../../contexts/CharacterContext"
 import { useState, useMemo } from "react"
 import SchtickModal from "./SchtickModal"
 
-import { Schtick } from "../../types/types"
+import type { Schtick } from "../../types/types"
+import type { SchticksStateType, SchticksActionType } from "./filterReducer"
 
-export default function SchtickCard({ schtick, filter, dispatchFilter }: any) {
+interface SchtickCardProps {
+  schtick: Schtick
+  filter: SchticksStateType
+  dispatchFilter?: React.Dispatch<SchticksActionType>
+}
+
+export default function SchtickCard({ schtick, filter, dispatchFilter }: SchtickCardProps) {
   const [open, setOpen] = useState(false)
   const { toastSuccess, toastError } = useToast()
   const { user, client } = useClient()
@@ -32,7 +40,9 @@ export default function SchtickCard({ schtick, filter, dispatchFilter }: any) {
     const response = await client.getSchticks()
     if (response.status === 200) {
       const data = await response.json()
-      dispatchFilter({ type: "schticks", payload: data })
+      if (dispatchFilter) {
+        dispatchFilter({ type: "schticks", payload: data })
+      }
     }
   }
 
@@ -60,9 +70,11 @@ export default function SchtickCard({ schtick, filter, dispatchFilter }: any) {
     setOpen(true)
   }
 
-  const deleteFunction = (typeof character === "undefined") ? deleteSchtick : removeSchtick
+  const deletion = (typeof character === "undefined")
 
-  const editButton = (typeof character === "undefined") ? (
+  const deleteFunction = deletion ? deleteSchtick : removeSchtick
+
+  const editButton = deletion ? (
     <Tooltip title="Edit" key="edit">
       <IconButton onClick={editSchtick}>
         <EditIcon sx={{color: "text.primary"}} />
@@ -74,16 +86,17 @@ export default function SchtickCard({ schtick, filter, dispatchFilter }: any) {
     const prereqIds = character?.schticks?.map((s: Schtick) => s.prerequisite.id) || []
     const schtickHasPrereq = prereqIds.includes(schtick?.id)
 
-    const tooltip = typeof character === "undefined" ? "Delete" : "Remove"
+    const tooltip = deletion ? "Delete" : "Remove"
+    const icon = deletion ? <DeleteIcon /> : <ClearIcon />
 
     return !schtickHasPrereq ? (
       <Tooltip title={tooltip} key="delete">
         <IconButton onClick={deleteFunction}>
-          <DeleteIcon sx={{color: "text.primary"}} />
+          { icon }
         </IconButton>
       </Tooltip>
     ) : ""
-  }, [character, schtick, deleteFunction])
+  }, [character, schtick, deleteFunction, deletion])
 
   if (!schtick) return <></>
   // Include an icon for the schtick's category
@@ -107,7 +120,12 @@ export default function SchtickCard({ schtick, filter, dispatchFilter }: any) {
             Requires: {schtick.prerequisite.title}
           </Typography> }
       </SchtickCardBase>
-      <SchtickModal schtick={schtick} filter={filter} dispatchFilter={dispatchFilter} open={open} setOpen={setOpen} />
+      <SchtickModal
+        filter={filter}
+        dispatchFilter={dispatchFilter}
+        open={open}
+        setOpen={setOpen}
+      />
     </>
   )
 }

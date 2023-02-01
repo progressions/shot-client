@@ -3,9 +3,31 @@ import { createContext, useContext, useState } from "react"
 import type { Toast } from "../types/types"
 import { defaultToast } from "../types/types"
 
-const ToastContext = createContext({})
+interface ToastProviderProps {
+  children: React.ReactNode
+}
 
-export function ToastProvider({ children }: any) {
+interface ToastContextType {
+  toast: Toast
+  closeToast: () => void
+  toastSuccess: (message: string) => void
+  toastError: (message?: string) => void
+  toastInfo: (message: string) => void
+  toastWarning: (message: string) => void
+}
+
+const defaultContext: ToastContextType = {
+  toast: defaultToast,
+  closeToast: () => {},
+  toastSuccess: (message: string) => {},
+  toastError: (message?: string) => {},
+  toastInfo: (message: string) => {},
+  toastWarning: (message: string) => {}
+}
+
+const ToastContext = createContext<ToastContextType>(defaultContext)
+
+export function ToastProvider({ children }: ToastProviderProps) {
   const [toast, setToast] = useState<Toast>(defaultToast)
 
   const toastSuccess = (message: string) => {
@@ -29,12 +51,12 @@ export function ToastProvider({ children }: any) {
   }
 
   return (
-    <ToastContext.Provider value={{ toast, setToast, closeToast, toastSuccess, toastError, toastInfo, toastWarning }}>
+    <ToastContext.Provider value={{ toast, closeToast, toastSuccess, toastError, toastInfo, toastWarning }}>
       {children}
     </ToastContext.Provider>
   )
 }
 
-export function useToast(): any {
+export function useToast(): ToastContextType {
   return useContext(ToastContext)
 }

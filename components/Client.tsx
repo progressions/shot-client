@@ -1,5 +1,6 @@
 import Api from "./Api"
 import type {
+  PasswordWithConfirmation,
   Weapon,
   Site,
   Advancement,
@@ -166,7 +167,7 @@ class Client {
     return await this.delete(this.api.invitations(invitation))
   }
 
-  async redeemInvitation(invitation: Invitation, user: any) {
+  async redeemInvitation(invitation: Invitation, user: User | ID) {
     return await this.patch(`${this.api.invitations(invitation)}/redeem`, {"user": user})
   }
 
@@ -237,7 +238,7 @@ class Client {
     })
   }
 
-  async resetUserPassword(reset_password_token: string, password: any):Promise<Response> {
+  async resetUserPassword(reset_password_token: string, password: PasswordWithConfirmation):Promise<Response> {
     return await this.patch(this.api.resetUserPassword(), {
       "user": { ...password, "reset_password_token": reset_password_token }
     })
@@ -333,15 +334,15 @@ class Client {
     return await this.delete(this.api.characterWeapons(character, weapon))
   }
 
-  async patch(url:string, body:any, options?:any):Promise<Response> {
+  async patch(url:string, body:{}, options?:{}):Promise<Response> {
     return await this.request("PATCH", url, body, options)
   }
 
-  async post(url:string, body?:any, options?:any):Promise<Response> {
+  async post(url:string, body?:{}, options?:{}):Promise<Response> {
     return await this.request("POST", url, body, options)
   }
 
-  async request(method:string, url:string, body:any, options?:any):Promise<Response> {
+  async request(method:string, url:string, body?:{}, options?:{}):Promise<Response> {
     body ||= {}
 
     return await fetch(url, {
@@ -352,14 +353,14 @@ class Client {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': this.jwt
-      },
+      } as HeadersInit,
       // Body of the request is the JSON data we created above.
       body: JSON.stringify(body),
       ...options
     })
   }
 
-  async get(url:string, options?:any):Promise<Response> {
+  async get(url:string, options?:{}):Promise<Response> {
     return await fetch(url, {
       headers: {
         'Content-Type': 'application/json',

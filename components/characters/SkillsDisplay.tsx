@@ -2,8 +2,13 @@ import { colors, Typography, Box, Popover, Tooltip, IconButton } from "@mui/mate
 import ArticleIcon from '@mui/icons-material/Article'
 import { useState } from "react"
 import { knownSkills } from "./edit/Skills"
+import type { SkillValues } from "../../types/types"
 
-export default function SkillsDisplay({ skills }: any) {
+interface SkillsDisplayProps {
+  skills: SkillValues
+}
+
+export default function SkillsDisplay({ skills }: SkillsDisplayProps) {
   const [anchorEl, setAnchorEl] = useState(null)
   const [open, setOpen] = useState(false)
 

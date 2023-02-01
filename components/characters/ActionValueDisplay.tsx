@@ -12,9 +12,9 @@ interface ActionValueDisplayParams {
   sx?: SxProps<Theme>
 }
 
-const effectForCharacter = (fight: Fight, character: Character, name: String): CharacterEffect | null => {
+const effectForCharacter = (fight: Fight, character: Character, name: String): CharacterEffect | undefined => {
   const effects = fight.character_effects[character.id as string] || []
-  const effect = effects.find((e: any) => {
+  const effect = effects.find((e: CharacterEffect) => {
     if (e.action_value === name) {
       return true
     }
@@ -34,7 +34,7 @@ const valueChange = (original: number, newValue: number): number => {
   return 0
 }
 
-const adjustedReturnValue = (original: number, newValue: number): any => {
+const adjustedReturnValue = (original: number, newValue: number): [number, number] => {
   return [valueChange(original, newValue), newValue]
 }
 

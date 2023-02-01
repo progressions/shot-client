@@ -6,16 +6,20 @@ import Client from "../components/Client"
 import { defaultUser } from "../types/types"
 import type { User } from "../types/types"
 
-interface ClientContextParams {
+interface ClientContextType {
   client: Client
   session: any
   jwt: string
   user: User
 }
 
-const ClientContext = createContext<ClientContextParams>({client: (new Client()), session: {}, jwt: "", user: defaultUser})
+interface ClientProviderProps {
+  children: React.ReactNode
+}
 
-export function ClientProvider({ children }: any) {
+const ClientContext = createContext<ClientContextType>({client: (new Client()), session: {}, jwt: "", user: defaultUser})
+
+export function ClientProvider({ children }: ClientProviderProps) {
   const session:any = useSession({ required: false })
   const jwt = session?.data?.authorization
   const client = useMemo(() => (new Client({ jwt })), [jwt])
@@ -28,6 +32,6 @@ export function ClientProvider({ children }: any) {
   )
 }
 
-export function useClient() {
+export function useClient(): ClientContextType {
   return useContext(ClientContext)
 }

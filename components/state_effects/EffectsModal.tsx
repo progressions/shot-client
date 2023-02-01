@@ -6,10 +6,14 @@ import { useToast } from "../../contexts/ToastContext"
 import { useClient } from "../../contexts/ClientContext"
 import { useFight } from "../../contexts/FightContext"
 
-import type { CharacterEffect, Toast, Effect, Fight } from "../../types/types"
+import type { Character, CharacterEffect, Toast, Effect, Fight } from "../../types/types"
 import { defaultCharacterEffect } from "../../types/types"
 
-export default function EffectsModal({ character }: any) {
+interface EffectsModalProps {
+  character: Character
+}
+
+export default function EffectsModal({ character }: EffectsModalProps) {
   const initialEffect = { ...defaultCharacterEffect, character_id: character?.id }
   const { fight, reloadFight } = useFight()
 
@@ -37,7 +41,7 @@ export default function EffectsModal({ character }: any) {
     }
   }, [character])
 
-  const handleSubmit = async (event: any) => {
+  const handleSubmit = async (event: React.ChangeEvent<HTMLInputElement>) => {
     setSaving(true)
     event.preventDefault()
 
@@ -57,7 +61,7 @@ export default function EffectsModal({ character }: any) {
     setSaving(false)
   }
 
-  const handleChange = (event: any) => {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setEffect((prev: CharacterEffect) => { return { ...prev, [event.target.name]: event.target.value } })
   }
 

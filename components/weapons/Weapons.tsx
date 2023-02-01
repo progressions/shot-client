@@ -3,10 +3,17 @@ import { Subhead } from "../StyledFields"
 import type { Weapon as WeaponType } from "../../types/types"
 import Weapon from "./Weapon"
 import { useCharacter } from "../../contexts/CharacterContext"
-import { rowMap } from "../schticks/Schticks"
+import { rowMap } from "../../utils/rowMap"
 import AddWeapon from "./AddWeapon"
 
-export default function Weapons({ filter, dispatchFilter }: any) {
+import type { WeaponsStateType, WeaponsActionType } from "./filterReducer"
+
+interface WeaponsProps {
+  filter: WeaponsStateType
+  dispatchFilter?: React.Dispatch<WeaponsActionType>
+}
+
+export default function Weapons({ filter, dispatchFilter }: WeaponsProps) {
   const { character } = useCharacter()
   const { weapons, meta } = filter
 
@@ -15,18 +22,22 @@ export default function Weapons({ filter, dispatchFilter }: any) {
   const outputRows = (
     rowsOfData.map((row: any, index: number) => (
       <Stack spacing={1} direction="row" key={`row_${index}`}>
-        { row.map((weapon: any) => (
-          <Weapon key={`weapon_${weapon?.id}`} weapon={weapon} filter={filter} dispatchFilter={dispatchFilter} />
+        { row.map((weapon: WeaponType, index: number) => (
+          <Weapon key={`weapon_${weapon?.id}_${index}`} weapon={weapon} filter={filter} dispatchFilter={dispatchFilter} />
         )) }
       </Stack>
     ))
   )
 
   function loadPrevious() {
+    if (!dispatchFilter) return
+
     dispatchFilter({ type: "previous" })
   }
 
   function loadNext() {
+    if (!dispatchFilter) return
+
     dispatchFilter({ type: "next" })
   }
 

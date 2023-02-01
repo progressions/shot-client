@@ -6,7 +6,7 @@ import type { Character } from "../../../types/types"
 
 interface EditActionValuesProps {
   character: Character
-  onChange: any
+  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void
 }
 
 export default function EditActionValues({ character, onChange }: EditActionValuesProps) {

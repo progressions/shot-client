@@ -1,10 +1,38 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { AlertColor } from "@mui/material"
 
+export interface OptionType {
+  inputValue: string
+}
+
+export interface FilterParamsType {
+  getOptionLabel: (option: string | OptionType) => string
+  inputValue: string
+}
+
+export type Severity = 'error' | 'info' | 'success' | 'warning'
+
+export interface PaginationMeta {
+  current_page: number
+  next_page: number | null
+  prev_page: number | null
+  total_pages: number
+  total_count: number
+}
+
+export interface InputParamsType {
+  [key: string]: unknown
+}
+
+export interface PasswordWithConfirmation {
+  password: string
+  password_confirmation: string
+}
+
 export interface Toast {
   open: boolean
   message: string
-  severity: AlertColor | undefined
+  severity: Severity
 }
 
 export interface Campaign {
@@ -70,7 +98,7 @@ export interface ActionValues {
 }
 
 export interface SkillValues {
-  [key: string]: number | unknown
+  [key: string]: number | undefined
   Deceit?: number
   Detective?: number
   Driving?: number
@@ -90,7 +118,6 @@ export interface SkillValues {
   Notice?: number
   Strength?: number
 }
-
 
 export interface VehicleActionValues {
   [key: string]: string | number | Position | CharacterType | undefined
@@ -118,6 +145,7 @@ export interface Schtick {
     id?: string
     title?: string
   }
+  color: string
 }
 
 export type Position = "near" | "far"
@@ -138,12 +166,12 @@ export interface Vehicle {
   impairments: number
   color: string
   action_values: VehicleActionValues
-  description: any
+  description: DescriptionValues
   schticks: Schtick[]
   advancements: Advancement[]
   sites: Site[]
   weapons: Weapon[]
-  skills: any
+  skills: SkillValues
   user?: User
   created_at?: string
   updated_at?: string
@@ -161,7 +189,7 @@ export interface Person {
   action_values: ActionValues
   description: DescriptionValues
   schticks: Schtick[]
-  skills: any
+  skills: SkillValues
   advancements: Advancement[]
   sites: Site[]
   weapons: Weapon[]
@@ -186,7 +214,7 @@ export interface Effect {
   id?: string
   title: string
   description: string
-  severity: AlertColor | undefined
+  severity: Severity
   start_sequence: number
   end_sequence: number
   start_shot: number
@@ -199,12 +227,16 @@ export interface CharacterEffect {
   description?: string
   character_id?: string
   vehicle_id?: string
-  severity: AlertColor | undefined
+  severity: Severity
   change?: string
   action_value?: string
 }
 
 export type ShotType = [number, Character[]]
+
+interface CharacterEffects {
+  [key: string]: CharacterEffect[]
+}
 
 export interface Fight {
   id?: string
@@ -215,7 +247,7 @@ export interface Fight {
   characters?: Character[]
   vehicles?: Vehicle[]
   shot_order: ShotType[]
-  character_effects: any
+  character_effects: CharacterEffects
 }
 
 export interface User {
@@ -318,7 +350,18 @@ export const defaultVehicle:Vehicle = {
     Type: "Featured Foe",
     Faction: ""
   },
-  description: {},
+  description: {
+    "Nicknames": "",
+    "Age": "",
+    "Height": "",
+    "Weight": "",
+    "Hair Color": "",
+    "Eye Color": "",
+    "Style of Dress": "",
+    "Appearance": "",
+    "Background": "",
+    "Melodramatic Hook": ""
+  },
   schticks: [],
   skills: {},
   advancements: [],
@@ -333,7 +376,7 @@ export const defaultFight:Fight = {
   effects: [],
   characters: [],
   shot_order: [],
-  character_effects: []
+  character_effects: {}
 }
 
 export const defaultUser:User = {
@@ -381,7 +424,8 @@ export const defaultSchtick:Schtick = {
   prerequisite: {
     id: "",
     title: ""
-  }
+  },
+  color: ""
 }
 
 export const defaultAdvancement:Advancement = {
@@ -403,3 +447,12 @@ export const defaultWeapon:Weapon = {
   mook_bonus: 0,
   kachunk: false
 }
+
+export const defaultPaginationMeta:PaginationMeta = {
+  current_page: 1,
+  next_page: null,
+  prev_page: null,
+  total_pages: 1,
+  total_count: 1
+}
+

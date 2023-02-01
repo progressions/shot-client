@@ -11,47 +11,6 @@ import { defaultWeapon } from "../../types/types"
 
 import { useState, useEffect, useReducer } from "react"
 
-const initialState = {
-  error: false,
-  loading: false,
-  weapon: defaultWeapon,
-  weapons: [],
-  meta: {}
-}
-
-function weaponReducer(state: any, action: any) {
-  switch(action.type) {
-    case "update":
-      return {
-        ...state,
-        weapon: {
-          ...state.weapon,
-          [action.name]: action.value
-        }
-      }
-    case "saving":
-      return {
-        ...state,
-        loading: true
-      }
-    case "weapon":
-      return {
-        ...state,
-        weapon: action.payload
-      }
-    case "weapons":
-      return {
-        ...state,
-        weapons: action.payload.weapons,
-        meta: action.payload.meta
-      }
-    case "reset":
-      return initialState
-    default:
-      return state
-  }
-}
-
 export default function AddWeapon() {
   const { character, dispatch:dispatchCharacter, reloadCharacter } = useCharacter()
   const { toastSuccess, toastError } = useToast()
@@ -93,7 +52,7 @@ export default function AddWeapon() {
 
   function handleClose() {
     setOpen(false)
-    dispatchWeapons({ type: "weapon" })
+    dispatchWeapons({ type: "reset" })
   }
 
   function selectWeapon(event: any, newValue: any) {

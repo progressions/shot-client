@@ -4,15 +4,22 @@ interface PlayerTypeOnlyProps {
   character: Character
   only?: CharacterType | CharacterType[]
   except?: CharacterType | CharacterType[]
-  children: any
 }
 
-export default function PlayerTypeOnly({ character, only, children, except }: PlayerTypeOnlyProps) {
+export default function PlayerTypeOnly({ character, only, children, except }: React.PropsWithChildren<PlayerTypeOnlyProps>) {
   if (only && [only].flat().includes(character.action_values["Type"] as CharacterType)) {
-    return children
+    return (
+      <>
+        { children }
+      </>
+    )
   }
   if (except && ![except].flat().includes(character.action_values["Type"] as CharacterType)) {
-    return children
+    return (
+      <>
+        { children }
+      </>
+    )
   }
   return (<></>)
 }

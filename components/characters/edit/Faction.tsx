@@ -2,15 +2,28 @@ import { useClient } from "../../../contexts/ClientContext"
 import { TextField, Stack, Autocomplete } from "@mui/material"
 import { useEffect, useReducer } from "react"
 import { StyledAutocomplete, StyledTextField } from "../../StyledFields"
+import type { InputParamsType } from "../../../types/types"
 
-const initialState = {
+export interface FactionStateType {
+  loading: boolean
+  anchorEl: any
+  value: string
+  factions: string[]
+}
+
+export interface FactionActionType {
+  type: string
+  factions: string[]
+}
+
+const initialState: FactionStateType = {
   loading: false,
   anchorEl: null,
   value: "",
   factions: []
 }
 
-function factionReducer(state: any, action: any) {
+function factionReducer(state: FactionStateType, action: FactionActionType) {
   switch(action.type) {
     case "replace":
       return {
@@ -22,7 +35,12 @@ function factionReducer(state: any, action: any) {
   }
 }
 
-export default function Faction({ faction, onChange }: any) {
+interface FactionProps {
+  faction: string
+  onChange: (event: React.ChangeEvent<HTMLInputElement>, newValue: string) => void
+}
+
+export default function Faction({ faction, onChange }: FactionProps) {
   const { user, client } = useClient()
   const [state, dispatch] = useReducer(factionReducer, initialState)
   const { loading, anchorEl, value, factions } = state
@@ -35,7 +53,7 @@ export default function Faction({ faction, onChange }: any) {
     }
   }
 
-  function changeFaction(event: any, newValue: any) {
+  function changeFaction(event: React.ChangeEvent<HTMLInputElement>, newValue: string) {
     onChange({...event, target: {...event.target, name: "Faction", value: newValue}}, newValue)
   }
 
@@ -51,7 +69,7 @@ export default function Faction({ faction, onChange }: any) {
           onChange={changeFaction}
           onOpen={getFactions}
           openOnFocus
-          renderInput={(params: any) => <StyledTextField autoFocus name="Faction" {...params} label="Faction" />}
+          renderInput={(params: InputParamsType) => <StyledTextField autoFocus name="Faction" {...params} label="Faction" />}
         />
       </Stack>
     </>

@@ -4,13 +4,14 @@ import { StyledTextField } from "../../StyledFields"
 
 import { useState } from "react"
 
+import type { CharacterStateAction } from "./characterReducer"
 import type { Character } from "../../../types/types"
 
 interface ColorPickerProps {
   character: Character
   onChange: any
-  setCharacter?: any
-  dispatch?: any
+  setCharacter?: React.Dispatch<React.SetStateAction<Character>>
+  dispatch?: React.Dispatch<CharacterStateAction>
 }
 
 export default function ColorPicker({ character, onChange, setCharacter, dispatch }: ColorPickerProps) {

@@ -22,17 +22,18 @@ import CurrentCampaign from "../campaigns/CurrentCampaign"
 import GamemasterOnly from "../GamemasterOnly"
 
 import type { Campaign, User } from "../../types/types"
+import { defaultCampaign } from "../../types/types"
 
-import { useCampaign } from "../../contexts/CampaignContext"
+import { useCampaign, CampaignContextType } from "../../contexts/CampaignContext"
 import { useClient } from "../../contexts/ClientContext"
 
 export default function Navbar() {
   const { session, user, client } = useClient()
 
-  const {campaign, getCurrentCampaign, setCurrentCampaign}:any = useCampaign()
+  const {campaign, getCurrentCampaign, setCurrentCampaign}:CampaignContextType = useCampaign()
 
   const handleClick = async () => {
-    const newCurrent = await setCurrentCampaign({})
+    const newCurrent = await setCurrentCampaign(defaultCampaign)
   }
   const handleClear = async () => {
     const newCurrent = await setCurrentCampaign(null)

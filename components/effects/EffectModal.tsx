@@ -10,7 +10,7 @@ import { defaultEffect } from "../../types/types"
 interface EffectModalProps {
   shot: number
   open: boolean
-  setOpen: any
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 export default function EffectModal({ shot, open, setOpen }: EffectModalProps) {
@@ -29,7 +29,7 @@ export default function EffectModal({ shot, open, setOpen }: EffectModalProps) {
     setOpen(false)
   }
 
-  const handleSubmit = async (event: any) => {
+  const handleSubmit = async (event: React.ChangeEvent<HTMLInputElement>) => {
     setSaving(true)
     event.preventDefault()
 
@@ -48,7 +48,7 @@ export default function EffectModal({ shot, open, setOpen }: EffectModalProps) {
     setSaving(false)
   }
 
-  const handleChange = (event: any) => {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setEffect((prev: Effect) => { return { ...prev, [event.target.name]: event.target.value } })
   }
 

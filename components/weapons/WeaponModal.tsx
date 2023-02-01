@@ -4,7 +4,7 @@ import { useClient } from "../../contexts/ClientContext"
 import { useToast } from "../../contexts/ToastContext"
 import { useCharacter } from "../../contexts/CharacterContext"
 
-import type { Character, Weapon } from "../../types/types"
+import type { InputParamsType, Character, Weapon } from "../../types/types"
 import { defaultWeapon } from "../../types/types"
 
 import { useEffect, useReducer } from "react"
@@ -121,7 +121,7 @@ export default function WeaponModal({ filter, dispatchFilter, open, setOpen }: a
 
               return filtered;
             }}
-            renderInput={(params: any) => <StyledTextField {...params} label="Juncture" />}
+            renderInput={(params: InputParamsType) => <StyledTextField {...params} label="Juncture" />}
           />
         </Box>
       </Stack>

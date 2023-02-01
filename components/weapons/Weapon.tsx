@@ -4,6 +4,7 @@ import { useToast } from "../../contexts/ToastContext"
 import { useCharacter } from "../../contexts/CharacterContext"
 import ClearIcon from '@mui/icons-material/Clear'
 import WeaponCardBase from "./WeaponCardBase"
+import { GiDeathSkull, GiShotgun, GiPistolGun } from "react-icons/gi"
 
 export default function Weapon({ weapon, filter, dispatchFilter }: any) {
   const { client } = useClient()
@@ -36,8 +37,8 @@ export default function Weapon({ weapon, filter, dispatchFilter }: any) {
   const deleteFunction = character?.id ? removeWeapon : deleteWeapon
 
   const deleteButton = (<IconButton key="delete" onClick={deleteFunction}>
-          <ClearIcon />
-        </IconButton>)
+    <ClearIcon />
+  </IconButton>)
 
   return (
     <>
@@ -46,10 +47,21 @@ export default function Weapon({ weapon, filter, dispatchFilter }: any) {
         subheader={`${weapon.juncture} ${weapon.category}`}
         action={[deleteButton]}
       >
-        <Typography variant="body2" gutterBottom>
+        <Typography sx={{marginBottom: 3}} variant="body2" gutterBottom>
           {weapon.description}
         </Typography>
-        { weapon.mook_bonus > 0 && <Typography variant="subtitle2">+{weapon.mook_bonus} Attack vs Mooks</Typography> }
+        { weapon.mook_bonus > 0 &&
+          <Typography variant="subtitle2">
+            <GiDeathSkull />
+            { weapon.mook_bonus > 1 && <GiDeathSkull /> }
+            &nbsp;
+            +{weapon.mook_bonus} Attack vs Mooks
+          </Typography> }
+        { weapon.kachunk &&
+          <Typography variant="subtitle2">
+            <GiShotgun />
+            Damage Value is 14 if you spend a shot to go “KA-CHUNK!”
+          </Typography> }
       </WeaponCardBase>
     </>
   )

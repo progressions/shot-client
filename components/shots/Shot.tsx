@@ -36,7 +36,8 @@ export default function Shot({ shot, characters, editingCharacter, setEditingCha
   }
 
   const setEditingCharacterWithCurrentShot = (character: Character | null): void => {
-    setEditingCharacter({...character, current_shot: shot} as any)
+    if (!character) return
+    setEditingCharacter({...character, current_shot: shot} as Character)
   }
 
   const color = (shot <= 0) ? "#ccc" : ""

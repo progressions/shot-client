@@ -1,26 +1,18 @@
 import { Button, Box, Stack, Typography } from "@mui/material"
 import SchtickCard from "./SchtickCard"
-import NewSchtick from "./NewSchtick"
 import { useClient } from "../../contexts/ClientContext"
 import { Subhead } from "../StyledFields"
+import { rowMap } from "../../utils/rowMap"
 
 import { useState, useMemo } from "react"
+import { SchticksStateType, SchticksActionType } from "./filterReducer"
 
-export function rowMap(array: any[], itemsPerRow: number) {
-  const rows = []
-  for (let i=0; i <= array.length; i+=itemsPerRow) {
-    const row = []
-    for (let j=0; j < itemsPerRow; j++) {
-      if (i+j < array.length) {
-        row.push(array[i+j])
-      }
-    }
-    rows.push(row)
-  }
-  return rows
+interface SchticksProps {
+  filter: SchticksStateType
+  dispatchFilter?: React.Dispatch<SchticksActionType>
 }
 
-export default function Schticks({ filter, dispatchFilter }: any) {
+export default function Schticks({ filter, dispatchFilter }: SchticksProps) {
   const { user, client } = useClient()
 
   const schticks = useMemo(() => (filter?.schticks || []), [filter?.schticks])
@@ -44,10 +36,14 @@ export default function Schticks({ filter, dispatchFilter }: any) {
   }, [filter, dispatchFilter, rowsOfData])
 
   function loadPrevious() {
+    if (!dispatchFilter) return
+
     dispatchFilter({ type: "previous" })
   }
 
   function loadNext() {
+    if (!dispatchFilter) return
+
     dispatchFilter({ type: "next" })
   }
 

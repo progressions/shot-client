@@ -135,7 +135,7 @@ export default function Characters({ characters:initialCharacters, jwt }: Charac
   }
 
   async function reloadCharacters() {
-  const [characterResponse, vehicleResponse, allCharacters] = await fetchCharactersAndVehicles(client)
+    const [characterResponse, vehicleResponse, allCharacters] = await fetchCharactersAndVehicles(client)
 
     if (characterResponse.status === 200 && vehicleResponse.status === 200) {
       setCharacters(allCharacters)

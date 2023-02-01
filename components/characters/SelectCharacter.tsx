@@ -12,7 +12,7 @@ import DirectionsCarFilledIcon from '@mui/icons-material/DirectionsCarFilled'
 import { useToast } from "../../contexts/ToastContext"
 import { useClient } from "../../contexts/ClientContext"
 import { useFight } from "../../contexts/FightContext"
-import type { Fight, Character, Vehicle } from "../../types/types"
+import type { InputParamsType, Fight, Character, Vehicle } from "../../types/types"
 import { defaultCharacter } from "../../types/types"
 
 export default function SelectCharacter() {
@@ -81,7 +81,7 @@ export default function SelectCharacter() {
     setShowHidden(checked)
   }
 
-  const handleChange = (event: any, newValue: any) => {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>, newValue: Character) => {
     if (newValue) {
       setValue(newValue)
     } else {
@@ -114,7 +114,7 @@ export default function SelectCharacter() {
     await reloadFight(fight)
   }
 
-  const getOptionLabel = (character: any) => {
+  const getOptionLabel = (character: Character) => {
     if (!character.name) return ""
 
     const carEmoji = "🚗"
@@ -152,7 +152,7 @@ export default function SelectCharacter() {
               value={value}
               onChange={handleChange}
               getOptionLabel={getOptionLabel}
-              renderInput={(params: any) => <StyledTextField autoFocus {...params} label="Character" />}
+              renderInput={(params: InputParamsType) => <StyledTextField autoFocus {...params} label="Character" />}
             />
             <Button type="submit" size="small" variant="contained">
               <PersonAddIcon />

@@ -10,11 +10,17 @@ import { useFight } from "../../contexts/FightContext"
 import { useToast } from "../../contexts/ToastContext"
 import { useClient } from "../../contexts/ClientContext"
 
-import { effectsGroupedByType } from "../effects/GroupedEffects"
+import type { Severity, Character } from "../../types/types"
 
-export default function GroupedEffects({ character }: any) {
+import { effectsGroupedByType } from "../../utils/effectsGrouped"
+
+interface GroupedEffectsProps {
+  character: Character
+}
+
+export default function GroupedEffects({ character }: GroupedEffectsProps) {
   const { fight } = useFight()
-  const effects = useMemo(() => (effectsGroupedByType(fight.character_effects[character.id] || [])), [character, fight])
+  const effects = useMemo(() => (effectsGroupedByType(fight.character_effects[character.id as string] || [])), [character, fight])
 
   const severities = ["error", "warning", "info", "success"]
 
@@ -24,7 +30,7 @@ export default function GroupedEffects({ character }: any) {
         {
           severities.map((severity) => {
             if (effects[severity]) {
-              return <Effects key={severity} effects={effects[severity]} severity={severity} />
+              return <Effects key={severity} effects={effects[severity]} severity={severity as Severity} />
             }
           })
         }

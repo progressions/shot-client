@@ -1,6 +1,7 @@
 import { Autocomplete, TextField } from "@mui/material"
 import { useMemo } from "react"
 import { StyledAutocomplete, StyledSelect } from "../StyledFields"
+import type { InputParamsType } from "../../types/types"
 
 export default function JunctureAutocomplete({ filter, dispatchFilter }: any) {
   const { loading, juncture, junctures, path } = filter
@@ -26,7 +27,7 @@ export default function JunctureAutocomplete({ filter, dispatchFilter }: any) {
         sx={{ width: 200 }}
         onChange={selectJuncture}
         getOptionLabel={getOptionLabel}
-        renderInput={(params: any) => <StyledSelect helperText={helperText} {...params} label="Juncture" />}
+        renderInput={(params: InputParamsType) => <StyledSelect helperText={helperText} {...params} label="Juncture" />}
       />
     </>
   )

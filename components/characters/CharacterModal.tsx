@@ -165,7 +165,7 @@ export default function CharacterModal({ open, setOpen, character:activeCharacte
                 <DeathMarks character={character} onChange={handleDeathMarks} />
               </PlayerTypeOnly>
               <StyledTextField label="Impairments" type="number" name="impairments" value={character.impairments || ''} onChange={handleChange} />
-              <ColorPicker character={character} onChange={handleChange} setCharacter={setCharacter} />
+              <ColorPicker character={character} onChange={handleChange} setCharacter={setCharacter as React.Dispatch<React.SetStateAction<Character>>} />
             </Stack>
             <EditActionValues character={character} onChange={handleAVChange} />
             <PlayerTypeOnly character={character} only="PC">

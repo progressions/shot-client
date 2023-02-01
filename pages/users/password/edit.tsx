@@ -9,7 +9,7 @@ import { authOptions } from '../../api/auth/[...nextauth]'
 import { unstable_getServerSession } from "next-auth/next"
 import { useRouter } from 'next/router'
 import Client from '../../../components/Client'
-import { User } from "../../../types/types"
+import { PasswordWithConfirmation, User } from "../../../types/types"
 import { useClient } from "../../../contexts/ClientContext"
 import { useToast } from "../../../contexts/ToastContext"
 
@@ -29,7 +29,7 @@ export async function getServerSideProps<GetServerSideProps>({ req, res, params,
 }
 
 export default function ResetPasswordView({ reset_password_token }: any) {
-  const [state, setState] = useState({password: "", password_confirmation: ""})
+  const [state, setState] = useState<PasswordWithConfirmation>({password: "", password_confirmation: ""})
   const [saving, setSaving] = useState(false)
   const [success, setSuccess] = useState(false)
   const { client } = useClient()

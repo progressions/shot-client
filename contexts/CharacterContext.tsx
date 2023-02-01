@@ -7,19 +7,32 @@ import type { Character, User } from "../types/types"
 import { useClient } from "./ClientContext"
 import { useToast } from "./ToastContext"
 
-import { initialState, characterReducer } from "../components/characters/edit/characterReducer"
+import { CharacterStateAction, CharacterStateType, initialState, characterReducer } from "../components/characters/edit/characterReducer"
 
-interface CharacterContextParams {
-  state: any
-  dispatch: any
+interface CharacterContextType {
+  state: CharacterStateType
+  dispatch: React.Dispatch<CharacterStateAction>
   character: Character
-  updateCharacter: any
-  reloadCharacter: any
+  updateCharacter: () => Promise<void>
+  reloadCharacter: () => Promise<void>
 }
 
-const CharacterContext = createContext<CharacterContextParams>({state: {}, dispatch: () => {}, updateCharacter: () => {}, reloadCharacter: () => {}, character: defaultCharacter})
+const defaultCharacterContext: CharacterContextType = {
+  state: initialState,
+  dispatch: () => {},
+  updateCharacter: () => { return new Promise(() => {})},
+  reloadCharacter: () => { return new Promise(() => {})},
+  character: defaultCharacter
+}
 
-export function CharacterProvider({ character, children }: any) {
+const CharacterContext = createContext<CharacterContextType>(defaultCharacterContext)
+
+interface CharacterProviderProps {
+  character: Character
+  children: React.ReactNode
+}
+
+export function CharacterProvider({ character, children }: CharacterProviderProps) {
   const { client } = useClient()
   const [state, dispatch] = useReducer(characterReducer, {...initialState, character: character})
   const { edited, saving } = state
@@ -27,7 +40,7 @@ export function CharacterProvider({ character, children }: any) {
 
   useEffect(() => {
     if (edited) {
-      const saveCharacter = async () => {
+      const saveCharacter = async (): Promise<void> => {
         dispatch({ type: "submit" })
 
         const response = await client.updateCharacter(state.character)
@@ -49,7 +62,7 @@ export function CharacterProvider({ character, children }: any) {
     }
   }, [edited, state.character, dispatch, toastSuccess, toastError, client])
 
-  async function updateCharacter() {
+  async function updateCharacter():Promise<void> {
     dispatch({ type: "submit" })
 
     const response = await client.updateCharacter(state.character)
@@ -63,7 +76,7 @@ export function CharacterProvider({ character, children }: any) {
     }
   }
 
-  async function reloadCharacter() {
+  async function reloadCharacter():Promise<void> {
     dispatch({ type: "submit" })
 
     const response = await client.getCharacter(state.character)
@@ -84,6 +97,6 @@ export function CharacterProvider({ character, children }: any) {
   )
 }
 
-export function useCharacter() {
+export function useCharacter(): CharacterContextType {
   return useContext(CharacterContext)
 }

@@ -1,5 +1,5 @@
 import { Button, IconButton, Box, TextField, MenuItem, Stack, Typography } from "@mui/material"
-import { useCampaign } from "../../contexts/CampaignContext"
+import { useCampaign, CampaignContextType } from "../../contexts/CampaignContext"
 import PlayCircleIcon from '@mui/icons-material/PlayCircle'
 import StopCircleIcon from '@mui/icons-material/StopCircle'
 import { useToast } from "../../contexts/ToastContext"
@@ -8,11 +8,15 @@ import Router from 'next/router'
 
 import { Campaign } from "../../types/types"
 
+interface CampaignNameProps {
+  campaign: Campaign | null
+}
+
 export default function CurrentCampaign() {
-  const {campaign, getCurrentCampaign, setCurrentCampaign}:any = useCampaign()
+  const {campaign, getCurrentCampaign, setCurrentCampaign}:CampaignContextType = useCampaign()
   const { toastSuccess } = useToast()
 
-  const startCampaign = async (camp?: Campaign | null) => {
+  const startCampaign = async (camp: Campaign | null) => {
     await setCurrentCampaign(camp)
     if (camp) {
       toastSuccess(`${camp.title} activated`)
@@ -33,7 +37,7 @@ export default function CurrentCampaign() {
     return (<></>)
   }
 
-  function CampaignName({ campaign }: any) {
+  function CampaignName({ campaign }: CampaignNameProps) {
     if (campaign?.id) {
       return (<>
         <Typography color="white">{campaign.title}</Typography>
@@ -41,7 +45,7 @@ export default function CurrentCampaign() {
       </>)
     }
     return (
-      <CampaignSelector campaign={campaign} startCampaign={startCampaign} />
+      <CampaignSelector startCampaign={startCampaign} />
     )
   }
 

@@ -1,5 +1,6 @@
 import { StyledAutocomplete, StyledSelect } from "../StyledFields"
 import { useState, useEffect } from "react"
+import type { InputParamsType } from "../../types/types"
 
 export default function WeaponAutocomplete({ filter, dispatchFilter }: any) {
   const { loading, weapon, weapons } = filter
@@ -38,7 +39,7 @@ export default function WeaponAutocomplete({ filter, dispatchFilter }: any) {
       onChange={handleSelect}
       getOptionLabel={getOptionLabel}
       isOptionEqualToValue={(option: any, value: any) => option.id === value.id}
-      renderInput={(params: any) => <StyledSelect helperText={helperText} {...params} label="Weapon" />}
+      renderInput={(params: InputParamsType) => <StyledSelect helperText={helperText} {...params} label="Weapon" />}
     />
   )
 }

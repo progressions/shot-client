@@ -1,44 +1,31 @@
 import { Autocomplete, Box, Stack, TextField, Button, Dialog } from '@mui/material'
 import { useState, useEffect, useReducer } from "react"
+import type { Schtick } from "../../types/types"
 import { defaultSchtick } from "../../types/types"
 import { useClient } from "../../contexts/ClientContext"
 import { useToast } from "../../contexts/ToastContext"
 import { StyledTextField, StyledDialog, SaveCancelButtons } from "../StyledFields"
+import { initialFilter, filterReducer } from "./filterReducer"
 
-const initialState = {
-  loading: false,
-  saving: false,
-  schtick: defaultSchtick
+import type { SchticksStateType, SchticksActionType } from "./filterReducer"
+
+interface SchtickModalProps {
+  open: boolean
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>
+  filter: SchticksStateType
+  dispatchFilter?: React.Dispatch<SchticksActionType>
+  schtick?: Schtick
 }
 
-function schtickReducer(state: any, action: any) {
-  switch(action.type) {
-    case "replace":
-      return { ...state, schtick: action.schtick }
-    case "update":
-      return {
-      ...state,
-      schtick: {
-        ...state.schtick,
-        [action.name]: action.value
-      }
-    }
-    case "reset":
-      return initialState
-    default:
-      return state
-  }
-}
-
-export default function SchtickModal({ open, setOpen, filter, dispatchFilter, schtick:initialSchtick }: any) {
+export default function SchtickModal({ open, setOpen, filter, dispatchFilter, schtick:initialSchtick }: SchtickModalProps) {
   const { toastSuccess, toastError } = useToast()
   const { client } = useClient()
-  const [state, dispatch] = useReducer(schtickReducer, initialState)
+  const [state, dispatch] = useReducer(filterReducer, initialFilter)
   const { saving, schtick } = state
   const { category, path } = filter
 
   useEffect(() => {
-    dispatch({ type: "replace", schtick: initialSchtick })
+    dispatch({ type: "schtick", payload: initialSchtick })
   }, [initialSchtick])
 
   useEffect(() => {
@@ -50,11 +37,13 @@ export default function SchtickModal({ open, setOpen, filter, dispatchFilter, sc
     const response = await client.getSchticks()
     if (response.status === 200) {
       const data = await response.json()
-      dispatchFilter({ type: "schticks", payload: data })
+      if (dispatchFilter) {
+        dispatchFilter({ type: "schticks", payload: data })
+      }
     }
   }
 
-  async function handleSubmit(event: any) {
+  async function handleSubmit(event: React.ChangeEvent<HTMLInputElement>) {
     event.preventDefault()
     const response = schtick?.id ? await client.updateSchtick(schtick) : await client.createSchtick(schtick)
     if (response.status === 200) {
@@ -66,7 +55,7 @@ export default function SchtickModal({ open, setOpen, filter, dispatchFilter, sc
     cancelForm()
   }
 
-  function handleChange(event: any) {
+  function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     dispatch({ type: "update", name: event.target.name, value: event.target.value })
   }
 

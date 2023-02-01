@@ -1,6 +1,13 @@
 import { colors, Card, CardHeader, CardContent, CardActions, Typography } from "@mui/material"
 
-export default function SchtickCardBase({ title, subheader, avatar, action, children }: any) {
+interface SchtickCardBase {
+  title: string
+  subheader: string
+  avatar: React.ReactNode
+  action: React.ReactNode
+}
+
+export default function SchtickCardBase({ title, subheader, avatar, action, children }: React.PropsWithChildren<SchtickCardBase>) {
   return (
     <Card sx={{backgroundColor: colors.blueGrey["A700"], width: 425, minHeight: 200}}>
       <CardHeader

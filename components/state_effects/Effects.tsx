@@ -7,9 +7,14 @@ import { useFight } from "../../contexts/FightContext"
 
 import { useMemo, useState } from "react"
 
-import type { CharacterEffect, Character } from "../../types/types"
+import type { Severity, CharacterEffect, Character } from "../../types/types"
 
-export default function Effects({ effects, severity }: any) {
+interface EffectsProps {
+  effects: CharacterEffect[]
+  severity: Severity
+}
+
+export default function Effects({ effects, severity }: EffectsProps) {
   const [open, setOpen] = useState<boolean>(false)
   const [anchorEl, setAnchorEl] = useState<any>(null)
 
@@ -27,7 +32,7 @@ export default function Effects({ effects, severity }: any) {
     setOpen(true)
   }
 
-  const deleteEffect = async (effect: any) => {
+  const deleteEffect = async (effect: CharacterEffect) => {
     const response = await client.deleteCharacterEffect(effect, fight)
     if (response.status === 200) {
       await reloadFight(fight)
@@ -55,9 +60,9 @@ export default function Effects({ effects, severity }: any) {
         </IconButton>
       </Tooltip>
       <Popover anchorEl={anchorEl} open={open} onClose={closePopover} anchorOrigin={{vertical: 'bottom', horizontal: 'center'}}>
-        <Alert severity={severity as any}>
+        <Alert severity={severity as Severity}>
           {
-            effects.map((effect: any) => (<Box key={effect.id}>
+            effects.map((effect: CharacterEffect) => (<Box key={effect.id}>
               <Stack direction="row" spacing={2}>
                 <AlertTitle>
                   <Box sx={{width: 100}}>{effect.title}</Box>

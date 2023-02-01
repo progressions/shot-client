@@ -7,7 +7,14 @@ import SchtickAutocomplete from "./SchtickAutocomplete"
 import CategoryAutocomplete from "./CategoryAutocomplete"
 import PathAutocomplete from "./PathAutocomplete"
 
-export default function FilterSchticks({ filter, dispatchFilter }: any) {
+import type { SchticksStateType, SchticksActionType } from "./filterReducer"
+
+interface FilterSchticksProps {
+  filter: SchticksStateType
+  dispatchFilter: React.Dispatch<SchticksActionType>
+}
+
+export default function FilterSchticks({ filter, dispatchFilter }: FilterSchticksProps) {
   const { character } = useCharacter()
   const { user, client } = useClient()
   const { toastSuccess, toastError } = useToast()

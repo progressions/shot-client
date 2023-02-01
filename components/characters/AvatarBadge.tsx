@@ -17,7 +17,7 @@ export default function AvatarBadge({ character, user }: AvatarBadgeParams) {
     "Featured Foe": "Foe",
     "Boss": "Boss",
     "Uber-Boss": "Uber"
-  } as any
+  }
 
   const charType = character.action_values['Type']
 

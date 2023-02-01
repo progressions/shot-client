@@ -2,28 +2,23 @@ import { Typography, Box, Stack, Autocomplete, TextField } from "@mui/material"
 import SkillField from "./SkillField"
 import NewSkill from "./NewSkill"
 import { Subhead } from "../../StyledFields"
+import { rowMap } from "../../../utils/rowMap"
 
 import { useMemo } from "react"
+import { SkillValues } from "../../../types/types"
 
-function rowMap(array: any[], itemsPerRow: number) {
-  const rows = []
-  for (let i=0; i <= array.length; i+=itemsPerRow) {
-    const row = []
-    for (let j=0; j < itemsPerRow; j++) {
-      if (i+j < array.length) {
-        row.push(array[i+j])
-      }
-    }
-    rows.push(row)
-  }
-  return rows
+type SkillType = [string, number]
+
+export function knownSkills(skills: SkillValues) {
+  return Object.entries(skills).filter(([name, value]) => (value as number > 0))
 }
 
-export function knownSkills(skills: any) {
-  return Object.entries(skills).filter(([name, value]: any) => (value > 0))
+interface SkillsProps {
+  skills: SkillValues
+  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void
 }
 
-export default function Skills({ skills, onChange }: any) {
+export default function Skills({ skills, onChange }: SkillsProps) {
 
   const rowsOfData = rowMap(knownSkills(skills), 6)
 

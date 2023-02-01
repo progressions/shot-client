@@ -54,6 +54,14 @@ export async function getServerSideProps({ req, res, params }: ServerSideProps) 
       }
     }
   }
+  if (response.status === 500) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/"
+      }
+    }
+  }
   return {
     props: {
     }
@@ -64,7 +72,9 @@ export default function Fight({ fight:initialFight, notFound }: FightParams) {
   const { fight, setFight } = useFight()
 
   useEffect(() => {
-    setFight(initialFight)
+    if (setFight && initialFight) {
+      setFight(initialFight)
+    }
   }, [setFight, initialFight])
 
   if (!fight && !notFound) {

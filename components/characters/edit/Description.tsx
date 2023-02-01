@@ -1,8 +1,14 @@
 import { Typography, Stack, TextField } from "@mui/material"
 import { Subhead, StyledTextField } from "../../StyledFields"
 import PlayerTypeOnly from "../../PlayerTypeOnly"
+import type { Character } from "../../../types/types"
 
-export default function Description({ character, onChange }: any) {
+interface DescriptionProps {
+  character: Character
+  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void
+}
+
+export default function Description({ character, onChange }: DescriptionProps) {
   const { description } = character
 
   return (

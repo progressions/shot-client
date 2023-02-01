@@ -1,4 +1,46 @@
-export const initialFilter = {
+import type { PaginationMeta, Weapon } from "../../types/types"
+import { defaultPaginationMeta, defaultWeapon } from "../../types/types"
+
+export interface WeaponsStateType {
+  edited: boolean
+  loading: boolean
+  saving: boolean
+  page: number
+  juncture: string
+  junctures: string[]
+  category: string
+  categories: string[]
+  name: string
+  weapon: Weapon
+  weapons: Weapon[]
+  meta: PaginationMeta
+}
+
+export interface ActionNoPayload {
+  type: "reset" | "edit" | "saving" | "success" | "previous" | "next"
+}
+
+export interface PayloadAction {
+  type: "juncture" | "category" | "weapon" | "weapons" | "name"
+  payload: any
+}
+
+export interface UpdateAction {
+  type: "update"
+  name: string
+  value: string
+}
+
+export interface WeaponsResponse {
+  weapons: Weapon[]
+  meta: PaginationMeta
+  junctures: string[]
+  categories: string[]
+}
+
+export type WeaponsActionType = ActionNoPayload | UpdateAction | PayloadAction
+
+export const initialFilter:WeaponsStateType = {
   edited: true,
   loading: true,
   saving: false,
@@ -8,11 +50,12 @@ export const initialFilter = {
   category: "",
   categories: [],
   name: "",
-  weapon: { id: null, name: "" },
+  weapon: defaultWeapon,
   weapons: [],
+  meta: defaultPaginationMeta
 }
 
-export function filterReducer (state: any, action: any) {
+export function filterReducer (state: WeaponsStateType, action: WeaponsActionType) {
   switch(action.type) {
     case "edit":
       return {
@@ -23,13 +66,13 @@ export function filterReducer (state: any, action: any) {
       return {
         ...state,
         edited: true,
-        page: state.meta["prev_page"]
+        page: state.meta["prev_page"] as number
       }
     case "next":
       return {
         ...state,
         edited: true,
-        page: state.meta["next_page"]
+        page: state.meta["next_page"] as number
       }
     case "saving":
       return {
@@ -71,7 +114,7 @@ export function filterReducer (state: any, action: any) {
         weapon: action.payload || initialFilter.weapon,
       }
     case "weapons":
-      const { weapons, meta, junctures, categories } = action.payload
+      const { weapons, meta, junctures, categories } = action.payload as WeaponsResponse
       return {
         ...state,
         loading: false,

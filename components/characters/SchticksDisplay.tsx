@@ -1,8 +1,13 @@
 import LightbulbIcon from '@mui/icons-material/Lightbulb'
 import { colors, Typography, Box, Popover, Tooltip, IconButton } from "@mui/material"
 import { useState } from "react"
+import type { Schtick } from "../../types/types"
 
-export default function SchticksDisplay({ schticks }: any) {
+interface SchticksDisplayProps {
+  schticks: Schtick[]
+}
+
+export default function SchticksDisplay({ schticks }: SchticksDisplayProps) {
   const [anchorEl, setAnchorEl] = useState(null)
   const [open, setOpen] = useState(false)
 

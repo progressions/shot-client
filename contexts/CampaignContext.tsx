@@ -8,19 +8,29 @@ import { useLocalStorage } from "./LocalStorageContext"
 
 export interface CampaignContextType {
   campaign: Campaign | null
-  setCurrentCampaign: any
-  getCurrentCampaign: any
+  setCurrentCampaign: (camp: Campaign | null) => Promise<Campaign | null>
+  getCurrentCampaign: () => Promise<Campaign | null>
 }
 
-const CampaignContext = createContext<CampaignContextType>({ campaign: null, setCurrentCampaign: null, getCurrentCampaign: null })
+interface CampaignProviderProps {
+  children: React.ReactNode
+}
 
-export function CampaignProvider({ children }: any) {
+const defaultContext: CampaignContextType = {
+  campaign: null,
+  setCurrentCampaign: async (camp: Campaign | null) => { return new Promise(() => defaultCampaign) },
+  getCurrentCampaign: async () => { return new Promise(() => defaultCampaign) }
+}
+
+const CampaignContext = createContext<CampaignContextType>(defaultContext)
+
+export function CampaignProvider({ children }: CampaignProviderProps) {
   const { user, client } = useClient()
   const { saveLocally, getLocally } = useLocalStorage()
 
-  const [campaign, setCampaign] = useState<Campaign>(defaultCampaign)
+  const [campaign, setCampaign] = useState<Campaign | null>(defaultCampaign)
 
-  const setCurrentCampaign = async (camp: Campaign | null) => {
+  const setCurrentCampaign = async (camp: Campaign | null):Promise<Campaign | null> => {
     const response = await client.setCurrentCampaign(camp)
     if (response.status === 200) {
       const data = await response.json()
@@ -28,12 +38,13 @@ export function CampaignProvider({ children }: any) {
       saveLocally("currentCampaign", data)
       return data
     }
+    return null
   }
 
   const getCurrentCampaign = async () => {
     const data = getLocally("currentCampaign")
     if (data) {
-      setCampaign(data)
+      setCampaign(data as Campaign)
       return data
     }
     const response = await client.getCurrentCampaign()
@@ -49,7 +60,7 @@ export function CampaignProvider({ children }: any) {
     if (user) {
       const data = getLocally("currentCampaign")
       if (data) {
-        setCampaign(data)
+        setCampaign(data as Campaign)
       } else {
         const data = getCurrentCampaign().catch(console.error)
         saveLocally("currentCampaign", data)

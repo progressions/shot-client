@@ -1,4 +1,18 @@
+import type { Character } from "../../../types/types"
 import { defaultCharacter } from "../../../types/types"
+
+export interface CharacterStateType {
+  edited: boolean
+  saving: boolean
+  character: Character
+}
+
+export interface CharacterStateAction {
+  type: string
+  name?: string
+  value?: unknown
+  character?: Character
+}
 
 export const initialState = {
   edited: false,
@@ -6,7 +20,7 @@ export const initialState = {
   character: defaultCharacter
 }
 
-export const characterReducer = (state: any, action: any) => {
+export function characterReducer(state: CharacterStateType, action: CharacterStateAction): CharacterStateType {
   switch(action.type) {
     case "edited":
       return {
@@ -19,8 +33,8 @@ export const characterReducer = (state: any, action: any) => {
         edited: true,
         character: {
           ...state.character,
-          [action.name]: action.value
-        }
+          [action.name as string]: action.value
+        } as Character
       }
     case "action_value":
       const value = action.value === "null" ? null : action.value
@@ -31,9 +45,9 @@ export const characterReducer = (state: any, action: any) => {
           ...state.character,
           action_values: {
             ...state.character.action_values,
-            [action.name]: value
+            [action.name as string]: value
           }
-        }
+        } as Character
       }
     case "description":
       return {
@@ -43,9 +57,9 @@ export const characterReducer = (state: any, action: any) => {
           ...state.character,
           description: {
             ...state.character.description,
-            [action.name]: action.value
+            [action.name as string]: action.value
           }
-        }
+        } as Character
       }
     case "skills":
       return {
@@ -55,9 +69,9 @@ export const characterReducer = (state: any, action: any) => {
           ...state.character,
           skills: {
             ...state.character.skills,
-            [action.name]: action.value
+            [action.name as string]: action.value
           }
-        }
+        } as Character
       }
     case "submit":
       return {
@@ -70,7 +84,7 @@ export const characterReducer = (state: any, action: any) => {
         ...state,
         saving: false,
         edited: false,
-        character: action.character
+        character: action.character as Character
       }
     case "reset":
       return {

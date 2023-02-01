@@ -1,9 +1,17 @@
 import { Autocomplete, TextField } from "@mui/material"
 import { useMemo } from "react"
 import { StyledAutocomplete, StyledSelect } from "../StyledFields"
+import type { InputParamsType } from "../../types/types"
 
-export default function CategoryAutocomplete({ filter, dispatchFilter }: any) {
-  const { loading, category, categories, path } = filter
+import type { WeaponsStateType, WeaponsActionType } from "./filterReducer"
+
+interface CategoryAutocompleteProps {
+  filter: WeaponsStateType
+  dispatchFilter: React.Dispatch<WeaponsActionType>
+}
+
+export default function CategoryAutocomplete({ filter, dispatchFilter }: CategoryAutocompleteProps) {
+  const { loading, category, categories } = filter
 
   // const categories = useMemo(() => (["Guns", "Martial Arts", "Transformed Animal", "Creature", "Cyborg", "Driving", "Foe", "Mutant", "Sorcery"]), [])
 
@@ -26,7 +34,7 @@ export default function CategoryAutocomplete({ filter, dispatchFilter }: any) {
         sx={{ width: 250 }}
         onChange={selectCategory}
         getOptionLabel={getOptionLabel}
-        renderInput={(params: any) => <StyledSelect helperText={helperText} {...params} label="Category" />}
+        renderInput={(params: InputParamsType) => <StyledSelect helperText={helperText} {...params} label="Category" />}
       />
     </>
   )

@@ -4,7 +4,7 @@ import { Subhead, StyledSelect, StyledTextField } from "../../StyledFields"
 
 interface FortuneSelectProps {
   character: Character
-  onChange: any
+  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void
   readOnly?: boolean
 }
 

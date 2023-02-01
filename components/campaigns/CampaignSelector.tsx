@@ -9,6 +9,10 @@ import Client from "../Client"
 
 import type { Campaign } from "../../types/types"
 
+interface CampaignSelectorProps {
+  startCampaign: (campaign: Campaign) => Promise<void>
+}
+
 declare module "@mui/material/styles" {
   interface CustomPalette {
     highlight: {
@@ -24,7 +28,7 @@ declare module "@mui/material/Button" {
   }
 }
 
-export default function CampaignSelector({ startCampaign }: any) {
+export default function CampaignSelector({ startCampaign }: CampaignSelectorProps) {
   const {campaign, getCurrentCampaign, setCurrentCampaign}:any = useCampaign()
   const [open, setOpen] = useState(false)
   const [saving, setSaving] = useState(false)

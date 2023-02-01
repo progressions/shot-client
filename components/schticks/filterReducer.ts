@@ -1,4 +1,45 @@
-export const initialFilter = {
+import type { PaginationMeta, Schtick } from "../../types/types"
+import { defaultPaginationMeta, defaultSchtick } from "../../types/types"
+
+export interface ActionNoPayload {
+  type: "reset" | "edit" | "saving" | "success" | "previous" | "next"
+}
+
+export interface PayloadAction {
+  type: "category" | "path" | "title" | "schtick" | "schticks"
+  payload: any
+}
+
+export interface UpdateAction {
+  type: "update"
+  name: string
+  value: string
+}
+
+export interface SchticksStateType {
+  loading: boolean
+  saving: boolean
+  page: number
+  path: string
+  paths: string[]
+  category: string
+  categories: string[]
+  title: string
+  schtick: Schtick
+  schticks: Schtick[]
+  meta: PaginationMeta
+}
+
+export interface SchticksResponse {
+  schticks: Schtick[]
+  meta: PaginationMeta
+  paths: string[]
+  categories: string[]
+}
+
+export type SchticksActionType = ActionNoPayload | UpdateAction | PayloadAction
+
+export const initialFilter: SchticksStateType = {
   loading: true,
   saving: false,
   page: 1,
@@ -7,21 +48,23 @@ export const initialFilter = {
   category: "",
   categories: [],
   title: "",
-  schtick: { id: null, title: "" },
+  schtick: defaultSchtick,
   schticks: [],
+  meta: defaultPaginationMeta
 }
 
-export function filterReducer (state: any, action: any) {
+export function filterReducer(state: SchticksStateType, action: SchticksActionType) {
   switch(action.type) {
     case "previous":
+      const { prev_page } = state.meta
       return {
         ...state,
-        page: state.meta["prev_page"]
+        page: prev_page as number
       }
     case "next":
       return {
         ...state,
-        page: state.meta["next_page"]
+        page: state.meta.next_page as number
       }
     case "saving":
       return {
@@ -57,7 +100,7 @@ export function filterReducer (state: any, action: any) {
         schtick: action.payload || initialFilter.schtick,
       }
     case "schticks":
-      const { schticks, meta, paths, categories } = action.payload
+      const { schticks, meta, paths, categories } = action.payload as SchticksResponse
       return {
         ...state,
         loading: false,

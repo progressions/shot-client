@@ -9,10 +9,15 @@ import { useClient } from "../../contexts/ClientContext"
 
 import type { Campaign } from "../../types/types"
 
-export default function Campaigns({ campaigns, getCampaigns }: any) {
+interface CampaignsProps {
+  campaigns: Campaign[]
+  getCampaigns: () => Promise<void>
+}
+
+export default function Campaigns({ campaigns, getCampaigns }: CampaignsProps) {
   const { toastSuccess } = useToast()
   const { client, user } = useClient()
-  const { campaign:currentCampaign, getCurrentCampaign, setCurrentCampaign }:any = useCampaign()
+  const { campaign:currentCampaign, getCurrentCampaign, setCurrentCampaign } = useCampaign()
 
   const deleteCampaign = async (campaign: Campaign) => {
     const confirmation = confirm("Delete campaign? This cannot be undone.")
@@ -25,7 +30,7 @@ export default function Campaigns({ campaigns, getCampaigns }: any) {
     }
   }
 
-  const startCampaign = async (camp?: Campaign | null) => {
+  const startCampaign = async (camp: Campaign | null) => {
     await setCurrentCampaign(camp)
     if (camp) {
       toastSuccess(`${camp.title} activated`)

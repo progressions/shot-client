@@ -9,9 +9,16 @@ import { useFight } from "../../contexts/FightContext"
 import Client from "../Client"
 import type { FightContextType } from "../../contexts/FightContext"
 
-export default function Effects({ effects, severity }: any) {
+import type { Effect, Severity } from "../../types/types"
+
+interface EffectsProps {
+  effects: Effect[]
+  severity: Severity
+}
+
+export default function Effects({ effects, severity }: EffectsProps) {
   const [open, setOpen] = useState(false)
-  const [anchorEl, setAnchorEl] = useState(null)
+  const [anchorEl, setAnchorEl] = useState<any>(null)
 
   const { fight, setFight, reloadFight } = useFight()
   const { client } = useClient()
@@ -22,12 +29,12 @@ export default function Effects({ effects, severity }: any) {
     setOpen(false)
   }
 
-  const showEffect = (event: any) => {
+  const showEffect = (event: any): void => {
     setAnchorEl(event.target)
     setOpen(true)
   }
 
-  const deleteEffect = async (effect: any) => {
+  const deleteEffect = async (effect: Effect) => {
     const response = await client.deleteEffect(effect, fight)
     if (response.status === 200) {
       await reloadFight(fight)
@@ -37,7 +44,7 @@ export default function Effects({ effects, severity }: any) {
     }
   }
 
-  const toolbarColor = `${severity}.dark`
+  const toolbarColor: string = `${severity}.dark`
 
   return (
     <>
@@ -47,9 +54,9 @@ export default function Effects({ effects, severity }: any) {
         </IconButton>
       </Tooltip>
       <Popover anchorEl={anchorEl} open={open} onClose={closePopover} anchorOrigin={{vertical: 'bottom', horizontal: 'center'}}>
-        <Alert severity={severity as any} sx={{paddingRight: 5}}>
+        <Alert severity={severity as Severity} sx={{paddingRight: 5}}>
           {
-            effects.map((effect: any) => (<Box key={effect.id}>
+            effects.map((effect: Effect) => (<Box key={effect.id}>
               <AlertTitle>
                 {effect.title}
               </AlertTitle>

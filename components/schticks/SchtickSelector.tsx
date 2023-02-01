@@ -8,7 +8,7 @@ import FilterSchticks from "./FilterSchticks"
 import { initialFilter, filterReducer } from "./filterReducer"
 import { SaveCancelButtons, StyledTextField } from "../StyledFields"
 
-export default function SchtickSelector({ }) {
+export default function SchtickSelector() {
   const [filter, dispatchFilter] = useReducer(filterReducer, initialFilter)
   const { character, dispatch:dispatchCharacter } = useCharacter()
   const { user, client } = useClient()
@@ -20,7 +20,7 @@ export default function SchtickSelector({ }) {
     setOpen(prev => (!prev))
   }
 
-  async function handleSubmit(event: any) {
+  async function handleSubmit(event: React.ChangeEvent<HTMLInputElement>) {
     event.preventDefault()
     if (!schtick?.id) return
     dispatchFilter({ type: "saving" })
@@ -35,11 +35,11 @@ export default function SchtickSelector({ }) {
     }
 
     dispatchFilter({ type: "success" })
-    dispatchFilter({ type: "schtick" })
+    dispatchFilter({ type: "reset" })
   }
 
   function cancelForm() {
-    dispatchFilter({ type: "schtick" })
+    dispatchFilter({ type: "reset" })
     setOpen(false)
   }
 

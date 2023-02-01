@@ -8,7 +8,7 @@ import type { Campaign, User } from "../../types/types"
 interface PlayerDetailsProps {
   campaign: Campaign
   player: User
-  reload: any
+  reload: (camp: Campaign) => Promise<void>
 }
 
 export default function PlayerDetails({ campaign, player, reload }: PlayerDetailsProps) {

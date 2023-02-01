@@ -4,7 +4,7 @@ import { StyledSelect } from "../../StyledFields"
 
 interface CharacterTypeParams {
   value: string
-  onChange: (event: React.ChangeEvent<HTMLInputElement>, newValue?: any) => void
+  onChange: (event: React.ChangeEvent<HTMLInputElement>, newValue: string) => void
 }
 
 export default function CharacterType({ value, onChange }: CharacterTypeParams) {

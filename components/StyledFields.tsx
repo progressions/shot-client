@@ -12,7 +12,7 @@ const SelectProps = {
   }
 }
 
-const PaperComponent=({ children }: any) => (
+const PaperComponent=({ children }: React.PropsWithChildren) => (
   <Paper style={{ background: colors.blueGrey[100], color: "black" }}>
     <Typography component="span">
       {children}
@@ -49,7 +49,11 @@ export const StyledTextField = styled(TextField)({
   },
 });
 
-export function StyledSelect(props: any) {
+interface AnyProps {
+  [key: string]: any
+}
+
+export function StyledSelect(props: AnyProps) {
   return (
     <StyledTextField {...props} SelectProps={SelectProps} />
   )
@@ -64,7 +68,7 @@ export function StyledAutocomplete(props: any) {
   )
 }
 
-export function Subhead(props: any) {
+export function Subhead(props: React.PropsWithChildren<AnyProps>) {
   return (
     <>
       <Divider color={colors.blue[100]} />
@@ -77,7 +81,7 @@ export function Subhead(props: any) {
   )
 }
 
-export function StyledDialog(props: any) {
+export function StyledDialog(props: React.PropsWithChildren<AnyProps>) {
   return (
     <Dialog
       open={props.open}
@@ -94,19 +98,19 @@ export function StyledDialog(props: any) {
   )
 }
 
-export function CancelButton(props: any) {
+export function CancelButton(props: React.PropsWithChildren<AnyProps>) {
   return (
     <Button variant="contained" color="secondary" {...props}>{ props.children ? props.children : "Cancel" }</Button>
   )
 }
 
-export function SaveButton(props: any) {
+export function SaveButton(props: React.PropsWithChildren<AnyProps>) {
   return (
     <Button variant="contained" color="primary" type="submit" {...props}>{ props.children ? props.children : "Save" }</Button>
   )
 }
 
-export function SaveCancelButtons(props: any) {
+export function SaveCancelButtons(props: React.PropsWithChildren<AnyProps>) {
   return (
     <Stack spacing={2} direction="row">
       <CancelButton disabled={props.disabled} onClick={props.onCancel}>{props.cancelText}</CancelButton>
@@ -119,7 +123,7 @@ interface ButtonBarProps {
   sx?: any
 }
 
-export function ButtonBar({ children, sx }: any) {
+export function ButtonBar({ children, sx }: React.PropsWithChildren<ButtonBarProps>) {
   return (
     <Box component={Paper} p={1} pt={2} mb={1} sx={sx}>
       <Stack direction="row" spacing={2} alignItems="top">

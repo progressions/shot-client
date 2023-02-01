@@ -25,51 +25,61 @@ import PlayerTypeOnly from "../../PlayerTypeOnly"
 import DeathMarks from "../DeathMarks"
 import { Subhead, StyledTextField } from "../../StyledFields"
 
-export default function EditCharacter({ character:initialCharacter }: any) {
+import type { Character } from "../../../types/types"
+import type { SchticksStateType } from "../../schticks/filterReducer"
+import { initialFilter as initialSchticksState } from "../../schticks/filterReducer"
+import type { WeaponsStateType } from "../../weapons/filterReducer"
+import { initialFilter as initialWeaponsState } from "../../weapons/filterReducer"
+
+interface EditCharacterProps {
+  character: Character
+}
+
+export default function EditCharacter({ character:initialCharacter }: EditCharacterProps) {
   const { client } = useClient()
   const { toastError, toastSuccess } = useToast()
-  const { state, dispatch, updateCharacter } = useCharacter()
+  const { state:characterState, dispatch:dispatchCharacter, updateCharacter } = useCharacter()
 
-  const { edited, saving, character } = state
+  const { edited, saving, character } = characterState
   const { weapons, schticks, skills, description, action_values } = character
 
-  async function handleSubmit(event: any) {
+  async function handleSubmit(event: React.ChangeEvent<HTMLInputElement>): Promise<void> {
     event.preventDefault()
 
     await updateCharacter()
   }
 
-  function handleChange(event: any) {
-    dispatch({ type: "update", name: event.target.name, value: event.target.value || event.target.checked })
+  function handleChange(event: React.ChangeEvent<HTMLInputElement>): void {
+    dispatchCharacter({ type: "update", name: event.target.name, value: event.target.value || event.target.checked })
   }
 
-  function handleCheck(event: any) {
-    dispatch({ type: "update", name: event.target.name, value: event.target.checked })
+  function handleCheck(event: any, checked: boolean): void {
+    dispatchCharacter({ type: "update", name: event.target.name, value: checked })
   }
 
-  function handleAVChange(event: any, newValue: any) {
-    dispatch({ type: "action_value", name: event.target.name, value: event.target.value || newValue })
+  function handleAVChange(event: React.ChangeEvent<HTMLInputElement>, newValue: string) {
+    dispatchCharacter({ type: "action_value", name: event.target.name, value: event.target.value || newValue })
   }
 
-  function handleSkillsChange(event: any) {
-    dispatch({ type: "skills", name: event.target.name, value: event.target.value })
+  function handleSkillsChange(event: React.ChangeEvent<HTMLInputElement>) {
+    dispatchCharacter({ type: "skills", name: event.target.name, value: event.target.value })
   }
 
-  function handleDescriptionChange(event: any) {
-    dispatch({ type: "description", name: event.target.name, value: event.target.value })
+  function handleDescriptionChange(event: React.ChangeEvent<HTMLInputElement>) {
+    dispatchCharacter({ type: "description", name: event.target.name, value: event.target.value })
   }
 
   const handleDeathMarks = (event: React.SyntheticEvent<Element, Event>, newValue: number | null) => {
     const { action_values } = character || {}
     const value = (newValue === character.action_values["Marks of Death"]) ? 0 : newValue
-    dispatch({ type: "action_value", name: "Marks of Death", value: value })
+    dispatchCharacter({ type: "action_value", name: "Marks of Death", value: value })
   }
 
   async function cancelForm() {
     const response = await client.getCharacter(character)
     if (response.status === 200) {
       const data = await response.json()
-      dispatch({ type: "replace", character: data })
+      dispatchCharacter({ type: "replace", character: data })
       toastSuccess("Changes reverted.")
     } else {
       toastError()
@@ -89,15 +99,8 @@ export default function EditCharacter({ character:initialCharacter }: any) {
     )
   }
 
-  const schticksFilter = {
-    schticks: schticks,
-    meta: {}
-  }
-
-  const weaponsFilter = {
-    weapons: weapons,
-    meta: {}
-  }
+  const schticksFilter:SchticksStateType = { ...initialSchticksState, schticks: schticks }
+  const weaponsFilter:WeaponsStateType = { ...initialWeaponsState, weapons: weapons }
 
   return (
     <>
@@ -105,11 +108,11 @@ export default function EditCharacter({ character:initialCharacter }: any) {
         <Stack spacing={2}>
           <Stack direction="row" spacing={1}>
             <StyledTextField name="name" label="Name" required autoFocus fullWidth onChange={handleChange} value={character.name} />
-            <Faction faction={action_values["Faction"]} onChange={handleAVChange as any} />
+            <Faction faction={action_values["Faction"]} onChange={handleAVChange} />
             <FormControlLabel label="Active" name="active" control={<Switch checked={character.active} />} onChange={handleCheck} />
           </Stack>
           <Stack direction="row" spacing={1}>
-            <CharacterType value={action_values.Type} onChange={handleAVChange} />
+            <CharacterType value={action_values.Type as string} onChange={handleAVChange} />
             <StyledTextField name="Archetype" label="Archetype" autoFocus fullWidth onChange={handleAVChange as React.ChangeEventHandler} value={action_values.Archetype} />
           </Stack>
           <Stack spacing={2} direction="row" alignItems='center'>
@@ -126,7 +129,7 @@ export default function EditCharacter({ character:initialCharacter }: any) {
               <DeathMarks character={character} onChange={handleDeathMarks} />
             </PlayerTypeOnly>
             <StyledTextField label="Impairments" type="number" name="impairments" value={character.impairments || ''} onChange={handleChange} />
-            <ColorPicker character={character} onChange={handleChange} dispatch={dispatch} />
+            <ColorPicker character={character} onChange={handleChange} dispatch={dispatchCharacter} />
           </Stack>
           <EditActionValues character={character} onChange={handleAVChange as React.ChangeEventHandler} />
           <PlayerTypeOnly character={character} only="PC">
@@ -139,7 +142,7 @@ export default function EditCharacter({ character:initialCharacter }: any) {
             <Sites character={character} />
           </PlayerTypeOnly>
           <Description character={character} onChange={handleDescriptionChange} />
-          <Schticks schticks={schticks} filter={schticksFilter} state={state} dispatch={dispatch} />
+          <Schticks filter={schticksFilter} />
           <SchtickSelector />
         </Stack>
       </Box>

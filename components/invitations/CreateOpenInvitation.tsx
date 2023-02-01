@@ -7,9 +7,13 @@ import Client from "../Client"
 import { useSession } from 'next-auth/react'
 import Router from 'next/router'
 
-import type { Invitation } from "../../types/types"
+import type { Campaign, Invitation } from "../../types/types"
 
-export default function CreateOpenInvitation({ campaign }: any) {
+interface CreateOpenInvitationProps {
+  campaign: Campaign
+}
+
+export default function CreateOpenInvitation({ campaign }: CreateOpenInvitationProps) {
   const { client } = useClient()
   const { toastError, toastSuccess } = useToast()
 
@@ -23,11 +27,11 @@ export default function CreateOpenInvitation({ campaign }: any) {
     setOpen(true)
   }
 
-  const handleChange = (event: any) => {
-    setInvitation((prev: any) => ({ ...prev, [event.target.name]: event.target.value }))
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setInvitation((prev: Invitation) => ({ ...prev, [event.target.name]: event.target.value }))
   }
 
-  const handleSubmit = async (event: any) => {
+  const handleSubmit = async (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault()
     setSaving(true)
 

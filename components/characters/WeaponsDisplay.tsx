@@ -5,7 +5,11 @@ import { GiDeathSkull, GiShotgun, GiPistolGun } from "react-icons/gi"
 
 import type { Weapon } from "../../types/types"
 
-export default function WeaponsDisplay({ weapons }: any) {
+interface WeaponsDisplayProps {
+  weapons: Weapon[]
+}
+
+export default function WeaponsDisplay({ weapons }: WeaponsDisplayProps) {
   const [anchorEl, setAnchorEl] = useState(null)
   const [open, setOpen] = useState(false)
 
@@ -33,7 +37,7 @@ export default function WeaponsDisplay({ weapons }: any) {
       <Popover anchorEl={anchorEl} open={open} onClose={closePopover} anchorOrigin={{vertical: 'bottom', horizontal: 'center'}}>
         <Box p={2} sx={{width: 500, backgroundColor: colors.green[100]}}>
           {
-            weapons.map((weapon: any, index: number) => (
+            weapons.map((weapon: Weapon, index: number) => (
               <Box key={weapon.name + index}>
               <Stack direction="row" spacing={1} alignItems="center">
                 <Typography gutterBottom sx={{color: "primary.dark"}}>

@@ -1,10 +1,18 @@
 import { Autocomplete, TextField } from "@mui/material"
 import { StyledAutocomplete, StyledSelect } from "../StyledFields"
+import type { InputParamsType } from "../../types/types"
 
-export default function PathAutocomplete({ filter, dispatchFilter }: any) {
+import { SchticksStateType, SchticksActionType } from "./filterReducer"
+
+interface PathAutocompleteProps {
+  filter: SchticksStateType
+  dispatchFilter: React.Dispatch<SchticksActionType>
+}
+
+export default function PathAutocomplete({ filter, dispatchFilter }: PathAutocompleteProps) {
   const { loading, path, paths } = filter
 
-  function selectPath(event: any, newValue: any) {
+  function selectPath(event: React.ChangeEvent<HTMLInputElement>, newValue: string) {
     dispatchFilter({ type: "path", payload: newValue })
   }
 
@@ -23,7 +31,7 @@ export default function PathAutocomplete({ filter, dispatchFilter }: any) {
       onChange={selectPath}
       openOnFocus
       getOptionLabel={getOptionLabel}
-      renderInput={(params: any) => <StyledSelect autoFocus helperText={helperText} {...params} label="Path" />}
+      renderInput={(params: InputParamsType) => <StyledSelect autoFocus helperText={helperText} {...params} label="Path" />}
     />
   )
 }
