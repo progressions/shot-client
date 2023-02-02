@@ -55,7 +55,7 @@ export const initialSchticksState: SchticksStateType = {
   meta: defaultPaginationMeta
 }
 
-export function filterReducer(state: SchticksStateType, action: SchticksActionType) {
+export function schticksReducer(state: SchticksStateType, action: SchticksActionType) {
   switch(action.type) {
     case "previous":
       const { prev_page } = state.meta

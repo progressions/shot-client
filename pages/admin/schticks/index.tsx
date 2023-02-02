@@ -14,7 +14,7 @@ import Campaigns from "../../../components/campaigns/Campaigns"
 import GamemasterOnly from "../../../components/GamemasterOnly"
 import CreateSchtickButton from "../../../components/schticks/CreateSchtickButton"
 import FilterSchticks from "../../../components/schticks/FilterSchticks"
-import { initialSchticksState, filterReducer } from "../../../components/schticks/schticksState"
+import { initialSchticksState, schticksReducer } from "../../../components/schticks/schticksState"
 
 import { authOptions } from '../../api/auth/[...nextauth]'
 import Client from "../../../components/Client"
@@ -67,7 +67,7 @@ export async function getServerSideProps<GetServerSideProps>({ req, res }: Serve
 }
 
 export default function SchticksIndex(data: SchticksResponse) {
-  const [filter, dispatchFilter] = useReducer(filterReducer, initialSchticksState)
+  const [filter, dispatchFilter] = useReducer(schticksReducer, initialSchticksState)
   const schticks = filter?.schticks || []
   const { loading } = filter
 

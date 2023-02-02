@@ -5,11 +5,11 @@ import { useClient } from "../../contexts/ClientContext"
 import { useToast } from "../../contexts/ToastContext"
 import { useCharacter } from "../../contexts/CharacterContext"
 import FilterSchticks from "./FilterSchticks"
-import { initialSchticksState, filterReducer } from "./schticksState"
+import { initialSchticksState, schticksReducer } from "./schticksState"
 import { SaveCancelButtons, StyledTextField } from "../StyledFields"
 
 export default function SchtickSelector() {
-  const [filter, dispatchFilter] = useReducer(filterReducer, initialSchticksState)
+  const [filter, dispatchFilter] = useReducer(schticksReducer, initialSchticksState)
   const { character, dispatch:dispatchCharacter } = useCharacter()
   const { user, client } = useClient()
   const { toastSuccess, toastError } = useToast()
