@@ -7,9 +7,16 @@ export interface AuthUser extends NextAuthUser {
   admin: boolean
 }
 
+export interface SessionData {
+  authorization: {}
+  user?: User | AuthUser
+}
+
 export interface AuthSession extends Session {
   authorization: {} | null
   id: {}
+  status: "loading" | "unauthenticated" | "authenticated"
+  data: SessionData | null
 }
 
 export interface OptionType {
