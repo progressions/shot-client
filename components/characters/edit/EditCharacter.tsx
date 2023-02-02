@@ -101,7 +101,7 @@ export default function EditCharacter({ character:initialCharacter }: EditCharac
   }
 
   const schticksFilter:SchticksStateType = { ...initialSchticksState, schticks: schticks }
-  const weaponsFilter:WeaponsStateType = { ...initialWeaponsState, weapons: weapons }
+  const weaponsState:WeaponsStateType = { ...initialWeaponsState, weapons: weapons }
 
   return (
     <>
@@ -137,7 +137,7 @@ export default function EditCharacter({ character:initialCharacter }: EditCharac
             <FortuneSelect character={character} onChange={handleAVChange as React.ChangeEventHandler} readOnly={false} />
           </PlayerTypeOnly>
           <Skills skills={skills} onChange={handleSkillsChange} />
-          <Weapons filter={weaponsFilter} />
+          <Weapons state={weaponsState} />
           <PlayerTypeOnly character={character} only="PC">
             <Advancements character={character} />
             <Sites character={character} />

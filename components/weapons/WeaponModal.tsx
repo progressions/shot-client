@@ -12,24 +12,24 @@ import type { WeaponsStateType, WeaponsActionType } from "./weaponsState"
 const filterOptions = createFilterOptions<Juncture>();
 
 interface WeaponModalProps {
-  filter: WeaponsStateType
-  dispatchFilter: React.Dispatch<WeaponsActionType>
+  state: WeaponsStateType
+  dispatch: React.Dispatch<WeaponsActionType>
   open: boolean
   setOpen: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-export default function WeaponModal({ filter, dispatchFilter, open, setOpen }: WeaponModalProps) {
+export default function WeaponModal({ state, dispatch, open, setOpen }: WeaponModalProps) {
   const { toastSuccess, toastError } = useToast()
   const { client } = useClient()
-  const { loading, weapon, junctures } = filter
+  const { loading, weapon, junctures } = state
 
   async function addWeapon(event: React.ChangeEvent<HTMLInputElement>) {
     event.preventDefault()
-    dispatchFilter({ type: "saving" })
+    dispatch({ type: "saving" })
 
     const response = await client.createWeapon(weapon)
     if (response.status === 200) {
-      dispatchFilter({ type: "edit" })
+      dispatch({ type: "edit" })
       setOpen(false)
     } else {
       toastError()
@@ -37,16 +37,16 @@ export default function WeaponModal({ filter, dispatchFilter, open, setOpen }: W
   }
 
   function cancelForm() {
-    dispatchFilter({ type: "reset" })
+    dispatch({ type: "reset" })
     setOpen(false)
   }
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
-    dispatchFilter({ type: "update", name: event.target.name, value: event.target.value })
+    dispatch({ type: "update", name: event.target.name, value: event.target.value })
   }
 
   function changeJuncture(event: React.SyntheticEvent<Element, Event>, newValue: Juncture) {
-    dispatchFilter({ type: "update", name: "juncture", value: newValue })
+    dispatch({ type: "update", name: "juncture", value: newValue })
   }
 
   function getOptionLabel(option: Juncture | OptionType) {

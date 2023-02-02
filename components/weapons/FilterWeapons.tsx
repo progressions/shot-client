@@ -15,19 +15,19 @@ interface FilterWeaponsProps {
   dispatch: React.Dispatch<WeaponsActionType>
 }
 
-export default function FilterWeapons({ state: filter, dispatch: dispatchFilter }: FilterWeaponsProps) {
+export default function FilterWeapons({ state, dispatch }: FilterWeaponsProps) {
   const { character } = useCharacter()
   const { user, client } = useClient()
   const { toastSuccess, toastError } = useToast()
-  const { page, loading, juncture, name } = filter
+  const { page, loading, juncture, name } = state
 
   return (
     <>
       <Stack spacing={2} direction="row" alignItems="top">
-        <JunctureAutocomplete filter={filter} dispatchFilter={dispatchFilter} />
-        <CategoryAutocomplete state={filter} dispatch={dispatchFilter} />
-        <WeaponAutocomplete filter={filter} dispatchFilter={dispatchFilter} />
-        { !character?.id && <CreateWeapon filter={filter} dispatchFilter={dispatchFilter} /> }
+        <JunctureAutocomplete state={state} dispatch={dispatch} />
+        <CategoryAutocomplete state={state} dispatch={dispatch} />
+        <WeaponAutocomplete state={state} dispatch={dispatch} />
+        { !character?.id && <CreateWeapon state={state} dispatch={dispatch} /> }
       </Stack>
     </>
   )

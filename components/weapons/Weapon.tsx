@@ -10,11 +10,11 @@ import type { WeaponsStateType, WeaponsActionType } from "./weaponsState"
 
 interface WeaponProps {
   weapon: WeaponType
-  filter: WeaponsStateType
-  dispatchFilter?: React.Dispatch<WeaponsActionType>
+  state: WeaponsStateType
+  dispatch?: React.Dispatch<WeaponsActionType>
 }
 
-export default function Weapon({ weapon, filter, dispatchFilter }: WeaponProps) {
+export default function Weapon({ weapon, state, dispatch }: WeaponProps) {
   const { client } = useClient()
   const { toastError } = useToast()
   const { character, reloadCharacter } = useCharacter()
@@ -34,8 +34,8 @@ export default function Weapon({ weapon, filter, dispatchFilter }: WeaponProps) 
 
     const response = await client.deleteWeapon(weapon)
     if (response.status === 200) {
-      if (dispatchFilter) {
-        dispatchFilter({ type: "edit" })
+      if (dispatch) {
+        dispatch({ type: "edit" })
       }
     } else {
       toastError()

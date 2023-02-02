@@ -22,9 +22,9 @@ import type { Campaign } from "../../../types/types"
 export default function WeaponsIndex() {
   const { character } = useCharacter()
   const { user, client } = useClient()
-  const [filter, dispatchFilter] = useReducer(weaponsReducer, initialWeaponsState)
-  const weapons = filter?.weapons || []
-  const { edited, page, loading, juncture, category, name } = filter
+  const [state, dispatch] = useReducer(weaponsReducer, initialWeaponsState)
+  const weapons = state?.weapons || []
+  const { edited, page, loading, juncture, category, name } = state
   const { toastSuccess, toastError } = useToast()
 
   useEffect(() => {
@@ -32,14 +32,14 @@ export default function WeaponsIndex() {
       const response = await client.getWeapons({ page, juncture, category, name, character_id: character?.id as string })
       if (response.status === 200) {
         const data = await response.json()
-        dispatchFilter({ type: "weapons", payload: data })
+        dispatch({ type: "weapons", payload: data })
       }
     }
 
     if (user?.id && edited) {
       getWeapons().catch(toastError)
     }
-  }, [edited, character?.id, dispatchFilter, user?.id, juncture, category, toastError, client, page, name])
+  }, [edited, character?.id, dispatch, user?.id, juncture, category, toastError, client, page, name])
 
   return (
     <>
@@ -55,9 +55,9 @@ export default function WeaponsIndex() {
             <Typography variant="h1" gutterBottom>Weapons</Typography>
             { !loading && <>
               <ButtonBar sx={{height: 80}}>
-                <FilterWeapons state={filter} dispatch={dispatchFilter} />
+                <FilterWeapons state={state} dispatch={dispatch} />
               </ButtonBar>
-              <Weapons filter={filter} dispatchFilter={dispatchFilter} />
+              <Weapons state={state} dispatch={dispatch} />
             </> }
             { loading && <>
               <Skeleton animation="wave" height={50} />

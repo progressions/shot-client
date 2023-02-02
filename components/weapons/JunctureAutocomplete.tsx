@@ -5,15 +5,15 @@ import type { Juncture, InputParamsType } from "../../types/types"
 import type { WeaponsStateType, WeaponsActionType } from "./weaponsState"
 
 interface JunctureAutocompleteProps {
-  filter: WeaponsStateType
-  dispatchFilter: React.Dispatch<WeaponsActionType>
+  state: WeaponsStateType
+  dispatch: React.Dispatch<WeaponsActionType>
 }
 
-export default function JunctureAutocomplete({ filter, dispatchFilter }: JunctureAutocompleteProps) {
-  const { loading, juncture, junctures } = filter
+export default function JunctureAutocomplete({ state, dispatch }: JunctureAutocompleteProps) {
+  const { loading, juncture, junctures } = state
 
   function selectJuncture(event: React.ChangeEvent<HTMLInputElement>, newValue: Juncture) {
-    dispatchFilter({ type: "juncture", payload: newValue })
+    dispatch({ type: "juncture", payload: newValue })
   }
 
   function getOptionLabel(option: Juncture) {
