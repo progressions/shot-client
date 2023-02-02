@@ -9,18 +9,15 @@ import { useToast } from "../../../contexts/ToastContext"
 import { useCampaign } from "../../../contexts/CampaignContext"
 import { useSession } from 'next-auth/react'
 
-import { authOptions } from '../../api/auth/[...nextauth]'
-import { getServerSession } from "next-auth/next"
 import Client from "../../../components/Client"
 
+import { getServerClient } from "../../../utils/getServerClient"
 import type { AuthSession, Weapon, ServerSideProps, Campaign } from "../../../types/types"
 import { GetServerSideProps } from 'next'
 import { InferGetServerSidePropsType } from 'next'
 
 export async function getServerSideProps<GetServerSideProps>({ req, res }: ServerSideProps) {
-  const session: any = await getServerSession(req as NextApiRequest, res as NextApiResponse, authOptions) as AuthSession
-  const jwt = session?.authorization as string
-  const client = new Client({ jwt: jwt })
+  const { client } = await getServerClient(req, res)
 
   const response = await client.getCurrentCampaign()
 

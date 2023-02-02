@@ -6,14 +6,12 @@ import type { NextApiRequest, NextApiResponse } from "next"
 
 import { Tooltip, IconButton, Box, Stack, TableContainer, Table, TableRow, TableHead, TableBody, TableCell, Container, Typography } from "@mui/material"
 
-import { authOptions } from '../api/auth/[...nextauth]'
-import { getServerSession } from "next-auth/next"
-
 import { ButtonBar } from "../../components/StyledFields"
 import CreateInvitation from "../../components/invitations/CreateInvitation"
 import CreateOpenInvitation from "../../components/invitations/CreateOpenInvitation"
 import Client from '../../components/Client'
 import { GetServerSideProps } from 'next'
+import { getServerClient } from "../../utils/getServerClient"
 
 import PlayerDetails from "../../components/campaigns/PlayerDetails"
 import { useClient } from "../../contexts/ClientContext"
@@ -23,9 +21,7 @@ import { useState } from "react"
 import { AuthSession, ServerSideProps, Invitation, User, Campaign } from "../../types/types"
 
 export async function getServerSideProps<GetServerSideProps>({ req, res, params }: ServerSideProps) {
-  const session: any = await getServerSession(req as NextApiRequest, res as NextApiResponse, authOptions) as AuthSession
-  const jwt = session?.authorization as string
-  const client = new Client({ jwt: jwt })
+  const { client } = await getServerClient(req, res)
   const { id } = params
 
   const response = await client.getCampaign({ id })

@@ -2,14 +2,12 @@ import Head from "next/head"
 import Layout from "../../components/Layout"
 import Client from "../../components/Client"
 import type { NextApiRequest, NextApiResponse } from "next"
+import { getServerClient } from "../../utils/getServerClient"
 
 import { useState } from "react"
 import Router from "next/router"
 
 import { Link, Paper, Switch, FormControlLabel, Stack, Avatar, Box, TableContainer, Table, TableHead, TableBody, TableRow, TableCell, Container, Typography } from "@mui/material"
-
-import { authOptions } from "../api/auth/[...nextauth]"
-import { getServerSession } from "next-auth/next"
 
 import { useSession } from "next-auth/react"
 
@@ -72,9 +70,7 @@ const fetchCharactersAndVehicles = async (client: Client) => {
 }
 
 export async function getServerSideProps({ req, res }: ServerSideProps) {
-  const session: any = await getServerSession(req as NextApiRequest, res as NextApiResponse, authOptions) as AuthSession
-  const jwt = session?.authorization as string
-  const client = new Client({ jwt })
+  const { client, jwt } = await getServerClient(req, res)
 
   const campaignResponse = await client.getCurrentCampaign()
   const currentCampaign = campaignResponse.status === 200 ? await campaignResponse.json() : null

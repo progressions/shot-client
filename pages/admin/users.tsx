@@ -7,8 +7,7 @@ import UserModal from '../../components/UserModal'
 import Router from 'next/router'
 import type { NextApiRequest, NextApiResponse } from "next"
 
-import { authOptions } from '../api/auth/[...nextauth]'
-import { getServerSession } from "next-auth/next"
+import { getServerClient } from "../../utils/getServerClient"
 
 import DeleteIcon from '@mui/icons-material/Delete'
 import EditIcon from '@mui/icons-material/Edit'
@@ -41,12 +40,9 @@ export async function loadUsers({ jwt, setUsers }: loadUsersParams) {
 }
 
 export async function getServerSideProps({ req, res }: ServerSideProps) {
-  const session: any = await getServerSession(req as NextApiRequest, res as NextApiResponse, authOptions) as AuthSession
-  const jwt = session?.authorization as string
-  const client = new Client({ jwt })
-  const id = session?.id
+  const { client, user, jwt } = await getServerClient(req, res)
 
-  if (!session?.user?.admin) {
+  if (!user?.admin) {
     return {
       redirect: {
         permanent: false,
@@ -63,7 +59,7 @@ export async function getServerSideProps({ req, res }: ServerSideProps) {
     return {
       props: {
         jwt: jwt,
-        currentUser: session?.user,
+        currentUser: user,
         users: users
       }, // will be passed to the page component as props
     }
@@ -72,7 +68,7 @@ export async function getServerSideProps({ req, res }: ServerSideProps) {
   return {
     props: {
       jwt: jwt,
-      user: session?.user,
+      user: user,
     }, // will be passed to the page component as props
   }
 }

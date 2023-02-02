@@ -13,8 +13,7 @@ import CreateCampaign from "../../components/campaigns/CreateCampaign"
 import Campaigns from "../../components/campaigns/Campaigns"
 import GamemasterOnly from "../../components/GamemasterOnly"
 
-import { authOptions } from '../api/auth/[...nextauth]'
-import { getServerSession } from "next-auth/next"
+import { getServerClient } from "../../utils/getServerClient"
 import Client from "../../components/Client"
 
 import type { AuthSession, CampaignsResponse, ServerSideProps, Campaign } from "../../types/types"
@@ -22,9 +21,7 @@ import { GetServerSideProps } from 'next'
 import { InferGetServerSidePropsType } from 'next'
 
 export async function getServerSideProps<GetServerSideProps>({ req, res }: ServerSideProps) {
-  const session: any = await getServerSession(req as NextApiRequest, res as NextApiResponse, authOptions) as AuthSession
-  const jwt = session?.authorization as string
-  const client = new Client({ jwt: jwt })
+  const { client } = await getServerClient(req, res)
 
   const response = await client.getCampaigns()
 

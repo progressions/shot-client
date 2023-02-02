@@ -8,10 +8,6 @@ import { useEffect, useState } from "react"
 
 import { Link, TextField, Button, Box, Stack, TableContainer, Table, TableRow, TableHead, TableBody, TableCell, Container, Typography } from "@mui/material"
 
-import { useSession } from 'next-auth/react'
-import { authOptions } from '../api/auth/[...nextauth]'
-import { getServerSession } from "next-auth/next"
-
 import CreateInvitation from "../../components/invitations/CreateInvitation"
 import Client from '../../components/Client'
 import { GetServerSideProps } from 'next'
@@ -19,15 +15,13 @@ import Navbar from "../../components/navbar/Navbar"
 import * as cookie from 'cookie'
 import { signIn, signOut } from 'next-auth/react'
 import { useClient } from "../../contexts/ClientContext"
+import { getServerClient } from "../../utils/getServerClient"
 
 import { AuthSession, ServerSideProps, Invitation, User, Campaign } from "../../types/types"
 
 export async function getServerSideProps<GetServerSideProps>({ req, res, params }: ServerSideProps) {
-  const session: any = await getServerSession(req as NextApiRequest, res as NextApiResponse, authOptions) as AuthSession
-  const jwt = session?.authorization as string
-  const client = new Client({ jwt: jwt })
+  const { client } = await getServerClient(req, res)
   const { id } = params
-
 
   const response = await client.getInvitation({ id })
   if (response.status === 200) {

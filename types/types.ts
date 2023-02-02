@@ -4,6 +4,7 @@ import { AlertColor } from "@mui/material"
 
 export interface AuthUser extends NextAuthUser {
   authorization: string | null
+  admin: boolean
 }
 
 export interface AuthSession extends Session {

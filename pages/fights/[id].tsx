@@ -4,13 +4,12 @@ import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useState, useEffect } from 'react'
 import Router from "next/router"
-import { authOptions } from '../api/auth/[...nextauth]'
-import { getServerSession } from "next-auth/next"
 
 import Layout from '../../components/Layout'
 import ShotCounter from "../../components/fights/ShotCounter"
 import Client from '../../components/Client'
 
+import { getServerClient } from "../../utils/getServerClient"
 import { useFight } from "../../contexts/FightContext"
 
 import type { AuthSession, ShotType, Vehicle, Person, Character, Fight, ID } from "../../types/types"
@@ -22,9 +21,7 @@ interface FightParams {
 }
 
 export async function getServerSideProps({ req, res, params }: ServerSideProps) {
-  const session: any = await getServerSession(req as NextApiRequest, res as NextApiResponse, authOptions) as AuthSession
-  const jwt = session?.authorization as string
-  const client = new Client({ jwt: jwt })
+  const { client } = await getServerClient(req, res)
   const { id } = params
 
   const response = await client.getFight({id: id, shot_order: []})

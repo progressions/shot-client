@@ -6,20 +6,17 @@ import Navbar from "../../../components/navbar/Navbar"
 
 import { TextField, Button, Stack, Link, Container, Typography, Box } from "@mui/material"
 
-import { authOptions } from '../../api/auth/[...nextauth]'
-import { getServerSession } from "next-auth/next"
 import { useRouter } from 'next/router'
 import Client from '../../../components/Client'
 import { AuthSession, ServerSideProps, PasswordWithConfirmation, User } from "../../../types/types"
 import { useClient } from "../../../contexts/ClientContext"
 import { useToast } from "../../../contexts/ToastContext"
+import { getServerClient } from "../../../utils/getServerClient"
 
 import { useState } from "react"
 
 export async function getServerSideProps<GetServerSideProps>({ req, res, params, query }: ServerSideProps) {
-  const session: any = await getServerSession(req as NextApiRequest, res as NextApiResponse, authOptions) as AuthSession
-  const jwt = session?.authorization as string
-  const client = new Client({ jwt: jwt })
+  const { client } = await getServerClient(req, res)
   const { reset_password_token } = query
 
   return {

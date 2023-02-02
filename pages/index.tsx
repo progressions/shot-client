@@ -3,7 +3,7 @@ import Image from 'next/image'
 import { Inter } from '@next/font/google'
 import { Box, Switch, FormControlLabel, Stack, Snackbar, Alert, Link, Button, Paper, Container, Table, TableContainer, TableBody, TableHead, TableRow, TableCell, Typography } from '@mui/material'
 import type { NextApiRequest, NextApiResponse } from "next"
-import type { NextAuthOptions } from "next-auth"
+import { getServerClient } from "../utils/getServerClient"
 
 import { ButtonBar } from "../components/StyledFields"
 import AddFight from '../components/fights/AddFight'
@@ -17,7 +17,6 @@ import { useMemo, useState, useEffect } from 'react'
 import { signIn, signOut } from 'next-auth/react'
 
 import { authOptions } from './api/auth/[...nextauth]'
-import { getServerSession } from "next-auth/next"
 
 import { GetServerSideProps } from 'next'
 import { InferGetServerSidePropsType } from 'next'
@@ -36,9 +35,7 @@ interface HomeProps {
 }
 
 export async function getServerSideProps<GetServerSideProps>({ req, res }: ServerSideProps) {
-  const session: any = await getServerSession(req as NextApiRequest, res as NextApiResponse, authOptions) as AuthSession
-  const jwt = session?.authorization as string
-  const client = new Client({ jwt: jwt })
+  const { client } = await getServerClient(req, res)
 
   const getCurrentCampaign = async () => {
     const response = await client.getCurrentCampaign()
