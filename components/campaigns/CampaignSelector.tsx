@@ -1,21 +1,16 @@
 import { IconButton, Box, Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, TextField, MenuItem, Stack, Typography } from "@mui/material"
 import { CampaignContextType, useCampaign } from "../../contexts/CampaignContext"
-import PlayCircleIcon from '@mui/icons-material/PlayCircle'
-import StopCircleIcon from '@mui/icons-material/StopCircle'
 import { useClient } from "../../contexts/ClientContext"
 import { useMemo, useCallback, useEffect, useState } from "react"
 import { useSession } from 'next-auth/react'
 import Client from "../Client"
+import NameDisplay from "./NameDisplay"
 
 import type { Campaign, CampaignsResponse } from "../../types/types"
 import { defaultCampaign } from "../../types/types"
 
 interface CampaignSelectorProps {
   startCampaign: (campaign: Campaign) => Promise<void>
-}
-
-interface NameDisplayProps {
-  camp: Campaign
 }
 
 declare module "@mui/material/styles" {
@@ -76,19 +71,6 @@ export default function CampaignSelector({ startCampaign }: CampaignSelectorProp
     setOpen(true)
   }
 
-  const NameDisplay = ({ camp }: NameDisplayProps) => {
-    return (
-      <>
-        <Stack direction="row" spacing={1} alignItems="center">
-          <Button variant="contained" startIcon={<PlayCircleIcon />} color="secondary" onClick={() => startCampaign(camp)}>
-            Start
-          </Button>
-          <Typography>{camp.title}</Typography>
-        </Stack>
-      </>
-    )
-  }
-
   if (campaign?.id) {
     return <></>
   }
@@ -104,10 +86,10 @@ export default function CampaignSelector({ startCampaign }: CampaignSelectorProp
           <DialogContent>
             <Stack spacing={1}>
               {
-                campaigns?.["gamemaster"]?.map((camp: Campaign) => <NameDisplay key={camp.id} camp={camp} />)
+                campaigns?.["gamemaster"]?.map((camp: Campaign) => <NameDisplay key={camp.id} campaign={camp} onClick={() => startCampaign(camp)} />)
               }
               {
-                campaigns?.["player"]?.map((camp: Campaign) => <NameDisplay key={camp.id} camp={camp} />)
+                campaigns?.["player"]?.map((camp: Campaign) => <NameDisplay key={camp.id} campaign={camp} onClick={() => startCampaign(camp)} />)
               }
             </Stack>
           </DialogContent>
