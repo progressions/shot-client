@@ -77,7 +77,7 @@ export default function AddWeapon() {
         <DialogContent>
           <Stack spacing={2}>
             <Box mt={3}>
-              <FilterWeapons filter={weaponsFilter} dispatchFilter={dispatchWeapons} />
+              <FilterWeapons state={weaponsFilter} dispatch={dispatchWeapons} />
             </Box>
             <Stack direction="row" spacing={1} alignItems="center">
               <StyledTextField

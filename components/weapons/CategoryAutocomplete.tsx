@@ -6,15 +6,15 @@ import type { WeaponCategory, InputParamsType } from "../../types/types"
 import type { WeaponsStateType, WeaponsActionType } from "./weaponsState"
 
 interface CategoryAutocompleteProps {
-  filter: WeaponsStateType
-  dispatchFilter: React.Dispatch<WeaponsActionType>
+  state: WeaponsStateType
+  dispatch: React.Dispatch<WeaponsActionType>
 }
 
-export default function CategoryAutocomplete({ filter, dispatchFilter }: CategoryAutocompleteProps) {
-  const { loading, category, categories } = filter
+export default function CategoryAutocomplete({ state, dispatch }: CategoryAutocompleteProps) {
+  const { loading, category, categories } = state
 
   function selectCategory(event: React.SyntheticEvent<Element, Event>, newValue: WeaponCategory) {
-    dispatchFilter({ type: "category", payload: newValue })
+    dispatch({ type: "category", payload: newValue })
   }
 
   function getOptionLabel(option: WeaponCategory) {

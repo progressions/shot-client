@@ -55,7 +55,7 @@ export default function WeaponsIndex() {
             <Typography variant="h1" gutterBottom>Weapons</Typography>
             { !loading && <>
               <ButtonBar sx={{height: 80}}>
-                <FilterWeapons filter={filter} dispatchFilter={dispatchFilter} />
+                <FilterWeapons state={filter} dispatch={dispatchFilter} />
               </ButtonBar>
               <Weapons filter={filter} dispatchFilter={dispatchFilter} />
             </> }
