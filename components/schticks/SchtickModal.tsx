@@ -23,10 +23,14 @@ export default function SchtickModal({ open, setOpen, state, dispatch, schtick:i
   const { saving, schtick, category, path } = state
 
   useEffect(() => {
+    if (!dispatch) return
+
     dispatch({ type: "schtick", payload: initialSchtick as Schtick })
   }, [dispatch, initialSchtick])
 
   useEffect(() => {
+    if (!dispatch) return
+
     dispatch({ type: "update", name: "category", value: category })
     dispatch({ type: "update", name: "path", value: path })
   }, [dispatch, category, path])
@@ -52,10 +56,14 @@ export default function SchtickModal({ open, setOpen, state, dispatch, schtick:i
   }
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
+    if (!dispatch) return
+
     dispatch({ type: "update", name: event.target.name, value: event.target.value })
   }
 
   function cancelForm() {
+    if (!dispatch) return
+
     dispatch({ type: "reset" })
     setOpen(false)
   }
