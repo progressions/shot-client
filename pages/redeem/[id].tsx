@@ -1,6 +1,7 @@
 import Layout from '../../components/Layout'
 import Head from 'next/head'
 import URL from "node:url"
+import type { NextApiRequest, NextApiResponse } from "next"
 
 import Router from 'next/router'
 import { useEffect, useState } from "react"
@@ -22,7 +23,7 @@ import { useClient } from "../../contexts/ClientContext"
 import { ServerSideProps, Invitation, User, Campaign } from "../../types/types"
 
 export async function getServerSideProps<GetServerSideProps>({ req, res, params }: ServerSideProps) {
-  const session: any = await getServerSession(req as any, res as any, authOptions as any)
+  const session: any = await getServerSession(req as NextApiRequest, res as NextApiResponse, authOptions as any)
   const jwt = session?.authorization
   const client = new Client({ jwt: jwt })
   const { id } = params

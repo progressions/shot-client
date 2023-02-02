@@ -2,6 +2,7 @@ import Head from 'next/head'
 import Image from 'next/image'
 import { Inter } from '@next/font/google'
 import { Box, Switch, FormControlLabel, Stack, Snackbar, Alert, Link, Button, Paper, Container, Table, TableContainer, TableBody, TableHead, TableRow, TableCell, Typography } from '@mui/material'
+import type { NextApiRequest, NextApiResponse } from "next"
 
 import { ButtonBar } from "../components/StyledFields"
 import AddFight from '../components/fights/AddFight'
@@ -34,7 +35,7 @@ interface HomeProps {
 }
 
 export async function getServerSideProps<GetServerSideProps>({ req, res }: ServerSideProps) {
-  const session: any = await getServerSession(req as any, res as any, authOptions as any)
+  const session: any = await getServerSession(req as NextApiRequest, res as NextApiResponse, authOptions as any)
   const jwt = session?.authorization
   const client = new Client({ jwt: jwt })
 

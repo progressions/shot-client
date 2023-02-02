@@ -1,3 +1,4 @@
+import type { NextApiRequest, NextApiResponse } from "next"
 import Head from 'next/head'
 import { Avatar, Box, Button, Stack, Container, Typography, TextField } from '@mui/material'
 import Layout from '../components/Layout'
@@ -16,7 +17,7 @@ interface ProfileProps {
 }
 
 export async function getServerSideProps({ req, res, params }: ServerSideProps) {
-  const session: any = await getServerSession(req as any, res as any, authOptions as any)
+  const session: any = await getServerSession(req as NextApiRequest, res as NextApiResponse, authOptions as any)
   const jwt = session?.authorization
   const client = new Client({ jwt })
   const id = session?.id

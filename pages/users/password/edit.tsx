@@ -1,5 +1,6 @@
 import Layout from '../../../components/Layout'
 import Head from 'next/head'
+import type { NextApiRequest, NextApiResponse } from "next"
 
 import Navbar from "../../../components/navbar/Navbar"
 
@@ -16,7 +17,7 @@ import { useToast } from "../../../contexts/ToastContext"
 import { useState } from "react"
 
 export async function getServerSideProps<GetServerSideProps>({ req, res, params, query }: ServerSideProps) {
-  const session: any = await getServerSession(req as any, res as any, authOptions as any)
+  const session: any = await getServerSession(req as NextApiRequest, res as NextApiResponse, authOptions as any)
   const jwt = session?.authorization
   const client = new Client({ jwt: jwt })
   const { reset_password_token } = query

@@ -1,5 +1,6 @@
 import Layout from '../../../components/Layout'
 import Head from 'next/head'
+import type { NextApiRequest, NextApiResponse } from "next"
 
 import { useState } from "react"
 import { Stack, Box, Button, Container, Typography, TextField } from "@mui/material"
@@ -17,7 +18,7 @@ import { GetServerSideProps } from 'next'
 import { InferGetServerSidePropsType } from 'next'
 
 export async function getServerSideProps<GetServerSideProps>({ req, res }: ServerSideProps) {
-  const session: any = await getServerSession(req as any, res as any, authOptions as any)
+  const session: any = await getServerSession(req as NextApiRequest, res as NextApiResponse, authOptions as any)
   const jwt = session?.authorization
   const client = new Client({ jwt: jwt })
 

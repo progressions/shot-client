@@ -5,6 +5,7 @@ import Layout from '../../components/Layout'
 import Client from "../../components/Client"
 import UserModal from '../../components/UserModal'
 import Router from 'next/router'
+import type { NextApiRequest, NextApiResponse } from "next"
 
 import { authOptions } from '../api/auth/[...nextauth]'
 import { getServerSession } from "next-auth/next"
@@ -40,7 +41,7 @@ export async function loadUsers({ jwt, setUsers }: loadUsersParams) {
 }
 
 export async function getServerSideProps({ req, res }: ServerSideProps) {
-  const session: any = await getServerSession(req as any, res as any, authOptions as any)
+  const session: any = await getServerSession(req as NextApiRequest, res as NextApiResponse, authOptions as any)
   const jwt = session?.authorization
   const client = new Client({ jwt })
   const id = session?.id

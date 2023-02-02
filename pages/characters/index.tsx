@@ -1,6 +1,7 @@
 import Head from "next/head"
 import Layout from "../../components/Layout"
 import Client from "../../components/Client"
+import type { NextApiRequest, NextApiResponse } from "next"
 
 import { useState } from "react"
 import Router from "next/router"
@@ -71,7 +72,7 @@ const fetchCharactersAndVehicles = async (client: Client) => {
 }
 
 export async function getServerSideProps({ req, res }: ServerSideProps) {
-  const session: any = await getServerSession(req as any, res as any, authOptions as any)
+  const session: any = await getServerSession(req as NextApiRequest, res as NextApiResponse, authOptions as any)
   const jwt = session?.authorization
   const client = new Client({ jwt })
 

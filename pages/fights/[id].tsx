@@ -1,3 +1,4 @@
+import type { NextApiRequest, NextApiResponse } from "next"
 import { Container, Typography } from "@mui/material"
 import Head from 'next/head'
 import { useRouter } from 'next/router'
@@ -21,7 +22,7 @@ interface FightParams {
 }
 
 export async function getServerSideProps({ req, res, params }: ServerSideProps) {
-  const session: any = await getServerSession(req as any, res as any, authOptions as any)
+  const session: any = await getServerSession(req as NextApiRequest, res as NextApiResponse, authOptions as any)
   const jwt = session?.authorization
   const client = new Client({ jwt: jwt })
   const { id } = params
