@@ -18,11 +18,11 @@ import { useClient } from "../../contexts/ClientContext"
 import { useToast } from "../../contexts/ToastContext"
 
 import { useState } from "react"
-import { AuthSession, ServerSideProps, Invitation, User, Campaign } from "../../types/types"
+import { ParamsType, AuthSession, ServerSideProps, Invitation, User, Campaign } from "../../types/types"
 
 export async function getServerSideProps<GetServerSideProps>({ req, res, params }: ServerSideProps) {
   const { client } = await getServerClient(req, res)
-  const { id } = params
+  const { id } = params as ParamsType
 
   const response = await client.getCampaign({ id })
 

@@ -2,6 +2,10 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { Session, User as NextAuthUser } from "next-auth"
 import { AlertColor } from "@mui/material"
 
+export interface ErrorMessages {
+  [key: string]: string
+}
+
 export interface AuthUser extends NextAuthUser {
   authorization: string | null
   admin: boolean
@@ -282,13 +286,13 @@ export interface Fight {
 }
 
 export interface User {
-  id?: string,
-  email: string,
-  password?: string,
-  first_name?: string,
-  last_name?: string,
-  gamemaster?: boolean,
-  admin?: boolean,
+  id?: string
+  email: string
+  password?: string
+  first_name?: string
+  last_name?: string
+  gamemaster?: boolean
+  admin?: boolean
   avatar_url?: string
 }
 
@@ -303,15 +307,26 @@ export interface Invitation {
 }
 
 export interface CharacterFilter {
-  type: string | null,
+  type: string | null
   name: string | null
 }
 
+export interface ParamsType {
+  [key: string]: string
+  id: string
+}
+
+export interface QueryType {
+  [key: string]: string | undefined
+  confirmation_token?: string
+  reset_password_token?: string
+}
+
 export interface ServerSideProps {
-  req: NextApiRequest,
-  res: NextApiResponse,
-  params?: any
-  query?: any
+  req: NextApiRequest
+  res: NextApiResponse
+  params?: ParamsType
+  query?: QueryType
 }
 
 export const defaultCharacter:Person = {

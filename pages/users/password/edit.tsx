@@ -8,7 +8,7 @@ import { TextField, Button, Stack, Link, Container, Typography, Box } from "@mui
 
 import { useRouter } from 'next/router'
 import Client from '../../../components/Client'
-import { AuthSession, ServerSideProps, PasswordWithConfirmation, User } from "../../../types/types"
+import { QueryType, AuthSession, ServerSideProps, PasswordWithConfirmation, User } from "../../../types/types"
 import { useClient } from "../../../contexts/ClientContext"
 import { useToast } from "../../../contexts/ToastContext"
 import { getServerClient } from "../../../utils/getServerClient"
@@ -17,7 +17,7 @@ import { useState } from "react"
 
 export async function getServerSideProps<GetServerSideProps>({ req, res, params, query }: ServerSideProps) {
   const { client } = await getServerClient(req, res)
-  const { reset_password_token } = query
+  const { reset_password_token } = query as QueryType
 
   return {
     props: {

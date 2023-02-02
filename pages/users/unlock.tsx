@@ -10,13 +10,13 @@ import { useRouter } from 'next/router'
 import { getServerClient } from "../../utils/getServerClient"
 
 import Client from '../../components/Client'
-import type { AuthSession, ServerSideProps, User } from "../../types/types"
+import type { QueryType, AuthSession, ServerSideProps, User } from "../../types/types"
 
 export async function getServerSideProps<GetServerSideProps>({ req, res, params, query }: ServerSideProps) {
   const { client } = await getServerClient(req, res)
-  const { unlock_token } = query
+  const { unlock_token } = query as QueryType
 
-  const response = await client.unlockUser(unlock_token)
+  const response = await client.unlockUser(unlock_token as string)
 
   if (response.status === 401) {
     return {

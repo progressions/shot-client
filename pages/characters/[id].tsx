@@ -9,11 +9,11 @@ import { GetServerSideProps } from 'next'
 
 import { getServerClient } from "../../utils/getServerClient"
 
-import { AuthSession, ServerSideProps, User, Character } from "../../types/types"
+import { ParamsType, AuthSession, ServerSideProps, User, Character } from "../../types/types"
 
 export async function getServerSideProps<GetServerSideProps>({ req, res, params }: ServerSideProps) {
   const { client } = await getServerClient(req, res)
-  const { id } = params
+  const { id } = params as ParamsType
 
   const response = await client.getCharacter({ id })
 

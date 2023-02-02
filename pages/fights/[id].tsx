@@ -12,7 +12,7 @@ import Client from '../../components/Client'
 import { getServerClient } from "../../utils/getServerClient"
 import { useFight } from "../../contexts/FightContext"
 
-import type { AuthSession, ShotType, Vehicle, Person, Character, Fight, ID } from "../../types/types"
+import type { ParamsType, AuthSession, ShotType, Vehicle, Person, Character, Fight, ID } from "../../types/types"
 import { ServerSideProps } from "../../types/types"
 
 interface FightParams {
@@ -22,7 +22,7 @@ interface FightParams {
 
 export async function getServerSideProps({ req, res, params }: ServerSideProps) {
   const { client } = await getServerClient(req, res)
-  const { id } = params
+  const { id } = params as ParamsType
 
   const response = await client.getFight({id: id, shot_order: []})
   if (response.status === 200) {

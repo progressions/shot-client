@@ -1,6 +1,8 @@
 import type { WeaponCategory, Juncture, PaginationMeta, Weapon } from "../../types/types"
 import { defaultPaginationMeta, defaultWeapon } from "../../types/types"
 
+export type PayloadType = WeaponCategory | Juncture | Weapon | WeaponsResponse | string
+
 export interface WeaponsStateType {
   edited: boolean
   loading: boolean
@@ -22,7 +24,7 @@ export interface ActionNoPayload {
 
 export interface PayloadAction {
   type: "juncture" | "category" | "weapon" | "weapons" | "name"
-  payload: any
+  payload: PayloadType
 }
 
 export interface UpdateAction {
@@ -91,27 +93,27 @@ export function filterReducer (state: WeaponsStateType, action: WeaponsActionTyp
       return {
         ...state,
         edited: true,
-        juncture: action.payload || initialFilter.juncture,
+        juncture: (action.payload || initialFilter.juncture) as Juncture,
         weapon: initialFilter.weapon
       }
     case "category":
       return {
         ...state,
         edited: true,
-        category: action.payload || initialFilter.category,
+        category: (action.payload || initialFilter.category) as WeaponCategory,
         weapon: initialFilter.weapon
       }
     case "name":
       return {
         ...state,
         edited: true,
-        name: action.payload || initialFilter.name,
+        name: (action.payload || initialFilter.name) as string,
       }
     case "weapon":
       return {
         ...state,
         edited: true,
-        weapon: action.payload || initialFilter.weapon,
+        weapon: (action.payload || initialFilter.weapon) as Weapon,
       }
     case "weapons":
       const { weapons, meta, junctures, categories } = action.payload as WeaponsResponse

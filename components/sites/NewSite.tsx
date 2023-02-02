@@ -21,7 +21,7 @@ export default function NewSite() {
     dispatchSite({ type: "reset" })
   }, [character])
 
-  async function addSite(event: any) {
+  async function addSite(event: React.ChangeEvent<HTMLInputElement>) {
     event.preventDefault()
     dispatchSite({ type: "saving" })
 

@@ -1,8 +1,10 @@
-import type { Fight, CharacterEffect, Effect } from "../types/types"
+import type { Severity, Fight, CharacterEffect, Effect } from "../types/types"
 
-type GeneralEffect = CharacterEffect | Effect
+interface GroupedEffects<T> {
+  [key: string]: T[]
+}
 
-export const effectsForShot = (fight: Fight, shot: number) => {
+export function effectsForShot(fight: Fight, shot: number):Effect[] {
   return fight.effects.filter((effect: Effect) => {
     return shot > 0 && (
       (fight.sequence == effect.start_sequence && shot <= effect.start_shot) ||
@@ -11,8 +13,8 @@ export const effectsForShot = (fight: Fight, shot: number) => {
   })
 }
 
-export const effectsGroupedByType = (effects: GeneralEffect[]) => {
-  return effects.reduce((acc: any, effect: GeneralEffect) => {
+export function effectsGroupedByType<T extends Effect | CharacterEffect>(effects: T[]):GroupedEffects<T> {
+  return effects.reduce((acc: GroupedEffects<T>, effect: T) => {
     if (!effect.severity) return acc
 
     acc[effect.severity] ||= []

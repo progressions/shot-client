@@ -5,9 +5,11 @@ export interface ActionNoPayload {
   type: "reset" | "edit" | "saving" | "success" | "previous" | "next"
 }
 
+export type PayloadType = SchtickCategory | SchtickPath | Schtick | SchticksResponse | string
+
 export interface PayloadAction {
   type: "category" | "path" | "title" | "schtick" | "schticks"
-  payload: any
+  payload: PayloadType
 }
 
 export interface UpdateAction {
@@ -80,24 +82,24 @@ export function filterReducer(state: SchticksStateType, action: SchticksActionTy
     case "category":
       return {
         ...state,
-        category: action.payload || initialFilter.category,
+        category: (action.payload || initialFilter.category) as SchtickCategory,
         path: initialFilter.path,
         schtick: initialFilter.schtick
       }
     case "path":
       return {
         ...state,
-        path: action.payload || initialFilter.path,
+        path: (action.payload || initialFilter.path) as SchtickPath,
       }
     case "title":
       return {
         ...state,
-        title: action.payload || initialFilter.title,
+        title: (action.payload || initialFilter.title) as string,
       }
     case "schtick":
       return {
         ...state,
-        schtick: action.payload || initialFilter.schtick,
+        schtick: (action.payload || initialFilter.schtick) as Schtick,
       }
     case "schticks":
       const { schticks, meta, paths, categories } = action.payload as SchticksResponse

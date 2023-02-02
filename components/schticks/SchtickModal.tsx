@@ -25,7 +25,7 @@ export default function SchtickModal({ open, setOpen, filter, dispatchFilter, sc
   const { category, path } = filter
 
   useEffect(() => {
-    dispatch({ type: "schtick", payload: initialSchtick })
+    dispatch({ type: "schtick", payload: initialSchtick as Schtick })
   }, [initialSchtick])
 
   useEffect(() => {

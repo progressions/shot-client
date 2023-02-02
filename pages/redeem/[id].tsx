@@ -17,11 +17,11 @@ import { signIn, signOut } from 'next-auth/react'
 import { useClient } from "../../contexts/ClientContext"
 import { getServerClient } from "../../utils/getServerClient"
 
-import { AuthSession, ServerSideProps, Invitation, User, Campaign } from "../../types/types"
+import { ParamsType, ErrorMessages, AuthSession, ServerSideProps, Invitation, User, Campaign } from "../../types/types"
 
 export async function getServerSideProps<GetServerSideProps>({ req, res, params }: ServerSideProps) {
   const { client } = await getServerClient(req, res)
-  const { id } = params
+  const { id } = params as ParamsType
 
   const response = await client.getInvitation({ id })
   if (response.status === 200) {
@@ -53,7 +53,7 @@ export default function RedeemInvitation({ invitation }: RedeemInvitationProps) 
   const [saving, setSaving] = useState(false)
   const [success, setSuccess] = useState(false)
   const { user:currentUser, session } = useClient()
-  const [errors, setErrors] = useState<any>({})
+  const [errors, setErrors] = useState<ErrorMessages>({})
 
   useEffect(() => {
     if (invitation.pending_user?.id) {
@@ -131,7 +131,7 @@ export default function RedeemInvitation({ invitation }: RedeemInvitationProps) 
               <Typography variant="h3" gutterBottom>{invitation.campaign?.title}</Typography>
               <Typography>To accept, enter your details to create an account.</Typography>
               <Stack direction="column" spacing={2} mt={4}>
-                <TextField name="email" label="Email" required error={errors["email"]} helperText={errors["email"]} value={user?.email || ""} onChange={handleChange} InputProps={{
+                <TextField name="email" label="Email" required error={!!errors["email"]} helperText={errors["email"]} value={user?.email || ""} onChange={handleChange} InputProps={{
                   readOnly: !!invitation.email,
                 }} />
                 <TextField name="first_name" label="First name" value={user?.first_name || ""} onChange={handleChange} />
