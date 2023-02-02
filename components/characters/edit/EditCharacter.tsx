@@ -28,8 +28,8 @@ import { Subhead, StyledTextField } from "../../StyledFields"
 import type { Character } from "../../../types/types"
 import type { SchticksStateType } from "../../schticks/filterReducer"
 import { initialFilter as initialSchticksState } from "../../schticks/filterReducer"
-import type { WeaponsStateType } from "../../weapons/filterReducer"
-import { initialFilter as initialWeaponsState } from "../../weapons/filterReducer"
+import type { WeaponsStateType } from "../../weapons/weaponsState"
+import { initialFilter as initialWeaponsState } from "../../weapons/weaponsState"
 
 interface EditCharacterProps {
   character: Character

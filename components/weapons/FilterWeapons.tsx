@@ -8,7 +8,7 @@ import JunctureAutocomplete from "./JunctureAutocomplete"
 import CategoryAutocomplete from "./CategoryAutocomplete"
 import AddWeapon from "./AddWeapon"
 import CreateWeapon from "./CreateWeapon"
-import type { WeaponsStateType, WeaponsActionType } from "./filterReducer"
+import type { WeaponsStateType, WeaponsActionType } from "./weaponsState"
 
 interface FilterWeaponsProps {
   filter: WeaponsStateType

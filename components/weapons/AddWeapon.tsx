@@ -4,7 +4,7 @@ import { useClient } from "../../contexts/ClientContext"
 import { useToast } from "../../contexts/ToastContext"
 import { useCharacter } from "../../contexts/CharacterContext"
 import FilterWeapons from "./FilterWeapons"
-import { initialFilter, filterReducer } from "./filterReducer"
+import { initialFilter, filterReducer } from "./weaponsState"
 
 import type { Character, Weapon } from "../../types/types"
 import { defaultWeapon } from "../../types/types"

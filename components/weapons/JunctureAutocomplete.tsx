@@ -2,7 +2,7 @@ import { Autocomplete, TextField } from "@mui/material"
 import { useMemo } from "react"
 import { StyledAutocomplete, StyledSelect } from "../StyledFields"
 import type { Juncture, InputParamsType } from "../../types/types"
-import type { WeaponsStateType, WeaponsActionType } from "./filterReducer"
+import type { WeaponsStateType, WeaponsActionType } from "./weaponsState"
 
 interface JunctureAutocompleteProps {
   filter: WeaponsStateType

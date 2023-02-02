@@ -3,7 +3,7 @@ import { useMemo } from "react"
 import { StyledAutocomplete, StyledSelect } from "../StyledFields"
 import type { WeaponCategory, InputParamsType } from "../../types/types"
 
-import type { WeaponsStateType, WeaponsActionType } from "./filterReducer"
+import type { WeaponsStateType, WeaponsActionType } from "./weaponsState"
 
 interface CategoryAutocompleteProps {
   filter: WeaponsStateType

@@ -6,7 +6,7 @@ import { useCharacter } from "../../contexts/CharacterContext"
 import { rowMap } from "../../utils/rowMap"
 import AddWeapon from "./AddWeapon"
 
-import type { WeaponsStateType, WeaponsActionType } from "./filterReducer"
+import type { WeaponsStateType, WeaponsActionType } from "./weaponsState"
 
 interface WeaponsProps {
   filter: WeaponsStateType

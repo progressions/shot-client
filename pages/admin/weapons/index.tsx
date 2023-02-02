@@ -14,7 +14,7 @@ import CreateCampaign from "../../../components/campaigns/CreateCampaign"
 import Campaigns from "../../../components/campaigns/Campaigns"
 import GamemasterOnly from "../../../components/GamemasterOnly"
 import FilterWeapons from "../../../components/weapons/FilterWeapons"
-import { initialFilter, filterReducer } from "../../../components/weapons/filterReducer"
+import { initialFilter, filterReducer } from "../../../components/weapons/weaponsState"
 
 import Weapons from "../../../components/weapons/Weapons"
 import type { Campaign } from "../../../types/types"

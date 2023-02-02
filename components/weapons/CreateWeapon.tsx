@@ -2,7 +2,7 @@ import { Stack, DialogContent, Tooltip, Button, Typography } from "@mui/material
 import { StyledDialog, ButtonBar } from "../StyledFields"
 import WeaponModal from "./WeaponModal"
 import { useState } from "react"
-import type { WeaponsStateType, WeaponsActionType } from "./filterReducer"
+import type { WeaponsStateType, WeaponsActionType } from "./weaponsState"
 
 interface CreateWeaponProps {
   filter: WeaponsStateType

@@ -6,7 +6,7 @@ import ClearIcon from '@mui/icons-material/Clear'
 import WeaponCardBase from "./WeaponCardBase"
 import { GiDeathSkull, GiShotgun, GiPistolGun } from "react-icons/gi"
 import { Weapon as WeaponType } from "../../types/types"
-import type { WeaponsStateType, WeaponsActionType } from "./filterReducer"
+import type { WeaponsStateType, WeaponsActionType } from "./weaponsState"
 
 interface WeaponProps {
   weapon: WeaponType
