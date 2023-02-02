@@ -7,7 +7,7 @@ import SchtickAutocomplete from "./SchtickAutocomplete"
 import CategoryAutocomplete from "./CategoryAutocomplete"
 import PathAutocomplete from "./PathAutocomplete"
 
-import type { SchticksStateType, SchticksActionType } from "./filterReducer"
+import type { SchticksStateType, SchticksActionType } from "./schticksState"
 
 interface FilterSchticksProps {
   filter: SchticksStateType

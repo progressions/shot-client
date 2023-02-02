@@ -6,7 +6,6 @@ import { useToast } from "../../contexts/ToastContext"
 import WeaponAutocomplete from "./WeaponAutocomplete"
 import JunctureAutocomplete from "./JunctureAutocomplete"
 import CategoryAutocomplete from "./CategoryAutocomplete"
-import AddWeapon from "./AddWeapon"
 import CreateWeapon from "./CreateWeapon"
 import type { WeaponsStateType, WeaponsActionType } from "./weaponsState"
 

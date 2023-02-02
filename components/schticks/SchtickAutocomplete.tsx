@@ -4,7 +4,7 @@ import type { Schtick, InputParamsType } from "../../types/types"
 import { defaultSchtick } from "../../types/types"
 
 import { useState, useEffect } from "react"
-import type { SchticksStateType, SchticksActionType } from "./filterReducer"
+import type { SchticksStateType, SchticksActionType } from "./schticksState"
 
 const filterOptions = createFilterOptions<string>();
 

@@ -5,9 +5,9 @@ import { defaultSchtick } from "../../types/types"
 import { useClient } from "../../contexts/ClientContext"
 import { useToast } from "../../contexts/ToastContext"
 import { StyledTextField, StyledDialog, SaveCancelButtons } from "../StyledFields"
-import { initialFilter, filterReducer } from "./filterReducer"
+import { initialSchticksState, filterReducer } from "./schticksState"
 
-import type { SchticksStateType, SchticksActionType } from "./filterReducer"
+import type { SchticksStateType, SchticksActionType } from "./schticksState"
 
 interface SchtickModalProps {
   open: boolean
@@ -20,7 +20,7 @@ interface SchtickModalProps {
 export default function SchtickModal({ open, setOpen, filter, dispatchFilter, schtick:initialSchtick }: SchtickModalProps) {
   const { toastSuccess, toastError } = useToast()
   const { client } = useClient()
-  const [state, dispatch] = useReducer(filterReducer, initialFilter)
+  const [state, dispatch] = useReducer(filterReducer, initialSchticksState)
   const { saving, schtick } = state
   const { category, path } = filter
 

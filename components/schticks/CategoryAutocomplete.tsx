@@ -2,7 +2,7 @@ import { Autocomplete, TextField } from "@mui/material"
 import { useMemo } from "react"
 import { StyledAutocomplete, StyledSelect } from "../StyledFields"
 import type { SchtickCategory, InputParamsType } from "../../types/types"
-import type { SchticksStateType, SchticksActionType } from "./filterReducer"
+import type { SchticksStateType, SchticksActionType } from "./schticksState"
 
 interface CategoryAutocompleteProps {
   filter: SchticksStateType

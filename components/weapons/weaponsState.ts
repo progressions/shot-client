@@ -57,7 +57,7 @@ export const initialWeaponsState:WeaponsStateType = {
   meta: defaultPaginationMeta
 }
 
-export function weaponsReducer(state: WeaponsStateType, action: WeaponsActionType) {
+export function weaponsReducer(state: WeaponsStateType, action: WeaponsActionType): WeaponsStateType {
   switch(action.type) {
     case "edit":
       return {

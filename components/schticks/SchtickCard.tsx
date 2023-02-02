@@ -11,7 +11,7 @@ import { useState, useMemo } from "react"
 import SchtickModal from "./SchtickModal"
 
 import type { Character, Schtick } from "../../types/types"
-import type { SchticksStateType, SchticksActionType } from "./filterReducer"
+import type { SchticksStateType, SchticksActionType } from "./schticksState"
 
 /*
 

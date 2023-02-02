@@ -2,7 +2,7 @@ import { Autocomplete, TextField } from "@mui/material"
 import { StyledAutocomplete, StyledSelect } from "../StyledFields"
 import type { SchtickPath, InputParamsType } from "../../types/types"
 
-import { SchticksStateType, SchticksActionType } from "./filterReducer"
+import { SchticksStateType, SchticksActionType } from "./schticksState"
 
 interface PathAutocompleteProps {
   filter: SchticksStateType

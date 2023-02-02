@@ -14,7 +14,7 @@ import Campaigns from "../../../components/campaigns/Campaigns"
 import GamemasterOnly from "../../../components/GamemasterOnly"
 import CreateSchtickButton from "../../../components/schticks/CreateSchtickButton"
 import FilterSchticks from "../../../components/schticks/FilterSchticks"
-import { initialFilter, filterReducer } from "../../../components/schticks/filterReducer"
+import { initialSchticksState, filterReducer } from "../../../components/schticks/schticksState"
 
 import { authOptions } from '../../api/auth/[...nextauth]'
 import Client from "../../../components/Client"
@@ -22,7 +22,7 @@ import Schticks from "../../../components/schticks/Schticks"
 
 import { getServerClient } from "../../../utils/getServerClient"
 import type { AuthSession, ServerSideProps, Campaign } from "../../../types/types"
-import type { SchticksResponse } from "../../../components/schticks/filterReducer"
+import type { SchticksResponse } from "../../../components/schticks/schticksState"
 import { GetServerSideProps } from 'next'
 import { InferGetServerSidePropsType } from 'next'
 
@@ -67,7 +67,7 @@ export async function getServerSideProps<GetServerSideProps>({ req, res }: Serve
 }
 
 export default function SchticksIndex(data: SchticksResponse) {
-  const [filter, dispatchFilter] = useReducer(filterReducer, initialFilter)
+  const [filter, dispatchFilter] = useReducer(filterReducer, initialSchticksState)
   const schticks = filter?.schticks || []
   const { loading } = filter
 
