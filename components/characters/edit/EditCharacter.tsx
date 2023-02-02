@@ -53,8 +53,9 @@ export default function EditCharacter({ character:initialCharacter }: EditCharac
     dispatchCharacter({ type: "update", name: event.target.name, value: event.target.value || event.target.checked })
   }
 
-  function handleCheck(event: any, checked: boolean): void {
-    dispatchCharacter({ type: "update", name: event.target.name, value: checked })
+  function handleCheck(event: React.SyntheticEvent<Element, Event>, checked: boolean): void {
+    const target = event.target as HTMLInputElement
+    dispatchCharacter({ type: "update", name: target.name, value: checked })
   }
 
   function handleAVChange(event: React.ChangeEvent<HTMLInputElement>, newValue: string) {

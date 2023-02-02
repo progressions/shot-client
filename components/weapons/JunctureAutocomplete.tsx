@@ -1,18 +1,22 @@
 import { Autocomplete, TextField } from "@mui/material"
 import { useMemo } from "react"
 import { StyledAutocomplete, StyledSelect } from "../StyledFields"
-import type { InputParamsType } from "../../types/types"
+import type { Juncture, InputParamsType } from "../../types/types"
+import type { WeaponsStateType, WeaponsActionType } from "./filterReducer"
 
-export default function JunctureAutocomplete({ filter, dispatchFilter }: any) {
-  const { loading, juncture, junctures, path } = filter
+interface JunctureAutocompleteProps {
+  filter: WeaponsStateType
+  dispatchFilter: React.Dispatch<WeaponsActionType>
+}
 
-  // const junctures = useMemo(() => (["Guns", "Martial Arts", "Transformed Animal", "Creature", "Cyborg", "Driving", "Foe", "Mutant", "Sorcery"]), [])
+export default function JunctureAutocomplete({ filter, dispatchFilter }: JunctureAutocompleteProps) {
+  const { loading, juncture, junctures } = filter
 
-  function selectJuncture(event: any, newValue: any) {
+  function selectJuncture(event: React.ChangeEvent<HTMLInputElement>, newValue: Juncture) {
     dispatchFilter({ type: "juncture", payload: newValue })
   }
 
-  function getOptionLabel(option: any) {
+  function getOptionLabel(option: Juncture) {
     return option || ""
   }
 

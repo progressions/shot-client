@@ -1,24 +1,22 @@
 import Layout from '../../components/Layout'
 import Head from 'next/head'
+import type { NextApiRequest, NextApiResponse } from "next"
 
 import Navbar from "../../components/navbar/Navbar"
 
 import { Stack, Link, Container, Typography, Box } from "@mui/material"
 
-import { authOptions } from '../api/auth/[...nextauth]'
-import { unstable_getServerSession } from "next-auth/next"
 import { useRouter } from 'next/router'
+import { getServerClient } from "../../utils/getServerClient"
 
 import Client from '../../components/Client'
-import { User } from "../../types/types"
+import type { QueryType, AuthSession, ServerSideProps, User } from "../../types/types"
 
-export async function getServerSideProps<GetServerSideProps>({ req, res, params, query }: any) {
-  const session: any = await unstable_getServerSession(req as any, res as any, authOptions as any)
-  const jwt = session?.authorization
-  const client = new Client({ jwt: jwt })
-  const { unlock_token } = query
+export async function getServerSideProps<GetServerSideProps>({ req, res, params, query }: ServerSideProps) {
+  const { client } = await getServerClient(req, res)
+  const { unlock_token } = query as QueryType
 
-  const response = await client.unlockUser(unlock_token)
+  const response = await client.unlockUser(unlock_token as string)
 
   if (response.status === 401) {
     return {
@@ -33,7 +31,9 @@ export async function getServerSideProps<GetServerSideProps>({ req, res, params,
     const errors = await response.json()
     return {
       props: {
-        errors: errors
+        success: false,
+        errors: errors,
+        not_found: false
       }
     }
   }
@@ -41,19 +41,29 @@ export async function getServerSideProps<GetServerSideProps>({ req, res, params,
   if (response.status === 404) {
     return {
       props: {
-        not_found: true,
+        success: false,
+        errors: {},
+        not_found: true
       }
     }
   }
 
   return {
     props: {
-      success: true
+      success: true,
+      errors: {},
+      not_found: false
     }
   }
 }
 
-export default function UnlockUser({ success, errors, not_found }: any) {
+interface UnlockUserProps {
+  success: boolean
+  errors: {}
+  not_found: boolean
+}
+
+export default function UnlockUser({ success, errors, not_found }: UnlockUserProps) {
   return (
     <>
       <Head>

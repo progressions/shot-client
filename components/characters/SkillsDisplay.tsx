@@ -2,14 +2,14 @@ import { colors, Typography, Box, Popover, Tooltip, IconButton } from "@mui/mate
 import ArticleIcon from '@mui/icons-material/Article'
 import { useState } from "react"
 import { knownSkills } from "./edit/Skills"
-import type { SkillValues } from "../../types/types"
+import type { SkillValue, SkillValues } from "../../types/types"
 
 interface SkillsDisplayProps {
   skills: SkillValues
 }
 
 export default function SkillsDisplay({ skills }: SkillsDisplayProps) {
-  const [anchorEl, setAnchorEl] = useState(null)
+  const [anchorEl, setAnchorEl] = useState<Element | null>(null)
   const [open, setOpen] = useState(false)
 
   function closePopover() {
@@ -17,8 +17,8 @@ export default function SkillsDisplay({ skills }: SkillsDisplayProps) {
     setOpen(false)
   }
 
-  function showSkills(event: any) {
-    setAnchorEl(event.target)
+  function showSkills(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
+    setAnchorEl(event.target as Element)
     setOpen(true)
   }
 
@@ -36,7 +36,7 @@ export default function SkillsDisplay({ skills }: SkillsDisplayProps) {
       <Popover anchorEl={anchorEl} open={open} onClose={closePopover} anchorOrigin={{vertical: 'bottom', horizontal: 'center'}}>
         <Box p={2} sx={{backgroundColor: colors.lightBlue[100]}}>
           {
-            skillValues.map(([name, value]: any) => (
+            skillValues.map(([name, value]: SkillValue) => (
               <Typography key={name} gutterBottom sx={{color: "primary.dark"}}><strong>{name}</strong>: {value}</Typography>
             ))
           }

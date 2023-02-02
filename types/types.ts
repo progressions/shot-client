@@ -1,5 +1,27 @@
 import { NextApiRequest, NextApiResponse } from 'next'
+import { Session, User as NextAuthUser } from "next-auth"
 import { AlertColor } from "@mui/material"
+
+export interface ErrorMessages {
+  [key: string]: string
+}
+
+export interface AuthUser extends NextAuthUser {
+  authorization: string | null
+  admin: boolean
+}
+
+export interface SessionData {
+  authorization: {}
+  user?: User | AuthUser
+}
+
+export interface AuthSession extends Session {
+  authorization: {} | null
+  id: {}
+  status: "loading" | "unauthenticated" | "authenticated"
+  data: SessionData | null
+}
 
 export interface OptionType {
   inputValue: string
@@ -11,6 +33,16 @@ export interface FilterParamsType {
 }
 
 export type Severity = 'error' | 'info' | 'success' | 'warning'
+
+export type WeaponCategory = string
+export type SchtickCategory = string
+export type SchtickPath = string
+export type Juncture = string
+
+export interface CampaignsResponse {
+  gamemaster: Campaign[]
+  player: Campaign[]
+}
 
 export interface PaginationMeta {
   current_page: number
@@ -52,8 +84,8 @@ export interface Weapon {
   damage: number
   concealment: number
   reload_value: number
-  category: string
-  juncture: string
+  category: WeaponCategory
+  juncture: Juncture
   mook_bonus: number
   kachunk: boolean
 }
@@ -97,6 +129,8 @@ export interface ActionValues {
   Faction: string
 }
 
+export type SkillValue = [string, number] | [string, undefined]
+
 export interface SkillValues {
   [key: string]: number | undefined
   Deceit?: number
@@ -138,8 +172,8 @@ export interface Schtick {
   title: string
   description: string
   campaign_id: string
-  category: string
-  path: string
+  category: SchtickCategory
+  path: SchtickPath
   schtick_id: string
   prerequisite: {
     id?: string
@@ -157,6 +191,7 @@ export interface ID {
 }
 
 export type Character = Vehicle | Person
+export type CharacterCategory = "character" | "vehicle"
 
 export interface Vehicle {
   id?: string
@@ -176,7 +211,7 @@ export interface Vehicle {
   created_at?: string
   updated_at?: string
   new?: boolean
-  category: "character" | "vehicle"
+  category: CharacterCategory
 }
 
 export interface Person {
@@ -197,7 +232,7 @@ export interface Person {
   created_at?: string
   updated_at?: string
   new?: boolean
-  category: "character" | "vehicle"
+  category: CharacterCategory
 }
 
 export interface Advancement {
@@ -251,34 +286,47 @@ export interface Fight {
 }
 
 export interface User {
-  id?: string,
-  email: string,
-  password?: string,
-  first_name?: string,
-  last_name?: string,
-  gamemaster?: boolean,
-  admin?: boolean,
+  id?: string
+  email: string
+  password?: string
+  first_name?: string
+  last_name?: string
+  gamemaster?: boolean
+  admin?: boolean
   avatar_url?: string
 }
 
 export interface Invitation {
   id?: string
   email?: string
-  campaign_id: string
+  campaign_id?: string
+  campaign?: Campaign
   maximum_count: number
   remaining_count: number
+  pending_user: User
 }
 
 export interface CharacterFilter {
-  type: string | null,
+  type: string | null
   name: string | null
 }
 
+export interface ParamsType {
+  [key: string]: string
+  id: string
+}
+
+export interface QueryType {
+  [key: string]: string | undefined
+  confirmation_token?: string
+  reset_password_token?: string
+}
+
 export interface ServerSideProps {
-  req: NextApiRequest,
-  res: NextApiResponse,
-  params?: any
-  query?: any
+  req: NextApiRequest
+  res: NextApiResponse
+  params?: ParamsType
+  query?: QueryType
 }
 
 export const defaultCharacter:Person = {

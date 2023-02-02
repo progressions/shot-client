@@ -1,4 +1,4 @@
-import { MouseEventHandler, useState, useEffect } from 'react'
+import { MouseEventHandler, useState, useEffect, SyntheticEvent } from 'react'
 import { colors, FormControl, Switch, Tooltip, Typography, DialogActions, FormControlLabel, MenuItem, Checkbox, InputAdornment, Dialog, DialogTitle, DialogContent, DialogContentText, Box, Stack, TextField, Button, Paper, Popover } from '@mui/material'
 import FavoriteIcon from '@mui/icons-material/Favorite'
 import PeopleIcon from '@mui/icons-material/People'
@@ -29,7 +29,7 @@ interface CharacterModalParams {
   fight?: Fight,
   setFight?: React.Dispatch<React.SetStateAction<Fight>>
   character: Person | null
-  reload?: any
+  reload?: () => Promise<void>
 }
 
 export default function CharacterModal({ open, setOpen, character:activeCharacter, reload }: CharacterModalParams) {
@@ -56,8 +56,9 @@ export default function CharacterModal({ open, setOpen, character:activeCharacte
     setCharacter((prevState: Person) => ({ ...prevState, [event.target.name]: event.target.value }))
   }
 
-  const handleCheck = (event: any) => {
-    setCharacter((prevState: Person) => ({ ...prevState, [event.target.name]: event.target.checked }))
+  const handleCheck = (event: SyntheticEvent<Element, Event>) => {
+    const target = event.target as HTMLInputElement
+    setCharacter((prevState: Person) => ({ ...prevState, [target.name]: target.checked }))
   }
 
   const handleAVChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -97,7 +98,7 @@ export default function CharacterModal({ open, setOpen, character:activeCharacte
       }
       if (fight?.id && setFight) {
         await reloadFight(fight)
-      } else {
+      } else if (reload) {
         await reload()
       }
     } else {
@@ -128,7 +129,7 @@ export default function CharacterModal({ open, setOpen, character:activeCharacte
     actionValues["Wounds"] = 0
     actionValues["Fortune"] = actionValues["Max Fortune"]
     actionValues["Marks of Death"] = 0
-    setCharacter((prev: any) => ({ ...prev, impairments: 0, action_values: actionValues }))
+    setCharacter((prev: Character) => ({ ...prev, impairments: 0, action_values: actionValues }))
   }
 
   return (

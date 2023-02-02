@@ -1,18 +1,18 @@
+import type { NextApiRequest, NextApiResponse } from "next"
 import { Container, Typography } from "@mui/material"
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useState, useEffect } from 'react'
 import Router from "next/router"
-import { authOptions } from '../api/auth/[...nextauth]'
-import { unstable_getServerSession } from "next-auth/next"
 
 import Layout from '../../components/Layout'
 import ShotCounter from "../../components/fights/ShotCounter"
 import Client from '../../components/Client'
 
+import { getServerClient } from "../../utils/getServerClient"
 import { useFight } from "../../contexts/FightContext"
 
-import type { ShotType, Vehicle, Person, Character, Fight, ID } from "../../types/types"
+import type { ParamsType, AuthSession, ShotType, Vehicle, Person, Character, Fight, ID } from "../../types/types"
 import { ServerSideProps } from "../../types/types"
 
 interface FightParams {
@@ -21,10 +21,8 @@ interface FightParams {
 }
 
 export async function getServerSideProps({ req, res, params }: ServerSideProps) {
-  const session: any = await unstable_getServerSession(req as any, res as any, authOptions as any)
-  const jwt = session?.authorization
-  const client = new Client({ jwt: jwt })
-  const { id } = params
+  const { client } = await getServerClient(req, res)
+  const { id } = params as ParamsType
 
   const response = await client.getFight({id: id, shot_order: []})
   if (response.status === 200) {

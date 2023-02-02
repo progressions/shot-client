@@ -3,39 +3,10 @@ import { Stack, Typography } from "@mui/material"
 import { useClient } from "../../contexts/ClientContext"
 import { useToast } from "../../contexts/ToastContext"
 import { useCharacter } from "../../contexts/CharacterContext"
-
 import type { Character, Advancement } from "../../types/types"
 import { defaultAdvancement } from "../../types/types"
-
 import { useEffect, useReducer } from "react"
-
-const initialState = {
-  error: false,
-  loading: false,
-  advancement: defaultAdvancement
-}
-
-function advancementReducer(state: any, action: any) {
-  switch(action.type) {
-    case "update":
-      return {
-        ...state,
-        advancement: {
-          ...state.advancement,
-          [action.name]: action.value
-        }
-      }
-    case "saving":
-      return {
-        ...state,
-        loading: true
-      }
-    case "reset":
-      return initialState
-    default:
-      return state
-  }
-}
+import { initialState, advancementReducer } from "./advancementReducer"
 
 export default function NewAdvancement() {
   const { character, dispatch:dispatchCharacter, reloadCharacter } = useCharacter()
@@ -48,7 +19,7 @@ export default function NewAdvancement() {
     dispatchAdvancement({ type: "reset" })
   }, [character])
 
-  async function addAdvancement(event: any) {
+  async function addAdvancement(event: React.ChangeEvent<HTMLInputElement>) {
     event.preventDefault()
     dispatchAdvancement({ type: "saving" })
 
@@ -61,7 +32,7 @@ export default function NewAdvancement() {
     }
   }
 
-  function handleChange(event: any) {
+  function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     dispatchAdvancement({ type: "update", name: event.target.name, value: event.target.value })
   }
 

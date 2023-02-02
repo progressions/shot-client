@@ -1,5 +1,6 @@
 import Layout from '../../../components/Layout'
 import Head from 'next/head'
+import type { NextApiRequest, NextApiResponse } from "next"
 
 import { useState } from "react"
 import { Stack, Box, Button, Container, Typography, TextField } from "@mui/material"
@@ -8,18 +9,15 @@ import { useToast } from "../../../contexts/ToastContext"
 import { useCampaign } from "../../../contexts/CampaignContext"
 import { useSession } from 'next-auth/react'
 
-import { authOptions } from '../../api/auth/[...nextauth]'
-import { unstable_getServerSession } from "next-auth/next"
 import Client from "../../../components/Client"
+import { getServerClient } from "../../../utils/getServerClient"
 
-import type { Campaign } from "../../../types/types"
+import type { AuthSession, Schtick, ServerSideProps, Campaign } from "../../../types/types"
 import { GetServerSideProps } from 'next'
 import { InferGetServerSidePropsType } from 'next'
 
-export async function getServerSideProps<GetServerSideProps>({ req, res }: any) {
-  const session: any = await unstable_getServerSession(req as any, res as any, authOptions as any)
-  const jwt = session?.authorization
-  const client = new Client({ jwt: jwt })
+export async function getServerSideProps<GetServerSideProps>({ req, res }: ServerSideProps) {
+  const { client } = await getServerClient(req, res)
 
   const response = await client.getCurrentCampaign()
 
@@ -55,14 +53,13 @@ export async function getServerSideProps<GetServerSideProps>({ req, res }: any) 
   }
 }
 
-export default function UploadSchticks({ schticks:initialSchticks }: any) {
+export default function UploadSchticks() {
   const [saving, setSaving] = useState(false)
-  const [schticks, setSchticks] = useState(initialSchticks)
   const [content, setContent] = useState("")
   const { toastSuccess, toastError } = useToast()
   const { client } = useClient()
 
-  async function handleSubmit(event: any) {
+  async function handleSubmit(event: React.ChangeEvent<HTMLInputElement>) {
     event.preventDefault()
     setSaving(true)
 
@@ -81,7 +78,7 @@ export default function UploadSchticks({ schticks:initialSchticks }: any) {
     setSaving(false)
   }
 
-  function handleChange(event: any) {
+  function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     setContent(event.target.value)
   }
 

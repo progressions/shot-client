@@ -12,7 +12,7 @@ import { defaultCharacter } from "../../types/types"
 interface CreateCharacterParams {
   fight?: Fight,
   setFight?: React.Dispatch<React.SetStateAction<Fight>>
-  reload?: () => void
+  reload?: () => Promise<void>
 }
 
 export default function CreateCharacter({ fight, setFight, reload }: CreateCharacterParams) {

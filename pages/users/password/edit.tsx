@@ -1,25 +1,23 @@
 import Layout from '../../../components/Layout'
 import Head from 'next/head'
+import type { NextApiRequest, NextApiResponse } from "next"
 
 import Navbar from "../../../components/navbar/Navbar"
 
 import { TextField, Button, Stack, Link, Container, Typography, Box } from "@mui/material"
 
-import { authOptions } from '../../api/auth/[...nextauth]'
-import { unstable_getServerSession } from "next-auth/next"
 import { useRouter } from 'next/router'
 import Client from '../../../components/Client'
-import { PasswordWithConfirmation, User } from "../../../types/types"
+import { QueryType, AuthSession, ServerSideProps, PasswordWithConfirmation, User } from "../../../types/types"
 import { useClient } from "../../../contexts/ClientContext"
 import { useToast } from "../../../contexts/ToastContext"
+import { getServerClient } from "../../../utils/getServerClient"
 
 import { useState } from "react"
 
-export async function getServerSideProps<GetServerSideProps>({ req, res, params, query }: any) {
-  const session: any = await unstable_getServerSession(req as any, res as any, authOptions as any)
-  const jwt = session?.authorization
-  const client = new Client({ jwt: jwt })
-  const { reset_password_token } = query
+export async function getServerSideProps<GetServerSideProps>({ req, res, params, query }: ServerSideProps) {
+  const { client } = await getServerClient(req, res)
+  const { reset_password_token } = query as QueryType
 
   return {
     props: {
@@ -28,18 +26,22 @@ export async function getServerSideProps<GetServerSideProps>({ req, res, params,
   }
 }
 
-export default function ResetPasswordView({ reset_password_token }: any) {
+interface ResetPasswordView {
+  reset_password_token: string
+}
+
+export default function ResetPasswordView({ reset_password_token }: ResetPasswordView) {
   const [state, setState] = useState<PasswordWithConfirmation>({password: "", password_confirmation: ""})
   const [saving, setSaving] = useState(false)
   const [success, setSuccess] = useState(false)
   const { client } = useClient()
   const { toastSuccess, toastError } = useToast()
 
-  function handleChange(event: any) {
-    setState((prev: any) => ({ ...prev, [event.target.name]: event.target.value }))
+  function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
+    setState((prev: PasswordWithConfirmation) => ({ ...prev, [event.target.name]: event.target.value }))
   }
 
-  async function handleSubmit(event: any) {
+  async function handleSubmit(event: React.ChangeEvent<HTMLInputElement>) {
     event.preventDefault()
     setSaving(true)
 

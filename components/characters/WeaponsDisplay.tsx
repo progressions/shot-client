@@ -10,7 +10,7 @@ interface WeaponsDisplayProps {
 }
 
 export default function WeaponsDisplay({ weapons }: WeaponsDisplayProps) {
-  const [anchorEl, setAnchorEl] = useState(null)
+  const [anchorEl, setAnchorEl] = useState<Element | null>(null)
   const [open, setOpen] = useState(false)
 
   function closePopover() {
@@ -18,8 +18,8 @@ export default function WeaponsDisplay({ weapons }: WeaponsDisplayProps) {
     setOpen(false)
   }
 
-  function showWeapons(event: any) {
-    setAnchorEl(event.target)
+  function showWeapons(event: React.SyntheticEvent<Element, Event>) {
+    setAnchorEl(event.target as Element)
     setOpen(true)
   }
 

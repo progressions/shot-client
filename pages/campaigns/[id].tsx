@@ -2,30 +2,27 @@ import Layout from '../../components/Layout'
 import Head from 'next/head'
 import DeleteIcon from '@mui/icons-material/Delete'
 import SendIcon from '@mui/icons-material/Send'
+import type { NextApiRequest, NextApiResponse } from "next"
 
 import { Tooltip, IconButton, Box, Stack, TableContainer, Table, TableRow, TableHead, TableBody, TableCell, Container, Typography } from "@mui/material"
-
-import { authOptions } from '../api/auth/[...nextauth]'
-import { unstable_getServerSession } from "next-auth/next"
 
 import { ButtonBar } from "../../components/StyledFields"
 import CreateInvitation from "../../components/invitations/CreateInvitation"
 import CreateOpenInvitation from "../../components/invitations/CreateOpenInvitation"
 import Client from '../../components/Client'
 import { GetServerSideProps } from 'next'
+import { getServerClient } from "../../utils/getServerClient"
 
 import PlayerDetails from "../../components/campaigns/PlayerDetails"
 import { useClient } from "../../contexts/ClientContext"
 import { useToast } from "../../contexts/ToastContext"
 
 import { useState } from "react"
-import { Invitation, User, Campaign } from "../../types/types"
+import { ParamsType, AuthSession, ServerSideProps, Invitation, User, Campaign } from "../../types/types"
 
-export async function getServerSideProps<GetServerSideProps>({ req, res, params }: any) {
-  const session: any = await unstable_getServerSession(req as any, res as any, authOptions as any)
-  const jwt = session?.authorization
-  const client = new Client({ jwt: jwt })
-  const { id } = params
+export async function getServerSideProps<GetServerSideProps>({ req, res, params }: ServerSideProps) {
+  const { client } = await getServerClient(req, res)
+  const { id } = params as ParamsType
 
   const response = await client.getCampaign({ id })
 
@@ -54,7 +51,11 @@ export async function getServerSideProps<GetServerSideProps>({ req, res, params 
   }
 }
 
-export default function CampaignView({ campaign:initialCampaign }: any) {
+interface CampaignViewProps {
+  campaign: Campaign
+}
+
+export default function CampaignView({ campaign:initialCampaign }: CampaignViewProps) {
   const { client } = useClient()
   const { toastError, toastSuccess } = useToast()
   const [campaign, setCampaign] = useState<Campaign>(initialCampaign)

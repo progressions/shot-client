@@ -1,5 +1,6 @@
 import Layout from '../../components/Layout'
 import Head from 'next/head'
+import type { NextApiRequest, NextApiResponse } from "next"
 
 import { useCallback, useMemo, useEffect, useState } from "react"
 import { Box, Paper, IconButton, Button, Stack, Link, Container, Typography, TableContainer, Table, TableHead, TableBody, TableRow, TableCell } from "@mui/material"
@@ -12,29 +13,15 @@ import CreateCampaign from "../../components/campaigns/CreateCampaign"
 import Campaigns from "../../components/campaigns/Campaigns"
 import GamemasterOnly from "../../components/GamemasterOnly"
 
-import { authOptions } from '../api/auth/[...nextauth]'
-import { unstable_getServerSession } from "next-auth/next"
+import { getServerClient } from "../../utils/getServerClient"
 import Client from "../../components/Client"
 
-import type { Campaign } from "../../types/types"
+import type { AuthSession, CampaignsResponse, ServerSideProps, Campaign } from "../../types/types"
 import { GetServerSideProps } from 'next'
 import { InferGetServerSidePropsType } from 'next'
 
-export async function getServerSideProps<GetServerSideProps>({ req, res }: any) {
-  const session: any = await unstable_getServerSession(req as any, res as any, authOptions as any)
-  const jwt = session?.authorization
-  const client = new Client({ jwt: jwt })
-
-  const getCurrentCampaign = async () => {
-    const response = await client.getCurrentCampaign()
-    if (response.status === 200) {
-      const data = await response.json()
-      return data
-    }
-    return null
-  }
-
-  const currentCampaign = await getCurrentCampaign()
+export async function getServerSideProps<GetServerSideProps>({ req, res }: ServerSideProps) {
+  const { client } = await getServerClient(req, res)
 
   const response = await client.getCampaigns()
 
@@ -42,7 +29,6 @@ export async function getServerSideProps<GetServerSideProps>({ req, res }: any) 
     const campaigns = await response.json()
     return {
       props: {
-        currentCampaign: currentCampaign,
         campaigns: campaigns
       }
     }
@@ -64,9 +50,13 @@ export async function getServerSideProps<GetServerSideProps>({ req, res }: any) 
   }
 }
 
-export default function CampaignsIndex({ campaigns:initialCampaigns }: any) {
-  const [campaigns, setCampaigns] = useState(initialCampaigns["gamemaster"])
-  const [playerCampaigns, setPlayerCampaigns] = useState(initialCampaigns["player"])
+interface CampaignsIndexProps {
+  campaigns: CampaignsResponse
+}
+
+export default function CampaignsIndex({ campaigns:initialCampaigns }: CampaignsIndexProps) {
+  const [campaigns, setCampaigns] = useState(initialCampaigns.gamemaster)
+  const [playerCampaigns, setPlayerCampaigns] = useState(initialCampaigns.player)
   const { client, user } = useClient()
   const { campaign:currentCampaign, setCurrentCampaign } = useCampaign()
 

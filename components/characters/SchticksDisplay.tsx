@@ -8,7 +8,7 @@ interface SchticksDisplayProps {
 }
 
 export default function SchticksDisplay({ schticks }: SchticksDisplayProps) {
-  const [anchorEl, setAnchorEl] = useState(null)
+  const [anchorEl, setAnchorEl] = useState<Element | null>(null)
   const [open, setOpen] = useState(false)
 
   function closePopover() {
@@ -16,8 +16,8 @@ export default function SchticksDisplay({ schticks }: SchticksDisplayProps) {
     setOpen(false)
   }
 
-  function showSchticks(event: any) {
-    setAnchorEl(event.target)
+  function showSchticks(event: React.SyntheticEvent<Element, Event>) {
+    setAnchorEl(event.target as Element)
     setOpen(true)
   }
 
@@ -33,7 +33,7 @@ export default function SchticksDisplay({ schticks }: SchticksDisplayProps) {
       <Popover anchorEl={anchorEl} open={open} onClose={closePopover} anchorOrigin={{vertical: 'bottom', horizontal: 'center'}}>
         <Box p={2} sx={{width: 500, backgroundColor: colors.amber[100]}}>
           {
-            schticks.map((schtick: any) => (
+            schticks.map((schtick: Schtick) => (
               <Typography key={schtick.id} gutterBottom sx={{color: "primary.dark"}}>
                 <Box component="span" sx={{color: schtick.color, fontWeight: "bold"}}>{schtick.title}</Box>: {schtick.description}
               </Typography>

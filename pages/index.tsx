@@ -2,6 +2,8 @@ import Head from 'next/head'
 import Image from 'next/image'
 import { Inter } from '@next/font/google'
 import { Box, Switch, FormControlLabel, Stack, Snackbar, Alert, Link, Button, Paper, Container, Table, TableContainer, TableBody, TableHead, TableRow, TableCell, Typography } from '@mui/material'
+import type { NextApiRequest, NextApiResponse } from "next"
+import { getServerClient } from "../utils/getServerClient"
 
 import { ButtonBar } from "../components/StyledFields"
 import AddFight from '../components/fights/AddFight'
@@ -15,7 +17,6 @@ import { useMemo, useState, useEffect } from 'react'
 import { signIn, signOut } from 'next-auth/react'
 
 import { authOptions } from './api/auth/[...nextauth]'
-import { unstable_getServerSession } from "next-auth/next"
 
 import { GetServerSideProps } from 'next'
 import { InferGetServerSidePropsType } from 'next'
@@ -26,7 +27,7 @@ import { useClient } from "../contexts/ClientContext"
 import { useCampaign } from "../contexts/CampaignContext"
 import GamemasterOnly from "../components/GamemasterOnly"
 
-import type { Campaign, Fight, Toast, ServerSideProps } from "../types/types"
+import type { AuthSession, Campaign, Fight, Toast, ServerSideProps } from "../types/types"
 
 interface HomeProps {
   fights: Fight[]
@@ -34,9 +35,7 @@ interface HomeProps {
 }
 
 export async function getServerSideProps<GetServerSideProps>({ req, res }: ServerSideProps) {
-  const session: any = await unstable_getServerSession(req as any, res as any, authOptions as any)
-  const jwt = session?.authorization
-  const client = new Client({ jwt: jwt })
+  const { client } = await getServerClient(req, res)
 
   const getCurrentCampaign = async () => {
     const response = await client.getCurrentCampaign()
@@ -79,7 +78,7 @@ export async function getServerSideProps<GetServerSideProps>({ req, res }: Serve
 
 export default function Home({ currentCampaign, fights:initialFights }: HomeProps) {
   const [fights, setFights] = useState<Fight[]>(initialFights)
-  const { status, data }: any = useSession({ required: true })
+  const { status, data } = useSession({ required: true })
   const { toast } = useToast()
   const [showHidden, setShowHidden] = useState<boolean>(false)
   const { user } = useClient()

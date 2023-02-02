@@ -16,7 +16,7 @@ interface EffectsProps {
 
 export default function Effects({ effects, severity }: EffectsProps) {
   const [open, setOpen] = useState<boolean>(false)
-  const [anchorEl, setAnchorEl] = useState<any>(null)
+  const [anchorEl, setAnchorEl] = useState<Element | null>(null)
 
   const { fight, setFight, reloadFight } = useFight()
   const { jwt, client } = useClient()
@@ -27,8 +27,8 @@ export default function Effects({ effects, severity }: EffectsProps) {
     setOpen(false)
   }
 
-  const showEffect = (event: any) => {
-    setAnchorEl(event.target)
+  const showEffect = (event: React.SyntheticEvent<Element, Event>) => {
+    setAnchorEl(event.target as Element)
     setOpen(true)
   }
 

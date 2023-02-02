@@ -1,5 +1,7 @@
-export function rowMap(array: unknown[], itemsPerRow: number): unknown[] {
-  const rows:unknown[] = []
+type Row<T> = T[][]
+
+export function rowMap<T>(array: T[], itemsPerRow: number): Row<T> {
+  const rows:T[][] = []
   for (let i=0; i <= array.length; i+=itemsPerRow) {
     const row = []
     for (let j=0; j < itemsPerRow; j++) {

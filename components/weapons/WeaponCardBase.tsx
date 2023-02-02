@@ -1,6 +1,13 @@
 import { colors, Card, CardHeader, CardContent, CardActions, Typography } from "@mui/material"
 
-export default function WeaponCardBase({ title, subheader, avatar, action, children }: any) {
+interface WeaponCardBaseProps {
+  title: string
+  subheader: string
+  avatar?: React.ReactNode
+  action: React.ReactNode
+}
+
+export default function WeaponCardBase({ title, subheader, avatar, action, children }: React.PropsWithChildren<WeaponCardBaseProps>) {
   return (
     <Card sx={{backgroundColor: colors.blueGrey["500"], width: 425, minHeight: 200}}>
       <CardHeader

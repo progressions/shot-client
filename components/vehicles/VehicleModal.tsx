@@ -3,13 +3,13 @@ import { colors, Switch, FormControl, FormLabel, RadioGroup, DialogActions, Dial
 import FavoriteIcon from '@mui/icons-material/Favorite'
 import CommuteIcon from '@mui/icons-material/Commute'
 import CarCrashIcon from '@mui/icons-material/CarCrash'
+import { BlockPicker, ColorResult } from 'react-color'
 
 import Router from 'next/router'
 
 import CharacterType from '../characters/edit/CharacterType'
 
 import { useSession } from 'next-auth/react'
-import { BlockPicker } from 'react-color'
 import Client from "../Client"
 import PositionSelector from "./PositionSelector"
 import PursuerSelector from "./PursuerSelector"
@@ -27,12 +27,12 @@ interface VehicleModalParams {
   fight?: Fight,
   setFight?: React.Dispatch<React.SetStateAction<Fight>>
   character: Vehicle | null
-  reload?: any
+  reload?: () => Promise<void>
 }
 
 export default function CharacterModal({ open, setOpen, character:activeVehicle, reload }: VehicleModalParams) {
   const [picker, setPicker] = useState<boolean>(false)
-  const [anchorEl, setAnchorEl] = useState(null)
+  const [anchorEl, setAnchorEl] = useState<Element | null>(null)
   const { toastSuccess, toastError } = useToast()
   const { client } = useClient()
   const { fight, setFight, reloadFight } = useFight()
@@ -57,16 +57,17 @@ export default function CharacterModal({ open, setOpen, character:activeVehicle,
     setCharacter((prevState: Vehicle) => ({ ...prevState, [event.target.name]: event.target.value }))
   }
 
-  const handleCheck = (event: any) => {
-    setCharacter((prevState: Vehicle) => ({ ...prevState, [event.target.name]: event.target.checked }))
+  const handleCheck = (event: React.SyntheticEvent<Element, Event>) => {
+    const target = event.target as HTMLInputElement
+    setCharacter((prevState: Vehicle) => ({ ...prevState, [target.name]: target.checked }))
   }
 
   const handleAVChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { action_values } = character || {}
-    setCharacter((prevState: any) => ({ ...prevState, action_values: { ...action_values, [event.target.name]: event.target.value } }))
+    setCharacter((prevState: Vehicle) => ({ ...prevState, action_values: { ...action_values, [event.target.name]: event.target.value } }))
   }
 
-  const handleColor = (color: any) => {
+  const handleColor = (color: ColorResult) => {
     setCharacter((prevState: Vehicle) => ({ ...prevState, color: color?.hex }))
     setPicker(false)
     setAnchorEl(null)
@@ -98,7 +99,7 @@ export default function CharacterModal({ open, setOpen, character:activeVehicle,
       }
       if (fight?.id) {
         await reloadFight(fight)
-      } else {
+      } else if (reload) {
         await reload()
       }
     } else {
@@ -114,7 +115,7 @@ export default function CharacterModal({ open, setOpen, character:activeVehicle,
       setAnchorEl(null)
     } else {
       setPicker(true)
-      setAnchorEl(event.target as any)
+      setAnchorEl(event.target as Element)
     }
   }
 

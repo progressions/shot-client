@@ -10,7 +10,7 @@ import { useCharacter } from "../../contexts/CharacterContext"
 import { useState, useMemo } from "react"
 import SchtickModal from "./SchtickModal"
 
-import type { Schtick } from "../../types/types"
+import type { Character, Schtick } from "../../types/types"
 import type { SchticksStateType, SchticksActionType } from "./filterReducer"
 
 /*
@@ -37,7 +37,7 @@ export default function SchtickCard({ schtick, filter, dispatchFilter }: Schtick
   const { state, dispatch } = useCharacter()
   const { character } = state
 
-  async function reloadCharacter(char: any) {
+  async function reloadCharacter(char: Character) {
     const response = await client.getCharacter(char)
     if (response.status === 200) {
       const data = await response.json()

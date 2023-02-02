@@ -6,7 +6,7 @@ import type { InputParamsType } from "../../../types/types"
 
 export interface FactionStateType {
   loading: boolean
-  anchorEl: any
+  anchorEl: Element | null
   value: string
   factions: string[]
 }

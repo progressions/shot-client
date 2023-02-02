@@ -9,7 +9,7 @@ interface CreateSchtickButtonProps {
   dispatchFilter: React.Dispatch<SchticksActionType>
 }
 
-export default function CreateSchtickButton({ filter, dispatchFilter }: any) {
+export default function CreateSchtickButton({ filter, dispatchFilter }: CreateSchtickButtonProps) {
   const [open, setOpen] = useState(false)
 
   return (

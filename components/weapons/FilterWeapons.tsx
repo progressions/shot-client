@@ -8,8 +8,14 @@ import JunctureAutocomplete from "./JunctureAutocomplete"
 import CategoryAutocomplete from "./CategoryAutocomplete"
 import AddWeapon from "./AddWeapon"
 import CreateWeapon from "./CreateWeapon"
+import type { WeaponsStateType, WeaponsActionType } from "./filterReducer"
 
-export default function FilterWeapons({ filter, dispatchFilter }: any) {
+interface FilterWeaponsProps {
+  filter: WeaponsStateType
+  dispatchFilter: React.Dispatch<WeaponsActionType>
+}
+
+export default function FilterWeapons({ filter, dispatchFilter }: FilterWeaponsProps) {
   const { character } = useCharacter()
   const { user, client } = useClient()
   const { toastSuccess, toastError } = useToast()

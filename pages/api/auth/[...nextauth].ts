@@ -1,9 +1,10 @@
-import NextAuth from "next-auth"
+import NextAuth, { NextAuthOptions, Awaitable, Session, User } from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials"
 import { getToken } from 'next-auth/jwt'
 import Api from "../../../components/Api"
+import type { AuthUser, AuthSession } from "../../../types/types"
 
-export const authOptions = {
+export const authOptions:NextAuthOptions = {
   session: {
     strategy: 'jwt'
   },
@@ -24,8 +25,8 @@ export const authOptions = {
           method: 'POST',
           mode: 'cors',
           headers: {
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Headers': true
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Headers": "true"
           },
           body: JSON.stringify({"user": credentials})
         })
@@ -35,7 +36,7 @@ export const authOptions = {
           // take the JWT from the response my backend server gives me
           const authToken = response.headers.get('authorization')
           const result = await response.json()
-          const user = result.data
+          const user: AuthUser = result.data
 
           // add the JWT to the user returned after signin
           user.authorization = authToken
@@ -48,7 +49,9 @@ export const authOptions = {
     })
   ],
   callbacks: {
-    jwt({ token, user, account, isNewUser }) {
+    jwt({ token, user:initialUser, account, isNewUser }) {
+      const user = initialUser as AuthUser
+
       if (user) {
         token.user = user
       }
@@ -62,7 +65,9 @@ export const authOptions = {
       // console.log({ token, user, account, isNewUser })
       return token
     },
-    session({ session, user, token }) {
+    session({ session:initialSession, user, token }) {
+      const session = initialSession as AuthSession
+
       // Put the JWT in the session so I can extract it later from the session
       // and send it as the "Authorization" header when making requests to my
       // backend.
@@ -84,7 +89,6 @@ export const authOptions = {
   },
   pages: {
     signIn: '/auth/signin',
-    signUp: '/auth/signup'
   }
 }
 export default NextAuth(authOptions)

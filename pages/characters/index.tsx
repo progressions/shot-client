@@ -1,14 +1,13 @@
 import Head from "next/head"
 import Layout from "../../components/Layout"
 import Client from "../../components/Client"
+import type { NextApiRequest, NextApiResponse } from "next"
+import { getServerClient } from "../../utils/getServerClient"
 
 import { useState } from "react"
 import Router from "next/router"
 
 import { Link, Paper, Switch, FormControlLabel, Stack, Avatar, Box, TableContainer, Table, TableHead, TableBody, TableRow, TableCell, Container, Typography } from "@mui/material"
-
-import { authOptions } from "../api/auth/[...nextauth]"
-import { unstable_getServerSession } from "next-auth/next"
 
 import { useSession } from "next-auth/react"
 
@@ -25,7 +24,7 @@ import GamemasterOnly from "../../components/GamemasterOnly"
 
 import { useToast } from "../../contexts/ToastContext"
 import { useClient } from "../../contexts/ClientContext"
-import type { Person, Vehicle, Character, CharacterFilter, ServerSideProps, Toast } from "../../types/types"
+import type { AuthSession, Person, Vehicle, Character, CharacterFilter, ServerSideProps, Toast } from "../../types/types"
 import { defaultCharacter } from "../../types/types"
 
 interface CharactersProps {
@@ -37,7 +36,7 @@ const characterVisibility = (character: Character) => {
   return (character.active)
 }
 
-const fetchVehicles = async (client: any) => {
+const fetchVehicles = async (client: Client) => {
   const response = await client.getAllVehicles()
   if (response.status === 200) {
     const vehicles = await response.json()
@@ -49,7 +48,7 @@ const fetchVehicles = async (client: any) => {
   }
 }
 
-const fetchCharacters = async (client: any) => {
+const fetchCharacters = async (client: Client) => {
   const response = await client.getAllCharacters()
   if (response.status === 200) {
     const chars = await response.json()
@@ -61,7 +60,7 @@ const fetchCharacters = async (client: any) => {
   }
 }
 
-const fetchCharactersAndVehicles = async (client: any) => {
+const fetchCharactersAndVehicles = async (client: Client) => {
   const [characterResponse, characters] = await fetchCharacters(client)
   const [vehicleResponse, vehicles] = await fetchVehicles(client)
 
@@ -71,9 +70,7 @@ const fetchCharactersAndVehicles = async (client: any) => {
 }
 
 export async function getServerSideProps({ req, res }: ServerSideProps) {
-  const session: any = await unstable_getServerSession(req as any, res as any, authOptions as any)
-  const jwt = session?.authorization
-  const client = new Client({ jwt })
+  const { client, jwt } = await getServerClient(req, res)
 
   const campaignResponse = await client.getCurrentCampaign()
   const currentCampaign = campaignResponse.status === 200 ? await campaignResponse.json() : null

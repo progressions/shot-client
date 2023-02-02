@@ -15,7 +15,7 @@ interface SchtickAutocompleteProps {
 
 export default function SchtickAutocomplete({ filter, dispatchFilter }: SchtickAutocompleteProps) {
   const { loading, schtick, schticks } = filter
-  const [search, setSearch] = useState<string | null>(null)
+  const [search, setSearch] = useState<string>("")
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -33,7 +33,7 @@ export default function SchtickAutocomplete({ filter, dispatchFilter }: SchtickA
     setSearch(newValue)
   }
 
-  function getOptionLabel(option: any) {
+  function getOptionLabel(option: Schtick) {
     return option.title
   }
 

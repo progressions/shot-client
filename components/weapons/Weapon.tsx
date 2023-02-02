@@ -5,13 +5,21 @@ import { useCharacter } from "../../contexts/CharacterContext"
 import ClearIcon from '@mui/icons-material/Clear'
 import WeaponCardBase from "./WeaponCardBase"
 import { GiDeathSkull, GiShotgun, GiPistolGun } from "react-icons/gi"
+import { Weapon as WeaponType } from "../../types/types"
+import type { WeaponsStateType, WeaponsActionType } from "./filterReducer"
 
-export default function Weapon({ weapon, filter, dispatchFilter }: any) {
+interface WeaponProps {
+  weapon: WeaponType
+  filter: WeaponsStateType
+  dispatchFilter?: React.Dispatch<WeaponsActionType>
+}
+
+export default function Weapon({ weapon, filter, dispatchFilter }: WeaponProps) {
   const { client } = useClient()
   const { toastError } = useToast()
   const { character, reloadCharacter } = useCharacter()
 
-  async function removeWeapon(event: any) {
+  async function removeWeapon() {
     const response = await client.removeWeapon(character, weapon)
     if (response.status === 200) {
       await reloadCharacter()
@@ -20,13 +28,15 @@ export default function Weapon({ weapon, filter, dispatchFilter }: any) {
     }
   }
 
-  async function deleteWeapon(event: any) {
+  async function deleteWeapon() {
     const doit = confirm("Delete this weapon? This cannot be undone.")
     if (!doit) return
 
     const response = await client.deleteWeapon(weapon)
     if (response.status === 200) {
-      dispatchFilter({ type: "edit" })
+      if (dispatchFilter) {
+        dispatchFilter({ type: "edit" })
+      }
     } else {
       toastError()
     }

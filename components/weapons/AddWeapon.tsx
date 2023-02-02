@@ -33,7 +33,7 @@ export default function AddWeapon() {
     }
   }, [edited, character?.id, dispatchWeapons, user?.id, juncture, category, toastError, client, page, name])
 
-  async function addWeapon(event: any) {
+  async function addWeapon(event: React.ChangeEvent<HTMLInputElement>) {
     event.preventDefault()
     dispatchWeapons({ type: "saving" })
 
@@ -46,21 +46,13 @@ export default function AddWeapon() {
     }
   }
 
-  function handleChange(event: any) {
+  function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     dispatchWeapons({ type: "update", name: event.target.name, value: event.target.value })
   }
 
   function handleClose() {
     setOpen(false)
     dispatchWeapons({ type: "reset" })
-  }
-
-  function selectWeapon(event: any, newValue: any) {
-    dispatchWeapons({ type: "weapon", payload: newValue })
-  }
-
-  function getOptionLabel(option: any) {
-    return option?.name || ""
   }
 
   const helperText = (weapons?.length) ? "" : "There are no available weapons."

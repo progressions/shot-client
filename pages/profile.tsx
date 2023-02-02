@@ -1,14 +1,13 @@
+import type { NextApiRequest, NextApiResponse } from "next"
 import Head from 'next/head'
 import { Avatar, Box, Button, Stack, Container, Typography, TextField } from '@mui/material'
 import Layout from '../components/Layout'
 import Client from '../components/Client'
-import { useSession } from 'next-auth/react'
-import { authOptions } from './api/auth/[...nextauth]'
-import { unstable_getServerSession } from "next-auth/next"
 import { useState } from 'react'
 import Router from "next/router"
+import { getServerClient } from "../utils/getServerClient"
 
-import type { User, ServerSideProps } from "../types/types"
+import type { AuthSession, User, ServerSideProps } from "../types/types"
 
 interface ProfileProps {
   jwt: string,
@@ -16,10 +15,8 @@ interface ProfileProps {
 }
 
 export async function getServerSideProps({ req, res, params }: ServerSideProps) {
-  const session: any = await unstable_getServerSession(req as any, res as any, authOptions as any)
-  const jwt = session?.authorization
-  const client = new Client({ jwt })
-  const id = session?.id
+  const { client, jwt, session } = await getServerClient(req, res)
+  const id = session?.id as string
 
   const response = await client.getUser({id: id})
   if (response.status === 200) {

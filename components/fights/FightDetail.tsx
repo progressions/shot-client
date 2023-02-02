@@ -3,11 +3,6 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
 import VisibilityIcon from '@mui/icons-material/Visibility'
 
-import Router from 'next/router'
-import { useSession } from 'next-auth/react'
-import { authOptions } from '../../pages/api/auth/[...nextauth]'
-import { unstable_getServerSession } from "next-auth/next"
-import Client from "../Client"
 import GamemasterOnly from "../GamemasterOnly"
 
 import { useToast } from "../../contexts/ToastContext"

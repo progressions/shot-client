@@ -1,5 +1,5 @@
 import { Button, TextField, Popover, Paper } from "@mui/material"
-import { BlockPicker } from 'react-color'
+import { BlockPicker, ColorResult } from 'react-color'
 import { StyledTextField } from "../../StyledFields"
 
 import { useState } from "react"
@@ -9,14 +9,14 @@ import type { Character } from "../../../types/types"
 
 interface ColorPickerProps {
   character: Character
-  onChange: any
+  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void
   setCharacter?: React.Dispatch<React.SetStateAction<Character>>
   dispatch?: React.Dispatch<CharacterStateAction>
 }
 
 export default function ColorPicker({ character, onChange, setCharacter, dispatch }: ColorPickerProps) {
   const [picker, setPicker] = useState<boolean>(false)
-  const [anchorEl, setAnchorEl] = useState(null)
+  const [anchorEl, setAnchorEl] = useState<Element | null>(null)
 
   const togglePicker = (event: React.MouseEvent<HTMLElement>) => {
     if (picker) {
@@ -24,11 +24,11 @@ export default function ColorPicker({ character, onChange, setCharacter, dispatc
       setAnchorEl(null)
     } else {
       setPicker(true)
-      setAnchorEl(event.target as any)
+      setAnchorEl(event.target as Element)
     }
   }
 
-  const handleColor = (color: any) => {
+  const handleColor = (color: ColorResult) => {
     if (dispatch) {
       dispatch({ type: "update", name: "color", value: color?.hex })
     }

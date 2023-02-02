@@ -4,12 +4,18 @@ import { useToast } from "../../contexts/ToastContext"
 import { useCharacter } from "../../contexts/CharacterContext"
 import ClearIcon from '@mui/icons-material/Clear'
 
-export default function Site({ site }: any) {
+import type { Site } from "../../types/types"
+
+interface SiteProps {
+  site: Site
+}
+
+export default function Site({ site }: SiteProps) {
   const { client } = useClient()
   const { toastError } = useToast()
   const { character, reloadCharacter } = useCharacter()
 
-  async function deleteSite(event: any) {
+  async function deleteSite() {
     const response = await client.deleteSite(character, site)
     if (response.status === 200) {
       await reloadCharacter()

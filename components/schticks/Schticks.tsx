@@ -6,6 +6,7 @@ import { rowMap } from "../../utils/rowMap"
 
 import { useState, useMemo } from "react"
 import { SchticksStateType, SchticksActionType } from "./filterReducer"
+import { Schtick } from "../../types/types"
 
 interface SchticksProps {
   filter: SchticksStateType
@@ -15,18 +16,18 @@ interface SchticksProps {
 export default function Schticks({ filter, dispatchFilter }: SchticksProps) {
   const { user, client } = useClient()
 
-  const schticks = useMemo(() => (filter?.schticks || []), [filter?.schticks])
+  const schticks:Schtick[] = useMemo(() => (filter?.schticks || []), [filter?.schticks])
   const meta = filter?.meta || {}
 
   const rowsOfData = useMemo(() => (
-    rowMap(schticks, 2)
+    rowMap<Schtick>(schticks, 2)
   ), [schticks])
 
   const outputRows = useMemo(() => {
     const output = (
-      rowsOfData.map((row: any, index: number) => (
+      rowsOfData.map((row: Schtick[], index: number) => (
         <Stack spacing={1} direction="row" key={`row_${index}`}>
-          { row.map((schtick: any) => (
+          { row.map((schtick: Schtick) => (
             <SchtickCard key={`schtick_${schtick?.id}`} schtick={schtick} filter={filter} dispatchFilter={dispatchFilter} />
           )) }
         </Stack>
