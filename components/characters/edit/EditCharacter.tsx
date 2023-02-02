@@ -30,6 +30,7 @@ import type { SchticksStateType } from "../../schticks/schticksState"
 import { initialSchticksState as initialSchticksState } from "../../schticks/schticksState"
 import type { WeaponsStateType } from "../../weapons/weaponsState"
 import { initialWeaponsState as initialWeaponsState } from "../../weapons/weaponsState"
+import { CharacterActions } from "./characterState"
 
 interface EditCharacterProps {
   character: Character
@@ -50,37 +51,37 @@ export default function EditCharacter({ character:initialCharacter }: EditCharac
   }
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement>): void {
-    dispatchCharacter({ type: "update", name: event.target.name, value: event.target.value || event.target.checked })
+    dispatchCharacter({ type: CharacterActions.UPDATE, name: event.target.name, value: event.target.value || event.target.checked })
   }
 
   function handleCheck(event: React.SyntheticEvent<Element, Event>, checked: boolean): void {
     const target = event.target as HTMLInputElement
-    dispatchCharacter({ type: "update", name: target.name, value: checked })
+    dispatchCharacter({ type: CharacterActions.UPDATE, name: target.name, value: checked })
   }
 
   function handleAVChange(event: React.ChangeEvent<HTMLInputElement>, newValue: string) {
-    dispatchCharacter({ type: "action_value", name: event.target.name, value: event.target.value || newValue })
+    dispatchCharacter({ type: CharacterActions.ACTION_VALUE, name: event.target.name, value: event.target.value || newValue })
   }
 
   function handleSkillsChange(event: React.ChangeEvent<HTMLInputElement>) {
-    dispatchCharacter({ type: "skills", name: event.target.name, value: event.target.value })
+    dispatchCharacter({ type: CharacterActions.SKILLS, name: event.target.name, value: event.target.value })
   }
 
   function handleDescriptionChange(event: React.ChangeEvent<HTMLInputElement>) {
-    dispatchCharacter({ type: "description", name: event.target.name, value: event.target.value })
+    dispatchCharacter({ type: CharacterActions.DESCRIPTION, name: event.target.name, value: event.target.value })
   }
 
   const handleDeathMarks = (event: React.SyntheticEvent<Element, Event>, newValue: number | null) => {
     const { action_values } = character || {}
     const value = (newValue === character.action_values["Marks of Death"]) ? 0 : newValue
-    dispatchCharacter({ type: "action_value", name: "Marks of Death", value: value })
+    dispatchCharacter({ type: CharacterActions.ACTION_VALUE, name: "Marks of Death", value: value as number })
   }
 
   async function cancelForm() {
     const response = await client.getCharacter(character)
     if (response.status === 200) {
       const data = await response.json()
-      dispatchCharacter({ type: "replace", character: data })
+      dispatchCharacter({ type: CharacterActions.CHARACTER, payload: data })
       toastSuccess("Changes reverted.")
     } else {
       toastError()

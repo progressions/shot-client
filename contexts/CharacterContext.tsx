@@ -7,7 +7,7 @@ import type { Character, User } from "../types/types"
 import { useClient } from "./ClientContext"
 import { useToast } from "./ToastContext"
 
-import { CharacterStateAction, CharacterStateType, initialState, characterReducer } from "../components/characters/edit/characterReducer"
+import { CharacterActions, CharacterStateAction, CharacterStateType, initialCharacterState, characterReducer } from "../components/characters/edit/characterState"
 
 interface CharacterContextType {
   state: CharacterStateType
@@ -18,7 +18,7 @@ interface CharacterContextType {
 }
 
 const defaultCharacterContext: CharacterContextType = {
-  state: initialState,
+  state: initialCharacterState,
   dispatch: () => {},
   updateCharacter: () => { return new Promise(() => {})},
   reloadCharacter: () => { return new Promise(() => {})},
@@ -34,22 +34,22 @@ interface CharacterProviderProps {
 
 export function CharacterProvider({ character, children }: CharacterProviderProps) {
   const { client } = useClient()
-  const [state, dispatch] = useReducer(characterReducer, {...initialState, character: character})
+  const [state, dispatch] = useReducer(characterReducer, {...initialCharacterState, character: character})
   const { edited, saving } = state
   const { toastError, toastSuccess } = useToast()
 
   useEffect(() => {
     if (edited) {
       const saveCharacter = async (): Promise<void> => {
-        dispatch({ type: "submit" })
+        dispatch({ type: CharacterActions.SUBMIT })
 
         const response = await client.updateCharacter(state.character)
         if (response.status === 200) {
           const data = await response.json()
-          dispatch({ type: "replace", character: data })
+          dispatch({ type: CharacterActions.CHARACTER, payload: data })
           toastSuccess("Character updated.")
         } else {
-          dispatch({ type: "reset" })
+          dispatch({ type: CharacterActions.RESET })
           toastError()
         }
       }
@@ -63,29 +63,29 @@ export function CharacterProvider({ character, children }: CharacterProviderProp
   }, [edited, state.character, dispatch, toastSuccess, toastError, client])
 
   async function updateCharacter():Promise<void> {
-    dispatch({ type: "submit" })
+    dispatch({ type: CharacterActions.SUBMIT })
 
     const response = await client.updateCharacter(state.character)
     if (response.status === 200) {
       const data = await response.json()
-      dispatch({ type: "replace", character: data })
+      dispatch({ type: CharacterActions.CHARACTER, payload: data })
       toastSuccess("Character updated.")
     } else {
-      dispatch({ type: "reset" })
+      dispatch({ type: CharacterActions.RESET })
       toastError()
     }
   }
 
   async function reloadCharacter():Promise<void> {
-    dispatch({ type: "submit" })
+    dispatch({ type: CharacterActions.SUBMIT })
 
     const response = await client.getCharacter(state.character)
     if (response.status === 200) {
       const data = await response.json()
-      dispatch({ type: "replace", character: data })
+      dispatch({ type: CharacterActions.CHARACTER, payload: data })
       toastSuccess("Character updated.")
     } else {
-      dispatch({ type: "reset" })
+      dispatch({ type: CharacterActions.RESET })
       toastError()
     }
   }

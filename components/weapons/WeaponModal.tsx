@@ -8,6 +8,7 @@ import type { FilterParamsType, OptionType, Juncture, InputParamsType, Character
 import { defaultWeapon } from "../../types/types"
 import { useEffect, useReducer } from "react"
 import type { WeaponsStateType, WeaponsActionType } from "./weaponsState"
+import { WeaponsActions } from "./weaponsState"
 
 const filterOptions = createFilterOptions<Juncture>();
 
@@ -25,11 +26,11 @@ export default function WeaponModal({ state, dispatch, open, setOpen }: WeaponMo
 
   async function addWeapon(event: React.ChangeEvent<HTMLInputElement>) {
     event.preventDefault()
-    dispatch({ type: "saving" })
+    dispatch({ type: WeaponsActions.SAVING })
 
     const response = await client.createWeapon(weapon)
     if (response.status === 200) {
-      dispatch({ type: "edit" })
+      dispatch({ type: WeaponsActions.EDIT })
       setOpen(false)
     } else {
       toastError()
@@ -37,16 +38,16 @@ export default function WeaponModal({ state, dispatch, open, setOpen }: WeaponMo
   }
 
   function cancelForm() {
-    dispatch({ type: "reset" })
+    dispatch({ type: WeaponsActions.RESET })
     setOpen(false)
   }
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
-    dispatch({ type: "update", name: event.target.name, value: event.target.value })
+    dispatch({ type: WeaponsActions.UPDATE, name: event.target.name, value: event.target.value })
   }
 
   function changeJuncture(event: React.SyntheticEvent<Element, Event>, newValue: Juncture) {
-    dispatch({ type: "update", name: "juncture", value: newValue })
+    dispatch({ type: WeaponsActions.UPDATE, name: "juncture", value: newValue })
   }
 
   function getOptionLabel(option: Juncture | OptionType) {

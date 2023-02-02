@@ -1,6 +1,21 @@
 import type { WeaponCategory, Juncture, PaginationMeta, Weapon } from "../../types/types"
 import { defaultPaginationMeta, defaultWeapon } from "../../types/types"
 
+export enum WeaponsActions {
+  RESET = "reset",
+  EDIT = "edit",
+  SAVING = "saving",
+  SUCCESS = "success",
+  PREVIOUS = "previous",
+  NEXT = "next",
+  CATEGORY = "cateory",
+  JUNCTURE = "juncture",
+  WEAPON = "weapon",
+  WEAPONS = "weapons",
+  NAME = "name",
+  UPDATE = "update"
+}
+
 export type PayloadType = WeaponCategory | Juncture | Weapon | WeaponsResponse | string
 
 export interface WeaponsStateType {
@@ -18,17 +33,17 @@ export interface WeaponsStateType {
   meta: PaginationMeta
 }
 
-export interface ActionNoPayload {
-  type: "reset" | "edit" | "saving" | "success" | "previous" | "next"
+interface ActionNoPayload {
+  type: Extract<WeaponsActions, WeaponsActions.RESET | WeaponsActions.EDIT | WeaponsActions.SAVING | WeaponsActions.SUCCESS | WeaponsActions.PREVIOUS | WeaponsActions.NEXT>
 }
 
-export interface PayloadAction {
-  type: "juncture" | "category" | "weapon" | "weapons" | "name"
+interface PayloadAction {
+  type: Extract<WeaponsActions, WeaponsActions.JUNCTURE | WeaponsActions.CATEGORY | WeaponsActions.WEAPON | WeaponsActions.WEAPONS | WeaponsActions.NAME>
   payload: PayloadType
 }
 
-export interface UpdateAction {
-  type: "update"
+interface UpdateAction {
+  type: Extract<WeaponsActions, WeaponsActions.UPDATE>
   name: string
   value: string
 }
@@ -59,63 +74,72 @@ export const initialWeaponsState:WeaponsStateType = {
 
 export function weaponsReducer(state: WeaponsStateType, action: WeaponsActionType): WeaponsStateType {
   switch(action.type) {
-    case "edit":
+    case WeaponsActions.EDIT:
       return {
         ...state,
         edited: true
       }
-    case "previous":
+    case WeaponsActions.PREVIOUS:
       return {
         ...state,
         edited: true,
         page: state.meta["prev_page"] as number
       }
-    case "next":
+    case WeaponsActions.NEXT:
       return {
         ...state,
         edited: true,
         page: state.meta["next_page"] as number
       }
-    case "saving":
+    case WeaponsActions.SAVING:
       return {
         ...state,
         saving: true,
         edited: false
       }
-    case "success":
+    case WeaponsActions.SUCCESS:
       return {
         ...state,
         loading: false,
         saving: false,
         edited: false
       }
-    case "juncture":
+    case WeaponsActions.JUNCTURE:
       return {
         ...state,
         edited: true,
         juncture: (action.payload || initialWeaponsState.juncture) as Juncture,
         weapon: initialWeaponsState.weapon
       }
-    case "category":
+    case WeaponsActions.CATEGORY:
       return {
         ...state,
         edited: true,
         category: (action.payload || initialWeaponsState.category) as WeaponCategory,
         weapon: initialWeaponsState.weapon
       }
-    case "name":
+    case WeaponsActions.NAME:
       return {
         ...state,
         edited: true,
         name: (action.payload || initialWeaponsState.name) as string,
       }
-    case "weapon":
+    case WeaponsActions.UPDATE:
+      return {
+        ...state,
+        edited: true,
+        weapon: {
+          ...state.weapon,
+          [action.name]: action.value
+        }
+      }
+    case WeaponsActions.WEAPON:
       return {
         ...state,
         edited: true,
         weapon: (action.payload || initialWeaponsState.weapon) as Weapon,
       }
-    case "weapons":
+    case WeaponsActions.WEAPONS:
       const { weapons, meta, junctures, categories } = action.payload as WeaponsResponse
       return {
         ...state,
@@ -126,7 +150,7 @@ export function weaponsReducer(state: WeaponsStateType, action: WeaponsActionTyp
         junctures: junctures,
         categories: categories
       }
-    case "reset":
+    case WeaponsActions.RESET:
       return initialWeaponsState
     default:
       return state

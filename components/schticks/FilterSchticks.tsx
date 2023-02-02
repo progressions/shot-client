@@ -6,6 +6,7 @@ import { useToast } from "../../contexts/ToastContext"
 import SchtickAutocomplete from "./SchtickAutocomplete"
 import CategoryAutocomplete from "./CategoryAutocomplete"
 import PathAutocomplete from "./PathAutocomplete"
+import { SchticksActions } from "./schticksState"
 
 import type { SchticksStateType, SchticksActionType } from "./schticksState"
 
@@ -25,7 +26,7 @@ export default function FilterSchticks({ state, dispatch }: FilterSchticksProps)
       const response = await client.getSchticks({ page, category, path, title, character_id: character?.id as string })
       if (response.status === 200) {
         const data = await response.json()
-        dispatch({ type: "schticks", payload: data })
+        dispatch({ type: SchticksActions.SCHTICKS, payload: data })
       }
     }
 

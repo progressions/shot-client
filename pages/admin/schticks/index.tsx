@@ -23,6 +23,7 @@ import Schticks from "../../../components/schticks/Schticks"
 import { getServerClient } from "../../../utils/getServerClient"
 import type { AuthSession, ServerSideProps, Campaign } from "../../../types/types"
 import type { SchticksResponse } from "../../../components/schticks/schticksState"
+import { SchticksActions } from "../../../components/schticks/schticksState"
 import { GetServerSideProps } from 'next'
 import { InferGetServerSidePropsType } from 'next'
 
@@ -72,7 +73,7 @@ export default function SchticksIndex(data: SchticksResponse) {
   const { loading } = state
 
   useEffect(() => {
-    dispatch({ type: "schticks", payload: data })
+    dispatch({ type: SchticksActions.SCHTICKS, payload: data })
   }, [data])
 
   return (

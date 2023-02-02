@@ -3,6 +3,7 @@ import { useState, useEffect } from "react"
 import type { Weapon, InputParamsType } from "../../types/types"
 import { defaultWeapon } from "../../types/types"
 import type { WeaponsStateType, WeaponsActionType } from "./weaponsState"
+import { WeaponsActions } from "./weaponsState"
 
 interface WeaponAutocompleteProps {
   state: WeaponsStateType
@@ -15,14 +16,14 @@ export default function WeaponAutocomplete({ state, dispatch }: WeaponAutocomple
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      dispatch({ type: "name", payload: search })
+      dispatch({ type: WeaponsActions.NAME, payload: search })
     }, 1000)
 
     return () => clearTimeout(timer)
   }, [search, dispatch])
 
   function handleSelect(event: React.ChangeEvent<HTMLInputElement>, newValue: Weapon) {
-    dispatch({ type: "weapon", payload: newValue })
+    dispatch({ type: WeaponsActions.WEAPON, payload: newValue })
   }
 
   function handleInputChange(event: React.ChangeEvent<HTMLInputElement>, newValue: string) {

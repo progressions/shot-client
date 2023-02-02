@@ -10,8 +10,10 @@ import { useCharacter } from "../../contexts/CharacterContext"
 import { useState, useMemo } from "react"
 import SchtickModal from "./SchtickModal"
 
+import { SchticksActions } from "./schticksState"
 import type { Character, Schtick } from "../../types/types"
 import type { SchticksStateType, SchticksActionType } from "./schticksState"
+import { CharacterActions } from "../characters/edit/characterState"
 
 /*
 
@@ -41,7 +43,7 @@ export default function SchtickCard({ schtick, state, dispatch }: SchtickCardPro
     const response = await client.getCharacter(char)
     if (response.status === 200) {
       const data = await response.json()
-      dispatchCharacter({ type: "replace", character: data })
+      dispatchCharacter({ type: CharacterActions.CHARACTER, payload: data })
     } else {
       toastError()
     }
@@ -52,7 +54,7 @@ export default function SchtickCard({ schtick, state, dispatch }: SchtickCardPro
     if (response.status === 200) {
       const data = await response.json()
       if (dispatch) {
-        dispatch({ type: "schticks", payload: data })
+        dispatch({ type: SchticksActions.SCHTICKS, payload: data })
       }
     }
   }

@@ -5,8 +5,9 @@ import { useClient } from "../../contexts/ClientContext"
 import { useToast } from "../../contexts/ToastContext"
 import { useCharacter } from "../../contexts/CharacterContext"
 import FilterSchticks from "./FilterSchticks"
-import { initialSchticksState, schticksReducer } from "./schticksState"
+import { SchticksActions, initialSchticksState, schticksReducer } from "./schticksState"
 import { SaveCancelButtons, StyledTextField } from "../StyledFields"
+import { CharacterActions } from "../characters/edit/characterState"
 
 export default function SchtickSelector() {
   const [state, dispatch] = useReducer(schticksReducer, initialSchticksState)
@@ -23,23 +24,23 @@ export default function SchtickSelector() {
   async function handleSubmit(event: React.ChangeEvent<HTMLInputElement>) {
     event.preventDefault()
     if (!schtick?.id) return
-    dispatch({ type: "saving" })
+    dispatch({ type: SchticksActions.SAVING })
 
     const response = await client.addSchtick(character, schtick)
     if (response.status === 200) {
       const data = await response.json()
-      dispatchCharacter({ type: "replace", character: data })
+      dispatchCharacter({ type: CharacterActions.CHARACTER, payload: data })
       toastSuccess("Schtick added.")
     } else {
       toastError()
     }
 
-    dispatch({ type: "success" })
-    dispatch({ type: "reset" })
+    dispatch({ type: SchticksActions.SUCCESS })
+    dispatch({ type: SchticksActions.RESET })
   }
 
   function cancelForm() {
-    dispatch({ type: "reset" })
+    dispatch({ type: SchticksActions.RESET })
     setOpen(false)
   }
 

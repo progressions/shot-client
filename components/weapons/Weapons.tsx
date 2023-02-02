@@ -6,6 +6,7 @@ import { useCharacter } from "../../contexts/CharacterContext"
 import { rowMap } from "../../utils/rowMap"
 import AddWeapon from "./AddWeapon"
 
+import { WeaponsActions } from "./weaponsState"
 import type { WeaponsStateType, WeaponsActionType } from "./weaponsState"
 
 interface WeaponsProps {
@@ -37,13 +38,13 @@ export default function Weapons({ state, dispatch }: WeaponsProps) {
   function loadPrevious() {
     if (!dispatch) return
 
-    dispatch({ type: "previous" })
+    dispatch({ type: WeaponsActions.PREVIOUS })
   }
 
   function loadNext() {
     if (!dispatch) return
 
-    dispatch({ type: "next" })
+    dispatch({ type: WeaponsActions.NEXT })
   }
 
   if (!weapons) return (<></>)

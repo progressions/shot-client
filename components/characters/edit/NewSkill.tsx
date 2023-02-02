@@ -5,6 +5,7 @@ import { StyledTextField, StyledAutocomplete } from "../../StyledFields"
 
 import { useEffect, useMemo, useState } from "react"
 import type { OptionType, FilterParamsType, InputParamsType } from "../../../types/types"
+import { CharacterActions } from "./characterState"
 
 const filter = createFilterOptions<string>();
 
@@ -36,7 +37,7 @@ export default function NewSkill() {
   }
 
   function addSkill(): void {
-    dispatch({ type: "skills", ...skill })
+    dispatch({ type: CharacterActions.SKILLS, ...skill })
     cancelForm()
   }
 

@@ -5,7 +5,8 @@ import { Subhead } from "../StyledFields"
 import { rowMap } from "../../utils/rowMap"
 
 import { useState, useMemo } from "react"
-import { SchticksStateType, SchticksActionType } from "./schticksState"
+import type { SchticksStateType, SchticksActionType } from "./schticksState"
+import { SchticksActions } from "./schticksState"
 import { Schtick } from "../../types/types"
 
 interface SchticksProps {
@@ -39,13 +40,13 @@ export default function Schticks({ state, dispatch }: SchticksProps) {
   function loadPrevious() {
     if (!dispatch) return
 
-    dispatch({ type: "previous" })
+    dispatch({ type: SchticksActions.PREVIOUS })
   }
 
   function loadNext() {
     if (!dispatch) return
 
-    dispatch({ type: "next" })
+    dispatch({ type: SchticksActions.NEXT })
   }
 
   if (!schticks) return (<></>)

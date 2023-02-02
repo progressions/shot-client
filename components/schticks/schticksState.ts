@@ -1,19 +1,34 @@
 import type { SchtickCategory, SchtickPath, PaginationMeta, Schtick } from "../../types/types"
 import { defaultPaginationMeta, defaultSchtick } from "../../types/types"
 
+export enum SchticksActions {
+  RESET = "reset",
+  EDIT = "edit",
+  SAVING = "saving",
+  SUCCESS = "success",
+  PREVIOUS = "previous",
+  NEXT = "next",
+  CATEGORY = "cateory",
+  PATH = "path",
+  TITLE = "title",
+  SCHTICK = "schtick",
+  SCHTICKS = "schticks",
+  UPDATE = "update"
+}
+
 export interface ActionNoPayload {
-  type: "reset" | "edit" | "saving" | "success" | "previous" | "next"
+  type: Extract<SchticksActions, SchticksActions.RESET | SchticksActions.EDIT | SchticksActions.SAVING | SchticksActions.SUCCESS | SchticksActions.PREVIOUS | SchticksActions.NEXT>
 }
 
 export type PayloadType = SchtickCategory | SchtickPath | Schtick | SchticksResponse | string
 
 export interface PayloadAction {
-  type: "category" | "path" | "title" | "schtick" | "schticks"
+  type: Extract<SchticksActions, SchticksActions.CATEGORY | SchticksActions.PATH | SchticksActions.TITLE | SchticksActions.SCHTICK | SchticksActions.SCHTICKS>
   payload: PayloadType
 }
 
 export interface UpdateAction {
-  type: "update"
+  type: Extract<SchticksActions, SchticksActions.UPDATE>
   name: string
   value: string
 }
@@ -57,51 +72,51 @@ export const initialSchticksState: SchticksStateType = {
 
 export function schticksReducer(state: SchticksStateType, action: SchticksActionType) {
   switch(action.type) {
-    case "previous":
+    case SchticksActions.PREVIOUS:
       const { prev_page } = state.meta
       return {
         ...state,
         page: prev_page as number
       }
-    case "next":
+    case SchticksActions.NEXT:
       return {
         ...state,
         page: state.meta.next_page as number
       }
-    case "saving":
+    case SchticksActions.SAVING:
       return {
         ...state,
         saving: true
       }
-    case "success":
+    case SchticksActions.SUCCESS:
       return {
         ...state,
         loading: false,
         saving: false
       }
-    case "category":
+    case SchticksActions.CATEGORY:
       return {
         ...state,
         category: (action.payload || initialSchticksState.category) as SchtickCategory,
         path: initialSchticksState.path,
         schtick: initialSchticksState.schtick
       }
-    case "path":
+    case SchticksActions.PATH:
       return {
         ...state,
         path: (action.payload || initialSchticksState.path) as SchtickPath,
       }
-    case "title":
+    case SchticksActions.TITLE:
       return {
         ...state,
         title: (action.payload || initialSchticksState.title) as string,
       }
-    case "schtick":
+    case SchticksActions.SCHTICK:
       return {
         ...state,
         schtick: (action.payload || initialSchticksState.schtick) as Schtick,
       }
-    case "schticks":
+    case SchticksActions.SCHTICKS:
       const { schticks, meta, paths, categories } = action.payload as SchticksResponse
       return {
         ...state,

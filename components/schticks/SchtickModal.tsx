@@ -6,6 +6,7 @@ import { useClient } from "../../contexts/ClientContext"
 import { useToast } from "../../contexts/ToastContext"
 import { StyledTextField, StyledDialog, SaveCancelButtons } from "../StyledFields"
 import { initialSchticksState, schticksReducer } from "./schticksState"
+import { SchticksActions } from "./schticksState"
 
 import type { SchticksStateType, SchticksActionType } from "./schticksState"
 
@@ -25,21 +26,21 @@ export default function SchtickModal({ open, setOpen, state, dispatch, schtick:i
   useEffect(() => {
     if (!dispatch) return
 
-    dispatch({ type: "schtick", payload: initialSchtick as Schtick })
+    dispatch({ type: SchticksActions.SCHTICK, payload: initialSchtick as Schtick })
   }, [dispatch, initialSchtick])
 
   useEffect(() => {
     if (!dispatch) return
 
-    dispatch({ type: "update", name: "category", value: category })
-    dispatch({ type: "update", name: "path", value: path })
+    dispatch({ type: SchticksActions.UPDATE, name: "category", value: category })
+    dispatch({ type: SchticksActions.UPDATE, name: "path", value: path })
   }, [dispatch, category, path])
 
   async function reloadSchticks() {
     const response = await client.getSchticks()
     if (response.status === 200) {
       const data = await response.json()
-      dispatch({ type: "schticks", payload: data })
+      dispatch({ type: SchticksActions.SCHTICKS, payload: data })
     }
   }
 
@@ -58,13 +59,13 @@ export default function SchtickModal({ open, setOpen, state, dispatch, schtick:i
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     if (!dispatch) return
 
-    dispatch({ type: "update", name: event.target.name, value: event.target.value })
+    dispatch({ type: SchticksActions.UPDATE, name: event.target.name, value: event.target.value })
   }
 
   function cancelForm() {
     if (!dispatch) return
 
-    dispatch({ type: "reset" })
+    dispatch({ type: SchticksActions.RESET })
     setOpen(false)
   }
 

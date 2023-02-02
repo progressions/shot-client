@@ -4,7 +4,7 @@ import { useClient } from "../../contexts/ClientContext"
 import { useToast } from "../../contexts/ToastContext"
 import { useCharacter } from "../../contexts/CharacterContext"
 import FilterWeapons from "./FilterWeapons"
-import { initialWeaponsState, weaponsReducer } from "./weaponsState"
+import { WeaponsActions, initialWeaponsState, weaponsReducer } from "./weaponsState"
 
 import type { Character, Weapon } from "../../types/types"
 import { defaultWeapon } from "../../types/types"
@@ -24,7 +24,7 @@ export default function AddWeapon() {
       const response = await client.getWeapons({ page, juncture, category, name, character_id: character?.id as string })
       if (response.status === 200) {
         const data = await response.json()
-        dispatchWeapons({ type: "weapons", payload: data })
+        dispatchWeapons({ type: WeaponsActions.WEAPONS, payload: data })
       }
     }
 
@@ -35,7 +35,7 @@ export default function AddWeapon() {
 
   async function addWeapon(event: React.ChangeEvent<HTMLInputElement>) {
     event.preventDefault()
-    dispatchWeapons({ type: "saving" })
+    dispatchWeapons({ type: WeaponsActions.SAVING })
 
     const response = await client.addWeapon(character, weapon)
     if (response.status === 200) {
@@ -47,12 +47,12 @@ export default function AddWeapon() {
   }
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
-    dispatchWeapons({ type: "update", name: event.target.name, value: event.target.value })
+    dispatchWeapons({ type: WeaponsActions.UPDATE, name: event.target.name, value: event.target.value })
   }
 
   function handleClose() {
     setOpen(false)
-    dispatchWeapons({ type: "reset" })
+    dispatchWeapons({ type: WeaponsActions.RESET })
   }
 
   const helperText = (weapons?.length) ? "" : "There are no available weapons."

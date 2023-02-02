@@ -1,20 +1,41 @@
 import type { Character } from "../../../types/types"
 import { defaultCharacter } from "../../../types/types"
 
+export enum CharacterActions {
+  EDITED = "edited",
+  UPDATE = "update",
+  ACTION_VALUE = "action_value",
+  DESCRIPTION = "description",
+  SKILLS = "skills",
+  SUBMIT = "submit",
+  CHARACTER = "character",
+  RESET = "reset"
+}
+
+interface ActionNoPayload {
+  type: Extract<CharacterActions, CharacterActions.EDITED | CharacterActions.SUBMIT | CharacterActions.RESET>
+}
+
+interface UpdateAction {
+  type: Extract<CharacterActions, CharacterActions.UPDATE | CharacterActions.ACTION_VALUE | CharacterActions.DESCRIPTION | CharacterActions.SKILLS>
+  name: string
+  value: string | boolean | number
+}
+
+interface PayloadAction {
+  type: Extract<CharacterActions, CharacterActions.CHARACTER>
+  payload: Character
+}
+
 export interface CharacterStateType {
   edited: boolean
   saving: boolean
   character: Character
 }
 
-export interface CharacterStateAction {
-  type: string
-  name?: string
-  value?: unknown
-  character?: Character
-}
+export type CharacterStateAction = ActionNoPayload | UpdateAction | PayloadAction
 
-export const initialState = {
+export const initialCharacterState:CharacterStateType = {
   edited: false,
   saving: false,
   character: defaultCharacter
@@ -22,12 +43,12 @@ export const initialState = {
 
 export function characterReducer(state: CharacterStateType, action: CharacterStateAction): CharacterStateType {
   switch(action.type) {
-    case "edited":
+    case CharacterActions.EDITED:
       return {
         ...state,
         edited: true
       }
-    case "update":
+    case CharacterActions.UPDATE:
       return {
         ...state,
         edited: true,
@@ -36,7 +57,7 @@ export function characterReducer(state: CharacterStateType, action: CharacterSta
           [action.name as string]: action.value
         } as Character
       }
-    case "action_value":
+    case CharacterActions.ACTION_VALUE:
       const value = action.value === "null" ? null : action.value
       return {
         ...state,
@@ -49,7 +70,7 @@ export function characterReducer(state: CharacterStateType, action: CharacterSta
           }
         } as Character
       }
-    case "description":
+    case CharacterActions.DESCRIPTION:
       return {
         ...state,
         edited: true,
@@ -61,7 +82,7 @@ export function characterReducer(state: CharacterStateType, action: CharacterSta
           }
         } as Character
       }
-    case "skills":
+    case CharacterActions.SKILLS:
       return {
         ...state,
         edited: true,
@@ -73,25 +94,25 @@ export function characterReducer(state: CharacterStateType, action: CharacterSta
           }
         } as Character
       }
-    case "submit":
+    case CharacterActions.SUBMIT:
       return {
         ...state,
         edited: false,
         saving: true,
       }
-    case "replace":
+    case CharacterActions.CHARACTER:
       return {
         ...state,
         saving: false,
         edited: false,
-        character: action.character as Character
+        character: action.payload as Character
       }
-    case "reset":
+    case CharacterActions.RESET:
       return {
         ...state,
         saving: false
       }
     default:
-      return initialState
+      return initialCharacterState
   }
 }

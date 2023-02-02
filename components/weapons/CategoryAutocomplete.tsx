@@ -4,6 +4,7 @@ import { StyledAutocomplete, StyledSelect } from "../StyledFields"
 import type { WeaponCategory, InputParamsType } from "../../types/types"
 
 import type { WeaponsStateType, WeaponsActionType } from "./weaponsState"
+import { WeaponsActions } from "./weaponsState"
 
 interface CategoryAutocompleteProps {
   state: WeaponsStateType
@@ -14,7 +15,7 @@ export default function CategoryAutocomplete({ state, dispatch }: CategoryAutoco
   const { loading, category, categories } = state
 
   function selectCategory(event: React.SyntheticEvent<Element, Event>, newValue: WeaponCategory) {
-    dispatch({ type: "category", payload: newValue })
+    dispatch({ type: WeaponsActions.CATEGORY, payload: newValue })
   }
 
   function getOptionLabel(option: WeaponCategory) {

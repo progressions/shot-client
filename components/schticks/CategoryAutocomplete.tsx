@@ -3,6 +3,7 @@ import { useMemo } from "react"
 import { StyledAutocomplete, StyledSelect } from "../StyledFields"
 import type { SchtickCategory, InputParamsType } from "../../types/types"
 import type { SchticksStateType, SchticksActionType } from "./schticksState"
+import { SchticksActions } from "./schticksState"
 
 interface CategoryAutocompleteProps {
   state: SchticksStateType
@@ -13,7 +14,7 @@ export default function CategoryAutocomplete({ state, dispatch }: CategoryAutoco
   const { loading, category, categories, path } = state
 
   function selectCategory(event: React.SyntheticEvent<Element, Event>, newValue: SchtickCategory) {
-    dispatch({ type: "category", payload: newValue })
+    dispatch({ type: SchticksActions.CATEGORY, payload: newValue })
   }
 
   function getOptionLabel(option: SchtickCategory) {

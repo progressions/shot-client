@@ -4,7 +4,8 @@ import { StyledTextField } from "../../StyledFields"
 
 import { useState } from "react"
 
-import type { CharacterStateAction } from "./characterReducer"
+import type { CharacterStateAction } from "./characterState"
+import { CharacterActions } from "./characterState"
 import type { Character } from "../../../types/types"
 
 interface ColorPickerProps {
@@ -30,7 +31,7 @@ export default function ColorPicker({ character, onChange, setCharacter, dispatc
 
   const handleColor = (color: ColorResult) => {
     if (dispatch) {
-      dispatch({ type: "update", name: "color", value: color?.hex })
+      dispatch({ type: CharacterActions.UPDATE, name: "color", value: color?.hex })
     }
     if (setCharacter) {
       setCharacter((prevState: Character) => ({ ...prevState, color: color?.hex }))

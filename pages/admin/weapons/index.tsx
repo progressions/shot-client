@@ -14,7 +14,7 @@ import CreateCampaign from "../../../components/campaigns/CreateCampaign"
 import Campaigns from "../../../components/campaigns/Campaigns"
 import GamemasterOnly from "../../../components/GamemasterOnly"
 import FilterWeapons from "../../../components/weapons/FilterWeapons"
-import { initialWeaponsState, weaponsReducer } from "../../../components/weapons/weaponsState"
+import { WeaponsActions, initialWeaponsState, weaponsReducer } from "../../../components/weapons/weaponsState"
 
 import Weapons from "../../../components/weapons/Weapons"
 import type { Campaign } from "../../../types/types"
@@ -32,7 +32,7 @@ export default function WeaponsIndex() {
       const response = await client.getWeapons({ page, juncture, category, name, character_id: character?.id as string })
       if (response.status === 200) {
         const data = await response.json()
-        dispatch({ type: "weapons", payload: data })
+        dispatch({ type: WeaponsActions.WEAPONS, payload: data })
       }
     }
 

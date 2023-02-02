@@ -7,6 +7,7 @@ import WeaponCardBase from "./WeaponCardBase"
 import { GiDeathSkull, GiShotgun, GiPistolGun } from "react-icons/gi"
 import { Weapon as WeaponType } from "../../types/types"
 import type { WeaponsStateType, WeaponsActionType } from "./weaponsState"
+import { WeaponsActions } from "./weaponsState"
 
 interface WeaponProps {
   weapon: WeaponType
@@ -35,7 +36,7 @@ export default function Weapon({ weapon, state, dispatch }: WeaponProps) {
     const response = await client.deleteWeapon(weapon)
     if (response.status === 200) {
       if (dispatch) {
-        dispatch({ type: "edit" })
+        dispatch({ type: WeaponsActions.EDIT })
       }
     } else {
       toastError()

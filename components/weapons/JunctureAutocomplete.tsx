@@ -3,6 +3,7 @@ import { useMemo } from "react"
 import { StyledAutocomplete, StyledSelect } from "../StyledFields"
 import type { Juncture, InputParamsType } from "../../types/types"
 import type { WeaponsStateType, WeaponsActionType } from "./weaponsState"
+import { WeaponsActions } from "./weaponsState"
 
 interface JunctureAutocompleteProps {
   state: WeaponsStateType
@@ -13,7 +14,7 @@ export default function JunctureAutocomplete({ state, dispatch }: JunctureAutoco
   const { loading, juncture, junctures } = state
 
   function selectJuncture(event: React.ChangeEvent<HTMLInputElement>, newValue: Juncture) {
-    dispatch({ type: "juncture", payload: newValue })
+    dispatch({ type: WeaponsActions.JUNCTURE, payload: newValue })
   }
 
   function getOptionLabel(option: Juncture) {

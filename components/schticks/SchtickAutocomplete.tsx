@@ -3,6 +3,7 @@ import { createFilterOptions } from "@mui/material"
 import type { Schtick, InputParamsType } from "../../types/types"
 import { defaultSchtick } from "../../types/types"
 
+import { SchticksActions } from "./schticksState"
 import { useState, useEffect } from "react"
 import type { SchticksStateType, SchticksActionType } from "./schticksState"
 
@@ -19,14 +20,14 @@ export default function SchtickAutocomplete({ state, dispatch }: SchtickAutocomp
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      dispatch({ type: "title", payload: search })
+      dispatch({ type: SchticksActions.TITLE, payload: search })
     }, 1000)
 
     return () => clearTimeout(timer)
   }, [search, dispatch])
 
   function handleSelect(event: React.ChangeEvent<HTMLInputElement>, newValue: Schtick) {
-    dispatch({ type: "schtick", payload: newValue })
+    dispatch({ type: SchticksActions.SCHTICK, payload: newValue })
   }
 
   function handleInputChange(event: React.ChangeEvent<HTMLInputElement>, newValue: string) {
