@@ -3,8 +3,6 @@ import { Stack, Button, Typography, IconButton, ButtonGroup } from "@mui/materia
 import { useFight } from "../../contexts/FightContext"
 import { useToast } from "../../contexts/ToastContext"
 import { useClient } from "../../contexts/ClientContext"
-import { useSession } from 'next-auth/react'
-import Client from "../Client"
 
 import AddIcon from '@mui/icons-material/Add'
 import RemoveIcon from '@mui/icons-material/Remove'

@@ -9,7 +9,6 @@ import Router from 'next/router'
 
 import CharacterType from '../characters/edit/CharacterType'
 
-import { useSession } from 'next-auth/react'
 import Client from "../Client"
 import PositionSelector from "./PositionSelector"
 import PursuerSelector from "./PursuerSelector"

@@ -17,8 +17,6 @@ import PlayerTypeOnly from "../PlayerTypeOnly"
 import { useToast } from "../../contexts/ToastContext"
 import { useFight } from "../../contexts/FightContext"
 import { useClient } from "../../contexts/ClientContext"
-import { useSession } from 'next-auth/react'
-import Client from "../Client"
 
 import type { Person, Fight, Character, Toast, ID } from "../../types/types"
 import { defaultCharacter } from "../../types/types"

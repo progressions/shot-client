@@ -5,7 +5,6 @@ import Client from "../Client"
 import { defaultCampaign } from "../../types/types"
 import { useToast } from "../../contexts/ToastContext"
 import { useClient } from "../../contexts/ClientContext"
-import { useSession } from 'next-auth/react'
 
 import type { Campaign } from "../../types/types"
 

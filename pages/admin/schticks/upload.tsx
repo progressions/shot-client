@@ -7,7 +7,6 @@ import { Stack, Box, Button, Container, Typography, TextField } from "@mui/mater
 import { useClient } from "../../../contexts/ClientContext"
 import { useToast } from "../../../contexts/ToastContext"
 import { useCampaign } from "../../../contexts/CampaignContext"
-import { useSession } from 'next-auth/react'
 
 import Client from "../../../components/Client"
 import { getServerClient } from "../../../utils/getServerClient"

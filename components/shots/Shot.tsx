@@ -11,7 +11,6 @@ import GroupedEffects from "../effects/GroupedEffects"
 
 import type { User, Vehicle, Character, Fight, Toast } from "../../types/types"
 
-import { useSession } from 'next-auth/react'
 import { useFight } from "../../contexts/FightContext"
 import { useClient } from "../../contexts/ClientContext"
 import { useState } from "react"

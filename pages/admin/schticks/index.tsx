@@ -6,7 +6,6 @@ import { useEffect, useReducer } from "react"
 import { Skeleton, Box, Paper, IconButton, Button, Stack, Link, Container, Typography, TableContainer, Table, TableHead, TableBody, TableRow, TableCell } from "@mui/material"
 import { useClient } from "../../../contexts/ClientContext"
 import { useCampaign } from "../../../contexts/CampaignContext"
-import { useSession } from 'next-auth/react'
 
 import { ButtonBar } from "../../../components/StyledFields"
 import CreateCampaign from "../../../components/campaigns/CreateCampaign"
@@ -17,7 +16,6 @@ import FilterSchticks from "../../../components/schticks/FilterSchticks"
 import { initialSchticksState, schticksReducer } from "../../../components/schticks/schticksState"
 
 import { authOptions } from '../../api/auth/[...nextauth]'
-import Client from "../../../components/Client"
 import Schticks from "../../../components/schticks/Schticks"
 
 import { getServerClient } from "../../../utils/getServerClient"

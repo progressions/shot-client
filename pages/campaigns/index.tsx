@@ -6,7 +6,6 @@ import { useCallback, useMemo, useEffect, useState } from "react"
 import { Box, Paper, IconButton, Button, Stack, Link, Container, Typography, TableContainer, Table, TableHead, TableBody, TableRow, TableCell } from "@mui/material"
 import { useClient } from "../../contexts/ClientContext"
 import { useCampaign } from "../../contexts/CampaignContext"
-import { useSession } from 'next-auth/react'
 
 import { ButtonBar } from "../../components/StyledFields"
 import CreateCampaign from "../../components/campaigns/CreateCampaign"

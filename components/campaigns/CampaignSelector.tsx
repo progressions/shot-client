@@ -2,7 +2,6 @@ import { IconButton, Box, Button, Dialog, DialogTitle, DialogContent, DialogCont
 import { CampaignContextType, useCampaign } from "../../contexts/CampaignContext"
 import { useClient } from "../../contexts/ClientContext"
 import { useMemo, useCallback, useEffect, useState } from "react"
-import { useSession } from 'next-auth/react'
 import Client from "../Client"
 import NameDisplay from "./NameDisplay"
 

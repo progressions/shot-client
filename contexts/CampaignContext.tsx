@@ -2,7 +2,6 @@ import { useEffect, useMemo, createContext, useContext, useState } from "react"
 
 import type { Campaign } from "../types/types"
 import { defaultCampaign } from "../types/types"
-import { useSession } from 'next-auth/react'
 import { useClient } from "./ClientContext"
 import { useLocalStorage } from "./LocalStorageContext"
 

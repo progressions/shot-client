@@ -8,6 +8,7 @@ import GamemasterOnly from "../GamemasterOnly"
 import type { User, AuthSession, Character, Toast, Person, Vehicle } from "../../types/types"
 import { useState } from "react"
 import { useSession } from 'next-auth/react'
+import { useClient } from "../../contexts/ClientContext"
 
 interface NameDisplayProps {
   character: Character
@@ -17,8 +18,7 @@ interface NameDisplayProps {
 
 export default function NameDisplay({ character, editCharacter, deleteCharacter }: NameDisplayProps) {
   const [open, setOpen] = useState<boolean>(false)
-  const session = useSession({ required: true })
-  const user = session?.data?.user as User
+  const { user } = useClient()
 
   const showButtons = () => {
     if (user?.gamemaster) {
