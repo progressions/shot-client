@@ -16,9 +16,7 @@ import GamemasterOnly from "../../../components/GamemasterOnly"
 import FilterWeapons from "../../../components/weapons/FilterWeapons"
 import { initialFilter, filterReducer } from "../../../components/weapons/filterReducer"
 
-import { authOptions } from '../../api/auth/[...nextauth]'
 import Weapons from "../../../components/weapons/Weapons"
-
 import type { Campaign } from "../../../types/types"
 
 export default function WeaponsIndex() {

@@ -41,7 +41,7 @@ export async function loadUsers({ jwt, setUsers }: loadUsersParams) {
 }
 
 export async function getServerSideProps({ req, res }: ServerSideProps) {
-  const session: any = await getServerSession(req as NextApiRequest, res as NextApiResponse, authOptions as any)
+  const session: any = await getServerSession(req as NextApiRequest, res as NextApiResponse, authOptions)
   const jwt = session?.authorization
   const client = new Client({ jwt })
   const id = session?.id
