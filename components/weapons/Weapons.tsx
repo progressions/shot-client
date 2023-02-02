@@ -9,13 +9,13 @@ import AddWeapon from "./AddWeapon"
 import type { WeaponsStateType, WeaponsActionType } from "./weaponsState"
 
 interface WeaponsProps {
-  filter: WeaponsStateType
-  dispatchFilter?: React.Dispatch<WeaponsActionType>
+  state: WeaponsStateType
+  dispatch?: React.Dispatch<WeaponsActionType>
 }
 
-export default function Weapons({ filter, dispatchFilter }: WeaponsProps) {
+export default function Weapons({ state, dispatch }: WeaponsProps) {
   const { character } = useCharacter()
-  const { weapons, meta } = filter
+  const { weapons, meta } = state
 
   const rowsOfData = rowMap<WeaponType>(weapons, 2)
 
@@ -26,8 +26,8 @@ export default function Weapons({ filter, dispatchFilter }: WeaponsProps) {
           <Weapon
             key={`weapon_${weapon?.id}_${index}`}
             weapon={weapon}
-            filter={filter}
-            dispatchFilter={dispatchFilter}
+            state={state}
+            dispatch={dispatch}
           />
         )) }
       </Stack>
@@ -35,15 +35,15 @@ export default function Weapons({ filter, dispatchFilter }: WeaponsProps) {
   )
 
   function loadPrevious() {
-    if (!dispatchFilter) return
+    if (!dispatch) return
 
-    dispatchFilter({ type: "previous" })
+    dispatch({ type: "previous" })
   }
 
   function loadNext() {
-    if (!dispatchFilter) return
+    if (!dispatch) return
 
-    dispatchFilter({ type: "next" })
+    dispatch({ type: "next" })
   }
 
   if (!weapons) return (<></>)

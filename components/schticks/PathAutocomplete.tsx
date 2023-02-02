@@ -2,18 +2,18 @@ import { Autocomplete, TextField } from "@mui/material"
 import { StyledAutocomplete, StyledSelect } from "../StyledFields"
 import type { SchtickPath, InputParamsType } from "../../types/types"
 
-import { SchticksStateType, SchticksActionType } from "./filterReducer"
+import { SchticksStateType, SchticksActionType } from "./schticksState"
 
 interface PathAutocompleteProps {
-  filter: SchticksStateType
-  dispatchFilter: React.Dispatch<SchticksActionType>
+  state: SchticksStateType
+  dispatch: React.Dispatch<SchticksActionType>
 }
 
-export default function PathAutocomplete({ filter, dispatchFilter }: PathAutocompleteProps) {
-  const { loading, path, paths } = filter
+export default function PathAutocomplete({ state, dispatch }: PathAutocompleteProps) {
+  const { loading, path, paths } = state
 
   function selectPath(event: React.ChangeEvent<HTMLInputElement>, newValue: string) {
-    dispatchFilter({ type: "path", payload: newValue })
+    dispatch({ type: "path", payload: newValue })
   }
 
   function getOptionLabel(option: SchtickPath) {

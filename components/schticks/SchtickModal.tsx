@@ -5,41 +5,41 @@ import { defaultSchtick } from "../../types/types"
 import { useClient } from "../../contexts/ClientContext"
 import { useToast } from "../../contexts/ToastContext"
 import { StyledTextField, StyledDialog, SaveCancelButtons } from "../StyledFields"
-import { initialFilter, filterReducer } from "./filterReducer"
+import { initialSchticksState, schticksReducer } from "./schticksState"
 
-import type { SchticksStateType, SchticksActionType } from "./filterReducer"
+import type { SchticksStateType, SchticksActionType } from "./schticksState"
 
 interface SchtickModalProps {
   open: boolean
   setOpen: React.Dispatch<React.SetStateAction<boolean>>
-  filter: SchticksStateType
-  dispatchFilter?: React.Dispatch<SchticksActionType>
+  state: SchticksStateType
+  dispatch: React.Dispatch<SchticksActionType>
   schtick?: Schtick
 }
 
-export default function SchtickModal({ open, setOpen, filter, dispatchFilter, schtick:initialSchtick }: SchtickModalProps) {
+export default function SchtickModal({ open, setOpen, state, dispatch, schtick:initialSchtick }: SchtickModalProps) {
   const { toastSuccess, toastError } = useToast()
   const { client } = useClient()
-  const [state, dispatch] = useReducer(filterReducer, initialFilter)
-  const { saving, schtick } = state
-  const { category, path } = filter
+  const { saving, schtick, category, path } = state
 
   useEffect(() => {
+    if (!dispatch) return
+
     dispatch({ type: "schtick", payload: initialSchtick as Schtick })
-  }, [initialSchtick])
+  }, [dispatch, initialSchtick])
 
   useEffect(() => {
+    if (!dispatch) return
+
     dispatch({ type: "update", name: "category", value: category })
     dispatch({ type: "update", name: "path", value: path })
-  }, [category, path])
+  }, [dispatch, category, path])
 
   async function reloadSchticks() {
     const response = await client.getSchticks()
     if (response.status === 200) {
       const data = await response.json()
-      if (dispatchFilter) {
-        dispatchFilter({ type: "schticks", payload: data })
-      }
+      dispatch({ type: "schticks", payload: data })
     }
   }
 
@@ -56,10 +56,14 @@ export default function SchtickModal({ open, setOpen, filter, dispatchFilter, sc
   }
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
+    if (!dispatch) return
+
     dispatch({ type: "update", name: event.target.name, value: event.target.value })
   }
 
   function cancelForm() {
+    if (!dispatch) return
+
     dispatch({ type: "reset" })
     setOpen(false)
   }

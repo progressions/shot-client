@@ -26,8 +26,8 @@ import DeathMarks from "../DeathMarks"
 import { Subhead, StyledTextField } from "../../StyledFields"
 
 import type { Character } from "../../../types/types"
-import type { SchticksStateType } from "../../schticks/filterReducer"
-import { initialFilter as initialSchticksState } from "../../schticks/filterReducer"
+import type { SchticksStateType } from "../../schticks/schticksState"
+import { initialSchticksState as initialSchticksState } from "../../schticks/schticksState"
 import type { WeaponsStateType } from "../../weapons/weaponsState"
 import { initialWeaponsState as initialWeaponsState } from "../../weapons/weaponsState"
 
@@ -100,8 +100,8 @@ export default function EditCharacter({ character:initialCharacter }: EditCharac
     )
   }
 
-  const schticksFilter:SchticksStateType = { ...initialSchticksState, schticks: schticks }
-  const weaponsFilter:WeaponsStateType = { ...initialWeaponsState, weapons: weapons }
+  const schticksState:SchticksStateType = { ...initialSchticksState, schticks: schticks }
+  const weaponsState:WeaponsStateType = { ...initialWeaponsState, weapons: weapons }
 
   return (
     <>
@@ -137,13 +137,13 @@ export default function EditCharacter({ character:initialCharacter }: EditCharac
             <FortuneSelect character={character} onChange={handleAVChange as React.ChangeEventHandler} readOnly={false} />
           </PlayerTypeOnly>
           <Skills skills={skills} onChange={handleSkillsChange} />
-          <Weapons filter={weaponsFilter} />
+          <Weapons state={weaponsState} />
           <PlayerTypeOnly character={character} only="PC">
             <Advancements character={character} />
             <Sites character={character} />
           </PlayerTypeOnly>
           <Description character={character} onChange={handleDescriptionChange} />
-          <Schticks filter={schticksFilter} />
+          <Schticks state={schticksState} />
           <SchtickSelector />
         </Stack>
       </Box>

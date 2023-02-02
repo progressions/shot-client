@@ -5,24 +5,24 @@ import { defaultWeapon } from "../../types/types"
 import type { WeaponsStateType, WeaponsActionType } from "./weaponsState"
 
 interface WeaponAutocompleteProps {
-  filter: WeaponsStateType
-  dispatchFilter: React.Dispatch<WeaponsActionType>
+  state: WeaponsStateType
+  dispatch: React.Dispatch<WeaponsActionType>
 }
 
-export default function WeaponAutocomplete({ filter, dispatchFilter }: WeaponAutocompleteProps) {
-  const { loading, weapon, weapons } = filter
+export default function WeaponAutocomplete({ state, dispatch }: WeaponAutocompleteProps) {
+  const { loading, weapon, weapons } = state
   const [search, setSearch] = useState("")
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      dispatchFilter({ type: "name", payload: search })
+      dispatch({ type: "name", payload: search })
     }, 1000)
 
     return () => clearTimeout(timer)
-  }, [search, dispatchFilter])
+  }, [search, dispatch])
 
   function handleSelect(event: React.ChangeEvent<HTMLInputElement>, newValue: Weapon) {
-    dispatchFilter({ type: "weapon", payload: newValue })
+    dispatch({ type: "weapon", payload: newValue })
   }
 
   function handleInputChange(event: React.ChangeEvent<HTMLInputElement>, newValue: string) {

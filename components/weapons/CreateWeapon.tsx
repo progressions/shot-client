@@ -5,11 +5,11 @@ import { useState } from "react"
 import type { WeaponsStateType, WeaponsActionType } from "./weaponsState"
 
 interface CreateWeaponProps {
-  filter: WeaponsStateType
-  dispatchFilter: React.Dispatch<WeaponsActionType>
+  state: WeaponsStateType
+  dispatch: React.Dispatch<WeaponsActionType>
 }
 
-export default function CreateWeapon({ filter, dispatchFilter }: CreateWeaponProps) {
+export default function CreateWeapon({ state, dispatch }: CreateWeaponProps) {
   const [open, setOpen] = useState(false)
 
   return (
@@ -30,7 +30,7 @@ export default function CreateWeapon({ filter, dispatchFilter }: CreateWeaponPro
       >
         <DialogContent>
           <Stack direction="column" spacing={2}>
-            <WeaponModal filter={filter} open={open} setOpen={setOpen} dispatchFilter={dispatchFilter} />
+            <WeaponModal state={state} open={open} setOpen={setOpen} dispatch={dispatch} />
           </Stack>
         </DialogContent>
       </StyledDialog>

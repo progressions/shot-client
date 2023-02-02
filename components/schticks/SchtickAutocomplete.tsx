@@ -4,29 +4,29 @@ import type { Schtick, InputParamsType } from "../../types/types"
 import { defaultSchtick } from "../../types/types"
 
 import { useState, useEffect } from "react"
-import type { SchticksStateType, SchticksActionType } from "./filterReducer"
+import type { SchticksStateType, SchticksActionType } from "./schticksState"
 
 const filterOptions = createFilterOptions<string>();
 
 interface SchtickAutocompleteProps {
-  filter: SchticksStateType
-  dispatchFilter: React.Dispatch<SchticksActionType>
+  state: SchticksStateType
+  dispatch: React.Dispatch<SchticksActionType>
 }
 
-export default function SchtickAutocomplete({ filter, dispatchFilter }: SchtickAutocompleteProps) {
-  const { loading, schtick, schticks } = filter
+export default function SchtickAutocomplete({ state, dispatch }: SchtickAutocompleteProps) {
+  const { loading, schtick, schticks } = state
   const [search, setSearch] = useState<string>("")
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      dispatchFilter({ type: "title", payload: search })
+      dispatch({ type: "title", payload: search })
     }, 1000)
 
     return () => clearTimeout(timer)
-  }, [search, dispatchFilter])
+  }, [search, dispatch])
 
   function handleSelect(event: React.ChangeEvent<HTMLInputElement>, newValue: Schtick) {
-    dispatchFilter({ type: "schtick", payload: newValue })
+    dispatch({ type: "schtick", payload: newValue })
   }
 
   function handleInputChange(event: React.ChangeEvent<HTMLInputElement>, newValue: string) {

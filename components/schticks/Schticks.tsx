@@ -5,19 +5,19 @@ import { Subhead } from "../StyledFields"
 import { rowMap } from "../../utils/rowMap"
 
 import { useState, useMemo } from "react"
-import { SchticksStateType, SchticksActionType } from "./filterReducer"
+import { SchticksStateType, SchticksActionType } from "./schticksState"
 import { Schtick } from "../../types/types"
 
 interface SchticksProps {
-  filter: SchticksStateType
-  dispatchFilter?: React.Dispatch<SchticksActionType>
+  state: SchticksStateType
+  dispatch?: React.Dispatch<SchticksActionType>
 }
 
-export default function Schticks({ filter, dispatchFilter }: SchticksProps) {
+export default function Schticks({ state, dispatch }: SchticksProps) {
   const { user, client } = useClient()
 
-  const schticks:Schtick[] = useMemo(() => (filter?.schticks || []), [filter?.schticks])
-  const meta = filter?.meta || {}
+  const schticks:Schtick[] = useMemo(() => (state?.schticks || []), [state?.schticks])
+  const meta = state?.meta || {}
 
   const rowsOfData = useMemo(() => (
     rowMap<Schtick>(schticks, 2)
@@ -28,24 +28,24 @@ export default function Schticks({ filter, dispatchFilter }: SchticksProps) {
       rowsOfData.map((row: Schtick[], index: number) => (
         <Stack spacing={1} direction="row" key={`row_${index}`}>
           { row.map((schtick: Schtick) => (
-            <SchtickCard key={`schtick_${schtick?.id}`} schtick={schtick} filter={filter} dispatchFilter={dispatchFilter} />
+            <SchtickCard key={`schtick_${schtick?.id}`} schtick={schtick} state={state} dispatch={dispatch as React.Dispatch<SchticksActionType>} />
           )) }
         </Stack>
       ))
     )
     return output
-  }, [filter, dispatchFilter, rowsOfData])
+  }, [state, dispatch, rowsOfData])
 
   function loadPrevious() {
-    if (!dispatchFilter) return
+    if (!dispatch) return
 
-    dispatchFilter({ type: "previous" })
+    dispatch({ type: "previous" })
   }
 
   function loadNext() {
-    if (!dispatchFilter) return
+    if (!dispatch) return
 
-    dispatchFilter({ type: "next" })
+    dispatch({ type: "next" })
   }
 
   if (!schticks) return (<></>)

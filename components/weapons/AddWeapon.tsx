@@ -4,7 +4,7 @@ import { useClient } from "../../contexts/ClientContext"
 import { useToast } from "../../contexts/ToastContext"
 import { useCharacter } from "../../contexts/CharacterContext"
 import FilterWeapons from "./FilterWeapons"
-import { initialWeaponsState, filterReducer } from "./weaponsState"
+import { initialWeaponsState, weaponsReducer } from "./weaponsState"
 
 import type { Character, Weapon } from "../../types/types"
 import { defaultWeapon } from "../../types/types"
@@ -16,7 +16,7 @@ export default function AddWeapon() {
   const { toastSuccess, toastError } = useToast()
   const { user, client } = useClient()
   const [open, setOpen] = useState(false)
-  const [weaponsFilter, dispatchWeapons] = useReducer(filterReducer, initialWeaponsState)
+  const [weaponsFilter, dispatchWeapons] = useReducer(weaponsReducer, initialWeaponsState)
   const { weapons, weapon, edited, page, loading, juncture, category, name } = weaponsFilter
 
   useEffect(() => {
@@ -77,7 +77,7 @@ export default function AddWeapon() {
         <DialogContent>
           <Stack spacing={2}>
             <Box mt={3}>
-              <FilterWeapons filter={weaponsFilter} dispatchFilter={dispatchWeapons} />
+              <FilterWeapons state={weaponsFilter} dispatch={dispatchWeapons} />
             </Box>
             <Stack direction="row" spacing={1} alignItems="center">
               <StyledTextField

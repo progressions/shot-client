@@ -11,7 +11,7 @@ import { useState, useMemo } from "react"
 import SchtickModal from "./SchtickModal"
 
 import type { Character, Schtick } from "../../types/types"
-import type { SchticksStateType, SchticksActionType } from "./filterReducer"
+import type { SchticksStateType, SchticksActionType } from "./schticksState"
 
 /*
 
@@ -26,22 +26,22 @@ Scroungetech: GiGears
 
 interface SchtickCardProps {
   schtick: Schtick
-  filter: SchticksStateType
-  dispatchFilter?: React.Dispatch<SchticksActionType>
+  state: SchticksStateType
+  dispatch: React.Dispatch<SchticksActionType>
 }
 
-export default function SchtickCard({ schtick, filter, dispatchFilter }: SchtickCardProps) {
+export default function SchtickCard({ schtick, state, dispatch }: SchtickCardProps) {
   const [open, setOpen] = useState(false)
   const { toastSuccess, toastError } = useToast()
   const { user, client } = useClient()
-  const { state, dispatch } = useCharacter()
-  const { character } = state
+  const { state:characterState, dispatch:dispatchCharacter } = useCharacter()
+  const { character } = characterState
 
   async function reloadCharacter(char: Character) {
     const response = await client.getCharacter(char)
     if (response.status === 200) {
       const data = await response.json()
-      dispatch({ type: "replace", character: data })
+      dispatchCharacter({ type: "replace", character: data })
     } else {
       toastError()
     }
@@ -51,8 +51,8 @@ export default function SchtickCard({ schtick, filter, dispatchFilter }: Schtick
     const response = await client.getSchticks()
     if (response.status === 200) {
       const data = await response.json()
-      if (dispatchFilter) {
-        dispatchFilter({ type: "schticks", payload: data })
+      if (dispatch) {
+        dispatch({ type: "schticks", payload: data })
       }
     }
   }
@@ -132,8 +132,8 @@ export default function SchtickCard({ schtick, filter, dispatchFilter }: Schtick
           </Typography> }
       </SchtickCardBase>
       <SchtickModal
-        filter={filter}
-        dispatchFilter={dispatchFilter}
+        state={state}
+        dispatch={dispatch}
         open={open}
         setOpen={setOpen}
       />

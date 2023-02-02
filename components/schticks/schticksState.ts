@@ -41,7 +41,7 @@ export interface SchticksResponse {
 
 export type SchticksActionType = ActionNoPayload | UpdateAction | PayloadAction
 
-export const initialFilter: SchticksStateType = {
+export const initialSchticksState: SchticksStateType = {
   loading: true,
   saving: false,
   page: 1,
@@ -55,7 +55,7 @@ export const initialFilter: SchticksStateType = {
   meta: defaultPaginationMeta
 }
 
-export function filterReducer(state: SchticksStateType, action: SchticksActionType) {
+export function schticksReducer(state: SchticksStateType, action: SchticksActionType) {
   switch(action.type) {
     case "previous":
       const { prev_page } = state.meta
@@ -82,24 +82,24 @@ export function filterReducer(state: SchticksStateType, action: SchticksActionTy
     case "category":
       return {
         ...state,
-        category: (action.payload || initialFilter.category) as SchtickCategory,
-        path: initialFilter.path,
-        schtick: initialFilter.schtick
+        category: (action.payload || initialSchticksState.category) as SchtickCategory,
+        path: initialSchticksState.path,
+        schtick: initialSchticksState.schtick
       }
     case "path":
       return {
         ...state,
-        path: (action.payload || initialFilter.path) as SchtickPath,
+        path: (action.payload || initialSchticksState.path) as SchtickPath,
       }
     case "title":
       return {
         ...state,
-        title: (action.payload || initialFilter.title) as string,
+        title: (action.payload || initialSchticksState.title) as string,
       }
     case "schtick":
       return {
         ...state,
-        schtick: (action.payload || initialFilter.schtick) as Schtick,
+        schtick: (action.payload || initialSchticksState.schtick) as Schtick,
       }
     case "schticks":
       const { schticks, meta, paths, categories } = action.payload as SchticksResponse

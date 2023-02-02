@@ -14,7 +14,7 @@ import Campaigns from "../../../components/campaigns/Campaigns"
 import GamemasterOnly from "../../../components/GamemasterOnly"
 import CreateSchtickButton from "../../../components/schticks/CreateSchtickButton"
 import FilterSchticks from "../../../components/schticks/FilterSchticks"
-import { initialFilter, filterReducer } from "../../../components/schticks/filterReducer"
+import { initialSchticksState, schticksReducer } from "../../../components/schticks/schticksState"
 
 import { authOptions } from '../../api/auth/[...nextauth]'
 import Client from "../../../components/Client"
@@ -22,7 +22,7 @@ import Schticks from "../../../components/schticks/Schticks"
 
 import { getServerClient } from "../../../utils/getServerClient"
 import type { AuthSession, ServerSideProps, Campaign } from "../../../types/types"
-import type { SchticksResponse } from "../../../components/schticks/filterReducer"
+import type { SchticksResponse } from "../../../components/schticks/schticksState"
 import { GetServerSideProps } from 'next'
 import { InferGetServerSidePropsType } from 'next'
 
@@ -67,12 +67,12 @@ export async function getServerSideProps<GetServerSideProps>({ req, res }: Serve
 }
 
 export default function SchticksIndex(data: SchticksResponse) {
-  const [filter, dispatchFilter] = useReducer(filterReducer, initialFilter)
-  const schticks = filter?.schticks || []
-  const { loading } = filter
+  const [state, dispatch] = useReducer(schticksReducer, initialSchticksState)
+  const schticks = state?.schticks || []
+  const { loading } = state
 
   useEffect(() => {
-    dispatchFilter({ type: "schticks", payload: data })
+    dispatch({ type: "schticks", payload: data })
   }, [data])
 
   return (
@@ -89,10 +89,10 @@ export default function SchticksIndex(data: SchticksResponse) {
             <Typography variant="h1" gutterBottom>Schticks</Typography>
             { !loading && <>
               <ButtonBar sx={{height: 80}}>
-                <FilterSchticks filter={filter} dispatchFilter={dispatchFilter} />
-                <CreateSchtickButton filter={filter} dispatchFilter={dispatchFilter} />
+                <FilterSchticks state={state} dispatch={dispatch} />
+                <CreateSchtickButton state={state} dispatch={dispatch} />
               </ButtonBar>
-              <Schticks filter={filter} dispatchFilter={dispatchFilter} />
+              <Schticks state={state} dispatch={dispatch} />
             </> }
             { loading && <>
               <Skeleton animation="wave" height={50} />
