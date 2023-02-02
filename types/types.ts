@@ -125,6 +125,8 @@ export interface ActionValues {
   Faction: string
 }
 
+export type SkillValue = [string, number] | [string, undefined]
+
 export interface SkillValues {
   [key: string]: number | undefined
   Deceit?: number

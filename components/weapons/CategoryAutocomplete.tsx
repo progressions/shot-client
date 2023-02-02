@@ -13,7 +13,7 @@ interface CategoryAutocompleteProps {
 export default function CategoryAutocomplete({ filter, dispatchFilter }: CategoryAutocompleteProps) {
   const { loading, category, categories } = filter
 
-  function selectCategory(event: any, newValue: WeaponCategory) {
+  function selectCategory(event: React.SyntheticEvent<Element, Event>, newValue: WeaponCategory) {
     dispatchFilter({ type: "category", payload: newValue })
   }
 

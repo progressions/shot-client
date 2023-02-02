@@ -21,7 +21,7 @@ export default function SelectCharacter() {
   const { fight, setFight, reloadFight } = useFight()
 
   const [open, setOpen] = useState<boolean>(false)
-  const [anchorEl, setAnchorEl] = useState<any>(null)
+  const [anchorEl, setAnchorEl] = useState<Element | null>(null)
   const [value, setValue] = useState<Character>(defaultCharacter)
   const [characters, setCharacters] = useState<Character[]>([])
   const [loading, setLoading] = useState(false)
@@ -70,11 +70,11 @@ export default function SelectCharacter() {
     }
   }, [user, fight, client, showHidden])
 
-  const handleOpen = async (event: any) => {
+  const handleOpen = async (event: React.SyntheticEvent<Element, Event>) => {
     loadCharacters()
     setValue(defaultCharacter)
     setOpen(true)
-    setAnchorEl(event.target)
+    setAnchorEl(event.target as Element)
   }
 
   const show = (event: React.SyntheticEvent<Element, Event>, checked: boolean) => {

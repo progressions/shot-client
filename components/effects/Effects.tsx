@@ -18,7 +18,7 @@ interface EffectsProps {
 
 export default function Effects({ effects, severity }: EffectsProps) {
   const [open, setOpen] = useState(false)
-  const [anchorEl, setAnchorEl] = useState<any>(null)
+  const [anchorEl, setAnchorEl] = useState<Element | null>(null)
 
   const { fight, setFight, reloadFight } = useFight()
   const { client } = useClient()
@@ -29,8 +29,8 @@ export default function Effects({ effects, severity }: EffectsProps) {
     setOpen(false)
   }
 
-  const showEffect = (event: any): void => {
-    setAnchorEl(event.target)
+  const showEffect = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
+    setAnchorEl(event.target as Element)
     setOpen(true)
   }
 

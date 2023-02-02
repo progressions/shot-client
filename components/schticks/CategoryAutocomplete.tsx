@@ -1,7 +1,7 @@
 import { Autocomplete, TextField } from "@mui/material"
 import { useMemo } from "react"
 import { StyledAutocomplete, StyledSelect } from "../StyledFields"
-import type { InputParamsType } from "../../types/types"
+import type { SchtickCategory, InputParamsType } from "../../types/types"
 import type { SchticksStateType, SchticksActionType } from "./filterReducer"
 
 interface CategoryAutocompleteProps {
@@ -12,11 +12,11 @@ interface CategoryAutocompleteProps {
 export default function CategoryAutocomplete({ filter, dispatchFilter }: CategoryAutocompleteProps) {
   const { loading, category, categories, path } = filter
 
-  function selectCategory(event: any, newValue: string) {
+  function selectCategory(event: React.SyntheticEvent<Element, Event>, newValue: SchtickCategory) {
     dispatchFilter({ type: "category", payload: newValue })
   }
 
-  function getOptionLabel(option: string) {
+  function getOptionLabel(option: SchtickCategory) {
     return option || ""
   }
 

@@ -45,7 +45,7 @@ export default function WeaponModal({ filter, dispatchFilter, open, setOpen }: W
     dispatchFilter({ type: "update", name: event.target.name, value: event.target.value })
   }
 
-  function changeJuncture(event: any, newValue: Juncture) {
+  function changeJuncture(event: React.SyntheticEvent<Element, Event>, newValue: Juncture) {
     dispatchFilter({ type: "update", name: "juncture", value: newValue })
   }
 

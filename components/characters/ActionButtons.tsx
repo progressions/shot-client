@@ -13,6 +13,7 @@ import GamemasterOnly from "../GamemasterOnly"
 import PlayerTypeOnly from "../PlayerTypeOnly"
 import MookRolls from '../MookRolls'
 import { useSession } from 'next-auth/react'
+import { useClient } from "../../contexts/ClientContext"
 
 import type { Character, CharacterType } from "../../types/types"
 
@@ -28,7 +29,7 @@ interface ActionButtonsParams {
 }
 
 export default function ActionButtons({ character, healWounds, takeWounds, takeConditionPoints, takeAction, editCharacter, deleteCharacter, takeDodgeAction }: ActionButtonsParams) {
-  const session: any = useSession({ required: true })
+  const { user } = useClient()
 
   let woundLabel:string
   let woundIcon
@@ -67,7 +68,7 @@ export default function ActionButtons({ character, healWounds, takeWounds, takeC
             <CarCrashIcon color="error" />
           </Button>
         </Tooltip> }
-        <GamemasterOnly user={session?.data?.user} character={character}>
+        <GamemasterOnly user={user} character={character}>
           { editCharacter &&
           <Tooltip title="Edit Character" arrow>
             <Button color="secondary" onClick={() => {editCharacter(character)}}>

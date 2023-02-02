@@ -8,7 +8,7 @@ interface SchticksDisplayProps {
 }
 
 export default function SchticksDisplay({ schticks }: SchticksDisplayProps) {
-  const [anchorEl, setAnchorEl] = useState(null)
+  const [anchorEl, setAnchorEl] = useState<Element | null>(null)
   const [open, setOpen] = useState(false)
 
   function closePopover() {
@@ -16,8 +16,8 @@ export default function SchticksDisplay({ schticks }: SchticksDisplayProps) {
     setOpen(false)
   }
 
-  function showSchticks(event: any) {
-    setAnchorEl(event.target)
+  function showSchticks(event: React.SyntheticEvent<Element, Event>) {
+    setAnchorEl(event.target as Element)
     setOpen(true)
   }
 

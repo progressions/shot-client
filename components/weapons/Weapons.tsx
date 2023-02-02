@@ -17,10 +17,10 @@ export default function Weapons({ filter, dispatchFilter }: WeaponsProps) {
   const { character } = useCharacter()
   const { weapons, meta } = filter
 
-  const rowsOfData = rowMap(weapons, 2)
+  const rowsOfData = rowMap<WeaponType>(weapons, 2)
 
   const outputRows = (
-    rowsOfData.map((row: any, index: number) => (
+    rowsOfData.map((row: WeaponType[], index: number) => (
       <Stack spacing={1} direction="row" key={`row_${index}`}>
         { row.map((weapon: WeaponType, index: number) => (
           <Weapon

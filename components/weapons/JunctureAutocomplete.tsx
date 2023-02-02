@@ -16,7 +16,7 @@ export default function JunctureAutocomplete({ filter, dispatchFilter }: Junctur
     dispatchFilter({ type: "juncture", payload: newValue })
   }
 
-  function getOptionLabel(option: any) {
+  function getOptionLabel(option: Juncture) {
     return option || ""
   }
 

@@ -9,10 +9,11 @@ import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOu
 import EffectModal from "../effects/EffectModal"
 import GroupedEffects from "../effects/GroupedEffects"
 
-import type { Vehicle, Character, Fight, Toast } from "../../types/types"
+import type { User, Vehicle, Character, Fight, Toast } from "../../types/types"
 
 import { useSession } from 'next-auth/react'
 import { useFight } from "../../contexts/FightContext"
+import { useClient } from "../../contexts/ClientContext"
 import { useState } from "react"
 
 import GamemasterOnly from "../GamemasterOnly"
@@ -29,7 +30,7 @@ export default function Shot({ shot, characters, editingCharacter, setEditingCha
   const [open, setOpen] = useState<boolean>(false)
   const [openEffectDialog, setOpenEffectDialog] = useState<boolean>(false)
   const { fight, setFight } = useFight()
-  const session: any = useSession({ required: true })
+  const { user } = useClient()
 
   if (!showHidden && (shot === null || shot === undefined)) {
     return null
@@ -48,7 +49,7 @@ export default function Shot({ shot, characters, editingCharacter, setEditingCha
           <Stack spacing={0} alignItems="center">
             <ShotButton shot={shot} />
             <GroupedEffects key={`effects_${shot}`} fight={fight} shot={shot} />
-            <GamemasterOnly user={session?.data?.user}>
+            <GamemasterOnly user={user}>
               { shot > 0 && <IconButton color="primary" onClick={() => { setOpen(false); setOpenEffectDialog(true) }}>
                 <AddCircleOutlineOutlinedIcon />
               </IconButton> }

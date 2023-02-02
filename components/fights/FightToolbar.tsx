@@ -13,6 +13,7 @@ import type { Fight } from "../../types/types"
 
 import { useSession } from 'next-auth/react'
 import { useFight } from "../../contexts/FightContext"
+import { useClient } from "../../contexts/ClientContext"
 import { useLocalStorage } from "../../contexts/LocalStorageContext"
 
 import { useEffect } from "react"
@@ -25,8 +26,7 @@ interface FightToolbarParams {
 export default function FightToolbar({ showHidden, setShowHidden }: FightToolbarParams) {
   const { fight, setFight } = useFight()
   const { saveLocally, getLocally } = useLocalStorage()
-
-  const session: any = useSession({ required: true })
+  const { user } = useClient()
 
   useEffect(() => {
     const showHiddenShots = getLocally("showHiddenShots") || false
@@ -44,7 +44,7 @@ export default function FightToolbar({ showHidden, setShowHidden }: FightToolbar
     <>
       <ButtonBar>
         <Stack direction="row" spacing={2} alignItems='center'>
-          <GamemasterOnly user={session?.data?.user}>
+          <GamemasterOnly user={user}>
             <RollInitiative />
           </GamemasterOnly>
           <DiceRoller />
@@ -56,7 +56,7 @@ export default function FightToolbar({ showHidden, setShowHidden }: FightToolbar
             <SelectCharacter />
           </ButtonGroup>
           <MookRolls />
-          <GamemasterOnly user={session?.data?.user}>
+          <GamemasterOnly user={user}>
             <FormControlLabel label="Show Hidden" control={<Switch checked={showHidden} />} onChange={show} />
           </GamemasterOnly>
         </Stack>

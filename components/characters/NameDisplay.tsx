@@ -5,7 +5,7 @@ import DeathMarks from "./DeathMarks"
 import EditButtons from "./EditButtons"
 
 import GamemasterOnly from "../GamemasterOnly"
-import type { Character, Toast, Person, Vehicle } from "../../types/types"
+import type { User, AuthSession, Character, Toast, Person, Vehicle } from "../../types/types"
 import { useState } from "react"
 import { useSession } from 'next-auth/react'
 
@@ -17,14 +17,15 @@ interface NameDisplayProps {
 
 export default function NameDisplay({ character, editCharacter, deleteCharacter }: NameDisplayProps) {
   const [open, setOpen] = useState<boolean>(false)
-  const session: any = useSession({ required: true })
+  const session = useSession({ required: true })
+  const user = session?.data?.user as User
 
   const showButtons = () => {
-    if (session?.data?.user?.gamemaster) {
+    if (user?.gamemaster) {
       setOpen(true)
       return
     }
-    if (character?.user?.id == session?.data?.user?.id) {
+    if (character?.user?.id == user?.id) {
       setOpen(true)
     }
   }
@@ -58,7 +59,7 @@ export default function NameDisplay({ character, editCharacter, deleteCharacter 
                 { character.name }
               </Link>
             </Typography>
-            <GamemasterOnly user={session?.data?.user} character={character}>
+            <GamemasterOnly user={user} character={character}>
               <Box visibility={open ? "visible" : "hidden"}>
                 <EditButtons character={character} editCharacter={editCharacter} deleteCharacter={deleteCharacter} />
               </Box>
