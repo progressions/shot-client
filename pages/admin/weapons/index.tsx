@@ -14,7 +14,7 @@ import CreateCampaign from "../../../components/campaigns/CreateCampaign"
 import Campaigns from "../../../components/campaigns/Campaigns"
 import GamemasterOnly from "../../../components/GamemasterOnly"
 import FilterWeapons from "../../../components/weapons/FilterWeapons"
-import { initialFilter, filterReducer } from "../../../components/weapons/weaponsState"
+import { initialWeaponsState, filterReducer } from "../../../components/weapons/weaponsState"
 
 import Weapons from "../../../components/weapons/Weapons"
 import type { Campaign } from "../../../types/types"
@@ -22,7 +22,7 @@ import type { Campaign } from "../../../types/types"
 export default function WeaponsIndex() {
   const { character } = useCharacter()
   const { user, client } = useClient()
-  const [filter, dispatchFilter] = useReducer(filterReducer, initialFilter)
+  const [filter, dispatchFilter] = useReducer(filterReducer, initialWeaponsState)
   const weapons = filter?.weapons || []
   const { edited, page, loading, juncture, category, name } = filter
   const { toastSuccess, toastError } = useToast()

@@ -4,7 +4,7 @@ import { useClient } from "../../contexts/ClientContext"
 import { useToast } from "../../contexts/ToastContext"
 import { useCharacter } from "../../contexts/CharacterContext"
 import FilterWeapons from "./FilterWeapons"
-import { initialFilter, filterReducer } from "./weaponsState"
+import { initialWeaponsState, filterReducer } from "./weaponsState"
 
 import type { Character, Weapon } from "../../types/types"
 import { defaultWeapon } from "../../types/types"
@@ -16,7 +16,7 @@ export default function AddWeapon() {
   const { toastSuccess, toastError } = useToast()
   const { user, client } = useClient()
   const [open, setOpen] = useState(false)
-  const [weaponsFilter, dispatchWeapons] = useReducer(filterReducer, initialFilter)
+  const [weaponsFilter, dispatchWeapons] = useReducer(filterReducer, initialWeaponsState)
   const { weapons, weapon, edited, page, loading, juncture, category, name } = weaponsFilter
 
   useEffect(() => {

@@ -42,7 +42,7 @@ export interface WeaponsResponse {
 
 export type WeaponsActionType = ActionNoPayload | UpdateAction | PayloadAction
 
-export const initialFilter:WeaponsStateType = {
+export const initialWeaponsState:WeaponsStateType = {
   edited: true,
   loading: true,
   saving: false,
@@ -93,27 +93,27 @@ export function filterReducer (state: WeaponsStateType, action: WeaponsActionTyp
       return {
         ...state,
         edited: true,
-        juncture: (action.payload || initialFilter.juncture) as Juncture,
-        weapon: initialFilter.weapon
+        juncture: (action.payload || initialWeaponsState.juncture) as Juncture,
+        weapon: initialWeaponsState.weapon
       }
     case "category":
       return {
         ...state,
         edited: true,
-        category: (action.payload || initialFilter.category) as WeaponCategory,
-        weapon: initialFilter.weapon
+        category: (action.payload || initialWeaponsState.category) as WeaponCategory,
+        weapon: initialWeaponsState.weapon
       }
     case "name":
       return {
         ...state,
         edited: true,
-        name: (action.payload || initialFilter.name) as string,
+        name: (action.payload || initialWeaponsState.name) as string,
       }
     case "weapon":
       return {
         ...state,
         edited: true,
-        weapon: (action.payload || initialFilter.weapon) as Weapon,
+        weapon: (action.payload || initialWeaponsState.weapon) as Weapon,
       }
     case "weapons":
       const { weapons, meta, junctures, categories } = action.payload as WeaponsResponse
@@ -127,7 +127,7 @@ export function filterReducer (state: WeaponsStateType, action: WeaponsActionTyp
         categories: categories
       }
     case "reset":
-      return initialFilter
+      return initialWeaponsState
     default:
       return state
   }

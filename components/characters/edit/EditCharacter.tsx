@@ -29,7 +29,7 @@ import type { Character } from "../../../types/types"
 import type { SchticksStateType } from "../../schticks/filterReducer"
 import { initialFilter as initialSchticksState } from "../../schticks/filterReducer"
 import type { WeaponsStateType } from "../../weapons/weaponsState"
-import { initialFilter as initialWeaponsState } from "../../weapons/weaponsState"
+import { initialWeaponsState as initialWeaponsState } from "../../weapons/weaponsState"
 
 interface EditCharacterProps {
   character: Character
