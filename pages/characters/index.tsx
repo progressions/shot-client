@@ -24,57 +24,19 @@ import GamemasterOnly from "../../components/GamemasterOnly"
 
 import { useToast } from "../../contexts/ToastContext"
 import { useClient } from "../../contexts/ClientContext"
-import type { AuthSession, Person, Vehicle, Character, CharacterFilter, ServerSideProps, Toast } from "../../types/types"
+import type { PaginationMeta, AuthSession, Person, Vehicle, Character, CharacterFilter, ServerSideProps, Toast } from "../../types/types"
 import { defaultCharacter } from "../../types/types"
 
 interface CharactersProps {
-  characters: Character[],
-  jwt: string
-}
-
-const characterVisibility = (character: Character) => {
-  return (character.active)
-}
-
-const fetchVehicles = async (client: Client) => {
-  const response = await client.getAllVehicles()
-  if (response.status === 200) {
-    const vehicles = await response.json()
-    const availableVehicles = vehicles.filter(characterVisibility)
-
-    return [response, availableVehicles]
-  } else {
-    return [response, []]
-  }
-}
-
-const fetchCharacters = async (client: Client) => {
-  const response = await client.getAllCharacters()
-  if (response.status === 200) {
-    const chars = await response.json()
-    const availableChars = chars.filter(characterVisibility)
-
-    return [response, availableChars]
-  } else {
-    return [response, []]
-  }
-}
-
-const fetchCharactersAndVehicles = async (client: Client) => {
-  const [characterResponse, characters] = await fetchCharacters(client)
-  const [vehicleResponse, vehicles] = await fetchVehicles(client)
-
-  const allCharacters = characters.concat(vehicles).sort((a: Character, b: Character) => a.name.localeCompare(b.name))
-
-  return [characterResponse, vehicleResponse, allCharacters]
+  characters: Character[]
+  meta: PaginationMeta
 }
 
 export async function getServerSideProps({ req, res }: ServerSideProps) {
-  const { client, jwt } = await getServerClient(req, res)
+  const { client } = await getServerClient(req, res)
 
   const campaignResponse = await client.getCurrentCampaign()
   const currentCampaign = campaignResponse.status === 200 ? await campaignResponse.json() : null
-  const [characterResponse, vehicleResponse, allCharacters] = await fetchCharactersAndVehicles(client)
 
   if (!currentCampaign) {
     return {
@@ -86,33 +48,17 @@ export async function getServerSideProps({ req, res }: ServerSideProps) {
       }
     }
   }
-  if ([characterResponse.status, vehicleResponse.status].includes(200)) {
+  const { characters, meta } = await client.getCharactersAndVehicles()
 
-    return {
-      props: {
-        characters: allCharacters,
-        jwt: jwt
-      }, // will be passed to the page component as props
-    }
-  }
-  if ([characterResponse.status, vehicleResponse.status].includes(401)) {
-    return {
-      redirect: {
-        permanent: false,
-        destination: "/auth/signin"
-      },
-      props: {
-      }
-    }
-  }
   return {
     props: {
-      characters: [],
-    }
+      characters: characters,
+      meta: meta,
+    }, // will be passed to the page component as props
   }
 }
 
-export default function Characters({ characters:initialCharacters, jwt }: CharactersProps) {
+export default function Characters({ characters:initialCharacters, meta }: CharactersProps) {
   const { client, session, user } = useClient()
   const [editingCharacter, setEditingCharacter] = useState<Character>(defaultCharacter)
   const [characters, setCharacters] = useState<Character[]>(initialCharacters)
@@ -132,11 +78,10 @@ export default function Characters({ characters:initialCharacters, jwt }: Charac
   }
 
   async function reloadCharacters() {
-    const [characterResponse, vehicleResponse, allCharacters] = await fetchCharactersAndVehicles(client)
-
-    if (characterResponse.status === 200 && vehicleResponse.status === 200) {
-      setCharacters(allCharacters)
-    } else {
+    try {
+      const { characters, meta } = await client.getCharactersAndVehicles()
+      setCharacters(characters)
+    } catch(error) {
       toastError()
     }
   }

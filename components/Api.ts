@@ -27,6 +27,10 @@ class Api {
     }
   }
 
+  charactersAndVehicles(): string {
+    return `${this.api()}/characters_and_vehicles`
+  }
+
   characters(fight?: Fight | null, character?: Character | ID): string {
     if (!fight?.id) {
       return this.allCharacters(character)

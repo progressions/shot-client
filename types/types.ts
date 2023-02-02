@@ -2,6 +2,11 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { Session, User as NextAuthUser } from "next-auth"
 import { AlertColor } from "@mui/material"
 
+export interface CharactersAndVehiclesResponse {
+  characters: Character[]
+  meta: PaginationMeta
+}
+
 export interface ErrorMessages {
   [key: string]: string
 }

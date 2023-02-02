@@ -1,5 +1,6 @@
 import Api from "./Api"
 import type {
+  CharactersAndVehiclesResponse,
   PasswordWithConfirmation,
   Weapon,
   Site,
@@ -49,6 +50,10 @@ class Client {
 
   async deleteFight(fight: Fight):Promise<Response> {
     return await this.delete(this.api.fights(fight))
+  }
+
+  async getCharactersAndVehicles():Promise<CharactersAndVehiclesResponse> {
+    return this.get(this.api.charactersAndVehicles()).then(response => response.json()).catch(error => error)
   }
 
   async getCharacter(character: Character | ID):Promise<Response> {
