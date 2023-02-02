@@ -5,15 +5,15 @@ import type { SchtickCategory, InputParamsType } from "../../types/types"
 import type { SchticksStateType, SchticksActionType } from "./schticksState"
 
 interface CategoryAutocompleteProps {
-  filter: SchticksStateType
-  dispatchFilter: React.Dispatch<SchticksActionType>
+  state: SchticksStateType
+  dispatch: React.Dispatch<SchticksActionType>
 }
 
-export default function CategoryAutocomplete({ filter, dispatchFilter }: CategoryAutocompleteProps) {
-  const { loading, category, categories, path } = filter
+export default function CategoryAutocomplete({ state, dispatch }: CategoryAutocompleteProps) {
+  const { loading, category, categories, path } = state
 
   function selectCategory(event: React.SyntheticEvent<Element, Event>, newValue: SchtickCategory) {
-    dispatchFilter({ type: "category", payload: newValue })
+    dispatch({ type: "category", payload: newValue })
   }
 
   function getOptionLabel(option: SchtickCategory) {

@@ -5,11 +5,11 @@ import { useState } from "react"
 import type { SchticksStateType, SchticksActionType } from "./schticksState"
 
 interface CreateSchtickButtonProps {
-  filter: SchticksStateType
-  dispatchFilter: React.Dispatch<SchticksActionType>
+  state: SchticksStateType
+  dispatch: React.Dispatch<SchticksActionType>
 }
 
-export default function CreateSchtickButton({ filter, dispatchFilter }: CreateSchtickButtonProps) {
+export default function CreateSchtickButton({ state, dispatch }: CreateSchtickButtonProps) {
   const [open, setOpen] = useState(false)
 
   return (
@@ -23,7 +23,7 @@ export default function CreateSchtickButton({ filter, dispatchFilter }: CreateSc
           New
         </Button>
       </Typography>
-      <SchtickModal filter={filter} open={open} setOpen={setOpen} dispatchFilter={dispatchFilter} />
+      <SchtickModal state={state} open={open} setOpen={setOpen} dispatch={dispatch} />
     </>
   )
 }

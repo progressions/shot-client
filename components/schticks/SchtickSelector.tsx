@@ -9,12 +9,12 @@ import { initialSchticksState, schticksReducer } from "./schticksState"
 import { SaveCancelButtons, StyledTextField } from "../StyledFields"
 
 export default function SchtickSelector() {
-  const [filter, dispatchFilter] = useReducer(schticksReducer, initialSchticksState)
+  const [state, dispatch] = useReducer(schticksReducer, initialSchticksState)
   const { character, dispatch:dispatchCharacter } = useCharacter()
   const { user, client } = useClient()
   const { toastSuccess, toastError } = useToast()
   const [open, setOpen] = useState(false)
-  const { saving, schtick, schticks } = filter
+  const { saving, schtick, schticks } = state
 
   function toggleOpen() {
     setOpen(prev => (!prev))
@@ -23,7 +23,7 @@ export default function SchtickSelector() {
   async function handleSubmit(event: React.ChangeEvent<HTMLInputElement>) {
     event.preventDefault()
     if (!schtick?.id) return
-    dispatchFilter({ type: "saving" })
+    dispatch({ type: "saving" })
 
     const response = await client.addSchtick(character, schtick)
     if (response.status === 200) {
@@ -34,12 +34,12 @@ export default function SchtickSelector() {
       toastError()
     }
 
-    dispatchFilter({ type: "success" })
-    dispatchFilter({ type: "reset" })
+    dispatch({ type: "success" })
+    dispatch({ type: "reset" })
   }
 
   function cancelForm() {
-    dispatchFilter({ type: "reset" })
+    dispatch({ type: "reset" })
     setOpen(false)
   }
 
@@ -48,7 +48,7 @@ export default function SchtickSelector() {
       <Button variant="contained" color="primary" onClick={toggleOpen}>Add Schtick</Button>
       <Box sx={{display: open ? "block" : "none"}}>
         <Stack direction="row" spacing={1} alignItems="top" sx={{height: 60}}>
-          <FilterSchticks filter={filter} dispatchFilter={dispatchFilter} />
+          <FilterSchticks state={state} dispatch={dispatch} />
         </Stack>
 
         <Stack p={4} spacing={2}>

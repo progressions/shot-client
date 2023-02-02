@@ -100,7 +100,7 @@ export default function EditCharacter({ character:initialCharacter }: EditCharac
     )
   }
 
-  const schticksFilter:SchticksStateType = { ...initialSchticksState, schticks: schticks }
+  const schticksState:SchticksStateType = { ...initialSchticksState, schticks: schticks }
   const weaponsState:WeaponsStateType = { ...initialWeaponsState, weapons: weapons }
 
   return (
@@ -143,7 +143,7 @@ export default function EditCharacter({ character:initialCharacter }: EditCharac
             <Sites character={character} />
           </PlayerTypeOnly>
           <Description character={character} onChange={handleDescriptionChange} />
-          <Schticks filter={schticksFilter} />
+          <Schticks state={schticksState} />
           <SchtickSelector />
         </Stack>
       </Box>

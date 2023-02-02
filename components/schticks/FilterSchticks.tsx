@@ -10,35 +10,35 @@ import PathAutocomplete from "./PathAutocomplete"
 import type { SchticksStateType, SchticksActionType } from "./schticksState"
 
 interface FilterSchticksProps {
-  filter: SchticksStateType
-  dispatchFilter: React.Dispatch<SchticksActionType>
+  state: SchticksStateType
+  dispatch: React.Dispatch<SchticksActionType>
 }
 
-export default function FilterSchticks({ filter, dispatchFilter }: FilterSchticksProps) {
+export default function FilterSchticks({ state, dispatch }: FilterSchticksProps) {
   const { character } = useCharacter()
   const { user, client } = useClient()
   const { toastSuccess, toastError } = useToast()
-  const { page, loading, category, path, title } = filter
+  const { page, loading, category, path, title } = state
 
   useEffect(() => {
     async function getSchticks() {
       const response = await client.getSchticks({ page, category, path, title, character_id: character?.id as string })
       if (response.status === 200) {
         const data = await response.json()
-        dispatchFilter({ type: "schticks", payload: data })
+        dispatch({ type: "schticks", payload: data })
       }
     }
 
     if (user?.id) {
       getSchticks().catch(toastError)
     }
-  }, [character?.id, dispatchFilter, user?.id, category, path, toastError, client, page, title])
+  }, [character?.id, dispatch, user?.id, category, path, toastError, client, page, title])
 
   return (
     <>
-      <CategoryAutocomplete filter={filter} dispatchFilter={dispatchFilter} />
-      <PathAutocomplete filter={filter} dispatchFilter={dispatchFilter} />
-      <SchtickAutocomplete filter={filter} dispatchFilter={dispatchFilter} />
+      <CategoryAutocomplete state={state} dispatch={dispatch} />
+      <PathAutocomplete state={state} dispatch={dispatch} />
+      <SchtickAutocomplete state={state} dispatch={dispatch} />
     </>
   )
 }
