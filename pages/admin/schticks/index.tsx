@@ -21,14 +21,14 @@ import { getServerSession } from "next-auth/next"
 import Client from "../../../components/Client"
 import Schticks from "../../../components/schticks/Schticks"
 
-import type { ServerSideProps, Campaign } from "../../../types/types"
+import type { AuthSession, ServerSideProps, Campaign } from "../../../types/types"
 import type { SchticksResponse } from "../../../components/schticks/filterReducer"
 import { GetServerSideProps } from 'next'
 import { InferGetServerSidePropsType } from 'next'
 
 export async function getServerSideProps<GetServerSideProps>({ req, res }: ServerSideProps) {
-  const session: any = await getServerSession(req as NextApiRequest, res as NextApiResponse, authOptions)
-  const jwt = session?.authorization
+  const session: any = await getServerSession(req as NextApiRequest, res as NextApiResponse, authOptions) as AuthSession
+  const jwt = session?.authorization as string
   const client = new Client({ jwt: jwt })
 
   const response = await client.getSchticks()

@@ -10,15 +10,15 @@ import { authOptions } from '../../api/auth/[...nextauth]'
 import { getServerSession } from "next-auth/next"
 import { useRouter } from 'next/router'
 import Client from '../../../components/Client'
-import { ServerSideProps, PasswordWithConfirmation, User } from "../../../types/types"
+import { AuthSession, ServerSideProps, PasswordWithConfirmation, User } from "../../../types/types"
 import { useClient } from "../../../contexts/ClientContext"
 import { useToast } from "../../../contexts/ToastContext"
 
 import { useState } from "react"
 
 export async function getServerSideProps<GetServerSideProps>({ req, res, params, query }: ServerSideProps) {
-  const session: any = await getServerSession(req as NextApiRequest, res as NextApiResponse, authOptions)
-  const jwt = session?.authorization
+  const session: any = await getServerSession(req as NextApiRequest, res as NextApiResponse, authOptions) as AuthSession
+  const jwt = session?.authorization as string
   const client = new Client({ jwt: jwt })
   const { reset_password_token } = query
 

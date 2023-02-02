@@ -20,11 +20,11 @@ import { useClient } from "../../contexts/ClientContext"
 import { useToast } from "../../contexts/ToastContext"
 
 import { useState } from "react"
-import { ServerSideProps, Invitation, User, Campaign } from "../../types/types"
+import { AuthSession, ServerSideProps, Invitation, User, Campaign } from "../../types/types"
 
 export async function getServerSideProps<GetServerSideProps>({ req, res, params }: ServerSideProps) {
-  const session: any = await getServerSession(req as NextApiRequest, res as NextApiResponse, authOptions)
-  const jwt = session?.authorization
+  const session: any = await getServerSession(req as NextApiRequest, res as NextApiResponse, authOptions) as AuthSession
+  const jwt = session?.authorization as string
   const client = new Client({ jwt: jwt })
   const { id } = params
 

@@ -11,11 +11,11 @@ import { getServerSession } from "next-auth/next"
 import { useRouter } from 'next/router'
 
 import Client from '../../components/Client'
-import { ServerSideProps, User } from "../../types/types"
+import type { AuthSession, ServerSideProps, User } from "../../types/types"
 
 export async function getServerSideProps<GetServerSideProps>({ req, res, params, query }: ServerSideProps) {
-  const session: any = await getServerSession(req as NextApiRequest, res as NextApiResponse, authOptions)
-  const jwt = session?.authorization
+  const session: any = await getServerSession(req as NextApiRequest, res as NextApiResponse, authOptions) as AuthSession
+  const jwt = session?.authorization as string
   const client = new Client({ jwt: jwt })
   const { unlock_token } = query
 

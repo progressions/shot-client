@@ -15,7 +15,7 @@ import EditIcon from '@mui/icons-material/Edit'
 import CheckIcon from '@mui/icons-material/Check'
 
 import { useToast } from "../../contexts/ToastContext"
-import type { User, Toast, ServerSideProps } from "../../types/types"
+import type { AuthSession, User, Toast, ServerSideProps } from "../../types/types"
 
 import { defaultUser } from "../../types/types"
 
@@ -41,8 +41,8 @@ export async function loadUsers({ jwt, setUsers }: loadUsersParams) {
 }
 
 export async function getServerSideProps({ req, res }: ServerSideProps) {
-  const session: any = await getServerSession(req as NextApiRequest, res as NextApiResponse, authOptions)
-  const jwt = session?.authorization
+  const session: any = await getServerSession(req as NextApiRequest, res as NextApiResponse, authOptions) as AuthSession
+  const jwt = session?.authorization as string
   const client = new Client({ jwt })
   const id = session?.id
 

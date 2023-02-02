@@ -9,7 +9,7 @@ import { getServerSession } from "next-auth/next"
 import { useState } from 'react'
 import Router from "next/router"
 
-import type { User, ServerSideProps } from "../types/types"
+import type { AuthSession, User, ServerSideProps } from "../types/types"
 
 interface ProfileProps {
   jwt: string,
@@ -17,8 +17,8 @@ interface ProfileProps {
 }
 
 export async function getServerSideProps({ req, res, params }: ServerSideProps) {
-  const session: any = await getServerSession(req as NextApiRequest, res as NextApiResponse, authOptions)
-  const jwt = session?.authorization
+  const session: any = await getServerSession(req as NextApiRequest, res as NextApiResponse, authOptions) as AuthSession
+  const jwt = session?.authorization as string
   const client = new Client({ jwt })
   const id = session?.id
 

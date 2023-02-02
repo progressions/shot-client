@@ -1,5 +1,15 @@
 import { NextApiRequest, NextApiResponse } from 'next'
+import { Session, User as NextAuthUser } from "next-auth"
 import { AlertColor } from "@mui/material"
+
+export interface AuthUser extends NextAuthUser {
+  authorization: string | null
+}
+
+export interface AuthSession extends Session {
+  authorization: {} | null
+  id: {}
+}
 
 export interface OptionType {
   inputValue: string

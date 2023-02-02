@@ -26,7 +26,7 @@ import GamemasterOnly from "../../components/GamemasterOnly"
 
 import { useToast } from "../../contexts/ToastContext"
 import { useClient } from "../../contexts/ClientContext"
-import type { Person, Vehicle, Character, CharacterFilter, ServerSideProps, Toast } from "../../types/types"
+import type { AuthSession, Person, Vehicle, Character, CharacterFilter, ServerSideProps, Toast } from "../../types/types"
 import { defaultCharacter } from "../../types/types"
 
 interface CharactersProps {
@@ -72,8 +72,8 @@ const fetchCharactersAndVehicles = async (client: Client) => {
 }
 
 export async function getServerSideProps({ req, res }: ServerSideProps) {
-  const session: any = await getServerSession(req as NextApiRequest, res as NextApiResponse, authOptions)
-  const jwt = session?.authorization
+  const session: any = await getServerSession(req as NextApiRequest, res as NextApiResponse, authOptions) as AuthSession
+  const jwt = session?.authorization as string
   const client = new Client({ jwt })
 
   const campaignResponse = await client.getCurrentCampaign()

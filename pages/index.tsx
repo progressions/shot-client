@@ -28,7 +28,7 @@ import { useClient } from "../contexts/ClientContext"
 import { useCampaign } from "../contexts/CampaignContext"
 import GamemasterOnly from "../components/GamemasterOnly"
 
-import type { Campaign, Fight, Toast, ServerSideProps } from "../types/types"
+import type { AuthSession, Campaign, Fight, Toast, ServerSideProps } from "../types/types"
 
 interface HomeProps {
   fights: Fight[]
@@ -36,8 +36,8 @@ interface HomeProps {
 }
 
 export async function getServerSideProps<GetServerSideProps>({ req, res }: ServerSideProps) {
-  const session: any = await getServerSession(req as NextApiRequest, res as NextApiResponse, authOptions)
-  const jwt = session?.authorization
+  const session: any = await getServerSession(req as NextApiRequest, res as NextApiResponse, authOptions) as AuthSession
+  const jwt = session?.authorization as string
   const client = new Client({ jwt: jwt })
 
   const getCurrentCampaign = async () => {

@@ -13,7 +13,7 @@ import Client from '../../components/Client'
 
 import { useFight } from "../../contexts/FightContext"
 
-import type { ShotType, Vehicle, Person, Character, Fight, ID } from "../../types/types"
+import type { AuthSession, ShotType, Vehicle, Person, Character, Fight, ID } from "../../types/types"
 import { ServerSideProps } from "../../types/types"
 
 interface FightParams {
@@ -22,8 +22,8 @@ interface FightParams {
 }
 
 export async function getServerSideProps({ req, res, params }: ServerSideProps) {
-  const session: any = await getServerSession(req as NextApiRequest, res as NextApiResponse, authOptions)
-  const jwt = session?.authorization
+  const session: any = await getServerSession(req as NextApiRequest, res as NextApiResponse, authOptions) as AuthSession
+  const jwt = session?.authorization as string
   const client = new Client({ jwt: jwt })
   const { id } = params
 
