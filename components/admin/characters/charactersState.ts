@@ -146,7 +146,7 @@ export function charactersReducer(state: CharactersStateType, action: Characters
         edited: false,
       }
     case CharactersActions.RESET:
-      return initialCharactersState
+      return { ...initialCharactersState, open: state.open, anchorEl: state.anchorEl }
     default:
       return state
   }
