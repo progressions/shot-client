@@ -24,6 +24,7 @@ import { useToast } from "../../contexts/ToastContext"
 import { useClient } from "../../contexts/ClientContext"
 import type { PaginationMeta, AuthSession, Person, Vehicle, Character, CharacterFilter, ServerSideProps, Toast } from "../../types/types"
 import { defaultCharacter } from "../../types/types"
+import Characters from "../../components/admin/characters/Characters"
 
 interface CharactersProps {
   characters: Character[]
@@ -36,6 +37,9 @@ export async function getServerSideProps({ req, res }: ServerSideProps) {
   const campaignResponse = await client.getCurrentCampaign()
   const currentCampaign = campaignResponse.status === 200 ? await campaignResponse.json() : null
 
+  console.log(campaignResponse)
+  console.log(currentCampaign)
+
   if (!currentCampaign) {
     return {
       redirect: {
@@ -46,6 +50,7 @@ export async function getServerSideProps({ req, res }: ServerSideProps) {
       }
     }
   }
+
   const { characters, meta } = await client.getCharactersAndVehicles()
 
   return {
@@ -56,13 +61,8 @@ export async function getServerSideProps({ req, res }: ServerSideProps) {
   }
 }
 
-export default function Characters({ characters, meta }: CharactersProps) {
-  const { session } = useClient()
-
-  if (session?.status !== "authenticated") {
-    return <div>Loading...</div>
-  }
-
+export default function CharactersIndex({ characters, meta }: CharactersProps) {
+  console.log("hello", characters, meta)
   return (
     <>
       <Head>

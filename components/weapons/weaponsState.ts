@@ -16,8 +16,6 @@ export enum WeaponsActions {
   UPDATE = "update"
 }
 
-export type PayloadType = WeaponCategory | Juncture | Weapon | WeaponsResponse | string
-
 export interface WeaponsStateType {
   edited: boolean
   loading: boolean
@@ -32,6 +30,8 @@ export interface WeaponsStateType {
   weapons: Weapon[]
   meta: PaginationMeta
 }
+
+export type PayloadType = WeaponCategory | Juncture | Weapon | WeaponsResponse | string
 
 interface ActionNoPayload {
   type: Extract<WeaponsActions, WeaponsActions.RESET | WeaponsActions.EDIT | WeaponsActions.SAVING | WeaponsActions.SUCCESS | WeaponsActions.PREVIOUS | WeaponsActions.NEXT>

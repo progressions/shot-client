@@ -1,5 +1,4 @@
-import { TableRow, TableCell, Typography } from "@mui/material"
-import Link from "next/link"
+import { Link, TableRow, TableCell, Typography } from "@mui/material"
 import { User, Character } from "../../../types/types"
 import ActionValues from "../../characters/ActionValues"
 import AvatarBadge from "../../characters/AvatarBadge"
@@ -18,7 +17,7 @@ export default function CharacterDisplay({ character, user }: CharacterDisplayPr
       <TableCell sx={{width: 200}}>
         <Typography variant="h5">
           { character.category === "character" &&
-          <Link color="text.primary" href={`/characters/${character.id}`}>
+          <Link color="inherit" href={`/characters/${character.id}`}>
             {character.name}
           </Link> }
           { character.category === "vehicle" &&

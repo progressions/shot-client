@@ -1,6 +1,6 @@
 import { FormControlLabel, Link, Paper, Stack, Switch, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material"
 
-import { useState } from "react"
+import { useReducer, useState } from "react"
 import { useClient } from "../../../contexts/ClientContext"
 import { useToast } from "../../../contexts/ToastContext"
 import { Character, CharacterFilter, defaultCharacter, PaginationMeta } from "../../../types/types"
@@ -13,6 +13,7 @@ import { ButtonBar } from "../../StyledFields"
 import CreateVehicle from "../../vehicles/CreateVehicle"
 import CharactersToolbar from "./CharactersToolbar"
 import CharacterDisplay from "./CharacterDisplay"
+import { initialCharactersState, charactersReducer } from "./charactersState"
 
 interface CharactersProps {
   characters: Character[]
