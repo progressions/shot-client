@@ -12,6 +12,7 @@ import GamemasterOnly from "../../GamemasterOnly"
 import { ButtonBar } from "../../StyledFields"
 import CreateVehicle from "../../vehicles/CreateVehicle"
 import CharactersToolbar from "./CharactersToolbar"
+import CharacterDisplay from "./CharacterDisplay"
 
 interface CharactersProps {
   characters: Character[]
@@ -105,26 +106,9 @@ export default function Characters({ characters:initialCharacters, meta }: Chara
           </TableHead>
           <TableBody>
             {
-              filteredCharacters(characters).map((character: Character) => {
-                return (<TableRow key={character.id}>
-                  <TableCell sx={{width: 50}}>
-                    <AvatarBadge character={character} user={user} />
-                  </TableCell>
-                  <TableCell sx={{width: 200}}>
-                    <Typography variant="h5">
-                      { character.category === "character" &&
-                      <Link color="text.primary" href={`/characters/${character.id}`}>
-                        {character.name}
-                      </Link> }
-                      { character.category === "vehicle" &&
-                        character.name }
-                    </Typography>
-                  </TableCell>
-                  <TableCell>{character.action_values["Type"]}</TableCell>
-                  <TableCell><ActionValues character={character} /></TableCell>
-                  <TableCell>{character.user?.first_name} {character.user?.last_name}</TableCell>
-                </TableRow>)
-              })
+              filteredCharacters(characters).map((character: Character) => (
+                <CharacterDisplay key={character.id} character={character} user={user} />
+              ))
             }
           </TableBody>
         </Table>
