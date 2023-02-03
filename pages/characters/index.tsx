@@ -55,7 +55,6 @@ export async function getServerSideProps({ req, res }: ServerSideProps) {
 }
 
 export default function CharactersIndex({ characters, meta, factions, archetypes }:CharactersResponse) {
-  console.log(factions)
   return (
     <>
       <Head>

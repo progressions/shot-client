@@ -101,7 +101,6 @@ export function charactersReducer(state: CharactersStateType, action: Characters
         edited: false
       }
     case CharactersActions.UPDATE:
-      console.log(action)
       return {
         ...state,
         edited: true,

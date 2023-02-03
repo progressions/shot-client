@@ -11,7 +11,7 @@ interface CharacterFiltersProps {
 }
 
 export default function CharacterFilters({ state, dispatch }: CharacterFiltersProps) {
-  const { character_type, faction, factions, search } = state
+  const { character_type, faction, factions, archetype, archetypes, search } = state
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     dispatch({ type: CharactersActions.UPDATE, name: event.target.name, value: event.target.value })
@@ -21,25 +21,34 @@ export default function CharacterFilters({ state, dispatch }: CharacterFiltersPr
     <>
       <Stack direction="row" spacing={1}>
         <Box sx={{width: 200}}>
-          <StyledSelect fullWidth name='character_type' label='Character Type' select value={character_type} onChange={handleChange}>
-            <MenuItem value=''>All</MenuItem>
-            <MenuItem value='PC'>Player Character</MenuItem>
-            <MenuItem value='Ally'>Ally</MenuItem>
-            <MenuItem value='Mook'>Mook</MenuItem>
-            <MenuItem value='Featured Foe'>Featured Foe</MenuItem>
-            <MenuItem value='Boss'>Boss</MenuItem>
-            <MenuItem value='Uber-Boss'>Uber-Boss</MenuItem>
+          <StyledSelect fullWidth name="character_type" label="Character Type" select value={character_type} onChange={handleChange}>
+            <MenuItem value="">All</MenuItem>
+            <MenuItem value="PC">Player Character</MenuItem>
+            <MenuItem value="Ally">Ally</MenuItem>
+            <MenuItem value="Mook">Mook</MenuItem>
+            <MenuItem value="Featured Foe">Featured Foe</MenuItem>
+            <MenuItem value="Boss">Boss</MenuItem>
+            <MenuItem value="Uber-Boss">Uber-Boss</MenuItem>
           </StyledSelect>
         </Box>
         <Box sx={{width: 200}}>
-          <StyledSelect fullWidth name='faction' label='Faction' select value={faction} onChange={handleChange}>
+          <StyledSelect fullWidth name="faction" label="Faction" select value={faction} onChange={handleChange}>
+            <MenuItem key="" value="">All</MenuItem>
             {
               factions.map((faction: Faction) => <MenuItem key={faction} value={faction}>{faction}</MenuItem>)
             }
           </StyledSelect>
         </Box>
         <Box sx={{width: 200}}>
-          <StyledTextField fullWidth name='search' label='Name' value={search} onChange={handleChange} />
+          <StyledSelect fullWidth name="archetype" label="Archetype" select value={archetype} onChange={handleChange}>
+            <MenuItem key="" value="">All</MenuItem>
+            {
+              archetypes.map((archetype: Faction) => <MenuItem key={archetype} value={archetype}>{archetype}</MenuItem>)
+            }
+          </StyledSelect>
+        </Box>
+        <Box sx={{width: 200}}>
+          <StyledTextField fullWidth name="search" label="Name" value={search} onChange={handleChange} />
         </Box>
       </Stack>
     </>

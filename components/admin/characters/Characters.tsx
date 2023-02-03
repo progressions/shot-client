@@ -28,7 +28,7 @@ export default function Characters(charactersResponse: CharactersResponse) {
   useEffect(() => {
     const reload = async () => {
       try {
-        const data = await client.getCharactersAndVehicles({ faction, archetype })
+        const data = await client.getCharactersAndVehicles({ faction, archetype, search, character_type, show_all: showHidden })
         dispatch({ type: CharactersActions.CHARACTERS, payload: data })
       } catch(error) {
         toastError()
@@ -37,7 +37,7 @@ export default function Characters(charactersResponse: CharactersResponse) {
     if (user) {
       reload().catch(() => toastError())
     }
-  }, [user, faction, archetype, client, dispatch, toastError])
+  }, [user, faction, archetype, client, dispatch, toastError, search, character_type, showHidden])
 
   function editCharacter(character: Character): void {
     dispatch({ type: CharactersActions.CHARACTER, payload: character })
@@ -78,17 +78,6 @@ export default function Characters(charactersResponse: CharactersResponse) {
     }
   }
 
-  const characterVisibility = (character: Character): boolean => {
-    return (showHidden || character.active)
-  }
-
-  const filteredCharacters = (characters: Character[]): Character[] => {
-    return characters
-      .filter(characterVisibility)
-      .filter(characterMatchesType)
-      .filter(characterMatchesName)
-  }
-
   if (!characters) return <></>
 
   return (
@@ -106,13 +95,14 @@ export default function Characters(charactersResponse: CharactersResponse) {
               <TableCell />
               <TableCell>Name</TableCell>
               <TableCell>Type</TableCell>
-              <TableCell>Action Values</TableCell>
+              <TableCell>Archetype</TableCell>
+              <TableCell>Faction</TableCell>
               <TableCell>Creator</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {
-              filteredCharacters(characters).map((character: Character) => (
+              characters.map((character: Character) => (
                 <CharacterDisplay key={character.id} character={character} user={user} />
               ))
             }
