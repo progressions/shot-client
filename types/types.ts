@@ -2,9 +2,21 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { Session, User as NextAuthUser } from "next-auth"
 import { AlertColor } from "@mui/material"
 
+export type Faction = string
+
+export type Archetype = string
+
+export interface CharactersResponse {
+  characters: Character[]
+  meta: PaginationMeta
+  factions: Faction[]
+  archetypes: Archetype[]
+}
+
 export interface CharactersAndVehiclesResponse {
   characters: Character[]
   meta: PaginationMeta
+  factions: Faction[]
 }
 
 export interface ErrorMessages {
@@ -130,8 +142,8 @@ export interface ActionValues {
   Damage?: number
   Vehicle?: boolean
   "Marks of Death": number
-  Archetype: string
-  Faction: string
+  Archetype: Archetype
+  Faction: Faction
 }
 
 export type SkillValue = [string, number] | [string, undefined]
@@ -169,7 +181,7 @@ export interface VehicleActionValues {
   "Condition Points": number
   Position: Position
   Type: CharacterType
-  Faction: string
+  Faction: Faction
 }
 
 export interface Schtick {

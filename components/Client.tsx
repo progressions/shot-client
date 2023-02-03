@@ -52,8 +52,11 @@ class Client {
     return await this.delete(this.api.fights(fight))
   }
 
-  async getCharactersAndVehicles():Promise<CharactersAndVehiclesResponse> {
-    return this.get(this.api.charactersAndVehicles()).then(response => response.json()).catch(error => error)
+  async getCharactersAndVehicles(params = {}):Promise<CharactersAndVehiclesResponse> {
+    const query = Object.entries(params).map(([key, value]) => `${key}=${value || ""}`).join("&")
+    return this.get(`${this.api.charactersAndVehicles()}?${query}`)
+    .then(response => response.json())
+    .catch(error => error)
   }
 
   async getCharacter(character: Character | ID):Promise<Response> {

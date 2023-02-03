@@ -1,4 +1,4 @@
-import { CharacterType, Character, PaginationMeta, CharacterCategory, defaultPaginationMeta, defaultCharacter } from "../../../types/types"
+import { Archetype, CharacterType, Character, PaginationMeta, CharacterCategory, defaultPaginationMeta, defaultCharacter, Faction, CharactersResponse, CharactersAndVehiclesResponse } from "../../../types/types"
 
 export enum CharactersActions {
   RESET = "reset",
@@ -23,11 +23,15 @@ export interface CharactersStateType {
   character_types: CharacterType[]
   characters: Character[]
   character: Character
+  faction: Faction,
+  factions: Faction[]
+  archetype: Archetype
+  archetypes: Archetype[]
   search: string
   meta: PaginationMeta
 }
 
-export type PayloadType = CharacterCategory | Character | CharactersResponse | string
+export type PayloadType = CharacterCategory | Character | CharactersResponse | CharactersAndVehiclesResponse | string
 
 interface ActionNoPayload {
   type: Extract<CharactersActions, CharactersActions.RESET | CharactersActions.EDIT | CharactersActions.SAVING | CharactersActions.SUCCESS | CharactersActions.PREVIOUS | CharactersActions.NEXT>
@@ -44,11 +48,6 @@ interface UpdateAction {
   value: string | boolean
 }
 
-export interface CharactersResponse {
-  characters: Character[]
-  meta: PaginationMeta
-}
-
 export type CharactersActionType = ActionNoPayload | UpdateAction | PayloadAction
 
 export const initialCharactersState:CharactersStateType = {
@@ -58,6 +57,10 @@ export const initialCharactersState:CharactersStateType = {
   page: 1,
   character_type: "",
   character_types: [],
+  faction: "",
+  factions: [],
+  archetype: "",
+  archetypes: [],
   character: defaultCharacter,
   characters: [],
   search: "",
@@ -98,6 +101,7 @@ export function charactersReducer(state: CharactersStateType, action: Characters
         edited: false
       }
     case CharactersActions.UPDATE:
+      console.log(action)
       return {
         ...state,
         edited: true,
@@ -119,11 +123,13 @@ export function charactersReducer(state: CharactersStateType, action: Characters
         character: (action.payload || initialCharactersState.character) as Character,
       }
     case CharactersActions.CHARACTERS:
-      const { characters, meta } = action.payload as CharactersResponse
+      const { characters, meta, factions, archetypes } = action.payload as CharactersResponse
       return {
         ...state,
         loading: false,
         characters: characters,
+        factions: factions,
+        archetypes: archetypes,
         meta: meta,
         edited: false,
       }

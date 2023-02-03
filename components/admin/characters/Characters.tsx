@@ -3,7 +3,7 @@ import { FormControlLabel, Link, Paper, Stack, Switch, Table, TableBody, TableCe
 import { useEffect, useReducer, useState } from "react"
 import { useClient } from "../../../contexts/ClientContext"
 import { useToast } from "../../../contexts/ToastContext"
-import { Character, CharacterFilter, defaultCharacter, PaginationMeta } from "../../../types/types"
+import { Character, CharacterFilter, CharactersResponse, defaultCharacter, PaginationMeta } from "../../../types/types"
 import ActionValues from "../../characters/ActionValues"
 import AvatarBadge from "../../characters/AvatarBadge"
 import CharacterFilters from "../../characters/CharacterFilters"
@@ -15,20 +15,29 @@ import CharactersToolbar from "./CharactersToolbar"
 import CharacterDisplay from "./CharacterDisplay"
 import { CharactersActions, initialCharactersState, charactersReducer } from "./charactersState"
 
-interface CharactersProps {
-  characters: Character[]
-  meta: PaginationMeta
-}
-
-export default function Characters({ characters:initialCharacters, meta }: CharactersProps) {
+export default function Characters(charactersResponse: CharactersResponse) {
   const { client, session, user } = useClient()
   const { toastError, toastSuccess } = useToast()
   const [state, dispatch] = useReducer(charactersReducer, initialCharactersState)
-  const { characters, character_type, search, showHidden } = state
+  const { faction, archetype, characters, character_type, factions, search, showHidden } = state
 
   useEffect(() => {
-    dispatch({ type: CharactersActions.CHARACTERS, payload: { characters: initialCharacters, meta } })
-  }, [initialCharacters, dispatch])
+    dispatch({ type: CharactersActions.CHARACTERS, payload: charactersResponse })
+  }, [charactersResponse, dispatch])
+
+  useEffect(() => {
+    const reload = async () => {
+      try {
+        const data = await client.getCharactersAndVehicles({ faction, archetype })
+        dispatch({ type: CharactersActions.CHARACTERS, payload: data })
+      } catch(error) {
+        toastError()
+      }
+    }
+    if (user) {
+      reload().catch(() => toastError())
+    }
+  }, [user, faction, archetype, client, dispatch, toastError])
 
   function editCharacter(character: Character): void {
     dispatch({ type: CharactersActions.CHARACTER, payload: character })
@@ -36,8 +45,8 @@ export default function Characters({ characters:initialCharacters, meta }: Chara
 
   async function reloadCharacters() {
     try {
-      const { characters, meta } = await client.getCharactersAndVehicles()
-      dispatch({ type: CharactersActions.CHARACTERS, payload: { characters, meta } })
+      const data = await client.getCharactersAndVehicles({ faction, archetype })
+      dispatch({ type: CharactersActions.CHARACTERS, payload: data })
     } catch(error) {
       toastError()
     }

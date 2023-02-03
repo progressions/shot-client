@@ -22,7 +22,7 @@ import GamemasterOnly from "../../components/GamemasterOnly"
 
 import { useToast } from "../../contexts/ToastContext"
 import { useClient } from "../../contexts/ClientContext"
-import type { PaginationMeta, AuthSession, Person, Vehicle, Character, CharacterFilter, ServerSideProps, Toast } from "../../types/types"
+import type { PaginationMeta, AuthSession, Person, Vehicle, Character, CharacterFilter, ServerSideProps, Toast, CharactersResponse } from "../../types/types"
 import { defaultCharacter } from "../../types/types"
 import Characters from "../../components/admin/characters/Characters"
 
@@ -43,22 +43,19 @@ export async function getServerSideProps({ req, res }: ServerSideProps) {
         permanent: false,
         destination: "/"
       },
-      props: {
-      }
+      props: {}
     }
   }
 
-  const { characters, meta } = await client.getCharactersAndVehicles()
+  const charactersResponse = await client.getCharactersAndVehicles()
 
   return {
-    props: {
-      characters: characters,
-      meta: meta,
-    }, // will be passed to the page component as props
+    props: charactersResponse
   }
 }
 
-export default function CharactersIndex({ characters, meta }: CharactersProps) {
+export default function CharactersIndex({ characters, meta, factions, archetypes }:CharactersResponse) {
+  console.log(factions)
   return (
     <>
       <Head>
@@ -70,7 +67,7 @@ export default function CharactersIndex({ characters, meta }: CharactersProps) {
       <main>
         <Layout>
           <Container maxWidth="lg">
-            <Characters characters={characters} meta={meta} />
+            <Characters characters={characters} meta={meta} factions={factions} archetypes={archetypes} />
           </Container>
         </Layout>
       </main>
