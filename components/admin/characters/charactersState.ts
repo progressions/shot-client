@@ -10,7 +10,8 @@ export enum CharactersActions {
   CHARACTER = "character",
   CHARACTERS = "characters",
   UPDATE = "update",
-  UPDATE_CHARACTER = "update_character"
+  UPDATE_CHARACTER = "update_character",
+  OPEN = "open"
 }
 
 export interface CharactersStateType {
@@ -29,16 +30,18 @@ export interface CharactersStateType {
   archetypes: Archetype[]
   search: string
   meta: PaginationMeta
+  open: boolean
+  anchorEl: Element | null
 }
 
-export type PayloadType = CharacterCategory | Character | CharactersResponse | CharactersAndVehiclesResponse | string
+export type PayloadType = CharacterCategory | Character | CharactersResponse | CharactersAndVehiclesResponse | string | Element | null
 
 interface ActionNoPayload {
   type: Extract<CharactersActions, CharactersActions.RESET | CharactersActions.EDIT | CharactersActions.SAVING | CharactersActions.SUCCESS | CharactersActions.PREVIOUS | CharactersActions.NEXT>
 }
 
 interface PayloadAction {
-  type: Extract<CharactersActions, CharactersActions.CHARACTER | CharactersActions.CHARACTERS>
+  type: Extract<CharactersActions, CharactersActions.CHARACTER | CharactersActions.CHARACTERS | CharactersActions.OPEN>
   payload: PayloadType
 }
 
@@ -65,7 +68,9 @@ export const initialCharactersState:CharactersStateType = {
   characters: [],
   search: "",
   meta: defaultPaginationMeta,
-  showHidden: false
+  showHidden: false,
+  open: false,
+  anchorEl: null
 }
 
 export function charactersReducer(state: CharactersStateType, action: CharactersActionType): CharactersStateType {
@@ -87,6 +92,13 @@ export function charactersReducer(state: CharactersStateType, action: Characters
         edited: true,
         page: state.meta["next_page"] as number
       }
+    case CharactersActions.OPEN:
+      return {
+        ...state,
+        edited: true,
+        open: true,
+        anchorEl: action.payload as Element
+      }
     case CharactersActions.SAVING:
       return {
         ...state,
@@ -107,6 +119,7 @@ export function charactersReducer(state: CharactersStateType, action: Characters
         [action.name]: action.value
       }
     case CharactersActions.UPDATE_CHARACTER:
+      console.log(action)
       return {
         ...state,
         edited: true,

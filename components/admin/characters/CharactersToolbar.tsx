@@ -29,7 +29,7 @@ export default function CharactersToolbar({ state, dispatch, reload }: Character
           <CharacterFilters state={state} dispatch={dispatch} />
           <CreateCharacter reload={reload} />
           <CreateVehicle reload={reload} />
-          <FormControlLabel label="Show Hidden" control={<Switch checked={showHidden} />} onChange={show} />
+          <FormControlLabel label="All" control={<Switch checked={showHidden} />} onChange={show} />
         </Stack>
       </ButtonBar>
     </GamemasterOnly>

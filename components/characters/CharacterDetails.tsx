@@ -13,6 +13,7 @@ import ActionModal from './ActionModal'
 import WoundsModal from './WoundsModal'
 import HealModal from './HealModal'
 import ActionButtons from './ActionButtons'
+import MookActionButtons from './MookActionButtons'
 import AvatarBadge from './AvatarBadge'
 import GamemasterOnly from '../GamemasterOnly'
 import DeathMarks from "./DeathMarks"
@@ -27,6 +28,7 @@ import { useFight } from "../../contexts/FightContext"
 import { useToast } from "../../contexts/ToastContext"
 import { useClient } from "../../contexts/ClientContext"
 import Client from "../Client"
+import PlayerTypeOnly from "../PlayerTypeOnly"
 
 import type { CharacterEffect, User, Person, Character, Fight, Toast, ID } from "../../types/types"
 import { defaultCharacter } from "../../types/types"
@@ -137,12 +139,22 @@ export default function CharacterDetails({ character, editingCharacter, setEditi
           <GamemasterOnly user={user} character={character}>
             <Stack direction="row" spacing={1} justifyContent="space-between">
               <ActionValues character={character} />
-              <ActionButtons character={character}
-                healWounds={healWounds}
-                takeWounds={takeWounds}
-                takeAction={takeAction}
-                takeDodgeAction={takeDodgeAction}
-              />
+              <PlayerTypeOnly character={character} except="Mook">
+                <ActionButtons character={character}
+                  healWounds={healWounds}
+                  takeWounds={takeWounds}
+                  takeAction={takeAction}
+                  takeDodgeAction={takeDodgeAction}
+                />
+              </PlayerTypeOnly>
+              <PlayerTypeOnly character={character} only="Mook">
+                <MookActionButtons character={character}
+                  healWounds={healWounds}
+                  takeWounds={takeWounds}
+                  takeAction={takeAction}
+                  takeDodgeAction={takeDodgeAction}
+                />
+              </PlayerTypeOnly>
             </Stack>
             <Stack direction="row" spacing={1} alignItems="center">
               <SchticksDisplay schticks={character.schticks} />

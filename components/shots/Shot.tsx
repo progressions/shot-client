@@ -57,7 +57,7 @@ export default function Shot({ shot, characters, editingCharacter, setEditingCha
           </Stack>
         </TableCell>
       </TableRow>
-      {characters.map((character: Character) => {
+      {characters.map((character: Character, index: number) => {
         if (character.category === "character") {
           return <CharacterDetails key={character.id} character={character} editingCharacter={editingCharacter as Character} setEditingCharacter={setEditingCharacterWithCurrentShot} />
         }

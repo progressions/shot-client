@@ -1,9 +1,8 @@
 import { Stack, Box, TextField, MenuItem } from "@mui/material"
-import { useState } from 'react'
 
-import type { Faction, CharacterFilter } from "../../types/types"
+import type { Character, Faction, InputParamsType } from "../../types/types"
 import { CharactersStateType, CharactersActionType, CharactersActions } from "../admin/characters/charactersState"
-import { StyledTextField, StyledSelect } from "../StyledFields"
+import { StyledAutocomplete, StyledTextField, StyledSelect } from "../StyledFields"
 
 interface CharacterFiltersProps {
   state: CharactersStateType,
@@ -11,10 +10,25 @@ interface CharacterFiltersProps {
 }
 
 export default function CharacterFilters({ state, dispatch }: CharacterFiltersProps) {
-  const { character_type, faction, factions, archetype, archetypes, search } = state
+  const { loading, character, characters, character_type, faction, factions, archetype, archetypes, search } = state
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     dispatch({ type: CharactersActions.UPDATE, name: event.target.name, value: event.target.value })
+  }
+
+  const selectCharacter = (event: React.ChangeEvent<HTMLInputElement>, value: Character) => {
+    dispatch({ type: CharactersActions.CHARACTER, payload: value })
+  }
+
+  const getOptionLabel = (character: Character) => {
+    if (!character.name) return ""
+
+    const carEmoji = "🚗"
+    const personEmoji = "👤"
+
+    const emoji = (character.category === "vehicle") ? carEmoji : personEmoji
+
+    return `${emoji} ${character.name} (${character.action_values["Type"]})`
   }
 
   return (
@@ -48,9 +62,19 @@ export default function CharacterFilters({ state, dispatch }: CharacterFiltersPr
           </StyledSelect>
         </Box>
         <Box sx={{width: 200}}>
-          <StyledTextField fullWidth name="search" label="Name" value={search} onChange={handleChange} />
+          <StyledAutocomplete
+            disabled={loading}
+            freeSolo
+            options={characters}
+            sx={{ width: 200 }}
+            value={character}
+            onChange={selectCharacter}
+            getOptionLabel={getOptionLabel}
+            renderInput={(params: InputParamsType) => <StyledTextField autoFocus {...params} label="Character" />}
+          />
         </Box>
       </Stack>
     </>
   )
 }
+// <StyledTextField fullWidth name="search" label="Name" value={search} onChange={handleChange} />
