@@ -8,6 +8,7 @@ export enum CharactersActions {
   PREVIOUS = "previous",
   NEXT = "next",
   CHARACTER = "character",
+  RESET_CHARACTER = "reset_character",
   CHARACTERS = "characters",
   UPDATE = "update",
   UPDATE_CHARACTER = "update_character",
@@ -37,7 +38,7 @@ export interface CharactersStateType {
 export type PayloadType = CharacterCategory | Character | CharactersResponse | CharactersAndVehiclesResponse | string | Element | null
 
 interface ActionNoPayload {
-  type: Extract<CharactersActions, CharactersActions.RESET | CharactersActions.EDIT | CharactersActions.SAVING | CharactersActions.SUCCESS | CharactersActions.PREVIOUS | CharactersActions.NEXT>
+  type: Extract<CharactersActions, CharactersActions.RESET | CharactersActions.EDIT | CharactersActions.SAVING | CharactersActions.SUCCESS | CharactersActions.PREVIOUS | CharactersActions.NEXT | CharactersActions.RESET_CHARACTER>
 }
 
 interface PayloadAction {
@@ -145,8 +146,14 @@ export function charactersReducer(state: CharactersStateType, action: Characters
         meta: meta,
         edited: false,
       }
+    case CharactersActions.RESET_CHARACTER:
+      return {
+        ...state,
+        edited: true,
+        character: defaultCharacter
+      }
     case CharactersActions.RESET:
-      return { ...initialCharactersState, open: state.open, anchorEl: state.anchorEl }
+      return initialCharactersState
     default:
       return state
   }

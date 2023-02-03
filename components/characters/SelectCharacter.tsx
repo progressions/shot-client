@@ -68,7 +68,7 @@ export default function SelectCharacter() {
     if (response.status === 200) {
       const character = await response.json()
       toastSuccess(`${character.name} added.`)
-      dispatch({ type: CharactersActions.RESET })
+      dispatch({ type: CharactersActions.RESET_CHARACTER })
     } else {
       toastError()
     }
