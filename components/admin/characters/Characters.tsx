@@ -19,7 +19,7 @@ export default function Characters(charactersResponse: CharactersResponse) {
   const { client, session, user } = useClient()
   const { toastError, toastSuccess } = useToast()
   const [state, dispatch] = useReducer(charactersReducer, initialCharactersState)
-  const { faction, archetype, characters, character_type, factions, search, showHidden } = state
+  const { edited, faction, archetype, characters, character_type, factions, search, showHidden } = state
 
   useEffect(() => {
     dispatch({ type: CharactersActions.CHARACTERS, payload: charactersResponse })
@@ -34,10 +34,10 @@ export default function Characters(charactersResponse: CharactersResponse) {
         toastError()
       }
     }
-    if (user) {
+    if (user && edited) {
       reload().catch(() => toastError())
     }
-  }, [user, faction, archetype, client, dispatch, toastError, search, character_type, showHidden])
+  }, [edited, user, faction, archetype, client, dispatch, toastError, search, character_type, showHidden])
 
   function editCharacter(character: Character): void {
     dispatch({ type: CharactersActions.CHARACTER, payload: character })
