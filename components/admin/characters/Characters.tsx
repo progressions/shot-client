@@ -11,6 +11,7 @@ import CreateCharacter from "../../characters/CreateCharacter"
 import GamemasterOnly from "../../GamemasterOnly"
 import { ButtonBar } from "../../StyledFields"
 import CreateVehicle from "../../vehicles/CreateVehicle"
+import CharactersToolbar from "./CharactersToolbar"
 
 interface CharactersProps {
   characters: Character[]
@@ -84,16 +85,13 @@ export default function Characters({ characters:initialCharacters, meta }: Chara
   return (
     <>
       <Typography variant="h1" gutterBottom>Characters</Typography>
-      <GamemasterOnly user={user}>
-        <ButtonBar>
-          <Stack direction="row" spacing={2} alignItems="center">
-            <CharacterFilters filters={filters} setFilters={setFilters} />
-            <CreateCharacter reload={reloadCharacters} />
-            <CreateVehicle reload={reloadCharacters} />
-            <FormControlLabel label="Show Hidden" control={<Switch checked={showHidden} />} onChange={show} />
-          </Stack>
-        </ButtonBar>
-      </GamemasterOnly>
+      <CharactersToolbar
+        filters={filters}
+        setFilters={setFilters}
+        reload={reloadCharacters}
+        showHidden={showHidden}
+        show={show}
+      />
       <TableContainer component={Paper}>
         <Table size="small">
           <TableHead>
