@@ -49,8 +49,14 @@ export async function getServerSideProps({ req, res }: ServerSideProps) {
 
   const charactersResponse = await client.getCharactersAndVehicles()
 
+  if (charactersResponse) {
+    return {
+      props: charactersResponse
+    }
+  }
+
   return {
-    props: charactersResponse
+    props: {}
   }
 }
 

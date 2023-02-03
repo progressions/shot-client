@@ -55,8 +55,17 @@ class Client {
   async getCharactersAndVehicles(params = {}):Promise<CharactersAndVehiclesResponse> {
     const query = Object.entries(params).map(([key, value]) => `${key}=${value || ""}`).join("&")
     return this.get(`${this.api.charactersAndVehicles()}?${query}`)
-    .then(response => response.json())
-    .catch(error => error)
+    .then(response => {
+      if (response.status === 200) {
+        return response.json()
+      } else {
+        throw(response)
+      }
+    })
+    .catch((error) => {
+      console.log("I CAUGHT AN ERROR")
+      return null
+    })
   }
 
   async getCharacter(character: Character | ID):Promise<Response> {
