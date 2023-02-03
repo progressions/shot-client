@@ -9,7 +9,6 @@ export enum CharactersActions {
   NEXT = "next",
   CHARACTER = "character",
   CHARACTERS = "characters",
-  SEARCH = "search",
   UPDATE = "update",
   UPDATE_CHARACTER = "update_character"
 }
@@ -42,7 +41,7 @@ interface PayloadAction {
 interface UpdateAction {
   type: Extract<CharactersActions, CharactersActions.UPDATE | CharactersActions.UPDATE_CHARACTER>
   name: string
-  value: string
+  value: string | boolean
 }
 
 export interface CharactersResponse {
@@ -120,6 +119,7 @@ export function charactersReducer(state: CharactersStateType, action: Characters
         character: (action.payload || initialCharactersState.character) as Character,
       }
     case CharactersActions.CHARACTERS:
+      console.log("payload", action)
       const { characters, meta } = action.payload as CharactersResponse
       return {
         ...state,

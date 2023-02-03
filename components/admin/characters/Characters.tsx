@@ -1,6 +1,6 @@
 import { FormControlLabel, Link, Paper, Stack, Switch, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material"
 
-import { useReducer, useState } from "react"
+import { useEffect, useReducer, useState } from "react"
 import { useClient } from "../../../contexts/ClientContext"
 import { useToast } from "../../../contexts/ToastContext"
 import { Character, CharacterFilter, defaultCharacter, PaginationMeta } from "../../../types/types"
@@ -13,7 +13,7 @@ import { ButtonBar } from "../../StyledFields"
 import CreateVehicle from "../../vehicles/CreateVehicle"
 import CharactersToolbar from "./CharactersToolbar"
 import CharacterDisplay from "./CharacterDisplay"
-import { initialCharactersState, charactersReducer } from "./charactersState"
+import { CharactersActions, initialCharactersState, charactersReducer } from "./charactersState"
 
 interface CharactersProps {
   characters: Character[]
@@ -22,27 +22,24 @@ interface CharactersProps {
 
 export default function Characters({ characters:initialCharacters, meta }: CharactersProps) {
   const { client, session, user } = useClient()
-  const [editingCharacter, setEditingCharacter] = useState<Character>(defaultCharacter)
-  const [characters, setCharacters] = useState<Character[]>(initialCharacters)
-  const [filters, setFilters] = useState<CharacterFilter>({
-    type: null,
-    name: null
-  })
   const { toastError, toastSuccess } = useToast()
-  const [showHidden, setShowHidden] = useState<boolean>(false)
+  const [state, dispatch] = useReducer(charactersReducer, initialCharactersState)
+  const { characters, character_type, search, showHidden } = state
+
+  console.log(state)
+
+  useEffect(() => {
+    dispatch({ type: CharactersActions.CHARACTERS, payload: { characters: initialCharacters, meta } })
+  }, [initialCharacters, dispatch])
 
   function editCharacter(character: Character): void {
-    setEditingCharacter(character)
-  }
-
-  const show = (event: React.SyntheticEvent<Element, Event>, checked: boolean) => {
-    setShowHidden(checked)
+    dispatch({ type: CharactersActions.CHARACTER, payload: character })
   }
 
   async function reloadCharacters() {
     try {
       const { characters, meta } = await client.getCharactersAndVehicles()
-      setCharacters(characters)
+      dispatch({ type: CharactersActions.CHARACTERS, payload: { characters, meta } })
     } catch(error) {
       toastError()
     }
@@ -59,16 +56,16 @@ export default function Characters({ characters:initialCharacters, meta }: Chara
   }
 
   const characterMatchesType = (character: Character): boolean => {
-    if (filters.type) {
-      return character.action_values?.["Type"] === filters.type
+    if (character_type) {
+      return character.action_values?.["Type"] === character_type
     } else {
       return true
     }
   }
 
   const characterMatchesName = (character: Character): boolean => {
-    if (filters.name) {
-      return new RegExp(filters.name, "gi").test(character.name)
+    if (search) {
+      return new RegExp(search, "gi").test(character.name)
     } else {
       return true
     }
@@ -84,15 +81,16 @@ export default function Characters({ characters:initialCharacters, meta }: Chara
       .filter(characterMatchesType)
       .filter(characterMatchesName)
   }
+
+  if (!characters) return <></>
+
   return (
     <>
       <Typography variant="h1" gutterBottom>Characters</Typography>
       <CharactersToolbar
-        filters={filters}
-        setFilters={setFilters}
+        state={state}
+        dispatch={dispatch}
         reload={reloadCharacters}
-        showHidden={showHidden}
-        show={show}
       />
       <TableContainer component={Paper}>
         <Table size="small">

@@ -2,27 +2,30 @@ import { Stack, Box, TextField, MenuItem } from "@mui/material"
 import { useState } from 'react'
 
 import type { CharacterFilter } from "../../types/types"
+import { CharactersStateType, CharactersActionType, CharactersActions } from "../admin/characters/charactersState"
 import { StyledTextField, StyledSelect } from "../StyledFields"
 
 interface CharacterFiltersProps {
-  filters: CharacterFilter,
-  setFilters: React.Dispatch<React.SetStateAction<CharacterFilter>>
+  state: CharactersStateType,
+  dispatch: React.Dispatch<CharactersActionType>
 }
 
-export default function CharacterFilters({ filters, setFilters }: CharacterFiltersProps) {
+export default function CharacterFilters({ state, dispatch }: CharacterFiltersProps) {
+  const { character_type, search } = state
+
   const handleTypeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setFilters({ ...filters, type: event.target.value })
+    dispatch({ type: CharactersActions.UPDATE, name: "character_type", value: event.target.value })
   }
 
   const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setFilters({ ...filters, name: event.target.value })
+    dispatch({ type: CharactersActions.UPDATE, name: "search", value: event.target.value })
   }
 
   return (
     <>
       <Stack direction="row" spacing={1}>
         <Box sx={{width: 200}}>
-          <StyledSelect fullWidth name='Type' label='Character Type' select value={filters.type || ''} onChange={handleTypeChange}>
+          <StyledSelect fullWidth name='Type' label='Character Type' select value={character_type} onChange={handleTypeChange}>
             <MenuItem value=''>All</MenuItem>
             <MenuItem value='PC'>Player Character</MenuItem>
             <MenuItem value='Ally'>Ally</MenuItem>
@@ -33,7 +36,7 @@ export default function CharacterFilters({ filters, setFilters }: CharacterFilte
           </StyledSelect>
         </Box>
         <Box sx={{width: 200}}>
-          <StyledTextField fullWidth name='Name' label='Name' value={filters.name || ''} onChange={handleNameChange} />
+          <StyledTextField fullWidth name='Name' label='Name' value={search} onChange={handleNameChange} />
         </Box>
       </Stack>
     </>

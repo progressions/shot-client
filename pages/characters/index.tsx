@@ -37,9 +37,6 @@ export async function getServerSideProps({ req, res }: ServerSideProps) {
   const campaignResponse = await client.getCurrentCampaign()
   const currentCampaign = campaignResponse.status === 200 ? await campaignResponse.json() : null
 
-  console.log(campaignResponse)
-  console.log(currentCampaign)
-
   if (!currentCampaign) {
     return {
       redirect: {
@@ -53,6 +50,7 @@ export async function getServerSideProps({ req, res }: ServerSideProps) {
 
   const { characters, meta } = await client.getCharactersAndVehicles()
 
+  console.log({ characters })
   return {
     props: {
       characters: characters,
@@ -62,7 +60,7 @@ export async function getServerSideProps({ req, res }: ServerSideProps) {
 }
 
 export default function CharactersIndex({ characters, meta }: CharactersProps) {
-  console.log("hello", characters, meta)
+  console.log({ characters })
   return (
     <>
       <Head>
