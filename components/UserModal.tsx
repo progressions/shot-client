@@ -7,7 +7,6 @@ import Stack from '@mui/material/Stack'
 import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
 import Router from "next/router"
-import { useSession } from 'next-auth/react'
 
 import Client from "./Client"
 

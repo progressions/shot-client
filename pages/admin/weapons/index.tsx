@@ -7,7 +7,6 @@ import { useClient } from "../../../contexts/ClientContext"
 import { useCharacter } from "../../../contexts/CharacterContext"
 import { useCampaign } from "../../../contexts/CampaignContext"
 import { useToast } from "../../../contexts/ToastContext"
-import { useSession } from 'next-auth/react'
 
 import { ButtonBar } from "../../../components/StyledFields"
 import CreateCampaign from "../../../components/campaigns/CreateCampaign"

@@ -1,6 +1,5 @@
 import { TableContainer, Table, TableBody, TableRow, TableCell, Stack, Box, Typography } from "@mui/material"
 import AvatarBadge from "../characters/AvatarBadge"
-import { useSession } from "next-auth/react"
 import Client from "../Client"
 import DirectionsCarIcon from "@mui/icons-material/DirectionsCar"
 import GamemasterOnly from "../GamemasterOnly"

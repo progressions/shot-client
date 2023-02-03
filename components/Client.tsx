@@ -1,5 +1,6 @@
 import Api from "./Api"
 import type {
+  CharactersAndVehiclesResponse,
   PasswordWithConfirmation,
   Weapon,
   Site,
@@ -49,6 +50,22 @@ class Client {
 
   async deleteFight(fight: Fight):Promise<Response> {
     return await this.delete(this.api.fights(fight))
+  }
+
+  async getCharactersAndVehicles(params = {}):Promise<CharactersAndVehiclesResponse> {
+    const query = Object.entries(params).map(([key, value]) => `${key}=${value || ""}`).join("&")
+    return this.get(`${this.api.charactersAndVehicles()}?${query}`)
+    .then(response => {
+      if (response.status === 200) {
+        return response.json()
+      } else {
+        throw(response)
+      }
+    })
+    .catch((error) => {
+      console.log("I CAUGHT AN ERROR")
+      return null
+    })
   }
 
   async getCharacter(character: Character | ID):Promise<Response> {

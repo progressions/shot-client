@@ -11,7 +11,6 @@ import GamemasterOnly from "../GamemasterOnly"
 
 import type { Fight } from "../../types/types"
 
-import { useSession } from 'next-auth/react'
 import { useFight } from "../../contexts/FightContext"
 import { useClient } from "../../contexts/ClientContext"
 import { useLocalStorage } from "../../contexts/LocalStorageContext"

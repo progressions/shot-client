@@ -4,9 +4,7 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import { useState } from "react"
 import { useToast } from "../../contexts/ToastContext"
 import { useClient } from "../../contexts/ClientContext"
-import { useSession } from 'next-auth/react'
 import { useFight } from "../../contexts/FightContext"
-import Client from "../Client"
 import type { FightContextType } from "../../contexts/FightContext"
 
 import type { Effect, Severity } from "../../types/types"

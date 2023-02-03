@@ -1,6 +1,5 @@
 import { Button } from "@mui/material"
 import { useMemo, useEffect, useState } from "react"
-import { useSession } from 'next-auth/react'
 import PlayArrowIcon from '@mui/icons-material/PlayArrow'
 
 import type { ShotType, Fight, Toast, Character, Person, Vehicle } from "../../types/types"

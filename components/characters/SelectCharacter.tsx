@@ -1,7 +1,5 @@
 import { useCallback, useMemo, useState, useEffect } from 'react'
 import { FormControlLabel, Switch, IconButton, Typography, Stack, Popover, Box, Dialog, DialogActions, DialogTitle, DialogContent, DialogContentText, Button } from '@mui/material'
-import { useSession } from 'next-auth/react'
-import Client from "../Client"
 import GamemasterOnly from "../GamemasterOnly"
 import { StyledTextField, StyledAutocomplete } from "../StyledFields"
 

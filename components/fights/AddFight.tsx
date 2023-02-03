@@ -3,7 +3,6 @@ import { Alert, Snackbar, Box, Paper, Stack, Typography, TextField, Button } fro
 import Router from "next/router"
 import KeyboardDoubleArrowDownIcon from '@mui/icons-material/KeyboardDoubleArrowDown';
 import KeyboardDoubleArrowUpIcon from '@mui/icons-material/KeyboardDoubleArrowUp';
-import { useSession } from 'next-auth/react'
 import Client from "../Client"
 
 import { useToast } from "../../contexts/ToastContext"

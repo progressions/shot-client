@@ -12,7 +12,6 @@ import CarCrashIcon from '@mui/icons-material/CarCrash'
 import GamemasterOnly from "../GamemasterOnly"
 import PlayerTypeOnly from "../PlayerTypeOnly"
 import MookRolls from '../MookRolls'
-import { useSession } from 'next-auth/react'
 import { useClient } from "../../contexts/ClientContext"
 
 import type { Character, CharacterType } from "../../types/types"

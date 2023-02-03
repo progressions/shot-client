@@ -1,7 +1,5 @@
 import { useEffect, useReducer, createContext, useContext } from "react"
 
-import { useSession } from 'next-auth/react'
-
 import { defaultCharacter } from "../types/types"
 import type { Character, User } from "../types/types"
 import { useClient } from "./ClientContext"
