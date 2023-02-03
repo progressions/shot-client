@@ -119,7 +119,6 @@ export function charactersReducer(state: CharactersStateType, action: Characters
         character: (action.payload || initialCharactersState.character) as Character,
       }
     case CharactersActions.CHARACTERS:
-      console.log("payload", action)
       const { characters, meta } = action.payload as CharactersResponse
       return {
         ...state,

@@ -26,8 +26,6 @@ export default function Characters({ characters:initialCharacters, meta }: Chara
   const [state, dispatch] = useReducer(charactersReducer, initialCharactersState)
   const { characters, character_type, search, showHidden } = state
 
-  console.log(state)
-
   useEffect(() => {
     dispatch({ type: CharactersActions.CHARACTERS, payload: { characters: initialCharacters, meta } })
   }, [initialCharacters, dispatch])
