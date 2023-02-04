@@ -11,10 +11,9 @@ import { CharactersStateType, CharactersActionType, CharactersActions } from "./
 interface CharactersToolbarProps {
   state: CharactersStateType
   dispatch: React.Dispatch<CharactersActionType>
-  reload: () => Promise<void>
 }
 
-export default function CharactersToolbar({ state, dispatch, reload }: CharactersToolbarProps) {
+export default function CharactersToolbar({ state, dispatch }: CharactersToolbarProps) {
   const { client, session, user } = useClient()
   const { showHidden } = state
 
@@ -27,8 +26,8 @@ export default function CharactersToolbar({ state, dispatch, reload }: Character
       <ButtonBar>
         <Stack direction="row" spacing={2} alignItems="center">
           <CharacterFilters state={state} dispatch={dispatch} />
-          <CreateCharacter reload={reload} />
-          <CreateVehicle reload={reload} />
+          <CreateCharacter />
+          <CreateVehicle />
           <FormControlLabel label="All" control={<Switch checked={showHidden} />} onChange={show} />
         </Stack>
       </ButtonBar>

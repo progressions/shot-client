@@ -6,6 +6,11 @@ export type Faction = string
 
 export type Archetype = string
 
+export interface FightsResponse {
+  fights: Fight[]
+  meta: PaginationMeta
+}
+
 export interface CharactersResponse {
   characters: Character[]
   meta: PaginationMeta

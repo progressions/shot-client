@@ -32,6 +32,7 @@ import PlayerTypeOnly from "../PlayerTypeOnly"
 
 import type { CharacterEffect, User, Person, Character, Fight, Toast, ID } from "../../types/types"
 import { defaultCharacter } from "../../types/types"
+import { FightsActions } from '../fights/fightsState'
 
 interface CharacterDetailsParams {
   character: Character,
@@ -40,7 +41,7 @@ interface CharacterDetailsParams {
 }
 
 export default function CharacterDetails({ character, editingCharacter, setEditingCharacter }: CharacterDetailsParams) {
-  const { fight, setFight, reloadFight } = useFight()
+  const { fight, dispatch } = useFight()
 
   const { session, client, user } = useClient()
 
@@ -60,7 +61,7 @@ export default function CharacterDetails({ character, editingCharacter, setEditi
       const response = await client.deleteCharacter(character, fight)
       if (response.status === 200) {
         toastSuccess(`${character.name} removed.`)
-        await reloadFight(fight)
+        dispatch({ type: FightsActions.EDIT })
       } else {
         toastError()
       }
@@ -108,7 +109,7 @@ export default function CharacterDetails({ character, editingCharacter, setEditi
     if (response.status === 200) {
       toastSuccess(`${character.name} dodged for 1 shot.`)
       await addDodgeEffect(character)
-      await reloadFight(fight)
+      dispatch({ type: FightsActions.EDIT })
     } else {
       toastError()
     }

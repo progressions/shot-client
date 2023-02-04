@@ -23,7 +23,7 @@ interface FightToolbarParams {
 }
 
 export default function FightToolbar({ showHidden, setShowHidden }: FightToolbarParams) {
-  const { fight, setFight } = useFight()
+  const { fight } = useFight()
   const { saveLocally, getLocally } = useLocalStorage()
   const { user } = useClient()
 
@@ -48,8 +48,8 @@ export default function FightToolbar({ showHidden, setShowHidden }: FightToolbar
           </GamemasterOnly>
           <DiceRoller />
           <ButtonGroup>
-            <CreateVehicle fight={fight} setFight={setFight} />
-            <CreateCharacter fight={fight} setFight={setFight} />
+            <CreateVehicle />
+            <CreateCharacter />
           </ButtonGroup>
           <ButtonGroup>
             <SelectCharacter />

@@ -1,5 +1,6 @@
 import Api from "./Api"
 import type {
+  FightsResponse,
   CharactersAndVehiclesResponse,
   PasswordWithConfirmation,
   Weapon,
@@ -32,8 +33,10 @@ class Client {
     this.api = new Api()
   }
 
-  async getFights():Promise<Response> {
-    return await this.get(this.api.fights())
+  async getFights(params = {}):Promise<FightsResponse> {
+    const query = Object.entries(params).map(([key, value]) => `${key}=${value || ""}`).join("&")
+    return this.get(`${this.api.fights()}?${query}`)
+    .then(this.handleResponse)
   }
 
   async getFight(fight: Fight | ID):Promise<Response> {
@@ -55,17 +58,7 @@ class Client {
   async getCharactersAndVehicles(params = {}):Promise<CharactersAndVehiclesResponse> {
     const query = Object.entries(params).map(([key, value]) => `${key}=${value || ""}`).join("&")
     return this.get(`${this.api.charactersAndVehicles()}?${query}`)
-    .then(response => {
-      if (response.status === 200) {
-        return response.json()
-      } else {
-        throw(response)
-      }
-    })
-    .catch((error) => {
-      console.log("I CAUGHT AN ERROR")
-      return null
-    })
+    .then(this.handleResponse)
   }
 
   async getCharacter(character: Character | ID):Promise<Response> {
@@ -394,6 +387,11 @@ class Client {
         'Authorization': this.jwt
       } as HeadersInit
     })
+  }
+
+  handleResponse(response: Response) {
+    if (!response.ok) throw Error(response.statusText)
+    return response.json()
   }
 }
 

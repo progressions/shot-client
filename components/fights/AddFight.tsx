@@ -10,33 +10,27 @@ import { useFight } from "../../contexts/FightContext"
 import { useClient } from "../../contexts/ClientContext"
 import type { Fight, Toast } from "../../types/types"
 import { defaultFight } from "../../types/types"
+import { FightsStateType, FightsActionType, FightsActions } from './fightsState';
 
-interface AddFightProps {
-  setFights: React.Dispatch<React.SetStateAction<Fight[]>>
-}
-
-export default function AddFight({ setFights }: AddFightProps) {
-  const { reloadFights } = useFight()
+export default function AddFight() {
   const { jwt, client } = useClient()
   const { toastSuccess, toastError } = useToast()
 
-  const [open, setOpen] = useState<boolean>(false)
-  const [fight, setFight] = useState<Fight>(defaultFight)
-  const [saving, setSaving] = useState<boolean>(false);
+  const { state, dispatch } = useFight()
+  const { open, saving, fight } = state
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
-    setFight((prev: Fight) => ({ ...prev, name: event.target.value }))
+    dispatch({ type: FightsActions.UPDATE_FIGHT, name: event.target.name, value: event.target.value })
   }
 
   const handleSubmit = async (event: React.ChangeEvent<HTMLInputElement>): Promise<void> => {
-    setSaving(true)
+    dispatch({ type: FightsActions.SAVING })
     event.preventDefault()
 
     const response = await client.createFight(fight)
     if (response.status === 200) {
-      setSaving(false)
       cancelForm()
-      await reloadFights({ setFights })
+      dispatch({ type: FightsActions.EDIT })
       toastSuccess(`Fight ${fight.name} created.`)
     } else {
       toastError()
@@ -44,8 +38,8 @@ export default function AddFight({ setFights }: AddFightProps) {
   }
 
   const cancelForm = (): void => {
-    setFight(defaultFight)
-    setOpen(false)
+    dispatch({ type: FightsActions.RESET_FIGHT })
+    dispatch({ type: FightsActions.CLOSE })
   }
 
   if (open) {
@@ -76,7 +70,7 @@ export default function AddFight({ setFights }: AddFightProps) {
     return (
       <>
         <Stack direction="row" mb={1}>
-          <Button color="primary" variant="contained" endIcon={<KeyboardDoubleArrowDownIcon />} onClick={() => setOpen(true)}>Add Fight</Button>
+          <Button color="primary" variant="contained" endIcon={<KeyboardDoubleArrowDownIcon />} onClick={() => dispatch({ type: FightsActions.OPEN, payload: null })}>Add Fight</Button>
         </Stack>
       </>
     )

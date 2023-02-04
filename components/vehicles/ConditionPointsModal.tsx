@@ -5,6 +5,7 @@ import { useFight } from "../../contexts/FightContext"
 import { useToast } from "../../contexts/ToastContext"
 import { useClient } from "../../contexts/ClientContext"
 import type { Vehicle, Character, Fight, Toast, VehicleActionValues } from "../../types/types"
+import { FightsActions } from '../fights/fightsState'
 
 interface ConditionPointsModalParams {
   open: boolean,
@@ -13,7 +14,7 @@ interface ConditionPointsModalParams {
 }
 
 const ConditionPointsModal = ({open, setOpen, character }: ConditionPointsModalParams) => {
-  const { fight, setFight, reloadFight } = useFight()
+  const { fight, dispatch:dispatchFight } = useFight()
   const [conditionPoints, setConditionPoints] = useState<number>(0)
   const [saving, setSaving] = useState<boolean>(false)
   const { toastSuccess, toastError } = useToast()
@@ -55,7 +56,7 @@ const ConditionPointsModal = ({open, setOpen, character }: ConditionPointsModalP
 
     const response = await client.updateVehicle({ ...character, "action_values": actionValues}, fight)
     if (response.status === 200) {
-      await reloadFight(fight)
+      dispatchFight({ type: FightsActions.EDIT })
       setConditionPoints(0)
       setOpen(false)
       if (character.action_values["Type"] === "Mook") {

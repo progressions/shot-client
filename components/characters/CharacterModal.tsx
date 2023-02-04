@@ -20,18 +20,18 @@ import { useClient } from "../../contexts/ClientContext"
 
 import type { Person, Fight, Character, Toast, ID } from "../../types/types"
 import { defaultCharacter } from "../../types/types"
+import { FightsActions } from '../fights/fightsState'
 
 interface CharacterModalParams {
   open: Character,
   setOpen: React.Dispatch<React.SetStateAction<Character>>
   fight?: Fight,
-  setFight?: React.Dispatch<React.SetStateAction<Fight>>
   character: Person | null
   reload?: () => Promise<void>
 }
 
 export default function CharacterModal({ open, setOpen, character:activeCharacter, reload }: CharacterModalParams) {
-  const { fight, setFight, reloadFight } = useFight()
+  const { fight, dispatch:dispatchFight } = useFight()
   const { client } = useClient()
   const { toastSuccess, toastError } = useToast()
 
@@ -94,8 +94,8 @@ export default function CharacterModal({ open, setOpen, character:activeCharacte
       } else {
         toastSuccess(`${character.name} updated.`)
       }
-      if (fight?.id && setFight) {
-        await reloadFight(fight)
+      if (fight?.id) {
+        dispatchFight({ type: FightsActions.EDIT })
       } else if (reload) {
         await reload()
       }

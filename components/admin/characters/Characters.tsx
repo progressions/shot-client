@@ -35,7 +35,7 @@ export default function Characters(charactersResponse: CharactersResponse) {
       }
     }
     if (user && edited) {
-      reload().catch(() => toastError())
+      reload()
     }
   }, [edited, user, faction, archetype, client, dispatch, toastError, search, character_type, showHidden])
 
@@ -43,20 +43,11 @@ export default function Characters(charactersResponse: CharactersResponse) {
     dispatch({ type: CharactersActions.CHARACTER, payload: character })
   }
 
-  async function reloadCharacters() {
-    try {
-      const data = await client.getCharactersAndVehicles({ faction, archetype })
-      dispatch({ type: CharactersActions.CHARACTERS, payload: data })
-    } catch(error) {
-      toastError()
-    }
-  }
-
   async function deleteCharacter(character: Character): Promise<void> {
     const response = await client.deleteCharacter(character)
 
     if (response.status === 200) {
-      reloadCharacters()
+      dispatch({ type: CharactersActions.EDIT })
     } else {
       toastError()
     }
@@ -86,7 +77,6 @@ export default function Characters(charactersResponse: CharactersResponse) {
       <CharactersToolbar
         state={state}
         dispatch={dispatch}
-        reload={reloadCharacters}
       />
       <TableContainer component={Paper}>
         <Table size="small">

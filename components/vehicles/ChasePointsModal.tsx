@@ -5,6 +5,7 @@ import { useClient } from "../../contexts/ClientContext"
 import { useFight } from "../../contexts/FightContext"
 
 import type { Vehicle, Character, Fight, Toast, VehicleActionValues } from "../../types/types"
+import { FightsActions } from '../fights/fightsState'
 
 interface ChasePointsModalParams {
   open: boolean,
@@ -13,7 +14,7 @@ interface ChasePointsModalParams {
 }
 
 const ChasePointsModal = ({open, setOpen, character }: ChasePointsModalParams) => {
-  const { fight, setFight, reloadFight } = useFight()
+  const { fight, dispatch } = useFight()
   const [chasePoints, setChasePoints] = useState<number>(0)
   const [saving, setSaving] = useState<boolean>(false)
   const { toastSuccess } = useToast()
@@ -55,7 +56,7 @@ const ChasePointsModal = ({open, setOpen, character }: ChasePointsModalParams) =
 
     const response = await client.updateVehicle({ ...character, "action_values": actionValues}, fight)
     if (response.status === 200) {
-      await reloadFight(fight)
+      dispatch({ type: FightsActions.EDIT })
       setChasePoints(0)
       setOpen(false)
       if (character.action_values["Type"] === "Mook") {

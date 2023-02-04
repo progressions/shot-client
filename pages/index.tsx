@@ -13,7 +13,7 @@ import Client from '../components/Client'
 import Router from 'next/router'
 import { useSession } from 'next-auth/react'
 import { getToken } from 'next-auth/jwt'
-import { useMemo, useState, useEffect } from 'react'
+import { useReducer, useMemo, useState, useEffect } from 'react'
 import { signIn, signOut } from 'next-auth/react'
 
 import { authOptions } from './api/auth/[...nextauth]'
@@ -26,11 +26,11 @@ import { useLocalStorage } from "../contexts/LocalStorageContext"
 import { useClient } from "../contexts/ClientContext"
 import { useCampaign } from "../contexts/CampaignContext"
 import GamemasterOnly from "../components/GamemasterOnly"
+import { FightsActions, initialFightsState, fightsReducer } from "../components/fights/fightsState"
 
-import type { AuthSession, Campaign, Fight, Toast, ServerSideProps } from "../types/types"
+import type { FightsResponse, PaginationMeta, AuthSession, Campaign, Fight, ServerSideProps } from "../types/types"
 
-interface HomeProps {
-  fights: Fight[]
+interface HomeProps extends FightsResponse {
   currentCampaign: Campaign | null
 }
 
@@ -48,60 +48,49 @@ export async function getServerSideProps<GetServerSideProps>({ req, res }: Serve
 
   const currentCampaign = await getCurrentCampaign()
 
-  const response = await client.getFights()
+  const fightsResponse = await client.getFights()
 
-  if (response.status === 200) {
-    const fights = await response.json()
-    return {
-      props: {
-        fights: fights,
-        currentCampaign: currentCampaign
-      }, // will be passed to the page component as props
-    }
-  }
-  if (response.status === 401) {
-    return {
-      redirect: {
-        permanent: false,
-        destination: "/auth/signin"
-      },
-      props: {
-      }
-    }
-  }
   return {
     props: {
-      fights: [],
+      ...fightsResponse,
+      currentCampaign: currentCampaign
     }
   }
 }
 
-export default function Home({ currentCampaign, fights:initialFights }: HomeProps) {
-  const [fights, setFights] = useState<Fight[]>(initialFights)
-  const { status, data } = useSession({ required: true })
-  const { toast } = useToast()
-  const [showHidden, setShowHidden] = useState<boolean>(false)
-  const { user } = useClient()
+export default function Home({ currentCampaign, fights:initialFights, meta }: HomeProps) {
+  const [state, dispatch] = useReducer(fightsReducer, initialFightsState)
+  const { client, user } = useClient()
+  const { toastSuccess, toastError } = useToast()
   const { saveLocally, getLocally } = useLocalStorage()
+  const { loading, edited, fights, showHidden } = state
+
+  useEffect(() => {
+    const reload = async () => {
+      try {
+        const fightsResponse = await client.getFights({ show_all: showHidden } )
+        dispatch({ type: FightsActions.FIGHTS, payload: fightsResponse })
+      } catch(error) {
+        toastError()
+      }
+    }
+
+    if (user && edited) {
+      reload()
+    }
+  }, [edited, user, dispatch, client, showHidden, toastError])
 
   useEffect(() => {
     const showHiddenFights = getLocally("showHiddenFights") || false
-    setShowHidden(!!showHiddenFights)
-  }, [getLocally, setShowHidden])
-
-  const filterFights = (fights: Fight[], showHidden: boolean) => {
-    if (showHidden) return fights
-    return fights.filter((fight: Fight) => (fight.active))
-  }
-
-  const filteredFights = filterFights(fights, showHidden)
+    dispatch({ type: FightsActions.UPDATE, name: "showHidden", value: !!showHiddenFights })
+  }, [getLocally, dispatch])
 
   const show = (event: React.SyntheticEvent<Element, Event>, checked: boolean) => {
     saveLocally("showHiddenFights", checked)
-    setShowHidden(checked)
+    dispatch({ type: FightsActions.UPDATE, name: "showHidden", value: !!checked })
   }
 
-  if (status !== "authenticated") {
+  if (loading) {
     return <div>Loading...</div>
   }
   return (
@@ -119,12 +108,12 @@ export default function Home({ currentCampaign, fights:initialFights }: HomeProp
             <GamemasterOnly user={user}>
               <ButtonBar>
                 <Stack direction="row" spacing={2}>
-                  { currentCampaign?.id && <AddFight setFights={setFights} /> }
+                  { currentCampaign?.id && <AddFight /> }
                   <FormControlLabel label="Show Hidden" control={<Switch checked={showHidden} />} onChange={show} />
                 </Stack>
               </ButtonBar>
             </GamemasterOnly>
-            { !!filteredFights.length &&
+            { !!fights.length &&
               <TableContainer component={Paper}>
                 <Table size="small">
                   <TableHead>
@@ -136,11 +125,20 @@ export default function Home({ currentCampaign, fights:initialFights }: HomeProp
                     </TableRow>
                   </TableHead>
                   <TableBody sx={{"& tr": { "& td": { color: "text.primary" }}}}>
-                    {filteredFights.map((fight: Fight) => <FightDetail fight={fight} key={fight.id} setFights={setFights} />)}
+                    {
+                      fights.map((fight: Fight) => (
+                        <FightDetail
+                          fight={fight}
+                          key={fight.id}
+                          state={state}
+                          dispatch={dispatch}
+                        />)
+                      )
+                    }
                   </TableBody>
                 </Table>
               </TableContainer> }
-            { !filteredFights.length && <Typography pt={5}>There are no available fights. Some fights might be hidden by the gamemaster.</Typography> }
+            { !fights.length && <Typography pt={5}>There are no available fights. Some fights might be hidden by the gamemaster.</Typography> }
           </Container>
         </Layout>
       </main>

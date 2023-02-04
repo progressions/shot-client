@@ -10,14 +10,16 @@ import { useFight } from "../../contexts/FightContext"
 import { useClient } from "../../contexts/ClientContext"
 import type { Fight, Toast } from "../../types/types"
 import { defaultFight } from "../../types/types"
+import type { FightsStateType, FightsActionType } from "./fightsState"
+import { FightsActions } from "./fightsState"
 
 interface FightParams {
-  fight: Fight,
-  setFights: React.Dispatch<React.SetStateAction<Fight[]>>
+  fight: Fight
+  state: FightsStateType
+  dispatch: React.Dispatch<FightsActionType>
 }
 
-export default function FightDetail({ fight, setFights }: FightParams) {
-  const { reloadFights } = useFight()
+export default function FightDetail({ fight, state, dispatch }: FightParams) {
   const { user, client } = useClient()
   const { toastSuccess, toastError } = useToast()
 
@@ -27,7 +29,7 @@ export default function FightDetail({ fight, setFights }: FightParams) {
     const response = await client.deleteFight(fight)
     if (response.status === 200) {
       toastError(`Fight ${fight.name} deleted`)
-      reloadFights({ setFights })
+      dispatch({ type: FightsActions.EDIT })
     }
   }
 
@@ -35,7 +37,7 @@ export default function FightDetail({ fight, setFights }: FightParams) {
     const response = await client.updateFight({ ...fight, "active": !fight.active })
     if (response.status === 200) {
       toastSuccess(`Fight ${fight.name} updated`)
-      reloadFights({ setFights })
+      dispatch({ type: FightsActions.EDIT })
     }
   }
 

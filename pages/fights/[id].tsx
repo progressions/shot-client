@@ -14,6 +14,8 @@ import { useFight } from "../../contexts/FightContext"
 
 import type { ParamsType, AuthSession, ShotType, Vehicle, Person, Character, Fight, ID } from "../../types/types"
 import { ServerSideProps } from "../../types/types"
+import { FightsActions, initialFightsState, fightsReducer } from "../../components/fights/fightsState"
+import { useClient } from "../../contexts/ClientContext"
 
 interface FightParams {
   fight: Fight | null,
@@ -67,13 +69,27 @@ export async function getServerSideProps({ req, res, params }: ServerSideProps) 
 }
 
 export default function Fight({ fight:initialFight, notFound }: FightParams) {
-  const { fight, setFight } = useFight()
+  const { client, user } = useClient()
+  const { fight, state, dispatch } = useFight()
+  const { edited } = state
 
   useEffect(() => {
-    if (setFight && initialFight) {
-      setFight(initialFight)
+    dispatch({ type: FightsActions.FIGHT, payload: initialFight })
+  }, [initialFight, dispatch])
+
+  useEffect(() => {
+    async function reloadFight(fight: Fight): Promise<void> {
+      const response = await client.getFight(fight)
+      if (response.status === 200) {
+        const data = await response.json()
+        dispatch({ type: FightsActions.FIGHT, payload: data })
+      }
     }
-  }, [setFight, initialFight])
+
+    if (user && edited && fight?.id) {
+      reloadFight(fight).catch(console.error)
+    }
+  }, [fight, edited, user, client, dispatch])
 
   if (!fight && !notFound) {
     return <>Loading...</>

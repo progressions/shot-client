@@ -1,30 +1,27 @@
-import { MouseEventHandler, useState, useEffect } from 'react'
-import { colors, Switch, FormControl, FormLabel, RadioGroup, DialogActions, DialogContent, DialogTitle, FormControlLabel, Checkbox, InputAdornment, Dialog, Box, Stack, TextField, Button, Paper, Popover } from '@mui/material'
-import FavoriteIcon from '@mui/icons-material/Favorite'
+import { useState, useEffect } from 'react'
+import { Switch, DialogActions, DialogContent, FormControlLabel, InputAdornment, Stack, Button, Paper, Popover } from '@mui/material'
 import CommuteIcon from '@mui/icons-material/Commute'
 import CarCrashIcon from '@mui/icons-material/CarCrash'
 import { BlockPicker, ColorResult } from 'react-color'
 
-import Router from 'next/router'
 
 import CharacterType from '../characters/edit/CharacterType'
 
-import Client from "../Client"
 import PositionSelector from "./PositionSelector"
 import PursuerSelector from "./PursuerSelector"
 
 import { useToast } from "../../contexts/ToastContext"
 import { useFight } from "../../contexts/FightContext"
 import { useClient } from "../../contexts/ClientContext"
-import type { Vehicle, Fight, Character, Toast, ID } from "../../types/types"
+import type { Vehicle, Fight } from "../../types/types"
 import { defaultVehicle } from "../../types/types"
 import { StyledTextField, SaveCancelButtons, StyledDialog } from "../StyledFields"
+import { FightsActions } from '../fights/fightsState'
 
 interface VehicleModalParams {
   open: Vehicle,
   setOpen: React.Dispatch<React.SetStateAction<Vehicle>>
   fight?: Fight,
-  setFight?: React.Dispatch<React.SetStateAction<Fight>>
   character: Vehicle | null
   reload?: () => Promise<void>
 }
@@ -34,7 +31,7 @@ export default function CharacterModal({ open, setOpen, character:activeVehicle,
   const [anchorEl, setAnchorEl] = useState<Element | null>(null)
   const { toastSuccess, toastError } = useToast()
   const { client } = useClient()
-  const { fight, setFight, reloadFight } = useFight()
+  const { fight, dispatch:dispatchFight } = useFight()
 
   const [saving, setSaving] = useState(false);
 
@@ -97,7 +94,7 @@ export default function CharacterModal({ open, setOpen, character:activeVehicle,
         toastSuccess(`${character.name} updated.`)
       }
       if (fight?.id) {
-        await reloadFight(fight)
+        dispatchFight({ type: FightsActions.EDIT })
       } else if (reload) {
         await reload()
       }

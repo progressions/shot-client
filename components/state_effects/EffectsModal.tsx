@@ -1,13 +1,14 @@
 import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined'
-import { Button, Dialog, DialogTitle, Box, TextField, MenuItem, DialogContent, DialogActions, Tooltip, IconButton, Stack } from "@mui/material"
+import { Button, Dialog, DialogTitle, Box, TextField, MenuItem, DialogContent, DialogActions, IconButton, Stack } from "@mui/material"
 
 import { useMemo, useState } from "react"
 import { useToast } from "../../contexts/ToastContext"
 import { useClient } from "../../contexts/ClientContext"
 import { useFight } from "../../contexts/FightContext"
 
-import type { Character, CharacterEffect, Toast, Effect, Fight } from "../../types/types"
+import type { Character, CharacterEffect } from "../../types/types"
 import { defaultCharacterEffect } from "../../types/types"
+import { FightsActions } from '../fights/fightsState'
 
 interface EffectsModalProps {
   character: Character
@@ -15,7 +16,7 @@ interface EffectsModalProps {
 
 export default function EffectsModal({ character }: EffectsModalProps) {
   const initialEffect = { ...defaultCharacterEffect, character_id: character?.id }
-  const { fight, reloadFight } = useFight()
+  const { fight, dispatch:dispatchFight } = useFight()
 
   const [open, setOpen] = useState(false)
   const [effect, setEffect] = useState<CharacterEffect>(initialEffect)
@@ -50,10 +51,8 @@ export default function EffectsModal({ character }: EffectsModalProps) {
       const data = await response.json()
       setEffect(data)
       cancelForm()
-      if (reloadFight) {
-        await reloadFight(fight)
-        toastSuccess(`Effect ${effect.title} added.`)
-      }
+      dispatchFight({ type: FightsActions.EDIT })
+      toastSuccess(`Effect ${effect.title} added.`)
     } else {
       toastError()
       cancelForm()

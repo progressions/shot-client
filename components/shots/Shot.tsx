@@ -28,7 +28,7 @@ interface ShotParams {
 export default function Shot({ shot, characters, editingCharacter, setEditingCharacter, showHidden }: ShotParams) {
   const [open, setOpen] = useState<boolean>(false)
   const [openEffectDialog, setOpenEffectDialog] = useState<boolean>(false)
-  const { fight, setFight } = useFight()
+  const { fight } = useFight()
   const { user } = useClient()
 
   if (!showHidden && (shot === null || shot === undefined)) {

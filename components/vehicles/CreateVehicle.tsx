@@ -9,13 +9,7 @@ import DirectionsCarFilledIcon from '@mui/icons-material/DirectionsCarFilled'
 import type { Character, Vehicle, Fight, Toast, ID } from "../../types/types"
 import { defaultVehicle } from "../../types/types"
 
-interface CreateVehicleParams {
-  fight?: Fight,
-  setFight?: React.Dispatch<React.SetStateAction<Fight>>
-  reload?: () => Promise<void>
-}
-
-export default function CreateVehicle({ fight, setFight, reload }: CreateVehicleParams) {
+export default function CreateVehicle() {
   const [newVehicle, setNewVehicle] = useState<Vehicle>(defaultVehicle)
 
   const openModal = (): void => {
@@ -27,7 +21,7 @@ export default function CreateVehicle({ fight, setFight, reload }: CreateVehicle
       <Button variant="contained" color="primary" startIcon={<DirectionsCarFilledIcon />} onClick={openModal}>
         New
       </Button>
-      <VehicleModal open={newVehicle} setOpen={setNewVehicle} fight={fight} character={newVehicle} setFight={setFight} reload={reload} />
+      <VehicleModal open={newVehicle} setOpen={setNewVehicle} character={newVehicle} />
     </>
   )
 }

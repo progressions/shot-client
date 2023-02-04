@@ -17,7 +17,7 @@ import { useMemo, useState } from "react"
 export default function ShotCounter() {
   const [editingCharacter, setEditingCharacter] = useState<Person | Vehicle>(defaultCharacter)
   const [showHidden, setShowHidden] = useState<boolean>(false)
-  const { fight, setFight } = useFight()
+  const { fight } = useFight()
 
   const toolbar = useMemo(() => {
     if (fight?.id) {
@@ -55,16 +55,12 @@ export default function ShotCounter() {
       </TableContainer>
       <CharacterModal open={editingCharacter}
         setOpen={setEditingCharacter}
-        fight={fight}
         character={editingCharacter as Person}
-        setFight={setFight}
       />
       <VehicleModal
         open={editingCharacter as Vehicle}
         setOpen={setEditingCharacter as React.Dispatch<React.SetStateAction<Vehicle>>}
-        fight={fight}
         character={editingCharacter as Vehicle}
-        setFight={setFight}
       />
     </>
   )

@@ -6,6 +6,7 @@ import { useFight } from "../../contexts/FightContext"
 
 import type { Toast, Effect, Fight } from "../../types/types"
 import { defaultEffect } from "../../types/types"
+import { FightsActions } from "../fights/fightsState"
 
 interface EffectModalProps {
   shot: number
@@ -14,7 +15,7 @@ interface EffectModalProps {
 }
 
 export default function EffectModal({ shot, open, setOpen }: EffectModalProps) {
-  const { fight, reloadFight } = useFight()
+  const { fight, dispatch } = useFight()
 
   const initialEffect = { ...defaultEffect, start_sequence: fight.sequence, end_sequence: fight.sequence+1, start_shot: shot, end_shot: shot }
 
@@ -37,10 +38,8 @@ export default function EffectModal({ shot, open, setOpen }: EffectModalProps) {
     if (response.status === 200) {
       const data = await response.json()
       setEffect(data)
-      if (reloadFight) {
-        await reloadFight(fight)
-        toastSuccess(`Effect ${effect.title} added.`)
-      }
+      dispatch({ type: FightsActions.EDIT })
+      toastSuccess(`Effect ${effect.title} added.`)
     } else {
       toastError()
     }

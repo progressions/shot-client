@@ -14,11 +14,12 @@ import type { InputParamsType, Fight, Character, Vehicle } from "../../types/typ
 import { defaultCharacter } from "../../types/types"
 import { CharactersActions, initialCharactersState, charactersReducer } from "../admin/characters/charactersState"
 import CharacterFilters from './CharacterFilters'
+import { FightsActions } from '../fights/fightsState'
 
 export default function SelectCharacter() {
   const { user, client } = useClient()
   const { toastSuccess, toastError } = useToast()
-  const { fight, reloadFight } = useFight()
+  const { fight, dispatch:dispatchFight } = useFight()
 
   const [state, dispatch] = useReducer(charactersReducer, initialCharactersState)
   const { open, anchorEl, loading, edited, faction, archetype, character, characters, character_type, factions, search, showHidden } = state
@@ -35,7 +36,7 @@ export default function SelectCharacter() {
     if (user && edited) {
       reload().catch(() => toastError())
     }
-  }, [edited, user, client, dispatch, search, archetype, faction, fight?.id])
+  }, [edited, user, client, dispatch, search, archetype, faction, fight?.id, character_type, showHidden, toastError])
 
   const handleOpen = async (event: React.SyntheticEvent<Element, Event>) => {
     dispatch({ type: CharactersActions.RESET })
@@ -72,7 +73,7 @@ export default function SelectCharacter() {
     } else {
       toastError()
     }
-    await reloadFight(fight)
+    dispatchFight({ type: FightsActions.EDIT })
   }
 
   return (

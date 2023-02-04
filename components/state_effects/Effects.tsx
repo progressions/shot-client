@@ -8,6 +8,7 @@ import { useFight } from "../../contexts/FightContext"
 import { useMemo, useState } from "react"
 
 import type { Severity, CharacterEffect, Character } from "../../types/types"
+import { FightsActions } from "../fights/fightsState"
 
 interface EffectsProps {
   effects: CharacterEffect[]
@@ -18,7 +19,7 @@ export default function Effects({ effects, severity }: EffectsProps) {
   const [open, setOpen] = useState<boolean>(false)
   const [anchorEl, setAnchorEl] = useState<Element | null>(null)
 
-  const { fight, setFight, reloadFight } = useFight()
+  const { fight, dispatch } = useFight()
   const { jwt, client } = useClient()
   const { toastSuccess, toastError } = useToast()
 
@@ -35,7 +36,7 @@ export default function Effects({ effects, severity }: EffectsProps) {
   const deleteEffect = async (effect: CharacterEffect) => {
     const response = await client.deleteCharacterEffect(effect, fight)
     if (response.status === 200) {
-      await reloadFight(fight)
+      dispatch({ type: FightsActions.EDIT })
       toastSuccess(`Effect ${effect.title} deleted.`)
     } else {
       toastError()
