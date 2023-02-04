@@ -3,9 +3,9 @@ import { createFilterOptions } from "@mui/material"
 import type { Schtick, InputParamsType } from "../../types/types"
 import { defaultSchtick } from "../../types/types"
 
-import { SchticksActions } from "./schticksState"
+import { SchticksActions } from "../../reducers/schticksState"
 import { useState, useEffect } from "react"
-import type { SchticksStateType, SchticksActionType } from "./schticksState"
+import type { SchticksStateType, SchticksActionType } from "../../reducers/schticksState"
 
 const filterOptions = createFilterOptions<string>();
 

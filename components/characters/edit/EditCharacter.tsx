@@ -26,11 +26,11 @@ import DeathMarks from "../DeathMarks"
 import { Subhead, StyledTextField } from "../../StyledFields"
 
 import type { Character } from "../../../types/types"
-import type { SchticksStateType } from "../../schticks/schticksState"
-import { initialSchticksState as initialSchticksState } from "../../schticks/schticksState"
-import type { WeaponsStateType } from "../../weapons/weaponsState"
-import { initialWeaponsState as initialWeaponsState } from "../../weapons/weaponsState"
-import { CharacterActions } from "./characterState"
+import type { SchticksStateType } from "../../../reducers/schticksState"
+import { initialSchticksState as initialSchticksState } from "../../../reducers/schticksState"
+import type { WeaponsStateType } from "../../../reducers/weaponsState"
+import { initialWeaponsState as initialWeaponsState } from "../../../reducers/weaponsState"
+import { CharacterActions } from "../../../reducers/characterState"
 
 interface EditCharacterProps {
   character: Character

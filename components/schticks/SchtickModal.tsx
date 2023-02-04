@@ -5,10 +5,10 @@ import { defaultSchtick } from "../../types/types"
 import { useClient } from "../../contexts/ClientContext"
 import { useToast } from "../../contexts/ToastContext"
 import { StyledTextField, StyledDialog, SaveCancelButtons } from "../StyledFields"
-import { initialSchticksState, schticksReducer } from "./schticksState"
-import { SchticksActions } from "./schticksState"
+import { initialSchticksState, schticksReducer } from "../../reducers/schticksState"
+import { SchticksActions } from "../../reducers/schticksState"
 
-import type { SchticksStateType, SchticksActionType } from "./schticksState"
+import type { SchticksStateType, SchticksActionType } from "../../reducers/schticksState"
 
 interface SchtickModalProps {
   open: boolean

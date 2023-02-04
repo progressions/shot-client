@@ -13,15 +13,15 @@ import Campaigns from "../../../components/campaigns/Campaigns"
 import GamemasterOnly from "../../../components/GamemasterOnly"
 import CreateSchtickButton from "../../../components/schticks/CreateSchtickButton"
 import FilterSchticks from "../../../components/schticks/FilterSchticks"
-import { initialSchticksState, schticksReducer } from "../../../components/schticks/schticksState"
+import { initialSchticksState, schticksReducer } from "../../../reducers/schticksState"
 
 import { authOptions } from '../../api/auth/[...nextauth]'
 import Schticks from "../../../components/schticks/Schticks"
 
 import { getServerClient } from "../../../utils/getServerClient"
 import type { AuthSession, ServerSideProps, Campaign } from "../../../types/types"
-import type { SchticksResponse } from "../../../components/schticks/schticksState"
-import { SchticksActions } from "../../../components/schticks/schticksState"
+import type { SchticksResponse } from "../../../reducers/schticksState"
+import { SchticksActions } from "../../../reducers/schticksState"
 import { GetServerSideProps } from 'next'
 import { InferGetServerSidePropsType } from 'next'
 

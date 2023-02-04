@@ -4,7 +4,6 @@ import CommuteIcon from '@mui/icons-material/Commute'
 import CarCrashIcon from '@mui/icons-material/CarCrash'
 import { BlockPicker, ColorResult } from 'react-color'
 
-
 import CharacterType from '../characters/edit/CharacterType'
 
 import PositionSelector from "./PositionSelector"
@@ -16,7 +15,7 @@ import { useClient } from "../../contexts/ClientContext"
 import type { Vehicle, Fight } from "../../types/types"
 import { defaultVehicle } from "../../types/types"
 import { StyledTextField, SaveCancelButtons, StyledDialog } from "../StyledFields"
-import { FightsActions } from '../fights/fightsState'
+import { FightActions } from '../../reducers/fightState'
 
 interface VehicleModalParams {
   open: Vehicle,
@@ -94,7 +93,7 @@ export default function CharacterModal({ open, setOpen, character:activeVehicle,
         toastSuccess(`${character.name} updated.`)
       }
       if (fight?.id) {
-        dispatchFight({ type: FightsActions.EDIT })
+        dispatchFight({ type: FightActions.EDIT })
       } else if (reload) {
         await reload()
       }

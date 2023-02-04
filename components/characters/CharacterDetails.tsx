@@ -32,7 +32,7 @@ import PlayerTypeOnly from "../PlayerTypeOnly"
 
 import type { CharacterEffect, User, Person, Character, Fight, Toast, ID } from "../../types/types"
 import { defaultCharacter } from "../../types/types"
-import { FightsActions } from '../fights/fightsState'
+import { FightActions } from '../../reducers/fightState'
 
 interface CharacterDetailsParams {
   character: Character,
@@ -61,7 +61,7 @@ export default function CharacterDetails({ character, editingCharacter, setEditi
       const response = await client.deleteCharacter(character, fight)
       if (response.status === 200) {
         toastSuccess(`${character.name} removed.`)
-        dispatch({ type: FightsActions.EDIT })
+        dispatch({ type: FightActions.EDIT })
       } else {
         toastError()
       }
@@ -109,7 +109,7 @@ export default function CharacterDetails({ character, editingCharacter, setEditi
     if (response.status === 200) {
       toastSuccess(`${character.name} dodged for 1 shot.`)
       await addDodgeEffect(character)
-      dispatch({ type: FightsActions.EDIT })
+      dispatch({ type: FightActions.EDIT })
     } else {
       toastError()
     }

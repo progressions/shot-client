@@ -5,7 +5,7 @@ import { useFight } from "../../contexts/FightContext"
 import { useToast } from "../../contexts/ToastContext"
 import { useClient } from "../../contexts/ClientContext"
 import type { Person, Character, Fight, Toast, ActionValues } from "../../types/types"
-import { FightsActions } from '../fights/fightsState'
+import { FightActions } from '../../reducers/fightState'
 
 interface WoundsModalParams {
   open: boolean,
@@ -98,7 +98,7 @@ const WoundsModal = ({open, setOpen, character }: WoundsModalParams) => {
 
     const response = await client.updateCharacter({ ...character, impairments: impairments, "action_values": actionValues}, fight)
     if (response.status === 200) {
-      dispatchFight({ type: FightsActions.EDIT })
+      dispatchFight({ type: FightActions.EDIT })
       setSmackdown(0)
       setOpen(false)
       if (character.action_values["Type"] === "Mook") {

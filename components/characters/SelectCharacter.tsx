@@ -12,9 +12,9 @@ import { useClient } from "../../contexts/ClientContext"
 import { useFight } from "../../contexts/FightContext"
 import type { InputParamsType, Fight, Character, Vehicle } from "../../types/types"
 import { defaultCharacter } from "../../types/types"
-import { CharactersActions, initialCharactersState, charactersReducer } from "../admin/characters/charactersState"
+import { CharactersActions, initialCharactersState, charactersReducer } from "../../reducers/charactersState"
 import CharacterFilters from './CharacterFilters'
-import { FightsActions } from '../fights/fightsState'
+import { FightActions } from '../../reducers/fightState'
 
 export default function SelectCharacter() {
   const { user, client } = useClient()
@@ -73,7 +73,7 @@ export default function SelectCharacter() {
     } else {
       toastError()
     }
-    dispatchFight({ type: FightsActions.EDIT })
+    dispatchFight({ type: FightActions.EDIT })
   }
 
   return (

@@ -9,7 +9,7 @@ import { useToast } from "../../contexts/ToastContext"
 import { useClient } from "../../contexts/ClientContext"
 import { rollDie } from "../dice/DiceRoller"
 import Client from "../Client"
-import { FightsActions } from "./fightsState"
+import { FightActions } from "../../reducers/fightState"
 
 export default function RollInitiative() {
   const { fight, dispatch:dispatchFight } = useFight()
@@ -25,7 +25,7 @@ export default function RollInitiative() {
 
     const response = await client.updateFight(updatedFight)
     if (response.status === 200) {
-      dispatchFight({ type: FightsActions.EDIT })
+      dispatchFight({ type: FightActions.EDIT })
       toastSuccess(`Sequence increased`)
     }
   }
@@ -43,7 +43,7 @@ export default function RollInitiative() {
 
     await Promise.all(nonzeroShots.map(rollForShot))
 
-    dispatchFight({ type: FightsActions.EDIT })
+    dispatchFight({ type: FightActions.EDIT })
     toastSuccess("Initiative updated")
     setProcessing(false)
   }

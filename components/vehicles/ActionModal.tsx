@@ -5,7 +5,7 @@ import { useFight } from "../../contexts/FightContext"
 import { useToast } from "../../contexts/ToastContext"
 import { useClient } from "../../contexts/ClientContext"
 import type { Vehicle, Character, Fight, Toast } from "../../types/types"
-import { FightsActions } from '../fights/fightsState'
+import { FightActions } from '../../reducers/fightState'
 
 interface ActionModalParams {
   open: boolean,
@@ -30,7 +30,7 @@ const ActionModal = ({open, setOpen, character }: ActionModalParams) => {
 
       if (response.status === 200) {
         setOpen(false)
-        dispatchFight({ type: FightsActions.EDIT })
+        dispatchFight({ type: FightActions.EDIT })
         toastSuccess(`${character.name} spent ${shots} shots.`)
       } else {
         toastError()

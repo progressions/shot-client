@@ -5,7 +5,7 @@ import type { Character, User } from "../types/types"
 import { useClient } from "./ClientContext"
 import { useToast } from "./ToastContext"
 
-import { CharacterActions, CharacterStateAction, CharacterStateType, initialCharacterState, characterReducer } from "../components/characters/edit/characterState"
+import { CharacterActions, CharacterStateAction, CharacterStateType, initialCharacterState, characterReducer } from "../reducers/characterState"
 
 interface CharacterContextType {
   state: CharacterStateType

@@ -1,5 +1,5 @@
-import type { SchtickCategory, SchtickPath, PaginationMeta, Schtick } from "../../types/types"
-import { defaultPaginationMeta, defaultSchtick } from "../../types/types"
+import type { SchtickCategory, SchtickPath, PaginationMeta, Schtick } from "../types/types"
+import { defaultPaginationMeta, defaultSchtick } from "../types/types"
 
 export enum SchticksActions {
   RESET = "reset",

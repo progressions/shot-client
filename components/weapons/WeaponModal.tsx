@@ -7,8 +7,8 @@ import { useCharacter } from "../../contexts/CharacterContext"
 import type { FilterParamsType, OptionType, Juncture, InputParamsType, Character, Weapon } from "../../types/types"
 import { defaultWeapon } from "../../types/types"
 import { useEffect, useReducer } from "react"
-import type { WeaponsStateType, WeaponsActionType } from "./weaponsState"
-import { WeaponsActions } from "./weaponsState"
+import type { WeaponsStateType, WeaponsActionType } from "../../reducers/weaponsState"
+import { WeaponsActions } from "../../reducers/weaponsState"
 
 const filterOptions = createFilterOptions<Juncture>();
 

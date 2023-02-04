@@ -10,9 +10,15 @@ import { useFight } from "../../contexts/FightContext"
 import { useClient } from "../../contexts/ClientContext"
 import type { Fight, Toast } from "../../types/types"
 import { defaultFight } from "../../types/types"
-import { FightsStateType, FightsActionType, FightsActions } from './fightsState';
+import { FightsStateType, FightsActionType, FightsActions } from '../../reducers/fightsState';
+import { FightStateType, FightActionType, FightActions } from '../../reducers/fightState';
 
-export default function AddFight() {
+interface AddFightProps {
+  state: FightsStateType
+  dispatch: React.Dispatch<FightsActionType>
+}
+
+export default function AddFight({ state:fightsState, dispatch:dispatchFights }: AddFightProps) {
   const { jwt, client } = useClient()
   const { toastSuccess, toastError } = useToast()
 
@@ -20,17 +26,17 @@ export default function AddFight() {
   const { open, saving, fight } = state
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
-    dispatch({ type: FightsActions.UPDATE_FIGHT, name: event.target.name, value: event.target.value })
+    dispatch({ type: FightActions.UPDATE_FIGHT, name: event.target.name, value: event.target.value })
   }
 
   const handleSubmit = async (event: React.ChangeEvent<HTMLInputElement>): Promise<void> => {
-    dispatch({ type: FightsActions.SAVING })
+    dispatch({ type: FightActions.SAVING })
     event.preventDefault()
 
     const response = await client.createFight(fight)
     if (response.status === 200) {
       cancelForm()
-      dispatch({ type: FightsActions.EDIT })
+      dispatchFights({ type: FightsActions.EDIT })
       toastSuccess(`Fight ${fight.name} created.`)
     } else {
       toastError()
@@ -38,8 +44,8 @@ export default function AddFight() {
   }
 
   const cancelForm = (): void => {
-    dispatch({ type: FightsActions.RESET_FIGHT })
-    dispatch({ type: FightsActions.CLOSE })
+    dispatch({ type: FightActions.RESET })
+    dispatch({ type: FightActions.CLOSE })
   }
 
   if (open) {
@@ -70,7 +76,7 @@ export default function AddFight() {
     return (
       <>
         <Stack direction="row" mb={1}>
-          <Button color="primary" variant="contained" endIcon={<KeyboardDoubleArrowDownIcon />} onClick={() => dispatch({ type: FightsActions.OPEN, payload: null })}>Add Fight</Button>
+          <Button color="primary" variant="contained" endIcon={<KeyboardDoubleArrowDownIcon />} onClick={() => dispatch({ type: FightActions.OPEN, payload: null })}>Add Fight</Button>
         </Stack>
       </>
     )

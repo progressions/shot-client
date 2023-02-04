@@ -1,7 +1,7 @@
 import { Stack, Box, TextField, MenuItem } from "@mui/material"
 
 import type { Character, Faction, InputParamsType } from "../../types/types"
-import { CharactersStateType, CharactersActionType, CharactersActions } from "../admin/characters/charactersState"
+import { CharactersStateType, CharactersActionType, CharactersActions } from "../../reducers/charactersState"
 import { StyledAutocomplete, StyledTextField, StyledSelect } from "../StyledFields"
 
 interface CharacterFiltersProps {

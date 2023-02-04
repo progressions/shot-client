@@ -4,8 +4,8 @@ import { StyledTextField } from "../../StyledFields"
 
 import { useState } from "react"
 
-import type { CharacterStateAction } from "./characterState"
-import { CharacterActions } from "./characterState"
+import type { CharacterStateAction } from "../../../reducers/characterState"
+import { CharacterActions } from "../../../reducers/characterState"
 import type { Character } from "../../../types/types"
 
 interface ColorPickerProps {

@@ -6,8 +6,8 @@ import { useCharacter } from "../../contexts/CharacterContext"
 import { rowMap } from "../../utils/rowMap"
 import AddWeapon from "./AddWeapon"
 
-import { WeaponsActions } from "./weaponsState"
-import type { WeaponsStateType, WeaponsActionType } from "./weaponsState"
+import { WeaponsActions } from "../../reducers/weaponsState"
+import type { WeaponsStateType, WeaponsActionType } from "../../reducers/weaponsState"
 
 interface WeaponsProps {
   state: WeaponsStateType

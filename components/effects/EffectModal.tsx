@@ -6,7 +6,7 @@ import { useFight } from "../../contexts/FightContext"
 
 import type { Toast, Effect, Fight } from "../../types/types"
 import { defaultEffect } from "../../types/types"
-import { FightsActions } from "../fights/fightsState"
+import { FightActions } from "../../reducers/fightState"
 
 interface EffectModalProps {
   shot: number
@@ -38,7 +38,7 @@ export default function EffectModal({ shot, open, setOpen }: EffectModalProps) {
     if (response.status === 200) {
       const data = await response.json()
       setEffect(data)
-      dispatch({ type: FightsActions.EDIT })
+      dispatch({ type: FightActions.EDIT })
       toastSuccess(`Effect ${effect.title} added.`)
     } else {
       toastError()

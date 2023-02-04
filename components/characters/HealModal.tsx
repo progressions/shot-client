@@ -6,7 +6,7 @@ import { useFight } from "../../contexts/FightContext"
 import { useToast } from "../../contexts/ToastContext"
 import { useClient } from "../../contexts/ClientContext"
 import type { Person, Character, Fight, Toast, ActionValues } from "../../types/types"
-import { FightsActions } from '../fights/fightsState'
+import { FightActions } from '../../reducers/fightState'
 
 interface HealModalParams {
   open: boolean,
@@ -80,7 +80,7 @@ export default function HealModal({open, setOpen, character }: HealModalParams) 
 
     const response = await client.updateCharacter({ ...character, impairments: impairments, "action_values": actionValues}, fight)
     if (response.status === 200) {
-      dispatchFight({ type: FightsActions.EDIT })
+      dispatchFight({ type: FightActions.EDIT })
       setHealing(0)
       setOpen(false)
       toastSuccess(`${character.name} healed ${healing} Wounds.`)

@@ -5,8 +5,8 @@ import { Subhead } from "../StyledFields"
 import { rowMap } from "../../utils/rowMap"
 
 import { useState, useMemo } from "react"
-import type { SchticksStateType, SchticksActionType } from "./schticksState"
-import { SchticksActions } from "./schticksState"
+import type { SchticksStateType, SchticksActionType } from "../../reducers/schticksState"
+import { SchticksActions } from "../../reducers/schticksState"
 import { Schtick } from "../../types/types"
 
 interface SchticksProps {

@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next"
-import { Container, Typography } from "@mui/material"
+import { Stack, Box, Skeleton, Container, Typography } from "@mui/material"
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useState, useEffect } from 'react'
@@ -14,8 +14,9 @@ import { useFight } from "../../contexts/FightContext"
 
 import type { ParamsType, AuthSession, ShotType, Vehicle, Person, Character, Fight, ID } from "../../types/types"
 import { ServerSideProps } from "../../types/types"
-import { FightsActions, initialFightsState, fightsReducer } from "../../components/fights/fightsState"
+import { FightActions, initialFightState, fightReducer } from "../../reducers/fightState"
 import { useClient } from "../../contexts/ClientContext"
+import Loading from "../../components/fights/Loading"
 
 interface FightParams {
   fight: Fight | null,
@@ -23,47 +24,23 @@ interface FightParams {
 }
 
 export async function getServerSideProps({ req, res, params }: ServerSideProps) {
-  const { client } = await getServerClient(req, res)
+  const { client, user } = await getServerClient(req, res)
   const { id } = params as ParamsType
 
-  const response = await client.getFight({id: id, shot_order: []})
-  if (response.status === 200) {
-    const fight = await response.json()
-
-    return {
-      props: {
-        fight: fight,
-      }, // will be passed to the page component as props
-    }
-  }
-  if (response.status === 404) {
-    return {
-      props: {
-        fight: null,
-        notFound: true
-      }, // will be passed to the page component as props
-    }
-  }
-  if (response.status === 401) {
+  if (!user) {
     return {
       redirect: {
         permanent: false,
         destination: "/auth/signin"
       },
       props: {
-      }
-    }
-  }
-  if (response.status === 500) {
-    return {
-      redirect: {
-        permanent: false,
-        destination: "/"
+        fight: { id } as Fight
       }
     }
   }
   return {
     props: {
+      fight: { id } as Fight
     }
   }
 }
@@ -71,10 +48,10 @@ export async function getServerSideProps({ req, res, params }: ServerSideProps) 
 export default function Fight({ fight:initialFight, notFound }: FightParams) {
   const { client, user } = useClient()
   const { fight, state, dispatch } = useFight()
-  const { edited } = state
+  const { loading, edited } = state
 
   useEffect(() => {
-    dispatch({ type: FightsActions.FIGHT, payload: initialFight })
+    dispatch({ type: FightActions.FIGHT, payload: initialFight })
   }, [initialFight, dispatch])
 
   useEffect(() => {
@@ -82,7 +59,8 @@ export default function Fight({ fight:initialFight, notFound }: FightParams) {
       const response = await client.getFight(fight)
       if (response.status === 200) {
         const data = await response.json()
-        dispatch({ type: FightsActions.FIGHT, payload: data })
+        dispatch({ type: FightActions.FIGHT, payload: data })
+        dispatch({ type: FightActions.SUCCESS })
       }
     }
 
@@ -110,7 +88,8 @@ export default function Fight({ fight:initialFight, notFound }: FightParams) {
           { !fight && <>
             <Typography sx={{mt: 5}} variant="h3">Fight not found.</Typography>
           </> }
-          { fight && <ShotCounter /> }
+          { !loading && <ShotCounter /> }
+          { loading && <Loading /> }
         </Container>
       </Layout>
     </>

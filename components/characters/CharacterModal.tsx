@@ -20,7 +20,7 @@ import { useClient } from "../../contexts/ClientContext"
 
 import type { Person, Fight, Character, Toast, ID } from "../../types/types"
 import { defaultCharacter } from "../../types/types"
-import { FightsActions } from '../fights/fightsState'
+import { FightActions } from '../../reducers/fightState'
 
 interface CharacterModalParams {
   open: Character,
@@ -95,7 +95,7 @@ export default function CharacterModal({ open, setOpen, character:activeCharacte
         toastSuccess(`${character.name} updated.`)
       }
       if (fight?.id) {
-        dispatchFight({ type: FightsActions.EDIT })
+        dispatchFight({ type: FightActions.EDIT })
       } else if (reload) {
         await reload()
       }

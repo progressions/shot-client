@@ -8,7 +8,7 @@ import { useFight } from "../../contexts/FightContext"
 import type { FightContextType } from "../../contexts/FightContext"
 
 import type { Effect, Severity } from "../../types/types"
-import { FightsActions } from "../fights/fightsState"
+import { FightActions } from "../../reducers/fightState"
 
 interface EffectsProps {
   effects: Effect[]
@@ -36,7 +36,7 @@ export default function Effects({ effects, severity }: EffectsProps) {
   const deleteEffect = async (effect: Effect) => {
     const response = await client.deleteEffect(effect, fight)
     if (response.status === 200) {
-      dispatch({ type: FightsActions.EDIT })
+      dispatch({ type: FightActions.EDIT })
       toastSuccess(`Effect ${effect.title} deleted.`)
     } else {
       toastError()

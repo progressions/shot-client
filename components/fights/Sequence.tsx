@@ -9,7 +9,7 @@ import RemoveIcon from '@mui/icons-material/Remove'
 import PlayArrowIcon from '@mui/icons-material/PlayArrow'
 
 import { Toast, Fight } from "../../types/types"
-import { FightsActions } from "./fightsState"
+import { FightActions } from "../../reducers/fightState"
 
 export default function Sequence() {
   const { client } = useClient()
@@ -22,7 +22,7 @@ export default function Sequence() {
 
     const response = await client.updateFight(updatedFight)
     if (response.status === 200) {
-      dispatch({ type: FightsActions.EDIT })
+      dispatch({ type: FightActions.EDIT })
       toastSuccess(`Sequence increased.`)
     }
   }
@@ -33,7 +33,7 @@ export default function Sequence() {
 
     const response = await client.updateFight(updatedFight)
     if (response.status === 200) {
-      dispatch({ type: FightsActions.EDIT })
+      dispatch({ type: FightActions.EDIT })
       toastSuccess(`Sequence decreased.`)
     }
   }

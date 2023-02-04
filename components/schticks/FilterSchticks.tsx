@@ -6,9 +6,9 @@ import { useToast } from "../../contexts/ToastContext"
 import SchtickAutocomplete from "./SchtickAutocomplete"
 import CategoryAutocomplete from "./CategoryAutocomplete"
 import PathAutocomplete from "./PathAutocomplete"
-import { SchticksActions } from "./schticksState"
+import { SchticksActions } from "../../reducers/schticksState"
 
-import type { SchticksStateType, SchticksActionType } from "./schticksState"
+import type { SchticksStateType, SchticksActionType } from "../../reducers/schticksState"
 
 interface FilterSchticksProps {
   state: SchticksStateType

@@ -1,5 +1,5 @@
-import type { WeaponCategory, Juncture, PaginationMeta, Weapon } from "../../types/types"
-import { defaultPaginationMeta, defaultWeapon } from "../../types/types"
+import type { WeaponCategory, Juncture, PaginationMeta, Weapon } from "../types/types"
+import { defaultPaginationMeta, defaultWeapon } from "../types/types"
 
 export enum WeaponsActions {
   RESET = "reset",

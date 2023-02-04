@@ -6,7 +6,7 @@ import CreateCharacter from "../../characters/CreateCharacter"
 import GamemasterOnly from "../../GamemasterOnly"
 import { ButtonBar } from "../../StyledFields"
 import CreateVehicle from "../../vehicles/CreateVehicle"
-import { CharactersStateType, CharactersActionType, CharactersActions } from "./charactersState"
+import { CharactersStateType, CharactersActionType, CharactersActions } from "../../../reducers/charactersState"
 
 interface CharactersToolbarProps {
   state: CharactersStateType

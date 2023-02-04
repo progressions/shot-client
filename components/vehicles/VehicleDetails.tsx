@@ -18,7 +18,7 @@ import { useFight } from "../../contexts/FightContext"
 
 import type { Character, Person, Vehicle, Fight, Toast, ID } from "../../types/types"
 import { defaultVehicle } from "../../types/types"
-import { FightsActions } from "../fights/fightsState"
+import { FightActions } from "../../reducers/fightState"
 
 interface VehicleDetailsParams {
   character: Vehicle,
@@ -43,7 +43,7 @@ export default function VehicleDetails({ character, editingCharacter, setEditing
   async function deleteCharacter(character: Character): Promise<void> {
     const response = await client.deleteVehicle(character as Vehicle, fight)
     if (response.status === 200) {
-      dispatchFight({ type: FightsActions.EDIT })
+      dispatchFight({ type: FightActions.EDIT })
       toastSuccess(`${character.name} removed.`)
       return
     }

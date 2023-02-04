@@ -2,8 +2,8 @@ import { Autocomplete, TextField } from "@mui/material"
 import { StyledAutocomplete, StyledSelect } from "../StyledFields"
 import type { SchtickPath, InputParamsType } from "../../types/types"
 
-import { SchticksActions } from "./schticksState"
-import { SchticksStateType, SchticksActionType } from "./schticksState"
+import { SchticksActions } from "../../reducers/schticksState"
+import { SchticksStateType, SchticksActionType } from "../../reducers/schticksState"
 
 interface PathAutocompleteProps {
   state: SchticksStateType

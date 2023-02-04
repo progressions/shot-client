@@ -10,10 +10,10 @@ import { useCharacter } from "../../contexts/CharacterContext"
 import { useState, useMemo } from "react"
 import SchtickModal from "./SchtickModal"
 
-import { SchticksActions } from "./schticksState"
+import { SchticksActions } from "../../reducers/schticksState"
 import type { Character, Schtick } from "../../types/types"
-import type { SchticksStateType, SchticksActionType } from "./schticksState"
-import { CharacterActions } from "../characters/edit/characterState"
+import type { SchticksStateType, SchticksActionType } from "../../reducers/schticksState"
+import { CharacterActions } from "../../reducers/characterState"
 
 /*
 

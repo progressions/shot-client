@@ -1,5 +1,5 @@
-import type { Character } from "../../../types/types"
-import { defaultCharacter } from "../../../types/types"
+import type { Character } from "../types/types"
+import { defaultCharacter } from "../types/types"
 
 export enum CharacterActions {
   EDITED = "edited",

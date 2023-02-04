@@ -1,4 +1,4 @@
-import { Archetype, CharacterType, Character, PaginationMeta, CharacterCategory, defaultPaginationMeta, defaultCharacter, Faction, CharactersResponse, CharactersAndVehiclesResponse } from "../../../types/types"
+import { Archetype, CharacterType, Character, PaginationMeta, CharacterCategory, defaultPaginationMeta, defaultCharacter, Faction, CharactersResponse, CharactersAndVehiclesResponse } from "../types/types"
 
 export enum CharactersActions {
   RESET = "reset",
@@ -120,7 +120,6 @@ export function charactersReducer(state: CharactersStateType, action: Characters
         [action.name]: action.value
       }
     case CharactersActions.UPDATE_CHARACTER:
-      console.log(action)
       return {
         ...state,
         edited: true,

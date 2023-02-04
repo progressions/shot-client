@@ -26,7 +26,7 @@ import { useLocalStorage } from "../contexts/LocalStorageContext"
 import { useClient } from "../contexts/ClientContext"
 import { useCampaign } from "../contexts/CampaignContext"
 import GamemasterOnly from "../components/GamemasterOnly"
-import { FightsActions, initialFightsState, fightsReducer } from "../components/fights/fightsState"
+import { FightsActions, initialFightsState, fightsReducer } from "../reducers/fightsState"
 
 import type { FightsResponse, PaginationMeta, AuthSession, Campaign, Fight, ServerSideProps } from "../types/types"
 
@@ -108,12 +108,12 @@ export default function Home({ currentCampaign, fights:initialFights, meta }: Ho
             <GamemasterOnly user={user}>
               <ButtonBar>
                 <Stack direction="row" spacing={2}>
-                  { currentCampaign?.id && <AddFight /> }
+                  { currentCampaign?.id && <AddFight state={state} dispatch={dispatch} /> }
                   <FormControlLabel label="Show Hidden" control={<Switch checked={showHidden} />} onChange={show} />
                 </Stack>
               </ButtonBar>
             </GamemasterOnly>
-            { !!fights.length &&
+            { !!fights?.length &&
               <TableContainer component={Paper}>
                 <Table size="small">
                   <TableHead>
@@ -138,7 +138,7 @@ export default function Home({ currentCampaign, fights:initialFights, meta }: Ho
                   </TableBody>
                 </Table>
               </TableContainer> }
-            { !fights.length && <Typography pt={5}>There are no available fights. Some fights might be hidden by the gamemaster.</Typography> }
+            { !fights?.length && <Typography pt={5}>There are no available fights. Some fights might be hidden by the gamemaster.</Typography> }
           </Container>
         </Layout>
       </main>

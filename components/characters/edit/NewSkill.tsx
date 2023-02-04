@@ -5,7 +5,7 @@ import { StyledTextField, StyledAutocomplete } from "../../StyledFields"
 
 import { useEffect, useMemo, useState } from "react"
 import type { OptionType, FilterParamsType, InputParamsType } from "../../../types/types"
-import { CharacterActions } from "./characterState"
+import { CharacterActions } from "../../../reducers/characterState"
 
 const filter = createFilterOptions<string>();
 

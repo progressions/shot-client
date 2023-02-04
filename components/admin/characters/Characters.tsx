@@ -13,7 +13,7 @@ import { ButtonBar } from "../../StyledFields"
 import CreateVehicle from "../../vehicles/CreateVehicle"
 import CharactersToolbar from "./CharactersToolbar"
 import CharacterDisplay from "./CharacterDisplay"
-import { CharactersActions, initialCharactersState, charactersReducer } from "./charactersState"
+import { CharactersActions, initialCharactersState, charactersReducer } from "../../../reducers/charactersState"
 
 export default function Characters(charactersResponse: CharactersResponse) {
   const { client, session, user } = useClient()

@@ -8,7 +8,7 @@ import { useFight } from "../../contexts/FightContext"
 
 import type { Character, CharacterEffect } from "../../types/types"
 import { defaultCharacterEffect } from "../../types/types"
-import { FightsActions } from '../fights/fightsState'
+import { FightActions } from '../../reducers/fightState'
 
 interface EffectsModalProps {
   character: Character
@@ -51,7 +51,7 @@ export default function EffectsModal({ character }: EffectsModalProps) {
       const data = await response.json()
       setEffect(data)
       cancelForm()
-      dispatchFight({ type: FightsActions.EDIT })
+      dispatchFight({ type: FightActions.EDIT })
       toastSuccess(`Effect ${effect.title} added.`)
     } else {
       toastError()
