@@ -34,7 +34,7 @@ export default function CharacterFilters({ state, dispatch }: CharacterFiltersPr
   return (
     <>
       <Stack direction="row" spacing={1}>
-        <Box sx={{width: 200}}>
+        <Box sx={{width: 180}}>
           <StyledSelect fullWidth name="character_type" label="Character Type" select value={character_type} onChange={handleChange}>
             <MenuItem value="">All</MenuItem>
             <MenuItem value="PC">Player Character</MenuItem>
@@ -45,7 +45,7 @@ export default function CharacterFilters({ state, dispatch }: CharacterFiltersPr
             <MenuItem value="Uber-Boss">Uber-Boss</MenuItem>
           </StyledSelect>
         </Box>
-        <Box sx={{width: 200}}>
+        <Box sx={{width: 180}}>
           <StyledSelect fullWidth name="faction" label="Faction" select value={faction} onChange={handleChange}>
             <MenuItem key="" value="">All</MenuItem>
             {
@@ -53,7 +53,7 @@ export default function CharacterFilters({ state, dispatch }: CharacterFiltersPr
             }
           </StyledSelect>
         </Box>
-        <Box sx={{width: 200}}>
+        <Box sx={{width: 180}}>
           <StyledSelect fullWidth name="archetype" label="Archetype" select value={archetype} onChange={handleChange}>
             <MenuItem key="" value="">All</MenuItem>
             {
@@ -61,12 +61,12 @@ export default function CharacterFilters({ state, dispatch }: CharacterFiltersPr
             }
           </StyledSelect>
         </Box>
-        <Box sx={{width: 200}}>
+        <Box sx={{width: 180}}>
           <StyledAutocomplete
             disabled={loading}
             freeSolo
             options={characters}
-            sx={{ width: 200 }}
+            sx={{ width: 180 }}
             value={character}
             onChange={selectCharacter}
             getOptionLabel={getOptionLabel}
@@ -77,4 +77,3 @@ export default function CharacterFilters({ state, dispatch }: CharacterFiltersPr
     </>
   )
 }
-// <StyledTextField fullWidth name="search" label="Name" value={search} onChange={handleChange} />
