@@ -46,14 +46,24 @@ export async function getServerSideProps<GetServerSideProps>({ req, res }: Serve
     return null
   }
 
-  const currentCampaign = await getCurrentCampaign()
+  try {
+    const currentCampaign = await getCurrentCampaign()
 
-  const fightsResponse = await client.getFights()
+    const fightsResponse = await client.getFights()
 
-  return {
-    props: {
-      ...fightsResponse,
-      currentCampaign: currentCampaign
+    return {
+      props: {
+        ...fightsResponse,
+        currentCampaign: currentCampaign
+      }
+    }
+  } catch(error) {
+    return {
+      props: {
+        fights: [],
+        meta: {},
+        currentCampaign: null,
+      }
     }
   }
 }
@@ -75,8 +85,12 @@ export default function Home({ currentCampaign, fights:initialFights, meta }: Ho
       }
     }
 
-    if (user && edited) {
+    if (user && edited && currentCampaign) {
       reload()
+    }
+
+    if (!currentCampaign) {
+      dispatch({ type: FightsActions.SUCCESS })
     }
   }, [edited, user, dispatch, client, showHidden, toastError])
 
