@@ -219,11 +219,7 @@ class Client {
 
   async createUser(user: User):Promise<User> {
     // override options to exclude JWT, no authentication exists yet for a new user
-    return await this.post(this.api.registerUser(), {"user": user}, {
-      headers: {
-        "Content-Type": "application/json"
-      }
-    })
+    return await this.post(this.api.registerUser(), {"user": user})
   }
 
   async updateUser(user: User):Promise<User> {
@@ -352,8 +348,8 @@ class Client {
     return await this.request("PATCH", url, params)
   }
 
-  async post<T>(url:string, body?:{}, options?:{}):Promise<T> {
-    return await this.request("POST", url, body, options)
+  async post<T>(url:string, params = {}):Promise<T> {
+    return await this.request("POST", url, params)
   }
 
   async request<T>(method:string, url:string, params = {}):Promise<T> {
@@ -361,7 +357,6 @@ class Client {
       url: url,
       method: method,
       params: params,
-      mode: 'cors',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': this.jwt
@@ -390,7 +385,7 @@ class Client {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': this.jwt
-      } as HeadersInit
+      }
     })
     .then(response => response.data)
   }
