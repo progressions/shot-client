@@ -33,7 +33,7 @@ export function CampaignProvider({ children }: CampaignProviderProps) {
     try {
       const data = await client.setCurrentCampaign(camp)
       setCampaign(data)
-      saveLocally("currentCampaign", data)
+      saveLocally(`currentCampaign-${user?.id}`, data)
       return data
     } catch(error) {
       console.error(error)
@@ -42,7 +42,7 @@ export function CampaignProvider({ children }: CampaignProviderProps) {
   }
 
   const getCurrentCampaign = async ():Promise<Campaign | null> => {
-    const data = getLocally("currentCampaign")
+    const data = getLocally(`currentCampaign-${user?.id}`)
     if (data) {
       setCampaign(data as Campaign)
       return data as Campaign
@@ -60,7 +60,7 @@ export function CampaignProvider({ children }: CampaignProviderProps) {
   useEffect(() => {
     if (!user) return
 
-    const data = getLocally("currentCampaign")
+    const data = getLocally(`currentCampaign-${user?.id}`)
     if (data) {
       setCampaign(data as Campaign)
       return
