@@ -54,8 +54,8 @@ const ConditionPointsModal = ({open, setOpen, character }: ConditionPointsModalP
     const actionValues: VehicleActionValues = character.action_values
     actionValues["Condition Points"] = newConditionPoints
 
-    const response = await client.updateVehicle({ ...character, "action_values": actionValues}, fight)
-    if (response.status === 200) {
+    try {
+      await client.updateVehicle({ ...character, "action_values": actionValues}, fight)
       dispatchFight({ type: FightActions.EDIT })
       setConditionPoints(0)
       setOpen(false)
@@ -65,8 +65,9 @@ const ConditionPointsModal = ({open, setOpen, character }: ConditionPointsModalP
         toastSuccess(`${character.name} took a smackdown of ${conditionPoints}, causing ${originalPoints} Condition Points.`)
       }
       return
+    } catch(error) {
+      toastError()
     }
-    toastError()
   }
 
   const cancelForm = () => {

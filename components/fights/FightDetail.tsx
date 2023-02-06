@@ -26,18 +26,25 @@ export default function FightDetail({ fight, state, dispatch }: FightParams) {
   async function deleteFight(fight: Fight) {
     const doit = confirm(`Permanently delete ${fight.name}?`)
     if (!doit) return
-    const response = await client.deleteFight(fight)
-    if (response.status === 200) {
-      toastError(`Fight ${fight.name} deleted`)
+    try {
+      await client.deleteFight(fight)
+      toastSuccess(`Fight ${fight.name} deleted`)
       dispatch({ type: FightsActions.EDIT })
+    } catch(error) {
+      console.error(error)
+      toastError()
     }
   }
 
   async function toggleVisibility(fight: Fight) {
-    const response = await client.updateFight({ ...fight, "active": !fight.active })
-    if (response.status === 200) {
+    try {
+      await client.updateFight({ ...fight, "active": !fight.active })
       toastSuccess(`Fight ${fight.name} updated`)
       dispatch({ type: FightsActions.EDIT })
+    } catch(error) {
+      // dispatch({ type: FightsActions.ERROR, payload: error })
+      console.error(error)
+      toastError()
     }
   }
 

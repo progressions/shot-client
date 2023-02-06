@@ -41,12 +41,11 @@ export function CharacterProvider({ character, children }: CharacterProviderProp
       const saveCharacter = async (): Promise<void> => {
         dispatch({ type: CharacterActions.SUBMIT })
 
-        const response = await client.updateCharacter(state.character)
-        if (response.status === 200) {
-          const data = await response.json()
+        try {
+          const data = await client.updateCharacter(state.character)
           dispatch({ type: CharacterActions.CHARACTER, payload: data })
           toastSuccess("Character updated.")
-        } else {
+        } catch(error) {
           dispatch({ type: CharacterActions.RESET })
           toastError()
         }
@@ -63,12 +62,11 @@ export function CharacterProvider({ character, children }: CharacterProviderProp
   async function updateCharacter():Promise<void> {
     dispatch({ type: CharacterActions.SUBMIT })
 
-    const response = await client.updateCharacter(state.character)
-    if (response.status === 200) {
-      const data = await response.json()
+    try {
+      const data = await client.updateCharacter(state.character)
       dispatch({ type: CharacterActions.CHARACTER, payload: data })
       toastSuccess("Character updated.")
-    } else {
+    } catch(error) {
       dispatch({ type: CharacterActions.RESET })
       toastError()
     }
@@ -77,12 +75,11 @@ export function CharacterProvider({ character, children }: CharacterProviderProp
   async function reloadCharacter():Promise<void> {
     dispatch({ type: CharacterActions.SUBMIT })
 
-    const response = await client.getCharacter(state.character)
-    if (response.status === 200) {
-      const data = await response.json()
+    try {
+      const data = await client.getCharacter(state.character)
       dispatch({ type: CharacterActions.CHARACTER, payload: data })
       toastSuccess("Character updated.")
-    } else {
+    } catch(error) {
       dispatch({ type: CharacterActions.RESET })
       toastError()
     }

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Box, Stack, TextField, Button, Dialog } from '@mui/material'
-import Client from "../Client"
+import Client from "../../utils/Client"
 
 import { useFight } from "../../contexts/FightContext"
 import { useToast } from "../../contexts/ToastContext"
@@ -33,13 +33,13 @@ const ActionModal = ({open, setOpen, character }: ActionModalParams) => {
   const submitAction = async (event: React.ChangeEvent<HTMLInputElement>): Promise<void> => {
     event.preventDefault()
     if (shots > 0) {
-      const response = await client.actCharacter(character, fight as Fight, shots)
+      try {
+        await client.actCharacter(character, fight as Fight, shots)
 
-      if (response.status === 200) {
         setOpen(false)
         toastSuccess(`${character.name} spent ${shots} shots.`)
         dispatchFight({ type: FightActions.EDIT })
-      } else {
+      } catch(error) {
         toastError()
       }
     }

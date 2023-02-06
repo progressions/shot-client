@@ -27,7 +27,7 @@ import WeaponsDisplay from "./WeaponsDisplay"
 import { useFight } from "../../contexts/FightContext"
 import { useToast } from "../../contexts/ToastContext"
 import { useClient } from "../../contexts/ClientContext"
-import Client from "../Client"
+import Client from "../../utils/Client"
 import PlayerTypeOnly from "../PlayerTypeOnly"
 
 import type { CharacterEffect, User, Person, Character, Fight, Toast, ID } from "../../types/types"
@@ -58,11 +58,11 @@ export default function CharacterDetails({ character, editingCharacter, setEditi
   async function deleteCharacter(character: Character): Promise<void> {
     const doit = confirm(`Remove ${character.name} from the fight?`)
     if (doit) {
-      const response = await client.deleteCharacter(character, fight)
-      if (response.status === 200) {
+      try {
+        await client.deleteCharacter(character, fight)
         toastSuccess(`${character.name} removed.`)
         dispatch({ type: FightActions.EDIT })
-      } else {
+      } catch(error) {
         toastError()
       }
     }
@@ -95,22 +95,21 @@ export default function CharacterDetails({ character, editingCharacter, setEditi
   }
 
   const addDodgeEffect = async (character: Character) => {
-    const response = await client.createCharacterEffect(dodge(character), fight)
-    if (response.status === 200) {
-      return true
-    } else {
-      const data = await response.json()
+    try {
+      const data = await client.createCharacterEffect(dodge(character), fight)
+      return !!data
+    } catch(error) {
       toastError()
     }
   }
 
   const takeDodgeAction = async (character: Character) => {
-    const response = await client.actCharacter(character, fight, 1)
-    if (response.status === 200) {
+    try {
+      await client.actCharacter(character, fight, 1)
       toastSuccess(`${character.name} dodged for 1 shot.`)
       await addDodgeEffect(character)
       dispatch({ type: FightActions.EDIT })
-    } else {
+    } catch(error) {
       toastError()
     }
   }

@@ -21,11 +21,13 @@ export default function SendResetPasswordView() {
     event.preventDefault()
     dispatch({ type: "submit" })
 
-    const response = await client.sendResetPasswordLink(email)
-    if (response.status === 200) {
+    try {
+      await client.sendResetPasswordLink(email)
       dispatch({ type: "success" })
-    } else {
+      toastSuccess("Reset password link sent.")
+    } catch(error) {
       dispatch({ type: "error" })
+      toastError()
     }
   }
 

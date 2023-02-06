@@ -23,11 +23,11 @@ export default function NewAdvancement() {
     event.preventDefault()
     dispatchAdvancement({ type: "saving" })
 
-    const response = await client.createAdvancement(character, advancement)
-    if (response.status === 200) {
+    try {
+      await client.createAdvancement(character, advancement)
       await reloadCharacter()
       dispatchAdvancement({ type: "reset" })
-    } else {
+    } catch(error) {
       toastError()
     }
   }

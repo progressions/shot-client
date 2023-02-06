@@ -9,7 +9,7 @@ import { ButtonBar } from "../components/StyledFields"
 import AddFight from '../components/fights/AddFight'
 import FightDetail from '../components/fights/FightDetail'
 import Layout from '../components/Layout'
-import Client from '../components/Client'
+import Client from '../utils/Client'
 import Router from 'next/router'
 import { useSession } from 'next-auth/react'
 import { getToken } from 'next-auth/jwt'
@@ -37,18 +37,8 @@ interface HomeProps extends FightsResponse {
 export async function getServerSideProps<GetServerSideProps>({ req, res }: ServerSideProps) {
   const { client } = await getServerClient(req, res)
 
-  const getCurrentCampaign = async () => {
-    const response = await client.getCurrentCampaign()
-    if (response.status === 200) {
-      const data = await response.json()
-      return data
-    }
-    return null
-  }
-
   try {
-    const currentCampaign = await getCurrentCampaign()
-
+    const currentCampaign = await client.getCurrentCampaign()
     const fightsResponse = await client.getFights()
 
     return {
@@ -92,7 +82,7 @@ export default function Home({ currentCampaign, fights:initialFights, meta }: Ho
     if (!currentCampaign) {
       dispatch({ type: FightsActions.SUCCESS })
     }
-  }, [edited, user, dispatch, client, showHidden, toastError])
+  }, [edited, user, dispatch, client, showHidden, toastError, currentCampaign])
 
   useEffect(() => {
     const showHiddenFights = getLocally("showHiddenFights") || false

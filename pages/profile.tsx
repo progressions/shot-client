@@ -2,7 +2,7 @@ import type { NextApiRequest, NextApiResponse } from "next"
 import Head from 'next/head'
 import { Avatar, Box, Button, Stack, Container, Typography, TextField } from '@mui/material'
 import Layout from '../components/Layout'
-import Client from '../components/Client'
+import Client from '../utils/Client'
 import { useState } from 'react'
 import Router from "next/router"
 import { getServerClient } from "../utils/getServerClient"
@@ -18,18 +18,18 @@ export async function getServerSideProps({ req, res, params }: ServerSideProps) 
   const { client, jwt, session } = await getServerClient(req, res)
   const id = session?.id as string
 
-  const response = await client.getUser({id: id})
-  if (response.status === 200) {
-    const user = await response.json()
+  try {
+    const user = await client.getUser({id: id})
+
     return {
       props: {
         jwt: jwt,
         user: user
-      }, // will be passed to the page component as props
+      }
     }
-  }
-  return {
-    props: {
+  } catch(error) {
+    return {
+      props: {}
     }
   }
 }
@@ -47,9 +47,13 @@ export default function Profile({ jwt, user:initialUser }: ProfileProps) {
     setSaving(true)
     event.preventDefault()
 
-    const response = await client.updateUser(user)
-    setSaving(false)
-    Router.reload()
+    try {
+      await client.updateUser(user)
+      setSaving(false)
+      Router.reload()
+    } catch(error) {
+      console.error(error)
+    }
   }
 
   const cancelForm = (): void => {

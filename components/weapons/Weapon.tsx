@@ -21,10 +21,10 @@ export default function Weapon({ weapon, state, dispatch }: WeaponProps) {
   const { character, reloadCharacter } = useCharacter()
 
   async function removeWeapon() {
-    const response = await client.removeWeapon(character, weapon)
-    if (response.status === 200) {
+    try {
+      await client.removeWeapon(character, weapon)
       await reloadCharacter()
-    } else {
+    } catch(error) {
       toastError()
     }
   }
@@ -33,12 +33,12 @@ export default function Weapon({ weapon, state, dispatch }: WeaponProps) {
     const doit = confirm("Delete this weapon? This cannot be undone.")
     if (!doit) return
 
-    const response = await client.deleteWeapon(weapon)
-    if (response.status === 200) {
+    try {
+      await client.deleteWeapon(weapon)
       if (dispatch) {
         dispatch({ type: WeaponsActions.EDIT })
       }
-    } else {
+    } catch(error) {
       toastError()
     }
   }

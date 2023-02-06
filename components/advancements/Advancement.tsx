@@ -15,10 +15,10 @@ export default function Advancement({ advancement }: AdvancementProps) {
   const { character, reloadCharacter } = useCharacter()
 
   async function deleteAdvancement() {
-    const response = await client.deleteAdvancement(character, advancement)
-    if (response.status === 200) {
+    try {
+      await client.deleteAdvancement(character, advancement)
       await reloadCharacter()
-    } else {
+    } catch(error) {
       toastError()
     }
   }

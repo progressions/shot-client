@@ -78,12 +78,11 @@ export default function EditCharacter({ character:initialCharacter }: EditCharac
   }
 
   async function cancelForm() {
-    const response = await client.getCharacter(character)
-    if (response.status === 200) {
-      const data = await response.json()
+    try {
+      const data = await client.getCharacter(character)
       dispatchCharacter({ type: CharacterActions.CHARACTER, payload: data })
       toastSuccess("Changes reverted.")
-    } else {
+    } catch(error) {
       toastError()
     }
   }

@@ -2,7 +2,7 @@ import { Session } from "next-auth"
 import type { NextApiRequest, NextApiResponse } from "next"
 import { authOptions } from '../pages/api/auth/[...nextauth]'
 import { getServerSession } from "next-auth/next"
-import Client from '../components/Client'
+import Client from './Client'
 import type { AuthUser, AuthSession } from "../types/types"
 
 export async function getServerClient(req: NextApiRequest, res: NextApiResponse) {

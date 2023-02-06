@@ -15,17 +15,19 @@ interface CampaignsProps {
 }
 
 export default function Campaigns({ campaigns, getCampaigns }: CampaignsProps) {
-  const { toastSuccess } = useToast()
+  const { toastError, toastSuccess } = useToast()
   const { client, user } = useClient()
   const { campaign:currentCampaign, getCurrentCampaign, setCurrentCampaign } = useCampaign()
 
   const deleteCampaign = async (campaign: Campaign) => {
     const confirmation = confirm("Delete campaign? This cannot be undone.")
     if (confirmation) {
-      const response = await client.deleteCampaign(campaign)
-      if (response.status === 200) {
+      try {
+        await client.deleteCampaign(campaign)
         toastSuccess(`${campaign.title} deleted.`)
         await getCampaigns()
+      } catch(error) {
+        toastError()
       }
     }
   }

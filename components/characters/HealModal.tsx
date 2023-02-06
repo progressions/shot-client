@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Box, Stack, TextField, Button, Dialog } from '@mui/material'
-import Client from "../Client"
+import Client from "../../utils/Client"
 
 import { useFight } from "../../contexts/FightContext"
 import { useToast } from "../../contexts/ToastContext"
@@ -78,13 +78,13 @@ export default function HealModal({open, setOpen, character }: HealModalParams) 
 
     const impairments = character.impairments + calculateImpairments(originalWounds, newWounds)
 
-    const response = await client.updateCharacter({ ...character, impairments: impairments, "action_values": actionValues}, fight)
-    if (response.status === 200) {
+    try {
+      await client.updateCharacter({ ...character, impairments: impairments, "action_values": actionValues}, fight)
       dispatchFight({ type: FightActions.EDIT })
       setHealing(0)
       setOpen(false)
       toastSuccess(`${character.name} healed ${healing} Wounds.`)
-    } else {
+    } catch(error) {
       toastError()
     }
   }

@@ -46,10 +46,11 @@ export default function Faction({ faction, onChange }: FactionProps) {
   const { loading, anchorEl, value, factions } = state
 
   async function getFactions() {
-    const response = await client.getFactions()
-    if (response.status === 200) {
-      const data = await response.json()
+    try {
+      const data = await client.getFactions()
       dispatch({ type: "replace", factions: data })
+    } catch(error) {
+      console.error(error)
     }
   }
 

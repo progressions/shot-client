@@ -1,6 +1,6 @@
 import { TableContainer, Table, TableBody, TableRow, TableCell, Stack, Box, Typography } from "@mui/material"
 import AvatarBadge from "../characters/AvatarBadge"
-import Client from "../Client"
+import Client from "../../utils/Client"
 import DirectionsCarIcon from "@mui/icons-material/DirectionsCar"
 import GamemasterOnly from "../GamemasterOnly"
 import VehicleActionValues from "./ActionValues"
@@ -41,13 +41,14 @@ export default function VehicleDetails({ character, editingCharacter, setEditing
   }
 
   async function deleteCharacter(character: Character): Promise<void> {
-    const response = await client.deleteVehicle(character as Vehicle, fight)
-    if (response.status === 200) {
+    try {
+      await client.deleteVehicle(character as Vehicle, fight)
       dispatchFight({ type: FightActions.EDIT })
       toastSuccess(`${character.name} removed.`)
       return
+    } catch(error) {
+      toastError()
     }
-    toastError()
   }
 
   function editCharacter(character: Character): void {

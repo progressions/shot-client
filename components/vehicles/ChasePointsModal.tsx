@@ -17,7 +17,7 @@ const ChasePointsModal = ({open, setOpen, character }: ChasePointsModalParams) =
   const { fight, dispatch } = useFight()
   const [chasePoints, setChasePoints] = useState<number>(0)
   const [saving, setSaving] = useState<boolean>(false)
-  const { toastSuccess } = useToast()
+  const { toastError, toastSuccess } = useToast()
 
   const { jwt, client } = useClient()
 
@@ -54,8 +54,8 @@ const ChasePointsModal = ({open, setOpen, character }: ChasePointsModalParams) =
     const actionValues: VehicleActionValues = character.action_values
     actionValues["Chase Points"] = newChasePoints
 
-    const response = await client.updateVehicle({ ...character, "action_values": actionValues}, fight)
-    if (response.status === 200) {
+    try {
+      await client.updateVehicle({ ...character, "action_values": actionValues}, fight)
       dispatch({ type: FightActions.EDIT })
       setChasePoints(0)
       setOpen(false)
@@ -64,6 +64,8 @@ const ChasePointsModal = ({open, setOpen, character }: ChasePointsModalParams) =
       } else {
         toastSuccess(`${character.name} took a smackdown of ${chasePoints}, causing ${originalPoints} Chase Points.`)
       }
+    } catch(error) {
+      toastError()
     }
   }
   const cancelForm = () => {

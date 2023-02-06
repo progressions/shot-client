@@ -79,12 +79,10 @@ export default function CharacterModal({ open, setOpen, character:activeCharacte
     setSaving(true)
     event.preventDefault()
 
-    const response = newCharacter ?
-      await client.createCharacter(character, fight) :
-      await client.updateCharacter(character, fight)
-
-    if (response.status === 200) {
-      const data = await response.json()
+    try {
+      const data = newCharacter ?
+        await client.createCharacter(character, fight) :
+        await client.updateCharacter(character, fight)
 
       setCharacter(data)
       setSaving(false)
@@ -99,7 +97,7 @@ export default function CharacterModal({ open, setOpen, character:activeCharacte
       } else if (reload) {
         await reload()
       }
-    } else {
+    } catch(error) {
       toastError()
       setSaving(false)
       cancelForm()

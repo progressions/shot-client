@@ -9,7 +9,7 @@ import { Tooltip, IconButton, Box, Stack, TableContainer, Table, TableRow, Table
 import { ButtonBar } from "../../components/StyledFields"
 import CreateInvitation from "../../components/invitations/CreateInvitation"
 import CreateOpenInvitation from "../../components/invitations/CreateOpenInvitation"
-import Client from '../../components/Client'
+import Client from '../../utils/Client'
 import { GetServerSideProps } from 'next'
 import { getServerClient } from "../../utils/getServerClient"
 
@@ -24,29 +24,20 @@ export async function getServerSideProps<GetServerSideProps>({ req, res, params 
   const { client } = await getServerClient(req, res)
   const { id } = params as ParamsType
 
-  const response = await client.getCampaign({ id })
+  try {
+    const campaign = await client.getCampaign({ id })
 
-  if (response.status === 200) {
-    const campaign = await response.json()
     return {
       props: {
         campaign: campaign
       }
     }
-  }
-
-  if (response.status === 401) {
+  } catch(error) {
     return {
       redirect: {
         permanent: false,
         destination: "/auth/signin"
       }
-    }
-  }
-
-  return {
-    props: {
-      campaign: {}
     }
   }
 }
@@ -61,30 +52,31 @@ export default function CampaignView({ campaign:initialCampaign }: CampaignViewP
   const [campaign, setCampaign] = useState<Campaign>(initialCampaign)
 
   async function reloadCampaign(camp:Campaign) {
-    const response = await client.getCampaign(camp)
-    if (response.status === 200) {
-      const data = await response.json()
+    try {
+      const data = await client.getCampaign(camp)
       setCampaign(data)
+    } catch(error) {
+      toastError()
     }
   }
 
   async function resendInvitation(invitation: Invitation) {
-    const response = await client.resendInvitation(invitation)
-    if (response.status === 200) {
+    try {
+      await client.resendInvitation(invitation)
       await reloadCampaign(campaign)
       toastSuccess("Invitation re-sent.")
-    } else {
+    } catch(error) {
       await reloadCampaign(campaign)
       toastError()
     }
   }
 
   async function deleteInvitation(invitation: Invitation) {
-    const response = await client.deleteInvitation(invitation)
-    if (response.status === 200) {
+    try {
+      await client.deleteInvitation(invitation)
       await reloadCampaign(campaign)
       toastSuccess("Invitation deleted.")
-    } else {
+    } catch(error) {
       await reloadCampaign(campaign)
       toastError()
     }

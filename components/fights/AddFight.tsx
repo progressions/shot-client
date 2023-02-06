@@ -3,7 +3,7 @@ import { Alert, Snackbar, Box, Paper, Stack, Typography, TextField, Button } fro
 import Router from "next/router"
 import KeyboardDoubleArrowDownIcon from '@mui/icons-material/KeyboardDoubleArrowDown';
 import KeyboardDoubleArrowUpIcon from '@mui/icons-material/KeyboardDoubleArrowUp';
-import Client from "../Client"
+import Client from "../../utils/Client"
 
 import { useToast } from "../../contexts/ToastContext"
 import { useFight } from "../../contexts/FightContext"
@@ -33,12 +33,12 @@ export default function AddFight({ state:fightsState, dispatch:dispatchFights }:
     dispatch({ type: FightActions.SAVING })
     event.preventDefault()
 
-    const response = await client.createFight(fight)
-    if (response.status === 200) {
+    try {
+      await client.createFight(fight)
       cancelForm()
       dispatchFights({ type: FightsActions.EDIT })
       toastSuccess(`Fight ${fight.name} created.`)
-    } else {
+    } catch(error) {
       toastError()
     }
   }

@@ -34,13 +34,12 @@ export default function EffectModal({ shot, open, setOpen }: EffectModalProps) {
     setSaving(true)
     event.preventDefault()
 
-    const response = await client.createEffect(effect, fight)
-    if (response.status === 200) {
-      const data = await response.json()
+    try {
+      const data = await client.createEffect(effect, fight)
       setEffect(data)
       dispatch({ type: FightActions.EDIT })
       toastSuccess(`Effect ${effect.title} added.`)
-    } else {
+    } catch(error)  {
       toastError()
     }
     cancelForm()

@@ -28,10 +28,11 @@ export default function WeaponsIndex() {
 
   useEffect(() => {
     async function getWeapons() {
-      const response = await client.getWeapons({ page, juncture, category, name, character_id: character?.id as string })
-      if (response.status === 200) {
-        const data = await response.json()
+      try {
+        const data = await client.getWeapons({ page, juncture, category, name, character_id: character?.id as string })
         dispatch({ type: WeaponsActions.WEAPONS, payload: data })
+      } catch(error) {
+        toastError()
       }
     }
 

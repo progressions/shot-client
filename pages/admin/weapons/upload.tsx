@@ -8,7 +8,7 @@ import { useClient } from "../../../contexts/ClientContext"
 import { useToast } from "../../../contexts/ToastContext"
 import { useCampaign } from "../../../contexts/CampaignContext"
 
-import Client from "../../../components/Client"
+import Client from "../../../utils/Client"
 
 import { getServerClient } from "../../../utils/getServerClient"
 import type { AuthSession, Weapon, ServerSideProps, Campaign } from "../../../types/types"
@@ -18,36 +18,18 @@ import { InferGetServerSidePropsType } from 'next'
 export async function getServerSideProps<GetServerSideProps>({ req, res }: ServerSideProps) {
   const { client } = await getServerClient(req, res)
 
-  const response = await client.getCurrentCampaign()
+  try {
+    const campaign = await client.getCurrentCampaign()
 
-  if (response.status === 200) {
-    const campaign = await response.json()
     return {
       props: {
       }
     }
-  }
-  if (response.status === 500) {
+  } catch(error) {
     return {
-      redirect: {
-        permanent: false,
-        destination: "/"
-      }
-    }
-  }
-  if (response.status === 401) {
-    return {
-      redirect: {
-        permanent: false,
-        destination: "/auth/signin"
-      },
       props: {
+        fights: [],
       }
-    }
-  }
-  return {
-    props: {
-      fights: [],
     }
   }
 }
@@ -62,11 +44,11 @@ export default function UploadWeapons() {
     event.preventDefault()
     setSaving(true)
 
-    const response = await client.uploadWeapons(content)
-    if (response.status === 200) {
+    try {
+      await client.uploadWeapons(content)
       toastSuccess("Weapons uploaded.")
       cancelForm()
-    } else {
+    } catch(error) {
       toastError()
       cancelForm()
     }

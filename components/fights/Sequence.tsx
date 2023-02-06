@@ -20,10 +20,13 @@ export default function Sequence() {
     const updatedFight = fight
     updatedFight.sequence = updatedFight.sequence+1
 
-    const response = await client.updateFight(updatedFight)
-    if (response.status === 200) {
+    try {
+      await client.updateFight(updatedFight)
       dispatch({ type: FightActions.EDIT })
       toastSuccess(`Sequence increased.`)
+    } catch(error) {
+      dispatch({ type: FightActions.ERROR, payload: error as Error })
+      console.error(error)
     }
   }
 
@@ -31,10 +34,13 @@ export default function Sequence() {
     const updatedFight = fight
     updatedFight.sequence = updatedFight.sequence-1
 
-    const response = await client.updateFight(updatedFight)
-    if (response.status === 200) {
+    try {
+      await client.updateFight(updatedFight)
       dispatch({ type: FightActions.EDIT })
       toastSuccess(`Sequence decreased.`)
+    } catch(error) {
+      dispatch({ type: FightActions.ERROR, payload: error as Error })
+      console.error(error)
     }
   }
 

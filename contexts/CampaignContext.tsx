@@ -30,40 +30,47 @@ export function CampaignProvider({ children }: CampaignProviderProps) {
   const [campaign, setCampaign] = useState<Campaign | null>(defaultCampaign)
 
   const setCurrentCampaign = async (camp: Campaign | null):Promise<Campaign | null> => {
-    const response = await client.setCurrentCampaign(camp)
-    if (response.status === 200) {
-      const data = await response.json()
+    try {
+      const data = await client.setCurrentCampaign(camp)
       setCampaign(data)
       saveLocally("currentCampaign", data)
       return data
+    } catch(error) {
+      console.error(error)
     }
     return null
   }
 
-  const getCurrentCampaign = async () => {
+  const getCurrentCampaign = async ():Promise<Campaign | null> => {
     const data = getLocally("currentCampaign")
     if (data) {
       setCampaign(data as Campaign)
-      return data
+      return data as Campaign
     }
-    const response = await client.getCurrentCampaign()
-    if (response.status === 200) {
-      const data = await response.json()
+    try {
+      const data = await client.getCurrentCampaign()
       setCampaign(data)
-      return data
+      return data as Campaign
+    } catch(error) {
+      console.error(error)
     }
     return null
   }
 
   useEffect(() => {
-    if (user) {
-      const data = getLocally("currentCampaign")
-      if (data) {
-        setCampaign(data as Campaign)
-      } else {
-        const data = getCurrentCampaign().catch(console.error)
-        saveLocally("currentCampaign", data)
-      }
+    if (!user) return
+
+    const data = getLocally("currentCampaign")
+    if (data) {
+      setCampaign(data as Campaign)
+      return
+    }
+
+    try {
+      const data = getCurrentCampaign()
+      saveLocally("currentCampaign", data)
+    } catch(error) {
+      console.error(error)
     }
   }, [user])
 

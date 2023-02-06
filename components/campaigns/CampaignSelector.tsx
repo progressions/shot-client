@@ -2,7 +2,7 @@ import { IconButton, Box, Button, Dialog, DialogTitle, DialogContent, DialogCont
 import { CampaignContextType, useCampaign } from "../../contexts/CampaignContext"
 import { useClient } from "../../contexts/ClientContext"
 import { useMemo, useCallback, useEffect, useState } from "react"
-import Client from "../Client"
+import Client from "../../utils/Client"
 import NameDisplay from "./NameDisplay"
 
 import type { Campaign, CampaignsResponse } from "../../types/types"
@@ -40,10 +40,11 @@ export default function CampaignSelector({ startCampaign }: CampaignSelectorProp
   const { user, client } = useClient()
 
   const getCampaigns = useCallback(async () => {
-    const response = await client.getCampaigns()
-    if (response.status === 200) {
-      const data = await response.json()
+    try {
+      const data = await client.getCampaigns()
       setCampaigns(data)
+    } catch(error) {
+      console.error(error)
     }
   }, [client])
 

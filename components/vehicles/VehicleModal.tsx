@@ -77,12 +77,10 @@ export default function CharacterModal({ open, setOpen, character:activeVehicle,
     setSaving(true)
     event.preventDefault()
 
-    const response = newVehicle ?
-      await client.createVehicle(character, fight) :
-      await client.updateVehicle(character, fight)
-
-    if (response.status === 200) {
-      const data = await response.json()
+    try {
+      const data = newVehicle ?
+        await client.createVehicle(character, fight) :
+        await client.updateVehicle(character, fight)
 
       setCharacter(data)
       setSaving(false)
@@ -97,7 +95,8 @@ export default function CharacterModal({ open, setOpen, character:activeVehicle,
       } else if (reload) {
         await reload()
       }
-    } else {
+    } catch(error) {
+      console.error(error)
       toastError()
       setSaving(false)
       cancelForm()

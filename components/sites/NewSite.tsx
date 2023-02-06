@@ -25,11 +25,11 @@ export default function NewSite() {
     event.preventDefault()
     dispatchSite({ type: "saving" })
 
-    const response = await client.createSite(character, site)
-    if (response.status === 200) {
+    try {
+      await client.createSite(character, site)
       await reloadCharacter()
       dispatchSite({ type: "reset" })
-    } else {
+    } catch(error) {
       toastError()
     }
   }

@@ -9,50 +9,30 @@ import { Stack, Link, Container, Typography, Box } from "@mui/material"
 import { useRouter } from 'next/router'
 import { getServerClient } from "../../utils/getServerClient"
 
-import Client from '../../components/Client'
+import Client from '../../utils/Client'
 import type { QueryType, AuthSession, ServerSideProps, User } from "../../types/types"
 
 export async function getServerSideProps<GetServerSideProps>({ req, res, params, query }: ServerSideProps) {
   const { client } = await getServerClient(req, res)
   const { unlock_token } = query as QueryType
 
-  const response = await client.unlockUser(unlock_token as string)
+  try {
+    await client.unlockUser(unlock_token as string)
 
-  if (response.status === 401) {
-    return {
-      redirect: {
-        permanent: false,
-        destination: "/auth/signin"
-      }
-    }
-  }
-
-  if (response.status === 400) {
-    const errors = await response.json()
     return {
       props: {
-        success: false,
-        errors: errors,
+        success: true,
+        errors: {},
         not_found: false
       }
     }
-  }
-
-  if (response.status === 404) {
+  } catch(error) {
     return {
       props: {
         success: false,
         errors: {},
         not_found: true
       }
-    }
-  }
-
-  return {
-    props: {
-      success: true,
-      errors: {},
-      not_found: false
     }
   }
 }

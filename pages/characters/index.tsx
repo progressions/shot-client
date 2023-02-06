@@ -1,6 +1,6 @@
 import Head from "next/head"
 import Layout from "../../components/Layout"
-import Client from "../../components/Client"
+import Client from "../../utils/Client"
 import type { NextApiRequest, NextApiResponse } from "next"
 import { getServerClient } from "../../utils/getServerClient"
 
@@ -34,29 +34,30 @@ interface CharactersProps {
 export async function getServerSideProps({ req, res }: ServerSideProps) {
   const { client } = await getServerClient(req, res)
 
-  const campaignResponse = await client.getCurrentCampaign()
-  const currentCampaign = campaignResponse.status === 200 ? await campaignResponse.json() : null
+  try {
+    const currentCampaign = await client.getCurrentCampaign()
 
-  if (!currentCampaign) {
+    if (!currentCampaign) {
+      return {
+        redirect: {
+          permanent: false,
+          destination: "/"
+        },
+        props: {}
+      }
+    }
+
+    const charactersResponse = await client.getCharactersAndVehicles()
+
+    if (charactersResponse) {
+      return {
+        props: charactersResponse
+      }
+    }
+  } catch(error) {
     return {
-      redirect: {
-        permanent: false,
-        destination: "/"
-      },
       props: {}
     }
-  }
-
-  const charactersResponse = await client.getCharactersAndVehicles()
-
-  if (charactersResponse) {
-    return {
-      props: charactersResponse
-    }
-  }
-
-  return {
-    props: {}
   }
 }
 

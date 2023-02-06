@@ -1,7 +1,7 @@
 import NextAuth, { NextAuthOptions, Awaitable, Session, User } from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials"
 import { getToken } from 'next-auth/jwt'
-import Api from "../../../components/Api"
+import Api from "../../../utils/Api"
 import type { AuthUser, AuthSession } from "../../../types/types"
 
 export const authOptions:NextAuthOptions = {

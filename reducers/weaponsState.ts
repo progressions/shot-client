@@ -1,4 +1,4 @@
-import type { WeaponCategory, Juncture, PaginationMeta, Weapon } from "../types/types"
+import type { WeaponsResponse, WeaponCategory, Juncture, PaginationMeta, Weapon } from "../types/types"
 import { defaultPaginationMeta, defaultWeapon } from "../types/types"
 
 export enum WeaponsActions {
@@ -46,13 +46,6 @@ interface UpdateAction {
   type: Extract<WeaponsActions, WeaponsActions.UPDATE>
   name: string
   value: string
-}
-
-export interface WeaponsResponse {
-  weapons: Weapon[]
-  meta: PaginationMeta
-  junctures: Juncture[]
-  categories: WeaponCategory[]
 }
 
 export type WeaponsActionType = ActionNoPayload | UpdateAction | PayloadAction

@@ -26,13 +26,14 @@ const ActionModal = ({open, setOpen, character }: ActionModalParams) => {
   const submitAction = async (event: React.ChangeEvent<HTMLInputElement>): Promise<void> => {
     event.preventDefault()
     if (shots > 0) {
-      const response = await client.actVehicle(character, fight, shots)
+      try {
+        await client.actVehicle(character, fight, shots)
 
-      if (response.status === 200) {
         setOpen(false)
         dispatchFight({ type: FightActions.EDIT })
         toastSuccess(`${character.name} spent ${shots} shots.`)
-      } else {
+      } catch(error) {
+        console.error(error)
         toastError()
       }
     }

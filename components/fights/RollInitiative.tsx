@@ -8,7 +8,7 @@ import { useFight } from "../../contexts/FightContext"
 import { useToast } from "../../contexts/ToastContext"
 import { useClient } from "../../contexts/ClientContext"
 import { rollDie } from "../dice/DiceRoller"
-import Client from "../Client"
+import Client from "../../utils/Client"
 import { FightActions } from "../../reducers/fightState"
 
 export default function RollInitiative() {
@@ -16,17 +16,21 @@ export default function RollInitiative() {
   const [processing, setProcessing] = useState<boolean>(false)
 
   const { client } = useClient()
-  const { toastSuccess } = useToast()
+  const { toastError, toastSuccess } = useToast()
   const startOfSequence = useMemo(() => ((fight?.shot_order?.[0]?.[0] || 0) === 0), [fight.shot_order])
 
   const addSequence = async () => {
     const updatedFight = fight
     updatedFight.sequence = updatedFight.sequence+1
 
-    const response = await client.updateFight(updatedFight)
-    if (response.status === 200) {
+    try {
+      await client.updateFight(updatedFight)
       dispatchFight({ type: FightActions.EDIT })
       toastSuccess(`Sequence increased`)
+    } catch(error) {
+      dispatchFight({ type: FightActions.ERROR, payload: error as Error })
+      console.error(error)
+      toastError()
     }
   }
 
@@ -68,15 +72,23 @@ export default function RollInitiative() {
   const updateCharacter = async (character: Person, shot: number) => {
     const roll = (character.action_values["Speed"] as number) - (character.impairments || 0) + rollDie() + shot
     const initiative = (roll > 1) ? roll : 1
-    const response = await client.updateCharacter({...character, "current_shot": initiative}, fight)
-    return (response.status === 200)
+    try {
+      const data = await client.updateCharacter({...character, "current_shot": initiative}, fight)
+      return !!data
+    } catch(error) {
+      return false
+    }
   }
 
   const updateVehicle = async (vehicle: Vehicle, shot: number) => {
     const roll = (vehicle.action_values["Acceleration"] as number) - (vehicle.impairments || 0) + rollDie() + shot
     const initiative = (roll > 1) ? roll : 1
-    const response = await client.updateVehicle({...vehicle, "current_shot": initiative}, fight)
-    return (response.status === 200)
+    try {
+      const data = await client.updateVehicle({...vehicle, "current_shot": initiative}, fight)
+      return !!data
+    } catch(error) {
+      return false
+    }
   }
 
   function label() {

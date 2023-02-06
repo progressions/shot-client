@@ -15,38 +15,20 @@ export async function getServerSideProps<GetServerSideProps>({ req, res, params 
   const { client } = await getServerClient(req, res)
   const { id } = params as ParamsType
 
-  const response = await client.getCharacter({ id })
+  try {
+    const character = await client.getCharacter({ id })
 
-  if (response.status === 200) {
-    const character = await response.json()
     return {
       props: {
         character: character
       }
     }
-  }
-
-  if (response.status === 401) {
-    return {
-      redirect: {
-        permanent: false,
-        destination: "/auth/signin"
-      }
-    }
-  }
-
-  if (response.status === 500) {
+  } catch(error) {
     return {
       redirect: {
         permanent: false,
         destination: "/"
       }
-    }
-  }
-
-  return {
-    props: {
-      character: {}
     }
   }
 }

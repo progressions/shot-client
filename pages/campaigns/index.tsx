@@ -13,7 +13,7 @@ import Campaigns from "../../components/campaigns/Campaigns"
 import GamemasterOnly from "../../components/GamemasterOnly"
 
 import { getServerClient } from "../../utils/getServerClient"
-import Client from "../../components/Client"
+import Client from "../../utils/Client"
 
 import type { AuthSession, CampaignsResponse, ServerSideProps, Campaign } from "../../types/types"
 import { GetServerSideProps } from 'next'
@@ -22,29 +22,19 @@ import { InferGetServerSidePropsType } from 'next'
 export async function getServerSideProps<GetServerSideProps>({ req, res }: ServerSideProps) {
   const { client } = await getServerClient(req, res)
 
-  const response = await client.getCampaigns()
+  try {
+    const campaigns = await client.getCampaigns()
 
-  if (response.status === 200) {
-    const campaigns = await response.json()
     return {
       props: {
         campaigns: campaigns
       }
     }
-  }
-  if (response.status === 401) {
+  } catch(error) {
     return {
-      redirect: {
-        permanent: false,
-        destination: "/auth/signin"
-      },
       props: {
+        fights: [],
       }
-    }
-  }
-  return {
-    props: {
-      fights: [],
     }
   }
 }
@@ -60,11 +50,12 @@ export default function CampaignsIndex({ campaigns:initialCampaigns }: Campaigns
   const { campaign:currentCampaign, setCurrentCampaign } = useCampaign()
 
   const getCampaigns = useCallback(async () => {
-    const response = await client.getCampaigns()
-    if (response.status === 200) {
-      const data = await response.json()
+    try {
+      const data = await client.getCampaigns()
       setCampaigns(data["gamemaster"])
       setPlayerCampaigns(data["player"])
+    } catch(error) {
+      console.error(error)
     }
   }, [client])
 

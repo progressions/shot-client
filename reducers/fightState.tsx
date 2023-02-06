@@ -5,6 +5,7 @@ export enum FightActions {
   EDIT = "edit",
   SAVING = "saving",
   SUCCESS = "success",
+  ERROR = "error",
   PREVIOUS = "previous",
   NEXT = "next",
   FIGHT = "fight",
@@ -18,7 +19,9 @@ export interface FightStateType {
   edited: boolean
   loading: boolean
   saving: boolean
+  notFound: boolean
   showHidden: boolean
+  error: string
   page: number
   fight: Fight
   search: string
@@ -26,14 +29,14 @@ export interface FightStateType {
   anchorEl: Element | null
 }
 
-export type PayloadType = Fight | string | Element | null
+export type PayloadType = Fight | string | Element | Error | null
 
 interface ActionNoPayload {
   type: Extract<FightActions, FightActions.RESET | FightActions.EDIT | FightActions.SAVING | FightActions.SUCCESS | FightActions.PREVIOUS | FightActions.NEXT | FightActions.CLOSE>
 }
 
 interface PayloadAction {
-  type: Extract<FightActions, FightActions.FIGHT | FightActions.OPEN>
+  type: Extract<FightActions, FightActions.FIGHT | FightActions.OPEN | FightActions.ERROR>
   payload: PayloadType
 }
 
@@ -49,6 +52,8 @@ export const initialFightState:FightStateType = {
   edited: true,
   loading: true,
   saving: false,
+  notFound: false,
+  error: "",
   page: 1,
   fight: defaultFight,
   search: "",
@@ -84,6 +89,15 @@ export function fightReducer(state: FightStateType, action: FightActionType): Fi
         saving: true,
         edited: false
       }
+    case FightActions.ERROR:
+      const { message } = action.payload as Error
+      return {
+        ...state,
+        error: message as string,
+        loading: false,
+        saving: false,
+        edited: false
+      }
     case FightActions.SUCCESS:
       return {
         ...state,
@@ -98,7 +112,6 @@ export function fightReducer(state: FightStateType, action: FightActionType): Fi
         [action.name]: action.value
       }
     case FightActions.UPDATE_FIGHT:
-      console.log(action)
       return {
         ...state,
         edited: true,

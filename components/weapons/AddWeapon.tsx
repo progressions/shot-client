@@ -21,10 +21,11 @@ export default function AddWeapon() {
 
   useEffect(() => {
     async function getWeapons() {
-      const response = await client.getWeapons({ page, juncture, category, name, character_id: character?.id as string })
-      if (response.status === 200) {
-        const data = await response.json()
+      try {
+        const data = await client.getWeapons({ page, juncture, category, name, character_id: character?.id as string })
         dispatchWeapons({ type: WeaponsActions.WEAPONS, payload: data })
+      } catch(error) {
+        toastError()
       }
     }
 
@@ -37,11 +38,11 @@ export default function AddWeapon() {
     event.preventDefault()
     dispatchWeapons({ type: WeaponsActions.SAVING })
 
-    const response = await client.addWeapon(character, weapon)
-    if (response.status === 200) {
+    try {
+      await client.addWeapon(character, weapon)
       await reloadCharacter()
       handleClose()
-    } else {
+    } catch(error) {
       toastError()
     }
   }

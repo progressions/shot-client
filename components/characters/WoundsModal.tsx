@@ -17,7 +17,7 @@ const WoundsModal = ({open, setOpen, character }: WoundsModalParams) => {
   const { fight, dispatch:dispatchFight } = useFight()
   const [smackdown, setSmackdown] = useState<number>(0)
   const [saving, setSaving] = useState<boolean>(false)
-  const { toastSuccess } = useToast()
+  const { toastError, toastSuccess } = useToast()
   const { client } = useClient()
 
   const calculateImpairments = (originalWounds: number, newWounds: number): number => {
@@ -96,8 +96,8 @@ const WoundsModal = ({open, setOpen, character }: WoundsModalParams) => {
 
     const impairments = character.impairments + calculateImpairments(originalWounds, newWounds)
 
-    const response = await client.updateCharacter({ ...character, impairments: impairments, "action_values": actionValues}, fight)
-    if (response.status === 200) {
+    try {
+      await client.updateCharacter({ ...character, impairments: impairments, "action_values": actionValues}, fight)
       dispatchFight({ type: FightActions.EDIT })
       setSmackdown(0)
       setOpen(false)
@@ -106,6 +106,8 @@ const WoundsModal = ({open, setOpen, character }: WoundsModalParams) => {
       } else {
         toastSuccess(`${character.name} took a smackdown of ${smackdown}, causing ${wounds} wounds.`)
       }
+    } catch(error) {
+      toastError()
     }
   }
   const cancelForm = () => {

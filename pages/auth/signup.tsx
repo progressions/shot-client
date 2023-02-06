@@ -4,8 +4,8 @@ import { useState } from "react"
 import Router from 'next/router'
 
 import Layout from '../../components/Layout'
-import Api from '../../components/Api'
-import Client from "../../components/Client"
+import Api from '../../utils/Api'
+import Client from "../../utils/Client"
 
 import type { User, ServerSideProps } from "../../types/types"
 import { defaultUser } from "../../types/types"
@@ -32,9 +32,11 @@ export default function SignUp() {
 
   const handleSubmit = async (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault()
-    const response = await client.createUser(user)
-    if (response.status === 200) {
+    try {
+      await client.createUser(user)
       Router.replace("/auth/signin")
+    } catch(error) {
+      console.error(error)
     }
   }
 

@@ -7,7 +7,7 @@ import Navbar from "../../../components/navbar/Navbar"
 import { TextField, Button, Stack, Link, Container, Typography, Box } from "@mui/material"
 
 import { useRouter } from 'next/router'
-import Client from '../../../components/Client'
+import Client from '../../../utils/Client'
 import { QueryType, AuthSession, ServerSideProps, PasswordWithConfirmation, User } from "../../../types/types"
 import { useClient } from "../../../contexts/ClientContext"
 import { useToast } from "../../../contexts/ToastContext"
@@ -45,12 +45,11 @@ export default function ResetPasswordView({ reset_password_token }: ResetPasswor
     event.preventDefault()
     setSaving(true)
 
-    const response = await client.resetUserPassword(reset_password_token, state)
-
-    if (response.status === 200) {
+    try {
+      await client.resetUserPassword(reset_password_token, state)
       setSuccess(true)
       toastSuccess("Password reset.")
-    } else {
+    } catch(error) {
       toastError()
       setSuccess(false)
     }

@@ -28,11 +28,11 @@ export default function WeaponModal({ state, dispatch, open, setOpen }: WeaponMo
     event.preventDefault()
     dispatch({ type: WeaponsActions.SAVING })
 
-    const response = await client.createWeapon(weapon)
-    if (response.status === 200) {
+    try {
+      await client.createWeapon(weapon)
       dispatch({ type: WeaponsActions.EDIT })
       setOpen(false)
-    } else {
+    } catch(error) {
       toastError()
     }
   }

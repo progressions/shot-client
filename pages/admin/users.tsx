@@ -2,7 +2,7 @@ import Head from 'next/head'
 import { Box, Paper, IconButton, Typography, Container, Table, TableContainer, TableBody, TableHead, TableRow, TableCell } from '@mui/material'
 import { useState } from 'react'
 import Layout from '../../components/Layout'
-import Client from "../../components/Client"
+import Client from "../../utils/Client"
 import UserModal from '../../components/UserModal'
 import Router from 'next/router'
 import type { NextApiRequest, NextApiResponse } from "next"
@@ -31,11 +31,12 @@ interface loadUsersParams {
 
 export async function loadUsers({ jwt, setUsers }: loadUsersParams) {
   const client = new Client({ jwt })
-  const response = await client.getUsers()
-  if (response.status === 200) {
-    const data = await response.json()
+  try {
+    const data = await client.getUsers()
     setUsers([])
     setUsers(data)
+  } catch(error) {
+    console.error(error)
   }
 }
 
@@ -52,10 +53,9 @@ export async function getServerSideProps({ req, res }: ServerSideProps) {
     }
   }
 
-  const response = await client.getUsers()
+  try {
+    const users = await client.getUsers()
 
-  if (response.status === 200) {
-    const users = await response.json()
     return {
       props: {
         jwt: jwt,
@@ -63,13 +63,14 @@ export async function getServerSideProps({ req, res }: ServerSideProps) {
         users: users
       }, // will be passed to the page component as props
     }
-  }
+  } catch(error) {
 
-  return {
-    props: {
-      jwt: jwt,
-      user: user,
-    }, // will be passed to the page component as props
+    return {
+      props: {
+        jwt: jwt,
+        user: user,
+      }, // will be passed to the page component as props
+    }
   }
 }
 
@@ -93,10 +94,12 @@ export default function UsersAdmin({ jwt, users:initialUsers, currentUser }: Use
       toastError("You can't delete the last user.")
       return
     }
-    const response = await client.deleteUser(user)
-    if (response.status === 200) {
+    try {
+      await client.deleteUser(user)
       toastSuccess(`User ${user.email} deleted.`)
       loadUsers({ jwt, setUsers })
+    } catch(error) {
+      toastError()
     }
   }
 

@@ -34,11 +34,11 @@ export default function Effects({ effects, severity }: EffectsProps) {
   }
 
   const deleteEffect = async (effect: Effect) => {
-    const response = await client.deleteEffect(effect, fight)
-    if (response.status === 200) {
+    try {
+      await client.deleteEffect(effect, fight)
       dispatch({ type: FightActions.EDIT })
       toastSuccess(`Effect ${effect.title} deleted.`)
-    } else {
+    } catch(error) {
       toastError()
     }
   }

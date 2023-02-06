@@ -1,4 +1,4 @@
-import type { SchtickCategory, SchtickPath, PaginationMeta, Schtick } from "../types/types"
+import type { SchticksResponse, SchtickCategory, SchtickPath, PaginationMeta, Schtick } from "../types/types"
 import { defaultPaginationMeta, defaultSchtick } from "../types/types"
 
 export enum SchticksActions {
@@ -45,13 +45,6 @@ export interface SchticksStateType {
   schtick: Schtick
   schticks: Schtick[]
   meta: PaginationMeta
-}
-
-export interface SchticksResponse {
-  schticks: Schtick[]
-  meta: PaginationMeta
-  paths: SchtickPath[]
-  categories: SchtickCategory[]
 }
 
 export type SchticksActionType = ActionNoPayload | UpdateAction | PayloadAction

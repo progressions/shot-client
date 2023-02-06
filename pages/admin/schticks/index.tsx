@@ -19,8 +19,7 @@ import { authOptions } from '../../api/auth/[...nextauth]'
 import Schticks from "../../../components/schticks/Schticks"
 
 import { getServerClient } from "../../../utils/getServerClient"
-import type { AuthSession, ServerSideProps, Campaign } from "../../../types/types"
-import type { SchticksResponse } from "../../../reducers/schticksState"
+import type { SchticksResponse, AuthSession, ServerSideProps, Campaign } from "../../../types/types"
 import { SchticksActions } from "../../../reducers/schticksState"
 import { GetServerSideProps } from 'next'
 import { InferGetServerSidePropsType } from 'next'
@@ -28,10 +27,9 @@ import { InferGetServerSidePropsType } from 'next'
 export async function getServerSideProps<GetServerSideProps>({ req, res }: ServerSideProps) {
   const { client } = await getServerClient(req, res)
 
-  const response = await client.getSchticks()
+  try {
+    const { schticks, meta, paths } = await client.getSchticks()
 
-  if (response.status === 200) {
-    const { schticks, meta, paths } = await response.json()
     return {
       props: {
         schticks: schticks,
@@ -39,28 +37,13 @@ export async function getServerSideProps<GetServerSideProps>({ req, res }: Serve
         paths: paths
       }
     }
-  }
-  if (response.status === 500) {
+  } catch(error) {
     return {
-      redirect: {
-        permanent: false,
-        destination: "/"
-      }
-    }
-  }
-  if (response.status === 401) {
-    return {
-      redirect: {
-        permanent: false,
-        destination: "/auth/signin"
-      },
       props: {
+        schticks: [],
+        meta: {},
+        paths: []
       }
-    }
-  }
-  return {
-    props: {
-      fights: [],
     }
   }
 }

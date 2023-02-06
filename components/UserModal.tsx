@@ -8,7 +8,7 @@ import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
 import Router from "next/router"
 
-import Client from "./Client"
+import Client from "../utils/Client"
 
 import { useClient } from "../contexts/ClientContext"
 import { useToast } from "../contexts/ToastContext"
@@ -48,20 +48,12 @@ export default function UserModal({ user, setUser, setUsers }: UserModalParams) 
     setSaving(true)
     event.preventDefault()
 
-    if (user.id) {
-      const response = await client.updateUser(user)
-      if (response.status === 200) {
-        toastSuccess("User updated.")
-      } else {
-        toastError()
-      }
-    } else {
-      const response = await client.createUser(user)
-      if (response.status === 200) {
-        toastSuccess("User created.")
-      } else {
-        toastError()
-      }
+    const message = user.id ? "User updated." : "User created."
+    try {
+      user.id ? await client.updateUser(user) : await client.createUser(user)
+      toastSuccess(message)
+    } catch(error) {
+      toastError()
     }
 
     setSaving(false)

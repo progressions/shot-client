@@ -44,11 +44,10 @@ export default function Characters(charactersResponse: CharactersResponse) {
   }
 
   async function deleteCharacter(character: Character): Promise<void> {
-    const response = await client.deleteCharacter(character)
-
-    if (response.status === 200) {
+    try {
+      await client.deleteCharacter(character)
       dispatch({ type: CharactersActions.EDIT })
-    } else {
+    } catch(error) {
       toastError()
     }
   }

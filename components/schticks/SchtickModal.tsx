@@ -37,20 +37,21 @@ export default function SchtickModal({ open, setOpen, state, dispatch, schtick:i
   }, [dispatch, category, path])
 
   async function reloadSchticks() {
-    const response = await client.getSchticks()
-    if (response.status === 200) {
-      const data = await response.json()
+    try {
+      const data = await client.getSchticks()
       dispatch({ type: SchticksActions.SCHTICKS, payload: data })
+    } catch(error) {
+      console.error(error)
     }
   }
 
   async function handleSubmit(event: React.ChangeEvent<HTMLInputElement>) {
     event.preventDefault()
-    const response = schtick?.id ? await client.updateSchtick(schtick) : await client.createSchtick(schtick)
-    if (response.status === 200) {
+    try {
+      (schtick?.id) ? await client.updateSchtick(schtick) : await client.createSchtick(schtick)
       await reloadSchticks()
       toastSuccess("Schtick updated.")
-    } else {
+    } catch(error) {
       toastError()
     }
     cancelForm()

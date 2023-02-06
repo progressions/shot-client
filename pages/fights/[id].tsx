@@ -7,7 +7,7 @@ import Router from "next/router"
 
 import Layout from '../../components/Layout'
 import ShotCounter from "../../components/fights/ShotCounter"
-import Client from '../../components/Client'
+import Client from '../../utils/Client'
 
 import { getServerClient } from "../../utils/getServerClient"
 import { useFight } from "../../contexts/FightContext"
@@ -19,8 +19,7 @@ import { useClient } from "../../contexts/ClientContext"
 import Loading from "../../components/fights/Loading"
 
 interface FightParams {
-  fight: Fight | null,
-  notFound?: boolean
+  fight: Fight | null
 }
 
 export async function getServerSideProps({ req, res, params }: ServerSideProps) {
@@ -45,10 +44,10 @@ export async function getServerSideProps({ req, res, params }: ServerSideProps) 
   }
 }
 
-export default function Fight({ fight:initialFight, notFound }: FightParams) {
+export default function Fight({ fight:initialFight }: FightParams) {
   const { client, user } = useClient()
   const { fight, state, dispatch } = useFight()
-  const { loading, edited } = state
+  const { notFound, loading, edited } = state
 
   useEffect(() => {
     dispatch({ type: FightActions.FIGHT, payload: initialFight })
@@ -56,24 +55,28 @@ export default function Fight({ fight:initialFight, notFound }: FightParams) {
 
   useEffect(() => {
     async function reloadFight(fight: Fight): Promise<void> {
-      const response = await client.getFight(fight)
-      if (response.status === 200) {
-        const data = await response.json()
+      try {
+        const data = await client.getFight(fight)
         dispatch({ type: FightActions.FIGHT, payload: data })
         dispatch({ type: FightActions.SUCCESS })
+      } catch(error: any) {
+        if (error.message === "Not Found") {
+          dispatch({ type: FightActions.UPDATE, name: "notFound", value: true })
+          dispatch({ type: FightActions.UPDATE, name: "loading", value: false })
+        }
       }
     }
 
-    if (user && edited && fight?.id) {
-      reloadFight(fight).catch(console.error)
+    if (!notFound && user && edited && fight?.id) {
+      reloadFight(fight)
     }
-  }, [fight, edited, user, client, dispatch])
+  }, [notFound, fight, edited, user, client, dispatch])
 
   if (!fight && !notFound) {
     return <>Loading...</>
   }
 
-  const title = fight ? `${fight.name} - Chi War` : "Fight not found - Chi War"
+  const title = !notFound ? `${fight.name || "Loading"} - Chi War` : "Fight not found - Chi War"
 
   return (
     <>
@@ -85,11 +88,11 @@ export default function Fight({ fight:initialFight, notFound }: FightParams) {
       </Head>
       <Layout>
         <Container>
-          { !fight && <>
+          { notFound && <>
             <Typography sx={{mt: 5}} variant="h3">Fight not found.</Typography>
           </> }
-          { !loading && <ShotCounter /> }
-          { loading && <Loading /> }
+          { !notFound && !loading && <ShotCounter /> }
+          { !notFound && loading && <Loading /> }
         </Container>
       </Layout>
     </>

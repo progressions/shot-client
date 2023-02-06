@@ -1,6 +1,6 @@
 import { TextField, Button, Tooltip, Box, Stack, Dialog, DialogTitle, DialogContent, DialogActions } from "@mui/material"
 import { useEffect, useState } from "react"
-import Client from "../Client"
+import Client from "../../utils/Client"
 
 import { defaultCampaign } from "../../types/types"
 import { useToast } from "../../contexts/ToastContext"
@@ -26,16 +26,15 @@ export default function CampaignModal({ open, setOpen, campaign:activeCampaign, 
     event.preventDefault()
     setSaving(true)
 
-    const response = await client.createCampaign(campaign)
-    if (response.status === 200) {
-      const data = await response.json()
+    try {
+      const data = await client.createCampaign(campaign)
       setCampaign(data)
       setSaving(false)
       cancelForm()
 
       toastSuccess(`${campaign.title} created.`)
       await reload()
-    } else {
+    } catch(error) {
       toastError()
       setSaving(false)
       cancelForm()

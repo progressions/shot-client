@@ -23,15 +23,16 @@ export default function FilterSchticks({ state, dispatch }: FilterSchticksProps)
 
   useEffect(() => {
     async function getSchticks() {
-      const response = await client.getSchticks({ page, category, path, title, character_id: character?.id as string })
-      if (response.status === 200) {
-        const data = await response.json()
+      try {
+        const data = await client.getSchticks({ page, category, path, title, character_id: character?.id as string })
         dispatch({ type: SchticksActions.SCHTICKS, payload: data })
+      } catch(error) {
+        toastError()
       }
     }
 
     if (user?.id) {
-      getSchticks().catch(toastError)
+      getSchticks()
     }
   }, [character?.id, dispatch, user?.id, category, path, toastError, client, page, title])
 

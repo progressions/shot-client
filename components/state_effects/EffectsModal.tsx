@@ -46,14 +46,13 @@ export default function EffectsModal({ character }: EffectsModalProps) {
     setSaving(true)
     event.preventDefault()
 
-    const response = await client.createCharacterEffect(effect, fight)
-    if (response.status === 200) {
-      const data = await response.json()
+    try {
+      const data = await client.createCharacterEffect(effect, fight)
       setEffect(data)
       cancelForm()
       dispatchFight({ type: FightActions.EDIT })
       toastSuccess(`Effect ${effect.title} added.`)
-    } else {
+    } catch(error) {
       toastError()
       cancelForm()
     }

@@ -62,15 +62,14 @@ export default function SelectCharacter() {
 
     if (!id) return
 
-    const response = (character.category === "character") ?
-      await client.addCharacter(fight, {id: id})
-    : await client.addVehicle(fight, {id: id})
+    try {
+      (character.category === "character") ?
+        await client.addCharacter(fight, {id: id})
+      : await client.addVehicle(fight, {id: id})
 
-    if (response.status === 200) {
-      const character = await response.json()
       toastSuccess(`${character.name} added.`)
       dispatch({ type: CharactersActions.RESET_CHARACTER })
-    } else {
+    } catch(error) {
       toastError()
     }
     dispatchFight({ type: FightActions.EDIT })

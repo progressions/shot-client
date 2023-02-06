@@ -9,7 +9,7 @@ import { useEffect, useState } from "react"
 import { Link, TextField, Button, Box, Stack, TableContainer, Table, TableRow, TableHead, TableBody, TableCell, Container, Typography } from "@mui/material"
 
 import CreateInvitation from "../../components/invitations/CreateInvitation"
-import Client from '../../components/Client'
+import Client from '../../utils/Client'
 import { GetServerSideProps } from 'next'
 import Navbar from "../../components/navbar/Navbar"
 import * as cookie from 'cookie'
@@ -23,23 +23,22 @@ export async function getServerSideProps<GetServerSideProps>({ req, res, params 
   const { client } = await getServerClient(req, res)
   const { id } = params as ParamsType
 
-  const response = await client.getInvitation({ id })
-  if (response.status === 200) {
-    const data = await response.json()
+  try {
+    const data = await client.getInvitation({ id })
 
     return {
       props: {
         invitation: data
       }
     }
-  }
-
-  return {
-    redirect: {
-      permanent: false,
-      destination: `/auth/signin`
-    },
-    props: {
+  } catch(error) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: `/auth/signin`
+      },
+      props: {
+      }
     }
   }
 }
@@ -75,13 +74,11 @@ export default function RedeemInvitation({ invitation }: RedeemInvitationProps) 
     event.preventDefault()
     setSaving(true)
 
-    const response = await client.redeemInvitation(invitation, user)
-    if (response.status === 200) {
-      const data = await response.json()
+    try {
+      const data = await client.redeemInvitation(invitation, user)
       setSuccess(true)
-    } else {
-      const data = await response.json()
-      setErrors(data)
+    } catch(error) {
+      console.error(error)
     }
 
     setSaving(false)

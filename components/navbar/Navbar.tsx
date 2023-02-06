@@ -16,7 +16,7 @@ import Avatar from '@mui/material/Avatar'
 import Tooltip from '@mui/material/Tooltip'
 import Stack from '@mui/material/Stack'
 import AuthButton from "./AuthButton"
-import Client from "../Client"
+import Client from "../../utils/Client"
 import CurrentCampaign from "../campaigns/CurrentCampaign"
 import GamemasterOnly from "../GamemasterOnly"
 

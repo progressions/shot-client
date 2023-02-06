@@ -26,12 +26,11 @@ export default function SchtickSelector() {
     if (!schtick?.id) return
     dispatch({ type: SchticksActions.SAVING })
 
-    const response = await client.addSchtick(character, schtick)
-    if (response.status === 200) {
-      const data = await response.json()
+    try {
+      const data = await client.addSchtick(character, schtick)
       dispatchCharacter({ type: CharacterActions.CHARACTER, payload: data })
       toastSuccess("Schtick added.")
-    } else {
+    } catch(error) {
       toastError()
     }
 

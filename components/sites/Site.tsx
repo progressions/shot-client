@@ -16,10 +16,10 @@ export default function Site({ site }: SiteProps) {
   const { character, reloadCharacter } = useCharacter()
 
   async function deleteSite() {
-    const response = await client.deleteSite(character, site)
-    if (response.status === 200) {
+    try {
+      await client.deleteSite(character, site)
       await reloadCharacter()
-    } else {
+    } catch(error) {
       toastError()
     }
   }

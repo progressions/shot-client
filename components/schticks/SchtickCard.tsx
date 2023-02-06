@@ -40,41 +40,41 @@ export default function SchtickCard({ schtick, state, dispatch }: SchtickCardPro
   const { character } = characterState
 
   async function reloadCharacter(char: Character) {
-    const response = await client.getCharacter(char)
-    if (response.status === 200) {
-      const data = await response.json()
+    try {
+      const data = await client.getCharacter(char)
       dispatchCharacter({ type: CharacterActions.CHARACTER, payload: data })
-    } else {
+    } catch(error) {
       toastError()
     }
   }
 
   async function reloadSchticks() {
-    const response = await client.getSchticks()
-    if (response.status === 200) {
-      const data = await response.json()
+    try {
+      const data = await client.getSchticks()
       if (dispatch) {
         dispatch({ type: SchticksActions.SCHTICKS, payload: data })
       }
+    } catch(error) {
+      console.error(error)
     }
   }
 
   async function removeSchtick() {
-    const response = await client.removeSchtick(character, schtick)
-    if (response.status === 200) {
+    try {
+      await client.removeSchtick(character, schtick)
       await reloadCharacter(character)
       toastSuccess("Schtick removed.")
-    } else {
+    } catch(error) {
       toastError()
     }
   }
 
   async function deleteSchtick() {
-    const response = await client.deleteSchtick(schtick)
-    if (response.status === 200) {
+    try {
+      await client.deleteSchtick(schtick)
       await reloadSchticks()
       toastSuccess("Schtick deleted.")
-    } else {
+    } catch(error) {
       toastError()
     }
   }
