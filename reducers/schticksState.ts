@@ -119,6 +119,11 @@ export function schticksReducer(state: SchticksStateType, action: SchticksAction
         paths: paths,
         categories: categories
       }
+    case SchticksActions.RESET:
+      return {
+        ...state,
+        schtick: initialSchticksState.schtick
+      }
     default:
       return state
   }

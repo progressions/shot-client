@@ -68,7 +68,7 @@ export function CampaignProvider({ children }: CampaignProviderProps) {
 
     try {
       const data = getCurrentCampaign()
-      saveLocally("currentCampaign", data)
+      saveLocally(`currentCampaign-${user?.id}`, data)
     } catch(error) {
       console.error(error)
     }
