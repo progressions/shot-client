@@ -87,7 +87,7 @@ export default function CharacterModal({ open, setOpen, character:activeCharacte
     try {
       const data = newCharacter ?
         await client.createCharacter(character, fight) :
-        await client.updateCharacter(characterToUpdate, fight)
+        await client.updateCharacter(characterToUpdate as Character, fight)
 
       setCharacter(data)
       setSaving(false)
