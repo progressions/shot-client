@@ -79,10 +79,15 @@ export default function CharacterModal({ open, setOpen, character:activeCharacte
     setSaving(true)
     event.preventDefault()
 
+    const {
+      skills, schticks,
+      ...characterToUpdate
+    } = character
+
     try {
       const data = newCharacter ?
         await client.createCharacter(character, fight) :
-        await client.updateCharacter(character, fight)
+        await client.updateCharacter(characterToUpdate, fight)
 
       setCharacter(data)
       setSaving(false)
