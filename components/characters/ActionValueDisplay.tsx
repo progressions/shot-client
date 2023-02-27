@@ -48,18 +48,18 @@ const colorForValue = (changed: number): string => {
 const adjustedValue = (character: Character, name: string, fight: Fight, impairments: number) => {
   const effect = effectForCharacter(fight, character, name)
   const original = (character.action_values[name] || 0) as number
+  const originalWithImpairments = original - impairments
 
   if (effect) {
     if (["+", "-"].includes(effect.change?.[0] as string)) {
-      const newValue = original + parseInt(effect.change as string)
-      return adjustedReturnValue(original, newValue)
+      const newValue = originalWithImpairments + parseInt(effect.change as string)
+      return adjustedReturnValue(originalWithImpairments, newValue)
     }
     const newValue = (effect.change || 0) as number
-    return adjustedReturnValue(original, newValue)
+    return adjustedReturnValue(originalWithImpairments, newValue)
   }
 
-  const newValue = original - impairments
-  return adjustedReturnValue(original, newValue)
+  return adjustedReturnValue(original, originalWithImpairments)
 }
 
 export default function ActionValueDisplay({ name, description, label, character, ignoreImpairments, sx }: ActionValueDisplayParams) {
