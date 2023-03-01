@@ -32,7 +32,8 @@ export default function EffectsModal({ character }: EffectsModalProps) {
   const actionValues = useMemo(() => {
     const characterActionValues = [
       { label: "Attack", value: "MainAttack" },
-      { label: "Defense", value: "Defense" }
+      { label: "Defense", value: "Defense" },
+      { label: "Toughness", value: "Toughness" },
     ]
 
     if (character.category === "character") {
