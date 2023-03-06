@@ -3,6 +3,7 @@ import Layout from "../../components/Layout"
 import Client from "../../utils/Client"
 import type { NextApiRequest, NextApiResponse } from "next"
 import { getServerClient } from "../../utils/getServerClient"
+import axios from "axios"
 
 import { useState } from "react"
 import Router from "next/router"
@@ -25,6 +26,7 @@ import { useClient } from "../../contexts/ClientContext"
 import type { PaginationMeta, AuthSession, Person, Vehicle, Character, CharacterFilter, ServerSideProps, Toast, CharactersResponse } from "../../types/types"
 import { defaultCharacter } from "../../types/types"
 import Characters from "../../components/admin/characters/Characters"
+import { AxiosError } from "axios"
 
 interface CharactersProps {
   characters: Character[]
@@ -54,8 +56,9 @@ export async function getServerSideProps({ req, res }: ServerSideProps) {
         props: charactersResponse
       }
     }
-  } catch(error) {
-    if (error.response.status === 401) {
+  } catch(error: unknown | AxiosError) {
+    if (axios.isAxiosError(error)) {
+      if (error?.response?.status === 401) {
       return {
         redirect: {
           destination: "/auth/signin",
@@ -63,6 +66,7 @@ export async function getServerSideProps({ req, res }: ServerSideProps) {
         }
       }
     }
+  }
 
     return {
       props: {}

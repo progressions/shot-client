@@ -29,6 +29,7 @@ import GamemasterOnly from "../components/GamemasterOnly"
 import { FightsActions, initialFightsState, fightsReducer } from "../reducers/fightsState"
 
 import type { FightsResponse, PaginationMeta, AuthSession, Campaign, Fight, ServerSideProps } from "../types/types"
+import axios, { AxiosError } from 'axios'
 
 interface HomeProps extends FightsResponse {
   currentCampaign: Campaign | null
@@ -47,12 +48,14 @@ export async function getServerSideProps<GetServerSideProps>({ req, res }: Serve
         currentCampaign: currentCampaign
       }
     }
-  } catch(error) {
-    if (error.response.status === 401) {
-      return {
-        redirect: {
-          destination: "/auth/signin",
-          permanent: false
+  } catch(error: unknown | AxiosError) {
+    if (axios.isAxiosError(error)) {
+      if (error?.response?.status === 401) {
+        return {
+          redirect: {
+            destination: "/auth/signin",
+            permanent: false
+          }
         }
       }
     }

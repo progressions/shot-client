@@ -10,6 +10,7 @@ import { GetServerSideProps } from 'next'
 import { getServerClient } from "../../utils/getServerClient"
 
 import { ParamsType, AuthSession, ServerSideProps, User, Character } from "../../types/types"
+import { AxiosError } from 'axios'
 
 export async function getServerSideProps<GetServerSideProps>({ req, res, params }: ServerSideProps) {
   const { client } = await getServerClient(req, res)
@@ -23,7 +24,7 @@ export async function getServerSideProps<GetServerSideProps>({ req, res, params 
         character: character
       }
     }
-  } catch(error) {
+  } catch(error: unknown | AxiosError) {
     return {
       redirect: {
         permanent: false,
