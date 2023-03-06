@@ -48,6 +48,15 @@ export async function getServerSideProps<GetServerSideProps>({ req, res }: Serve
       }
     }
   } catch(error) {
+    if (error.response.status === 401) {
+      return {
+        redirect: {
+          destination: "/auth/signin",
+          permanent: false
+        }
+      }
+    }
+
     return {
       props: {
         fights: [],
