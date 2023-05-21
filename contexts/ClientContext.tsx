@@ -21,7 +21,7 @@ interface ClientProviderProps {
 const ClientContext = createContext<ClientContextType>({client: (new Client()), session: {} as AuthSession, jwt: "", user: defaultUser})
 
 export function ClientProvider({ children }: ClientProviderProps) {
-  const session = useSession({ required: false }) as AuthSession
+  const session = useSession({ required: false }) as any
   const jwt = session?.data?.authorization as string
   const client = useMemo(() => (new Client({ jwt })), [jwt])
   const user = session?.data?.user as User
