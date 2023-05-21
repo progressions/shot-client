@@ -17,8 +17,7 @@ export default function Sequence() {
   const { fight, dispatch } = useFight()
 
   const addSequence = async () => {
-    const updatedFight = fight
-    updatedFight.sequence = updatedFight.sequence+1
+    const updatedFight = { id: fight.id, sequence: fight.sequence+1 }
 
     try {
       await client.updateFight(updatedFight)
@@ -31,8 +30,7 @@ export default function Sequence() {
   }
 
   const minusSequence = async () => {
-    const updatedFight = fight
-    updatedFight.sequence = updatedFight.sequence-1
+    const updatedFight = { id: fight.id, sequence: fight.sequence-1 }
 
     try {
       await client.updateFight(updatedFight)
