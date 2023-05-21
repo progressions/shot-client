@@ -25,7 +25,7 @@ const ActionModal = ({open, setOpen, character }: ActionModalParams) => {
     if (["Boss", "Uber-Boss"].includes(character.action_values["Type"] as string)) {
       setShots(2)
     }
-  }, [shots, character.action_values])
+  }, [])
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
     setShots(parseInt(event.target.value))
