@@ -82,7 +82,7 @@ class Client {
   }
 
   async actCharacter(character: Character, fight: Fight, shots: number):Promise<Character> {
-    return await this.patch(this.api.actCharacter(fight, character), {"character": character, "shots": shots})
+    return await this.patch(this.api.actCharacter(fight, { id: character.id } as Character), {"character": { id: character.id } as Character, "shots": shots})
   }
 
   async addCharacter(fight: Fight, character: Character | ID):Promise<Character> {
