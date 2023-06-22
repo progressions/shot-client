@@ -38,7 +38,8 @@ export default function FightDetail({ fight, state, dispatch }: FightParams) {
 
   async function toggleVisibility(fight: Fight) {
     try {
-      await client.updateFight({ ...fight, "active": !fight.active })
+      alert("doing it")
+      await client.updateFight({ id: fight.id, "active": !fight.active })
       toastSuccess(`Fight ${fight.name} updated`)
       dispatch({ type: FightsActions.EDIT })
     } catch(error) {
