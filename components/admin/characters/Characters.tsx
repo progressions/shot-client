@@ -38,7 +38,7 @@ export default function Characters(charactersResponse: CharactersResponse) {
     if (user && edited) {
       reload()
     }
-  }, [edited, user, faction, archetype, client, dispatch, toastError, search, character_type, showHidden])
+  }, [edited, user, faction, archetype, client, dispatch, toastError, search, character_type, showHidden, state?.page])
 
   function editCharacter(character: Character): void {
     dispatch({ type: CharactersActions.CHARACTER, payload: character })
