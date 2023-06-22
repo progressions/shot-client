@@ -1,4 +1,4 @@
-import { FormControlLabel, Link, Paper, Stack, Switch, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material"
+import { Box, Button, FormControlLabel, Link, Paper, Stack, Switch, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material"
 
 import { useEffect, useReducer, useState } from "react"
 import { useClient } from "../../../contexts/ClientContext"
@@ -20,15 +20,20 @@ export default function Characters(charactersResponse: CharactersResponse) {
   const { toastError, toastSuccess } = useToast()
   const [state, dispatch] = useReducer(charactersReducer, initialCharactersState)
   const { edited, faction, archetype, characters, character_type, factions, search, showHidden } = state
+  const meta = state?.meta || {}
+
+  console.log("page", state?.page)
+  console.log(meta)
 
   useEffect(() => {
+    console.log("Characters", charactersResponse)
     dispatch({ type: CharactersActions.CHARACTERS, payload: charactersResponse })
   }, [charactersResponse, dispatch])
 
   useEffect(() => {
     const reload = async () => {
       try {
-        const data = await client.getCharactersAndVehicles({ faction, archetype, search, character_type, show_all: showHidden })
+        const data = await client.getCharactersAndVehicles({ faction, archetype, search, character_type, show_all: showHidden, page: state?.page })
         dispatch({ type: CharactersActions.CHARACTERS, payload: data })
       } catch(error) {
         toastError()
@@ -68,6 +73,18 @@ export default function Characters(charactersResponse: CharactersResponse) {
     }
   }
 
+  function loadPrevious() {
+    if (!dispatch) return
+
+    dispatch({ type: CharactersActions.PREVIOUS })
+  }
+
+  function loadNext() {
+    if (!dispatch) return
+
+    dispatch({ type: CharactersActions.NEXT })
+  }
+
   if (!characters) return <></>
 
   return (
@@ -91,9 +108,25 @@ export default function Characters(charactersResponse: CharactersResponse) {
           </TableHead>
           <TableBody>
             {
+              meta?.prev_page &&
+              <TableRow>
+                <TableCell colSpan={6}>
+                  <Button sx={{width: "100%"}} onClick={loadPrevious} variant="contained" color="primary">Previous</Button>
+                </TableCell>
+              </TableRow>
+            }
+            {
               characters.map((character: Character) => (
                 <CharacterDisplay key={character.id} character={character} user={user} />
               ))
+            }
+            {
+              meta?.next_page &&
+              <TableRow>
+                <TableCell colSpan={6}>
+                  <Button sx={{width: "100%"}} onClick={loadNext} variant="contained" color="primary">Next</Button>
+                </TableCell>
+              </TableRow>
             }
           </TableBody>
         </Table>
