@@ -6,7 +6,6 @@ import { getServerClient } from "../../utils/getServerClient"
 import axios from "axios"
 
 import { useState } from "react"
-import Router from "next/router"
 
 import { Link, Paper, Switch, FormControlLabel, Stack, Avatar, Box, TableContainer, Table, TableHead, TableBody, TableRow, TableCell, Container, Typography } from "@mui/material"
 
@@ -27,14 +26,17 @@ import type { PaginationMeta, AuthSession, Person, Vehicle, Character, Character
 import { defaultCharacter } from "../../types/types"
 import Characters from "../../components/admin/characters/Characters"
 import { AxiosError } from "axios"
+import { useRouter } from 'next/router'
 
 interface CharactersProps {
   characters: Character[]
   meta: PaginationMeta
 }
 
-export async function getServerSideProps({ req, res }: ServerSideProps) {
+export async function getServerSideProps({ req, res, query }: ServerSideProps) {
   const { client } = await getServerClient(req, res)
+
+  const page = query?.page
 
   try {
     const currentCampaign = await client.getCurrentCampaign()
@@ -49,7 +51,7 @@ export async function getServerSideProps({ req, res }: ServerSideProps) {
       }
     }
 
-    const charactersResponse = await client.getCharactersAndVehicles()
+    const charactersResponse = await client.getCharactersAndVehicles({ page })
 
     if (charactersResponse) {
       return {
