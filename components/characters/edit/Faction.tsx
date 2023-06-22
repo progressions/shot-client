@@ -55,7 +55,6 @@ export default function Faction({ faction, onChange }: FactionProps) {
   }
 
   function changeFaction(event: React.ChangeEvent<HTMLInputElement>, newValue: string) {
-    console.log("hello")
     onChange({...event, target: {...event.target, name: "Faction", value: newValue}}, newValue)
   }
 
