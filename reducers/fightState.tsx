@@ -106,6 +106,7 @@ export function fightReducer(state: FightStateType, action: FightActionType): Fi
         edited: false
       }
     case FightActions.UPDATE:
+      console.log("update", action.name, action.value)
       return {
         ...state,
         edited: true,
