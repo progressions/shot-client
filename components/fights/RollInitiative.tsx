@@ -20,11 +20,8 @@ export default function RollInitiative() {
   const startOfSequence = useMemo(() => ((fight?.shot_order?.[0]?.[0] || 0) === 0), [fight.shot_order])
 
   const addSequence = async () => {
-    const updatedFight = fight
-    updatedFight.sequence = updatedFight.sequence+1
-
     try {
-      await client.updateFight(updatedFight)
+      await client.updateFight({ id: fight.id, sequence: fight.sequence + 1 } as Fight)
       dispatchFight({ type: FightActions.EDIT })
       toastSuccess(`Sequence increased`)
     } catch(error) {

@@ -456,7 +456,7 @@ export const defaultVehicle:Vehicle = {
 export const defaultFight:Fight = {
   name: '',
   active: true,
-  sequence: 1,
+  sequence: 0,
   effects: [],
   characters: [],
   shot_order: [],
