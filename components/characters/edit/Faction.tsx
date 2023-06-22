@@ -55,6 +55,7 @@ export default function Faction({ faction, onChange }: FactionProps) {
   }
 
   function changeFaction(event: React.ChangeEvent<HTMLInputElement>, newValue: string) {
+    console.log("hello")
     onChange({...event, target: {...event.target, name: "Faction", value: newValue}}, newValue)
   }
 
@@ -71,6 +72,13 @@ export default function Faction({ faction, onChange }: FactionProps) {
           onOpen={getFactions}
           openOnFocus
           renderInput={(params: InputParamsType) => <StyledTextField autoFocus name="Faction" {...params} label="Faction" />}
+          filterOptions={(options: string[], params: any) => {
+            const filtered = options.filter((option: string) => option.toLowerCase().includes(params.inputValue.toLowerCase()))
+            if (filtered.length === 0 && params.inputValue !== "") {
+              filtered.push(params.inputValue)
+            }
+            return filtered
+          }}
         />
       </Stack>
     </>
