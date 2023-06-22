@@ -22,11 +22,7 @@ export default function Characters(charactersResponse: CharactersResponse) {
   const { edited, faction, archetype, characters, character_type, factions, search, showHidden } = state
   const meta = state?.meta || {}
 
-  console.log("page", state?.page)
-  console.log(meta)
-
   useEffect(() => {
-    console.log("Characters", charactersResponse)
     dispatch({ type: CharactersActions.CHARACTERS, payload: charactersResponse })
   }, [charactersResponse, dispatch])
 

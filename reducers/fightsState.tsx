@@ -116,7 +116,6 @@ export function fightsReducer(state: FightsStateType, action: FightsActionType):
         [action.name]: action.value
       }
     case FightsActions.UPDATE_FIGHT:
-      console.log(action)
       return {
         ...state,
         edited: true,
