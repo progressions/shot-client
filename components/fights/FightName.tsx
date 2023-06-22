@@ -35,7 +35,6 @@ export default function FightName() {
   }
 
   const editFightName = () => {
-    console.log("edit fight name")
     setEditing(true)
   }
 
