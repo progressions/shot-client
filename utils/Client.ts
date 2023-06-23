@@ -70,6 +70,8 @@ class Client {
   }
 
   async updateCharacter(character: Character, fight?: Fight | null):Promise<Person> {
+    // No need to send the character's schticks to the server
+    delete character.schticks
     return await this.patch(this.api.characters(fight, character), {"character": character})
   }
 
