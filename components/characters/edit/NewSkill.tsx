@@ -29,7 +29,7 @@ export default function NewSkill() {
 
   const newSkills = useMemo(() => {
     return skills.filter((name: string) => ((character.skills?.[name] as number) <= 7))
-  })
+  }, [skills, character.skills])
 
   function selectSkill(event: React.ChangeEvent<HTMLInputElement>, newValue: string): void {
     const value = newValue.replace('Add "', "").replace('"', "");
