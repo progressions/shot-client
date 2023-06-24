@@ -27,6 +27,10 @@ export default function NewSkill() {
 
   const [skills, setSkills] = useState(initialSkills)
 
+  const newSkills = useMemo(() => {
+    return skills.filter((name: string) => ((character.skills?.[name] as number) <= 7))
+  })
+
   function selectSkill(event: React.ChangeEvent<HTMLInputElement>, newValue: string): void {
     const value = newValue.replace('Add "', "").replace('"', "");
     setSkill((prev: SkillValue) => ({ ...prev, name: value } as SkillValue))
@@ -78,8 +82,7 @@ export default function NewSkill() {
           <StyledAutocomplete
             freeSolo
             value={skill?.name || null}
-            disabled={!skills?.length}
-            options={skills || []}
+            options={newSkills || []}
             sx={{ width: 200 }}
             onChange={selectSkill}
             openOnFocus
