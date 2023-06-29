@@ -34,6 +34,9 @@ export default function RollInitiative() {
   const handleClick = async () => {
     setProcessing(true)
     const nonzeroShots = fight.shot_order.filter(([shot, characters]: ShotType) => {
+      if (shot === null || shot === undefined) {
+        return false
+      }
       // only roll for characters on shots zero or below
       return (shot <= 0)
     })

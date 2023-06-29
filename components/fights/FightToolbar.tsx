@@ -28,7 +28,7 @@ export default function FightToolbar({ showHidden, setShowHidden }: FightToolbar
   const { user } = useClient()
 
   useEffect(() => {
-    const showHiddenShots = getLocally("showHiddenShots") || false
+    const showHiddenShots = getLocally("showHiddenShots") || true
     setShowHidden(!!showHiddenShots)
   }, [getLocally, setShowHidden])
 
