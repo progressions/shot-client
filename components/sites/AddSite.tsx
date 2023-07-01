@@ -84,10 +84,10 @@ export default function AddSite() {
         getOptionLabel={getOptionLabel}
         isOptionEqualToValue={(option: Site, value: Site) => option.id === value.id}
         renderInput={(params: InputParamsType) => <StyledSelect helperText={helperText} {...params} label="Site" />}
-        filterOptions={(options: string[], params: any) => {
-          const filtered = options.filter((option: string) => option.name.toLowerCase().includes(params.inputValue.toLowerCase()))
+        filterOptions={(options: Site[], params: any) => {
+          const filtered = options.filter((option: Site) => option.name.toLowerCase().includes(params.inputValue.toLowerCase()))
           if (filtered.length === 0 && params.inputValue !== "") {
-            filtered.push({ id: null, name: params.inputValue })
+            filtered.push({ name: params.inputValue } as Site)
           }
           return filtered
         }}
