@@ -6,7 +6,7 @@ import { useCharacter } from "../../contexts/CharacterContext"
 import type { Character, Advancement } from "../../types/types"
 import { defaultAdvancement } from "../../types/types"
 import { useEffect, useReducer } from "react"
-import { initialState, advancementReducer } from "./advancementReducer"
+import { AdvancementActions, initialState, advancementReducer } from "../../reducers/advancementState"
 
 export default function NewAdvancement() {
   const { character, dispatch:dispatchCharacter, reloadCharacter } = useCharacter()
@@ -16,24 +16,24 @@ export default function NewAdvancement() {
   const { loading, advancement } = state
 
   useEffect(() => {
-    dispatchAdvancement({ type: "reset" })
+    dispatchAdvancement({ type: AdvancementActions.RESET })
   }, [character])
 
   async function addAdvancement(event: React.ChangeEvent<HTMLInputElement>) {
     event.preventDefault()
-    dispatchAdvancement({ type: "saving" })
+    dispatchAdvancement({ type: AdvancementActions.SAVING })
 
     try {
       await client.createAdvancement(character, advancement)
       await reloadCharacter()
-      dispatchAdvancement({ type: "reset" })
+      dispatchAdvancement({ type: AdvancementActions.RESET })
     } catch(error) {
       toastError()
     }
   }
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
-    dispatchAdvancement({ type: "update", name: event.target.name, value: event.target.value })
+    dispatchAdvancement({ type: AdvancementActions.UPDATE, name: event.target.name, value: event.target.value })
   }
 
   return (

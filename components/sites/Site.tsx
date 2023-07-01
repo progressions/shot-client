@@ -17,7 +17,7 @@ export default function Site({ site }: SiteProps) {
 
   async function deleteSite() {
     try {
-      await client.deleteSite(character, site)
+      await client.removeSite(character, site)
       await reloadCharacter()
     } catch(error) {
       toastError()
@@ -26,7 +26,7 @@ export default function Site({ site }: SiteProps) {
 
   return (
     <Stack direction="row" spacing={0} alignItems="center">
-      <Typography>{site.description}</Typography>
+      <Typography>{site.name}</Typography>
       <IconButton onClick={deleteSite}>
         <ClearIcon />
       </IconButton>

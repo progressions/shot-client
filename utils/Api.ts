@@ -93,6 +93,14 @@ class Api {
     }
   }
 
+  allSites(site?: Site | ID): string {
+    if (site?.id) {
+      return `${this.api()}/sites/${site.id}`
+    } else {
+      return `${this.api()}/sites`
+    }
+  }
+
   sites(character: Character, site?: Site | ID): string {
     if (site?.id) {
       return `${this.allCharacters(character)}/sites/${site.id}`

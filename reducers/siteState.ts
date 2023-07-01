@@ -1,5 +1,11 @@
-import { defaultSite } from "../../types/types"
-import type { Site } from "../../types/types"
+import { defaultSite } from "../types/types"
+import type { Site } from "../types/types"
+
+export enum SiteActions {
+  SAVING = "saving",
+  RESET = "reset",
+  UPDATE = "update"
+}
 
 export interface SiteStateType {
   error: boolean

@@ -1,4 +1,4 @@
-import { StyledSelect, StyledDialog, StyledAutocomplete, StyledTextField, SaveButton, CancelButton } from "../StyledFields"
+import { StyledSelect, StyledDialog, StyledTextField, SaveButton, CancelButton } from "../StyledFields"
 import { Box, DialogContent, DialogContentText, DialogActions, Button, Stack, Typography } from "@mui/material"
 import { useClient } from "../../contexts/ClientContext"
 import { useToast } from "../../contexts/ToastContext"

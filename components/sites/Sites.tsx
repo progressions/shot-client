@@ -2,7 +2,7 @@ import { useClient } from "../../contexts/ClientContext"
 import { useToast } from "../../contexts/ToastContext"
 import { useCharacter } from "../../contexts/CharacterContext"
 import { Subhead } from "../StyledFields"
-import NewSite from "./NewSite"
+import AddSite from "./AddSite"
 import Site from "./Site"
 
 import { Stack, Typography } from "@mui/material"
@@ -25,7 +25,7 @@ export default function Sites({ character }: SitesProps) {
             <Site key={site.id} site={site} />
           ))
         }
-        <NewSite />
+        <AddSite />
       </Stack>
     </>
   )

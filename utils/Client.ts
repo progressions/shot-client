@@ -4,6 +4,7 @@ import type {
   WeaponsResponse,
   SchticksResponse,
   CampaignsResponse,
+  SitesResponse,
   Faction,
   Person,
   FightsResponse,
@@ -127,11 +128,24 @@ class Client {
     return await this.delete(this.api.advancements(character, advancement))
   }
 
-  async createSite(character: Character, site: Site):Promise<Site> {
+  async getSites(params = {}):Promise<SitesResponse> {
+    const query = Object.entries(params).map(([key, value]) => `${key}=${value || ""}`).join("&")
+    return this.get(`${this.api.allSites()}?${query}`)
+  }
+
+  async createSite(site: Site):Promise<Site> {
+    return await this.post(this.api.allSites(), {"site": site})
+  }
+
+  async getSite(site: Site | ID):Promise<Site> {
+    return await this.get(this.api.allSites(site))
+  }
+
+  async addSite(character: Character, site: Site):Promise<Site> {
     return await this.post(this.api.sites(character), {"site": site})
   }
 
-  async deleteSite(character: Character, site: Site):Promise<void> {
+  async removeSite(character: Character, site: Site):Promise<void> {
     return await this.delete(this.api.sites(character, site))
   }
 

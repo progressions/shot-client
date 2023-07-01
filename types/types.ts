@@ -6,6 +6,11 @@ export type Faction = string
 
 export type Archetype = string
 
+export interface SitesResponse {
+  sites: Site[]
+  meta: PaginationMeta
+}
+
 export interface SchticksResponse {
   schticks: Schtick[]
   meta: PaginationMeta
@@ -278,7 +283,8 @@ export interface Advancement {
 
 export interface Site {
   id?: string
-  description: string
+  name: string
+  description?: string
 }
 
 export interface Effect {
@@ -517,6 +523,7 @@ export const defaultAdvancement:Advancement = {
 }
 
 export const defaultSite:Site = {
+  name: "",
   description: ""
 }
 

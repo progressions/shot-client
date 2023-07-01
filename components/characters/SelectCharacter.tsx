@@ -1,7 +1,7 @@
 import { useEffect, useReducer, useCallback, useState } from 'react'
 import { colors, FormControlLabel, Switch, Stack, Popover, Box, Button } from '@mui/material'
 import GamemasterOnly from "../GamemasterOnly"
-import { StyledTextField, StyledAutocomplete } from "../StyledFields"
+import { StyledTextField } from "../StyledFields"
 
 import PersonIcon from '@mui/icons-material/Person'
 import PersonAddIcon from '@mui/icons-material/PersonAdd'
