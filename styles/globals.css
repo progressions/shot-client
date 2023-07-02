@@ -4,12 +4,3 @@
 .hidden .actionButtons {
   display: none;
 }
-.hidden .hideCharacter {
-  display: none;
-}
-.showCharacter {
-  display: none;
-}
-.hidden .showCharacter {
-  display: flex;
-}

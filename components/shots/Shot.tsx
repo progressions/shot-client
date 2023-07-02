@@ -42,6 +42,7 @@ export default function Shot({ shot, characters, editingCharacter, setEditingCha
 
   const color = (shot <= 0) ? "#ccc" : ""
   const className = (shot === null) ? "hidden" : ""
+  const hidden = (shot === null)
   return (
     <>
       <TableRow key={shot} className={className}>
@@ -60,7 +61,7 @@ export default function Shot({ shot, characters, editingCharacter, setEditingCha
       </TableRow>
       {characters.map((character: Character, index: number) => {
         if (character.category === "character") {
-          return <CharacterDetails key={character.id} character={character} editingCharacter={editingCharacter as Character} setEditingCharacter={setEditingCharacterWithCurrentShot} className={className} />
+          return <CharacterDetails key={character.id} character={character} editingCharacter={editingCharacter as Character} setEditingCharacter={setEditingCharacterWithCurrentShot} className={className} hidden={hidden} />
         }
         if (character.category === "vehicle") {
           return <VehicleDetails key={character.id} character={character as Vehicle} editingCharacter={editingCharacter as Vehicle} setEditingCharacter={setEditingCharacterWithCurrentShot} className={className} />

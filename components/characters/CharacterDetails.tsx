@@ -39,9 +39,10 @@ interface CharacterDetailsParams {
   editingCharacter: Character,
   setEditingCharacter: React.Dispatch<React.SetStateAction<Character>> | ((character: Character | null) => void),
   className?: string
+  hidden?: boolean
 }
 
-export default function CharacterDetails({ character, editingCharacter, setEditingCharacter, className }: CharacterDetailsParams) {
+export default function CharacterDetails({ character, editingCharacter, setEditingCharacter, className, hidden }: CharacterDetailsParams) {
   const { fight, dispatch } = useFight()
 
   const { session, client, user } = useClient()

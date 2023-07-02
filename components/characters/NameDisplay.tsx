@@ -16,9 +16,10 @@ interface NameDisplayProps {
   deleteCharacter: (character: Character) => void
   hideCharacter?: (character: Character) => void
   showCharacter?: (character: Character) => void
+  hidden?: boolean
 }
 
-export default function NameDisplay({ character, editCharacter, deleteCharacter, hideCharacter, showCharacter }: NameDisplayProps) {
+export default function NameDisplay({ character, editCharacter, deleteCharacter, hideCharacter, showCharacter, hidden }: NameDisplayProps) {
   const [open, setOpen] = useState<boolean>(false)
   const { user } = useClient()
 

@@ -12,9 +12,10 @@ interface EditButtonsProps {
   deleteCharacter: (character: Character) => void
   hideCharacter?: (character: Character) => void
   showCharacter?: (character: Character) => void
+  hidden?: boolean
 }
 
-export default function EditButtons({ character, editCharacter, deleteCharacter, hideCharacter, showCharacter }: EditButtonsProps) {
+export default function EditButtons({ character, editCharacter, deleteCharacter, hideCharacter, showCharacter, hidden }: EditButtonsProps) {
   return (
     <ButtonGroup size="small">
       <Tooltip title="Edit" arrow>
@@ -22,14 +23,14 @@ export default function EditButtons({ character, editCharacter, deleteCharacter,
           <EditIcon />
         </Button>
       </Tooltip>
-      { hideCharacter &&
+      { hideCharacter && !hidden &&
       <Tooltip title="Hide" arrow>
         <Button className="hideCharacter" variant="contained" color="primary" onClick={() => {hideCharacter(character)}}>
           <VisibilityOffIcon />
         </Button>
       </Tooltip>
       }
-      { showCharacter &&
+      { showCharacter && hidden &&
       <Tooltip className="showCharacter" title="Show" arrow>
         <Button variant="contained" color="primary" onClick={() => {showCharacter(character)}}>
           <VisibilityIcon />
