@@ -5,7 +5,7 @@ import { Subhead } from "../StyledFields"
 import NewAdvancement from "./NewAdvancement"
 import Advancement from "./Advancement"
 
-import { Stack, Typography } from "@mui/material"
+import { Grid } from "@mui/material"
 
 import type { Advancement as AdvancementType, Character } from "../../types/types"
 
@@ -19,14 +19,16 @@ export default function Advancements({ character }: AdvancementsProps) {
   return (
     <>
       <Subhead>Advancements ({advancements.length})</Subhead>
-      <Stack spacing={2}>
+      <Grid container spacing={2}>
         {
           advancements.map((advancement: AdvancementType) => (
-            <Advancement key={advancement.id} advancement={advancement} />
+            <Grid key={advancement.id}>
+              <Advancement advancement={advancement} />
+            </Grid>
           ))
         }
-        <NewAdvancement />
-      </Stack>
+      </Grid>
+      <NewAdvancement />
     </>
   )
 }

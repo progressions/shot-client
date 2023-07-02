@@ -25,7 +25,7 @@ export default function Advancement({ advancement }: AdvancementProps) {
 
   return (
     <Stack direction="row" spacing={0} alignItems="center">
-      <Typography>{advancement.description}</Typography>
+      <Typography>{advancement.description || "(Unnamed)"}</Typography>
       <IconButton onClick={deleteAdvancement}>
         <ClearIcon />
       </IconButton>

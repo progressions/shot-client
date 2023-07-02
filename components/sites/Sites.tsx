@@ -5,7 +5,7 @@ import { Subhead } from "../StyledFields"
 import AddSite from "./AddSite"
 import Site from "./Site"
 
-import { Stack, Typography } from "@mui/material"
+import { Grid } from "@mui/material"
 
 import type { Site as SiteType, Character } from "../../types/types"
 
@@ -19,14 +19,16 @@ export default function Sites({ character }: SitesProps) {
   return (
     <>
       <Subhead>Feng Shui Sites ({sites.length})</Subhead>
-      <Stack spacing={2}>
+      <Grid container spacing={2}>
         {
           sites.map((site: SiteType) => (
-            <Site key={site.id} site={site} />
+            <Grid key={site.id}>
+              <Site key={site.id} site={site} />
+            </Grid>
           ))
         }
-        <AddSite />
-      </Stack>
+      </Grid>
+      <AddSite />
     </>
   )
 }

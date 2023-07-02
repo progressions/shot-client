@@ -74,6 +74,7 @@ export default function AddSite() {
   return (
     <Stack direction="row" spacing={1} alignItems="center">
       <StyledAutocomplete
+        onClick={() => dispatchSites({ type: SitesActions.RESET })}
         freeSolo
         value={site || defaultSite}
         disabled={loading}
@@ -83,7 +84,7 @@ export default function AddSite() {
         onChange={handleSelect}
         getOptionLabel={getOptionLabel}
         isOptionEqualToValue={(option: Site, value: Site) => option.id === value.id}
-        renderInput={(params: InputParamsType) => <StyledSelect helperText={helperText} {...params} label="Site" />}
+        renderInput={(params: InputParamsType) => <StyledSelect helperText={helperText} {...params} onFocus={() => dispatchSites({ type: SitesActions.RESET })} label="Site" />}
         filterOptions={(options: Site[], params: any) => {
           const filtered = options.filter((option: Site) => option.name.toLowerCase().includes(params.inputValue.toLowerCase()))
           if (filtered.length === 0 && params.inputValue !== "") {

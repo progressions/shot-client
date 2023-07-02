@@ -1,4 +1,3 @@
-import * as React from 'react'
 import Image from "next/image"
 import { Container } from "@mui/material"
 import AppBar from '@mui/material/AppBar'
@@ -8,6 +7,13 @@ import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
 import IconButton from '@mui/material/IconButton'
 import MenuIcon from '@mui/icons-material/Menu'
+import Menu from '@mui/material/Menu'
+import MenuItem from '@mui/material/MenuItem'
+import {
+  usePopupState,
+  bindTrigger,
+  bindMenu,
+} from 'material-ui-popup-state/hooks'
 import Link from '@mui/material/Link'
 import { useEffect } from 'react'
 import Router from 'next/router'
@@ -28,6 +34,7 @@ import { useClient } from "../../contexts/ClientContext"
 
 export default function Navbar() {
   const { session, user, client } = useClient()
+  const popupState = usePopupState({ variant: 'popover', popupId: 'navMenu' })
 
   const {campaign, getCurrentCampaign, setCurrentCampaign}:CampaignContextType = useCampaign()
 
@@ -48,45 +55,62 @@ export default function Navbar() {
             color="inherit"
             aria-label="menu"
             sx={{ mr: 2 }}
+            {...bindTrigger(popupState)}
           >
             <MenuIcon />
           </IconButton>
-          <Link color="inherit" href='/'>
+          <Menu {...bindMenu(popupState)}>
+            { campaign?.id &&
+              <MenuItem onClick={popupState.close}>
+                <Link underline="none" color="inherit" href='/'>
+                  Fights
+                </Link>
+              </MenuItem>
+            }
+            { campaign?.id &&
+              <MenuItem onClick={popupState.close}>
+                <Link underline="none" color="inherit" href='/characters'>
+                  Characters
+                </Link>
+              </MenuItem>
+            }
+            { user &&
+              <MenuItem onClick={popupState.close}>
+                <Link underline="none" color="inherit" href='/campaigns'>
+                  Campaigns
+                </Link>
+              </MenuItem>
+            }
+            { user?.gamemaster && campaign?.id &&
+              <MenuItem onClick={popupState.close}>
+                <Link underline="none" color="inherit" href='/admin/weapons'>
+                  Weapons
+                </Link>
+              </MenuItem>
+            }
+            { user?.gamemaster && campaign?.id &&
+              <MenuItem onClick={popupState.close}>
+                <Link underline="none" color="inherit" href='/admin/schticks'>
+                  Schticks
+                </Link>
+              </MenuItem>
+            }
+            { user?.admin &&
+              <MenuItem onClick={popupState.close}>
+                <Link underline="none" color="inherit" href='/admin/users'>
+                  Users
+                </Link>
+              </MenuItem>
+            }
+            { !user?.id &&
+            <MenuItem onClick={() => signIn()}>
+                Sign In
+              </MenuItem>
+            }
+          </Menu>
+          <Link underline="none" color="inherit" href='/'>
             <Image src="/ChiWar.svg" alt="ChiWar" width="120" height="40" style={{marginTop: 5, marginRight: 10}} />
           </Link>
-          { user && <>
-            { campaign?.id &&
-            <Typography variant="h6" component="div" paddingRight={2} sx={{ minWith: 100 }}>
-              <Link color="inherit" href='/characters'>
-                Characters
-              </Link>
-            </Typography> }
-          <Typography variant="h6" component="div" paddingRight={2} sx={{ minWidth: 100 }}>
-            <Link color="inherit" href='/campaigns'>
-              Campaigns
-            </Link>
-          </Typography>
-          { user?.gamemaster && campaign?.id &&
-            <Typography variant="h6" component="div" paddingRight={2}>
-              <Link color="inherit" href='/admin/weapons'>
-                Weapons
-              </Link>
-            </Typography> }
-          { user?.gamemaster && campaign?.id &&
-            <Typography variant="h6" component="div" paddingRight={2}>
-              <Link color="inherit" href='/admin/schticks'>
-                Schticks
-              </Link>
-            </Typography> }
-          { user?.admin && (<>
-            <Typography variant="h6" component="div" paddingRight={2}>
-              <Link color="inherit" href='/admin/users'>
-                Users
-              </Link>
-            </Typography>
-          </>)}
-        </>
-          }
           <AuthButton status={session?.status} user={user || {}} />
         </Toolbar>
         { user &&
