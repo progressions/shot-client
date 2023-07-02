@@ -8,7 +8,7 @@
   display: none;
 }
 .showCharacter {
-  display: none;
+  display: none !important;
 }
 .hidden .showCharacter {
   display: flex;
