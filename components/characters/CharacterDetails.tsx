@@ -37,10 +37,11 @@ import { FightActions } from '../../reducers/fightState'
 interface CharacterDetailsParams {
   character: Character,
   editingCharacter: Character,
-  setEditingCharacter: React.Dispatch<React.SetStateAction<Character>> | ((character: Character | null) => void)
+  setEditingCharacter: React.Dispatch<React.SetStateAction<Character>> | ((character: Character | null) => void),
+  className: string
 }
 
-export default function CharacterDetails({ character, editingCharacter, setEditingCharacter }: CharacterDetailsParams) {
+export default function CharacterDetails({ character, editingCharacter, setEditingCharacter, className }: CharacterDetailsParams) {
   const { fight, dispatch } = useFight()
 
   const { session, client, user } = useClient()
@@ -123,7 +124,7 @@ export default function CharacterDetails({ character, editingCharacter, setEditi
   const key = `CharacterDetails ${character.id}`
 
   return (
-    <TableRow key={key}>
+    <TableRow key={key} className={className}>
       <TableCell sx={{width: 50, verticalAlign: "top"}}>
         <AvatarBadge character={character} user={user} />
       </TableCell>

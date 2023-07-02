@@ -41,9 +41,10 @@ export default function Shot({ shot, characters, editingCharacter, setEditingCha
   }
 
   const color = (shot <= 0) ? "#ccc" : ""
+  const className = (shot === null) ? "hidden" : ""
   return (
     <>
-      <TableRow key={shot}>
+      <TableRow key={shot} className={className}>
         <TableCell rowSpan={characters.length + 1} sx={{width: 60, verticalAlign: "top"}}>
           <Stack spacing={0} alignItems="center">
             <ShotButton shot={shot} />
@@ -59,10 +60,10 @@ export default function Shot({ shot, characters, editingCharacter, setEditingCha
       </TableRow>
       {characters.map((character: Character, index: number) => {
         if (character.category === "character") {
-          return <CharacterDetails key={character.id} character={character} editingCharacter={editingCharacter as Character} setEditingCharacter={setEditingCharacterWithCurrentShot} />
+          return <CharacterDetails key={character.id} character={character} editingCharacter={editingCharacter as Character} setEditingCharacter={setEditingCharacterWithCurrentShot} className={className} />
         }
         if (character.category === "vehicle") {
-          return <VehicleDetails key={character.id} character={character as Vehicle} editingCharacter={editingCharacter as Vehicle} setEditingCharacter={setEditingCharacterWithCurrentShot} />
+          return <VehicleDetails key={character.id} character={character as Vehicle} editingCharacter={editingCharacter as Vehicle} setEditingCharacter={setEditingCharacterWithCurrentShot} className={className} />
         }
       })}
     </>

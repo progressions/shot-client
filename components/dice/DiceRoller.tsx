@@ -1,5 +1,5 @@
 import { StyledDialog } from "../StyledFields"
-import { Stack, Avatar, Tooltip, Button, IconButton, Dialog, DialogTitle, DialogContent, Box, Typography} from '@mui/material'
+import { Stack, Avatar, Tooltip, Button, IconButton, Dialog, DialogTitle, DialogContent, Box, Typography } from '@mui/material'
 import CasinoIcon from '@mui/icons-material/Casino'
 import { useState } from 'react'
 
