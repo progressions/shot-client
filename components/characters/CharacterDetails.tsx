@@ -115,6 +115,24 @@ export default function CharacterDetails({ character, editingCharacter, setEditi
     }
   }
 
+  const hideCharacter = async (character: Character) => {
+    try {
+      await client.hideCharacter(fight, character)
+      dispatch({ type: FightActions.EDIT })
+    } catch(error) {
+      toastError()
+    }
+  }
+
+  const showCharacter = async (character: Character) => {
+    try {
+      await client.showCharacter(fight, character)
+      dispatch({ type: FightActions.EDIT })
+    } catch(error) {
+      toastError()
+    }
+  }
+
   const impairments = character.impairments ? `(-${character.impairments})` : ''
   const color = character.impairments > 0 ? 'error' : 'primary'
   const showDeathMarks = character.category === "character" &&
@@ -136,6 +154,8 @@ export default function CharacterDetails({ character, editingCharacter, setEditi
           <NameDisplay character={character}
             editCharacter={editCharacter}
             deleteCharacter={deleteCharacter}
+            hideCharacter={hideCharacter}
+            showCharacter={showCharacter}
           />
           <GamemasterOnly user={user} character={character}>
             <Stack direction="row" spacing={1} justifyContent="space-between">

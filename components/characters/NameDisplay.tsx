@@ -14,9 +14,11 @@ interface NameDisplayProps {
   character: Character
   editCharacter: (character: Character) => void
   deleteCharacter: (character: Character) => void
+  hideCharacter?: (character: Character) => void
+  showCharacter?: (character: Character) => void
 }
 
-export default function NameDisplay({ character, editCharacter, deleteCharacter }: NameDisplayProps) {
+export default function NameDisplay({ character, editCharacter, deleteCharacter, hideCharacter, showCharacter }: NameDisplayProps) {
   const [open, setOpen] = useState<boolean>(false)
   const { user } = useClient()
 
@@ -60,7 +62,13 @@ export default function NameDisplay({ character, editCharacter, deleteCharacter 
             </Typography>
             <GamemasterOnly user={user} character={character}>
               <Box visibility={open ? "visible" : "hidden"}>
-                <EditButtons character={character} editCharacter={editCharacter} deleteCharacter={deleteCharacter} />
+                <EditButtons
+                  character={character}
+                  editCharacter={editCharacter}
+                  deleteCharacter={deleteCharacter}
+                  hideCharacter={hideCharacter}
+                  showCharacter={showCharacter}
+                />
               </Box>
             </GamemasterOnly>
           </Stack>

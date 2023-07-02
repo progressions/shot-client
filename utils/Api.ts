@@ -69,6 +69,22 @@ class Api {
     return `${this.characters(fight, character)}/act`
   }
 
+  hideCharacter(fight: Fight, character: Character): string {
+    return `${this.characters(fight, character)}/hide`
+  }
+
+  revealCharacter(fight: Fight, character: Character): string {
+    return `${this.characters(fight, character)}/reveal`
+  }
+
+  hideVehicle(fight: Fight, vehicle: Vehicle): string {
+    return `${this.vehicles(fight, vehicle)}/hide`
+  }
+
+  showVehicle(fight: Fight, vehicle: Vehicle): string {
+    return `${this.vehicles(fight, vehicle)}/show`
+  }
+
   allVehicles(vehicle?: Vehicle | ID): string {
     if (vehicle?.id) {
       return `${this.api()}/vehicles/${vehicle.id}`

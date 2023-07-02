@@ -88,6 +88,14 @@ class Client {
     return await this.patch(this.api.actCharacter(fight, { id: character.id } as Character), {"character": { id: character.id } as Character, "shots": shots})
   }
 
+  async hideCharacter(fight: Fight, character: Character | ID):Promise<Character> {
+    return await this.patch(this.api.hideCharacter(fight, character as Character))
+  }
+
+  async showCharacter(fight: Fight, character: Character | ID):Promise<Character> {
+    return await this.patch(this.api.revealCharacter(fight, character as Character))
+  }
+
   async addCharacter(fight: Fight, character: Character | ID):Promise<Character> {
     return await this.post(this.api.addCharacter(fight, character), {"character": {"current_shot": 0}})
   }
@@ -361,6 +369,7 @@ class Client {
   }
 
   async patch<T>(url:string, params = {}):Promise<T> {
+    console.log("patch", params)
     return await this.request("PATCH", url, params)
   }
 
