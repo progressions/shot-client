@@ -69,6 +69,7 @@ export default function NameDisplay({ character, editCharacter, deleteCharacter,
                   deleteCharacter={deleteCharacter}
                   hideCharacter={hideCharacter}
                   showCharacter={showCharacter}
+                  hidden={hidden}
                 />
               </Box>
             </GamemasterOnly>

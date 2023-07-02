@@ -30,7 +30,7 @@ export default function EditButtons({ character, editCharacter, deleteCharacter,
         </Button>
       </Tooltip>
       }
-      { showCharacter && hidden &&
+      { showCharacter && !!hidden &&
       <Tooltip className="showCharacter" title="Show" arrow>
         <Button variant="contained" color="primary" onClick={() => {showCharacter(character)}}>
           <VisibilityIcon />

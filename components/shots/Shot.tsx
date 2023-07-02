@@ -42,7 +42,8 @@ export default function Shot({ shot, characters, editingCharacter, setEditingCha
 
   const color = (shot <= 0) ? "#ccc" : ""
   const className = (shot === null) ? "hidden" : ""
-  const hidden = (shot === null)
+  const hidden = (shot === null) ? true : false
+
   return (
     <>
       <TableRow key={shot} className={className}>

@@ -157,6 +157,7 @@ export default function CharacterDetails({ character, editingCharacter, setEditi
             deleteCharacter={deleteCharacter}
             hideCharacter={hideCharacter}
             showCharacter={showCharacter}
+            hidden={hidden}
           />
           <GamemasterOnly user={user} character={character}>
             <Stack direction="row" spacing={1} justifyContent="space-between">
