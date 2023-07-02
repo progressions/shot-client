@@ -38,7 +38,7 @@ interface CharacterDetailsParams {
   character: Character,
   editingCharacter: Character,
   setEditingCharacter: React.Dispatch<React.SetStateAction<Character>> | ((character: Character | null) => void),
-  className: string
+  className?: string
 }
 
 export default function CharacterDetails({ character, editingCharacter, setEditingCharacter, className }: CharacterDetailsParams) {

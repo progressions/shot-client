@@ -24,9 +24,10 @@ interface VehicleDetailsParams {
   character: Vehicle,
   editingCharacter: Vehicle,
   setEditingCharacter: React.Dispatch<React.SetStateAction<Vehicle>> | ((character: Vehicle | null) => void)
+  className?: string
 }
 
-export default function VehicleDetails({ character, editingCharacter, setEditingCharacter }: VehicleDetailsParams) {
+export default function VehicleDetails({ character, editingCharacter, setEditingCharacter, className }: VehicleDetailsParams) {
   const { fight, dispatch:dispatchFight } = useFight()
   const { user, client } = useClient()
 
@@ -70,7 +71,7 @@ export default function VehicleDetails({ character, editingCharacter, setEditing
   const wounds = (character?.action_values["Chase Points"])
 
   return (
-    <TableRow key={character.id}>
+    <TableRow key={character.id} className={className}>
       <TableCell sx={{width: 50, verticalAlign: "top"}}>
         <AvatarBadge character={character} user={user} />
       </TableCell>
