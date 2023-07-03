@@ -33,7 +33,7 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>Home</title>
+        <title>Sites</title>
       </Head>
       <main>
         <Layout>

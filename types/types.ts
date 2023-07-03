@@ -291,7 +291,8 @@ export interface Site {
   id?: string
   name: string
   description?: string
-  faction?: Faction | null
+  faction?: Faction | null,
+  characters?: Character[]
 }
 
 export interface Effect {
