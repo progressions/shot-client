@@ -27,6 +27,13 @@ export default function MenuPopupState({ campaign, user }: MenuPopupStateProps) 
             <MenuIcon />
           </IconButton>
           <Menu {...bindMenu(popupState)}>
+            { user &&
+              <MenuItem onClick={popupState.close}>
+                <Link underline="none" color="inherit" href='/campaigns'>
+                  Campaigns
+                </Link>
+              </MenuItem>
+            }
             { campaign?.id &&
               <MenuItem onClick={popupState.close}>
                 <Link underline="none" color="inherit" href='/'>
@@ -48,10 +55,10 @@ export default function MenuPopupState({ campaign, user }: MenuPopupStateProps) 
                 </Link>
               </MenuItem>
             }
-            { user &&
+            { campaign?.id &&
               <MenuItem onClick={popupState.close}>
-                <Link underline="none" color="inherit" href='/campaigns'>
-                  Campaigns
+                <Link underline="none" color="inherit" href='/parties'>
+                  Parties
                 </Link>
               </MenuItem>
             }
