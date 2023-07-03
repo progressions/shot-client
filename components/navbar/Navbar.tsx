@@ -6,7 +6,6 @@ import Toolbar from '@mui/material/Toolbar'
 import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
 import IconButton from '@mui/material/IconButton'
-import MenuIcon from '@mui/icons-material/Menu'
 import Menu from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem'
 import {
@@ -25,6 +24,7 @@ import AuthButton from "./AuthButton"
 import Client from "../../utils/Client"
 import CurrentCampaign from "../campaigns/CurrentCampaign"
 import GamemasterOnly from "../GamemasterOnly"
+import PopupMenu from "./PopupMenu"
 
 import type { Campaign, User } from "../../types/types"
 import { defaultCampaign } from "../../types/types"
@@ -34,7 +34,6 @@ import { useClient } from "../../contexts/ClientContext"
 
 export default function Navbar() {
   const { session, user, client } = useClient()
-  const popupState = usePopupState({ variant: 'popover', popupId: 'navMenu' })
 
   const {campaign, getCurrentCampaign, setCurrentCampaign}:CampaignContextType = useCampaign()
 
@@ -49,65 +48,7 @@ export default function Navbar() {
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static" sx={{backgroundColor: "primary.main"}}>
         <Toolbar>
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            sx={{ mr: 2 }}
-            {...bindTrigger(popupState)}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Menu {...bindMenu(popupState)}>
-            { campaign?.id &&
-              <MenuItem onClick={popupState.close}>
-                <Link underline="none" color="inherit" href='/'>
-                  Fights
-                </Link>
-              </MenuItem>
-            }
-            { campaign?.id &&
-              <MenuItem onClick={popupState.close}>
-                <Link underline="none" color="inherit" href='/characters'>
-                  Characters
-                </Link>
-              </MenuItem>
-            }
-            { user &&
-              <MenuItem onClick={popupState.close}>
-                <Link underline="none" color="inherit" href='/campaigns'>
-                  Campaigns
-                </Link>
-              </MenuItem>
-            }
-            { user?.gamemaster && campaign?.id &&
-              <MenuItem onClick={popupState.close}>
-                <Link underline="none" color="inherit" href='/admin/weapons'>
-                  Weapons
-                </Link>
-              </MenuItem>
-            }
-            { user?.gamemaster && campaign?.id &&
-              <MenuItem onClick={popupState.close}>
-                <Link underline="none" color="inherit" href='/admin/schticks'>
-                  Schticks
-                </Link>
-              </MenuItem>
-            }
-            { user?.admin &&
-              <MenuItem onClick={popupState.close}>
-                <Link underline="none" color="inherit" href='/admin/users'>
-                  Users
-                </Link>
-              </MenuItem>
-            }
-            { !user?.id &&
-            <MenuItem onClick={() => signIn()}>
-                Sign In
-              </MenuItem>
-            }
-          </Menu>
+          <PopupMenu campaign={campaign} user={user} />
           <Link underline="none" color="inherit" href='/'>
             <Image src="/ChiWar.svg" alt="ChiWar" width="120" height="40" style={{marginTop: 5, marginRight: 10}} />
           </Link>
