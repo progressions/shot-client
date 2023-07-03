@@ -1,6 +1,6 @@
 import { Stack, Box, TextField, MenuItem } from "@mui/material"
 
-import type { Character, Faction, InputParamsType } from "../../types/types"
+import type { Character, Archetype, FactionName, InputParamsType } from "../../types/types"
 import { CharactersStateType, CharactersActionType, CharactersActions } from "../../reducers/charactersState"
 import { StyledAutocomplete, StyledTextField, StyledSelect } from "../StyledFields"
 
@@ -49,7 +49,7 @@ export default function CharacterFilters({ state, dispatch }: CharacterFiltersPr
           <StyledSelect fullWidth name="faction" label="Faction" select value={faction} onChange={handleChange}>
             <MenuItem key="" value="">All</MenuItem>
             {
-              factions.map((faction: Faction) => <MenuItem key={faction} value={faction}>{faction}</MenuItem>)
+              factions.map((faction: FactionName) => <MenuItem key={faction} value={faction}>{faction}</MenuItem>)
             }
           </StyledSelect>
         </Box>
@@ -57,7 +57,7 @@ export default function CharacterFilters({ state, dispatch }: CharacterFiltersPr
           <StyledSelect fullWidth name="archetype" label="Archetype" select value={archetype} onChange={handleChange}>
             <MenuItem key="" value="">All</MenuItem>
             {
-              archetypes.map((archetype: Faction) => <MenuItem key={archetype} value={archetype}>{archetype}</MenuItem>)
+              archetypes.map((archetype: Archetype) => <MenuItem key={archetype} value={archetype}>{archetype}</MenuItem>)
             }
           </StyledSelect>
         </Box>

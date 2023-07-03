@@ -5,7 +5,7 @@ import type {
   SchticksResponse,
   CampaignsResponse,
   SitesResponse,
-  Faction,
+  FactionName,
   Person,
   FightsResponse,
   CharactersAndVehiclesResponse,
@@ -282,7 +282,7 @@ class Client {
     return await this.get(this.api.adminUsers())
   }
 
-  async getFactions():Promise<Faction[]> {
+  async getFactions():Promise<FactionName[]> {
     return await this.get(this.api.factions())
   }
 

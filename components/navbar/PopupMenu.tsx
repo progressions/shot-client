@@ -41,6 +41,13 @@ export default function MenuPopupState({ campaign, user }: MenuPopupStateProps) 
                 </Link>
               </MenuItem>
             }
+            { campaign?.id &&
+              <MenuItem onClick={popupState.close}>
+                <Link underline="none" color="inherit" href='/sites'>
+                  Feng Shui Sites
+                </Link>
+              </MenuItem>
+            }
             { user &&
               <MenuItem onClick={popupState.close}>
                 <Link underline="none" color="inherit" href='/campaigns'>

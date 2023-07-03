@@ -1,4 +1,4 @@
-import { Archetype, CharacterType, Character, PaginationMeta, CharacterCategory, defaultPaginationMeta, defaultCharacter, Faction, CharactersResponse, CharactersAndVehiclesResponse } from "../types/types"
+import { Archetype, CharacterType, Character, PaginationMeta, CharacterCategory, defaultPaginationMeta, defaultCharacter, FactionName, CharactersResponse, CharactersAndVehiclesResponse } from "../types/types"
 
 export enum CharactersActions {
   RESET = "reset",
@@ -25,8 +25,8 @@ export interface CharactersStateType {
   character_types: CharacterType[]
   characters: Character[]
   character: Character
-  faction: Faction,
-  factions: Faction[]
+  faction: FactionName,
+  factions: FactionName[]
   archetype: Archetype
   archetypes: Archetype[]
   search: string

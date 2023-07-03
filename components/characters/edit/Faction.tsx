@@ -2,7 +2,7 @@ import { useClient } from "../../../contexts/ClientContext"
 import { TextField, Stack, Autocomplete } from "@mui/material"
 import { useEffect, useReducer } from "react"
 import { StyledAutocomplete, StyledTextField } from "../../StyledFields"
-import type { InputParamsType } from "../../../types/types"
+import type { FactionName, InputParamsType } from "../../../types/types"
 
 export interface FactionStateType {
   loading: boolean
@@ -13,7 +13,7 @@ export interface FactionStateType {
 
 export interface FactionActionType {
   type: string
-  factions: string[]
+  factions: FactionName[]
 }
 
 const initialState: FactionStateType = {

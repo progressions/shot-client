@@ -2,9 +2,15 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { Session, User as NextAuthUser } from "next-auth"
 import { AlertColor } from "@mui/material"
 
-export type Faction = string
+export type FactionName = string
 
 export type Archetype = string
+
+export interface Faction {
+  id?: ID
+  name: string
+  description: string
+}
 
 export interface SitesResponse {
   sites: Site[]
@@ -33,14 +39,14 @@ export interface FightsResponse {
 export interface CharactersResponse {
   characters: Character[]
   meta: PaginationMeta
-  factions: Faction[]
+  factions: FactionName[]
   archetypes: Archetype[]
 }
 
 export interface CharactersAndVehiclesResponse {
   characters: Character[]
   meta: PaginationMeta
-  factions: Faction[]
+  factions: FactionName[]
 }
 
 export interface ErrorMessages {
@@ -167,7 +173,7 @@ export interface ActionValues {
   Vehicle?: boolean
   "Marks of Death": number
   Archetype: Archetype
-  Faction: Faction
+  Faction: FactionName
 }
 
 export type SkillValue = [string, number] | [string, undefined]
@@ -205,7 +211,7 @@ export interface VehicleActionValues {
   "Condition Points": number
   Position: Position
   Type: CharacterType
-  Faction: Faction
+  Faction: FactionName
 }
 
 export interface Schtick {
@@ -285,6 +291,7 @@ export interface Site {
   id?: string
   name: string
   description?: string
+  faction?: Faction | null
 }
 
 export interface Effect {
@@ -524,7 +531,8 @@ export const defaultAdvancement:Advancement = {
 
 export const defaultSite:Site = {
   name: "",
-  description: ""
+  description: "",
+  faction: null
 }
 
 export const defaultWeapon:Weapon = {
