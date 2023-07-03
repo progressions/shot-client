@@ -1,8 +1,8 @@
-import { useState } from 'react'
-import { Alert, Snackbar, Box, Paper, Stack, Typography, TextField, Button } from '@mui/material'
+import { useState } from "react"
+import { Alert, Snackbar, Box, Paper, Stack, Typography, TextField, Button } from "@mui/material"
 import Router from "next/router"
-import KeyboardDoubleArrowDownIcon from '@mui/icons-material/KeyboardDoubleArrowDown';
-import KeyboardDoubleArrowUpIcon from '@mui/icons-material/KeyboardDoubleArrowUp';
+import KeyboardDoubleArrowDownIcon from "@mui/icons-material/KeyboardDoubleArrowDown"
+import KeyboardDoubleArrowUpIcon from "@mui/icons-material/KeyboardDoubleArrowUp"
 import Client from "../../utils/Client"
 
 import { useToast } from "../../contexts/ToastContext"
@@ -10,8 +10,9 @@ import { useFight } from "../../contexts/FightContext"
 import { useClient } from "../../contexts/ClientContext"
 import type { Fight, Toast } from "../../types/types"
 import { defaultFight } from "../../types/types"
-import { FightsStateType, FightsActionType, FightsActions } from '../../reducers/fightsState';
-import { FightStateType, FightActionType, FightActions } from '../../reducers/fightState';
+import { FightsStateType, FightsActionType, FightsActions } from "../../reducers/fightsState"
+import { FightStateType, FightActionType, FightActions } from "../../reducers/fightState"
+import { StyledTextField, SaveCancelButtons } from "../StyledFields"
 
 interface AddFightProps {
   state: FightsStateType
@@ -51,21 +52,20 @@ export default function AddFight({ state:fightsState, dispatch:dispatchFights }:
   if (open) {
     return (
       <>
-        <Box m={1} mb={4} component="form" onSubmit={handleSubmit}>
+        <Box m={1} mb={4} component="form" onSubmit={handleSubmit} sx={{width: 600}}>
           <Stack spacing={1}>
             <Stack direction="row" mb={1}>
-              <Button color="primary" variant="outlined" endIcon={<KeyboardDoubleArrowUpIcon />} onClick={() => cancelForm()}>Add Fight</Button>
+              <Button color="primary" variant="contained" endIcon={<KeyboardDoubleArrowUpIcon />} onClick={() => cancelForm()}>Add Fight</Button>
             </Stack>
             <Stack direction="row">
               <Typography variant="h4">Add Fight</Typography>
             </Stack>
             <Stack spacing={1}>
               <Stack>
-                <TextField label="Fight" autoFocus required name="name" value={fight.name} onChange={handleChange} />
+                <StyledTextField label="Fight" autoFocus required name="name" value={fight.name} onChange={handleChange} />
               </Stack>
               <Stack spacing={2} direction="row">
-                <Button color="primary" variant="outlined" disabled={saving} onClick={cancelForm}>Cancel</Button>
-                <Button color="primary" variant="contained" type="submit" disabled={saving}>Save Changes</Button>
+                <SaveCancelButtons disabled={saving} onCancel={cancelForm} />
               </Stack>
             </Stack>
           </Stack>

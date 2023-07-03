@@ -327,6 +327,7 @@ export interface Fight {
   id?: string
   active: boolean
   name?: string
+  description?: string
   sequence: number
   effects: Effect[]
   characters?: Character[]
@@ -468,7 +469,8 @@ export const defaultVehicle:Vehicle = {
 }
 
 export const defaultFight:Fight = {
-  name: '',
+  name: "",
+  description: "",
   active: true,
   sequence: 0,
   effects: [],
@@ -555,4 +557,3 @@ export const defaultPaginationMeta:PaginationMeta = {
   total_pages: 1,
   total_count: 1
 }
-
