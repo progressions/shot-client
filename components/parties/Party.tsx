@@ -16,11 +16,7 @@ export default function Party({ party }: PartyProps) {
   const { toastError } = useToast()
 
   async function deleteFunction() {
-    try {
-      console.log("Deleting party", party.id)
-    } catch (error) {
-      toastError(error)
-    }
+    console.log("Deleting party", party.id)
   }
 
   const deleteButton = (<IconButton key="delete" onClick={deleteFunction}>
@@ -30,7 +26,7 @@ export default function Party({ party }: PartyProps) {
   return (
     <PartyCardBase
       title={party.name}
-      subheader={`${party.characters.length} members`}
+      subheader={`${party?.characters?.length} members`}
       action={deleteButton}
     >
       <Typography>{party.description}</Typography>
