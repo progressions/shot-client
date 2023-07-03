@@ -19,7 +19,7 @@ export default function Parties({ state, dispatch }: PartiesProps) {
             <Typography variant="h2">{party.name}</Typography>
             <Typography>{party.description}</Typography>
             {
-              !!party.characters.length &&
+              !!party?.characters?.length &&
               <Box mt={2} mb={2}>
                 <Typography variant="h4" gutterBottom>Members</Typography>
                 {
