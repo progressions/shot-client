@@ -1,6 +1,7 @@
 import axios from "axios"
 import Api from "./Api"
 import type {
+  PartiesResponse,
   WeaponsResponse,
   SchticksResponse,
   CampaignsResponse,
@@ -22,6 +23,7 @@ import type {
   Character,
   ID,
   Fight,
+  Party,
   User
 } from "../types/types"
 
@@ -38,6 +40,15 @@ class Client {
       this.jwt = params.jwt
     }
     this.api = new Api()
+  }
+
+  async getParties(params = {}):Promise<PartiesResponse> {
+    const query = Object.entries(params).map(([key, value]) => `${key}=${value || ""}`).join("&")
+    return this.get<PartiesResponse>(`${this.api.parties()}?${query}`)
+  }
+
+  async addPartyToFight(party: Party | ID, fight: Fight | ID):Promise<Party> {
+    return await this.post(this.api.addPartyToFight(party, fight))
   }
 
   async getFights(params = {}):Promise<FightsResponse> {

@@ -1,4 +1,5 @@
 import type {
+  Party,
   Weapon,
   Site,
   Advancement,
@@ -18,6 +19,18 @@ class Api {
   base():string { return process.env.NEXT_PUBLIC_SERVER_URL as string }
 
   api():string { return `${this.base()}/api/v1` }
+
+  parties(party?: Party | ID): string {
+    if (party?.id) {
+      return `${this.api()}/parties/${party.id}`
+    } else {
+      return `${this.api()}/parties`
+    }
+  }
+
+  addPartyToFight(party: Party | ID, fight: Fight | ID): string {
+    return `${this.parties(party)}/fight/${fight.id}`
+  }
 
   fights(fight?: Fight | ID | undefined): string {
     if (fight?.id) {

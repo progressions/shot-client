@@ -6,10 +6,23 @@ export type FactionName = string
 
 export type Archetype = string
 
+export interface Party {
+  id?: string
+  name: string
+  description?: string
+  faction?: Faction | null,
+  characters?: Character[]
+}
+
 export interface Faction {
   id?: ID
   name: string
   description: string
+}
+
+export interface PartiesResponse {
+  parties: Party[]
+  meta: PaginationMeta
 }
 
 export interface SitesResponse {

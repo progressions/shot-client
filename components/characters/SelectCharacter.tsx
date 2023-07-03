@@ -95,7 +95,7 @@ export default function SelectCharacter() {
         <Box component="form" onSubmit={handleSubmit} p={2} sx={{background: colors.blueGrey[100]}}>
           <Stack direction="row" spacing={1}>
             <CharacterFilters state={state} dispatch={dispatch} />
-            <Button type="submit" size="small" variant="contained">
+            <Button disabled={!character?.id} type="submit" size="small" variant="contained">
               <PersonAddIcon />
             </Button>
             <GamemasterOnly user={user}>

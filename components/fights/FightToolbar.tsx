@@ -8,6 +8,7 @@ import DiceRoller from '../dice/DiceRoller'
 import MookRolls from '../MookRolls'
 import RollInitiative from "./RollInitiative"
 import GamemasterOnly from "../GamemasterOnly"
+import SelectParty from "../parties/SelectParty"
 
 import type { Fight } from "../../types/types"
 
@@ -43,6 +44,7 @@ export default function FightToolbar({ showHidden, setShowHidden }: FightToolbar
     <>
       <ButtonBar>
         <Stack direction="row" spacing={2} alignItems='center'>
+          <DiceRoller />
           <ButtonGroup>
             <CreateVehicle />
             <CreateCharacter />
@@ -50,7 +52,9 @@ export default function FightToolbar({ showHidden, setShowHidden }: FightToolbar
           <ButtonGroup>
             <SelectCharacter />
           </ButtonGroup>
-          <MookRolls />
+          <ButtonGroup>
+            <SelectParty />
+          </ButtonGroup>
           <GamemasterOnly user={user}>
             <FormControlLabel label="Show Hidden" control={<Switch checked={showHidden} />} onChange={show} />
           </GamemasterOnly>
