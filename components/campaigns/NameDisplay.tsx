@@ -19,7 +19,7 @@ export default function NameDisplay({ campaign, onClick }: NameDisplayProps) {
         >
           Start
         </Button>
-        <Typography>{campaign.title}</Typography>
+        <Typography>{campaign.name}</Typography>
       </Stack>
     </>
   )

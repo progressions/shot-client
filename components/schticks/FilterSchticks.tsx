@@ -19,12 +19,12 @@ export default function FilterSchticks({ state, dispatch }: FilterSchticksProps)
   const { character } = useCharacter()
   const { user, client } = useClient()
   const { toastSuccess, toastError } = useToast()
-  const { page, loading, category, path, title } = state
+  const { page, loading, category, path, name } = state
 
   useEffect(() => {
     async function getSchticks() {
       try {
-        const data = await client.getSchticks({ page, category, path, title, character_id: character?.id as string })
+        const data = await client.getSchticks({ page, category, path, name, character_id: character?.id as string })
         dispatch({ type: SchticksActions.SCHTICKS, payload: data })
       } catch(error) {
         toastError()
@@ -34,7 +34,7 @@ export default function FilterSchticks({ state, dispatch }: FilterSchticksProps)
     if (user?.id) {
       getSchticks()
     }
-  }, [character?.id, dispatch, user?.id, category, path, toastError, client, page, title])
+  }, [character?.id, dispatch, user?.id, category, path, toastError, client, page, name])
 
   return (
     <>

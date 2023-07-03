@@ -88,7 +88,7 @@ export default function CharacterDetails({ character, editingCharacter, setEditi
 
   const dodge = (character: Character): CharacterEffect => {
     return {
-      title: "Dodge",
+      name: "Dodge",
       action_value: "Defense",
       change: "+3",
       severity: "success",

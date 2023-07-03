@@ -37,7 +37,7 @@ export default function Effects({ effects, severity }: EffectsProps) {
     try {
       await client.deleteEffect(effect, fight)
       dispatch({ type: FightActions.EDIT })
-      toastSuccess(`Effect ${effect.title} deleted.`)
+      toastSuccess(`Effect ${effect.name} deleted.`)
     } catch(error) {
       toastError()
     }
@@ -57,7 +57,7 @@ export default function Effects({ effects, severity }: EffectsProps) {
           {
             effects.map((effect: Effect) => (<Box key={effect.id}>
               <AlertTitle>
-                {effect.title}
+                {effect.name}
               </AlertTitle>
               <Box mt={-1} pb={1}>
                 <Typography>{effect.description}</Typography>

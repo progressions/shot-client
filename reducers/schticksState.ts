@@ -10,7 +10,7 @@ export enum SchticksActions {
   NEXT = "next",
   CATEGORY = "cateory",
   PATH = "path",
-  TITLE = "title",
+  NAME = "name",
   SCHTICK = "schtick",
   SCHTICKS = "schticks",
   UPDATE = "update"
@@ -23,7 +23,7 @@ export interface ActionNoPayload {
 export type PayloadType = SchtickCategory | SchtickPath | Schtick | SchticksResponse | string
 
 export interface PayloadAction {
-  type: Extract<SchticksActions, SchticksActions.CATEGORY | SchticksActions.PATH | SchticksActions.TITLE | SchticksActions.SCHTICK | SchticksActions.SCHTICKS>
+  type: Extract<SchticksActions, SchticksActions.CATEGORY | SchticksActions.PATH | SchticksActions.NAME | SchticksActions.SCHTICK | SchticksActions.SCHTICKS>
   payload: PayloadType
 }
 
@@ -41,7 +41,7 @@ export interface SchticksStateType {
   paths: SchtickPath[]
   category: SchtickCategory
   categories: SchtickCategory[]
-  title: string
+  name: string
   schtick: Schtick
   schticks: Schtick[]
   meta: PaginationMeta
@@ -57,7 +57,7 @@ export const initialSchticksState: SchticksStateType = {
   paths: [],
   category: "",
   categories: [],
-  title: "",
+  name: "",
   schtick: defaultSchtick,
   schticks: [],
   meta: defaultPaginationMeta
@@ -99,10 +99,10 @@ export function schticksReducer(state: SchticksStateType, action: SchticksAction
         ...state,
         path: (action.payload || initialSchticksState.path) as SchtickPath,
       }
-    case SchticksActions.TITLE:
+    case SchticksActions.NAME:
       return {
         ...state,
-        title: (action.payload || initialSchticksState.title) as string,
+        name: (action.payload || initialSchticksState.name) as string,
       }
     case SchticksActions.SCHTICK:
       return {

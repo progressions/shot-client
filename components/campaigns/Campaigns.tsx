@@ -24,7 +24,7 @@ export default function Campaigns({ campaigns, getCampaigns }: CampaignsProps) {
     if (confirmation) {
       try {
         await client.deleteCampaign(campaign)
-        toastSuccess(`${campaign.title} deleted.`)
+        toastSuccess(`${campaign.name} deleted.`)
         await getCampaigns()
       } catch(error) {
         toastError()
@@ -35,7 +35,7 @@ export default function Campaigns({ campaigns, getCampaigns }: CampaignsProps) {
   const startCampaign = async (camp: Campaign | null) => {
     await setCurrentCampaign(camp)
     if (camp) {
-      toastSuccess(`${camp.title} activated`)
+      toastSuccess(`${camp.name} activated`)
     } else {
       toastSuccess(`Campaign cleared`)
     }
@@ -75,7 +75,7 @@ export default function Campaigns({ campaigns, getCampaigns }: CampaignsProps) {
                   <TableCell sx={{width: 400}}>
                     <Typography variant="h6">
                       <Link color="text.primary" href={`/campaigns/${campaign.id}`}>
-                        {campaign.title}
+                        {campaign.name}
                       </Link>
                     </Typography>
                   </TableCell>

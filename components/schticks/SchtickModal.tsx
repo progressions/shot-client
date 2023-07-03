@@ -78,7 +78,7 @@ export default function SchtickModal({ open, setOpen, state, dispatch, schtick:i
       onSubmit={handleSubmit}
     >
       <Stack p={4} spacing={2} sx={{width: 400}}>
-        <StyledTextField name="title" label="Title" value={schtick?.title || ""} onChange={handleChange} />
+        <StyledTextField name="name" label="Title" value={schtick?.name || ""} onChange={handleChange} />
         <StyledTextField name="category" label="Category" value={schtick?.category || ""} onChange={handleChange} />
         <StyledTextField name="path" label="Path" value={schtick?.path || ""} onChange={handleChange} />
         <StyledTextField name="description" multiline rows={8} label="Description" value={schtick?.description || ""} onChange={handleChange} />

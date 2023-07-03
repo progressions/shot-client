@@ -19,7 +19,7 @@ export default function CurrentCampaign() {
   const startCampaign = async (camp: Campaign | null) => {
     await setCurrentCampaign(camp)
     if (camp) {
-      toastSuccess(`${camp.title} activated`)
+      toastSuccess(`${camp.name} activated`)
     } else {
       toastSuccess(`Campaign cleared`)
     }
@@ -40,7 +40,7 @@ export default function CurrentCampaign() {
   function CampaignName({ campaign }: CampaignNameProps) {
     if (campaign?.id) {
       return (<>
-        <Typography color="white">{campaign.title}</Typography>
+        <Typography color="white">{campaign.name}</Typography>
         { startStopCampaignButton(campaign, campaign) }
       </>)
     }

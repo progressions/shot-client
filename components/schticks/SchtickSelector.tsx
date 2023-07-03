@@ -52,11 +52,11 @@ export default function SchtickSelector() {
         </Stack>
 
         <Stack p={4} spacing={2}>
-          <StyledTextField name="title" label="Title" value={schtick?.title || ""} InputProps={{readOnly: true}} />
+          <StyledTextField name="name" label="Name" value={schtick?.name || ""} InputProps={{readOnly: true}} />
           <StyledTextField name="category" label="Category" value={schtick?.category || ""} InputProps={{readOnly: true}} />
           <StyledTextField name="path" label="Path" value={schtick?.path || ""} InputProps={{readOnly: true}} />
           <StyledTextField name="description" multiline rows={8} label="Description" value={schtick?.description || ""} InputProps={{readOnly: true}} />
-          <StyledTextField name="prerequisite" label="Prerequisite" value={schtick?.prerequisite?.title || ""} InputProps={{readOnly: true}} />
+          <StyledTextField name="prerequisite" label="Prerequisite" value={schtick?.prerequisite?.name || ""} InputProps={{readOnly: true}} />
           <SaveCancelButtons onCancel={cancelForm} onSave={handleSubmit} disabled={saving} />
         </Stack>
       </Box>

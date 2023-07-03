@@ -120,7 +120,7 @@ export default function SchtickCard({ schtick, state, dispatch }: SchtickCardPro
   return (
     <>
       <SchtickCardBase
-        title={schtick.title}
+        title={schtick.name}
         subheader={schtick.path}
         avatar={avatar}
         action={[editButton, deleteButton]}
@@ -128,9 +128,9 @@ export default function SchtickCard({ schtick, state, dispatch }: SchtickCardPro
         <Typography variant="body2" gutterBottom>
           {schtick.description}
         </Typography>
-        { schtick.prerequisite.title &&
+        { schtick.prerequisite.name &&
           <Typography variant="subtitle2">
-            Requires: {schtick.prerequisite.title}
+            Requires: {schtick.prerequisite.name}
           </Typography> }
       </SchtickCardBase>
       <SchtickModal

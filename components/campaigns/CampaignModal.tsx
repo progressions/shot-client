@@ -32,7 +32,7 @@ export default function CampaignModal({ open, setOpen, campaign:activeCampaign, 
       setSaving(false)
       cancelForm()
 
-      toastSuccess(`${campaign.title} created.`)
+      toastSuccess(`${campaign.name} created.`)
       await reload()
     } catch(error) {
       toastError()
@@ -61,7 +61,7 @@ export default function CampaignModal({ open, setOpen, campaign:activeCampaign, 
           <DialogTitle>Campaign</DialogTitle>
           <DialogContent>
             <Stack spacing={2}>
-              <TextField autoFocus name="title" value={campaign.title} label="Title" onChange={handleChange} />
+              <TextField autoFocus name="name" value={campaign.name} label="Title" onChange={handleChange} />
               <TextField name="description" multiline rows={3} value={campaign.description} label="Description" onChange={handleChange} />
             </Stack>
           </DialogContent>

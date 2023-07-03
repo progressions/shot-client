@@ -35,7 +35,7 @@ export default function SchticksDisplay({ schticks }: SchticksDisplayProps) {
           {
             schticks.map((schtick: Schtick) => (
               <Typography key={schtick.id} gutterBottom sx={{color: "primary.dark"}}>
-                <Box component="span" sx={{color: schtick.color, fontWeight: "bold"}}>{schtick.title}</Box>: {schtick.description}
+                <Box component="span" sx={{color: schtick.color, fontWeight: "bold"}}>{schtick.name}</Box>: {schtick.description}
               </Typography>
             ))
           }

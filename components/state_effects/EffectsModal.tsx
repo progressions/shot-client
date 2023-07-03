@@ -52,7 +52,7 @@ export default function EffectsModal({ character }: EffectsModalProps) {
       setEffect(data)
       cancelForm()
       dispatchFight({ type: FightActions.EDIT })
-      toastSuccess(`Effect ${effect.title} added.`)
+      toastSuccess(`Effect ${effect.name} added.`)
     } catch(error) {
       toastError()
       cancelForm()

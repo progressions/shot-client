@@ -38,7 +38,7 @@ export default function EffectModal({ shot, open, setOpen }: EffectModalProps) {
       const data = await client.createEffect(effect, fight)
       setEffect(data)
       dispatch({ type: FightActions.EDIT })
-      toastSuccess(`Effect ${effect.title} added.`)
+      toastSuccess(`Effect ${effect.name} added.`)
     } catch(error)  {
       toastError()
     }
@@ -61,7 +61,7 @@ export default function EffectModal({ shot, open, setOpen }: EffectModalProps) {
         <DialogContent>
           <Box component="form" onSubmit={handleSubmit} sx={{width: 400}}>
             <Stack spacing={2}>
-              <TextField autoFocus label="Title" variant="filled" size="medium" sx={{paddingBottom: 2}} fullWidth required name="title" value={effect.title} onChange={handleChange} />
+              <TextField autoFocus label="Name" variant="filled" size="medium" sx={{paddingBottom: 2}} fullWidth required name="name" value={effect.name} onChange={handleChange} />
               <TextField label="Description" fullWidth name="description" value={effect.description} onChange={handleChange} />
               <Stack direction="row" spacing={1}>
                 <TextField label="First Sequence" name="start_sequence" type="number" fullWidth required value={effect.start_sequence} onChange={handleChange} />

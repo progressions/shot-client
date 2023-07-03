@@ -116,7 +116,7 @@ export interface Toast {
 
 export interface Campaign {
   id?: string
-  title: string
+  name: string
   description?: string
   gamemaster?: User
   new?: boolean
@@ -216,7 +216,7 @@ export interface VehicleActionValues {
 
 export interface Schtick {
   id?: string
-  title: string
+  name: string
   description: string
   campaign_id: string
   category: SchtickCategory
@@ -224,7 +224,7 @@ export interface Schtick {
   schtick_id: string
   prerequisite: {
     id?: string
-    title?: string
+    name?: string
   }
   color: string
 }
@@ -297,7 +297,7 @@ export interface Site {
 
 export interface Effect {
   id?: string
-  title: string
+  name: string
   description: string
   severity: Severity
   start_sequence: number
@@ -308,7 +308,7 @@ export interface Effect {
 
 export interface CharacterEffect {
   id?: string
-  title: string
+  name: string
   description?: string
   character_id?: string
   vehicle_id?: string
@@ -484,7 +484,7 @@ export const defaultUser:User = {
 }
 
 export const defaultEffect:Effect = {
-  title: "",
+  name: "",
   description: "",
   severity: "error",
   start_sequence: 1,
@@ -500,7 +500,7 @@ export const defaultToast:Toast = {
 }
 
 export const defaultCampaign:Campaign = {
-  title: "",
+  name: "",
   description: "",
   gamemaster: defaultUser,
   players: [],
@@ -508,14 +508,14 @@ export const defaultCampaign:Campaign = {
 }
 
 export const defaultCharacterEffect:CharacterEffect = {
-  title: "",
+  name: "",
   description: "",
   severity: "info",
   character_id: ""
 }
 
 export const defaultSchtick:Schtick = {
-  title: "",
+  name: "",
   description: "",
   campaign_id: "",
   category: "",
@@ -523,7 +523,7 @@ export const defaultSchtick:Schtick = {
   schtick_id: "",
   prerequisite: {
     id: "",
-    title: ""
+    name: ""
   },
   color: ""
 }

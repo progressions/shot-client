@@ -37,7 +37,7 @@ export default function Effects({ effects, severity }: EffectsProps) {
     try {
       await client.deleteCharacterEffect(effect, fight)
       dispatch({ type: FightActions.EDIT })
-      toastSuccess(`Effect ${effect.title} deleted.`)
+      toastSuccess(`Effect ${effect.name} deleted.`)
     } catch(error) {
       toastError()
     }
@@ -66,7 +66,7 @@ export default function Effects({ effects, severity }: EffectsProps) {
             effects.map((effect: CharacterEffect) => (<Box key={effect.id}>
               <Stack direction="row" spacing={2}>
                 <AlertTitle>
-                  <Box sx={{width: 100}}>{effect.title}</Box>
+                  <Box sx={{width: 100}}>{effect.name}</Box>
                 </AlertTitle>
                 <IconButton onClick={async () => await deleteEffect(effect)}><DeleteIcon sx={{marginTop: -1, color: toolbarColor}} /></IconButton>
               </Stack>
