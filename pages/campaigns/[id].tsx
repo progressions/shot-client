@@ -85,7 +85,7 @@ export default function CampaignView({ campaign:initialCampaign }: CampaignViewP
   return (
     <>
       <Head>
-        <title>{campaign?.title || "Loading..."} - Chi War</title>
+        <title>{campaign?.name || "Loading..."} - Chi War</title>
         <meta name="description" content="Feng Shui 2 Shot Counter" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
@@ -93,7 +93,7 @@ export default function CampaignView({ campaign:initialCampaign }: CampaignViewP
       <main>
         <Layout>
           <Container maxWidth="md">
-            <Typography variant="h2" gutterBottom>{campaign.title}</Typography>
+            <Typography variant="h2" gutterBottom>{campaign.name}</Typography>
             <Typography>{campaign.description}</Typography>
             <Typography>Gamemaster: {campaign?.gamemaster?.first_name} {campaign?.gamemaster?.last_name}</Typography>
             <ButtonBar>

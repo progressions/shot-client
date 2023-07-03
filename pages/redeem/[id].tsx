@@ -107,7 +107,7 @@ export default function RedeemInvitation({ invitation }: RedeemInvitationProps) 
                 <Typography>
                   <Link href="/auth/signin">Click here</Link> to sign in.
                 </Typography> }
-              <Typography variant="h3" gutterBottom>{invitation.campaign?.title}</Typography>
+              <Typography variant="h3" gutterBottom>{invitation.campaign?.name}</Typography>
             </Box> }
           { !success && invitation.pending_user?.id &&
             <Box my={2}>
@@ -115,7 +115,7 @@ export default function RedeemInvitation({ invitation }: RedeemInvitationProps) 
               <Typography>
                 You&rsquo;ve been invited to the campaign.
               </Typography>
-              <Typography variant="h3" gutterBottom>{invitation.campaign?.title}</Typography>
+              <Typography variant="h3" gutterBottom>{invitation.campaign?.name}</Typography>
               <Box component="form" onSubmit={handleSubmit}>
                 <Stack spacing={2} direction="row">
                   <Button variant="contained" type="submit" disabled={saving}>Accept</Button>
@@ -125,7 +125,7 @@ export default function RedeemInvitation({ invitation }: RedeemInvitationProps) 
           { !success && !invitation.pending_user?.id && session.status !== "authenticated" &&
             <Box component="form" onSubmit={handleSubmit}>
               <Typography>You&rsquo;ve been invited to </Typography>
-              <Typography variant="h3" gutterBottom>{invitation.campaign?.title}</Typography>
+              <Typography variant="h3" gutterBottom>{invitation.campaign?.name}</Typography>
               <Typography>To accept, enter your details to create an account.</Typography>
               <Stack direction="column" spacing={2} mt={4}>
                 <TextField name="email" label="Email" required error={!!errors["email"]} helperText={errors["email"]} value={user?.email || ""} onChange={handleChange} InputProps={{

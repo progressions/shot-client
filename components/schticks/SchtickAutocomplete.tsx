@@ -20,7 +20,7 @@ export default function SchtickAutocomplete({ state, dispatch }: SchtickAutocomp
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      dispatch({ type: SchticksActions.TITLE, payload: search })
+      dispatch({ type: SchticksActions.NAME, payload: search })
     }, 1000)
 
     return () => clearTimeout(timer)
@@ -35,7 +35,7 @@ export default function SchtickAutocomplete({ state, dispatch }: SchtickAutocomp
   }
 
   function getOptionLabel(option: Schtick) {
-    return option.title
+    return option.name
   }
 
   const helperText = (schticks.length) ? "": "There are no available schticks."

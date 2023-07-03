@@ -79,7 +79,7 @@ export default function EffectsModal({ character }: EffectsModalProps) {
           <DialogContent>
             <Stack spacing={2} sx={{paddingTop: 2}}>
               <Stack direction="row" spacing={1}>
-              <TextField autoFocus label="Title" variant="filled" size="medium" sx={{paddingBottom: 2}} fullWidth required name="title" value={effect.title} onChange={handleChange} />
+              <TextField autoFocus label="Title" variant="filled" size="medium" sx={{paddingBottom: 2}} fullWidth required name="name" value={effect.name} onChange={handleChange} />
                 <TextField label="Severity" name="severity" select fullWidth required value={effect.severity} onChange={handleChange}>
                   <MenuItem value="error">Danger</MenuItem>
                   <MenuItem value="warning">Warning</MenuItem>
