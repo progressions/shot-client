@@ -1,13 +1,10 @@
-import { useClient } from "../../contexts/ClientContext"
-import { useToast } from "../../contexts/ToastContext"
-import { useCharacter } from "../../contexts/CharacterContext"
-import { Subhead } from "../StyledFields"
+import { Grid } from "@mui/material"
+import { Character } from "../../../../types/types"
+import type { Site as SiteType } from "../../../../types/types"
+import { Subhead } from "../../../StyledFields"
 import AddSite from "./AddSite"
 import Site from "./Site"
 
-import { Grid } from "@mui/material"
-
-import type { Site as SiteType, Character } from "../../types/types"
 
 interface SitesProps {
   character: Character

@@ -1,34 +1,20 @@
 import Head from 'next/head'
-import Image from 'next/image'
-import { Inter } from '@next/font/google'
-import { Box, Switch, FormControlLabel, Stack, Snackbar, Alert, Link, Button, Paper, Container, Table, TableContainer, TableBody, TableHead, TableRow, TableCell, Typography } from '@mui/material'
-import type { NextApiRequest, NextApiResponse } from "next"
+import { Switch, FormControlLabel, Stack, Paper, Container, Table, TableContainer, TableBody, TableHead, TableRow, TableCell, Typography } from '@mui/material'
 import { getServerClient } from "../utils/getServerClient"
 
 import { ButtonBar } from "../components/StyledFields"
 import AddFight from '../components/fights/AddFight'
 import FightDetail from '../components/fights/FightDetail'
 import Layout from '../components/Layout'
-import Client from '../utils/Client'
-import Router from 'next/router'
-import { useSession } from 'next-auth/react'
-import { getToken } from 'next-auth/jwt'
-import { useReducer, useMemo, useState, useEffect } from 'react'
-import { signIn, signOut } from 'next-auth/react'
-
-import { authOptions } from './api/auth/[...nextauth]'
-
-import { GetServerSideProps } from 'next'
-import { InferGetServerSidePropsType } from 'next'
+import { useReducer, useEffect } from 'react'
 
 import { useToast } from "../contexts/ToastContext"
 import { useLocalStorage } from "../contexts/LocalStorageContext"
 import { useClient } from "../contexts/ClientContext"
-import { useCampaign } from "../contexts/CampaignContext"
 import GamemasterOnly from "../components/GamemasterOnly"
 import { FightsActions, initialFightsState, fightsReducer } from "../reducers/fightsState"
 
-import type { FightsResponse, PaginationMeta, AuthSession, Campaign, Fight, ServerSideProps } from "../types/types"
+import type { FightsResponse, Campaign, Fight, ServerSideProps } from "../types/types"
 import axios, { AxiosError } from 'axios'
 
 interface HomeProps extends FightsResponse {

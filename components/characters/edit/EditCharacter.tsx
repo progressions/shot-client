@@ -12,7 +12,7 @@ import Schticks from "../../schticks/Schticks"
 import SchtickSelector from "../../schticks/SchtickSelector"
 import Skills from "./Skills"
 import Advancements from "../../advancements/Advancements"
-import Sites from "../../sites/Sites"
+import Sites from "./sites/Sites"
 import Weapons from "../../weapons/Weapons"
 
 import { useEffect } from "react"

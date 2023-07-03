@@ -1,15 +1,13 @@
-import { StyledSelect, StyledAutocomplete, StyledTextField, SaveButton, CancelButton } from "../StyledFields"
 import { Stack, Typography } from "@mui/material"
-import { useClient } from "../../contexts/ClientContext"
-import { useToast } from "../../contexts/ToastContext"
-import { useCharacter } from "../../contexts/CharacterContext"
+import { useEffect, useReducer } from "react"
 
-import type { Character, Site, InputParamsType } from "../../types/types"
-import { defaultSite } from "../../types/types"
+import { CancelButton, SaveButton, StyledAutocomplete, StyledSelect } from "../../../StyledFields"
+import { useCharacter } from "../../../../contexts/CharacterContext"
+import { useClient } from "../../../../contexts/ClientContext"
+import { useToast } from "../../../../contexts/ToastContext"
+import { sitesReducer, initialSitesState, SitesActions } from "../../../../reducers/sitesState"
+import { defaultSite, InputParamsType, Site } from "../../../../types/types"
 
-import { useState, useEffect, useReducer } from "react"
-import { SitesActions, initialSitesState, sitesReducer } from "../../reducers/sitesState"
-import type { SitesActionType } from "../../reducers/sitesState"
 
 export default function AddSite() {
   const { character, dispatch:dispatchCharacter, reloadCharacter } = useCharacter()

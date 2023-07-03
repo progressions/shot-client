@@ -1,10 +1,9 @@
 import { IconButton, Stack, Typography } from "@mui/material"
-import { useClient } from "../../contexts/ClientContext"
-import { useToast } from "../../contexts/ToastContext"
-import { useCharacter } from "../../contexts/CharacterContext"
 import ClearIcon from '@mui/icons-material/Clear'
-
-import type { Site } from "../../types/types"
+import { useCharacter } from "../../../../contexts/CharacterContext"
+import { useClient } from "../../../../contexts/ClientContext"
+import { useToast } from "../../../../contexts/ToastContext"
+import type { Site } from "../../../../types/types"
 
 interface SiteProps {
   site: Site
