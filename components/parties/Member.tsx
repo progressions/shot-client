@@ -7,7 +7,7 @@ interface MemberProps {
 
 export default function Member({ character }: MemberProps) {
   return (
-    <Typography variant="h5" mb={1}>
+    <Typography mb={1}>
       <Link color="inherit" underline="hover" href={`/characters/${character.id}`}>
         {character.name}
       </Link>

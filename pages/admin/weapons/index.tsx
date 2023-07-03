@@ -51,8 +51,7 @@ export default function WeaponsIndex() {
       </Head>
       <main>
         <Layout>
-          <Container maxWidth="md">
-            <Typography variant="h1" gutterBottom>Weapons</Typography>
+          <Container maxWidth="md" sx={{paddingTop: 2}}>
             { !loading && <>
               <ButtonBar sx={{height: 80}}>
                 <FilterWeapons state={state} dispatch={dispatch} />

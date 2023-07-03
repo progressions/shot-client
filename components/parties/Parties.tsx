@@ -1,7 +1,8 @@
-import { Link, Box, Typography } from "@mui/material"
-import type { Party } from "../../types/types"
+import { Grid, Stack } from "@mui/material"
+import type { Party as PartyType } from "../../types/types"
 import { PartiesStateType, PartiesActionType, PartiesActions } from "../../reducers/partiesState"
-import Member from "./Member"
+import Party from "./Party"
+import { Subhead } from "../StyledFields"
 
 interface PartiesProps {
   state: PartiesStateType,
@@ -13,25 +14,16 @@ export default function Parties({ state, dispatch }: PartiesProps) {
 
   return (
     <>
-      {
-        parties.map(party => (
-          <Box key={party.id} mb={2}>
-            <Typography variant="h2">{party.name}</Typography>
-            <Typography>{party.description}</Typography>
-            {
-              !!party?.characters?.length &&
-              <Box mt={2} mb={2}>
-                <Typography variant="h4" gutterBottom>Members</Typography>
-                {
-                  party.characters.map(character => (
-                    <Member key={character.id} character={character} />
-                  ))
-                }
-              </Box>
-            }
-          </Box>
-        ))
-      }
+      <Subhead>Parties</Subhead>
+      <Grid container spacing={2}>
+        {
+          parties.map(party => (
+            <Grid item key={party.id}>
+              <Party key={party.id} party={party} />
+            </Grid>
+          ))
+        }
+      </Grid>
     </>
   )
 }

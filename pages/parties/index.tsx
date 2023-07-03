@@ -7,6 +7,7 @@ import { useReducer, useEffect } from 'react'
 import { useToast } from '../../contexts/ToastContext'
 import { partiesReducer, initialPartiesState, PartiesActions } from '../../reducers/partiesState'
 import Parties from '../../components/parties/Parties'
+import { ButtonBar } from "../../components/StyledFields"
 
 export default function Home() {
   const { user, client } = useClient()
@@ -37,8 +38,9 @@ export default function Home() {
       </Head>
       <main>
         <Layout>
-          <Container maxWidth="md">
-            <Typography variant="h1" gutterBottom>Parties</Typography>
+          <Container maxWidth="md" sx={{paddingTop: 2}}>
+            <ButtonBar sx={{height: 80}}>
+            </ButtonBar>
             <Parties state={state} dispatch={dispatch} />
           </Container>
         </Layout>
