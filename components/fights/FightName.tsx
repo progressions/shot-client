@@ -89,7 +89,7 @@ export default function FightName() {
             </Box>
           </Stack>
           { fight.description &&
-            <Typography>
+            <Typography sx={{whiteSpace: "pre-line"}}>
               {fight.description}
             </Typography>
           }
