@@ -1,5 +1,5 @@
-import { StyledTextField, SaveButton, CancelButton } from "../StyledFields"
-import { Stack, Typography } from "@mui/material"
+import { SaveCancelButtons, StyledTextField } from "../StyledFields"
+import { Box, Stack, Typography } from "@mui/material"
 import { useClient } from "../../contexts/ClientContext"
 import { useToast } from "../../contexts/ToastContext"
 import { useCharacter } from "../../contexts/CharacterContext"
@@ -46,9 +46,11 @@ export default function NewAdvancement() {
         label="Description"
         onChange={handleChange}
         disabled={loading}
+        helperText=" "
       />
-      <CancelButton disabled={loading} />
-      <SaveButton disabled={loading} onClick={addAdvancement}>Add</SaveButton>
+      <Box sx={{ height: 60 }}>
+        <SaveCancelButtons disabled={loading} onSave={addAdvancement} saveText="Add" />
+      </Box>
     </Stack>
   )
 }
