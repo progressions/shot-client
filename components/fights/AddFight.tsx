@@ -60,9 +60,10 @@ export default function AddFight({ state:fightsState, dispatch:dispatchFights }:
             <Stack direction="row">
               <Typography variant="h4">Add Fight</Typography>
             </Stack>
-            <Stack spacing={1}>
-              <Stack>
+            <Stack spacing={2}>
+              <Stack spacing={1}>
                 <StyledTextField label="Fight" autoFocus required name="name" value={fight.name} onChange={handleChange} />
+                <StyledTextField multiline label="Description" autoFocus required name="description" value={fight.description} onChange={handleChange} />
               </Stack>
               <Stack spacing={2} direction="row">
                 <SaveCancelButtons disabled={saving} onCancel={cancelForm} />

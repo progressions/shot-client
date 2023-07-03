@@ -21,7 +21,7 @@ export default function FightName() {
 
   const [open, setOpen] = useState(false)
   const [editing, setEditing] = useState(false)
-  const [name, setName] = useState(fight.name)
+  const [tempFight, setTempFight] = useState({ name: fight.name, description: fight.description })
 
   const showButtons = () => {
     if (user?.gamemaster) {
@@ -39,20 +39,20 @@ export default function FightName() {
   }
 
   const cancelForm = () => {
-    setName(fight.name)
+    setTempFight({ name: fight.name, description: fight.description })
     setEditing(false)
   }
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setName(event.target.value)
+    setTempFight({ ...tempFight, [event.target.name]: event.target.value })
   }
 
   const handleSubmit = async () => {
-    const updatedFight = { id: fight.id, name: name } as Fight
+    const updatedFight = { id: fight.id, name: tempFight.name, description: tempFight.description } as Fight
     try {
       await client.updateFight(updatedFight)
       dispatch({ type: FightActions.EDIT })
-      toastSuccess(`Name saved.`)
+      toastSuccess(`Fight updated.`)
       setEditing(false)
     } catch(error) {
       dispatch({ type: FightActions.ERROR, payload: error as Error })
@@ -62,8 +62,9 @@ export default function FightName() {
 
   if (editing) {
     return (
-      <Stack direction="row" spacing={2} alignItems="baseline" sx={{marginTop: 2, marginBottom: 2}}>
-        <StyledTextField name="name" autoFocus value={name} sx={{width: "100%"}} onChange={handleChange} />
+      <Stack spacing={2} alignItems="baseline" sx={{marginTop: 2, marginBottom: 2}}>
+        <StyledTextField name="name" autoFocus value={tempFight.name} fullWidth onChange={handleChange} />
+        <StyledTextField multiline label="Description" fullWidth autoFocus required name="description" value={tempFight.description || ""} onChange={handleChange} />
         <SaveCancelButtons onCancel={cancelForm} onSave={handleSubmit} />
       </Stack>
     )
@@ -72,19 +73,26 @@ export default function FightName() {
   return (
     <>
       <Box onMouseEnter={showButtons} onMouseLeave={hideButtons}>
-        <Stack direction="row" spacing={2} alignItems="baseline" sx={{marginTop: 2}}>
-          <Typography variant="h2" gutterBottom sx={{width: "100%"}}>
-            {fight.name}
-          </Typography>
-          <Box visibility={open ? "visible" : "hidden"}>
-            <ButtonGroup size="small">
-              <Tooltip title="Edit Name" arrow>
-                <Button variant="contained" color="primary" onClick={editFightName}>
-                  <EditIcon />
-                </Button>
-              </Tooltip>
-            </ButtonGroup>
-          </Box>
+        <Stack mb={1}>
+          <Stack direction="row" spacing={2} alignItems="baseline" sx={{marginTop: 2}}>
+            <Typography variant="h2" gutterBottom sx={{width: "100%"}}>
+              {fight.name}
+            </Typography>
+            <Box visibility={open ? "visible" : "hidden"}>
+              <ButtonGroup size="small">
+                <Tooltip title="Edit Name" arrow>
+                  <Button variant="contained" color="primary" onClick={editFightName}>
+                    <EditIcon />
+                  </Button>
+                </Tooltip>
+              </ButtonGroup>
+            </Box>
+          </Stack>
+          { fight.description &&
+            <Typography>
+              {fight.description}
+            </Typography>
+          }
         </Stack>
       </Box>
     </>
