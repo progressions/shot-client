@@ -8,11 +8,13 @@ import AddIcon from '@mui/icons-material/Add'
 import RemoveIcon from '@mui/icons-material/Remove'
 import PlayArrowIcon from '@mui/icons-material/PlayArrow'
 
+import RollInitiative from "./RollInitiative"
+import GamemasterOnly from "../GamemasterOnly"
 import { Toast, Fight } from "../../types/types"
 import { FightActions } from "../../reducers/fightState"
 
 export default function Sequence() {
-  const { client } = useClient()
+  const { user, client } = useClient()
   const { toastSuccess } = useToast()
   const { fight, dispatch } = useFight()
 
@@ -55,6 +57,9 @@ export default function Sequence() {
           <AddIcon />
         </Button>
       </ButtonGroup>
+      <GamemasterOnly user={user}>
+        <RollInitiative />
+      </GamemasterOnly>
     </Stack>
   )
 }

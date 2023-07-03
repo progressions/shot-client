@@ -6,6 +6,7 @@ import Link from '@mui/material/Link'
 import AuthButton from "./AuthButton"
 import CurrentCampaign from "../campaigns/CurrentCampaign"
 import PopupMenu from "./PopupMenu"
+import DiceRoller from '../dice/DiceRoller'
 
 import { defaultCampaign } from "../../types/types"
 
@@ -32,6 +33,7 @@ export default function Navbar() {
           <Link underline="none" color="inherit" href='/'>
             <Image src="/ChiWar.svg" alt="ChiWar" width="120" height="40" style={{marginTop: 5, marginRight: 10}} />
           </Link>
+          <DiceRoller />
           <AuthButton status={session?.status} user={user || {}} />
         </Toolbar>
         { user &&

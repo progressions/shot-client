@@ -66,21 +66,23 @@ export default function DiceRoller() {
 
   return (
     <>
-      <Tooltip title="Roll Single Die" arrow>
-        <IconButton onClick={showSingleRoll}>
-          <CasinoIcon color='error' sx={{width: 45, height: 45}} />
-        </IconButton>
-      </Tooltip>
-      <Tooltip title="Roll Swerve" arrow>
-        <Button onClick={showExplodingRoll}>
-          <Box sx={{marginLeft: -3, height: 35, bgcolor: "black", borderRadius: 3}}>
-            <Box sx={{marginTop: '-13px', whiteSpace: "nowrap"}} p={1}>
-              <CasinoIcon sx={{color: 'white', width: 25, height: 45}} />
-              <CasinoIcon sx={{color: 'red', width: 25, height: 45}} />
+      <Stack direction="row" spacing={1}>
+        <Tooltip title="Roll Single Die" arrow>
+          <IconButton onClick={showSingleRoll}>
+            <CasinoIcon color='error' sx={{width: 45, height: 45}} />
+          </IconButton>
+        </Tooltip>
+        <Tooltip title="Roll Swerve" arrow>
+          <Button onClick={showExplodingRoll}>
+            <Box sx={{marginLeft: -3, height: 35, bgcolor: "black", borderRadius: 3}}>
+              <Box sx={{marginTop: '-13px', whiteSpace: "nowrap"}} p={1}>
+                <CasinoIcon sx={{color: 'white', width: 25, height: 45}} />
+                <CasinoIcon sx={{color: 'red', width: 25, height: 45}} />
+              </Box>
             </Box>
-          </Box>
-        </Button>
-      </Tooltip>
+          </Button>
+        </Tooltip>
+      </Stack>
       <StyledDialog open={open} onClose={() => setOpen(false)} title={title}>
         <DialogContent>
           <Box p={4}>

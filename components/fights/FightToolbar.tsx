@@ -43,10 +43,6 @@ export default function FightToolbar({ showHidden, setShowHidden }: FightToolbar
     <>
       <ButtonBar>
         <Stack direction="row" spacing={2} alignItems='center'>
-          <GamemasterOnly user={user}>
-            <RollInitiative />
-          </GamemasterOnly>
-          <DiceRoller />
           <ButtonGroup>
             <CreateVehicle />
             <CreateCharacter />
