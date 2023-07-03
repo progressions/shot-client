@@ -64,7 +64,7 @@ export default function FightName() {
     return (
       <Stack spacing={2} alignItems="baseline" sx={{marginTop: 2, marginBottom: 2}}>
         <StyledTextField name="name" autoFocus value={tempFight.name} fullWidth onChange={handleChange} />
-        <StyledTextField multiline label="Description" fullWidth autoFocus required name="description" value={tempFight.description || ""} onChange={handleChange} />
+        <StyledTextField multiline label="Description" fullWidth name="description" value={tempFight.description || ""} onChange={handleChange} />
         <SaveCancelButtons onCancel={cancelForm} onSave={handleSubmit} />
       </Stack>
     )
