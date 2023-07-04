@@ -388,7 +388,6 @@ class Client {
   }
 
   async patch<T>(url:string, params = {}):Promise<T> {
-    console.log("patch", params)
     return await this.request("PATCH", url, params)
   }
 

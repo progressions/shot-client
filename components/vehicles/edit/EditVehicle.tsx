@@ -2,8 +2,7 @@ import { useClient } from "../../../contexts/ClientContext"
 import { useToast } from "../../../contexts/ToastContext"
 import { useVehicle } from "../../../contexts/VehicleContext"
 
-// import EditActionValues from "./EditActionValues"
-// import Description from "./Description"
+import EditActionValues from "./EditActionValues"
 import Faction from "../../characters/edit/Faction"
 import CharacterType from "../../characters/edit/CharacterType"
 import ColorPicker from "../../characters/edit/ColorPicker"
@@ -118,6 +117,7 @@ export default function EditVehicle({ vehicle:initialVehicle }: EditVehicleProps
             <StyledTextField label="Impairments" type="number" name="impairments" value={vehicle.impairments || ''} onChange={handleChange} />
             <ColorPicker character={vehicle} onChange={handleChange} dispatch={dispatchVehicle} />
           </Stack>
+          <EditActionValues vehicle={vehicle} onChange={handleAVChange as React.ChangeEventHandler} />
         </Stack>
       </Box>
     </>
