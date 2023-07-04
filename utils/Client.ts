@@ -42,6 +42,22 @@ class Client {
     this.api = new Api()
   }
 
+  async addCharacterToParty(party: Party | ID, character: Character | ID):Promise<Party> {
+    return await this.post(this.api.memberships(party), {"character_id": character.id})
+  }
+
+  async addVehicleToParty(party: Party | ID, vehicle: Vehicle | ID):Promise<Party> {
+    return await this.post(this.api.memberships(party), {"vehicle_id": vehicle.id})
+  }
+
+  async removeCharacterFromParty(party: Party | ID, character: Character | ID):Promise<Party> {
+    return await this.delete(`${this.api.memberships(party, character)}/character`)
+  }
+
+  async removeVehicleFromParty(party: Party | ID, vehicle: Vehicle | ID):Promise<Party> {
+    return await this.delete(`${this.api.memberships(party, vehicle)}/vehicle`)
+  }
+
   async getParties(params = {}):Promise<PartiesResponse> {
     const query = Object.entries(params).map(([key, value]) => `${key}=${value || ""}`).join("&")
     return this.get<PartiesResponse>(`${this.api.parties()}?${query}`)

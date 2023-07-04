@@ -12,6 +12,7 @@ import type {
   Fight,
   Character,
   User,
+  Person,
   ID
 } from "../types/types"
 
@@ -19,6 +20,14 @@ class Api {
   base():string { return process.env.NEXT_PUBLIC_SERVER_URL as string }
 
   api():string { return `${this.base()}/api/v1` }
+
+  memberships(party: Party | ID, person?: Character | Vehicle | ID): string {
+    if (person) {
+      return `${this.parties(party)}/memberships/${person}`
+    } else {
+      return `${this.parties(party)}/memberships`
+    }
+  }
 
   parties(party?: Party | ID): string {
     if (party?.id) {
