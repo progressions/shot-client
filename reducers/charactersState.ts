@@ -1,4 +1,4 @@
-import { Archetype, CharacterType, Character, PaginationMeta, CharacterCategory, defaultPaginationMeta, defaultCharacter, FactionName, CharactersResponse, CharactersAndVehiclesResponse } from "../types/types"
+import { FactionName, Archetype, CharacterType, Character, PaginationMeta, CharacterCategory, defaultPaginationMeta, defaultCharacter, defaultFaction, Faction, CharactersResponse, CharactersAndVehiclesResponse } from "../types/types"
 
 export enum CharactersActions {
   RESET = "reset",

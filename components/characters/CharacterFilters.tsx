@@ -13,6 +13,7 @@ export default function CharacterFilters({ state, dispatch }: CharacterFiltersPr
   const { loading, character, characters, character_type, faction, factions, archetype, archetypes, search } = state
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    console.log("what", event.target.name, event.target.value)
     dispatch({ type: CharactersActions.UPDATE, name: event.target.name, value: event.target.value })
   }
 
@@ -30,6 +31,8 @@ export default function CharacterFilters({ state, dispatch }: CharacterFiltersPr
 
     return `${emoji} ${character.name} (${character.action_values["Type"]})`
   }
+
+  console.log("faction", faction)
 
   return (
     <>
@@ -51,12 +54,12 @@ export default function CharacterFilters({ state, dispatch }: CharacterFiltersPr
             name="faction"
             label="Faction"
             select
-            value={faction}
+            value={faction || ""}
             onChange={handleChange}
           >
             <MenuItem key="" value="">All</MenuItem>
             {
-              factions.map((faction: FactionName) => <MenuItem key={faction.id} value={faction.name}>{faction.name}</MenuItem>)
+              factions.map((faction: FactionName) => <MenuItem key={faction} value={faction}>{faction}</MenuItem>)
             }
           </StyledSelect>
         </Box>

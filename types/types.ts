@@ -563,6 +563,11 @@ export const defaultWeapon:Weapon = {
   kachunk: false
 }
 
+export const defaultFaction:Faction = {
+  name: "",
+  description: ""
+}
+
 export const defaultPaginationMeta:PaginationMeta = {
   current_page: 1,
   next_page: null,
