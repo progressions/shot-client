@@ -31,12 +31,6 @@ export default function CharacterFilters({ state, dispatch }: CharacterFiltersPr
     return `${emoji} ${character.name} (${character.action_values["Type"]})`
   }
 
-  const getFactionLabel = (faction: Faction) => {
-    if (!faction.name) return ""
-
-    return faction.name
-  }
-
   return (
     <>
       <Stack direction="row" spacing={1}>
