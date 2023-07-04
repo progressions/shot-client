@@ -31,10 +31,16 @@ export default function CharacterFilters({ state, dispatch }: CharacterFiltersPr
     return `${emoji} ${character.name} (${character.action_values["Type"]})`
   }
 
+  const getFactionLabel = (faction: Faction) => {
+    if (!faction.name) return ""
+
+    return faction.name
+  }
+
   return (
     <>
       <Stack direction="row" spacing={1}>
-        <Box sx={{width: 180}}>
+        <Box sx={{width: 165}}>
           <StyledSelect fullWidth name="character_type" label="Character Type" select value={character_type} onChange={handleChange}>
             <MenuItem value="">All</MenuItem>
             <MenuItem value="PC">Player Character</MenuItem>
@@ -45,15 +51,22 @@ export default function CharacterFilters({ state, dispatch }: CharacterFiltersPr
             <MenuItem value="Uber-Boss">Uber-Boss</MenuItem>
           </StyledSelect>
         </Box>
-        <Box sx={{width: 180}}>
-          <StyledSelect fullWidth name="faction" label="Faction" select value={faction} onChange={handleChange}>
+        <Box sx={{width: 165}}>
+          <StyledSelect
+            fullWidth
+            name="faction"
+            label="Faction"
+            select
+            value={faction}
+            onChange={handleChange}
+          >
             <MenuItem key="" value="">All</MenuItem>
             {
-              factions.map((faction: FactionName) => <MenuItem key={faction} value={faction}>{faction}</MenuItem>)
+              factions.map((faction: FactionName) => <MenuItem key={faction.id} value={faction.name}>{faction.name}</MenuItem>)
             }
           </StyledSelect>
         </Box>
-        <Box sx={{width: 180}}>
+        <Box sx={{width: 165}}>
           <StyledSelect fullWidth name="archetype" label="Archetype" select value={archetype} onChange={handleChange}>
             <MenuItem key="" value="">All</MenuItem>
             {
@@ -61,12 +74,12 @@ export default function CharacterFilters({ state, dispatch }: CharacterFiltersPr
             }
           </StyledSelect>
         </Box>
-        <Box sx={{width: 180}}>
+        <Box sx={{width: 165}}>
           <StyledAutocomplete
             disabled={loading}
             freeSolo
             options={characters}
-            sx={{ width: 180 }}
+            sx={{ width: 165 }}
             value={character}
             onChange={selectCharacter}
             getOptionLabel={getOptionLabel}
