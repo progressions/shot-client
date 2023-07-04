@@ -17,7 +17,7 @@ interface ActionNoPayload {
 }
 
 interface UpdateAction {
-  type: Extract<VehicleActions, VehicleActions.UPDATE | VehicleActions.ACTION_VALUE | VehicleActions.DESCRIPTION | VehicleActions.SKILLS>
+  type: any | Extract<VehicleActions, VehicleActions.UPDATE | VehicleActions.ACTION_VALUE | VehicleActions.DESCRIPTION | VehicleActions.SKILLS>
   name: string
   value: string | boolean | number
 }
@@ -33,7 +33,7 @@ export interface VehicleStateType {
   vehicle: Vehicle
 }
 
-export type VehicleStateAction = ActionNoPayload | UpdateAction | PayloadAction
+export type VehicleStateAction = ActionNoPayload | UpdateAction | PayloadAction | any
 
 export const initialVehicleState:VehicleStateType = {
   edited: false,

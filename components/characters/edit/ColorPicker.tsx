@@ -5,14 +5,16 @@ import { StyledTextField } from "../../StyledFields"
 import { useState } from "react"
 
 import type { CharacterStateAction } from "../../../reducers/characterState"
+import type { VehicleStateAction } from "../../../reducers/vehicleState"
 import { CharacterActions } from "../../../reducers/characterState"
+import { VehicleActions } from "../../../reducers/vehicleState"
 import type { Character } from "../../../types/types"
 
 interface ColorPickerProps {
   character: Character
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void
   setCharacter?: React.Dispatch<React.SetStateAction<Character>>
-  dispatch?: React.Dispatch<CharacterStateAction>
+  dispatch?: React.Dispatch<CharacterStateAction> | React.Dispatch<VehicleStateAction>
 }
 
 export default function ColorPicker({ character, onChange, setCharacter, dispatch }: ColorPickerProps) {

@@ -89,18 +89,6 @@ class Client {
     return await this.get(this.api.vehicles(null, vehicle))
   }
 
-  async updateVehicle(vehicle: Vehicle, fight?: Fight | null):Promise<Vehicle> {
-    return await this.patch(this.api.vehicles(fight, vehicle), {"vehicle": vehicle})
-  }
-
-  async createVehicle(vehicle: Vehicle, fight?: Fight | null):Promise<Vehicle> {
-    return await this.post(this.api.vehicles(fight, vehicle), {"vehicle": vehicle})
-  }
-
-  async deleteVehicle(vehicle: Vehicle, fight?: Fight | null):Promise<void> {
-    return await this.delete(this.api.vehicles(fight, vehicle))
-  }
-
   async updateCharacter(character: Character, fight?: Fight | null):Promise<Person> {
     // No need to send the character's schticks or weapons to the server
     const updatedCharacter = {...character, schticks: undefined, weapons: undefined}
