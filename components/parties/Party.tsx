@@ -26,7 +26,7 @@ export default function Party({ party }: PartyProps) {
   return (
     <PartyCardBase
       title={party.name}
-      subheader={`${party?.characters?.length} members`}
+      subheader={`${party?.characters?.length} characters, ${party?.vehicles?.length} vehicles`}
       action={deleteButton}
     >
       <Typography>{party.description}</Typography>

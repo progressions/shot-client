@@ -12,6 +12,7 @@ export interface Party {
   description?: string
   faction?: Faction | null,
   characters?: Character[]
+  vehicles?: Vehicle[]
 }
 
 export interface Faction {
