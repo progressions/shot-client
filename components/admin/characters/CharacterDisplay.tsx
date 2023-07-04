@@ -21,7 +21,9 @@ export default function CharacterDisplay({ character, user }: CharacterDisplayPr
             {character.name}
           </Link> }
           { character.category === "vehicle" &&
-            character.name }
+          <Link color="inherit" href={`/vehicles/${character.id}`}>
+            {character.name}
+          </Link> }
         </Typography>
       </TableCell>
       <TableCell>{character.action_values["Type"]}</TableCell>
