@@ -17,11 +17,11 @@ export default function CharacterDisplay({ character, user }: CharacterDisplayPr
       <TableCell sx={{width: 200}}>
         <Typography variant="h5">
           { character.category === "character" &&
-          <Link color="inherit" href={`/characters/${character.id}`}>
+          <Link underline="hover" color="inherit" href={`/characters/${character.id}`}>
             {character.name}
           </Link> }
           { character.category === "vehicle" &&
-          <Link color="inherit" href={`/vehicles/${character.id}`}>
+          <Link underline="hover" color="inherit" href={`/vehicles/${character.id}`}>
             {character.name}
           </Link> }
         </Typography>
