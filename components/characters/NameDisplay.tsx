@@ -52,12 +52,14 @@ export default function NameDisplay({ character, editCharacter, deleteCharacter,
     )
   }
 
+  const link = character?.category == "vehicle" ? `/vehicles/${character.id}` : `/characters/${character.id}`
+
   return (
       <Box>
         <Box onMouseEnter={showButtons} onMouseLeave={hideButtons}>
           <Stack direction="row" spacing={1} alignItems="baseline">
             <Typography variant="h4" sx={{fontWeight: 'bold', overflow: "hidden", textOverflow: "ellipsis", width: "100%"}}>
-              <Link color="inherit" href={`/characters/${character.id}`} target="_blank">
+              <Link color="inherit" href={link} target="_blank">
                 { character.name }
               </Link>
             </Typography>
