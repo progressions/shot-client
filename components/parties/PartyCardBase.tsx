@@ -9,7 +9,7 @@ interface PartyCardBaseProps {
 
 export default function PartyCardBase({ title, subheader, avatar, action, children }: React.PropsWithChildren<PartyCardBaseProps>) {
   return (
-    <Card sx={{backgroundColor: colors.blueGrey["500"], width: 400, minHeight: 200}}>
+    <Card sx={{backgroundColor: colors.blueGrey["500"], minHeight: 200}}>
       <CardHeader
         title={title}
         subheader={subheader}

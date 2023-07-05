@@ -37,10 +37,16 @@ export default function Party({ party, state, dispatch }: PartyProps) {
     <ClearIcon />
   </IconButton>)
 
+  let subheader = ""
+  if (party.faction?.name) {
+    subheader += `Faction: ${party.faction.name} `
+  }
+  subheader += `(${party?.characters?.length} characters, ${party?.vehicles?.length} vehicles)`
+
   return (
     <PartyCardBase
       title={party.name}
-      subheader={`${party?.characters?.length} characters, ${party?.vehicles?.length} vehicles`}
+      subheader={subheader}
       action={deleteButton}
     >
       <Typography>{party.description}</Typography>

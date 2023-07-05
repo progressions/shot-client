@@ -1,4 +1,4 @@
-import { Grid, Stack } from "@mui/material"
+import { Stack } from "@mui/material"
 import type { Party as PartyType } from "../../types/types"
 import { PartiesStateType, PartiesActionType, PartiesActions } from "../../reducers/partiesState"
 import Party from "./Party"
@@ -15,15 +15,13 @@ export default function Parties({ state, dispatch }: PartiesProps) {
   return (
     <>
       <Subhead>Parties</Subhead>
-      <Grid container spacing={2}>
+      <Stack spacing={2} sx={{ width: "100%" }}>
         {
           parties.map(party => (
-            <Grid item key={party.id}>
-              <Party key={party.id} party={party} state={state} dispatch={dispatch} />
-            </Grid>
+            <Party key={party.id} party={party} state={state} dispatch={dispatch} />
           ))
         }
-      </Grid>
+      </Stack>
     </>
   )
 }
