@@ -71,7 +71,7 @@ export default function Faction({ faction, onChange }: FactionProps) {
           onChange={changeFaction}
           onOpen={getFactions}
           openOnFocus
-          renderInput={(params: InputParamsType) => <StyledTextField autoFocus name="faction_id" {...params} label="Faction" />}
+          renderInput={(params: InputParamsType) => <StyledTextField name="faction_id" {...params} label="Faction" />}
           getOptionLabel={(option: Faction) => option.name}
         />
       </Stack>
