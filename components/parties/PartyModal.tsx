@@ -28,7 +28,9 @@ export default function PartyModal({ state, dispatch, open, setOpen }: PartyModa
     dispatch({ type: PartiesActions.SAVING })
 
     try {
-      await client.createParty(party as Party)
+      const data = party?.id ?
+        await client.updateParty(party as Party) :
+        await client.createParty(party as Party)
       dispatch({ type: PartiesActions.EDIT })
       setOpen(false)
     } catch(error) {
@@ -72,10 +74,10 @@ export default function PartyModal({ state, dispatch, open, setOpen }: PartyModa
           disabled={loading}
         />
       </Stack>
-      <Faction faction={defaultFaction} onChange={handleChange} />
+      <Faction faction={party.faction || defaultFaction} onChange={handleChange} />
       <Stack direction="row" spacing={1} alignItems="center">
         <CancelButton disabled={loading} onClick={cancelForm} />
-        <SaveButton disabled={loading} onClick={addParty}>Add</SaveButton>
+        <SaveButton disabled={loading} onClick={addParty}>{ party?.id ? "Save" : "Add" }</SaveButton>
       </Stack>
     </>
   )

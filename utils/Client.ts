@@ -71,6 +71,10 @@ class Client {
     return await this.post(this.api.parties(), {"party": party})
   }
 
+  async updateParty(party: Party):Promise<Party> {
+    return await this.patch(this.api.parties(party), {"party": party})
+  }
+
   async addPartyToFight(party: Party | ID, fight: Fight | ID):Promise<Party> {
     return await this.post(this.api.addPartyToFight(party, fight))
   }

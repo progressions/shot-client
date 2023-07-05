@@ -30,7 +30,7 @@ export default function Home() {
     if (user?.id && edited) {
       getParties().catch(toastError)
     }
-  }, [edited, dispatch, user?.id, toastError, client, search])
+  }, [edited, dispatch, user?.id, toastError, client, search, faction?.id])
 
   return (
     <>
