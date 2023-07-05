@@ -16,7 +16,7 @@ import { CharactersActions, initialCharactersState, charactersReducer } from "..
 import CharacterFilters from './CharacterFilters'
 import { FightActions } from '../../reducers/fightState'
 
-export default function SelectCharacter() {
+export default function SelectCharacter({ addCharacter }) {
   const { user, client } = useClient()
   const { toastSuccess, toastError } = useToast()
   const { fight, dispatch:dispatchFight } = useFight()
@@ -55,24 +55,13 @@ export default function SelectCharacter() {
     dispatch({ type: CharactersActions.RESET })
   }
 
-  const handleSubmit = async (event: React.SyntheticEvent):Promise<void> => {
+  const handleSubmit = async (event: React.SyntheticEvent) => {
     event.preventDefault()
 
-    const { id } = character
+    if (!character?.id) return
 
-    if (!id) return
-
-    try {
-      (character.category === "character") ?
-        await client.addCharacter(fight, {id: id})
-      : await client.addVehicle(fight, {id: id})
-
-      toastSuccess(`${character.name} added.`)
-      dispatch({ type: CharactersActions.RESET_CHARACTER })
-    } catch(error) {
-      toastError()
-    }
-    dispatchFight({ type: FightActions.EDIT })
+    await addCharacter(character)
+    dispatch({ type: CharactersActions.RESET_CHARACTER })
   }
 
   return (

@@ -10,6 +10,8 @@ import { useEffect, useReducer } from "react"
 import type { PartiesStateType, PartiesActionType } from "../../reducers/partiesState"
 import { PartiesActions } from "../../reducers/partiesState"
 import Faction from "../../components/characters/edit/Faction"
+import CharacterFilters from "../../components/characters/CharacterFilters"
+import SelectCharacter from "../../components/characters/SelectCharacter"
 
 interface PartyModalProps {
   state: PartiesStateType
@@ -75,6 +77,7 @@ export default function PartyModal({ state, dispatch, open, setOpen }: PartyModa
         />
       </Stack>
       <Faction faction={party.faction || defaultFaction} onChange={handleChange} />
+      <SelectCharacter />
       <Stack direction="row" spacing={1} alignItems="center">
         <CancelButton disabled={loading} onClick={cancelForm} />
         <SaveButton disabled={loading} onClick={addParty}>{ party?.id ? "Save" : "Add" }</SaveButton>
