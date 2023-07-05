@@ -20,6 +20,7 @@ export default function PartyAutocomplete({ state, dispatch }: PartyAutocomplete
   }
 
   const getOptionLabel = (option: Party) => {
+    if (!option?.id) return ""
     return `${option?.name} (${option?.characters?.length} characters)`
   }
 

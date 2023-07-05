@@ -6,6 +6,7 @@ import { useToast } from "../../contexts/ToastContext"
 import CreateParty from "./CreateParty"
 import { PartiesActions, PartiesStateType, PartiesActionType } from "../../reducers/partiesState"
 import { StyledSelect } from "../StyledFields"
+import PartyAutocomplete from "./PartyAutocomplete"
 import type { Faction, Party } from "../../types/types"
 
 interface FilterPartiesProps {
@@ -49,6 +50,7 @@ export default function FilterParties({ state, dispatch }: FilterPartiesProps) {
             }
           </StyledSelect>
         </Box>
+        <PartyAutocomplete state={state} dispatch={dispatch} />
         { !character?.id && <CreateParty state={state} dispatch={dispatch} /> }
       </Stack>
     </>
