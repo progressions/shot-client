@@ -5,18 +5,32 @@ import Member from "./Member"
 import PartyCardBase from "./PartyCardBase"
 import ClearIcon from '@mui/icons-material/Clear'
 
+import type { PartiesStateType, PartiesActionType } from "../../reducers/partiesState"
 import type { Character, Party as PartyType } from "../../types/types"
+import { PartiesActions } from "../../reducers/partiesState"
 
 interface PartyProps {
   party: PartyType
+  state: PartiesStateType
+  dispatch: React.Dispatch<PartiesActionType>
 }
 
-export default function Party({ party }: PartyProps) {
+export default function Party({ party, state, dispatch }: PartyProps) {
   const { client } = useClient()
-  const { toastError } = useToast()
+  const { toastSuccess, toastError } = useToast()
 
   async function deleteFunction() {
-    console.log("Deleting party", party.id)
+    try {
+      if (party.characters.length > 0 || party.vehicles.length > 0) {
+        const doit = confirm("Delete this party? It has members.")
+        if (!doit) return
+      }
+      await client.deleteParty(party)
+      dispatch({ type: PartiesActions.EDIT })
+      toastSuccess("Party deleted")
+    } catch (error) {
+      toastError()
+    }
   }
 
   const deleteButton = (<IconButton key="delete" onClick={deleteFunction}>

@@ -8,6 +8,7 @@ import { useToast } from '../../contexts/ToastContext'
 import { partiesReducer, initialPartiesState, PartiesActions } from '../../reducers/partiesState'
 import Parties from '../../components/parties/Parties'
 import { ButtonBar } from "../../components/StyledFields"
+import FilterParties from "../../components/parties/FilterParties"
 
 export default function Home() {
   const { user, client } = useClient()
@@ -40,6 +41,7 @@ export default function Home() {
         <Layout>
           <Container maxWidth="md" sx={{paddingTop: 2}}>
             <ButtonBar sx={{height: 80}}>
+                <FilterParties state={state} dispatch={dispatch} />
             </ButtonBar>
             <Parties state={state} dispatch={dispatch} />
           </Container>

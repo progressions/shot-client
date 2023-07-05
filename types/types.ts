@@ -11,8 +11,8 @@ export interface Party {
   name: string
   description?: string
   faction?: Faction | null,
-  characters?: Character[]
-  vehicles?: Vehicle[]
+  characters: Character[]
+  vehicles: Vehicle[]
 }
 
 export interface Faction {
@@ -550,6 +550,14 @@ export const defaultSite:Site = {
   name: "",
   description: "",
   faction: null
+}
+
+export const defaultParty:Party = {
+  name: "",
+  description: "",
+  faction: null,
+  characters: [],
+  vehicles: []
 }
 
 export const defaultWeapon:Weapon = {

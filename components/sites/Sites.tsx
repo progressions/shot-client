@@ -6,7 +6,6 @@ interface SitesProps {
 }
 
 export default function Sites({ sites }: SitesProps) {
-  console.log('Sites', sites)
   return (
     <>
       {

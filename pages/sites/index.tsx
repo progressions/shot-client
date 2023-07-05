@@ -7,6 +7,7 @@ import { useReducer, useEffect } from 'react'
 import { useToast } from '../../contexts/ToastContext'
 import { sitesReducer, initialSitesState, SitesActions } from '../../reducers/sitesState'
 import Sites from '../../components/sites/Sites'
+import { ButtonBar } from "../../components/StyledFields"
 
 export default function Home() {
   const { user, client } = useClient()
@@ -37,8 +38,9 @@ export default function Home() {
       </Head>
       <main>
         <Layout>
-          <Container maxWidth="md">
-            <Typography variant="h1" gutterBottom>Sites</Typography>
+          <Container maxWidth="md" sx={{paddingTop: 2}}>
+            <ButtonBar sx={{height: 80}}>
+            </ButtonBar>
             <Sites sites={sites} />
           </Container>
         </Layout>

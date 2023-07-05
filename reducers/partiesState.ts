@@ -1,4 +1,4 @@
-import { Party, PartiesResponse, PaginationMeta, defaultPaginationMeta } from "../types/types"
+import { defaultParty, Party, PartiesResponse, PaginationMeta, defaultPaginationMeta } from "../types/types"
 
 export enum PartiesActions {
   EDIT = "edit",
@@ -7,7 +7,8 @@ export enum PartiesActions {
   PARTY = "party",
   RESET = "reset",
   SUCCESS = "success",
-  UPDATE = "update"
+  UPDATE = "update",
+  SAVING = "saving"
 }
 
 export interface PartiesStateType {
@@ -16,16 +17,17 @@ export interface PartiesStateType {
   loading: boolean
   meta: PaginationMeta
   open: boolean
-  party: Party | null
+  party: Party
   parties: Party[]
   saving: boolean
   search: string
+  page?: number
 }
 
 export type PayloadType = Party | PartiesResponse | string | Element | null
 
 interface ActionNoPayload {
-  type: Extract<PartiesActions, PartiesActions.RESET | PartiesActions.EDIT | PartiesActions.SUCCESS>
+  type: Extract<PartiesActions, PartiesActions.RESET | PartiesActions.EDIT | PartiesActions.SUCCESS | PartiesActions.SAVING>
 }
 
 interface PayloadAction {
@@ -47,7 +49,7 @@ export const initialPartiesState: PartiesStateType = {
   loading: true,
   meta: defaultPaginationMeta,
   open: false,
-  party: null,
+  party: defaultParty,
   parties: [],
   search: "",
   saving: false,
@@ -78,7 +80,10 @@ export function partiesReducer(state: PartiesStateType, action: PartiesActionTyp
       return {
         ...state,
         edited: true,
-        [action.name]: action.value
+        party: {
+          ...state.party,
+          [action.name]: action.value
+        }
       }
     case PartiesActions.PARTY:
       return {

@@ -19,7 +19,7 @@ export default function Parties({ state, dispatch }: PartiesProps) {
         {
           parties.map(party => (
             <Grid item key={party.id}>
-              <Party key={party.id} party={party} />
+              <Party key={party.id} party={party} state={state} dispatch={dispatch} />
             </Grid>
           ))
         }
