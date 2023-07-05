@@ -1,4 +1,4 @@
-import { defaultParty, Party, PartiesResponse, PaginationMeta, defaultPaginationMeta } from "../types/types"
+import { Faction, defaultFaction, defaultParty, Party, PartiesResponse, PaginationMeta, defaultPaginationMeta } from "../types/types"
 
 export enum PartiesActions {
   EDIT = "edit",
@@ -19,6 +19,8 @@ export interface PartiesStateType {
   open: boolean
   party: Party
   parties: Party[]
+  faction: Faction
+  factions: Faction[]
   saving: boolean
   search: string
   page?: number
@@ -46,6 +48,8 @@ export type PartiesActionType = ActionNoPayload | UpdateAction | PayloadAction
 export const initialPartiesState: PartiesStateType = {
   anchorEl: null,
   edited: true,
+  faction: defaultFaction,
+  factions: [],
   loading: true,
   meta: defaultPaginationMeta,
   open: false,
@@ -77,6 +81,14 @@ export function partiesReducer(state: PartiesStateType, action: PartiesActionTyp
         edited: false
       }
     case PartiesActions.UPDATE:
+      if (action.name === "faction") {
+        const faction = state.factions.find(faction => faction.id === action.value) || defaultFaction
+        return {
+          ...state,
+          edited: true,
+          [action.name]: faction
+        }
+      }
       return {
         ...state,
         edited: true,
@@ -92,13 +104,14 @@ export function partiesReducer(state: PartiesStateType, action: PartiesActionTyp
         party: (action.payload || initialPartiesState.party) as Party,
       }
     case PartiesActions.PARTIES:
-      const { parties, meta } = action.payload as PartiesResponse
+      const { parties, factions, meta } = action.payload as PartiesResponse
       return {
         ...state,
         loading: false,
-        parties: parties,
-        meta: meta,
         edited: false,
+        parties,
+        factions,
+        meta,
       }
     case PartiesActions.RESET:
       return initialPartiesState

@@ -21,11 +21,13 @@ export interface Faction {
 
 export interface PartiesResponse {
   parties: Party[]
+  factions: Faction[]
   meta: PaginationMeta
 }
 
 export interface SitesResponse {
   sites: Site[]
+  factions: Faction[]
   meta: PaginationMeta
 }
 
