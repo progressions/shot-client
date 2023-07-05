@@ -27,7 +27,7 @@ export default function SelectCharacter() {
   useEffect(() => {
     const reload = async () => {
       try {
-        const data = await client.getCharactersAndVehicles({ faction, archetype, search, character_type, fight_id: fight?.id, show_all: showHidden })
+        const data = await client.getCharactersAndVehicles({ faction_id: faction.id, archetype, search, character_type, fight_id: fight?.id, show_all: showHidden })
         dispatch({ type: CharactersActions.CHARACTERS, payload: data })
       } catch(error) {
         toastError()
