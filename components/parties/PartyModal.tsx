@@ -50,6 +50,19 @@ export default function PartyModal({ state, dispatch, open, setOpen }: PartyModa
     dispatch({ type: PartiesActions.UPDATE, name: event.target.name, value: event.target.value })
   }
 
+  const addCharacter = async (character: Character):Promise<void> => {
+    try {
+      (character.category === "character") ?
+        await client.addCharacterToParty(party, character)
+      : await client.addVehicleToParty(party, character)
+
+      toastSuccess(`${character.name} added.`)
+    } catch(error) {
+      toastError()
+    }
+    dispatch({ type: PartiesActions.EDIT })
+  }
+
   return (
     <>
       <Stack direction="row" spacing={1} alignItems="center">
@@ -77,7 +90,7 @@ export default function PartyModal({ state, dispatch, open, setOpen }: PartyModa
         />
       </Stack>
       <Faction faction={party.faction || defaultFaction} onChange={handleChange} />
-      <SelectCharacter />
+      <SelectCharacter addCharacter={addCharacter} />
       <Stack direction="row" spacing={1} alignItems="center">
         <CancelButton disabled={loading} onClick={cancelForm} />
         <SaveButton disabled={loading} onClick={addParty}>{ party?.id ? "Save" : "Add" }</SaveButton>
