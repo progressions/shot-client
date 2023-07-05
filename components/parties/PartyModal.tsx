@@ -90,7 +90,7 @@ export default function PartyModal({ state, dispatch, open, setOpen }: PartyModa
         />
       </Stack>
       <Faction faction={party.faction || defaultFaction} onChange={handleChange} />
-      <SelectCharacter addCharacter={addCharacter} />
+      { party?.id && <SelectCharacter addCharacter={addCharacter} /> }
       <Stack direction="row" spacing={1} alignItems="center">
         <CancelButton disabled={loading} onClick={cancelForm} />
         <SaveButton disabled={loading} onClick={addParty}>{ party?.id ? "Save" : "Add" }</SaveButton>
