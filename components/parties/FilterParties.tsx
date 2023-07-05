@@ -33,7 +33,7 @@ export default function FilterParties({ state, dispatch }: FilterPartiesProps) {
 
   return (
     <>
-      <Stack spacing={2} direction="row" alignItems="top">
+      <Stack spacing={2} direction="row" alignItems="center">
         <Box sx={{width: 155}}>
           <StyledSelect
             fullWidth
