@@ -31,8 +31,6 @@ export default function FilterParties({ state, dispatch }: FilterPartiesProps) {
     return party.name
   }
 
-  console.log(factions)
-
   return (
     <>
       <Stack spacing={2} direction="row" alignItems="top">

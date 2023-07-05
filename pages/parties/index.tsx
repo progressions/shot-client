@@ -20,7 +20,6 @@ export default function Home() {
   useEffect(() => {
     async function getParties() {
       try {
-        console.log("faction", faction)
         const data = await client.getParties({ search, faction_id: faction.id })
         dispatch({ type: PartiesActions.PARTIES, payload: data })
       } catch(error) {
