@@ -2,8 +2,6 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { Session, User as NextAuthUser } from "next-auth"
 import { AlertColor } from "@mui/material"
 
-export type FactionName = string
-
 export type Archetype = string
 
 export interface Party {
@@ -16,7 +14,7 @@ export interface Party {
 }
 
 export interface Faction {
-  id?: ID
+  id?: string
   name: string
   description: string
 }
@@ -53,14 +51,14 @@ export interface FightsResponse {
 export interface CharactersResponse {
   characters: Character[]
   meta: PaginationMeta
-  factions: FactionName[]
+  factions: Faction[]
   archetypes: Archetype[]
 }
 
 export interface CharactersAndVehiclesResponse {
   characters: Character[]
   meta: PaginationMeta
-  factions: FactionName[]
+  factions: Faction[]
 }
 
 export interface ErrorMessages {
@@ -187,7 +185,6 @@ export interface ActionValues {
   Vehicle?: boolean
   "Marks of Death": number
   Archetype: Archetype
-  Faction: FactionName
 }
 
 export type SkillValue = [string, number] | [string, undefined]
@@ -225,7 +222,6 @@ export interface VehicleActionValues {
   "Condition Points": number
   Position: Position
   Type: CharacterType
-  Faction: FactionName
 }
 
 export interface Schtick {
@@ -263,6 +259,8 @@ export interface Vehicle {
   color: string
   action_values: VehicleActionValues
   description: DescriptionValues
+  faction_id: string | null
+  faction: Faction
   schticks: Schtick[]
   advancements: Advancement[]
   sites: Site[]
@@ -282,6 +280,8 @@ export interface Person {
   current_shot?: number | string
   impairments: number
   color: string
+  faction_id: string | null
+  faction: Faction
   action_values: ActionValues
   description: DescriptionValues
   schticks: Schtick[]
@@ -394,6 +394,12 @@ export interface ServerSideProps {
   query?: QueryType
 }
 
+export const defaultFaction:Faction = {
+  id: "",
+  name: "",
+  description: ""
+}
+
 export const defaultCharacter:Person = {
   name: '',
   category: "character",
@@ -401,6 +407,8 @@ export const defaultCharacter:Person = {
   current_shot: 0,
   impairments: 0,
   color: '',
+  faction_id: null,
+  faction: defaultFaction,
   action_values: {
     Archetype: "",
     Guns: 0,
@@ -422,7 +430,6 @@ export const defaultCharacter:Person = {
     Vehicle: false,
     "Marks of Death": 0,
     Damage: 0,
-    Faction: ""
   },
   description: {
     "Nicknames": "",
@@ -450,6 +457,8 @@ export const defaultVehicle:Vehicle = {
   current_shot: '',
   impairments: 0,
   color: '',
+  faction_id: null,
+  faction: defaultFaction,
   action_values: {
     Acceleration: 0,
     Handling: 0,
@@ -461,7 +470,6 @@ export const defaultVehicle:Vehicle = {
     Pursuer: "true",
     Position: "far",
     Type: "Featured Foe",
-    Faction: ""
   },
   description: {
     "Nicknames": "",
@@ -570,11 +578,6 @@ export const defaultWeapon:Weapon = {
   category: "",
   mook_bonus: 0,
   kachunk: false
-}
-
-export const defaultFaction:Faction = {
-  name: "",
-  description: ""
 }
 
 export const defaultPaginationMeta:PaginationMeta = {

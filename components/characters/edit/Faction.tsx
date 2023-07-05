@@ -2,24 +2,25 @@ import { useClient } from "../../../contexts/ClientContext"
 import { TextField, Stack, Autocomplete } from "@mui/material"
 import { useEffect, useReducer } from "react"
 import { StyledAutocomplete, StyledTextField } from "../../StyledFields"
-import type { FactionName, InputParamsType } from "../../../types/types"
+import type { Faction, InputParamsType } from "../../../types/types"
+import { defaultFaction } from "../../../types/types"
 
 export interface FactionStateType {
   loading: boolean
   anchorEl: Element | null
-  value: string
-  factions: string[]
+  value: Faction
+  factions: Faction[]
 }
 
 export interface FactionActionType {
   type: string
-  factions: FactionName[]
+  factions: Faction[]
 }
 
 const initialState: FactionStateType = {
   loading: false,
   anchorEl: null,
-  value: "",
+  value: defaultFaction,
   factions: []
 }
 
@@ -36,7 +37,7 @@ function factionReducer(state: FactionStateType, action: FactionActionType) {
 }
 
 interface FactionProps {
-  faction: string
+  faction: Faction
   onChange: (event: React.ChangeEvent<HTMLInputElement>, newValue: string) => void
 }
 
@@ -54,8 +55,8 @@ export default function Faction({ faction, onChange }: FactionProps) {
     }
   }
 
-  function changeFaction(event: React.ChangeEvent<HTMLInputElement>, newValue: string) {
-    onChange({...event, target: {...event.target, name: "Faction", value: newValue}}, newValue)
+  function changeFaction(event: React.ChangeEvent<HTMLInputElement>, newFaction: Faction) {
+    onChange({...event, target: {...event.target, name: "faction_id", value: newFaction.id as string}}, newFaction.id as string)
   }
 
   return (
@@ -66,18 +67,12 @@ export default function Faction({ faction, onChange }: FactionProps) {
           freeSolo
           options={factions}
           sx={{ width: 300 }}
-          value={faction}
+          value={faction || defaultFaction}
           onChange={changeFaction}
           onOpen={getFactions}
           openOnFocus
-          renderInput={(params: InputParamsType) => <StyledTextField autoFocus name="Faction" {...params} label="Faction" />}
-          filterOptions={(options: string[], params: any) => {
-            const filtered = options.filter((option: string) => option.toLowerCase().includes(params.inputValue.toLowerCase()))
-            if (filtered.length === 0 && params.inputValue !== "") {
-              filtered.push(params.inputValue)
-            }
-            return filtered
-          }}
+          renderInput={(params: InputParamsType) => <StyledTextField autoFocus name="faction_id" {...params} label="Faction" />}
+          getOptionLabel={(option: Faction) => option.name}
         />
       </Stack>
     </>

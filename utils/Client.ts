@@ -1,12 +1,12 @@
 import axios from "axios"
 import Api from "./Api"
 import type {
+  Faction,
   PartiesResponse,
   WeaponsResponse,
   SchticksResponse,
   CampaignsResponse,
   SitesResponse,
-  FactionName,
   Person,
   FightsResponse,
   CharactersAndVehiclesResponse,
@@ -112,7 +112,7 @@ class Client {
   async updateCharacter(character: Character, fight?: Fight | null):Promise<Person> {
     // No need to send the character's schticks or weapons to the server
     const updatedCharacter = {...character, schticks: undefined, weapons: undefined}
-    return await this.patch(this.api.characters(fight, character), {"character": updatedCharacter})
+    return await this.patch(this.api.characters(fight, {id: character.id} as ID), {"character": updatedCharacter})
   }
 
   async createCharacter(character: Character, fight?: Fight | null):Promise<Person> {
@@ -321,7 +321,7 @@ class Client {
     return await this.get(this.api.adminUsers())
   }
 
-  async getFactions():Promise<FactionName[]> {
+  async getFactions():Promise<Faction[]> {
     return await this.get(this.api.factions())
   }
 

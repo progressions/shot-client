@@ -32,7 +32,7 @@ export default function Characters(charactersResponse: CharactersResponse) {
   useEffect(() => {
     const reload = async () => {
       try {
-        const data = await client.getCharactersAndVehicles({ faction: faction, archetype, search, character_type, show_all: showHidden, page: state?.page })
+        const data = await client.getCharactersAndVehicles({ faction_id: faction.id, archetype, search, character_type, show_all: showHidden, page: state?.page })
         dispatch({ type: CharactersActions.CHARACTERS, payload: data })
       } catch(error) {
         toastError()

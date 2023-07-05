@@ -25,8 +25,6 @@ export async function getServerSideProps<GetServerSideProps>({ req, res, params 
       }
     }
   } catch(error: unknown | AxiosError) {
-    console.log("ERROR")
-    console.log(error)
     return {
       redirect: {
         permanent: false,

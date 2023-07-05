@@ -1,4 +1,4 @@
-import { FactionName, Archetype, CharacterType, Character, PaginationMeta, CharacterCategory, defaultPaginationMeta, defaultCharacter, defaultFaction, Faction, CharactersResponse, CharactersAndVehiclesResponse } from "../types/types"
+import { Archetype, CharacterType, Character, PaginationMeta, CharacterCategory, defaultPaginationMeta, defaultCharacter, defaultFaction, Faction, CharactersResponse, CharactersAndVehiclesResponse } from "../types/types"
 
 export enum CharactersActions {
   RESET = "reset",
@@ -25,8 +25,8 @@ export interface CharactersStateType {
   character_types: CharacterType[]
   characters: Character[]
   character: Character
-  faction: FactionName,
-  factions: FactionName[]
+  faction: Faction,
+  factions: Faction[]
   archetype: Archetype
   archetypes: Archetype[]
   search: string
@@ -61,7 +61,7 @@ export const initialCharactersState:CharactersStateType = {
   page: 1,
   character_type: "",
   character_types: [],
-  faction: "",
+  faction: defaultFaction,
   factions: [],
   archetype: "",
   archetypes: [],
@@ -114,6 +114,14 @@ export function charactersReducer(state: CharactersStateType, action: Characters
         edited: false
       }
     case CharactersActions.UPDATE:
+      if (action.name === "faction") {
+        const faction = state.factions.find(faction => faction.id === action.value) || defaultFaction
+        return {
+          ...state,
+          edited: true,
+          [action.name]: faction
+        }
+      }
       return {
         ...state,
         edited: true,

@@ -63,6 +63,10 @@ export default function EditCharacter({ character:initialCharacter }: EditCharac
     dispatchCharacter({ type: CharacterActions.ACTION_VALUE, name: event.target.name, value: event.target.value || newValue })
   }
 
+  function handleFactionChange(event: React.ChangeEvent<HTMLInputElement>, newValue: string) {
+    dispatchCharacter({ type: CharacterActions.UPDATE, name: event.target.name, value: event.target.value || newValue })
+  }
+
   function handleSkillsChange(event: React.ChangeEvent<HTMLInputElement>) {
     dispatchCharacter({ type: CharacterActions.SKILLS, name: event.target.name, value: event.target.value })
   }
@@ -109,7 +113,7 @@ export default function EditCharacter({ character:initialCharacter }: EditCharac
         <Stack spacing={2}>
           <Stack direction="row" spacing={1}>
             <StyledTextField name="name" label="Name" required autoFocus fullWidth onChange={handleChange} value={character.name} />
-            <Faction faction={action_values["Faction"]} onChange={handleAVChange} />
+            <Faction faction={character.faction} onChange={handleFactionChange} />
             <FormControlLabel label="Active" name="active" control={<Switch checked={character.active} />} onChange={handleCheck} />
           </Stack>
           <Stack direction="row" spacing={1}>

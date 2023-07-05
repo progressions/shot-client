@@ -5,7 +5,7 @@ import { useToast } from "../../contexts/ToastContext"
 import { useCharacter } from "../../contexts/CharacterContext"
 
 import type { FilterParamsType, OptionType, InputParamsType, Character, Party } from "../../types/types"
-import { defaultParty } from "../../types/types"
+import { defaultFaction, defaultParty } from "../../types/types"
 import { useEffect, useReducer } from "react"
 import type { PartiesStateType, PartiesActionType } from "../../reducers/partiesState"
 import { PartiesActions } from "../../reducers/partiesState"
@@ -22,8 +22,6 @@ export default function PartyModal({ state, dispatch, open, setOpen }: PartyModa
   const { toastSuccess, toastError } = useToast()
   const { client } = useClient()
   const { loading, party } = state
-
-  console.log(party)
 
   async function addParty(event: React.ChangeEvent<HTMLInputElement>) {
     event.preventDefault()
@@ -45,7 +43,6 @@ export default function PartyModal({ state, dispatch, open, setOpen }: PartyModa
   }
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
-    console.log(event.target.name, event.target.value)
     dispatch({ type: PartiesActions.UPDATE, name: event.target.name, value: event.target.value })
   }
 
@@ -75,7 +72,7 @@ export default function PartyModal({ state, dispatch, open, setOpen }: PartyModa
           disabled={loading}
         />
       </Stack>
-      <Faction faction={""} onChange={handleChange} />
+      <Faction faction={defaultFaction} onChange={handleChange} />
       <Stack direction="row" spacing={1} alignItems="center">
         <CancelButton disabled={loading} onClick={cancelForm} />
         <SaveButton disabled={loading} onClick={addParty}>Add</SaveButton>

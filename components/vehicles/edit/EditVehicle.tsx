@@ -87,7 +87,7 @@ export default function EditVehicle({ vehicle:initialVehicle }: EditVehicleProps
         <Stack spacing={2}>
           <Stack direction="row" spacing={1}>
             <StyledTextField name="name" label="Name" required autoFocus fullWidth onChange={handleChange} value={vehicle.name} />
-            <Faction faction={action_values["Faction"]} onChange={handleAVChange} />
+            <Faction faction={vehicle.faction} onChange={handleAVChange} />
             <FormControlLabel label="Active" name="active" control={<Switch checked={vehicle.active} />} onChange={handleCheck} />
           </Stack>
           <Stack direction="row" spacing={1}>

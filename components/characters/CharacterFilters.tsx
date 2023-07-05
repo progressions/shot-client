@@ -1,8 +1,9 @@
 import { Stack, Box, TextField, MenuItem } from "@mui/material"
 
-import type { Character, Archetype, FactionName, InputParamsType } from "../../types/types"
+import type { Character, Archetype, Faction, InputParamsType } from "../../types/types"
 import { CharactersStateType, CharactersActionType, CharactersActions } from "../../reducers/charactersState"
 import { StyledAutocomplete, StyledTextField, StyledSelect } from "../StyledFields"
+import { defaultFaction } from "../../types/types"
 
 interface CharacterFiltersProps {
   state: CharactersStateType,
@@ -13,7 +14,6 @@ export default function CharacterFilters({ state, dispatch }: CharacterFiltersPr
   const { loading, character, characters, character_type, faction, factions, archetype, archetypes, search } = state
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    console.log("what", event.target.name, event.target.value)
     dispatch({ type: CharactersActions.UPDATE, name: event.target.name, value: event.target.value })
   }
 
@@ -32,12 +32,10 @@ export default function CharacterFilters({ state, dispatch }: CharacterFiltersPr
     return `${emoji} ${character.name} (${character.action_values["Type"]})`
   }
 
-  console.log("faction", faction)
-
   return (
     <>
       <Stack direction="row" spacing={1}>
-        <Box sx={{width: 165}}>
+        <Box sx={{width: 155}}>
           <StyledSelect fullWidth name="character_type" label="Character Type" select value={character_type} onChange={handleChange}>
             <MenuItem value="">All</MenuItem>
             <MenuItem value="PC">Player Character</MenuItem>
@@ -48,22 +46,22 @@ export default function CharacterFilters({ state, dispatch }: CharacterFiltersPr
             <MenuItem value="Uber-Boss">Uber-Boss</MenuItem>
           </StyledSelect>
         </Box>
-        <Box sx={{width: 165}}>
+        <Box sx={{width: 155}}>
           <StyledSelect
             fullWidth
             name="faction"
             label="Faction"
             select
-            value={faction || ""}
+            value={faction.id}
             onChange={handleChange}
           >
             <MenuItem key="" value="">All</MenuItem>
             {
-              factions.map((faction: FactionName) => <MenuItem key={faction} value={faction}>{faction}</MenuItem>)
+              factions.map((faction: Faction) => <MenuItem key={faction.id} value={faction.id}>{faction.name}</MenuItem>)
             }
           </StyledSelect>
         </Box>
-        <Box sx={{width: 165}}>
+        <Box sx={{width: 155}}>
           <StyledSelect fullWidth name="archetype" label="Archetype" select value={archetype} onChange={handleChange}>
             <MenuItem key="" value="">All</MenuItem>
             {
@@ -71,12 +69,12 @@ export default function CharacterFilters({ state, dispatch }: CharacterFiltersPr
             }
           </StyledSelect>
         </Box>
-        <Box sx={{width: 165}}>
+        <Box sx={{width: 155}}>
           <StyledAutocomplete
             disabled={loading}
             freeSolo
             options={characters}
-            sx={{ width: 165 }}
+            sx={{ width: 155 }}
             value={character}
             onChange={selectCharacter}
             getOptionLabel={getOptionLabel}
