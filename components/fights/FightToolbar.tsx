@@ -10,7 +10,7 @@ import RollInitiative from "./RollInitiative"
 import GamemasterOnly from "../GamemasterOnly"
 import SelectParty from "../parties/SelectParty"
 
-import type { Fight, Character } from "../../types/types"
+import type { Fight, Vehicle, Character } from "../../types/types"
 
 import { useFight } from "../../contexts/FightContext"
 import { useClient } from "../../contexts/ClientContext"
@@ -39,8 +39,8 @@ export default function FightToolbar({ showHidden, setShowHidden }: FightToolbar
   const addCharacter = async (character: Character):Promise<void> => {
     try {
       (character.category === "character") ?
-        await client.addCharacter(fight, character)
-      : await client.addVehicle(fight, character)
+        await client.addCharacter(fight, character as Character)
+      : await client.addVehicle(fight, character as Vehicle)
 
       toastSuccess(`${character.name} added.`)
     } catch(error) {

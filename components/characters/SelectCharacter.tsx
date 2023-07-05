@@ -16,7 +16,11 @@ import { CharactersActions, initialCharactersState, charactersReducer } from "..
 import CharacterFilters from './CharacterFilters'
 import { FightActions } from '../../reducers/fightState'
 
-export default function SelectCharacter({ addCharacter }) {
+interface SelectCharacterProps {
+  addCharacter: (character: Character | Vehicle) => Promise<void>
+}
+
+export default function SelectCharacter({ addCharacter }: SelectCharacterProps) {
   const { user, client } = useClient()
   const { toastSuccess, toastError } = useToast()
   const { fight, dispatch:dispatchFight } = useFight()

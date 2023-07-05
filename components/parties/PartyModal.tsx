@@ -4,7 +4,7 @@ import { useClient } from "../../contexts/ClientContext"
 import { useToast } from "../../contexts/ToastContext"
 import { useCharacter } from "../../contexts/CharacterContext"
 
-import type { FilterParamsType, OptionType, InputParamsType, Character, Party } from "../../types/types"
+import type { Vehicle, FilterParamsType, OptionType, InputParamsType, Character, Party } from "../../types/types"
 import { defaultFaction, defaultParty } from "../../types/types"
 import { useEffect, useReducer } from "react"
 import type { PartiesStateType, PartiesActionType } from "../../reducers/partiesState"
@@ -53,8 +53,8 @@ export default function PartyModal({ state, dispatch, open, setOpen }: PartyModa
   const addCharacter = async (character: Character):Promise<void> => {
     try {
       (character.category === "character") ?
-        await client.addCharacterToParty(party, character)
-      : await client.addVehicleToParty(party, character)
+        await client.addCharacterToParty(party, character as Character)
+      : await client.addVehicleToParty(party, character as Vehicle)
 
       toastSuccess(`${character.name} added.`)
     } catch(error) {

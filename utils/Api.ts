@@ -22,8 +22,8 @@ class Api {
   api():string { return `${this.base()}/api/v1` }
 
   memberships(party: Party | ID, person?: Character | Vehicle | ID): string {
-    if (person) {
-      return `${this.parties(party)}/memberships/${person}`
+    if (person?.id) {
+      return `${this.parties(party)}/memberships/${person.id}`
     } else {
       return `${this.parties(party)}/memberships`
     }
