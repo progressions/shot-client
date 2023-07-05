@@ -6,6 +6,7 @@ import { useToast } from "../../contexts/ToastContext"
 import CreateParty from "./CreateParty"
 import { PartiesActions, PartiesStateType, PartiesActionType } from "../../reducers/partiesState"
 import { StyledSelect } from "../StyledFields"
+import type { Faction, Party } from "../../types/types"
 
 interface FilterPartiesProps {
   state: PartiesStateType
@@ -23,7 +24,7 @@ export default function FilterParties({ state, dispatch }: FilterPartiesProps) {
   }
 
   const selectParty = (event: React.ChangeEvent<HTMLInputElement>, value: Party) => {
-    dispatch({ type: PartiesActions.CHARACTER, payload: value })
+    dispatch({ type: PartiesActions.PARTY, payload: value })
   }
 
   const getOptionLabel = (party: Party) => {
