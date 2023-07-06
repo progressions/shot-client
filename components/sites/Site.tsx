@@ -28,7 +28,7 @@ export default function Site({ site, state, dispatch }: SiteProps) {
 
   async function deleteFunction() {
     try {
-      if (site.characters.length > 0) {
+      if (site?.characters?.length) {
         const doit = confirm("Delete this site? It has members.")
         if (!doit) return
       }

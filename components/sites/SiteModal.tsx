@@ -52,9 +52,7 @@ export default function SiteModal({ state, dispatch, open, setOpen }: SiteModalP
 
   const addCharacter = async (character: Character):Promise<void> => {
     try {
-      (character.category === "character") ?
-        await client.addCharacterToSite(site, character as Character)
-      : await client.addVehicleToSite(site, character as Vehicle)
+      await client.addCharacterToSite(site, character as Character)
 
       toastSuccess(`${character.name} added.`)
     } catch(error) {

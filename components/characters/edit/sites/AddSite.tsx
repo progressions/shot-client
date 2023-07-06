@@ -59,7 +59,7 @@ export default function AddSite() {
   }
 
   function handleInputChange(event: React.ChangeEvent<HTMLInputElement>, newValue: string) {
-    dispatchSites({ type: SitesActions.NAME, payload: newValue })
+    dispatchSites({ type: SitesActions.SEARCH, payload: newValue })
   }
 
   function getOptionLabel(option: Site) {
@@ -81,7 +81,7 @@ export default function AddSite() {
         onChange={handleSelect}
         getOptionLabel={getOptionLabel}
         isOptionEqualToValue={(option: Site, value: Site) => option.id === value.id}
-        renderInput={(params: InputParamsType) => <StyledSelect helperText={helperText} {...params} onFocus={() => dispatchSites({ type: SitesActions.RESET })} label="Site" />}
+        renderInput={(params: InputParamsType) => <StyledSelect helperText={helperText} {...params} onFocus={() => dispatchSites({ type: SitesActions.EDIT })} label="Site" />}
         filterOptions={(options: Site[], params: any) => {
           const filtered = options.filter((option: Site) => option.name.toLowerCase().includes(params.inputValue.toLowerCase()))
           if (filtered.length === 0 && params.inputValue !== "") {

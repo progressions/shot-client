@@ -192,6 +192,14 @@ class Client {
     return await this.get(this.api.allSites(site))
   }
 
+  async deleteSite(site: Site):Promise<void> {
+    return await this.delete(this.api.allSites(site))
+  }
+
+  async updateSite(site: Site):Promise<Site> {
+    return await this.patch(this.api.allSites(site), {"site": site})
+  }
+
   async addCharacterToSite(site: Site, character: Character):Promise<Site> {
     return await this.post(this.api.sites(character), {"site": site})
   }

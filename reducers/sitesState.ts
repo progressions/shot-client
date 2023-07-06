@@ -34,7 +34,7 @@ interface ActionNoPayload {
 }
 
 interface PayloadAction {
-  type: Extract<SitesActions, SitesActions.SITE | SitesActions.SITES | SitesActions.OPEN>
+  type: Extract<SitesActions, SitesActions.SITE | SitesActions.SITES | SitesActions.OPEN | SitesActions.SEARCH>
   payload: PayloadType
 }
 
@@ -71,14 +71,7 @@ export function sitesReducer(state: SitesStateType, action: SitesActionType): Si
       return {
         ...state,
         edited: true,
-        name: (action.payload || initialSitesState.name) as string,
-      }
-    case SitesActions.OPEN:
-      return {
-        ...state,
-        edited: true,
-        open: true,
-        anchorEl: action.payload as Element
+        search: (action.payload || initialSitesState.search) as string,
       }
     case SitesActions.SUCCESS:
       return {
