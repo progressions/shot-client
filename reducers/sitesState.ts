@@ -6,6 +6,7 @@ export enum SitesActions {
   SITES = "sites",
   SITE = "site",
   RESET = "reset",
+  SEARCH = "search",
   SUCCESS = "success",
   UPDATE = "update",
   SAVING = "saving"
@@ -65,6 +66,12 @@ export function sitesReducer(state: SitesStateType, action: SitesActionType): Si
       return {
         ...state,
         edited: true
+      }
+    case SitesActions.SEARCH:
+      return {
+        ...state,
+        edited: true,
+        name: (action.payload || initialSitesState.name) as string,
       }
     case SitesActions.OPEN:
       return {
