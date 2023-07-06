@@ -28,7 +28,7 @@ export default function Site({ site, state, dispatch }: SiteProps) {
 
   async function deleteFunction() {
     try {
-      if (site.characters.length > 0 || site.vehicles.length > 0) {
+      if (site.characters.length > 0) {
         const doit = confirm("Delete this site? It has members.")
         if (!doit) return
       }
@@ -42,9 +42,7 @@ export default function Site({ site, state, dispatch }: SiteProps) {
 
   async function removeCharacter(character: Character | Vehicle) {
     try {
-      character.category === "vehicle" ?
-        await client.removeVehicleFromSite(character, site as Vehicle) :
-        await client.removeCharacterFromSite(character, site as Character)
+      await client.removeCharacterFromSite(site, character as Character)
       dispatch({ type: SitesActions.EDIT })
       toastSuccess(`${character.name} removed.`)
     } catch (error) {
@@ -70,7 +68,7 @@ export default function Site({ site, state, dispatch }: SiteProps) {
   if (site.faction?.name) {
     subheader += `Faction: ${site.faction.name} `
   }
-  subheader += `(${site?.characters?.length} characters, ${site?.vehicles?.length} vehicles)`
+  subheader += `(${site?.characters?.length} characters`
 
   function generateKey(character: Character | Vehicle, index: number): string {
     return `${character.id}-${index}`

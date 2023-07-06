@@ -36,12 +36,12 @@ export default function AddSite() {
 
     try {
       if (site.id) {
-        await client.addCharacterToSite(character, site)
+        await client.addCharacterToSite(site, character)
         await reloadCharacter()
         dispatchSites({ type: SitesActions.RESET })
       } else {
         const newSite = await client.createSite(site)
-        await client.addCharacterToSite(character, newSite)
+        await client.addCharacterToSite(newSite, character)
         await reloadCharacter()
         dispatchSites({ type: SitesActions.RESET })
       }
