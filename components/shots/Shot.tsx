@@ -65,7 +65,7 @@ export default function Shot({ shot, characters, editingCharacter, setEditingCha
           return <CharacterDetails key={character.id} character={character} editingCharacter={editingCharacter as Character} setEditingCharacter={setEditingCharacterWithCurrentShot} className={className} hidden={hidden} shot={shot} />
         }
         if (character.category === "vehicle") {
-          return <VehicleDetails key={character.id} character={character as Vehicle} editingCharacter={editingCharacter as Vehicle} setEditingCharacter={setEditingCharacterWithCurrentShot} className={className} shot={shot} />
+          return <VehicleDetails key={character.id} character={character as Vehicle} editingCharacter={editingCharacter as Vehicle} setEditingCharacter={setEditingCharacterWithCurrentShot} className={className} hidden={hidden} shot={shot} />
         }
       })}
     </>

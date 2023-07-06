@@ -113,8 +113,8 @@ class Api {
     return `${this.vehicles(fight, vehicle)}/hide`
   }
 
-  showVehicle(fight: Fight, vehicle: Vehicle): string {
-    return `${this.vehicles(fight, vehicle)}/show`
+  revealVehicle(fight: Fight, vehicle: Vehicle): string {
+    return `${this.vehicles(fight, vehicle)}/reveal`
   }
 
   allVehicles(vehicle?: Vehicle | ID): string {

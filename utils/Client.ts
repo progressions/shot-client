@@ -181,6 +181,14 @@ class Client {
     return await this.post(this.api.addVehicle(fight, vehicle), {"vehicle": {"current_shot": 0}})
   }
 
+  async hideVehicle(fight: Fight, vehicle: Vehicle | ID):Promise<Vehicle> {
+    return await this.patch(this.api.hideVehicle(fight, vehicle as Vehicle))
+  }
+
+  async showVehicle(fight: Fight, vehicle: Vehicle | ID):Promise<Vehicle> {
+    return await this.patch(this.api.revealVehicle(fight, vehicle as Vehicle))
+  }
+
   async getAllVehicles():Promise<Vehicle[]> {
     return await this.get(this.api.allVehicles())
   }
