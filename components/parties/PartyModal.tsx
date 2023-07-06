@@ -35,6 +35,7 @@ export default function PartyModal({ state, dispatch, open, setOpen }: PartyModa
         await client.createParty(party as Party)
       dispatch({ type: PartiesActions.EDIT })
       setOpen(false)
+      toastSuccess(`${party.name} ${party?.id ? "updated" : "added"}.`)
     } catch(error) {
       toastError()
     }

@@ -35,7 +35,9 @@ export default function SiteModal({ state, dispatch, open, setOpen }: SiteModalP
         await client.createSite(site as Site)
       dispatch({ type: SitesActions.EDIT })
       setOpen(false)
+      toastSuccess(`${site.name} ${site?.id ? "updated" : "added"}.`)
     } catch(error) {
+      console.log(error)
       toastError()
     }
     dispatch({ type: SitesActions.RESET })
