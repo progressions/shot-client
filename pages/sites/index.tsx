@@ -8,18 +8,19 @@ import { useToast } from '../../contexts/ToastContext'
 import { sitesReducer, initialSitesState, SitesActions } from '../../reducers/sitesState'
 import Sites from '../../components/sites/Sites'
 import { ButtonBar } from "../../components/StyledFields"
+import FilterSites from "../../components/sites/FilterSites"
 
 export default function Home() {
   const { user, client } = useClient()
   const [state, dispatch] = useReducer(sitesReducer, initialSitesState)
   const sites = state?.sites || []
-  const { edited, loading, name } = state
+  const { edited, faction, loading, search } = state
   const { toastSuccess, toastError } = useToast()
 
   useEffect(() => {
     async function getSites() {
       try {
-        const data = await client.getSites({ name })
+        const data = await client.getSites({ search, faction_id: faction.id })
         dispatch({ type: SitesActions.SITES, payload: data })
       } catch(error) {
         toastError()
@@ -29,7 +30,7 @@ export default function Home() {
     if (user?.id && edited) {
       getSites().catch(toastError)
     }
-  }, [edited, dispatch, user?.id, toastError, client, name])
+  }, [edited, dispatch, user?.id, toastError, client, search])
 
   return (
     <>
@@ -40,6 +41,7 @@ export default function Home() {
         <Layout>
           <Container maxWidth="md" sx={{paddingTop: 2}}>
             <ButtonBar sx={{height: 80}}>
+              <FilterSites state={state} dispatch={dispatch} />
             </ButtonBar>
             <Sites sites={sites} />
           </Container>

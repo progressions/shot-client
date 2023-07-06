@@ -1,5 +1,5 @@
 import type { SitesResponse, PaginationMeta, Site } from "../types/types"
-import { defaultPaginationMeta, defaultSite } from "../types/types"
+import { defaultFaction, defaultPaginationMeta, defaultSite } from "../types/types"
 
 export enum SitesActions {
   RESET = "reset",
@@ -12,6 +12,8 @@ export enum SitesActions {
 
 export interface SitesStateType {
   edited: boolean
+  faction: Faction
+  factions: Faction[]
   loading: boolean
   saving: boolean
   name: string
@@ -41,6 +43,8 @@ export type SitesActionType = ActionNoPayload | UpdateAction | PayloadAction
 
 export const initialSitesState: SitesStateType = {
   edited: true,
+  faction: defaultFaction,
+  factions: [],
   loading: false,
   saving: false,
   name: "",
@@ -65,6 +69,14 @@ export function sitesReducer(state: SitesStateType, action: SitesActionType): Si
         name: (action.payload || initialSitesState.name) as string,
       }
     case SitesActions.UPDATE:
+      if (action.name === "faction") {
+        const faction = state.factions.find(faction => faction.id === action.value) || defaultFaction
+        return {
+          ...state,
+          edited: true,
+          [action.name]: faction
+        }
+      }
       return {
         ...state,
         edited: true,
@@ -80,13 +92,14 @@ export function sitesReducer(state: SitesStateType, action: SitesActionType): Si
         site: (action.payload || initialSitesState.site) as Site,
       }
     case SitesActions.SITES:
-      const { sites, meta } = action.payload as SitesResponse
+      const { sites, factions, meta } = action.payload as SitesResponse
       return {
         ...state,
-        loading: false,
-        sites: sites,
-        meta: meta,
         edited: false,
+        loading: false,
+        sites,
+        factions,
+        meta,
       }
     default:
       return state
