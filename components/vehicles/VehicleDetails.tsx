@@ -26,9 +26,11 @@ interface VehicleDetailsParams {
   editingCharacter: Vehicle,
   setEditingCharacter: React.Dispatch<React.SetStateAction<Vehicle>> | ((character: Vehicle | null) => void)
   className?: string
+  hidden: boolean
+  shot: number
 }
 
-export default function VehicleDetails({ character, editingCharacter, setEditingCharacter, className }: VehicleDetailsParams) {
+export default function VehicleDetails({ character, editingCharacter, setEditingCharacter, className, hidden, shot }: VehicleDetailsParams) {
   const { fight, dispatch:dispatchFight } = useFight()
   const { user, client } = useClient()
 

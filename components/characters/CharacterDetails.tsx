@@ -40,9 +40,10 @@ interface CharacterDetailsParams {
   setEditingCharacter: React.Dispatch<React.SetStateAction<Character>> | ((character: Character | null) => void),
   className?: string
   hidden?: boolean
+  shot: number
 }
 
-export default function CharacterDetails({ character, editingCharacter, setEditingCharacter, className, hidden }: CharacterDetailsParams) {
+export default function CharacterDetails({ character, editingCharacter, setEditingCharacter, className, hidden, shot }: CharacterDetailsParams) {
   const { fight, dispatch } = useFight()
 
   const { session, client, user } = useClient()
@@ -158,6 +159,7 @@ export default function CharacterDetails({ character, editingCharacter, setEditi
             hideCharacter={hideCharacter}
             showCharacter={showCharacter}
             hidden={hidden}
+            shot={shot}
           />
           <GamemasterOnly user={user} character={character}>
             <Stack direction="row" spacing={1} justifyContent="space-between">

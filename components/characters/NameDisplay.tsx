@@ -3,6 +3,7 @@ import DirectionsCarIcon from "@mui/icons-material/DirectionsCar"
 import { IoSkull, IoSkullOutline } from "react-icons/io5"
 import DeathMarks from "./DeathMarks"
 import EditButtons from "./EditButtons"
+import Location from "../locations/Location"
 
 import GamemasterOnly from "../GamemasterOnly"
 import type { User, AuthSession, Character, Toast, Person, Vehicle } from "../../types/types"
@@ -17,9 +18,10 @@ interface NameDisplayProps {
   hideCharacter?: (character: Character) => void
   showCharacter?: (character: Character) => void
   hidden?: boolean
+  shot: number
 }
 
-export default function NameDisplay({ character, editCharacter, deleteCharacter, hideCharacter, showCharacter, hidden }: NameDisplayProps) {
+export default function NameDisplay({ character, editCharacter, deleteCharacter, hideCharacter, showCharacter, hidden, shot }: NameDisplayProps) {
   const [open, setOpen] = useState<boolean>(false)
   const { user } = useClient()
 
@@ -62,6 +64,7 @@ export default function NameDisplay({ character, editCharacter, deleteCharacter,
               <Link color="inherit" href={link} target="_blank">
                 { character.name }
               </Link>
+              <Location shot={shot} character={character} />
             </Typography>
             <GamemasterOnly user={user} character={character}>
               <Box visibility={open ? "visible" : "hidden"}>

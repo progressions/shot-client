@@ -1,6 +1,6 @@
 import { useClient } from "../../../contexts/ClientContext"
 import { TextField, Stack, Autocomplete } from "@mui/material"
-import { useEffect, useReducer } from "react"
+import { useReducer } from "react"
 import { StyledAutocomplete, StyledTextField } from "../../StyledFields"
 import type { Faction, InputParamsType } from "../../../types/types"
 import { defaultFaction } from "../../../types/types"

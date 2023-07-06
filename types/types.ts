@@ -2,6 +2,17 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { Session, User as NextAuthUser } from "next-auth"
 import { AlertColor } from "@mui/material"
 
+export interface Location {
+  id?: string
+  name: string
+  shot: Shot
+}
+
+export interface Shot {
+  id?: string
+  shot: number
+}
+
 export type Archetype = string
 
 export interface Party {
