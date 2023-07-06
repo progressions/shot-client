@@ -51,7 +51,7 @@ export default function FilterSites({ state, dispatch }: FilterSitesProps) {
           </StyledSelect>
         </Box>
         <SiteAutocomplete state={state} dispatch={dispatch} />
-        { false && !character?.id && <CreateSite state={state} dispatch={dispatch} /> }
+        { !character?.id && <CreateSite state={state} dispatch={dispatch} /> }
       </Stack>
     </>
   )
