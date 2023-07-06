@@ -66,6 +66,7 @@ export default function SelectCharacter({ addCharacter }: SelectCharacterProps) 
 
     await addCharacter(character)
     dispatch({ type: CharactersActions.RESET_CHARACTER })
+    toastSuccess(`${character.name} added.`)
   }
 
   return (

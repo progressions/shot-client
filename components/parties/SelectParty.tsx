@@ -46,12 +46,13 @@ export default function SelectParty() {
     event.preventDefault()
 
     if (!party?.id) {
-      toastError("You must select a party")
+      toastError("You must select a party.")
       return
     }
 
     try {
       await client.addPartyToFight(party, fight)
+      toastSuccess(`${party.name} added.`)
     } catch(error) {
       console.log(error)
       toastError()
