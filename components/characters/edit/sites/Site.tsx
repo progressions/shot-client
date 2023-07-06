@@ -16,7 +16,7 @@ export default function Site({ site }: SiteProps) {
 
   async function deleteSite() {
     try {
-      await client.removeSite(character, site)
+      await client.removeCharacterFromSite(character, site)
       await reloadCharacter()
     } catch(error) {
       toastError()
