@@ -42,7 +42,7 @@ export default function Location({ shot, character }: LocationProps) {
   async function setLocationForShot() {
     try {
       const name = prompt("Location name")
-      if (!name) {
+      if (name === null) {
         return
       }
       if (character?.category === "character") {
