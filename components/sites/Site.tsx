@@ -68,7 +68,7 @@ export default function Site({ site, state, dispatch }: SiteProps) {
   if (site.faction?.name) {
     subheader += `Faction: ${site.faction.name} `
   }
-  subheader += `(${site?.characters?.length} characters`
+  subheader += `(${site?.characters?.length} characters)`
 
   function generateKey(character: Character | Vehicle, index: number): string {
     return `${character.id}-${index}`
