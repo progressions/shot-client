@@ -5,7 +5,7 @@ import { AlertColor } from "@mui/material"
 export interface Location {
   id?: string
   name: string
-  shot: Shot
+  shot?: Shot
 }
 
 export interface Shot {

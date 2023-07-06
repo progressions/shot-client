@@ -1,6 +1,6 @@
 import AddLocationIcon from '@mui/icons-material/AddLocation'
 import { Typography } from '@mui/material'
-import type { Character } from "../../types/types"
+import type { Vehicle, Character } from "../../types/types"
 import { useState, useEffect } from 'react'
 import { useClient } from '../../contexts/ClientContext'
 import { useFight } from '../../contexts/FightContext'
@@ -22,8 +22,8 @@ export default function Location({ shot, character }: LocationProps) {
     const reload = async () => {
       try {
         const data = character?.category === "character" ?
-          await client.getLocationForCharacter(fight, character) :
-          await client.getLocationForVehicle(fight, character)
+          await client.getLocationForCharacter(fight, character as Character) :
+          await client.getLocationForVehicle(fight, character as Vehicle)
         if (data.length > 0) {
           setLocation(data[0])
         } else {
@@ -37,7 +37,7 @@ export default function Location({ shot, character }: LocationProps) {
     if (user && character?.id) {
       reload()
     }
-  }, [user, character?.id, shot, state.edited])
+  }, [user, client, fight, toastError, character, shot, state.edited])
 
   async function setLocationForShot() {
     try {
@@ -46,9 +46,9 @@ export default function Location({ shot, character }: LocationProps) {
         return
       }
       if (character?.category === "character") {
-        await client.setCharacterLocation(fight, character, { name: name })
+        await client.setCharacterLocation(fight, character as Character, { name: name })
       } else {
-        await client.setVehicleLocation(fight, character, { name: name })
+        await client.setVehicleLocation(fight, character as Vehicle, { name: name })
       }
       dispatch({ type: FightActions.EDIT })
     } catch(error) {
