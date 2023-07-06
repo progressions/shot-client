@@ -1,23 +1,27 @@
-import { Box, Typography } from "@mui/material"
-import type { Site } from "../../types/types"
+import { Stack } from "@mui/material"
+import type { Site as SiteType } from "../../types/types"
+import { SitesStateType, SitesActionType, SitesActions } from "../../reducers/sitesState"
+import Site from "./Site"
+import { Subhead } from "../StyledFields"
 
 interface SitesProps {
-  sites: Site[]
+  state: SitesStateType,
+  dispatch: React.Dispatch<SitesActionType>
 }
 
-export default function Sites({ sites }: SitesProps) {
+export default function Sites({ state, dispatch }: SitesProps) {
+  const { sites } = state
+
   return (
     <>
-      {
-        sites.map(site => (
-          <Box key={site.id} mb={2}>
-            <Typography variant="h2">{site.name}</Typography>
-            <Typography>{site.description}</Typography>
-            { site.faction && <Typography>Faction: {site.faction.name}</Typography> }
-            { site.characters && <Typography>Characters: {site.characters.map(character => character.name).join(', ')}</Typography> }
-          </Box>
-        ))
-      }
+      <Subhead>Sites</Subhead>
+      <Stack spacing={2} sx={{ width: "100%" }}>
+        {
+          sites.map(site => (
+            <Site key={site.id} site={site} state={state} dispatch={dispatch} />
+          ))
+        }
+      </Stack>
     </>
   )
 }

@@ -1,13 +1,13 @@
 import { colors, Card, CardHeader, CardContent, CardActions, Typography } from "@mui/material"
 
-interface PartyCardBaseProps {
+interface SiteCardBaseProps {
   title: string
   subheader: string
   avatar?: React.ReactNode
   action: React.ReactNode
 }
 
-export default function PartyCardBase({ title, subheader, avatar, action, children }: React.PropsWithChildren<PartyCardBaseProps>) {
+export default function SiteCardBase({ title, subheader, avatar, action, children }: React.PropsWithChildren<SiteCardBaseProps>) {
   return (
     <Card sx={{backgroundColor: colors.blueGrey["500"], minHeight: 200}}>
       <CardHeader

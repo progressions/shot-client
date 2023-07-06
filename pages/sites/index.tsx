@@ -13,7 +13,6 @@ import FilterSites from "../../components/sites/FilterSites"
 export default function Home() {
   const { user, client } = useClient()
   const [state, dispatch] = useReducer(sitesReducer, initialSitesState)
-  const sites = state?.sites || []
   const { edited, faction, loading, search } = state
   const { toastSuccess, toastError } = useToast()
 
@@ -30,7 +29,7 @@ export default function Home() {
     if (user?.id && edited) {
       getSites().catch(toastError)
     }
-  }, [edited, dispatch, user?.id, toastError, client, search])
+  }, [edited, dispatch, user?.id, toastError, client, search, faction?.id])
 
   return (
     <>
@@ -43,7 +42,7 @@ export default function Home() {
             <ButtonBar sx={{height: 80}}>
               <FilterSites state={state} dispatch={dispatch} />
             </ButtonBar>
-            <Sites sites={sites} />
+            <Sites state={state} dispatch={dispatch} />
           </Container>
         </Layout>
       </main>

@@ -24,14 +24,6 @@ export default function FilterSites({ state, dispatch }: FilterSitesProps) {
     dispatch({ type: SitesActions.UPDATE, name: event.target.name, value: event.target.value })
   }
 
-  const selectSite = (event: React.ChangeEvent<HTMLInputElement>, value: Site) => {
-    dispatch({ type: SitesActions.SITE, payload: value })
-  }
-
-  const getOptionLabel = (site: Site) => {
-    return site.name
-  }
-
   return (
     <>
       <Stack spacing={2} direction="row" alignItems="center">
