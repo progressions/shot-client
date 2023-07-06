@@ -15,7 +15,14 @@ interface EffectsModalProps {
 }
 
 export default function EffectsModal({ character }: EffectsModalProps) {
-  const initialEffect = { ...defaultCharacterEffect, character_id: character?.id }
+  const initialEffect = defaultCharacterEffect
+  if (character.category === "character") {
+    initialEffect.character_id = character.id
+    initialEffect.vehicle_id = undefined
+  } else {
+    initialEffect.vehicle_id = character.id
+    initialEffect.character_id = undefined
+  }
   const { fight, dispatch:dispatchFight } = useFight()
 
   const [open, setOpen] = useState(false)
@@ -35,11 +42,16 @@ export default function EffectsModal({ character }: EffectsModalProps) {
       { label: "Defense", value: "Defense" },
       { label: "Toughness", value: "Toughness" },
     ]
+    const vehicleActionValues = [
+      { label: "Acceleration", value: "Acceleration" },
+      { label: "Handling", value: "Handling" },
+      { label: "Frame", value: "Frame" },
+    ]
 
     if (character.category === "character") {
       return characterActionValues
     } else {
-      return []
+      return vehicleActionValues
     }
   }, [character])
 

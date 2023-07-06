@@ -20,7 +20,8 @@ interface GroupedEffectsProps {
 
 export default function GroupedEffects({ character }: GroupedEffectsProps) {
   const { fight } = useFight()
-  const effects = useMemo(() => (effectsGroupedByType(fight.character_effects[character.id as string] || [])), [character, fight])
+  const effects = (character.category === "character") ? effectsGroupedByType(fight.character_effects[character.id as string] || []) :
+    effectsGroupedByType(fight.vehicle_effects[character.id as string] || [])
 
   const severities = ["error", "warning", "info", "success"]
 

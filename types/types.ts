@@ -350,6 +350,7 @@ export interface Fight {
   vehicles?: Vehicle[]
   shot_order: ShotType[]
   character_effects: CharacterEffects
+  vehicle_effects: CharacterEffects
 }
 
 export interface User {
@@ -500,7 +501,8 @@ export const defaultFight:Fight = {
   effects: [],
   characters: [],
   shot_order: [],
-  character_effects: {}
+  character_effects: {},
+  vehicle_effects: {}
 }
 
 export const defaultUser:User = {

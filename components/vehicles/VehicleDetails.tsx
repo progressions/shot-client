@@ -15,6 +15,7 @@ import { useState } from "react"
 import { useToast } from "../../contexts/ToastContext"
 import { useClient } from "../../contexts/ClientContext"
 import { useFight } from "../../contexts/FightContext"
+import GroupedEffects from "../state_effects/GroupedEffects"
 
 import type { Character, Person, Vehicle, Fight, Toast, ID } from "../../types/types"
 import { defaultVehicle } from "../../types/types"
@@ -94,6 +95,7 @@ export default function VehicleDetails({ character, editingCharacter, setEditing
                 takeAction={takeAction}
               />
             </Stack>
+            <GroupedEffects character={character} />
           </GamemasterOnly>
         </Stack>
         <VehicleActionModal
