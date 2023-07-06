@@ -144,8 +144,8 @@ export default function EditCharacter({ character:initialCharacter }: EditCharac
           <Weapons state={weaponsState} />
           <PlayerTypeOnly character={character} only="PC">
             <Advancements character={character} />
-            <Sites character={character} />
           </PlayerTypeOnly>
+          <Sites character={character} />
           <Description character={character} onChange={handleDescriptionChange} />
           <Schticks state={schticksState} />
           <SchtickSelector />

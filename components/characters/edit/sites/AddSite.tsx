@@ -13,7 +13,7 @@ export default function AddSite() {
   const [state, dispatchSites] = useReducer(sitesReducer, initialSitesState)
   const { toastSuccess, toastError } = useToast()
   const { user, client } = useClient()
-  const { edited, name, loading, site, sites } = state
+  const { edited, search, loading, site, sites } = state
 
   useEffect(() => {
     async function getSites() {
