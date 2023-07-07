@@ -30,7 +30,7 @@ import { useClient } from "../../contexts/ClientContext"
 import Client from "../../utils/Client"
 import PlayerTypeOnly from "../PlayerTypeOnly"
 
-import type { CharacterEffect, User, Person, Character, Fight, Toast, ID } from "../../types/types"
+import type { Vehicle, CharacterEffect, User, Person, Character, Fight, Toast, ID } from "../../types/types"
 import { defaultCharacter } from "../../types/types"
 import { FightActions } from '../../reducers/fightState'
 
@@ -117,7 +117,7 @@ export default function CharacterDetails({ character, editingCharacter, setEditi
     }
   }
 
-  const hideCharacter = async (character: Character) => {
+  const hideCharacter = async (character: Character | Vehicle): Promise<void> => {
     try {
       await client.hideCharacter(fight, character)
       dispatch({ type: FightActions.EDIT })
@@ -126,7 +126,7 @@ export default function CharacterDetails({ character, editingCharacter, setEditi
     }
   }
 
-  const showCharacter = async (character: Character) => {
+  const showCharacter = async (character: Character | Vehicle): Promise<void> => {
     try {
       await client.showCharacter(fight, character)
       dispatch({ type: FightActions.EDIT })

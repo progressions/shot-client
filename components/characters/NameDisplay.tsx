@@ -15,8 +15,8 @@ interface NameDisplayProps {
   character: Character
   editCharacter: (character: Character) => void
   deleteCharacter: (character: Character) => void
-  hideCharacter?: (character: Character) => void
-  showCharacter?: (character: Character) => void
+  hideCharacter?: (character: Character | Vehicle) => Promise<void>
+  showCharacter?: (character: Character | Vehicle) => Promise<void>
   hidden?: boolean
   shot: number
 }

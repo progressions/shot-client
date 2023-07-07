@@ -4,14 +4,14 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import VisibilityIcon from '@mui/icons-material/Visibility'
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
 
-import type { Character, CharacterType } from "../../types/types"
+import type { Vehicle, Character, CharacterType } from "../../types/types"
 
 interface EditButtonsProps {
   character: Character,
   editCharacter: (character: Character) => void
   deleteCharacter: (character: Character) => void
-  hideCharacter?: (character: Character) => void
-  showCharacter?: (character: Character) => void
+  hideCharacter?: (character: Character | Vehicle) => Promise<void>
+  showCharacter?: (character: Character | Vehicle) => Promise<void>
   hidden?: boolean
 }
 

@@ -26,11 +26,12 @@ interface VehicleDetailsParams {
   editingCharacter: Vehicle,
   setEditingCharacter: React.Dispatch<React.SetStateAction<Vehicle>> | ((character: Vehicle | null) => void)
   className?: string
+  hidden?: boolean
   shot: number
 }
 
-export default function VehicleDetails({ character, editingCharacter, setEditingCharacter, className, shot }: VehicleDetailsParams) {
-  const { fight, dispatch:dispatchFight } = useFight()
+export default function VehicleDetails({ character, editingCharacter, setEditingCharacter, className, shot, hidden }: VehicleDetailsParams) {
+  const { fight, dispatch } = useFight()
   const { user, client } = useClient()
 
   const [open, setOpen] = useState<Vehicle>(defaultVehicle)
@@ -46,9 +47,27 @@ export default function VehicleDetails({ character, editingCharacter, setEditing
   async function deleteCharacter(character: Character): Promise<void> {
     try {
       await client.deleteVehicle(character as Vehicle, fight)
-      dispatchFight({ type: FightActions.EDIT })
+      dispatch({ type: FightActions.EDIT })
       toastSuccess(`${character.name} removed.`)
       return
+    } catch(error) {
+      toastError()
+    }
+  }
+
+  const hideCharacter = async (character: Character | Vehicle) => {
+    try {
+      await client.hideVehicle(fight, character as Vehicle)
+      dispatch({ type: FightActions.EDIT })
+    } catch(error) {
+      toastError()
+    }
+  }
+
+  const showCharacter = async (character: Character | Vehicle) => {
+    try {
+      await client.showVehicle(fight, character as Vehicle)
+      dispatch({ type: FightActions.EDIT })
     } catch(error) {
       toastError()
     }
@@ -85,6 +104,9 @@ export default function VehicleDetails({ character, editingCharacter, setEditing
           <NameDisplay character={character}
             editCharacter={editCharacter}
             deleteCharacter={deleteCharacter}
+            hideCharacter={hideCharacter}
+            showCharacter={showCharacter}
+            hidden={hidden}
             shot={shot}
           />
           <PositionDisplay character={character} />
