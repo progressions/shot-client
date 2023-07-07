@@ -82,7 +82,7 @@ export default function Site({ site, state, dispatch }: SiteProps) {
         action={deleteButton}
       >
         <Typography>{site.description}</Typography>
-        <Typography variant="h6" mt={2} gutterBottom>Members</Typography>
+        <Typography variant="h6" mt={2} gutterBottom>Attuned</Typography>
         { !!site?.characters?.length &&
         <>
             {
