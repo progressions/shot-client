@@ -575,7 +575,7 @@ export const defaultSite:Site = {
   name: "",
   description: "",
   faction: null,
-  private: false
+  secret: false
 }
 
 export const defaultParty:Party = {
@@ -584,7 +584,7 @@ export const defaultParty:Party = {
   faction: null,
   characters: [],
   vehicles: [],
-  private: false
+  secret: false
 }
 
 export const defaultWeapon:Weapon = {

@@ -1,9 +1,10 @@
 import { StyledAutocomplete, StyledSelect, StyledTextField, SaveButton, CancelButton } from "../StyledFields"
-import { createFilterOptions, MenuItem, Box, Stack, Typography } from "@mui/material"
+import { FormControlLabel, Switch, createFilterOptions, MenuItem, Box, Stack, Typography } from "@mui/material"
 import { useClient } from "../../contexts/ClientContext"
 import { useToast } from "../../contexts/ToastContext"
 import { useCharacter } from "../../contexts/CharacterContext"
 
+import GamemasterOnly from "../GamemasterOnly"
 import type { Vehicle, FilterParamsType, OptionType, InputParamsType, Character, Site } from "../../types/types"
 import { defaultFaction, defaultSite } from "../../types/types"
 import { useEffect, useReducer } from "react"
@@ -22,7 +23,7 @@ interface SiteModalProps {
 
 export default function SiteModal({ state, dispatch, open, setOpen }: SiteModalProps) {
   const { toastSuccess, toastError } = useToast()
-  const { client } = useClient()
+  const { client, user } = useClient()
   const { loading, site } = state
 
   async function addSite(event: React.ChangeEvent<HTMLInputElement>) {
@@ -52,6 +53,10 @@ export default function SiteModal({ state, dispatch, open, setOpen }: SiteModalP
     dispatch({ type: SitesActions.UPDATE, name: event.target.name, value: event.target.value })
   }
 
+  const handleCheck = (event: React.SyntheticEvent<Element, Event>, checked: boolean) => {
+    dispatch({ type: SitesActions.UPDATE, name: event.target.name, value: checked })
+  }
+
   const addCharacter = async (character: Character):Promise<void> => {
     try {
       await client.addCharacterToSite(site, character as Character)
@@ -76,6 +81,9 @@ export default function SiteModal({ state, dispatch, open, setOpen }: SiteModalP
           onChange={handleChange}
           disabled={loading}
         />
+        <GamemasterOnly user={user}>
+          <FormControlLabel label="Active" name="secret" control={<Switch checked={site.secret} />} onChange={handleCheck} />
+        </GamemasterOnly>
       </Stack>
       <Stack direction="row" spacing={1} alignItems="center">
         <StyledTextField
