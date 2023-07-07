@@ -1,5 +1,5 @@
 import { useEffect, useState, useMemo, useReducer } from "react"
-import { Autocomplete, Button, Stack, Typography, TextField, MenuItem, Box } from "@mui/material"
+import { FormControlLabel, Switch, Autocomplete, Button, Stack, Typography, TextField, MenuItem, Box } from "@mui/material"
 import { useClient } from "../../contexts/ClientContext"
 import { useCharacter } from "../../contexts/CharacterContext"
 import { useToast } from "../../contexts/ToastContext"
@@ -8,6 +8,8 @@ import { SitesActions, SitesStateType, SitesActionType } from "../../reducers/si
 import { StyledSelect } from "../StyledFields"
 import SiteAutocomplete from "./SiteAutocomplete"
 import type { Faction, Site } from "../../types/types"
+import { useLocalStorage } from "../../contexts/LocalStorageContext"
+import GamemasterOnly from "../GamemasterOnly"
 
 interface FilterSitesProps {
   state: SitesStateType
@@ -18,10 +20,15 @@ export default function FilterSites({ state, dispatch }: FilterSitesProps) {
   const { character } = useCharacter()
   const { user, client } = useClient()
   const { toastSuccess, toastError } = useToast()
-  const { faction, factions, page, loading, search } = state
+  const { saveLocally, getLocally } = useLocalStorage()
+  const { secret, faction, factions, page, loading, search } = state
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     dispatch({ type: SitesActions.UPDATE, name: event.target.name, value: event.target.value })
+  }
+
+  const show = (event: React.SyntheticEvent<Element, Event>, checked: boolean) => {
+    dispatch({ type: SitesActions.SECRET, payload: checked })
   }
 
   return (
@@ -44,6 +51,9 @@ export default function FilterSites({ state, dispatch }: FilterSitesProps) {
         </Box>
         <SiteAutocomplete state={state} dispatch={dispatch} />
         { !character?.id && <CreateSite state={state} dispatch={dispatch} /> }
+        <GamemasterOnly user={user}>
+          <FormControlLabel name="secret" label="Show Secret" control={<Switch checked={secret} />} onChange={show} />
+        </GamemasterOnly>
       </Stack>
     </>
   )

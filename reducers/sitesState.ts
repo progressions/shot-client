@@ -7,6 +7,7 @@ export enum SitesActions {
   SITE = "site",
   RESET = "reset",
   SEARCH = "search",
+  SECRET = "secret",
   SUCCESS = "success",
   UPDATE = "update",
   SAVING = "saving"
@@ -17,7 +18,9 @@ export interface SitesStateType {
   edited: boolean
   loading: boolean
   meta: PaginationMeta
+  private: boolean
   open: boolean
+  secret: boolean
   site: Site
   sites: Site[]
   faction: Faction
@@ -27,14 +30,14 @@ export interface SitesStateType {
   page?: number
 }
 
-export type PayloadType = Site | SitesResponse | string | Element | null
+export type PayloadType = Site | SitesResponse | string | Element | null | boolean
 
 interface ActionNoPayload {
   type: Extract<SitesActions, SitesActions.RESET | SitesActions.EDIT | SitesActions.SUCCESS | SitesActions.SAVING>
 }
 
 interface PayloadAction {
-  type: Extract<SitesActions, SitesActions.SITE | SitesActions.SITES | SitesActions.OPEN | SitesActions.SEARCH>
+  type: Extract<SitesActions, SitesActions.SECRET | SitesActions.SITE | SitesActions.SITES | SitesActions.OPEN | SitesActions.SEARCH>
   payload: PayloadType
 }
 
@@ -54,6 +57,8 @@ export const initialSitesState: SitesStateType = {
   loading: true,
   meta: defaultPaginationMeta,
   open: false,
+  private: false,
+  secret: false,
   site: defaultSite,
   sites: [],
   search: "",
@@ -66,6 +71,12 @@ export function sitesReducer(state: SitesStateType, action: SitesActionType): Si
       return {
         ...state,
         edited: true
+      }
+    case SitesActions.SECRET:
+      return {
+        ...state,
+        edited: true,
+        secret: (action.payload || initialSitesState.secret) as boolean,
       }
     case SitesActions.SEARCH:
       return {
@@ -89,6 +100,7 @@ export function sitesReducer(state: SitesStateType, action: SitesActionType): Si
           [action.name]: faction
         }
       }
+
       return {
         ...state,
         edited: true,

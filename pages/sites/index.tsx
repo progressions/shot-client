@@ -13,13 +13,13 @@ import FilterSites from "../../components/sites/FilterSites"
 export default function Home() {
   const { user, client } = useClient()
   const [state, dispatch] = useReducer(sitesReducer, initialSitesState)
-  const { edited, faction, loading, search } = state
+  const { secret, edited, faction, loading, search } = state
   const { toastSuccess, toastError } = useToast()
 
   useEffect(() => {
     async function getSites() {
       try {
-        const data = await client.getSites({ search, faction_id: faction.id })
+        const data = await client.getSites({ search, faction_id: faction.id, secret: secret })
         dispatch({ type: SitesActions.SITES, payload: data })
       } catch(error) {
         toastError()

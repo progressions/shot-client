@@ -22,7 +22,7 @@ export interface Party {
   faction?: Faction | null,
   characters: Character[]
   vehicles: Vehicle[]
-  private: boolean
+  secret: boolean
 }
 
 export interface Faction {
@@ -321,7 +321,7 @@ export interface Site {
   description?: string
   faction?: Faction | null,
   characters?: Character[]
-  private: boolean
+  secret: boolean
 }
 
 export interface Effect {
