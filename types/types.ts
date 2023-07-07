@@ -22,6 +22,7 @@ export interface Party {
   faction?: Faction | null,
   characters: Character[]
   vehicles: Vehicle[]
+  private: boolean
 }
 
 export interface Faction {
@@ -320,6 +321,7 @@ export interface Site {
   description?: string
   faction?: Faction | null,
   characters?: Character[]
+  private: boolean
 }
 
 export interface Effect {
@@ -572,7 +574,8 @@ export const defaultAdvancement:Advancement = {
 export const defaultSite:Site = {
   name: "",
   description: "",
-  faction: null
+  faction: null,
+  private: false
 }
 
 export const defaultParty:Party = {
@@ -580,7 +583,8 @@ export const defaultParty:Party = {
   description: "",
   faction: null,
   characters: [],
-  vehicles: []
+  vehicles: [],
+  private: false
 }
 
 export const defaultWeapon:Weapon = {
@@ -601,4 +605,8 @@ export const defaultPaginationMeta:PaginationMeta = {
   prev_page: null,
   total_pages: 1,
   total_count: 1
+}
+
+export const defaultLocation:Location = {
+  name: ""
 }
