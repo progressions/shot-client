@@ -54,7 +54,7 @@ export default function SiteModal({ state, dispatch, open, setOpen }: SiteModalP
   }
 
   const handleCheck = (event: React.SyntheticEvent<Element, Event>, checked: boolean) => {
-    dispatch({ type: SitesActions.UPDATE, name: event.target.name, value: checked })
+    dispatch({ type: SitesActions.UPDATE, name: "secret", value: checked })
   }
 
   const addCharacter = async (character: Character):Promise<void> => {
