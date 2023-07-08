@@ -29,7 +29,7 @@ export interface PartiesStateType {
 export type PayloadType = Party | PartiesResponse | string | Element | null
 
 interface ActionNoPayload {
-  type: Extract<PartiesActions, PartiesActions.RESET | PartiesActions.EDIT | PartiesActions.SUCCESS | PartiesActions.SAVING>
+  type: Extract<PartiesActions, PartiesActions.RESET | PartiesActions.SUCCESS | PartiesActions.SAVING>
 }
 
 interface PayloadAction {
@@ -38,9 +38,9 @@ interface PayloadAction {
 }
 
 interface UpdateAction {
-  type: Extract<PartiesActions, PartiesActions.UPDATE>
-  name: string
-  value: string | boolean
+  type: Extract<PartiesActions, PartiesActions.UPDATE | PartiesActions.EDIT>
+  name?: string
+  value?: string | boolean
 }
 
 export type PartiesActionType = ActionNoPayload | UpdateAction | PayloadAction
@@ -64,6 +64,7 @@ export function partiesReducer(state: PartiesStateType, action: PartiesActionTyp
     case PartiesActions.EDIT:
       return {
         ...state,
+        [action.name as string]: action.value,
         edited: true
       }
     case PartiesActions.OPEN:
@@ -86,7 +87,7 @@ export function partiesReducer(state: PartiesStateType, action: PartiesActionTyp
         return {
           ...state,
           edited: true,
-          [action.name]: faction
+          [action.name as string]: faction
         }
       }
       return {
@@ -94,7 +95,7 @@ export function partiesReducer(state: PartiesStateType, action: PartiesActionTyp
         edited: true,
         party: {
           ...state.party,
-          [action.name]: action.value
+          [action.name as string]: action.value
         }
       }
     case PartiesActions.PARTY:

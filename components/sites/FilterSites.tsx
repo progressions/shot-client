@@ -28,7 +28,7 @@ export default function FilterSites({ state, dispatch }: FilterSitesProps) {
   }
 
   const show = (event: React.SyntheticEvent<Element, Event>, checked: boolean) => {
-    dispatch({ type: SitesActions.SECRET, payload: checked })
+    dispatch({ type: SitesActions.EDIT, name: "secret", value: checked })
   }
 
   return (

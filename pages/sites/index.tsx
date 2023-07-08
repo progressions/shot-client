@@ -29,7 +29,7 @@ export default function Home() {
     if (user?.id && edited) {
       getSites().catch(toastError)
     }
-  }, [edited, dispatch, user?.id, toastError, client, search, faction?.id])
+  }, [edited, dispatch, user?.id, toastError, client, search, faction?.id, secret])
 
   return (
     <>

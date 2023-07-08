@@ -6,8 +6,6 @@ export enum SitesActions {
   SITES = "sites",
   SITE = "site",
   RESET = "reset",
-  SEARCH = "search",
-  SECRET = "secret",
   SUCCESS = "success",
   UPDATE = "update",
   SAVING = "saving"
@@ -33,18 +31,18 @@ export interface SitesStateType {
 export type PayloadType = Site | SitesResponse | string | Element | null | boolean
 
 interface ActionNoPayload {
-  type: Extract<SitesActions, SitesActions.RESET | SitesActions.EDIT | SitesActions.SUCCESS | SitesActions.SAVING>
+  type: Extract<SitesActions, SitesActions.RESET | SitesActions.SUCCESS | SitesActions.SAVING>
 }
 
 interface PayloadAction {
-  type: Extract<SitesActions, SitesActions.SECRET | SitesActions.SITE | SitesActions.SITES | SitesActions.OPEN | SitesActions.SEARCH>
+  type: Extract<SitesActions, SitesActions.SITE | SitesActions.SITES | SitesActions.OPEN>
   payload: PayloadType
 }
 
 interface UpdateAction {
-  type: Extract<SitesActions, SitesActions.UPDATE>
-  name: string
-  value: string | boolean
+  type: Extract<SitesActions, SitesActions.UPDATE | SitesActions.EDIT>
+  name?: string
+  value?: string | boolean
 }
 
 export type SitesActionType = ActionNoPayload | UpdateAction | PayloadAction
@@ -70,19 +68,8 @@ export function sitesReducer(state: SitesStateType, action: SitesActionType): Si
     case SitesActions.EDIT:
       return {
         ...state,
+        [action.name as string]: action.value,
         edited: true
-      }
-    case SitesActions.SECRET:
-      return {
-        ...state,
-        edited: true,
-        secret: (action.payload || initialSitesState.secret) as boolean,
-      }
-    case SitesActions.SEARCH:
-      return {
-        ...state,
-        edited: true,
-        search: (action.payload || initialSitesState.search) as string,
       }
     case SitesActions.SUCCESS:
       return {
@@ -97,7 +84,7 @@ export function sitesReducer(state: SitesStateType, action: SitesActionType): Si
         return {
           ...state,
           edited: true,
-          [action.name]: faction
+          [action.name as string]: faction
         }
       }
 
@@ -106,7 +93,7 @@ export function sitesReducer(state: SitesStateType, action: SitesActionType): Si
         edited: true,
         site: {
           ...state.site,
-          [action.name]: action.value
+          [action.name as string]: action.value
         }
       }
     case SitesActions.SITE:

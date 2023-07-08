@@ -59,7 +59,7 @@ export default function AddSite() {
   }
 
   function handleInputChange(event: React.ChangeEvent<HTMLInputElement>, newValue: string) {
-    dispatchSites({ type: SitesActions.SEARCH, payload: newValue })
+    dispatchSites({ type: SitesActions.EDIT, name: search, value: newValue })
   }
 
   function getOptionLabel(option: Site) {
