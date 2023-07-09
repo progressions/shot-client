@@ -1,9 +1,10 @@
 import { StyledAutocomplete, StyledSelect, StyledTextField, SaveButton, CancelButton } from "../StyledFields"
-import { createFilterOptions, MenuItem, Box, Stack, Typography } from "@mui/material"
+import { FormControlLabel, Switch, createFilterOptions, MenuItem, Box, Stack, Typography } from "@mui/material"
 import { useClient } from "../../contexts/ClientContext"
 import { useToast } from "../../contexts/ToastContext"
 import { useCharacter } from "../../contexts/CharacterContext"
 
+import GamemasterOnly from "../GamemasterOnly"
 import type { Vehicle, FilterParamsType, OptionType, InputParamsType, Character, Party } from "../../types/types"
 import { defaultFaction, defaultParty } from "../../types/types"
 import { useEffect, useReducer } from "react"
@@ -22,7 +23,7 @@ interface PartyModalProps {
 
 export default function PartyModal({ state, dispatch, open, setOpen }: PartyModalProps) {
   const { toastSuccess, toastError } = useToast()
-  const { client } = useClient()
+  const { user, client } = useClient()
   const { loading, party } = state
 
   async function addParty(event: React.ChangeEvent<HTMLInputElement>) {
@@ -45,6 +46,10 @@ export default function PartyModal({ state, dispatch, open, setOpen }: PartyModa
   function cancelForm() {
     dispatch({ type: PartiesActions.RESET })
     setOpen(false)
+  }
+
+  const handleCheck = (event: React.SyntheticEvent<Element, Event>, checked: boolean) => {
+    dispatch({ type: PartiesActions.UPDATE, name: "secret", value: checked })
   }
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
@@ -77,6 +82,9 @@ export default function PartyModal({ state, dispatch, open, setOpen }: PartyModa
           onChange={handleChange}
           disabled={loading}
         />
+        <GamemasterOnly user={user}>
+          <FormControlLabel label="Active" name="secret" control={<Switch checked={party.secret} />} onChange={handleCheck} />
+        </GamemasterOnly>
       </Stack>
       <Stack direction="row" spacing={1} alignItems="center">
         <StyledTextField

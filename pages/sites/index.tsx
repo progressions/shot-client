@@ -19,7 +19,7 @@ export default function Home() {
   useEffect(() => {
     async function getSites() {
       try {
-        const data = await client.getSites({ search, faction_id: faction.id, secret: secret })
+        const data = await client.getSites({ search, faction_id: faction.id, secret })
         dispatch({ type: SitesActions.SITES, payload: data })
       } catch(error) {
         toastError()

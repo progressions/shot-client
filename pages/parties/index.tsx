@@ -14,13 +14,13 @@ export default function Home() {
   const { user, client } = useClient()
   const [state, dispatch] = useReducer(partiesReducer, initialPartiesState)
   const parties = state?.parties || []
-  const { edited, faction, loading, search } = state
+  const { secret, edited, faction, loading, search } = state
   const { toastSuccess, toastError } = useToast()
 
   useEffect(() => {
     async function getParties() {
       try {
-        const data = await client.getParties({ search, faction_id: faction.id })
+        const data = await client.getParties({ search, faction_id: faction.id, secret })
         dispatch({ type: PartiesActions.PARTIES, payload: data })
       } catch(error) {
         toastError()
@@ -30,7 +30,7 @@ export default function Home() {
     if (user?.id && edited) {
       getParties().catch(toastError)
     }
-  }, [edited, dispatch, user?.id, toastError, client, search, faction?.id])
+  }, [edited, dispatch, user?.id, toastError, client, search, faction?.id, secret])
 
   return (
     <>

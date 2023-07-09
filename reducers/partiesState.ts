@@ -14,15 +14,16 @@ export enum PartiesActions {
 export interface PartiesStateType {
   anchorEl: Element | null
   edited: boolean
+  faction: Faction
+  factions: Faction[]
   loading: boolean
   meta: PaginationMeta
   open: boolean
   party: Party
   parties: Party[]
-  faction: Faction
-  factions: Faction[]
-  saving: boolean
   search: string
+  secret: boolean
+  saving: boolean
   page?: number
 }
 
@@ -55,6 +56,7 @@ export const initialPartiesState: PartiesStateType = {
   open: false,
   party: defaultParty,
   parties: [],
+  secret: false,
   search: "",
   saving: false,
 }
