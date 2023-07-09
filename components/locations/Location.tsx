@@ -24,8 +24,8 @@ export default function Location({ shot, character }: LocationProps) {
         const data = character?.category === "character" ?
           await client.getLocationForCharacter(fight, character as Character) :
           await client.getLocationForVehicle(fight, character as Vehicle)
-        if (data.length > 0) {
-          setLocation(data[0])
+        if (data) {
+          setLocation(data)
         } else {
           setLocation(null)
         }

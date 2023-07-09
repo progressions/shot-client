@@ -44,11 +44,11 @@ class Client {
     this.api = new Api()
   }
 
-  async getLocationForCharacter(fight: Fight | ID, character: Character | ID):Promise<Location[]> {
+  async getLocationForCharacter(fight: Fight | ID, character: Character | ID):Promise<Location> {
     return this.get(this.api.locations(), {"fight_id": fight.id, "character_id": character.id})
   }
 
-  async getLocationForVehicle(fight: Fight | ID, vehicle: Vehicle | ID):Promise<Location[]> {
+  async getLocationForVehicle(fight: Fight | ID, vehicle: Vehicle | ID):Promise<Location> {
     return this.get(this.api.locations(), {"fight_id": fight.id, "vehicle_id": vehicle.id})
   }
 
