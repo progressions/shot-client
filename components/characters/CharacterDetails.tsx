@@ -185,9 +185,9 @@ export default function CharacterDetails({ character, editingCharacter, setEditi
               <SchticksDisplay schticks={character.schticks} />
               <SkillsDisplay skills={character.skills} />
               <WeaponsDisplay weapons={character.weapons} />
-              <GroupedEffects character={character} />
             </Stack>
           </GamemasterOnly>
+          <GroupedEffects character={character} />
         </Stack>
       <ActionModal open={openAction}
         setOpen={setOpenAction}

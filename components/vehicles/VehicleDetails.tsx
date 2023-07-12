@@ -119,8 +119,8 @@ export default function VehicleDetails({ character, editingCharacter, setEditing
                 takeAction={takeAction}
               />
             </Stack>
-            <GroupedEffects character={character} />
           </GamemasterOnly>
+          <GroupedEffects character={character} />
         </Stack>
         <VehicleActionModal
           open={openAction}
