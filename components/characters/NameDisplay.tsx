@@ -40,14 +40,14 @@ export default function NameDisplay({ character, editCharacter, deleteCharacter,
   }
 
   const subheading = () => {
-    if (!character.action_values["Archetype"] && !character.action_values["Death Marks"] && !character.action_values["Faction"]) {
+    if (!character.action_values["Archetype"] && !character.action_values["Death Marks"] && !character.faction) {
       return null
     }
     return (
       <Typography variant="caption" sx={{textTransform: "uppercase", color: "text.secondary"}}>
         { character.action_values["Archetype"] }
-        { (character.action_values["Archetype"] && character.action_values["Faction"]) && " - " }
-        { character.action_values["Faction"] }
+        { (character.action_values["Archetype"] && character.faction) && " - " }
+        { character.faction?.name }
         &nbsp;
         <DeathMarks character={character} readOnly />
       </Typography>

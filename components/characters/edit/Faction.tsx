@@ -72,7 +72,7 @@ export default function Faction({ faction, onChange }: FactionProps) {
           onOpen={getFactions}
           openOnFocus
           renderInput={(params: InputParamsType) => <StyledTextField name="faction_id" {...params} label="Faction" />}
-          getOptionLabel={(option: Faction) => option.name}
+          getOptionLabel={(option: Faction) => option.name || ""}
         />
       </Stack>
     </>
