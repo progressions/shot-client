@@ -58,7 +58,7 @@ export function vehicleReducer(state: VehicleStateType, action: VehicleStateActi
         } as Vehicle
       }
     case VehicleActions.ACTION_VALUE:
-      const value = action.value === "null" ? null : action.value
+      const value = action.value === "null" ? "" : action.value
       return {
         ...state,
         edited: true,

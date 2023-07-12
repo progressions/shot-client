@@ -58,7 +58,7 @@ export function characterReducer(state: CharacterStateType, action: CharacterSta
         } as Character
       }
     case CharacterActions.ACTION_VALUE:
-      const value = action.value === "null" ? null : action.value
+      const value = action.value === "null" ? "" : action.value
       return {
         ...state,
         edited: true,
