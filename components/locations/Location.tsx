@@ -6,6 +6,7 @@ import { useClient } from '../../contexts/ClientContext'
 import { useFight } from '../../contexts/FightContext'
 import { useToast } from '../../contexts/ToastContext'
 import { FightActions } from "../../reducers/fightState"
+import GamemasterOnly from "../GamemasterOnly"
 
 interface LocationProps {
   shot: number
@@ -60,7 +61,9 @@ export default function Location({ shot, character }: LocationProps) {
   return (
     <Typography sx={{opacity: 0.5, display: "inline", ml: 1}} onClick={setLocationForShot}>
       { location?.name }
-      <AddLocationIcon sx={{fontSize: "1em", ml: 0.5}} />
+      <GamemasterOnly user={user}>
+        <AddLocationIcon sx={{fontSize: "1em", ml: 0.5}} />
+      </GamemasterOnly>
     </Typography>
   )
 }
