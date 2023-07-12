@@ -28,7 +28,7 @@ export default function CharacterDisplay({ character, user }: CharacterDisplayPr
       </TableCell>
       <TableCell>{character.action_values["Type"]}</TableCell>
       <TableCell>{character.action_values["Archetype"]}</TableCell>
-      <TableCell>{character.action_values["Faction"]}</TableCell>
+      <TableCell>{character.faction?.name}</TableCell>
       <TableCell>{character.user?.first_name} {character.user?.last_name}</TableCell>
     </TableRow>
   )
