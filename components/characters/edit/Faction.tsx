@@ -67,7 +67,7 @@ export default function Faction({ faction, onChange }: FactionProps) {
           freeSolo
           options={factions}
           sx={{ width: 300 }}
-          value={faction || defaultFaction}
+          value={faction || ""}
           onChange={changeFaction}
           onOpen={getFactions}
           openOnFocus

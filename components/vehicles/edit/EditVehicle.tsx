@@ -58,6 +58,10 @@ export default function EditVehicle({ vehicle:initialVehicle }: EditVehicleProps
     dispatchVehicle({ type: VehicleActions.DESCRIPTION, name: event.target.name, value: event.target.value })
   }
 
+  function handleFactionChange(event: React.ChangeEvent<HTMLInputElement>, newValue: string) {
+    dispatchVehicle({ type: VehicleActions.UPDATE, name: event.target.name, value: event.target.value || newValue })
+  }
+
   async function cancelForm() {
     try {
       const data = await client.getVehicle(vehicle)
@@ -87,7 +91,7 @@ export default function EditVehicle({ vehicle:initialVehicle }: EditVehicleProps
         <Stack spacing={2}>
           <Stack direction="row" spacing={1}>
             <StyledTextField name="name" label="Name" required autoFocus fullWidth onChange={handleChange} value={vehicle.name} />
-            <Faction faction={vehicle.faction} onChange={handleAVChange} />
+            <Faction faction={vehicle.faction} onChange={handleFactionChange} />
             <FormControlLabel label="Active" name="active" control={<Switch checked={vehicle.active} />} onChange={handleCheck} />
           </Stack>
           <Stack direction="row" spacing={1}>
