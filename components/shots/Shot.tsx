@@ -44,6 +44,7 @@ export default function Shot({ shot, characters, editingCharacter, setEditingCha
   const className = (shot === null) ? "hidden" : ""
   const hidden = (shot === null) ? true : false
 
+  if (hidden && !user.gamemaster) return null
   return (
     <>
       <TableRow key={shot} className={className}>
