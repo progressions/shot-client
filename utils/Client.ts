@@ -146,15 +146,15 @@ class Client {
   }
 
   async actCharacter(character: Character, fight: Fight, shots: number):Promise<Character> {
-    return await this.patch(this.api.actCharacter(fight, { id: character.id } as Character), {"character": { id: character.id } as Character, "shots": shots})
+    return await this.patch(this.api.actCharacter(fight, { id: character.id } as Character), {"character": { id: character.id, shot_id: character.shot_id } as Character, "shots": shots})
   }
 
   async hideCharacter(fight: Fight, character: Character | ID):Promise<Character> {
-    return await this.patch(this.api.hideCharacter(fight, character as Character))
+    return await this.patch(this.api.hideCharacter(fight, character as Character), {"character": character})
   }
 
   async showCharacter(fight: Fight, character: Character | ID):Promise<Character> {
-    return await this.patch(this.api.revealCharacter(fight, character as Character))
+    return await this.patch(this.api.revealCharacter(fight, character as Character), {"character": character})
   }
 
   async addCharacter(fight: Fight, character: Character | ID):Promise<Character> {
@@ -174,7 +174,7 @@ class Client {
   }
 
   async actVehicle(vehicle: Vehicle, fight: Fight, shots: number):Promise<Vehicle> {
-    return await this.patch(this.api.actVehicle(fight, vehicle), {"vehicle": vehicle, "shots": shots})
+    return await this.patch(this.api.actVehicle(fight, vehicle), {"vehicle": { id: vehicle.id, shot_id: vehicle.shot_id } as Vehicle, "shots": shots})
   }
 
   async addVehicle(fight: Fight, vehicle: Vehicle | ID):Promise<Vehicle> {
@@ -182,11 +182,11 @@ class Client {
   }
 
   async hideVehicle(fight: Fight, vehicle: Vehicle | ID):Promise<Vehicle> {
-    return await this.patch(this.api.hideVehicle(fight, vehicle as Vehicle))
+    return await this.patch(this.api.hideVehicle(fight, vehicle as Vehicle), {"vehicle": vehicle})
   }
 
   async showVehicle(fight: Fight, vehicle: Vehicle | ID):Promise<Vehicle> {
-    return await this.patch(this.api.revealVehicle(fight, vehicle as Vehicle))
+    return await this.patch(this.api.revealVehicle(fight, vehicle as Vehicle), {"vehicle": vehicle})
   }
 
   async getAllVehicles():Promise<Vehicle[]> {
