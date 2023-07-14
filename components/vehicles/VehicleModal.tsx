@@ -4,6 +4,7 @@ import CommuteIcon from '@mui/icons-material/Commute'
 import CarCrashIcon from '@mui/icons-material/CarCrash'
 import { BlockPicker, ColorResult } from 'react-color'
 
+import PlayerTypeOnly from "../PlayerTypeOnly"
 import CharacterType from '../characters/edit/CharacterType'
 
 import PositionSelector from "./PositionSelector"
@@ -147,10 +148,16 @@ export default function CharacterModal({ open, setOpen, character:activeVehicle,
               <StyledTextField label="Shot" type="number" name="current_shot" value={character.current_shot === null ? '' : character.current_shot} onChange={handleChange} sx={{width: 80}} /> }
             </Stack>
             <Stack spacing={2} direction="row" alignItems='center'>
-              <StyledTextField label={woundsLabel} type="number" name="Chase Points" value={character.action_values?.['Chase Points'] || ''} onChange={handleAVChange}
-                InputProps={{startAdornment: <InputAdornment position="start"><CommuteIcon color='error' /></InputAdornment>}} />
-              <StyledTextField label="Condition" type="number" name="Condition Points" value={character.action_values?.['Condition Points'] || ''} onChange={handleAVChange}
-                InputProps={{startAdornment: <InputAdornment position="start"><CarCrashIcon color='error' /></InputAdornment>}} />
+              <PlayerTypeOnly character={character} only="PC">
+                <StyledTextField label={woundsLabel} type="number" name="Chase Points" value={character.action_values?.['Chase Points'] || ''} onChange={handleAVChange}
+                  InputProps={{startAdornment: <InputAdornment position="start"><CommuteIcon color='error' /></InputAdornment>}} />
+                <StyledTextField label="Condition" type="number" name="Condition Points" value={character.action_values?.['Condition Points'] || ''} onChange={handleAVChange}
+                  InputProps={{startAdornment: <InputAdornment position="start"><CarCrashIcon color='error' /></InputAdornment>}} />
+              </PlayerTypeOnly>
+              <PlayerTypeOnly character={character} only="Mook">
+                <StyledTextField label={woundsLabel} type="number" name="count" value={character.count || ""} onChange={handleChange}
+                  InputProps={{startAdornment: <InputAdornment position="start"><CommuteIcon color='error' /></InputAdornment>}} />
+              </PlayerTypeOnly>
               <StyledTextField label="Impairments" type="number" name="impairments" value={character.impairments || ''} onChange={handleChange} />
               <Button sx={{width: 2, height: 50, bgcolor: character.color, borderColor: 'primary', border: 1, borderRadius: 2}} onClick={togglePicker} />
               <StyledTextField id="colorPicker" label="Color" name="color" value={character.color || ''} onChange={handleChange} />
