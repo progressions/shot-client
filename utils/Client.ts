@@ -142,7 +142,7 @@ class Client {
   }
 
   async deleteCharacter(character: Character, fight?: Fight | null):Promise<void> {
-    return await this.delete(this.api.characters(fight, character))
+    return await this.delete(this.api.characters(fight, { id: character.shot_id } as Character))
   }
 
   async actCharacter(character: Character, fight: Fight, shots: number):Promise<Character> {
@@ -170,7 +170,7 @@ class Client {
   }
 
   async deleteVehicle(vehicle: Vehicle, fight?: Fight | null):Promise<void> {
-    return await this.delete(this.api.vehicles(fight, vehicle))
+    return await this.delete(this.api.vehicles(fight, { id: vehicle.shot_id } as Vehicle))
   }
 
   async actVehicle(vehicle: Vehicle, fight: Fight, shots: number):Promise<Vehicle> {
