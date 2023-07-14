@@ -15,7 +15,7 @@ interface EffectsModalProps {
 }
 
 export default function EffectsModal({ character }: EffectsModalProps) {
-  const initialEffect = defaultCharacterEffect
+  const initialEffect = { ...defaultCharacterEffect, shot_id: character.shot_id }
   if (character.category === "character") {
     initialEffect.character_id = character.id
     initialEffect.vehicle_id = undefined

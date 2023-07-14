@@ -348,6 +348,7 @@ export interface CharacterEffect {
   severity: Severity
   change?: string
   action_value?: string
+  shot_id?: string
 }
 
 export type ShotType = [number, Character[]]
@@ -558,7 +559,8 @@ export const defaultCharacterEffect:CharacterEffect = {
   name: "",
   description: "",
   severity: "info",
-  character_id: ""
+  character_id: "",
+  shot_id: ""
 }
 
 export const defaultSchtick:Schtick = {
