@@ -23,8 +23,8 @@ export default function Location({ shot, character }: LocationProps) {
     const reload = async () => {
       try {
         const data = character?.category === "character" ?
-          await client.getLocationForCharacter(fight, character as Character) :
-          await client.getLocationForVehicle(fight, character as Vehicle)
+          await client.getLocationForCharacter(character as Character) :
+          await client.getLocationForVehicle(character as Vehicle)
         if (data) {
           setLocation(data)
         } else {
@@ -47,9 +47,9 @@ export default function Location({ shot, character }: LocationProps) {
         return
       }
       if (character?.category === "character") {
-        await client.setCharacterLocation(fight, character as Character, { name: name })
+        await client.setCharacterLocation(character as Character, { name: name })
       } else {
-        await client.setVehicleLocation(fight, character as Vehicle, { name: name })
+        await client.setVehicleLocation(character as Vehicle, { name: name })
       }
       dispatch({ type: FightActions.EDIT })
     } catch(error) {

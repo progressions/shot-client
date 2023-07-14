@@ -65,7 +65,7 @@ export default function Shot({ shot, characters, editingCharacter, setEditingCha
         if (character.category === "character") {
           return (
             <CharacterDetails
-              key={character.id}
+              key={`${character.id}-${index}`}
               character={character}
               editingCharacter={editingCharacter as Character}
               setEditingCharacter={setEditingCharacterWithCurrentShot}
@@ -78,7 +78,7 @@ export default function Shot({ shot, characters, editingCharacter, setEditingCha
         if (character.category === "vehicle") {
           return (
             <VehicleDetails
-              key={character.id}
+              key={`${character.id}-${index}`}
               character={character as Vehicle}
               editingCharacter={editingCharacter as Vehicle}
               setEditingCharacter={setEditingCharacterWithCurrentShot}

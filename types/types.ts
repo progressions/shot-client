@@ -285,6 +285,8 @@ export interface Vehicle {
   updated_at?: string
   new?: boolean
   category: CharacterCategory
+  count: number
+  shot_id?: string
 }
 
 export interface Person {
@@ -308,6 +310,8 @@ export interface Person {
   updated_at?: string
   new?: boolean
   category: CharacterCategory
+  count: number
+  shot_id?: string
 }
 
 export interface Advancement {
@@ -463,7 +467,8 @@ export const defaultCharacter:Person = {
   skills: {},
   advancements: [],
   sites: [],
-  weapons: []
+  weapons: [],
+  count: null,
 }
 
 export const defaultVehicle:Vehicle = {
@@ -503,7 +508,8 @@ export const defaultVehicle:Vehicle = {
   skills: {},
   advancements: [],
   sites: [],
-  weapons: []
+  weapons: [],
+  count: null
 }
 
 export const defaultFight:Fight = {

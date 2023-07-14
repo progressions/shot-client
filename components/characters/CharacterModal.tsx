@@ -149,15 +149,28 @@ export default function CharacterModal({ open, setOpen, character:activeCharacte
               <StyledTextField label="Shot" type="number" name="current_shot" value={character.current_shot === null ? "" : character.current_shot} onChange={handleChange} sx={{width: 80}} /> }
             </Stack>
             <Stack spacing={2} direction="row" alignItems='center'>
-              <StyledTextField label={woundsLabel}
-                type="number"
-                name="Wounds"
-                value={character.action_values?.['Wounds'] || ''}
-                onChange={handleAVChange}
-                InputProps={
-                  {startAdornment: woundsAdornment()}
-                }
-              />
+              <PlayerTypeOnly character={character} only="PC">
+                <StyledTextField label={woundsLabel}
+                  type="number"
+                  name="Wounds"
+                  value={character.action_values?.["Wounds"] || ""}
+                  onChange={handleAVChange}
+                  InputProps={
+                    {startAdornment: woundsAdornment()}
+                  }
+                />
+              </PlayerTypeOnly>
+              <PlayerTypeOnly character={character} only="Mook">
+                <StyledTextField label={woundsLabel}
+                  type="number"
+                  name="count"
+                  value={character.count || ""}
+                  onChange={handleChange}
+                  InputProps={
+                    {startAdornment: woundsAdornment()}
+                  }
+                />
+              </PlayerTypeOnly>
               <PlayerTypeOnly character={character} only="PC">
                 <DeathMarks character={character} onChange={handleDeathMarks} />
               </PlayerTypeOnly>

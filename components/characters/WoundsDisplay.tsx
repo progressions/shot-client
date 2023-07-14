@@ -20,7 +20,7 @@ export default function WoundsDisplay({ character, user }: WoundsDisplayProps) {
   }
   const [color, backgroundColor] = getColors(character)
 
-  const wounds = character.action_values["Wounds"] || 0
+  const wounds = character.count || character.action_values["Wounds"] || 0
 
   return (
     <GamemasterOnly user={user} character={character}>

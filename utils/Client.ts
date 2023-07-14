@@ -44,20 +44,20 @@ class Client {
     this.api = new Api()
   }
 
-  async getLocationForCharacter(fight: Fight | ID, character: Character | ID):Promise<Location> {
-    return this.get(this.api.locations(), {"fight_id": fight.id, "character_id": character.id})
+  async getLocationForCharacter(character: Character | ID):Promise<Location> {
+    return this.get(this.api.locations(), {"shot_id": character.shot_id})
   }
 
   async getLocationForVehicle(fight: Fight | ID, vehicle: Vehicle | ID):Promise<Location> {
-    return this.get(this.api.locations(), {"fight_id": fight.id, "vehicle_id": vehicle.id})
+    return this.get(this.api.locations(), {"shot_id": vehicle.shot_id})
   }
 
-  async setCharacterLocation(fight: Fight | ID, character: Character | ID, location: Location | ID):Promise<Location> {
-    return this.post(this.api.locations(), {"fight_id": fight.id, "character_id": character.id, "location": location})
+  async setCharacterLocation(character: Character | ID, location: Location | ID):Promise<Location> {
+    return this.post(this.api.locations(), {"shot_id": character.shot_id, "location": location})
   }
 
-  async setVehicleLocation(fight: Fight | ID, vehicle: Vehicle | ID, location: Location | ID):Promise<Location> {
-    return this.post(this.api.locations(), {"fight_id": fight.id, "vehicle_id": vehicle.id, "location": location})
+  async setVehicleLocation(vehicle: Vehicle | ID, location: Location | ID):Promise<Location> {
+    return this.post(this.api.locations(), {"shot_id": vehicle.shot_id, "location": location})
   }
 
   async addCharacterToParty(party: Party | ID, character: Character | ID):Promise<Party> {

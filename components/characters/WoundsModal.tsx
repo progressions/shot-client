@@ -1,11 +1,12 @@
-import { useState } from 'react'
-import { Box, Stack, TextField, Button, Dialog } from '@mui/material'
+import { useState } from "react"
+import { Box, Stack, TextField, Button, Dialog } from "@mui/material"
 
 import { useFight } from "../../contexts/FightContext"
 import { useToast } from "../../contexts/ToastContext"
 import { useClient } from "../../contexts/ClientContext"
 import type { Person, Character, Fight, Toast, ActionValues } from "../../types/types"
-import { FightActions } from '../../reducers/fightState'
+import { FightActions } from "../../reducers/fightState"
+import { StyledTextField, SaveCancelButtons } from "../StyledFields"
 
 interface WoundsModalParams {
   open: boolean,
@@ -93,7 +94,7 @@ const WoundsModal = ({open, setOpen, character }: WoundsModalParams) => {
 
   const calculateNewTotal = (smackdown: number) => {
     if (character.action_values["Type"] === "Mook") {
-      return (character.action_values["Wounds"] - smackdown)
+      return (character.count - smackdown)
     }
 
     return (character.action_values["Wounds"] + smackdown)
@@ -115,7 +116,7 @@ const WoundsModal = ({open, setOpen, character }: WoundsModalParams) => {
     const impairments = character.impairments + calculateImpairments(originalWounds, newWounds)
 
     try {
-      await client.updateCharacter({ ...character, impairments: impairments, "action_values": actionValues}, fight)
+      await client.updateCharacter({ ...character, count: newWounds, impairments: impairments, "action_values": actionValues}, fight)
       dispatchFight({ type: FightActions.EDIT })
       setSmackdown(0)
       setOpen(false)
@@ -144,11 +145,8 @@ const WoundsModal = ({open, setOpen, character }: WoundsModalParams) => {
     >
       <Box component="form" onSubmit={submitWounds}>
         <Stack p={4} spacing={2}>
-          <TextField autoFocus type="number" label={label} required name="wounds" value={smackdown || ""} onChange={handleChange} />
-          <Stack alignItems="flex-end" spacing={2} direction="row">
-            <Button variant="outlined" disabled={saving} onClick={cancelForm}>Cancel</Button>
-            <Button variant="contained" type="submit" disabled={saving}>Save Changes</Button>
-          </Stack>
+          <StyledTextField autoFocus type="number" label={label} required name="wounds" value={smackdown || ""} onChange={handleChange} />
+          <SaveCancelButtons saving={saving} onCancel={cancelForm} />
         </Stack>
       </Box>
     </Dialog>
