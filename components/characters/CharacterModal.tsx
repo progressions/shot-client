@@ -149,7 +149,7 @@ export default function CharacterModal({ open, setOpen, character:activeCharacte
               <StyledTextField label="Shot" type="number" name="current_shot" value={character.current_shot === null ? "" : character.current_shot} onChange={handleChange} sx={{width: 80}} /> }
             </Stack>
             <Stack spacing={2} direction="row" alignItems='center'>
-              <PlayerTypeOnly character={character} only="PC">
+              <PlayerTypeOnly character={character} except="Mook">
                 <StyledTextField label={woundsLabel}
                   type="number"
                   name="Wounds"

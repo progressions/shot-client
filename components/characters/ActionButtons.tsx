@@ -62,11 +62,13 @@ export default function ActionButtons({ character, healWounds, takeWounds, takeC
           </Tooltip>
         </PlayerTypeOnly> }
         { takeConditionPoints && character.category === "vehicle" &&
-        <Tooltip title="Take Condition Points">
-          <Button variant="contained" onClick={() => {takeConditionPoints(character)}}>
-            <CarCrashIcon color="error" />
-          </Button>
-        </Tooltip> }
+        <PlayerTypeOnly character={character} except="Mook">
+          <Tooltip title="Take Condition Points">
+            <Button variant="contained" onClick={() => {takeConditionPoints(character)}}>
+              <CarCrashIcon color="error" />
+            </Button>
+          </Tooltip>
+        </PlayerTypeOnly> }
         <GamemasterOnly user={user} character={character}>
           { editCharacter &&
           <Tooltip title="Edit Character" arrow>
