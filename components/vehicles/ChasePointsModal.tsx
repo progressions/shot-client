@@ -6,6 +6,7 @@ import { useFight } from "../../contexts/FightContext"
 
 import type { Vehicle, Character, Fight, Toast, VehicleActionValues } from "../../types/types"
 import { FightActions } from '../../reducers/fightState'
+import { StyledTextField, SaveCancelButtons } from "../StyledFields"
 
 interface ChasePointsModalParams {
   open: boolean,
@@ -40,7 +41,7 @@ const ChasePointsModal = ({open, setOpen, character }: ChasePointsModalParams) =
 
   const calculateNewTotal = (chasePoints: number) => {
     if (character.action_values["Type"] === "Mook") {
-      return (character.action_values["Chase Points"] - chasePoints)
+      return (character.count - chasePoints)
     }
 
     return (character.action_values["Chase Points"] + chasePoints)
@@ -55,7 +56,7 @@ const ChasePointsModal = ({open, setOpen, character }: ChasePointsModalParams) =
     actionValues["Chase Points"] = newChasePoints
 
     try {
-      await client.updateVehicle({ ...character, "action_values": actionValues}, fight)
+      await client.updateVehicle({ ...character, count: newChasePoints, "action_values": actionValues}, fight)
       dispatch({ type: FightActions.EDIT })
       setChasePoints(0)
       setOpen(false)
@@ -84,10 +85,9 @@ const ChasePointsModal = ({open, setOpen, character }: ChasePointsModalParams) =
     >
       <Box component="form" onSubmit={submitChasePoints}>
         <Stack p={4} spacing={2}>
-          <TextField autoFocus type="number" label={label} required name="chasePoints" value={chasePoints || ""} onChange={handleChange} />
+          <StyledTextField autoFocus type="number" label={label} required name="chasePoints" value={chasePoints || ""} onChange={handleChange} />
           <Stack alignItems="flex-end" spacing={2} direction="row">
-            <Button variant="outlined" disabled={saving} onClick={cancelForm}>Cancel</Button>
-            <Button variant="contained" type="submit" disabled={saving}>Save Changes</Button>
+            <SaveCancelButtons saving={saving} onCancel={cancelForm} />
           </Stack>
         </Stack>
       </Box>
