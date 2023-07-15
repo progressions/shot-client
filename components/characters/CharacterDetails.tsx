@@ -11,6 +11,7 @@ import WhatshotIcon from '@mui/icons-material/Whatshot'
 import ActionValues from './ActionValues'
 import ActionModal from './ActionModal'
 import WoundsModal from './WoundsModal'
+import KillMooksModal from './KillMooksModal'
 import HealModal from './HealModal'
 import ActionButtons from './ActionButtons'
 import MookActionButtons from './MookActionButtons'
@@ -193,10 +194,18 @@ export default function CharacterDetails({ character, editingCharacter, setEditi
         setOpen={setOpenAction}
         character={character}
       />
-      <WoundsModal open={openWounds}
-        setOpen={setOpenWounds}
-        character={character as Person}
-      />
+      <PlayerTypeOnly character={character} except="Mook">
+        <WoundsModal open={openWounds}
+          setOpen={setOpenWounds}
+          character={character as Person}
+        />
+      </PlayerTypeOnly>
+      <PlayerTypeOnly character={character} only="Mook">
+        <KillMooksModal open={openWounds}
+          setOpen={setOpenWounds}
+          character={character as Person}
+        />
+      </PlayerTypeOnly>
       <HealModal open={openHeal}
         setOpen={setOpenHeal}
         character={character as Person}

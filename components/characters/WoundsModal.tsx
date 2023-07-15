@@ -30,7 +30,7 @@ const woundThresholds: woundThresholdsType = {
   "Featured Foe": { "low": 25, "high": 30 },
 }
 
-const WoundsModal = ({open, setOpen, character }: WoundsModalParams) => {
+export default function WoundsModal({open, setOpen, character }: WoundsModalParams) {
   const { fight, dispatch:dispatchFight } = useFight()
   const [smackdown, setSmackdown] = useState<number>(0)
   const [saving, setSaving] = useState<boolean>(false)
@@ -38,8 +38,6 @@ const WoundsModal = ({open, setOpen, character }: WoundsModalParams) => {
   const { client } = useClient()
 
   const calculateImpairments = (originalWounds: number, newWounds: number): number => {
-    if (character.action_values["Type"] === "Mook") { return 0 }
-
     const threshold = woundThresholds[character.action_values["Type"] as string]
 
     if (["Boss", "Uber-Boss"].includes(character.action_values["Type"] as string)) {
@@ -80,10 +78,6 @@ const WoundsModal = ({open, setOpen, character }: WoundsModalParams) => {
   }
 
   const calculateWounds = (): number => {
-    if (character.action_values["Type"] === "Mook") {
-      return smackdown
-    }
-
     const toughness = Math.max(0, (character.action_values["Toughness"] || 0) - character.impairments)
     const result = smackdown - toughness
 
@@ -94,10 +88,6 @@ const WoundsModal = ({open, setOpen, character }: WoundsModalParams) => {
   }
 
   const calculateNewTotal = (smackdown: number) => {
-    if (character.action_values["Type"] === "Mook") {
-      return (character.count - smackdown)
-    }
-
     return (character.action_values["Wounds"] + smackdown)
   }
 
@@ -121,11 +111,7 @@ const WoundsModal = ({open, setOpen, character }: WoundsModalParams) => {
       dispatchFight({ type: FightActions.EDIT })
       setSmackdown(0)
       setOpen(false)
-      if (character.action_values["Type"] === "Mook") {
-        toastSuccess(`${character.name} lost ${wounds} mooks.`)
-      } else {
-        toastSuccess(`${character.name} took a smackdown of ${smackdown}, causing ${wounds} wounds.`)
-      }
+      toastSuccess(`${character.name} took a smackdown of ${smackdown}, causing ${wounds} wounds.`)
     } catch(error) {
       toastError()
     }
@@ -134,7 +120,7 @@ const WoundsModal = ({open, setOpen, character }: WoundsModalParams) => {
     setSmackdown(0)
     setOpen(false)
   }
-  const label = (character.action_values["Type"] === "Mook") ? "Kill Mooks" : "Smackdown"
+  const label = "Smackdown"
 
   return (
     <StyledFormDialog
@@ -149,5 +135,3 @@ const WoundsModal = ({open, setOpen, character }: WoundsModalParams) => {
     </StyledFormDialog>
   )
 }
-
-export default WoundsModal

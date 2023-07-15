@@ -27,10 +27,6 @@ const ChasePointsModal = ({open, setOpen, character }: ChasePointsModalParams) =
   }
 
   const calculateOriginalPoints = (): number => {
-    if (character.action_values["Type"] === "Mook") {
-      return character.count
-    }
-
     const handling = Math.max(0, (character.action_values["Handling"] || 0) - character.impairments)
     const result = chasePoints - handling
 
@@ -41,10 +37,6 @@ const ChasePointsModal = ({open, setOpen, character }: ChasePointsModalParams) =
   }
 
   const calculateNewTotal = (chasePoints: number) => {
-    if (character.action_values["Type"] === "Mook") {
-      return (character.count - chasePoints)
-    }
-
     return (character.action_values["Chase Points"] + chasePoints)
   }
 
@@ -61,11 +53,7 @@ const ChasePointsModal = ({open, setOpen, character }: ChasePointsModalParams) =
       dispatch({ type: FightActions.EDIT })
       setChasePoints(0)
       setOpen(false)
-      if (character.action_values["Type"] === "Mook") {
-        toastSuccess(`${character.name} lost ${originalPoints} mooks.`)
-      } else {
-        toastSuccess(`${character.name} took a smackdown of ${chasePoints}, causing ${originalPoints} Chase Points.`)
-      }
+      toastSuccess(`${character.name} took a smackdown of ${chasePoints}, causing ${originalPoints} Chase Points.`)
     } catch(error) {
       toastError()
     }
@@ -74,7 +62,7 @@ const ChasePointsModal = ({open, setOpen, character }: ChasePointsModalParams) =
     setChasePoints(0)
     setOpen(false)
   }
-  const label = (character.action_values["Type"] === "Mook") ? "Mooks" : "Chase Points"
+  const label = "Chase Points"
 
   return (
     <StyledFormDialog
