@@ -7,6 +7,7 @@ import { useToast } from "../../contexts/ToastContext"
 import { useClient } from "../../contexts/ClientContext"
 import type { Character, Fight, Toast } from "../../types/types"
 import { FightActions } from '../../reducers/fightState'
+import { StyledFormDialog, StyledTextField } from "../StyledFields"
 
 interface ActionModalParams {
   open: boolean,
@@ -50,23 +51,19 @@ const ActionModal = ({open, setOpen, character }: ActionModalParams) => {
   }
 
   return (
-    <Dialog
+    <StyledFormDialog
       open={open}
       onClose={() => setOpen(false)}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
       disableRestoreFocus
+      onSubmit={submitAction}
+      saving={saving}
+      onCancel={cancelForm}
+      title="Spend Shots"
     >
-      <Box component="form" onSubmit={submitAction}>
-        <Stack p={4} spacing={2}>
-          <TextField autoFocus type="number" label="Shots" required name="shots" value={shots || ''} onChange={handleChange} />
-          <Stack alignItems="flex-end" spacing={2} direction="row">
-            <Button variant="outlined" disabled={saving} onClick={cancelForm}>Cancel</Button>
-            <Button variant="contained" type="submit" disabled={saving}>Save Changes</Button>
-          </Stack>
-        </Stack>
-      </Box>
-    </Dialog>
+      <StyledTextField autoFocus type="number" label="Shots" required name="shots" value={shots || ''} onChange={handleChange} />
+    </StyledFormDialog>
   )
 }
 
