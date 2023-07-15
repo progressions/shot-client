@@ -1,11 +1,12 @@
 import { Tooltip, Divider, Grid, Stack, Dialog, DialogTitle, DialogContent, DialogActions, DialogContentText, Button, Box, Typography, TextField } from "@mui/material"
-import { useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import { rollDie, rollExplodingDie } from "./dice/DiceRoller"
 import CasinoIcon from "@mui/icons-material/Casino"
 import { StyledTextField, SaveCancelButtons, StyledDialog } from "./StyledFields"
 import EnemiesAutocomplete from "./mooks/EnemiesAutocomplete"
 import type { Character } from "../types/types"
 import { defaultCharacter } from "../types/types"
+import Smackdowns from "./mooks/Smackdowns"
 
 interface MookRollsParams {
   count?: number,
@@ -15,14 +16,14 @@ interface MookRollsParams {
   icon?: React.ReactElement
 }
 
-interface MookRollValue {
+export interface MookRollValue {
   count: number,
   attack: number,
   defense: number,
   damage: number
 }
 
-interface RollOutcomeParams {
+export interface RollOutcomeParams {
   outcome: number,
   value: MookRollValue
 }
@@ -82,35 +83,6 @@ export default function MookRolls({ count, attack, damage, icon }: MookRollsPara
     )
   }
 
-  const actualToughness = (enemy: Character) => {
-    if (enemy.action_values["Toughness"]) {
-      const impairments = enemy.impairments || 0
-      const toughness = enemy.action_values["Toughness"] || 0
-      const modifiedToughness = toughness as number - impairments as number
-      return Math.max(0, modifiedToughness)
-    } else {
-      return 0
-    }
-  }
-
-  const damageMessage = (enemy: Character, outcome: number) => {
-    const label = (enemy?.name) ? (<><strong>{enemy.name}</strong>: </>) : ""
-    const toughness = actualToughness(enemy)
-    const smackdown = outcome - value.defense + value.damage
-    const wounds = Math.max(0, smackdown - toughness)
-    const toughnessMessage = (toughness) ? (<> - Toughness {toughness} = <strong style={{color: "red"}}>{wounds} Wounds</strong></>) : ""
-    return (<>{outcome}: {label} Smackdown of {smackdown} {toughnessMessage}</>)
-  }
-
-  const smackdowns = (rolls: number[]) => {
-    return (rolls
-      .filter((roll: number) => (roll >= value.defense))
-      .map((outcome: number, index: number) => {
-        const message = damageMessage(enemy, outcome)
-        return <Typography key={(Math.random() * 10000)}>{message}</Typography>
-      })
-    )
-  }
 
   const buttonWithTooltip = (icon: React.ReactElement | undefined) => {
     if (icon) {
@@ -160,9 +132,7 @@ export default function MookRolls({ count, attack, damage, icon }: MookRollsPara
             </Box>
             <Divider />
             <Box py={2}>
-              {
-                smackdowns(rolls)
-              }
+              <Smackdowns enemy={enemy} rolls={rolls} value={value} handleClose={handleClose} />
             </Box>
           </Box>
         </DialogContent>

@@ -6,7 +6,7 @@ import { useFight } from "../../contexts/FightContext"
 
 import type { Vehicle, Character, Fight, Toast, VehicleActionValues } from "../../types/types"
 import { FightActions } from '../../reducers/fightState'
-import { StyledDialog, StyledTextField, SaveCancelButtons } from "../StyledFields"
+import { StyledFormDialog, StyledTextField } from "../StyledFields"
 
 interface ChasePointsModalParams {
   open: boolean,
@@ -77,22 +77,16 @@ const ChasePointsModal = ({open, setOpen, character }: ChasePointsModalParams) =
   const label = (character.action_values["Type"] === "Mook") ? "Mooks" : "Chase Points"
 
   return (
-    <StyledDialog
+    <StyledFormDialog
       title={label}
       open={open}
       onClose={() => setOpen(false)}
-      aria-labelledby="modal-modal-title"
-      aria-describedby="modal-modal-description"
-      disableRestoreFocus
       onSubmit={submitChasePoints}
+      saving={saving}
+      onCancel={cancelForm}
     >
-      <Stack p={2} spacing={2}>
-        <StyledTextField autoFocus type="number" label={label} required name="chasePoints" value={chasePoints || ""} onChange={handleChange} />
-        <Stack alignItems="flex-end" spacing={2} direction="row">
-          <SaveCancelButtons saving={saving} onCancel={cancelForm} />
-        </Stack>
-      </Stack>
-    </StyledDialog>
+      <StyledTextField autoFocus type="number" label={label} required name="chasePoints" value={chasePoints || ""} onChange={handleChange} />
+    </StyledFormDialog>
   )
 }
 

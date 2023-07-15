@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Box, Stack, TextField, Button, Dialog } from '@mui/material'
+import { DialogContent, Box, Stack, TextField, Button, Dialog } from '@mui/material'
 import Client from "../../utils/Client"
 
 import { useFight } from "../../contexts/FightContext"
@@ -7,6 +7,7 @@ import { useToast } from "../../contexts/ToastContext"
 import { useClient } from "../../contexts/ClientContext"
 import type { Person, Character, Fight, Toast, ActionValues } from "../../types/types"
 import { FightActions } from '../../reducers/fightState'
+import { StyledTextField, StyledFormDialog, SaveCancelButtons } from '../StyledFields'
 
 interface HealModalParams {
   open: boolean,
@@ -94,22 +95,15 @@ export default function HealModal({open, setOpen, character }: HealModalParams) 
   }
 
   return (
-    <Dialog
+    <StyledFormDialog
       open={open}
       onClose={() => setOpen(false)}
-      aria-labelledby="modal-modal-title"
-      aria-describedby="modal-modal-description"
-      disableRestoreFocus
+      onSubmit={submitWounds}
+      title="Heal Wounds"
+      saving={saving}
+      onCancel={cancelForm}
     >
-      <Box component="form" onSubmit={submitWounds}>
-        <Stack p={4} spacing={2}>
-          <TextField autoFocus type="number" label="Heal Wounds" required name="healing" value={healing || ""} onChange={handleChange} />
-          <Stack alignItems="flex-end" spacing={2} direction="row">
-            <Button variant="outlined" disabled={saving} onClick={cancelForm}>Cancel</Button>
-            <Button variant="contained" type="submit" disabled={saving}>Save Changes</Button>
-          </Stack>
-        </Stack>
-      </Box>
-    </Dialog>
+      <StyledTextField autoFocus type="number" label="Heal Wounds" required name="healing" value={healing || ""} onChange={handleChange} />
+    </StyledFormDialog>
   )
 }

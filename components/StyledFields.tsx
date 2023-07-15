@@ -1,4 +1,4 @@
-import { colors, Stack, Button, Dialog, DialogTitle, Divider, Box, Typography, Autocomplete, Paper, TextField } from "@mui/material"
+import { DialogContent, colors, Stack, Button, Dialog, DialogTitle, Divider, Box, Typography, Autocomplete, Paper, TextField } from "@mui/material"
 import { styled } from "@mui/material/styles"
 
 const SelectProps = {
@@ -95,6 +95,27 @@ export function StyledDialog(props: React.PropsWithChildren<AnyProps>) {
         {props.children}
       </Box>
     </Dialog>
+  )
+}
+
+export function StyledFormDialog(props: React.PropsWithChildren<AnyProps>) {
+  return (
+    <StyledDialog
+      open={props.open}
+      onClose={props.onClose}
+      aria-labelledby="modal-modal-title"
+      aria-describedby="modal-modal-description"
+      disableRestoreFocus
+      onSubmit={props.onSubmit}
+      title={props.title}
+    >
+      <DialogContent>
+        <Stack spacing={2}>
+          { props.children }
+          <SaveCancelButtons saving={props.saving} onCancel={props.onCancel} />
+        </Stack>
+      </DialogContent>
+    </StyledDialog>
   )
 }
 

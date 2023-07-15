@@ -6,7 +6,7 @@ import { useToast } from "../../contexts/ToastContext"
 import { useClient } from "../../contexts/ClientContext"
 import type { Vehicle, Character, Fight, Toast, VehicleActionValues } from "../../types/types"
 import { FightActions } from '../../reducers/fightState'
-import { StyledDialog, StyledTextField, SaveCancelButtons } from "../StyledFields"
+import { StyledFormDialog, StyledTextField } from "../StyledFields"
 
 interface ConditionPointsModalParams {
   open: boolean,
@@ -79,7 +79,7 @@ const ConditionPointsModal = ({open, setOpen, character }: ConditionPointsModalP
   const label = (character.action_values["Type"] === "Mook") ? "Mooks" : "Condition Points"
 
   return (
-    <StyledDialog
+    <StyledFormDialog
       title={label}
       open={open}
       onClose={() => setOpen(false)}
@@ -87,14 +87,11 @@ const ConditionPointsModal = ({open, setOpen, character }: ConditionPointsModalP
       aria-describedby="modal-modal-description"
       disableRestoreFocus
       onSubmit={submitConditionPoints}
+      saving={saving}
+      onCancel={cancelForm}
     >
-      <Stack p={2} spacing={2}>
-        <StyledTextField autoFocus type="number" label={label} required name="Condition Points" value={conditionPoints || ""} onChange={handleChange} />
-        <Stack alignItems="flex-end" spacing={2} direction="row">
-          <SaveCancelButtons saving={saving} onCancel={cancelForm} />
-        </Stack>
-      </Stack>
-    </StyledDialog>
+      <StyledTextField autoFocus type="number" label={label} required name="Condition Points" value={conditionPoints || ""} onChange={handleChange} />
+    </StyledFormDialog>
   )
 }
 

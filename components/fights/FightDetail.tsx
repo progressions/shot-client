@@ -58,10 +58,7 @@ export default function FightDetail({ fight, state, dispatch }: FightParams) {
         </Typography>
       </TableCell>
       <TableCell>
-        {fight.characters?.length}
-      </TableCell>
-      <TableCell>
-        {fight.shot_order?.[0]?.[0] || ''}
+        {fight.description}
       </TableCell>
       <TableCell>
         <GamemasterOnly user={user}>

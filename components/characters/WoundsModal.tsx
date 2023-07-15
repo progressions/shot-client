@@ -1,12 +1,12 @@
 import { useState } from "react"
-import { Box, Stack, TextField, Button, Dialog } from "@mui/material"
+import { DialogContent, Box, Stack, TextField, Button, Dialog } from "@mui/material"
 
 import { useFight } from "../../contexts/FightContext"
 import { useToast } from "../../contexts/ToastContext"
 import { useClient } from "../../contexts/ClientContext"
 import type { Person, Character, Fight, Toast, ActionValues } from "../../types/types"
 import { FightActions } from "../../reducers/fightState"
-import { StyledTextField, SaveCancelButtons } from "../StyledFields"
+import { StyledFormDialog, StyledTextField } from "../StyledFields"
 
 interface WoundsModalParams {
   open: boolean,
@@ -134,23 +134,19 @@ const WoundsModal = ({open, setOpen, character }: WoundsModalParams) => {
     setSmackdown(0)
     setOpen(false)
   }
-  const label = (character.action_values["Type"] === "Mook") ? "Mooks" : "Smackdown"
+  const label = (character.action_values["Type"] === "Mook") ? "Kill Mooks" : "Smackdown"
 
   return (
-    <Dialog
+    <StyledFormDialog
       open={open}
       onClose={() => setOpen(false)}
-      aria-labelledby="modal-modal-title"
-      aria-describedby="modal-modal-description"
-      disableRestoreFocus
+      title={label}
+      onSubmit={submitWounds}
+      saving={saving}
+      onCancel={cancelForm}
     >
-      <Box component="form" onSubmit={submitWounds}>
-        <Stack p={4} spacing={2}>
-          <StyledTextField autoFocus type="number" label={label} required name="wounds" value={smackdown || ""} onChange={handleChange} />
-          <SaveCancelButtons saving={saving} onCancel={cancelForm} />
-        </Stack>
-      </Box>
-    </Dialog>
+      <StyledTextField autoFocus type="number" label={label} required name="wounds" value={smackdown || ""} onChange={handleChange} />
+    </StyledFormDialog>
   )
 }
 

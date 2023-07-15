@@ -121,8 +121,7 @@ export default function Home({ currentCampaign, fights:initialFights, meta }: Ho
                   <TableHead>
                     <TableRow sx={{"& th": { color: "text.secondary" }}}>
                       <TableCell>Fight</TableCell>
-                      <TableCell>Characters</TableCell>
-                      <TableCell>Shot</TableCell>
+                      <TableCell>Description</TableCell>
                       <TableCell></TableCell>
                     </TableRow>
                   </TableHead>
