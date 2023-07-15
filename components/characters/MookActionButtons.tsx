@@ -21,10 +21,9 @@ interface ActionButtonsParams {
   takeAction?: (character: Character) => void,
   editCharacter?: (character: Character) => void,
   deleteCharacter?: (character: Character) => void,
-  takeDodgeAction?: (character: Character) => void,
 }
 
-export default function MookActionButtons({ character, healWounds, takeWounds, takeConditionPoints, takeAction, editCharacter, deleteCharacter, takeDodgeAction }: ActionButtonsParams) {
+export default function MookActionButtons({ character, healWounds, takeWounds, takeConditionPoints, takeAction, editCharacter, deleteCharacter }: ActionButtonsParams) {
   const { user } = useClient()
 
   const woundLabel = "Kill Mooks"
@@ -64,11 +63,6 @@ export default function MookActionButtons({ character, healWounds, takeWounds, t
         </GamemasterOnly>
       </ButtonGroup>
       <ButtonGroup variant="outlined" size="small" className="actionButtons">
-        { takeDodgeAction && <Tooltip title="Dodge" arrow>
-          <Button variant="contained" color="highlight" onClick={() => takeDodgeAction(character)}>
-            <DirectionsRunIcon />
-          </Button>
-        </Tooltip> }
         { takeAction && <Tooltip title="Take Action" arrow>
           <Button sx={{width: 60}} variant="contained" color="highlight" onClick={() => {takeAction(character)}}>
             <BoltIcon sx={{width: 50, height: 50}} />

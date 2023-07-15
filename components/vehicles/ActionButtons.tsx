@@ -23,10 +23,9 @@ interface ActionButtonsParams {
   takeAction?: (character: Character) => void,
   editCharacter?: (character: Character) => void,
   deleteCharacter?: (character: Character) => void,
-  takeDodgeAction?: (character: Character) => void,
 }
 
-export default function ActionButtons({ character, healWounds, takeWounds, takeConditionPoints, takeAction, editCharacter, deleteCharacter, takeDodgeAction }: ActionButtonsParams) {
+export default function ActionButtons({ character, healWounds, takeWounds, takeConditionPoints, takeAction, editCharacter, deleteCharacter }: ActionButtonsParams) {
   const { user } = useClient()
 
   const woundLabel = character.action_values["Type"] === "Mook" as CharacterType ? "Kill Mooks" : "Take Chase Points"

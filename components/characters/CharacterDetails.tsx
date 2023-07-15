@@ -94,6 +94,7 @@ export default function CharacterDetails({ character, editingCharacter, setEditi
       action_value: "Defense",
       change: "+3",
       severity: "success",
+      shot_id: character.shot_id,
       [`${character.category}_id`]: character.id
     } as CharacterEffect
   }
@@ -103,6 +104,7 @@ export default function CharacterDetails({ character, editingCharacter, setEditi
       const data = await client.createCharacterEffect(dodge(character), fight)
       return !!data
     } catch(error) {
+      console.error(error)
       toastError()
     }
   }
