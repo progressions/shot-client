@@ -11,7 +11,6 @@ import CarCrashIcon from '@mui/icons-material/CarCrash'
 
 import GamemasterOnly from "../GamemasterOnly"
 import PlayerTypeOnly from "../PlayerTypeOnly"
-import MookRolls from '../MookRolls'
 import { useClient } from "../../contexts/ClientContext"
 
 import type { Character, CharacterType } from "../../types/types"
@@ -45,8 +44,6 @@ export default function ActionButtons({ character, healWounds, takeWounds, takeC
   return (
     <Stack direction="row" spacing={1} sx={{height: 30}}>
       <ButtonGroup variant="contained" size="small">
-        { character.category === "character" && takeWounds && character.action_values["Type"] == "Mook" &&
-            <MookRolls count={character.action_values["Wounds"] as number} attack={mainAttack as number} damage={character.action_values["Damage"] as number} icon={<NewReleasesIcon />} /> }
         { takeWounds &&
           <Tooltip title={woundLabel} arrow>
             <Button onClick={() => {takeWounds(character)}}>

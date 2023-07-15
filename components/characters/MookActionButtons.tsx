@@ -24,7 +24,7 @@ interface ActionButtonsParams {
   takeDodgeAction?: (character: Character) => void,
 }
 
-export default function ActionButtons({ character, healWounds, takeWounds, takeConditionPoints, takeAction, editCharacter, deleteCharacter, takeDodgeAction }: ActionButtonsParams) {
+export default function MookActionButtons({ character, healWounds, takeWounds, takeConditionPoints, takeAction, editCharacter, deleteCharacter, takeDodgeAction }: ActionButtonsParams) {
   const { user } = useClient()
 
   const woundLabel = "Kill Mooks"
@@ -41,7 +41,7 @@ export default function ActionButtons({ character, healWounds, takeWounds, takeC
     <Stack direction="row" spacing={1} sx={{height: 30}}>
       <ButtonGroup variant="contained" size="small">
         { character.category === "character" && takeWounds &&
-            <MookRolls count={character.action_values["Wounds"] as number} attack={mainAttack as number} damage={character.action_values["Damage"] as number} icon={<NewReleasesIcon />} /> }
+          <MookRolls count={character.count} attack={mainAttack as number} damage={character.action_values["Damage"] as number} icon={<NewReleasesIcon />} /> }
         { takeWounds &&
           <Tooltip title={woundLabel} arrow>
             <Button onClick={() => {takeWounds(character)}}>

@@ -118,6 +118,14 @@ class Client {
     return await this.delete(this.api.fights(fight))
   }
 
+  async getCharactersInFight(fight: Fight | ID):Promise<Person[]> {
+    return await this.get(`${this.api.charactersAndVehicles(fight)}/characters`)
+  }
+
+  async getVehiclesInFight(fight: Fight | ID):Promise<Vehicle[]> {
+    return await this.get(`${this.api.charactersAndVehicles(fight)}/vehicles`)
+  }
+
   async getCharactersAndVehicles(params = {}):Promise<CharactersAndVehiclesResponse> {
     const query = Object.entries(params).map(([key, value]) => `${key}=${value || ""}`).join("&")
     return this.get(`${this.api.charactersAndVehicles()}?${query}`)

@@ -59,8 +59,12 @@ class Api {
     }
   }
 
-  charactersAndVehicles(): string {
-    return `${this.api()}/characters_and_vehicles`
+  charactersAndVehicles(fight?: Fight | ID | undefined): string {
+    if (fight?.id) {
+      return `${this.api()}/characters_and_vehicles/${fight.id}`
+    } else {
+      return `${this.api()}/characters_and_vehicles`
+    }
   }
 
   characters(fight?: Fight | null, character?: Character | ID): string {
