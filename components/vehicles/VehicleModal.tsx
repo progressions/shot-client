@@ -148,7 +148,7 @@ export default function CharacterModal({ open, setOpen, character:activeVehicle,
               <StyledTextField label="Shot" type="number" name="current_shot" value={character.current_shot === null ? '' : character.current_shot} onChange={handleChange} sx={{width: 80}} /> }
             </Stack>
             <Stack spacing={2} direction="row" alignItems='center'>
-              <PlayerTypeOnly character={character} only="PC">
+              <PlayerTypeOnly character={character} except="Mook">
                 <StyledTextField label={woundsLabel} type="number" name="Chase Points" value={character.action_values?.['Chase Points'] || ''} onChange={handleAVChange}
                   InputProps={{startAdornment: <InputAdornment position="start"><CommuteIcon color='error' /></InputAdornment>}} />
                 <StyledTextField label="Condition" type="number" name="Condition Points" value={character.action_values?.['Condition Points'] || ''} onChange={handleAVChange}

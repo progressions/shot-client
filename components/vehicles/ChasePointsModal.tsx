@@ -28,10 +28,11 @@ const ChasePointsModal = ({open, setOpen, character }: ChasePointsModalParams) =
 
   const calculateOriginalPoints = (): number => {
     if (character.action_values["Type"] === "Mook") {
-      return chasePoints
+      return character.count
     }
 
-    const result = chasePoints - (character.action_values["Handling"] || 0) + (character.impairments)
+    const handling = Math.max(0, (character.action_values["Handling"] || 0) - character.impairments)
+    const result = chasePoints - handling
 
     if (result >= 0) {
       return result

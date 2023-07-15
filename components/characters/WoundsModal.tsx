@@ -84,7 +84,8 @@ const WoundsModal = ({open, setOpen, character }: WoundsModalParams) => {
       return smackdown
     }
 
-    const result = smackdown - (character.action_values["Toughness"] || 0) + (character.impairments)
+    const toughness = Math.max(0, (character.action_values["Toughness"] || 0) - character.impairments)
+    const result = smackdown - toughness
 
     if (result >= 0) {
       return result
