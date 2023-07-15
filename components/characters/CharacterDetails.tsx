@@ -180,7 +180,6 @@ export default function CharacterDetails({ character, editingCharacter, setEditi
                   healWounds={healWounds}
                   takeWounds={takeWounds}
                   takeAction={takeAction}
-                  takeDodgeAction={takeDodgeAction}
                 />
               </PlayerTypeOnly>
             </Stack>
