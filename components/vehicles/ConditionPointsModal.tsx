@@ -31,7 +31,8 @@ const ConditionPointsModal = ({open, setOpen, character }: ConditionPointsModalP
       return conditionPoints
     }
 
-    const result = conditionPoints - (character.action_values["Frame"] || 0) + (character.impairments)
+    const frame = Math.max(0, (character.action_values["Frame"] || 0) - character.impairments)
+    const result = conditionPoints - frame
 
     if (result >= 0) {
       return result
