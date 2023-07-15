@@ -3,9 +3,11 @@ import AvatarBadge from "../characters/AvatarBadge"
 import Client from "../../utils/Client"
 import DirectionsCarIcon from "@mui/icons-material/DirectionsCar"
 import GamemasterOnly from "../GamemasterOnly"
+import PlayerTypeOnly from "../PlayerTypeOnly"
 import VehicleActionValues from "./ActionValues"
 import VehicleActionModal from "./ActionModal"
 import ChasePointsModal from "./ChasePointsModal"
+import KillMooksModal from "./KillMooksModal"
 import ConditionPointsModal from "./ConditionPointsModal"
 import ActionButtons from "../vehicles/ActionButtons"
 import NameDisplay from "../characters/NameDisplay"
@@ -127,10 +129,18 @@ export default function VehicleDetails({ character, editingCharacter, setEditing
           setOpen={setOpenAction}
           character={character}
         />
-        <ChasePointsModal open={openChasePoints}
-          setOpen={setOpenChasePoints}
-          character={character as Vehicle}
-        />
+        <PlayerTypeOnly character={character} except="Mook">
+          <ChasePointsModal open={openChasePoints}
+            setOpen={setOpenChasePoints}
+            character={character as Vehicle}
+          />
+        </PlayerTypeOnly>
+        <PlayerTypeOnly character={character} only="Mook">
+          <KillMooksModal open={openChasePoints}
+            setOpen={setOpenChasePoints}
+            character={character as Vehicle}
+          />
+        </PlayerTypeOnly>
         <ConditionPointsModal open={openConditionPoints}
           setOpen={setOpenConditionPoints}
           character={character as Vehicle}
