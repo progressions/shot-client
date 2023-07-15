@@ -9,6 +9,7 @@ import { useFight } from "../../contexts/FightContext"
 import type { Character, CharacterEffect } from "../../types/types"
 import { defaultCharacterEffect } from "../../types/types"
 import { FightActions } from '../../reducers/fightState'
+import { StyledFormDialog, StyledTextField } from "../StyledFields"
 
 interface EffectsModalProps {
   character: Character
@@ -81,44 +82,35 @@ export default function EffectsModal({ character }: EffectsModalProps) {
       <IconButton color="inherit" onClick={() => setOpen(true)}>
         <AddCircleOutlineOutlinedIcon />
       </IconButton>
-      <Dialog
+      <StyledFormDialog
         open={open}
         onClose={cancelForm}
         disableRestoreFocus
+        onSubmit={handleSubmit}
+        title="Add Effect"
+        saving={saving}
+        onCancel={cancelForm}
       >
-        <Box component="form" onSubmit={handleSubmit} sx={{width: 400}}>
-          <DialogTitle>Add Effect</DialogTitle>
-          <DialogContent>
-            <Stack spacing={2} sx={{paddingTop: 2}}>
-              <Stack direction="row" spacing={1}>
-              <TextField autoFocus label="Title" variant="filled" size="medium" sx={{paddingBottom: 2}} fullWidth required name="name" value={effect.name} onChange={handleChange} />
-                <TextField label="Severity" name="severity" select fullWidth required value={effect.severity} onChange={handleChange}>
-                  <MenuItem value="error">Danger</MenuItem>
-                  <MenuItem value="warning">Warning</MenuItem>
-                  <MenuItem value="info">Info</MenuItem>
-                  <MenuItem value="success">Success</MenuItem>
-                </TextField>
-              </Stack>
-              <TextField label="Description" fullWidth name="description" value={effect.description} onChange={handleChange} />
-            </Stack>
-            <Stack spacing={2} sx={{paddingTop: 2}} direction="row">
-              <TextField label="Action Value" name="action_value" select fullWidth value={effect.action_value || ""} onChange={handleChange}>
-                <MenuItem value="">None</MenuItem>
-                {
-                  actionValues.map(({label, value}) => <MenuItem key={value} value={value}>{label}</MenuItem>)
-                }
-              </TextField>
-              <TextField label="Change" fullWidth name="change" value={effect.change || ""} onChange={handleChange} />
-            </Stack>
-          </DialogContent>
-          <DialogActions>
-            <Stack alignItems="flex-end" spacing={2} direction="row">
-              <Button variant="contained" color="error" disabled={saving} onClick={cancelForm}>Cancel</Button>
-              <Button variant="contained" type="submit" disabled={saving}>Save Changes</Button>
-            </Stack>
-          </DialogActions>
-        </Box>
-      </Dialog>
+        <Stack direction="row" spacing={1}>
+          <StyledTextField autoFocus label="Title" variant="filled" size="medium" sx={{paddingBottom: 2}} fullWidth required name="name" value={effect.name} onChange={handleChange} />
+          <StyledTextField label="Severity" name="severity" select fullWidth required value={effect.severity} onChange={handleChange}>
+            <MenuItem value="error">Danger</MenuItem>
+            <MenuItem value="warning">Warning</MenuItem>
+            <MenuItem value="info">Info</MenuItem>
+            <MenuItem value="success">Success</MenuItem>
+          </StyledTextField>
+        </Stack>
+        <StyledTextField label="Description" fullWidth name="description" value={effect.description} onChange={handleChange} />
+        <Stack spacing={2} sx={{paddingTop: 2}} direction="row">
+          <StyledTextField label="Action Value" name="action_value" select fullWidth value={effect.action_value || ""} onChange={handleChange}>
+            <MenuItem value="">None</MenuItem>
+            {
+              actionValues.map(({label, value}) => <MenuItem key={value} value={value}>{label}</MenuItem>)
+            }
+          </StyledTextField>
+          <StyledTextField label="Change" fullWidth name="change" value={effect.change || ""} onChange={handleChange} />
+        </Stack>
+      </StyledFormDialog>
     </>
   )
 }

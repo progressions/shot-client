@@ -7,6 +7,7 @@ import { useFight } from "../../contexts/FightContext"
 import type { Toast, Effect, Fight } from "../../types/types"
 import { defaultEffect } from "../../types/types"
 import { FightActions } from "../../reducers/fightState"
+import { StyledFormDialog, StyledTextField } from "../StyledFields"
 
 interface EffectModalProps {
   shot: number
@@ -52,39 +53,32 @@ export default function EffectModal({ shot, open, setOpen }: EffectModalProps) {
 
   return (
     <>
-      <Dialog
+      <StyledFormDialog
         open={open}
         onClose={cancelForm}
         disableRestoreFocus
+        title="Add Effect"
+        onSubmit={handleSubmit}
+        onCancel={cancelForm}
+        saving={saving}
       >
-        <DialogTitle>Add Effect</DialogTitle>
-        <DialogContent>
-          <Box component="form" onSubmit={handleSubmit} sx={{width: 400}}>
-            <Stack spacing={2}>
-              <TextField autoFocus label="Name" variant="filled" size="medium" sx={{paddingBottom: 2}} fullWidth required name="name" value={effect.name} onChange={handleChange} />
-              <TextField label="Description" fullWidth name="description" value={effect.description} onChange={handleChange} />
-              <Stack direction="row" spacing={1}>
-                <TextField label="First Sequence" name="start_sequence" type="number" fullWidth required value={effect.start_sequence} onChange={handleChange} />
-                <TextField label="Last Sequence" name="end_sequence" type="number" fullWidth required value={effect.end_sequence} onChange={handleChange} />
-                <TextField label="Severity" name="severity" select fullWidth required value={effect.severity} onChange={handleChange}>
-                  <MenuItem value="error">Danger</MenuItem>
-                  <MenuItem value="warning">Warning</MenuItem>
-                  <MenuItem value="info">Info</MenuItem>
-                  <MenuItem value="success">Success</MenuItem>
-                </TextField>
-              </Stack>
-              <Stack direction="row" spacing={1}>
-                <TextField label="First Shot" type="number" name="start_shot" fullWidth required value={effect.start_shot} onChange={handleChange} />
-                <TextField label="Last Shot" type="number" name="end_shot" fullWidth required value={effect.end_shot} onChange={handleChange} />
-              </Stack>
-              <Stack alignItems="flex-end" spacing={2} direction="row">
-                <Button variant="outlined" disabled={saving} onClick={cancelForm}>Cancel</Button>
-                <Button variant="contained" type="submit" disabled={saving}>Save Changes</Button>
-              </Stack>
-            </Stack>
-          </Box>
-        </DialogContent>
-      </Dialog>
+        <StyledTextField autoFocus label="Name" variant="filled" size="medium" sx={{paddingBottom: 2}} fullWidth required name="name" value={effect.name} onChange={handleChange} />
+        <StyledTextField label="Description" fullWidth name="description" value={effect.description} onChange={handleChange} />
+        <Stack direction="row" spacing={1}>
+          <StyledTextField label="First Sequence" name="start_sequence" type="number" fullWidth required value={effect.start_sequence} onChange={handleChange} />
+          <StyledTextField label="Last Sequence" name="end_sequence" type="number" fullWidth required value={effect.end_sequence} onChange={handleChange} />
+          <StyledTextField label="Severity" name="severity" select fullWidth required value={effect.severity} onChange={handleChange}>
+            <MenuItem value="error">Danger</MenuItem>
+            <MenuItem value="warning">Warning</MenuItem>
+            <MenuItem value="info">Info</MenuItem>
+            <MenuItem value="success">Success</MenuItem>
+          </StyledTextField>
+        </Stack>
+        <Stack direction="row" spacing={1}>
+          <StyledTextField label="First Shot" type="number" name="start_shot" fullWidth required value={effect.start_shot} onChange={handleChange} />
+          <StyledTextField label="Last Shot" type="number" name="end_shot" fullWidth required value={effect.end_shot} onChange={handleChange} />
+        </Stack>
+      </StyledFormDialog>
     </>
   )
 }
