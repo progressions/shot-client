@@ -21,7 +21,8 @@ interface SchtickModalProps {
 export default function SchtickModal({ open, setOpen, state, dispatch, schtick:initialSchtick }: SchtickModalProps) {
   const { toastSuccess, toastError } = useToast()
   const { client } = useClient()
-  const { saving, schtick, category, path } = state
+  const { saving, category, path } = state
+  const [schtick, setSchtick] = useState<Schtick>(defaultSchtick)
 
   useEffect(() => {
     if (!dispatch) return
@@ -52,6 +53,7 @@ export default function SchtickModal({ open, setOpen, state, dispatch, schtick:i
       await reloadSchticks()
       toastSuccess("Schtick updated.")
     } catch(error) {
+      console.log(error)
       toastError()
     }
     cancelForm()
@@ -60,13 +62,15 @@ export default function SchtickModal({ open, setOpen, state, dispatch, schtick:i
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     if (!dispatch) return
 
-    dispatch({ type: SchticksActions.UPDATE, name: event.target.name, value: event.target.value })
+    // dispatch({ type: SchticksActions.UPDATE, name: event.target.name, value: event.target.value })
+    setSchtick(oldSchtick => ({ ...schtick, [event.target.name]: event.target.value }))
   }
 
   function cancelForm() {
     if (!dispatch) return
 
     dispatch({ type: SchticksActions.RESET })
+    setSchtick(defaultSchtick)
     setOpen(false)
   }
 
