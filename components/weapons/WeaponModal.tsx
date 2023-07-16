@@ -4,7 +4,7 @@ import { useClient } from "../../contexts/ClientContext"
 import { useToast } from "../../contexts/ToastContext"
 import { useCharacter } from "../../contexts/CharacterContext"
 
-import type { FilterParamsType, OptionType, Juncture, InputParamsType, Character, Weapon } from "../../types/types"
+import type { WeaponCategory, FilterParamsType, OptionType, Juncture, InputParamsType, Character, Weapon } from "../../types/types"
 import { defaultWeapon } from "../../types/types"
 import { useState, useEffect, useReducer } from "react"
 import type { WeaponsStateType, WeaponsActionType } from "../../reducers/weaponsState"
@@ -48,7 +48,7 @@ export default function WeaponModal({ state, dispatch, open, setOpen }: WeaponMo
     setWeapon(oldWeapon => ({ ...weapon, [event.target.name]: event.target.value }))
   }
 
-  function changeCategory(event: React.SyntheticEvent<Element, Event>, newValue: Category) {
+  function changeCategory(event: React.SyntheticEvent<Element, Event>, newValue: WeaponCategory) {
     // dispatch({ type: WeaponsActions.UPDATE, name: "category", value: newValue })
     setWeapon(oldWeapon => ({ ...weapon, category: newValue }))
   }
@@ -122,12 +122,12 @@ export default function WeaponModal({ state, dispatch, open, setOpen }: WeaponMo
           onChange={changeCategory}
           openOnFocus
           getOptionLabel={getOptionLabel}
-          filterOptions={(options: Category[], params: FilterParamsType) => {
+          filterOptions={(options: WeaponCategory[], params: FilterParamsType) => {
             const filtered = filterOptions(options, params);
 
             const { inputValue } = params;
             // Suggest the creation of a new value
-            const isExisting = options.some((option: Category) => inputValue === option);
+            const isExisting = options.some((option: WeaponCategory) => inputValue === option);
             if (inputValue !== '' && !isExisting) {
               filtered.push(
                 inputValue,

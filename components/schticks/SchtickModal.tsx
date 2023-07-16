@@ -22,12 +22,12 @@ export default function SchtickModal({ open, setOpen, state, dispatch, schtick:i
   const { toastSuccess, toastError } = useToast()
   const { client } = useClient()
   const { saving, category, path } = state
-  const [schtick, setSchtick] = useState<Schtick>(initialSchtick)
+  const [schtick, setSchtick] = useState<Schtick>(initialSchtick || defaultSchtick)
 
   useEffect(() => {
     if (!dispatch) return
 
-    setSchtick(initialSchtick)
+    setSchtick(initialSchtick || defaultSchtick)
       // dispatch({ type: SchticksActions.SCHTICK, payload: initialSchtick as Schtick })
   }, [dispatch, initialSchtick])
 
