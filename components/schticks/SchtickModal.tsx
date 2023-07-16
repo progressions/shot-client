@@ -22,12 +22,13 @@ export default function SchtickModal({ open, setOpen, state, dispatch, schtick:i
   const { toastSuccess, toastError } = useToast()
   const { client } = useClient()
   const { saving, category, path } = state
-  const [schtick, setSchtick] = useState<Schtick>(defaultSchtick)
+  const [schtick, setSchtick] = useState<Schtick>(initialSchtick)
 
   useEffect(() => {
     if (!dispatch) return
 
-    dispatch({ type: SchticksActions.SCHTICK, payload: initialSchtick as Schtick })
+    setSchtick(initialSchtick)
+      // dispatch({ type: SchticksActions.SCHTICK, payload: initialSchtick as Schtick })
   }, [dispatch, initialSchtick])
 
   useEffect(() => {
@@ -43,6 +44,7 @@ export default function SchtickModal({ open, setOpen, state, dispatch, schtick:i
       dispatch({ type: SchticksActions.SCHTICKS, payload: data })
     } catch(error) {
       console.error(error)
+      toastError()
     }
   }
 
@@ -69,7 +71,7 @@ export default function SchtickModal({ open, setOpen, state, dispatch, schtick:i
   function cancelForm() {
     if (!dispatch) return
 
-    dispatch({ type: SchticksActions.RESET })
+      // dispatch({ type: SchticksActions.RESET })
     setSchtick(defaultSchtick)
     setOpen(false)
   }

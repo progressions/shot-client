@@ -83,14 +83,14 @@ export default function SchtickCard({ schtick, state, dispatch }: SchtickCardPro
     setOpen(true)
   }
 
-  const deletion = (typeof character === "undefined")
+  const deletion = !character?.id
 
   const deleteFunction = deletion ? deleteSchtick : removeSchtick
 
   const editButton = deletion ? (
     <Tooltip title="Edit" key="edit">
       <IconButton onClick={editSchtick}>
-        <EditIcon sx={{color: "text.primary"}} />
+        <EditIcon />
       </IconButton>
     </Tooltip>
   ) : null
@@ -138,6 +138,7 @@ export default function SchtickCard({ schtick, state, dispatch }: SchtickCardPro
         dispatch={dispatch}
         open={open}
         setOpen={setOpen}
+        schtick={schtick}
       />
     </>
   )
