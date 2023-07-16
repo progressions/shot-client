@@ -1,4 +1,4 @@
-import { StyledAutocomplete, StyledSelect, StyledTextField, SaveButton, CancelButton } from "../StyledFields"
+import { StyledAutocomplete, StyledSelect, StyledTextField, SaveCancelButtons } from "../StyledFields"
 import { createFilterOptions, MenuItem, Box, Stack, Typography } from "@mui/material"
 import { useClient } from "../../contexts/ClientContext"
 import { useToast } from "../../contexts/ToastContext"
@@ -6,7 +6,7 @@ import { useCharacter } from "../../contexts/CharacterContext"
 
 import type { FilterParamsType, OptionType, Juncture, InputParamsType, Character, Weapon } from "../../types/types"
 import { defaultWeapon } from "../../types/types"
-import { useEffect, useReducer } from "react"
+import { useState, useEffect, useReducer } from "react"
 import type { WeaponsStateType, WeaponsActionType } from "../../reducers/weaponsState"
 import { WeaponsActions } from "../../reducers/weaponsState"
 
@@ -22,7 +22,8 @@ interface WeaponModalProps {
 export default function WeaponModal({ state, dispatch, open, setOpen }: WeaponModalProps) {
   const { toastSuccess, toastError } = useToast()
   const { client } = useClient()
-  const { loading, weapon, junctures } = state
+  const { loading, categories, junctures } = state
+  const [weapon, setWeapon] = useState<Weapon>(defaultWeapon)
 
   async function addWeapon(event: React.ChangeEvent<HTMLInputElement>) {
     event.preventDefault()
@@ -43,11 +44,18 @@ export default function WeaponModal({ state, dispatch, open, setOpen }: WeaponMo
   }
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
-    dispatch({ type: WeaponsActions.UPDATE, name: event.target.name, value: event.target.value })
+    // dispatch({ type: WeaponsActions.UPDATE, name: event.target.name, value: event.target.value })
+    setWeapon(oldWeapon => ({ ...weapon, [event.target.name]: event.target.value }))
+  }
+
+  function changeCategory(event: React.SyntheticEvent<Element, Event>, newValue: Category) {
+    // dispatch({ type: WeaponsActions.UPDATE, name: "category", value: newValue })
+    setWeapon(oldWeapon => ({ ...weapon, category: newValue }))
   }
 
   function changeJuncture(event: React.SyntheticEvent<Element, Event>, newValue: Juncture) {
-    dispatch({ type: WeaponsActions.UPDATE, name: "juncture", value: newValue })
+    // dispatch({ type: WeaponsActions.UPDATE, name: "juncture", value: newValue })
+    setWeapon(oldWeapon => ({ ...weapon, juncture: newValue }))
   }
 
   function getOptionLabel(option: Juncture | OptionType) {
@@ -104,6 +112,32 @@ export default function WeaponModal({ state, dispatch, open, setOpen }: WeaponMo
         </Box>
       </Stack>
       <Stack direction="row" spacing={1} alignItems="center">
+        <StyledAutocomplete
+          name="category"
+          freeSolo
+          value={weapon?.category || null}
+          disabled={loading}
+          options={categories || []}
+          sx={{ width: 200 }}
+          onChange={changeCategory}
+          openOnFocus
+          getOptionLabel={getOptionLabel}
+          filterOptions={(options: Category[], params: FilterParamsType) => {
+            const filtered = filterOptions(options, params);
+
+            const { inputValue } = params;
+            // Suggest the creation of a new value
+            const isExisting = options.some((option: Category) => inputValue === option);
+            if (inputValue !== '' && !isExisting) {
+              filtered.push(
+                inputValue,
+              );
+            }
+
+            return filtered;
+          }}
+          renderInput={(params: InputParamsType) => <StyledTextField {...params} name="category" label="Category" />}
+        />
         <StyledTextField
           sx={{width: 80}}
           type="number"
@@ -149,8 +183,11 @@ export default function WeaponModal({ state, dispatch, open, setOpen }: WeaponMo
         />
       </Stack>
       <Stack direction="row" spacing={1} alignItems="center">
-        <CancelButton disabled={loading} onClick={cancelForm} />
-        <SaveButton disabled={loading} onClick={addWeapon}>Add</SaveButton>
+        <SaveCancelButtons
+          disabled={loading}
+          onCancel={cancelForm}
+          onSubmit={addWeapon}
+        />
       </Stack>
     </>
   )
