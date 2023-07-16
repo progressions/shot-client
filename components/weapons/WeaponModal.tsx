@@ -1,5 +1,5 @@
-import { StyledAutocomplete, StyledSelect, StyledTextField, SaveCancelButtons } from "../StyledFields"
-import { createFilterOptions, MenuItem, Box, Stack, Typography } from "@mui/material"
+import { StyledFormDialog, StyledAutocomplete, StyledSelect, StyledTextField, SaveCancelButtons } from "../StyledFields"
+import { DialogContent, createFilterOptions, MenuItem, Box, Stack, Typography } from "@mui/material"
 import { useClient } from "../../contexts/ClientContext"
 import { useToast } from "../../contexts/ToastContext"
 import { useCharacter } from "../../contexts/CharacterContext"
@@ -19,18 +19,19 @@ interface WeaponModalProps {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-export default function WeaponModal({ state, dispatch, open, setOpen }: WeaponModalProps) {
+export default function WeaponModal({ state, dispatch, open, setOpen, weapon:initialWeapon }: WeaponModalProps) {
   const { toastSuccess, toastError } = useToast()
   const { client } = useClient()
   const { loading, categories, junctures } = state
-  const [weapon, setWeapon] = useState<Weapon>(defaultWeapon)
+  const [weapon, setWeapon] = useState<Weapon>(initialWeapon || defaultWeapon)
 
   async function addWeapon(event: React.ChangeEvent<HTMLInputElement>) {
     event.preventDefault()
     dispatch({ type: WeaponsActions.SAVING })
 
     try {
-      await client.createWeapon(weapon)
+      data = weapon?.id ? await client.updateWeapon : await client.createWeapon(weapon)
+      console.log("data", data)
       dispatch({ type: WeaponsActions.EDIT })
       setOpen(false)
     } catch(error) {
@@ -39,7 +40,7 @@ export default function WeaponModal({ state, dispatch, open, setOpen }: WeaponMo
   }
 
   function cancelForm() {
-    dispatch({ type: WeaponsActions.RESET })
+    // dispatch({ type: WeaponsActions.RESET })
     setOpen(false)
   }
 
@@ -73,122 +74,123 @@ export default function WeaponModal({ state, dispatch, open, setOpen }: WeaponMo
 
   return (
     <>
-      <Stack direction="row" spacing={1} alignItems="center">
-        <StyledTextField
-          sx={{width: 400}}
-          required
-          value={weapon?.name}
-          name="name"
-          label="Name"
-          onChange={handleChange}
-          disabled={loading}
-        />
-        <Box sx={{width: 300}}>
-          <StyledAutocomplete
-            freeSolo
-            value={weapon?.juncture || null}
-            disabled={loading}
-            options={junctures || []}
-            sx={{ width: 200 }}
-            onChange={changeJuncture}
-            openOnFocus
-            getOptionLabel={getOptionLabel}
-            filterOptions={(options: Juncture[], params: FilterParamsType) => {
-              const filtered = filterOptions(options, params);
+      <StyledFormDialog
+        open={open}
+        onClose={() => setOpen(false)}
+        title="Weapon"
+        onCancel={cancelForm}
+        onSubmit={addWeapon}
+      >
+          <Stack direction="column" spacing={2}>
+            <Stack direction="row" spacing={1} alignItems="center">
+              <StyledTextField
+                sx={{width: 400}}
+                required
+                value={weapon?.name}
+                name="name"
+                label="Name"
+                onChange={handleChange}
+                disabled={loading}
+              />
+              <Box sx={{width: 300}}>
+                <StyledAutocomplete
+                  freeSolo
+                  value={weapon?.juncture || null}
+                  disabled={loading}
+                  options={junctures || []}
+                  sx={{ width: 200 }}
+                  onChange={changeJuncture}
+                  openOnFocus
+                  getOptionLabel={getOptionLabel}
+                  filterOptions={(options: Juncture[], params: FilterParamsType) => {
+                    const filtered = filterOptions(options, params);
 
-              const { inputValue } = params;
-              // Suggest the creation of a new value
-              const isExisting = options.some((option: Juncture) => inputValue === option);
-              if (inputValue !== '' && !isExisting) {
-                filtered.push(
-                  inputValue,
-                );
-              }
+                    const { inputValue } = params;
+                    // Suggest the creation of a new value
+                    const isExisting = options.some((option: Juncture) => inputValue === option);
+                    if (inputValue !== '' && !isExisting) {
+                      filtered.push(
+                        inputValue,
+                      );
+                    }
 
-              return filtered;
-            }}
-            renderInput={(params: InputParamsType) => <StyledTextField {...params} label="Juncture" />}
-          />
-        </Box>
-      </Stack>
-      <Stack direction="row" spacing={1} alignItems="center">
-        <StyledAutocomplete
-          name="category"
-          freeSolo
-          value={weapon?.category || null}
-          disabled={loading}
-          options={categories || []}
-          sx={{ width: 200 }}
-          onChange={changeCategory}
-          openOnFocus
-          getOptionLabel={getOptionLabel}
-          filterOptions={(options: WeaponCategory[], params: FilterParamsType) => {
-            const filtered = filterOptions(options, params);
+                    return filtered;
+                  }}
+                  renderInput={(params: InputParamsType) => <StyledTextField {...params} label="Juncture" />}
+                />
+              </Box>
+            </Stack>
+            <Stack direction="row" spacing={1} alignItems="center">
+              <StyledAutocomplete
+                name="category"
+                freeSolo
+                value={weapon?.category || null}
+                disabled={loading}
+                options={categories || []}
+                sx={{ width: 200 }}
+                onChange={changeCategory}
+                openOnFocus
+                getOptionLabel={getOptionLabel}
+                filterOptions={(options: WeaponCategory[], params: FilterParamsType) => {
+                  const filtered = filterOptions(options, params);
 
-            const { inputValue } = params;
-            // Suggest the creation of a new value
-            const isExisting = options.some((option: WeaponCategory) => inputValue === option);
-            if (inputValue !== '' && !isExisting) {
-              filtered.push(
-                inputValue,
-              );
-            }
+                  const { inputValue } = params;
+                  // Suggest the creation of a new value
+                  const isExisting = options.some((option: WeaponCategory) => inputValue === option);
+                  if (inputValue !== '' && !isExisting) {
+                    filtered.push(
+                      inputValue,
+                    );
+                  }
 
-            return filtered;
-          }}
-          renderInput={(params: InputParamsType) => <StyledTextField {...params} name="category" label="Category" />}
-        />
-        <StyledTextField
-          sx={{width: 80}}
-          type="number"
-          required
-          value={weapon?.damage}
-          name="damage"
-          label="Damage"
-          onChange={handleChange}
-          disabled={loading}
-        />
-        <StyledTextField
-          sx={{width: 80}}
-          type="number"
-          required
-          value={weapon?.concealment}
-          name="concealment"
-          label="Concealment"
-          onChange={handleChange}
-          disabled={loading}
-        />
-        <StyledTextField
-          sx={{width: 80}}
-          type="number"
-          required
-          value={weapon?.reload_value}
-          name="reload_value"
-          label="Reload"
-          onChange={handleChange}
-          disabled={loading}
-        />
-      </Stack>
-      <Stack direction="row" spacing={1} alignItems="center">
-        <StyledTextField
-          fullWidth
-          multiline
-          rows={3}
-          required
-          value={weapon?.description}
-          name="description"
-          label="Description"
-          onChange={handleChange}
-          disabled={loading}
-        />
-      </Stack>
-      <Stack direction="row" spacing={1} alignItems="center">
-        <SaveCancelButtons
-          disabled={loading}
-          onCancel={cancelForm}
-          onSubmit={addWeapon}
-        />
-      </Stack>
+                  return filtered;
+                }}
+                renderInput={(params: InputParamsType) => <StyledTextField {...params} name="category" label="Category" />}
+              />
+              <StyledTextField
+                sx={{width: 80}}
+                type="number"
+                required
+                value={weapon?.damage || ""}
+                name="damage"
+                label="Damage"
+                onChange={handleChange}
+                disabled={loading}
+              />
+              <StyledTextField
+                sx={{width: 80}}
+                type="number"
+                value={weapon?.concealment || ""}
+                name="concealment"
+                label="Concealment"
+                onChange={handleChange}
+                disabled={loading}
+              />
+              <StyledTextField
+                sx={{width: 80}}
+                type="number"
+                value={weapon?.reload_value || ""}
+                name="reload_value"
+                label="Reload"
+                onChange={handleChange}
+                disabled={loading}
+              />
+            </Stack>
+            <Stack direction="row" spacing={1} alignItems="center">
+              <StyledTextField
+                fullWidth
+                multiline
+                rows={3}
+                required
+                value={weapon?.description || ""}
+                name="description"
+                label="Description"
+                onChange={handleChange}
+                disabled={loading}
+              />
+            </Stack>
+          </Stack>
+      </StyledFormDialog>
     </>
   )
 }

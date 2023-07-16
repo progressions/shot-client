@@ -3,11 +3,14 @@ import { useClient } from "../../contexts/ClientContext"
 import { useToast } from "../../contexts/ToastContext"
 import { useCharacter } from "../../contexts/CharacterContext"
 import ClearIcon from '@mui/icons-material/Clear'
+import EditIcon from '@mui/icons-material/Edit'
 import WeaponCardBase from "./WeaponCardBase"
 import { GiDeathSkull, GiShotgun, GiPistolGun } from "react-icons/gi"
 import { Weapon as WeaponType } from "../../types/types"
 import type { WeaponsStateType, WeaponsActionType } from "../../reducers/weaponsState"
 import { WeaponsActions } from "../../reducers/weaponsState"
+import WeaponModal from "./WeaponModal"
+import { useState } from "react"
 
 interface WeaponProps {
   weapon: WeaponType
@@ -19,6 +22,7 @@ export default function Weapon({ weapon, state, dispatch }: WeaponProps) {
   const { client } = useClient()
   const { toastError } = useToast()
   const { character, reloadCharacter } = useCharacter()
+  const [open, setOpen] = useState<boolean>(false)
 
   async function removeWeapon() {
     try {
@@ -43,6 +47,10 @@ export default function Weapon({ weapon, state, dispatch }: WeaponProps) {
     }
   }
 
+  function editWeapon() {
+    setOpen(true)
+  }
+
   const stats = `(${weapon.damage || "-"}/${weapon.concealment || "-"}/${weapon.reload_value || "-"})`
 
   const deleteFunction = character?.id ? removeWeapon : deleteWeapon
@@ -50,6 +58,10 @@ export default function Weapon({ weapon, state, dispatch }: WeaponProps) {
   const deleteButton = (<IconButton key="delete" onClick={deleteFunction}>
     <ClearIcon />
   </IconButton>)
+
+  const editButton = !character?.id ? (<IconButton key="edit" onClick={editWeapon}>
+    <EditIcon />
+  </IconButton>) : null
 
   return (
     <>
@@ -74,6 +86,7 @@ export default function Weapon({ weapon, state, dispatch }: WeaponProps) {
             Damage Value is 14 if you spend a shot to go “KA-CHUNK!”
           </Typography> }
       </WeaponCardBase>
+      <WeaponModal weapon={weapon} state={state} open={open} setOpen={setOpen} dispatch={dispatch} />
     </>
   )
 }
