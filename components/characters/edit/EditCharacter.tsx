@@ -31,6 +31,7 @@ import { initialSchticksState as initialSchticksState } from "../../../reducers/
 import type { WeaponsStateType } from "../../../reducers/weaponsState"
 import { initialWeaponsState as initialWeaponsState } from "../../../reducers/weaponsState"
 import { CharacterActions } from "../../../reducers/characterState"
+import CS from "../../../services/CharacterService"
 
 interface EditCharacterProps {
   character: Character
@@ -91,10 +92,10 @@ export default function EditCharacter({ character:initialCharacter }: EditCharac
     }
   }
 
-  const woundsLabel = character.action_values["Type"] === "Mook" ? "Mooks" : "Wounds"
+  const woundsLabel = CS.isType(character, "Mooks") ? "Mooks" : "Wounds"
 
   const woundsAdornment = () => {
-    if (character.action_values["Type"] === "Mook") {
+    if (CS.isType(character, "Mooks")) {
       return (
         <InputAdornment position="start"><PeopleIcon color='error' /></InputAdornment>
       )

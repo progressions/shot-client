@@ -8,7 +8,7 @@ interface woundThresholdsType {
   [key: string]: woundThresholdType,
 }
 
-const woundThresholds: woundThresholdsType = {
+export const woundThresholds: woundThresholdsType = {
   "Boss": { "low": 40, "high": 45 },
   "Uber-Boss": { "low": 40, "high": 45 },
   "PC": { "low": 25, "high": 30 },
@@ -25,12 +25,24 @@ const CharacterService = {
     return "PC"
   },
 
+  isCharacter: (character: Character): boolean => {
+    return (character.category === "character")
+  },
+
+  isVehicle: (character: Character): boolean => {
+    return (character.category === "vehicle")
+  },
+
   isType: (character: Character, type: string | string[]): boolean => {
     if (Array.isArray(type)) {
       return type.includes(character.action_values["Type"] as string)
     }
 
     return character.action_values["Type"] === type
+  },
+
+  skill: (character: Character, key: string): number => {
+    return character.skills[key] as number || 7
   },
 
   actionValue: (character: Character, key: string): number => {
@@ -46,43 +58,36 @@ const CharacterService = {
     return CharacterService.actionValue(character, CharacterService.mainAttack(character)) - impairments
   },
 
+  marksOfDeath: (character: Character): number => {
+    return character.action_values["Marks of Death"] as number || 0
+  },
+
   isImpaired: (character: Character): boolean => {
     return character.impairments > 0
   },
 
-  calculateImpairments: (character: Character, newWounds: number): number => {
-    const originalWounds = character.action_values["Wounds"] as number
+  calculateImpairments: (character: Character, originalWounds:number, newWounds: number): number => {
+    if (CharacterService.isType(character, "Mook")) return 0
+
     const threshold = woundThresholds[CharacterService.type(character)]
 
-    if (["Boss", "Uber-Boss"].includes(character.action_values["Type"] as string)) {
-      // a Boss and an Uber-Boss gain 1 point of Impairment when their Wounds
-      // goes from < 40 to between 40 and 44
-      if (originalWounds < threshold.low && newWounds >= threshold.low && newWounds <= threshold.high) {
-        return 1
-      }
-      // and gain 1 point of Impairment when their Wounds go from
-      // between 40 and 44 to > 45
-      if (originalWounds >= threshold.low && originalWounds <= threshold.high && newWounds > 45) {
-        return 1
-      }
-      // and gain 2 points of Impairment when their Wounds go from
-      // < 40 to >= 45
-      if (originalWounds < threshold.low && newWounds >= threshold.high) {
-        return 2
-      }
-    }
-
+    // a Boss and an Uber-Boss gain 1 point of Impairment when their Wounds
+    // goes from < 40 to between 40 and 44
     // A PC, Ally, Featured Foe gain 1 point of Impairment when their Wounds
     // go from < 25 to between 25 and 30
     if (originalWounds < threshold.low && newWounds >= threshold.low && newWounds <= threshold.high) {
       return 1
     }
-    // and gain 1 point of Impairment when their Wounds go from
+    // Boss and Uber-Boss gain 1 point of Impairment when their Wounds go from
+    // between 40 and 44 to > 45
+    // PC, Ally, Featured Foe gain 1 point of Impairment when their Wounds go from
     // between 25 and 29 to >= 30
     if (originalWounds >= threshold.low && originalWounds < threshold.high && newWounds >= 30) {
       return 1
     }
-    // and gain 2 points of Impairment when their Wounds go from
+    // Boss and Uber-Boss gain 2 points of Impairment when their Wounds go from
+    // < 40 to >= 45
+    // PC, Ally, Featured Foe gain 2 points of Impairment when their Wounds go from
     // < 25 to >= 35
     if (originalWounds < threshold.low && newWounds >= threshold.high) {
       return 2
@@ -101,41 +106,29 @@ const CharacterService = {
   takeSmackdown: (character: Character, smackdown: number): Character => {
     const wounds = CharacterService.calculateWounds(character, smackdown)
     const originalWounds = character.action_values["Wounds"] as number
-    const impairments = character.impairments + CharacterService.calculateImpairments(character, originalWounds + wounds)
+    const impairments = CharacterService.calculateImpairments(character, originalWounds, originalWounds + wounds)
+    const updatedCharacter = CharacterService.addImpairments(character, impairments)
+    return CharacterService.updateActionValue(updatedCharacter, "Wounds", Math.max(0, originalWounds + wounds))
+  },
 
+  addImpairments: (character: Character, value: number): Character => {
+    console.log("addImpairments", value)
     return {
       ...character,
-      impairments: impairments,
-      action_values: {
-        ...character.action_values,
-        "Wounds": Math.max(0, originalWounds + wounds),
-      }
+      impairments: character.impairments + value
     } as Character
   },
 
   healWounds: (character: Character, wounds: number): Character => {
-    const originalWounds = character.action_values["Wounds"] as number
-    const impairments = character.impairments - CharacterService.calculateImpairments(character, originalWounds - wounds)
-
-    return {
-      ...character,
-      impairments: impairments,
-      action_values: {
-        ...character.action_values,
-        "Wounds": Math.max(0, originalWounds - wounds),
-      }
-    } as Character
+    const originalWounds = CharacterService.wounds(character)
+    const impairments = CharacterService.calculateImpairments(character, originalWounds - wounds, originalWounds)
+    let updatedCharacter = CharacterService.addImpairments(character, -impairments)
+    return CharacterService.updateActionValue(updatedCharacter, "Wounds", Math.max(0, originalWounds - wounds))
   },
 
   addDeathMarks: (character: Character, value: number): Character => {
     const deathMarks = character.action_values["Marks of Death"] as number || 0
-    return {
-      ...character,
-      action_values: {
-        ...character.action_values,
-        "Marks of Death": deathMarks + value
-      }
-    } as Character
+    return CharacterService.updateActionValue(updatedCharacter, "Marks of Death", Math.max(0, deathMarks + value))
   },
 
   updateActionValue: (character: Character, key: string, value: number | string): Character => {
