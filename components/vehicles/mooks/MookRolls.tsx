@@ -35,8 +35,6 @@ export default function MookRolls({ count, attack, damage, icon }: MookRollsPara
   const [rolls, setRolls] = useState<number[]>([])
   const [enemy, setEnemy] = useState<Vehicle>(defaultVehicle)
 
-  console.log(enemy)
-
   useEffect(() => {
     if (count) {
       setValue(oldValue => ({...oldValue, count: count}))

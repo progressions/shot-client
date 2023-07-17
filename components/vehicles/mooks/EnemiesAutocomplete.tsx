@@ -11,7 +11,7 @@ interface EnemiesAutocompleteParams {
 }
 
 export default function EnemiesAutocomplete({ enemy, setEnemy }: EnemiesAutocompleteParams) {
-  const { fight} = useFight()
+  const { fight } = useFight()
   const { client } = useClient()
   const [enemies, setEnemies] = useState<Vehicle[]>([])
   const [loading, setLoading] = useState<boolean>(false)

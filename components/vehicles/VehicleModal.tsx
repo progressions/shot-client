@@ -9,6 +9,7 @@ import CharacterType from '../characters/edit/CharacterType'
 
 import PositionSelector from "./PositionSelector"
 import PursuerSelector from "./PursuerSelector"
+import DriverSelector from "./DriverSelector"
 
 import { useToast } from "../../contexts/ToastContext"
 import { useFight } from "../../contexts/FightContext"
@@ -26,7 +27,7 @@ interface VehicleModalParams {
   reload?: () => Promise<void>
 }
 
-export default function CharacterModal({ open, setOpen, character:activeVehicle, reload }: VehicleModalParams) {
+export default function VehicleModal({ open, setOpen, character:activeVehicle, reload }: VehicleModalParams) {
   const [picker, setPicker] = useState<boolean>(false)
   const [anchorEl, setAnchorEl] = useState<Element | null>(null)
   const { toastSuccess, toastError } = useToast()
@@ -38,6 +39,10 @@ export default function CharacterModal({ open, setOpen, character:activeVehicle,
   const [character, setCharacter] = useState<Vehicle>(activeVehicle || defaultVehicle)
 
   const newVehicle = !character.id
+
+  if (character?.id) {
+    console.log("VehicleModal", character)
+  }
 
   useEffect(() => {
     if (activeVehicle) {
@@ -61,6 +66,10 @@ export default function CharacterModal({ open, setOpen, character:activeVehicle,
   const handleAVChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { action_values } = character || {}
     setCharacter((prevState: Vehicle) => ({ ...prevState, action_values: { ...action_values, [event.target.name]: event.target.value } }))
+  }
+
+  const handleDriverChange = (driver: Character) => {
+    setCharacter((prevState: Vehicle) => ({ ...prevState, driver: driver }))
   }
 
   const handleColor = (color: ColorResult) => {
@@ -174,6 +183,7 @@ export default function CharacterModal({ open, setOpen, character:activeVehicle,
               <StyledTextField label="Frame" type="number" sx={{width: 100}} name="Frame" value={character.action_values?.['Frame'] || ''} onChange={handleAVChange} />
               <StyledTextField label="Crunch" type="number" sx={{width: 100}} name="Crunch" value={character.action_values?.['Crunch'] || ''} onChange={handleAVChange} />
             </Stack>
+            <DriverSelector vehicle={character} onChange={handleDriverChange} />
             <Stack direction="row" spacing={2}>
               <PositionSelector character={character} onChange={handleAVChange} />
               <PursuerSelector character={character} onChange={handleAVChange} />

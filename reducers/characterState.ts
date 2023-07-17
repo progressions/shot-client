@@ -49,7 +49,6 @@ export function characterReducer(state: CharacterStateType, action: CharacterSta
         edited: true
       }
     case CharacterActions.UPDATE:
-      console.log(action.name, action.value)
       return {
         ...state,
         edited: true,
