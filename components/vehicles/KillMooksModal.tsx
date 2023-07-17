@@ -35,8 +35,6 @@ export default function MooksKilledModal({open, setOpen, character }: MooksKille
     const originalPoints: number = character.count
     const newCount: number = calculateNewTotal(mooksKilled)
 
-    console.log(originalPoints, newCount)
-
     try {
       await client.updateVehicle({ ...character, count: newCount }, fight)
       dispatch({ type: FightActions.EDIT })

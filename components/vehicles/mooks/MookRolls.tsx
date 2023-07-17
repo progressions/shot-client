@@ -42,9 +42,7 @@ export default function MookRolls({ count, attack, damage, icon }: MookRollsPara
   }, [count])
 
   useEffect(() => {
-    if (enemy?.skills && enemy?.skills["Driving"]) {
-      setValue(oldValue => ({...oldValue, defense: enemy.skills["Driving"] as number}))
-    } else if (enemy?.driver?.skills && enemy?.driver?.skills["Driving"]) {
+    if (enemy?.driver?.skills && enemy?.driver?.skills["Driving"]) {
       setValue(oldValue => ({...oldValue, defense: enemy.driver.skills["Driving"] as number}))
     } else {
       setValue(oldValue => ({...oldValue, defense: defaultValue.defense}))
