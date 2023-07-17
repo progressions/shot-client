@@ -60,14 +60,13 @@ export default function CharacterModal({ open, setOpen, character:activeCharacte
   }
 
   const handleAVChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { action_values } = character || {}
-    setCharacter((prevState: Person) => ({ ...prevState, action_values: { ...action_values, [event.target.name]: event.target.value } }))
+    const updatedCharacter = CS.updateActionValue(character, event.target.name, event.target.value)
+    setCharacter(updatedCharacter)
   }
 
   const handleDeathMarks = (event: React.SyntheticEvent<Element, Event>, newValue: number | null) => {
-    const { action_values } = character || {}
-    const value = (newValue === character.action_values["Marks of Death"]) ? 0 : newValue
-    setCharacter((prevState: Person) => ({ ...prevState, action_values: { ...action_values, "Marks of Death": value as number } }))
+    const updatedCharacter = CS.addDeathMarks(character, newValue)
+    setCharacter(updatedCharacter)
   }
 
   const cancelForm = () => {
@@ -104,11 +103,11 @@ export default function CharacterModal({ open, setOpen, character:activeCharacte
     }
   }
 
-  const woundsLabel = character.action_values["Type"] === "Mook" ? "Mooks" : "Wounds"
+  const woundsLabel = CS.isType(character, "Mook") ? "Mooks" : "Wounds"
   const dialogTitle = newCharacter ? "Create Character" : `${character.name}`
 
   const woundsAdornment = () => {
-    if (character.action_values["Type"] === "Mook") {
+    if (CS.isType(character, "Mook")) {
       return (
         <InputAdornment position="start"><PeopleIcon color='error' /></InputAdornment>
       )
@@ -119,13 +118,8 @@ export default function CharacterModal({ open, setOpen, character:activeCharacte
   }
 
   const healCharacter = () => {
-    if (character.action_values["Type"] === "Mook") return
-
-    const actionValues = character.action_values
-    actionValues["Wounds"] = 0
-    actionValues["Fortune"] = actionValues["Max Fortune"]
-    actionValues["Marks of Death"] = 0
-    setCharacter((prev: Character) => ({ ...prev, impairments: 0, action_values: actionValues }))
+    const updatedCharacter = CS.fullHeal(character)
+    setCharacter(updatedCharacter)
   }
 
   return (

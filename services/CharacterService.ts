@@ -127,6 +127,55 @@ const CharacterService = {
     } as Character
   },
 
+  addDeathMark: (character: Character, value: number): Character => {
+    const deathMarks = character.action_values["Marks of Death"] as number || 0
+    return {
+      ...character,
+      action_values: {
+        ...character.action_values,
+        "Marks of Death": deathMarks + value
+      }
+    } as Character
+  },
+
+  updateActionValue: (character: Character, key: string, value: number): Character => {
+    return {
+      ...character,
+      action_values: {
+        ...character.action_values,
+        [key]: value
+      }
+    } as Character
+  },
+
+  fullHeal: (character: Character): Character => {
+    if (CS.isType(character, "Mook")) return character
+
+    const maxFortune = CharacterService.actionValue(character, "Max Fortune")
+    let updatedCharacter = CharacterService.updateActionValue(character, "Wounds", 0)
+    updatedCharacter = CharacterService.updateActionValue(updatedCharacter, "Marks of Death", 0)
+    updatedCharacter = CharacterService.updateActionValue(updatedCharacter, "Fortune", maxFortune)
+    updatedCharacter.impairments = 0
+
+    return updatedCharacter
+  },
+
+  wounds: (character: Character): number => {
+    if (CharacterService.isType(character, "Mook")) {
+      return character.count || 0
+    }
+    return character.action_values["Wounds"] as number || 0
+  },
+
+  seriousWounds: (character: Character): boolean => {
+    if (CharacterService.isType(character, ["Boss", "Uber-Boss"]) && CharacterService.wounds(character) > 50) {
+      return true
+    }
+    if (!CharacterService.isType(character, "Mook") && CharacterService.wounds(character) > 35) {
+      return ["primary.contrastText", "error.main"]
+    }
+    return false
+  }
 }
 
 export default CharacterService
