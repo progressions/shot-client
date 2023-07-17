@@ -37,6 +37,9 @@ export default function EnemiesAutocomplete({ enemy, setEnemy }: EnemiesAutocomp
   }
 
   function getOptionLabel(option: Vehicle) {
+    if (option.driver?.id) {
+      return `${option.name} (${option.driver.name})`
+    }
     return option.name
   }
 

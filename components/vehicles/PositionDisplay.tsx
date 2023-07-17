@@ -1,7 +1,7 @@
 import { FaCarSide } from "react-icons/fa"
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
 
-import { Stack, Box } from "@mui/material"
+import { Typography, Stack, Box } from "@mui/material"
 import { Vehicle } from "../../types/types"
 
 interface PositionDisplayProps {
@@ -17,7 +17,7 @@ export default function PositionDisplay({ character }: PositionDisplayProps) {
   return (
     <>
       <Stack direction="row" spacing={1}>
-        <Box>{pursuer ? "Pursuer" : "Evader" }</Box>
+        <Typography>{pursuer ? "Pursuer" : "Evader" }</Typography>
         <Stack direction="row" spacing={spacing}>
           <Box color={firstColor}>
             <FaCarSide size={20} />

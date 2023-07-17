@@ -29,11 +29,13 @@ export interface RollOutcomeParams {
 }
 
 export default function MookRolls({ count, attack, damage, icon }: MookRollsParams) {
-  const defaultValue:MookRollValue = {count: count || 10, attack: attack || 8, defense: 7, damage: damage || 7}
+  const defaultValue:MookRollValue = {count: count || 10, attack: attack || 7, defense: 7, damage: damage || 7}
   const [open, setOpen] = useState<boolean>(false)
   const [value, setValue] = useState<MookRollValue>(defaultValue)
   const [rolls, setRolls] = useState<number[]>([])
   const [enemy, setEnemy] = useState<Vehicle>(defaultVehicle)
+
+  console.log(enemy)
 
   useEffect(() => {
     if (count) {
@@ -42,8 +44,10 @@ export default function MookRolls({ count, attack, damage, icon }: MookRollsPara
   }, [count])
 
   useEffect(() => {
-    if (enemy?.skills && enemy?.action_values["Driving"]) {
+    if (enemy?.skills && enemy?.skills["Driving"]) {
       setValue(oldValue => ({...oldValue, defense: enemy.skills["Driving"] as number}))
+    } else if (enemy?.driver?.skills && enemy?.driver?.skills["Driving"]) {
+      setValue(oldValue => ({...oldValue, defense: enemy.driver.skills["Driving"] as number}))
     } else {
       setValue(oldValue => ({...oldValue, defense: defaultValue.defense}))
     }
@@ -115,9 +119,9 @@ export default function MookRolls({ count, attack, damage, icon }: MookRollsPara
             <Stack spacing={2}>
               <Stack direction="row" spacing={2}>
                 <StyledTextField name="count" type="number" autoFocus value={value.count || ""} onChange={handleChange} label="Mooks" required sx={{width: 140}} />
-                <StyledTextField name="attack" type="number" value={value.attack || ""} onChange={handleChange} label="Attack" required sx={{width: 150}} />
-                <StyledTextField name="defense" type="number" value={value.defense || ""} onChange={handleChange} label="Target Driving" required sx={{width: 160}} />
-                <StyledTextField name="damage" type="number" value={value.damage || ""} onChange={handleChange} label="Squeal" required sx={{width: 150}} />
+                <StyledTextField name="attack" type="number" value={value.attack || ""} onChange={handleChange} label="Driving" required sx={{width: 160}} helperText="Attack" />
+                <StyledTextField name="defense" type="number" value={value.defense || ""} onChange={handleChange} label="Target Driving" required sx={{width: 160}} helperText="Defense" />
+                <StyledTextField name="damage" type="number" value={value.damage || ""} onChange={handleChange} label="Squeal" required sx={{width: 150}} helperText="Chase Points" />
               </Stack>
             </Stack>
             <Box py={2}>

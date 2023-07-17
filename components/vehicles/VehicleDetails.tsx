@@ -19,6 +19,7 @@ import { useToast } from "../../contexts/ToastContext"
 import { useClient } from "../../contexts/ClientContext"
 import { useFight } from "../../contexts/FightContext"
 import GroupedEffects from "../state_effects/GroupedEffects"
+import DriverDetails from "./DriverDetails"
 
 import type { Character, Person, Vehicle, Fight, Toast, ID } from "../../types/types"
 import { defaultVehicle } from "../../types/types"
@@ -112,6 +113,7 @@ export default function VehicleDetails({ character, editingCharacter, setEditing
             hidden={hidden}
             shot={shot}
           />
+          <DriverDetails vehicle={character} />
           <PositionDisplay character={character} />
           <GamemasterOnly user={user} character={character}>
             <Stack direction="row" spacing={1} justifyContent="space-between">

@@ -287,6 +287,7 @@ export interface Vehicle {
   category: CharacterCategory
   count: number
   shot_id: string
+  driver: Person
 }
 
 export interface Person {
@@ -513,6 +514,7 @@ export const defaultVehicle:Vehicle = {
   weapons: [],
   count: 0,
   shot_id: "",
+  driver: defaultCharacter,
 }
 
 export const defaultFight:Fight = {
