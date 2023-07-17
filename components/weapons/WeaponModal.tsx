@@ -13,8 +13,9 @@ import { WeaponsActions } from "../../reducers/weaponsState"
 const filterOptions = createFilterOptions<Juncture>();
 
 interface WeaponModalProps {
+  weapon?: Weapon
   state: WeaponsStateType
-  dispatch: React.Dispatch<WeaponsActionType>
+  dispatch?: React.Dispatch<WeaponsActionType>
   open: boolean
   setOpen: React.Dispatch<React.SetStateAction<boolean>>
 }
@@ -27,12 +28,15 @@ export default function WeaponModal({ state, dispatch, open, setOpen, weapon:ini
 
   async function addWeapon(event: React.ChangeEvent<HTMLInputElement>) {
     event.preventDefault()
-    dispatch({ type: WeaponsActions.SAVING })
+    if (dispatch) {
+      dispatch({ type: WeaponsActions.SAVING })
+    }
 
     try {
-      data = weapon?.id ? await client.updateWeapon : await client.createWeapon(weapon)
-      console.log("data", data)
-      dispatch({ type: WeaponsActions.EDIT })
+      weapon?.id ? await client.updateWeapon : await client.createWeapon(weapon)
+      if (dispatch) {
+        dispatch({ type: WeaponsActions.EDIT })
+      }
       setOpen(false)
     } catch(error) {
       toastError()
