@@ -32,9 +32,13 @@ export default function Smackdowns({ enemy, rolls, value, handleClose }: Smackdo
 
   const damageMessage = (enemy: Vehicle, outcome: number) => {
     const originalHandling = enemy.action_values["Handling"] || 0
+    console.log({ originalHandling })
     const toughness = actualHandling(enemy)
+    console.log({ toughness })
     const smackdown = outcome - value.defense + value.damage
+    console.log({ smackdown })
     const chasePoints = Math.max(0, smackdown - toughness)
+    console.log({ chasePoints })
     const toughnessDisplay = (toughness < originalHandling) ? (<><strong style={{color: "red"}}>{toughness}</strong> ({enemy.action_values["Handling"]})</>) : toughness
     const toughnessMessage = (toughness) ? (<> - Handling {toughnessDisplay} = <strong style={{color: "red"}}>{chasePoints} Chase Points</strong></>) : ""
 
