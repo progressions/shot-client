@@ -30,6 +30,7 @@ import { useToast } from "../../contexts/ToastContext"
 import { useClient } from "../../contexts/ClientContext"
 import Client from "../../utils/Client"
 import PlayerTypeOnly from "../PlayerTypeOnly"
+import CS from "../../services/CharacterService"
 
 import type { Vehicle, CharacterEffect, User, Person, Character, Fight, Toast, ID } from "../../types/types"
 import { defaultCharacter } from "../../types/types"
@@ -139,10 +140,9 @@ export default function CharacterDetails({ character, editingCharacter, setEditi
   }
 
   const impairments = character.impairments ? `(-${character.impairments})` : ''
-  const color = character.impairments > 0 ? 'error' : 'primary'
+  const color = CS.isImpaired(character) ? 'error' : 'primary'
   const showDeathMarks = character.category === "character" &&
-    (["PC", "Ally"].includes(character.action_values["Type"] as string) &&
-    character.action_values["Marks of Death"] as number > 0)
+    (CS.isType(character, ["PC", "Ally"]) && character.action_values["Marks of Death"] as number > 0)
 
   const key = `CharacterDetails ${character.id}`
 

@@ -10,8 +10,8 @@ import CommuteIcon from '@mui/icons-material/Commute'
 import GamemasterOnly from "../GamemasterOnly"
 import MookRolls from '../MookRolls'
 import { useClient } from "../../contexts/ClientContext"
-
 import type { Character, CharacterType } from "../../types/types"
+import CS from "../../services/CharacterService"
 
 interface ActionButtonsParams {
   character: Character,
@@ -34,7 +34,7 @@ export default function MookActionButtons({ character, healWounds, takeWounds, t
     woundIcon = <CommuteIcon color="error" />
   }
 
-  const mainAttack = character?.action_values?.[character?.action_values?.["MainAttack"] as string]
+  const mainAttack = CS.mainAttackValue(character)
 
   return (
     <Stack direction="row" spacing={1} sx={{height: 30}}>
