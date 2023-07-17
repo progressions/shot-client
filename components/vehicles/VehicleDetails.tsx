@@ -10,6 +10,7 @@ import ChasePointsModal from "./ChasePointsModal"
 import KillMooksModal from "./KillMooksModal"
 import ConditionPointsModal from "./ConditionPointsModal"
 import ActionButtons from "../vehicles/ActionButtons"
+import MookActionButtons from "../vehicles/MookActionButtons"
 import NameDisplay from "../characters/NameDisplay"
 import WoundsDisplay from "../vehicles/WoundsDisplay"
 import PositionDisplay from "./PositionDisplay"
@@ -115,11 +116,20 @@ export default function VehicleDetails({ character, editingCharacter, setEditing
           <GamemasterOnly user={user} character={character}>
             <Stack direction="row" spacing={1} justifyContent="space-between">
               <VehicleActionValues character={character} />
-              <ActionButtons character={character}
-                takeWounds={takeChasePoints}
-                takeConditionPoints={takeConditionPoints}
-                takeAction={takeAction}
-              />
+              <PlayerTypeOnly character={character} except="Mook">
+                <ActionButtons character={character}
+                  takeWounds={takeChasePoints}
+                  takeConditionPoints={takeConditionPoints}
+                  takeAction={takeAction}
+                />
+              </PlayerTypeOnly>
+              <PlayerTypeOnly character={character} only="Mook">
+                <MookActionButtons character={character}
+                  takeWounds={takeChasePoints}
+                  takeConditionPoints={takeConditionPoints}
+                  takeAction={takeAction}
+                />
+              </PlayerTypeOnly>
             </Stack>
           </GamemasterOnly>
           <GroupedEffects character={character} />
