@@ -116,10 +116,10 @@ export default function MookRolls({ count, attack, damage, icon }: MookRollsPara
           <Box py={2} sx={{width: 500}}>
             <Stack spacing={2}>
               <Stack direction="row" spacing={2}>
-                <StyledTextField name="count" type="number" autoFocus value={value.count || ""} onChange={handleChange} label="Mooks" required sx={{width: 140}} />
-                <StyledTextField name="attack" type="number" value={value.attack || ""} onChange={handleChange} label="Driving" required sx={{width: 160}} helperText="Attack" />
-                <StyledTextField name="defense" type="number" value={value.defense || ""} onChange={handleChange} label="Target Driving" required sx={{width: 160}} helperText="Defense" />
-                <StyledTextField name="damage" type="number" value={value.damage || ""} onChange={handleChange} label="Squeal" required sx={{width: 150}} helperText="Chase Points" />
+                <StyledTextField name="count" type="number" autoFocus value={value.count || 0} onChange={handleChange} label="Mooks" required sx={{width: 140}} />
+                <StyledTextField name="attack" type="number" value={value.attack || 0} onChange={handleChange} label="Driving" required sx={{width: 160}} helperText="Attack" />
+                <StyledTextField name="defense" type="number" value={value.defense || 0} onChange={handleChange} label="Target Driving" required sx={{width: 160}} helperText="Defense" />
+                <StyledTextField name="damage" type="number" value={value.damage || 0} onChange={handleChange} label="Squeal" required sx={{width: 150}} helperText="Chase Points" />
               </Stack>
             </Stack>
             <Box py={2}>
