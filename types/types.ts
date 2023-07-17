@@ -287,7 +287,7 @@ export interface Vehicle {
   category: CharacterCategory
   count: number
   shot_id: string
-  driver: Person
+  driver: Character
 }
 
 export interface Person {
@@ -313,7 +313,7 @@ export interface Person {
   category: CharacterCategory
   count: number
   shot_id: string
-  driver?: Person
+  driver?: Character
 }
 
 export interface Advancement {

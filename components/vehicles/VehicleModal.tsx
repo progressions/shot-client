@@ -14,7 +14,7 @@ import DriverSelector from "./DriverSelector"
 import { useToast } from "../../contexts/ToastContext"
 import { useFight } from "../../contexts/FightContext"
 import { useClient } from "../../contexts/ClientContext"
-import type { Vehicle, Fight } from "../../types/types"
+import type { Character, Vehicle, Fight } from "../../types/types"
 import { defaultVehicle } from "../../types/types"
 import { StyledTextField, SaveCancelButtons, StyledDialog } from "../StyledFields"
 import { FightActions } from '../../reducers/fightState'
@@ -69,7 +69,7 @@ export default function VehicleModal({ open, setOpen, character:activeVehicle, r
   }
 
   const handleDriverChange = (driver: Character) => {
-    setCharacter((prevState: Vehicle) => ({ ...prevState, driver: driver }))
+    setCharacter((prevState: Vehicle) => ({ ...prevState, driver: driver as Character }))
   }
 
   const handleColor = (color: ColorResult) => {

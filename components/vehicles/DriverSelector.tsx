@@ -1,5 +1,5 @@
 import { StyledAutocomplete, StyledSelect } from "../StyledFields"
-import type { Vehicle, Character } from "../../types/types"
+import type { InputParamsType, Vehicle, Character } from "../../types/types"
 import { useFight } from "../../contexts/FightContext"
 import { useClient } from "../../contexts/ClientContext"
 import { useState, useEffect } from "react"
@@ -19,7 +19,7 @@ export default function DriverSelector({ vehicle, onChange }: DriverSelectorProp
     if (vehicle?.driver?.id) {
       onChange(vehicle.driver)
     }
-  }, [vehicle.driver])
+  }, [onChange, vehicle?.driver])
 
   useEffect(() => {
     const getCharacters = async () => {
@@ -50,7 +50,7 @@ export default function DriverSelector({ vehicle, onChange }: DriverSelectorProp
     <StyledAutocomplete
       freeSolo
       defaultValue={defaultCharacter}
-      value={vehicle.driver?.id ? vehicle.driver : defaultCharacter}
+      value={vehicle?.driver?.id ? vehicle.driver : defaultCharacter}
       disabled={loading}
       options={drivers || []}
       onChange={handleSelect}
