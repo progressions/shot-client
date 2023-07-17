@@ -288,6 +288,7 @@ export interface Vehicle {
   count: number
   shot_id: string
   driver: Character
+  location?: string
 }
 
 export interface Person {
@@ -314,6 +315,7 @@ export interface Person {
   count: number
   shot_id: string
   driver?: Character
+  location?: string
 }
 
 export interface Advancement {

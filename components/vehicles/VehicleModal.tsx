@@ -66,7 +66,7 @@ export default function VehicleModal({ open, setOpen, character:activeVehicle, r
 
   const handleDriverChange = (driver: Character) => {
     if (!driver?.id) {
-      setCharacter((prevState: Vehicle) => ({ ...prevState, driver: { id: "" } }))
+      setCharacter((prevState: Vehicle) => ({ ...prevState, driver: { id: "" } as Character }))
     } else {
       setCharacter((prevState: Vehicle) => ({ ...prevState, driver: driver as Character }))
     }

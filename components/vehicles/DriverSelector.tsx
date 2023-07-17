@@ -31,7 +31,7 @@ export default function DriverSelector({ vehicle, onChange }: DriverSelectorProp
     if (fight?.id && client) {
       getCharacters()
     }
-  }, [client, fight, vehicle?.action_values?.["Type"]])
+  }, [client, fight, vehicle?.action_values])
 
   function handleSelect(event: React.ChangeEvent<HTMLInputElement>, newValue: Character) {
     onChange(newValue)
