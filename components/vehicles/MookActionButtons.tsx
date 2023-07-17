@@ -32,7 +32,7 @@ export default function ActionButtons({ character, healWounds, takeWounds, takeC
   const woundLabel = "Kill Mooks"
   const woundIcon = <CommuteIcon color="error" />
 
-  const mainAttack = character.driver.id ? character.driver.skills?.["Driving"] : character.skills?.["Driving"]
+  const mainAttack = character.driver?.id ? character.driver.skills?.["Driving"] : character.skills?.["Driving"]
 
   return (
     <Stack direction="row" spacing={1} sx={{height: 30}}>

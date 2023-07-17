@@ -313,6 +313,7 @@ export interface Person {
   category: CharacterCategory
   count: number
   shot_id: string
+  driver?: Person
 }
 
 export interface Advancement {
