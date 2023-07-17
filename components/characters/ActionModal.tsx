@@ -27,7 +27,7 @@ export default function ActionModal({open, setOpen, character }: ActionModalPara
     if (CS.isType(character, ["Boss", "Uber-Boss"])) {
       setShots(2)
     }
-  }, [character.action_values])
+  }, [character])
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
     setShots(parseInt(event.target.value))

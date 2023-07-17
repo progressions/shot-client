@@ -127,7 +127,7 @@ const CharacterService = {
     } as Character
   },
 
-  addDeathMark: (character: Character, value: number): Character => {
+  addDeathMarks: (character: Character, value: number): Character => {
     const deathMarks = character.action_values["Marks of Death"] as number || 0
     return {
       ...character,
@@ -138,7 +138,7 @@ const CharacterService = {
     } as Character
   },
 
-  updateActionValue: (character: Character, key: string, value: number): Character => {
+  updateActionValue: (character: Character, key: string, value: number | string): Character => {
     return {
       ...character,
       action_values: {
@@ -149,7 +149,7 @@ const CharacterService = {
   },
 
   fullHeal: (character: Character): Character => {
-    if (CS.isType(character, "Mook")) return character
+    if (CharacterService.isType(character, "Mook")) return character
 
     const maxFortune = CharacterService.actionValue(character, "Max Fortune")
     let updatedCharacter = CharacterService.updateActionValue(character, "Wounds", 0)
@@ -172,7 +172,7 @@ const CharacterService = {
       return true
     }
     if (!CharacterService.isType(character, "Mook") && CharacterService.wounds(character) > 35) {
-      return ["primary.contrastText", "error.main"]
+      return true
     }
     return false
   }

@@ -1,13 +1,13 @@
-import { MouseEventHandler, useState, useEffect, SyntheticEvent } from 'react'
-import { colors, FormControl, Switch, Tooltip, Typography, DialogActions, FormControlLabel, MenuItem, Checkbox, InputAdornment, Dialog, DialogTitle, DialogContent, DialogContentText, Box, Stack, TextField, Button, Paper, Popover } from '@mui/material'
-import FavoriteIcon from '@mui/icons-material/Favorite'
-import PeopleIcon from '@mui/icons-material/People'
+import { MouseEventHandler, useState, useEffect, SyntheticEvent } from "react"
+import { colors, FormControl, Switch, Tooltip, Typography, DialogActions, FormControlLabel, MenuItem, Checkbox, InputAdornment, Dialog, DialogTitle, DialogContent, DialogContentText, Box, Stack, TextField, Button, Paper, Popover } from "@mui/material"
+import FavoriteIcon from "@mui/icons-material/Favorite"
+import PeopleIcon from "@mui/icons-material/People"
 import { StyledTextField, SaveCancelButtons, SaveButton, CancelButton, StyledDialog } from "../StyledFields"
 
-import Router from 'next/router'
+import Router from "next/router"
 
 import ColorPicker from "./edit/ColorPicker"
-import CharacterType from './edit/CharacterType'
+import CharacterType from "./edit/CharacterType"
 import FortuneSelect from "./edit/FortuneSelect"
 import EditActionValues from "./edit/EditActionValues"
 
@@ -20,7 +20,8 @@ import { useClient } from "../../contexts/ClientContext"
 
 import type { Person, Fight, Character, Toast, ID } from "../../types/types"
 import { defaultCharacter } from "../../types/types"
-import { FightActions } from '../../reducers/fightState'
+import { FightActions } from "../../reducers/fightState"
+import CS from "../../services/CharacterService"
 
 interface CharacterModalParams {
   open: Character,
@@ -61,12 +62,14 @@ export default function CharacterModal({ open, setOpen, character:activeCharacte
 
   const handleAVChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const updatedCharacter = CS.updateActionValue(character, event.target.name, event.target.value)
-    setCharacter(updatedCharacter)
+    setCharacter(updatedCharacter as Person)
   }
 
   const handleDeathMarks = (event: React.SyntheticEvent<Element, Event>, newValue: number | null) => {
-    const updatedCharacter = CS.addDeathMarks(character, newValue)
-    setCharacter(updatedCharacter)
+    if (newValue) {
+      const updatedCharacter = CS.addDeathMarks(character, newValue)
+      setCharacter(updatedCharacter as Person)
+    }
   }
 
   const cancelForm = () => {
@@ -119,7 +122,7 @@ export default function CharacterModal({ open, setOpen, character:activeCharacte
 
   const healCharacter = () => {
     const updatedCharacter = CS.fullHeal(character)
-    setCharacter(updatedCharacter)
+    setCharacter(updatedCharacter as Person)
   }
 
   return (
