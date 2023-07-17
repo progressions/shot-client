@@ -22,7 +22,7 @@ export default function EnemiesAutocomplete({ enemy, setEnemy }: EnemiesAutocomp
 
   useEffect(() => {
     const getVehicles = async () => {
-      const data = await client.getVehiclesInFight(fight)
+      const data = await client.getVehiclesInFight(fight, { type: ["PC", "Ally"] })
       setEnemies(data)
       setLoading(false)
     }
@@ -38,7 +38,8 @@ export default function EnemiesAutocomplete({ enemy, setEnemy }: EnemiesAutocomp
 
   function getOptionLabel(option: Vehicle) {
     if (option.driver?.id) {
-      return `${option.name} (${option.driver.name})`
+      const location = option.location ? ` (${option.location})` : ""
+      return `${option.name} (${option.driver.name})${location}`
     }
     return option.name
   }

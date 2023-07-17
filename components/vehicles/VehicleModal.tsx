@@ -40,10 +40,6 @@ export default function VehicleModal({ open, setOpen, character:activeVehicle, r
 
   const newVehicle = !character.id
 
-  if (character?.id) {
-    console.log("VehicleModal", character)
-  }
-
   useEffect(() => {
     if (activeVehicle) {
       setCharacter(activeVehicle)
@@ -69,7 +65,11 @@ export default function VehicleModal({ open, setOpen, character:activeVehicle, r
   }
 
   const handleDriverChange = (driver: Character) => {
-    setCharacter((prevState: Vehicle) => ({ ...prevState, driver: driver as Character }))
+    if (!driver?.id) {
+      setCharacter((prevState: Vehicle) => ({ ...prevState, driver: { id: "" } }))
+    } else {
+      setCharacter((prevState: Vehicle) => ({ ...prevState, driver: driver as Character }))
+    }
   }
 
   const handleColor = (color: ColorResult) => {

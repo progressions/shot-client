@@ -118,12 +118,14 @@ class Client {
     return await this.delete(this.api.fights(fight))
   }
 
-  async getCharactersInFight(fight: Fight | ID):Promise<Person[]> {
-    return await this.get(`${this.api.charactersAndVehicles(fight)}/characters`)
+  async getCharactersInFight(fight: Fight | ID, params = {}):Promise<Person[]> {
+    const query = this.queryParams(params)
+    return await this.get(`${this.api.charactersAndVehicles(fight)}/characters?${query}`)
   }
 
-  async getVehiclesInFight(fight: Fight | ID):Promise<Vehicle[]> {
-    return await this.get(`${this.api.charactersAndVehicles(fight)}/vehicles`)
+  async getVehiclesInFight(fight: Fight | ID, params = {}):Promise<Vehicle[]> {
+    const query = this.queryParams(params)
+    return await this.get(`${this.api.charactersAndVehicles(fight)}/vehicles?${query}`)
   }
 
   async getCharactersAndVehicles(params = {}):Promise<CharactersAndVehiclesResponse> {
@@ -497,6 +499,10 @@ class Client {
       }
     })
     .then(response => response.data)
+  }
+
+  queryParams(params={}) {
+    return Object.entries(params).map(([key, value]) => `${key}=${value || ""}`).join("&")
   }
 }
 

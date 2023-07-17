@@ -22,7 +22,7 @@ export default function EnemiesAutocomplete({ enemy, setEnemy }: EnemiesAutocomp
 
   useEffect(() => {
     const getCharacters = async () => {
-      const data = await client.getCharactersInFight(fight)
+      const data = await client.getCharactersInFight(fight, { type: ["PC", "Ally"] })
       setEnemies(data)
       setLoading(false)
     }
@@ -37,6 +37,10 @@ export default function EnemiesAutocomplete({ enemy, setEnemy }: EnemiesAutocomp
   }
 
   function getOptionLabel(option: Character) {
+    if (option.location) {
+      const location = option.location ? ` (${option.location})` : ""
+      return `${option.name}${location}`
+    }
     return option.name
   }
 

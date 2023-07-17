@@ -23,7 +23,7 @@ export default function DriverSelector({ vehicle, onChange }: DriverSelectorProp
 
   useEffect(() => {
     const getCharacters = async () => {
-      const data = await client.getCharactersInFight(fight)
+      const data = await client.getCharactersInFight(fight, { type: vehicle?.action_values?.["Type"] })
       setDrivers(data)
       setLoading(false)
     }
@@ -31,15 +31,16 @@ export default function DriverSelector({ vehicle, onChange }: DriverSelectorProp
     if (fight?.id && client) {
       getCharacters()
     }
-  }, [client, fight])
+  }, [client, fight, vehicle?.action_values?.["Type"]])
 
   function handleSelect(event: React.ChangeEvent<HTMLInputElement>, newValue: Character) {
-    onChange(newValue || defaultCharacter)
+    onChange(newValue)
   }
 
   function getOptionLabel(option: Character) {
     if (option.id) {
-      return option.name
+      const location = option.location ? ` (${option.location})` : ""
+      return `${option.name}${location}`
     }
     return ""
   }
