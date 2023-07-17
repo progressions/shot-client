@@ -3,6 +3,7 @@ import { SxProps, Theme } from '@mui/material/styles'
 import type { Fight, CharacterEffect, Character } from "../../types/types"
 import { useFight } from "../../contexts/FightContext"
 import CS from "../../services/CharacterService"
+import CES from "../../services/CharacterEffectService"
 
 interface ActionValueDisplayParams {
   name: string
@@ -25,7 +26,7 @@ export default function ActionValueDisplay({ name, description, label, character
 
   const { fight } = useFight()
 
-  const [changed, actionValue] = CS.adjustedActionValue(character, name, fight, ignoreImpairments as boolean)
+  const [changed, actionValue] = CES.adjustedActionValue(character, name, fight, ignoreImpairments as boolean)
 
   const color = colorForValue(changed)
 
