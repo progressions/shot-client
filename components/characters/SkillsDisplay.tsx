@@ -1,14 +1,14 @@
 import { colors, Typography, Box, Popover, Tooltip, IconButton } from "@mui/material"
 import ArticleIcon from '@mui/icons-material/Article'
 import { useState } from "react"
-import { knownSkills } from "./edit/Skills"
-import type { SkillValue, SkillValues } from "../../types/types"
+import type { Character, SkillValue, SkillValues } from "../../types/types"
+import CS from "../../services/CharacterService"
 
 interface SkillsDisplayProps {
-  skills: SkillValues
+  character: Character
 }
 
-export default function SkillsDisplay({ skills }: SkillsDisplayProps) {
+export default function SkillsDisplay({ character }: SkillsDisplayProps) {
   const [anchorEl, setAnchorEl] = useState<Element | null>(null)
   const [open, setOpen] = useState(false)
 
@@ -22,7 +22,7 @@ export default function SkillsDisplay({ skills }: SkillsDisplayProps) {
     setOpen(true)
   }
 
-  const skillValues = knownSkills(skills)
+  const skillValues = CS.knownSkills(character)
 
   if (!skillValues.length) return <></>
 

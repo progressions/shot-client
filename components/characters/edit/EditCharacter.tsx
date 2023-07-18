@@ -78,7 +78,7 @@ export default function EditCharacter({ character:initialCharacter }: EditCharac
 
   const handleDeathMarks = (event: React.SyntheticEvent<Element, Event>, newValue: number | null) => {
     const { action_values } = character || {}
-    const value = (newValue === character.action_values["Marks of Death"]) ? 0 : newValue
+    const value = (newValue === CS.deathMarks(character)) ? 0 : newValue
     dispatchCharacter({ type: CharacterActions.ACTION_VALUE, name: "Marks of Death", value: value as number })
   }
 
@@ -141,7 +141,7 @@ export default function EditCharacter({ character:initialCharacter }: EditCharac
           <PlayerTypeOnly character={character} only="PC">
             <FortuneSelect character={character} onChange={handleAVChange as React.ChangeEventHandler} readOnly={false} />
           </PlayerTypeOnly>
-          <Skills skills={skills} onChange={handleSkillsChange} />
+          <Skills character={character} onChange={handleSkillsChange} />
           <Weapons state={weaponsState} />
           <PlayerTypeOnly character={character} only="PC">
             <Advancements character={character} />

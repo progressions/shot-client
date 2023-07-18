@@ -7,6 +7,7 @@ import EnemiesAutocomplete from "./mooks/EnemiesAutocomplete"
 import type { Character } from "../types/types"
 import { defaultCharacter } from "../types/types"
 import Smackdowns from "./mooks/Smackdowns"
+import CS from "../services/CharacterService"
 
 interface MookRollsParams {
   count?: number,
@@ -42,8 +43,8 @@ export default function MookRolls({ count, attack, damage, icon }: MookRollsPara
   }, [count])
 
   useEffect(() => {
-    if (enemy?.action_values && enemy?.action_values["Defense"]) {
-      setValue(oldValue => ({...oldValue, defense: enemy.action_values["Defense"] as number}))
+    if (CS.actionValue(enemy, "Defense")) {
+      setValue(oldValue => ({...oldValue, defense: CS.actionValue(enemy, "Defense")}))
     } else {
       setValue(oldValue => ({...oldValue, defense: defaultValue.defense}))
     }
@@ -88,7 +89,7 @@ export default function MookRolls({ count, attack, damage, icon }: MookRollsPara
     if (icon) {
       return (
         <Tooltip title="Mook Attacks" arrow>
-         {icon}
+          {icon}
         </Tooltip>
       )
     } else {

@@ -185,7 +185,7 @@ export default function CharacterDetails({ character, editingCharacter, setEditi
             </Stack>
             <Stack direction="row" spacing={1} alignItems="center">
               <SchticksDisplay schticks={character.schticks} />
-              <SkillsDisplay skills={character.skills} />
+              <SkillsDisplay character={character} />
               <WeaponsDisplay weapons={character.weapons} />
             </Stack>
           </GamemasterOnly>

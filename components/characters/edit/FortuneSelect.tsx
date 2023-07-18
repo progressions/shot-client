@@ -1,6 +1,7 @@
 import { Typography, Stack, Box, TextField, MenuItem } from "@mui/material"
 import type { Character } from "../../../types/types"
 import { Subhead, StyledSelect, StyledTextField } from "../../StyledFields"
+import CS from "../../../services/CharacterService"
 
 interface FortuneSelectProps {
   character: Character
@@ -20,7 +21,7 @@ export default function FortuneSelect({ character, onChange, readOnly }: Fortune
               fullWidth
               label="Fortune Type"
               name="FortuneType"
-              value={character.action_values["FortuneType"] || "Fortune"}
+              value={CS.fortuneType(character)}
               onChange={onChange}
               disabled={readOnly}
             >
@@ -31,19 +32,19 @@ export default function FortuneSelect({ character, onChange, readOnly }: Fortune
             </StyledSelect>
           </Box>
           <StyledTextField
-            label={character.action_values["FortuneType"]}
+            label={CS.fortuneType(character)}
             type="number"
             sx={{width: 100}}
             name="Fortune"
-            value={character.action_values?.['Fortune'] || ''}
+            value={CS.rawActionValue(character, "Fortune") || ""}
             onChange={onChange}
           />
           <StyledTextField
-            label={`Max ${character.action_values["FortuneType"]}`}
+            label={CS.maxFortuneLabel(character)}
             type="number"
             sx={{width: 100}}
             name="Max Fortune"
-            value={character.action_values["Max Fortune"]}
+            value={CS.maxFortune(character) || ""}
             onChange={onChange}
             disabled={readOnly}
           />

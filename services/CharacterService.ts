@@ -65,6 +65,19 @@ const CharacterService = {
     return CharacterService.actionValue(character, CharacterService.mainAttack(character))
   },
 
+  fortuneType: (character: Character): string => {
+    return character.action_values["FortuneType"] as string || "Fortune"
+  },
+
+  maxFortuneLabel: (character: Character): string => {
+    const fortuneType = CharacterService.fortuneType(character)
+    return `Max ${fortuneType}`
+  },
+
+  maxFortune: (character: Character): number => {
+    return CharacterService.rawActionValue(character, "Max Fortune")
+  },
+
   marksOfDeath: (character: Character): number => {
     return character.action_values["Marks of Death"] as number || 0
   },
