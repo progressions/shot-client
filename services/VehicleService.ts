@@ -66,16 +66,21 @@ const VehicleService = {
     return VehicleService.rawActionValue(vehicle, "Chase Points")
   },
 
-  seriousChasePoints: (vehicle: Vehicle): number => {
-    type = CharacterService.type(vehicle)
-    threshold = woundThresholds[type]
-    if (VehicleService.isType(vehicle, ["Boss", "Uber-Boss"]) && CharacterService.chasePoints(vehicle) > 50) {
-      return true
-    }
-    if (!VehicleService.isType(vehicle, "Mook") && CharacterService.chasePoints(vehicle) > 35) {
-      return true
-    }
-    return false
+  seriousChasePoints: (vehicle: Vehicle): boolean => {
+    return VehicleService.seriousPoints(vehicle, VehicleService.chasePoints(vehicle))
+  },
+
+  seriousConditionPoints: (vehicle: Vehicle): boolean => {
+    return VehicleService.seriousPoints(vehicle, VehicleService.conditionPoints(vehicle))
+  },
+
+  seriousPoints: (vehicle: Vehicle, value: number): boolean => {
+    if (VehicleService.isType(vehicle, "Mook")) return false
+
+    const type = CS.type(vehicle)
+    const threshold = woundThresholds[type]
+
+    return (value > threshold.serious)
   },
 
   conditionPoints: (vehicle: Vehicle): number => {

@@ -3,6 +3,7 @@ import type { SkillValue, Character, CharacterEffect } from "../types/types"
 interface woundThresholdType {
   low: number,
   high: number,
+  serious: number,
 }
 interface woundThresholdsType {
   [key: string]: woundThresholdType,
@@ -216,7 +217,17 @@ const CharacterService = {
       return true
     }
     return false
-  }
+  },
+
+  seriousPoints: (character: Character, value: number): boolean => {
+    if (CharacterService.isType(character, "Mook")) return false
+
+    const type = CharacterService.type(character)
+    const threshold = woundThresholds[type]
+
+    return (value > threshold.serious)
+  },
+
 }
 
 export default CharacterService
