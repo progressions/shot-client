@@ -3,6 +3,7 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
 
 import { Typography, Stack, Box } from "@mui/material"
 import { Vehicle } from "../../types/types"
+import VS from "../../services/VehicleService"
 
 interface PositionDisplayProps {
   character: Vehicle
@@ -10,7 +11,7 @@ interface PositionDisplayProps {
 
 export default function PositionDisplay({ character }: PositionDisplayProps) {
   const spacing = (character.action_values["Position"] === "near") ? 1 : 3
-  const pursuer = character.action_values["Pursuer"] == "true"
+  const pursuer = VS.isPursuer(character)
   const firstColor = pursuer ? (character.color || "secondary.main") : "inherit"
   const secondColor = !pursuer ? (character.color || "secondary.main") : "inherit"
 

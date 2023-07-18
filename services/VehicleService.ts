@@ -31,10 +31,27 @@ const VehicleService = {
     return vehicle.action_values[key] as number || 0
   },
 
+  // Use when fetching action values other than numbers.
+  otherActionValue: (vehicle: Vehicle, key: string): string => {
+    return vehicle.action_values[key] as string || ""
+  }
+
   mainAttackValue: (vehicle: Vehicle): number => {
     if (!vehicle.driver?.id) return 7
 
     return CS.skill(vehicle.driver, "Driving")
+  },
+
+  isPursuer: (vehicle: Vehicle): boolean => {
+    return vehicle.otherActionValue("Pursuer") === "true"
+  },
+
+  isNear: (vehicle: Vehicle): boolean => {
+    return VehicleService.position(vehicle).toLowerCase() === "Near".toLowerCase()
+  },
+
+  position: (vehicle: Vehicle): Position => {
+    return vehicle.otherActionValue("Position") as Position
   },
 
   isImpaired: (vehicle: Vehicle): boolean => {
@@ -42,11 +59,11 @@ const VehicleService = {
   },
 
   chasePoints: (vehicle: Vehicle): number => {
-    return VehicleService.actionValue(vehicle, "Chase Points")
+    return VehicleService.rawActionValue(vehicle, "Chase Points")
   },
 
   conditionPoints: (vehicle: Vehicle): number => {
-    return VehicleService.actionValue(vehicle, "Condition Points")
+    return VehicleService.rawActionValue(vehicle, "Condition Points")
   },
 
   calculateImpairments: (vehicle: Vehicle, originalChasePoints, newChasePoints: number): number => {
@@ -88,7 +105,7 @@ const VehicleService = {
 
   takeChasePoints: (vehicle: Vehicle, smackdown: number): Vehicle => {
     const chasePoints = VehicleService.calculateChasePoints(vehicle, smackdown)
-    const originalChasePoints = VehicleService.rawActionValue(vehicle, "Chase Points")
+    const originalChasePoints = VehicleService.chasePoints(vehicle)
     const impairments = VehicleService.calculateImpairments(vehicle, originalChasePoints, originalChasePoints + chasePoints)
     const updatedVehicle = VehicleService.addImpairments(vehicle, impairments)
 
@@ -96,7 +113,7 @@ const VehicleService = {
   },
 
   takeRawChasePoints: (vehicle: Vehicle, chasePoints: number): Vehicle => {
-    const originalChasePoints = VehicleService.rawActionValue(vehicle, "Chase Points")
+    const originalChasePoints = VehicleService.chasePoints(vehicle)
     return VehicleService.updateActionValue(vehicle, "Chase Points", Math.max(0, originalChasePoints + chasePoints))
   },
 
@@ -109,7 +126,7 @@ const VehicleService = {
 
   takeConditionPoints: (vehicle: Vehicle, smackdown: number): Vehicle => {
     const conditionPoints = VehicleService.calculateConditionPoints(vehicle, smackdown)
-    const originalConditionPoints = VehicleService.rawActionValue(vehicle, "Condition Points")
+    const originalConditionPoints = VehicleService.conditionPoints(vehicle)
 
     return VehicleService.updateActionValue(vehicle, "Condition Points", Math.max(0, originalConditionPoints + conditionPoints))
   },

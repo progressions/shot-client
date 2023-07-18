@@ -147,7 +147,7 @@ const CharacterService = {
     return CharacterService.updateActionValue(updatedCharacter, "Marks of Death", Math.max(0, deathMarks + value))
   },
 
-  knownSkills: (character: Character): string[] => {
+  knownSkills: (character: Character): SkillValue[] => {
     return Object.entries(character.skills).filter(([name, value]: SkillValue) => (value as number > 0))
   },
 

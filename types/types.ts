@@ -235,7 +235,7 @@ export interface VehicleActionValues {
   "Chase Points": number
   "Condition Points": number
   Position: Position
-  Pursuer: boolean
+  Pursuer: Pursuer
   Type: CharacterType
 }
 
@@ -255,6 +255,8 @@ export interface Schtick {
 }
 
 export type Position = "near" | "far"
+
+export type Pursuer = "true" | "false"
 
 export type CharacterType = "" | "PC" | "Ally" | "Mook" | "Featured Foe" | "Boss" | "Uber-Boss"
 

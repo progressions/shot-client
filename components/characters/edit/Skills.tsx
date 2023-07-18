@@ -23,7 +23,7 @@ export default function Skills({ character, onChange }: SkillsProps) {
         <Subhead>Skills</Subhead>
         <Grid container spacing={2}>
           { knownSkills.map (([name, value]: SkillValue) => (
-            <Grid item xs={2}>
+            <Grid key={name} item xs={2}>
               <SkillField key={name} name={name} value={value as number} onChange={onChange} />
             </Grid>
           )) }

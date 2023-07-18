@@ -45,7 +45,7 @@ export default function VehicleModal({ open, setOpen, character:activeVehicle, r
     if (activeVehicle?.id) {
       setCharacter(activeVehicle)
     }
-  }, [activeVehicle?.id])
+  }, [activeVehicle])
 
   function handleClose() {
     cancelForm()
