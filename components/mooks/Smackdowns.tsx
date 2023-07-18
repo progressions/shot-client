@@ -30,7 +30,7 @@ export default function Smackdowns({ enemy, attackRolls, value, handleClose }: S
     const toughnessDisplay = (toughness < originalToughness) ? (<><strong style={{color: "red"}}>{toughness}</strong> ({enemy.action_values["Toughness"]})</>) : toughness
     const toughnessMessage = (toughness) ? (<> - Toughness {toughnessDisplay} = <strong style={{color: "red"}}>{wounds} Wounds</strong></>) : ""
 
-    return [(<>{attackRoll.actionResult}: Smackdown of {smackdown} {toughnessMessage}</>), wounds as number]
+    return (<>{attackRoll.actionResult}: Smackdown of {smackdown} {toughnessMessage}</>)
   }
 
   const applyWounds = async () => {
