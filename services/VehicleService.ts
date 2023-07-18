@@ -62,6 +62,18 @@ const VehicleService = {
     return VehicleService.rawActionValue(vehicle, "Chase Points")
   },
 
+  seriousChasePoints: (vehicle: Vehicle): number => {
+    type = CharacterService.type(vehicle)
+    threshold = woundThresholds[type]
+    if (VehicleService.isType(vehicle, ["Boss", "Uber-Boss"]) && CharacterService.chasePoints(vehicle) > 50) {
+      return true
+    }
+    if (!VehicleService.isType(vehicle, "Mook") && CharacterService.chasePoints(vehicle) > 35) {
+      return true
+    }
+    return false
+  },
+
   conditionPoints: (vehicle: Vehicle): number => {
     return VehicleService.rawActionValue(vehicle, "Condition Points")
   },
@@ -69,7 +81,7 @@ const VehicleService = {
   calculateImpairments: (vehicle: Vehicle, originalChasePoints: number, newChasePoints: number): number => {
     if (VehicleService.isType(vehicle, "Mook")) return 0
 
-    const threshold = woundThresholds[CS.type(vehicle)]
+    const threshold = woundThresholds[VehicleService.type(vehicle)]
 
     // a Boss and an Uber-Boss gain 1 point of Impairment when their Chase Points
     // goes from < 40 to between 40 and 44

@@ -9,11 +9,11 @@ interface woundThresholdsType {
 }
 
 export const woundThresholds: woundThresholdsType = {
-  "Boss": { "low": 40, "high": 45 },
-  "Uber-Boss": { "low": 40, "high": 45 },
-  "PC": { "low": 25, "high": 30 },
-  "Ally": { "low": 25, "high": 30 },
-  "Featured Foe": { "low": 25, "high": 30 },
+  "Boss": { low: 40, high: 45, serious: 50 },
+  "Uber-Boss": { low: 40, high: 45, serious: 50 },
+  "PC": { low: 25, high: 30, serious: 35 },
+  "Ally": { low: 25, high: 30, serious: 35 },
+  "Featured Foe": { low: 25, high: 30, serious: 35 },
 }
 
 const CharacterService = {
@@ -41,15 +41,17 @@ const CharacterService = {
     return character.action_values["Type"] === type
   },
 
+  // Adjusted for Impairment
   skill: (character: Character, key: string): number => {
-    return character.skills[key] as number || 7
+    const value = character.skills[key] as number || 7
+    returm Math.max(0, value - CharacterService.impairments(character))
   },
 
   // Adjusted for Impairment
-  // Acceleration, Speed, Handling, and Toughness are all affected by Impairment
+  // Attacks, Defense and skill checks
   actionValue: (character: Character, key: string): number => {
     const value = CharacterService.rawActionValue(character, key)
-    return Math.max(0, value - (character.impairments || 0))
+    return Math.max(0, value - CharacterService.impairments(character))
   },
 
   // Unadjusted for Impairment
@@ -58,7 +60,7 @@ const CharacterService = {
   },
 
   mainAttack: (character: Character): string => {
-    return character.action_values["MainAttack"] as string
+    return CharacterService.otherActionValue(character, "MainAttack")
   },
 
   mainAttackValue: (character: Character): number => {
