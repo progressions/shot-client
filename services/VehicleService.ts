@@ -34,7 +34,7 @@ const VehicleService = {
   // Use when fetching action values other than numbers.
   otherActionValue: (vehicle: Vehicle, key: string): string => {
     return vehicle.action_values[key] as string || ""
-  }
+  },
 
   mainAttackValue: (vehicle: Vehicle): number => {
     if (!vehicle.driver?.id) return 7
