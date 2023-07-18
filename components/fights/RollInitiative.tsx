@@ -10,6 +10,7 @@ import { useClient } from "../../contexts/ClientContext"
 import { rollDie } from "../dice/DiceRoller"
 import Client from "../../utils/Client"
 import { FightActions } from "../../reducers/fightState"
+import CS from "../../services/CharacterService"
 
 export default function RollInitiative() {
   const { fight, dispatch:dispatchFight } = useFight()
@@ -23,7 +24,7 @@ export default function RollInitiative() {
     try {
       await client.updateFight({ id: fight.id, sequence: fight.sequence + 1 } as Fight)
       dispatchFight({ type: FightActions.EDIT })
-      toastSuccess(`Sequence increased`)
+      toastSuccess(`Sequence increased.`)
     } catch(error) {
       dispatchFight({ type: FightActions.ERROR, payload: error as Error })
       console.error(error)
@@ -55,12 +56,12 @@ export default function RollInitiative() {
   const rollForShot = async ([shot, characters]: ShotType) => {
     const eligibleCharacters = characters.filter((character: Character) => {
       // only roll for GMCs with a Speed value
-      return (character.action_values["Type"] !== "PC") && (character.action_values["Speed"] || character.action_values["Acceleration"])
+      return (!CS.isType(character, "PC")) && (CS.actionValue(character, "Speed") || CS.actionValue(character, "Acceleration"))
     })
 
     await Promise.all(
       eligibleCharacters.map(async (character: Character) => {
-        if (character.category === "character") {
+        if (CS.isCharacter(character)) {
           await updateCharacter(character as Person, shot)
         } else {
           await updateVehicle(character as Vehicle, shot)
@@ -70,10 +71,11 @@ export default function RollInitiative() {
   }
 
   const updateCharacter = async (character: Person, shot: number) => {
-    const roll = (character.action_values["Speed"] as number) - (character.impairments || 0) + rollDie() + shot
+    const roll = CS.actionValue(character, "Speed") + rollDie() + shot
     const initiative = (roll > 1) ? roll : 1
+    const updatedCharacter = CS.updateValue(character, "current_shot", initiative)
     try {
-      const data = await client.updateCharacter({...character, "current_shot": initiative}, fight)
+      const data = await client.updateCharacter(updatedCharacter, fight)
       return !!data
     } catch(error) {
       return false
