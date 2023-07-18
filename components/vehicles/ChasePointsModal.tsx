@@ -7,6 +7,7 @@ import { useFight } from "../../contexts/FightContext"
 import type { Vehicle, Character, Fight, Toast, VehicleActionValues } from "../../types/types"
 import { FightActions } from '../../reducers/fightState'
 import { StyledFormDialog, StyledTextField } from "../StyledFields"
+import VS from "../../services/VehicleService"
 
 interface ChasePointsModalParams {
   open: boolean,
@@ -20,40 +21,24 @@ const ChasePointsModal = ({open, setOpen, character }: ChasePointsModalParams) =
   const [saving, setSaving] = useState<boolean>(false)
   const { toastError, toastSuccess } = useToast()
 
-  const { jwt, client } = useClient()
+  const { client } = useClient()
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setChasePoints(parseInt(event.target.value))
   }
 
-  const calculateOriginalPoints = (): number => {
-    const handling = Math.max(0, (character.action_values["Handling"] || 0) - character.impairments)
-    const result = chasePoints - handling
-
-    if (result >= 0) {
-      return result
-    }
-    return 0
-  }
-
-  const calculateNewTotal = (chasePoints: number) => {
-    return (character.action_values["Chase Points"] + chasePoints)
-  }
-
   const submitChasePoints = async (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault()
 
-    const originalPoints: number = calculateOriginalPoints()
-    const newChasePoints: number = calculateNewTotal(originalPoints)
-    const actionValues: VehicleActionValues = character.action_values
-    actionValues["Chase Points"] = newChasePoints
+    const points = VS.calculateChasePoints(character, chasePoints)
+    const updatedVehicle = VS.takeChasePoints(character, chasePoints)
 
     try {
-      await client.updateVehicle({ ...character, count: newChasePoints, "action_values": actionValues}, fight)
+      await client.updateVehicle(updatedVehicle, fight)
       dispatch({ type: FightActions.EDIT })
       setChasePoints(0)
       setOpen(false)
-      toastSuccess(`${character.name} took a smackdown of ${chasePoints}, causing ${originalPoints} Chase Points.`)
+      toastSuccess(`${character.name} took a smackdown of ${chasePoints}, causing ${points} Chase Points.`)
     } catch(error) {
       toastError()
     }

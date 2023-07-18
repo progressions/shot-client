@@ -50,10 +50,6 @@ export default function EditVehicle({ vehicle:initialVehicle }: EditVehicleProps
     dispatchVehicle({ type: VehicleActions.ACTION_VALUE, name: event.target.name, value: event.target.value || newValue })
   }
 
-  function handleSkillsChange(event: React.ChangeEvent<HTMLInputElement>) {
-    dispatchVehicle({ type: VehicleActions.SKILLS, name: event.target.name, value: event.target.value })
-  }
-
   function handleDescriptionChange(event: React.ChangeEvent<HTMLInputElement>) {
     dispatchVehicle({ type: VehicleActions.DESCRIPTION, name: event.target.name, value: event.target.value })
   }

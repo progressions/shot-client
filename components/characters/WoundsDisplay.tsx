@@ -1,5 +1,6 @@
 import { Stack, Typography } from "@mui/material"
 import GamemasterOnly from "../GamemasterOnly"
+import CS from "../../services/CharacterService"
 
 import type { User, Person } from "../../types/types"
 
@@ -10,17 +11,14 @@ interface WoundsDisplayProps {
 
 export default function WoundsDisplay({ character, user }: WoundsDisplayProps) {
   const getColors = (character: Person) =>  {
-    if (["Boss", "Uber-Boss"].includes(character.action_values["Type"] as string) && character.action_values["Wounds"] > 50) {
-      return ["primary.contrastText", "error.main"]
-    }
-    if (!["Mook"].includes(character.action_values["Type"] as string) && character.action_values["Wounds"] > 35) {
+    if (CS.seriousWounds(character)) {
       return ["primary.contrastText", "error.main"]
     }
     return ["primary.contrastText", "primary.light"]
   }
   const [color, backgroundColor] = getColors(character)
 
-  const wounds = character.count || character.action_values["Wounds"] || 0
+  const wounds = CS.wounds(character)
 
   return (
     <GamemasterOnly user={user} character={character}>

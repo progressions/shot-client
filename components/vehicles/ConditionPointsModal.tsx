@@ -7,6 +7,7 @@ import { useClient } from "../../contexts/ClientContext"
 import type { Vehicle, Character, Fight, Toast, VehicleActionValues } from "../../types/types"
 import { FightActions } from '../../reducers/fightState'
 import { StyledFormDialog, StyledTextField } from "../StyledFields"
+import VS from "../../services/VehicleService"
 
 interface ConditionPointsModalParams {
   open: boolean,
@@ -20,52 +21,24 @@ const ConditionPointsModal = ({open, setOpen, character }: ConditionPointsModalP
   const [saving, setSaving] = useState<boolean>(false)
   const { toastSuccess, toastError } = useToast()
 
-  const { jwt, client } = useClient()
+  const { client } = useClient()
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setConditionPoints(parseInt(event.target.value))
   }
 
-  const calculateOriginalPoints = (): number => {
-    if (character.action_values["Type"] === "Mook") {
-      return conditionPoints
-    }
-
-    const frame = Math.max(0, (character.action_values["Frame"] || 0) - character.impairments)
-    const result = conditionPoints - frame
-
-    if (result >= 0) {
-      return result
-    }
-    return 0
-  }
-
-  const calculateNewTotal = (conditionPoints: number) => {
-    if (character.action_values["Type"] === "Mook") {
-      return (character.action_values["Condition Points"] - conditionPoints)
-    }
-
-    return (character.action_values["Condition Points"] + conditionPoints)
-  }
-
   const submitConditionPoints = async (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault()
 
-    const originalPoints: number = calculateOriginalPoints()
-    const newConditionPoints: number = calculateNewTotal(originalPoints)
-    const actionValues: VehicleActionValues = character.action_values
-    actionValues["Condition Points"] = newConditionPoints
+    const points = VS.calculateConditionPoints(character, conditionPoints)
+    const updatedVehicle = VS.takeConditionPoints(character, conditionPoints)
 
     try {
-      await client.updateVehicle({ ...character, "action_values": actionValues}, fight)
+      await client.updateVehicle(updatedVehicle, fight)
       dispatchFight({ type: FightActions.EDIT })
       setConditionPoints(0)
       setOpen(false)
-      if (character.action_values["Type"] === "Mook") {
-        toastSuccess(`${character.name} lost ${conditionPoints} mooks.`)
-      } else {
-        toastSuccess(`${character.name} took a smackdown of ${conditionPoints}, causing ${originalPoints} Condition Points.`)
-      }
+      toastSuccess(`${character.name} took a smackdown of ${conditionPoints}, causing ${points} Condition Points.`)
       return
     } catch(error) {
       toastError()
@@ -76,7 +49,7 @@ const ConditionPointsModal = ({open, setOpen, character }: ConditionPointsModalP
     setConditionPoints(0)
     setOpen(false)
   }
-  const label = (character.action_values["Type"] === "Mook") ? "Mooks" : "Condition Points"
+  const label = "Condition Points"
 
   return (
     <StyledFormDialog

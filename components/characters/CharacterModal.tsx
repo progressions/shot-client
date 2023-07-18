@@ -1,13 +1,13 @@
-import { MouseEventHandler, useState, useEffect, SyntheticEvent } from 'react'
-import { colors, FormControl, Switch, Tooltip, Typography, DialogActions, FormControlLabel, MenuItem, Checkbox, InputAdornment, Dialog, DialogTitle, DialogContent, DialogContentText, Box, Stack, TextField, Button, Paper, Popover } from '@mui/material'
-import FavoriteIcon from '@mui/icons-material/Favorite'
-import PeopleIcon from '@mui/icons-material/People'
+import { MouseEventHandler, useState, useEffect, SyntheticEvent } from "react"
+import { colors, FormControl, Switch, Tooltip, Typography, DialogActions, FormControlLabel, MenuItem, Checkbox, InputAdornment, Dialog, DialogTitle, DialogContent, DialogContentText, Box, Stack, TextField, Button, Paper, Popover } from "@mui/material"
+import FavoriteIcon from "@mui/icons-material/Favorite"
+import PeopleIcon from "@mui/icons-material/People"
 import { StyledTextField, SaveCancelButtons, SaveButton, CancelButton, StyledDialog } from "../StyledFields"
 
-import Router from 'next/router'
+import Router from "next/router"
 
 import ColorPicker from "./edit/ColorPicker"
-import CharacterType from './edit/CharacterType'
+import CharacterType from "./edit/CharacterType"
 import FortuneSelect from "./edit/FortuneSelect"
 import EditActionValues from "./edit/EditActionValues"
 
@@ -20,7 +20,8 @@ import { useClient } from "../../contexts/ClientContext"
 
 import type { Person, Fight, Character, Toast, ID } from "../../types/types"
 import { defaultCharacter } from "../../types/types"
-import { FightActions } from '../../reducers/fightState'
+import { FightActions } from "../../reducers/fightState"
+import CS from "../../services/CharacterService"
 
 interface CharacterModalParams {
   open: Character,
@@ -60,14 +61,15 @@ export default function CharacterModal({ open, setOpen, character:activeCharacte
   }
 
   const handleAVChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { action_values } = character || {}
-    setCharacter((prevState: Person) => ({ ...prevState, action_values: { ...action_values, [event.target.name]: event.target.value } }))
+    const updatedCharacter = CS.updateActionValue(character, event.target.name, event.target.value)
+    setCharacter(updatedCharacter as Person)
   }
 
   const handleDeathMarks = (event: React.SyntheticEvent<Element, Event>, newValue: number | null) => {
-    const { action_values } = character || {}
-    const value = (newValue === character.action_values["Marks of Death"]) ? 0 : newValue
-    setCharacter((prevState: Person) => ({ ...prevState, action_values: { ...action_values, "Marks of Death": value as number } }))
+    if (newValue) {
+      const updatedCharacter = CS.addDeathMarks(character, newValue)
+      setCharacter(updatedCharacter as Person)
+    }
   }
 
   const cancelForm = () => {
@@ -104,11 +106,11 @@ export default function CharacterModal({ open, setOpen, character:activeCharacte
     }
   }
 
-  const woundsLabel = character.action_values["Type"] === "Mook" ? "Mooks" : "Wounds"
+  const woundsLabel = CS.isType(character, "Mook") ? "Mooks" : "Wounds"
   const dialogTitle = newCharacter ? "Create Character" : `${character.name}`
 
   const woundsAdornment = () => {
-    if (character.action_values["Type"] === "Mook") {
+    if (CS.isType(character, "Mook")) {
       return (
         <InputAdornment position="start"><PeopleIcon color='error' /></InputAdornment>
       )
@@ -119,13 +121,8 @@ export default function CharacterModal({ open, setOpen, character:activeCharacte
   }
 
   const healCharacter = () => {
-    if (character.action_values["Type"] === "Mook") return
-
-    const actionValues = character.action_values
-    actionValues["Wounds"] = 0
-    actionValues["Fortune"] = actionValues["Max Fortune"]
-    actionValues["Marks of Death"] = 0
-    setCharacter((prev: Character) => ({ ...prev, impairments: 0, action_values: actionValues }))
+    const updatedCharacter = CS.fullHeal(character)
+    setCharacter(updatedCharacter as Person)
   }
 
   return (

@@ -31,6 +31,7 @@ import { initialSchticksState as initialSchticksState } from "../../../reducers/
 import type { WeaponsStateType } from "../../../reducers/weaponsState"
 import { initialWeaponsState as initialWeaponsState } from "../../../reducers/weaponsState"
 import { CharacterActions } from "../../../reducers/characterState"
+import CS from "../../../services/CharacterService"
 
 interface EditCharacterProps {
   character: Character
@@ -77,7 +78,7 @@ export default function EditCharacter({ character:initialCharacter }: EditCharac
 
   const handleDeathMarks = (event: React.SyntheticEvent<Element, Event>, newValue: number | null) => {
     const { action_values } = character || {}
-    const value = (newValue === character.action_values["Marks of Death"]) ? 0 : newValue
+    const value = (newValue === CS.marksOfDeath(character)) ? 0 : newValue
     dispatchCharacter({ type: CharacterActions.ACTION_VALUE, name: "Marks of Death", value: value as number })
   }
 
@@ -91,10 +92,10 @@ export default function EditCharacter({ character:initialCharacter }: EditCharac
     }
   }
 
-  const woundsLabel = character.action_values["Type"] === "Mook" ? "Mooks" : "Wounds"
+  const woundsLabel = CS.isType(character, "Mooks") ? "Mooks" : "Wounds"
 
   const woundsAdornment = () => {
-    if (character.action_values["Type"] === "Mook") {
+    if (CS.isType(character, "Mooks")) {
       return (
         <InputAdornment position="start"><PeopleIcon color='error' /></InputAdornment>
       )
@@ -140,7 +141,7 @@ export default function EditCharacter({ character:initialCharacter }: EditCharac
           <PlayerTypeOnly character={character} only="PC">
             <FortuneSelect character={character} onChange={handleAVChange as React.ChangeEventHandler} readOnly={false} />
           </PlayerTypeOnly>
-          <Skills skills={skills} onChange={handleSkillsChange} />
+          <Skills character={character} onChange={handleSkillsChange} />
           <Weapons state={weaponsState} />
           <PlayerTypeOnly character={character} only="PC">
             <Advancements character={character} />

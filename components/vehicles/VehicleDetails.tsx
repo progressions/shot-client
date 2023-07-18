@@ -49,13 +49,16 @@ export default function VehicleDetails({ character, editingCharacter, setEditing
   }
 
   async function deleteCharacter(character: Character): Promise<void> {
-    try {
-      await client.deleteVehicle(character as Vehicle, fight)
-      dispatch({ type: FightActions.EDIT })
-      toastSuccess(`${character.name} removed.`)
-      return
-    } catch(error) {
-      toastError()
+    const doit = confirm(`Remove ${character.name} from the fight?`)
+    if (doit) {
+      try {
+        await client.deleteVehicle(character as Vehicle, fight)
+        dispatch({ type: FightActions.EDIT })
+        toastSuccess(`${character.name} removed.`)
+        return
+      } catch(error) {
+        toastError()
+      }
     }
   }
 

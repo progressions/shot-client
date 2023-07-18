@@ -8,6 +8,7 @@ import { useClient } from "../../contexts/ClientContext"
 import type { Character, Fight, Toast } from "../../types/types"
 import { FightActions } from '../../reducers/fightState'
 import { StyledFormDialog, StyledTextField } from "../StyledFields"
+import CS from "../../services/CharacterService"
 
 interface ActionModalParams {
   open: boolean,
@@ -15,7 +16,7 @@ interface ActionModalParams {
   character: Character,
 }
 
-const ActionModal = ({open, setOpen, character }: ActionModalParams) => {
+export default function ActionModal({open, setOpen, character }: ActionModalParams) {
   const { fight, dispatch:dispatchFight } = useFight()
   const [shots, setShots] = useState<number>(3)
   const [saving, setSaving] = useState<boolean>(false)
@@ -23,10 +24,10 @@ const ActionModal = ({open, setOpen, character }: ActionModalParams) => {
   const { client } = useClient()
 
   useEffect(() => {
-    if (["Boss", "Uber-Boss"].includes(character.action_values["Type"] as string)) {
+    if (CS.isType(character, ["Boss", "Uber-Boss"])) {
       setShots(2)
     }
-  }, [character.action_values])
+  }, [character])
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
     setShots(parseInt(event.target.value))
@@ -66,5 +67,3 @@ const ActionModal = ({open, setOpen, character }: ActionModalParams) => {
     </StyledFormDialog>
   )
 }
-
-export default ActionModal

@@ -3,6 +3,7 @@ import { styled } from '@mui/material/styles'
 import { IoSkull, IoSkullOutline } from "react-icons/io5"
 
 import type { Character } from "../../types/types"
+import CS from "../../services/CharacterService"
 
 const StyledRating = styled(Rating)({
   '& .MuiRating-icon': {
@@ -23,11 +24,11 @@ interface DeathMarksProps {
 }
 
 export const deathMarkIcons = (character: Character) => {
-  if (!character.action_values["Marks of Death"]) { return [] }
+  if (!CS.marksOfDeath(character)) { return [] }
 
   const icons = []
   for (let i=1; i <= 5; i++) {
-    if (i <= character.action_values["Marks of Death"]) {
+    if (i <= CS.marksOfDeath(character)) {
       icons.push(<IoSkull key={`Mark ${i}`} />)
     } else {
       icons.push(<IoSkullOutline key={`Mark ${i}`} />)
@@ -52,7 +53,7 @@ export default function DeathMarks({ character, readOnly, onChange }: DeathMarks
         name="Marks of Death"
         readOnly={readOnly}
         onChange={onChange}
-        value={character.action_values["Marks of Death"] as number}
+        value={CS.marksOfDeath(character)}
         icon={<IoSkull />}
         emptyIcon={<IoSkullOutline />}
         max={5} />

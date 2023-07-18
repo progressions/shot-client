@@ -3,7 +3,7 @@ import { Stack, Avatar, Tooltip, Button, IconButton, Dialog, DialogTitle, Dialog
 import CasinoIcon from '@mui/icons-material/Casino'
 import { useState } from 'react'
 
-interface RollsType {
+export interface RollsType {
   result: number
   positiveRolls: number[]
   negativeRolls: number[]

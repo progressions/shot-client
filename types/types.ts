@@ -177,6 +177,10 @@ export interface DescriptionValues {
   "Melodramatic Hook": string
 }
 
+export interface AVs {
+  [key: string]: string | number | null | undefined | boolean
+}
+
 export interface ActionValues {
   [key: string]: string | number | null | undefined | boolean
   Guns?: number
@@ -226,7 +230,7 @@ export interface SkillValues {
 }
 
 export interface VehicleActionValues {
-  [key: string]: string | number | Position | CharacterType | undefined
+  [key: string]: string | number | Position | CharacterType | undefined | boolean
   Acceleration: number
   Handling: number
   Squeal: number
@@ -235,6 +239,7 @@ export interface VehicleActionValues {
   "Chase Points": number
   "Condition Points": number
   Position: Position
+  Pursuer: Pursuer
   Type: CharacterType
 }
 
@@ -255,6 +260,8 @@ export interface Schtick {
 
 export type Position = "near" | "far"
 
+export type Pursuer = "true" | "false"
+
 export type CharacterType = "" | "PC" | "Ally" | "Mook" | "Featured Foe" | "Boss" | "Uber-Boss"
 
 export interface ID {
@@ -271,7 +278,7 @@ export interface Vehicle {
   current_shot?: number | string
   impairments: number
   color: string
-  action_values: VehicleActionValues
+  action_values: AVs | VehicleActionValues
   description: DescriptionValues
   faction_id: string | null
   faction: Faction
@@ -287,7 +294,7 @@ export interface Vehicle {
   category: CharacterCategory
   count: number
   shot_id: string
-  driver: Character
+  driver?: Character
   location?: string
 }
 
@@ -300,7 +307,7 @@ export interface Person {
   color: string
   faction_id: string | null
   faction: Faction
-  action_values: ActionValues
+  action_values: AVs | ActionValues
   description: DescriptionValues
   schticks: Schtick[]
   skills: SkillValues
