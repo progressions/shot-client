@@ -8,7 +8,10 @@ import type { Character } from "../types/types"
 import { defaultCharacter } from "../types/types"
 import Smackdowns from "./mooks/Smackdowns"
 import CS from "../services/CharacterService"
+import VS from "../services/VehicleService"
 import AS, { AttackRollType } from "../services/ActionService"
+import RollOutcome from "./mooks/RollOutcome"
+import ButtonWithTooltip from "./mooks/ButtonWithTooltip"
 
 interface MookRollsParams {
   count?: number,
@@ -65,35 +68,11 @@ export default function MookRolls({ count, attack, damage, icon }: MookRollsPara
     setRolls(attacks)
   }
 
-  const RollOutcome = ({ attackRoll }: { attackRoll: AttackRollType }) => {
-    const style = (attackRoll.success) ? {color: "red", fontWeight: "bold"} : {}
-
-    return (
-      <Grid item xs={2}>
-        <Typography sx={style} variant='h5'>
-          {attackRoll.actionResult}
-        </Typography>
-      </Grid>
-    )
-  }
-
-  const buttonWithTooltip = (icon: React.ReactElement | undefined) => {
-    if (icon) {
-      return (
-        <Tooltip title="Mook Attacks" arrow>
-          {icon}
-        </Tooltip>
-      )
-    } else {
-      return (
-        "Mooks"
-      )
-    }
-  }
-
   return (
     <>
-      <Button variant="contained" color="primary" onClick={() => setOpen(true)}>{ buttonWithTooltip(icon) }</Button>
+      <Button variant="contained" color="primary" onClick={() => setOpen(true)}>
+        <ButtonWithTooltip icon={icon} />
+      </Button>
       <StyledDialog
         open={open}
         onClose={handleClose}

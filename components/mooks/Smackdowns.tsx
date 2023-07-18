@@ -54,13 +54,13 @@ export default function Smackdowns({ enemy, attackRolls, value, handleClose }: S
     { successfulRolls.length > 0 && enemy.name && <Typography variant="h5" py={2}>{enemy.name}</Typography> }
     {
       successfulRolls
-        .map((attackRoll: AttackRollType, index: number) => {
-          const message = damageMessage(enemy, attackRoll)
-          return (<React.Fragment key={(Math.random() * 10000)}><Typography component="span">{message}</Typography><br /></React.Fragment>)
-        })
-      }
-      { enemy?.id && total > 0 && <Typography variant="h5" py={2} sx={{color: "red"}}>Total Wounds: {total}</Typography> }
-      { enemy?.id && total > 0 && <Button variant="contained" color="primary" onClick={applyWounds}>Apply Wounds</Button> }
+      .map((attackRoll: AttackRollType, index: number) => {
+        const message = damageMessage(enemy, attackRoll)
+        return (<React.Fragment key={(Math.random() * 10000)}><Typography component="span">{message}</Typography><br /></React.Fragment>)
+      })
+    }
+    { enemy?.id && total > 0 && <Typography variant="h5" py={2} sx={{color: "red"}}>Total Wounds: {total}</Typography> }
+    { enemy?.id && total > 0 && <Button variant="contained" color="primary" onClick={applyWounds}>Apply Wounds</Button> }
     </>
   )
 }
