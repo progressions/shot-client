@@ -21,7 +21,7 @@ export default function Smackdowns({ enemy, attackRolls, value, handleClose }: S
   const { toastError, toastSuccess } = useToast()
   const { fight, dispatch } = useFight()
 
-  const damageMessage = (enemy: Character, attackRoll: AttackRollType) => {
+  const damageMessage = (enemy: Vehicle, attackRoll: AttackRollType) => {
     const originalHandling = VS.rawActionValue(enemy, "Handling")
     const handling = VS.handling(enemy)
     const outcome = attackRoll.outcome

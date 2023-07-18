@@ -6,7 +6,11 @@ interface ButtonWithTooltipProps {
 }
 
 export default function ButtonWithTooltip({ icon }: ButtonWithTooltipProps) {
-  if (!icon) return ("Mooks")
+  if (!icon) {
+    return (
+      <>Mooks</>
+    )
+  }
 
   return (
     <Tooltip title="Mook Attacks" arrow>

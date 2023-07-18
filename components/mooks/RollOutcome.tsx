@@ -1,5 +1,5 @@
 import { Grid, Tooltip, Typography } from '@mui/material'
-import type AttackRollType from "../../services/ActionService"
+import type { AttackRollType } from "../../services/ActionService"
 
 export interface RollOutcomeParams {
   attackRoll: AttackRollType
