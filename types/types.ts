@@ -177,6 +177,10 @@ export interface DescriptionValues {
   "Melodramatic Hook": string
 }
 
+export interface AVs {
+  [key: string]: string | number | null | undefined | boolean
+}
+
 export interface ActionValues {
   [key: string]: string | number | null | undefined | boolean
   Guns?: number
@@ -274,7 +278,7 @@ export interface Vehicle {
   current_shot?: number | string
   impairments: number
   color: string
-  action_values: VehicleActionValues
+  action_values: AVs
   description: DescriptionValues
   faction_id: string | null
   faction: Faction
@@ -290,7 +294,7 @@ export interface Vehicle {
   category: CharacterCategory
   count: number
   shot_id: string
-  driver: Character
+  driver?: Character
   location?: string
 }
 
@@ -303,7 +307,7 @@ export interface Person {
   color: string
   faction_id: string | null
   faction: Faction
-  action_values: ActionValues
+  action_values: AVs
   description: DescriptionValues
   schticks: Schtick[]
   skills: SkillValues

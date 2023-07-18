@@ -9,8 +9,12 @@ interface AvatarBadgeParams {
   user: User | null
 }
 
+interface Names {
+  [key: string]: string
+}
+
 export default function AvatarBadge({ character, user }: AvatarBadgeParams) {
-  const names = {
+  const names:Names = {
     "PC": "PC",
     "Ally": "Ally",
     "Mook": "Mook",
@@ -28,7 +32,7 @@ export default function AvatarBadge({ character, user }: AvatarBadgeParams) {
       </Badge>
       <GamemasterOnly user={user} character={character}>
         <Box width={40} sx={{textAlign: 'center'}}>
-          <Typography variant="caption" sx={{color: 'text.secondary'}}>{charType && names[charType]}</Typography>
+          <Typography variant="caption" sx={{color: 'text.secondary'}}>{charType && names[charType as string]}</Typography>
         </Box>
         <Box width={40} sx={{textAlign: 'center'}}>
           { character.category === "vehicle" &&

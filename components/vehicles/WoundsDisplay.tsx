@@ -3,6 +3,7 @@ import GamemasterOnly from "../GamemasterOnly"
 import PlayerTypeOnly from "../PlayerTypeOnly"
 
 import type { User, Vehicle } from "../../types/types"
+import VS from "../../services/VehicleService"
 
 interface WoundsDisplayProps {
   character: Vehicle
@@ -11,13 +12,7 @@ interface WoundsDisplayProps {
 
 export default function WoundsDisplay({ character, user }: WoundsDisplayProps) {
   const getColors = (character: Vehicle) =>  {
-    if (["Boss", "Uber-Boss"].includes(character.action_values["Type"]) && character.action_values["Chase Points"] > 50) {
-      return ["primary.contrastText", "error.main"]
-    }
-    if (["Mook"].includes(character.action_values["Type"])) {
-      return ["primary.contrastText", "primary.light"]
-    }
-    if (character.action_values["Chase Points"] > 35) {
+    if (VS.seriousChasePoints(character)) {
       return ["primary.contrastText", "error.main"]
     }
     return ["primary.contrastText", "primary.light"]

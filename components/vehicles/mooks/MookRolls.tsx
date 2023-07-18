@@ -7,6 +7,7 @@ import EnemiesAutocomplete from "./EnemiesAutocomplete"
 import type { Vehicle } from "../../../types/types"
 import { defaultVehicle } from "../../../types/types"
 import Smackdowns from "./Smackdowns"
+import CS from "../../../services/CharacterService"
 
 interface MookRollsParams {
   count?: number,
@@ -42,10 +43,10 @@ export default function MookRolls({ count, attack, damage, icon }: MookRollsPara
   }, [count])
 
   useEffect(() => {
-    if (enemy?.driver?.skills && enemy?.driver?.skills["Driving"]) {
-      setValue(oldValue => ({...oldValue, defense: enemy.driver.skills["Driving"] as number}))
-    } else {
-      setValue(oldValue => ({...oldValue, defense: defaultValue.defense}))
+    if (enemy.driver !== undefined) {
+      const driving = CS.skill(enemy.driver, "Driving")
+
+      setValue(oldValue => ({...oldValue, defense: driving || defaultValue.defense}))
     }
   }, [enemy, defaultValue.defense])
 

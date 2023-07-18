@@ -1,195 +1,97 @@
 import type { Character, Position, Vehicle, CharacterEffect } from "../types/types"
-import CS, { woundThresholds } from "./CharacterService"
+import CS from "./CharacterService"
+import SharedService, { woundThresholds } from "./SharedService"
 
 const VehicleService = {
-  name: (vehicle: Vehicle): string => {
-    return vehicle.name
-  },
+  ...SharedService,
 
-  type: (vehicle: Vehicle): string => {
-    return "PC"
-  },
-
-  isVehicle: (vehicle: Vehicle): boolean => {
-    return (vehicle.category === "vehicle")
-  },
-
-  isType: (vehicle: Vehicle, type: string | string[]): boolean => {
-    if (Array.isArray(type)) {
-      return type.includes(vehicle.action_values["Type"] as string)
-    }
-
-    return vehicle.action_values["Type"] === type
-  },
-
-  actionValue: (vehicle: Vehicle, key: string): number => {
-    const value = VehicleService.rawActionValue(vehicle, key)
-    return Math.max(0, value - (vehicle.impairments || 0))
-  },
-
-  rawActionValue: (vehicle: Vehicle, key: string): number => {
-    return vehicle.action_values[key] as number || 0
-  },
-
-  // Use when fetching action values other than numbers.
-  otherActionValue: (vehicle: Vehicle, key: string): string => {
-    return vehicle.action_values[key] as string || ""
-  },
-
-  mainAttackValue: (vehicle: Vehicle): number => {
+  mainAttackValue: function(vehicle: Vehicle): number {
     if (!vehicle.driver?.id) return 7
 
     return CS.skill(vehicle.driver, "Driving")
   },
 
-  isPursuer: (vehicle: Vehicle): boolean => {
-    return VehicleService.otherActionValue(vehicle, "Pursuer") === "true"
+  isPursuer: function(vehicle: Vehicle): boolean {
+    return this.otherActionValue(vehicle, "Pursuer") === "true"
   },
 
-  isNear: (vehicle: Vehicle): boolean => {
-    return VehicleService.position(vehicle).toLowerCase() === "Near".toLowerCase()
+  isNear: function(vehicle: Vehicle): boolean {
+    return this.position(vehicle).toLowerCase() === "Near".toLowerCase()
   },
 
-  position: (vehicle: Vehicle): Position => {
-    return VehicleService.otherActionValue(vehicle, "Position") as Position
+  position: function(vehicle: Vehicle): Position {
+    return this.otherActionValue(vehicle, "Position") as Position
   },
 
-  impairments: (vehicle: Vehicle): number => {
-    return vehicle.impairments || 0
+  chasePoints: function(vehicle: Vehicle): number {
+    return this.rawActionValue(vehicle, "Chase Points")
   },
 
-  isImpaired: (vehicle: Vehicle): boolean => {
-    return VehicleService.impairments(vehicle) > 0
+  seriousChasePoints: function(vehicle: Vehicle): boolean {
+    return this.seriousPoints(vehicle, this.chasePoints(vehicle))
   },
 
-  chasePoints: (vehicle: Vehicle): number => {
-    return VehicleService.rawActionValue(vehicle, "Chase Points")
+  seriousConditionPoints: function(vehicle: Vehicle): boolean {
+    return this.seriousPoints(vehicle, this.conditionPoints(vehicle))
   },
 
-  seriousChasePoints: (vehicle: Vehicle): boolean => {
-    return VehicleService.seriousPoints(vehicle, VehicleService.chasePoints(vehicle))
+  conditionPoints: function(vehicle: Vehicle): number {
+    return this.rawActionValue(vehicle, "Condition Points")
   },
 
-  seriousConditionPoints: (vehicle: Vehicle): boolean => {
-    return VehicleService.seriousPoints(vehicle, VehicleService.conditionPoints(vehicle))
-  },
-
-  seriousPoints: (vehicle: Vehicle, value: number): boolean => {
-    if (VehicleService.isType(vehicle, "Mook")) return false
-
-    const type = CS.type(vehicle)
-    const threshold = woundThresholds[type]
-
-    return (value > threshold.serious)
-  },
-
-  conditionPoints: (vehicle: Vehicle): number => {
-    return VehicleService.rawActionValue(vehicle, "Condition Points")
-  },
-
-  calculateImpairments: (vehicle: Vehicle, originalChasePoints: number, newChasePoints: number): number => {
-    if (VehicleService.isType(vehicle, "Mook")) return 0
-
-    const threshold = woundThresholds[VehicleService.type(vehicle)]
-
-    // a Boss and an Uber-Boss gain 1 point of Impairment when their Chase Points
-    // goes from < 40 to between 40 and 44
-    // A PC, Ally, Featured Foe gain 1 point of Impairment when their Chase Points
-    // go from < 25 to between 25 and 30
-    if (originalChasePoints < threshold.low && newChasePoints >= threshold.low && newChasePoints <= threshold.high) {
-      return 1
-    }
-    // Boss and Uber-Boss gain 1 point of Impairment when their Chase Points go from
-    // between 40 and 44 to > 45
-    // PC, Ally, Featured Foe gain 1 point of Impairment when their Chase Points go from
-    // between 25 and 29 to >= 30
-    if (originalChasePoints >= threshold.low && originalChasePoints < threshold.high && newChasePoints >= 30) {
-      return 1
-    }
-    // Boss and Uber-Boss gain 2 points of Impairment when their Chase Points go from
-    // < 40 to >= 45
-    // PC, Ally, Featured Foe gain 2 points of Impairment when their Chase Points go from
-    // < 25 to >= 35
-    if (originalChasePoints < threshold.low && newChasePoints >= threshold.high) {
-      return 2
-    }
-
-    return 0
-  },
-
-  calculateChasePoints: (vehicle: Vehicle, smackdown: number): number => {
-    const toughness = VehicleService.actionValue(vehicle, "Handling")
+  calculateChasePoints: function(vehicle: Vehicle, smackdown: number): number {
+    const toughness = this.actionValue(vehicle, "Handling")
     const chasePoints = Math.max(0, smackdown - toughness)
 
     return chasePoints
   },
 
-  takeChasePoints: (vehicle: Vehicle, smackdown: number): Vehicle => {
-    const chasePoints = VehicleService.calculateChasePoints(vehicle, smackdown)
-    const originalChasePoints = VehicleService.chasePoints(vehicle)
-    const impairments = VehicleService.calculateImpairments(vehicle, originalChasePoints, originalChasePoints + chasePoints)
-    const updatedVehicle = VehicleService.addImpairments(vehicle, impairments)
+  takeChasePoints: function(vehicle: Vehicle, smackdown: number): Vehicle {
+    const chasePoints = this.calculateChasePoints(vehicle, smackdown)
+    const originalChasePoints = this.chasePoints(vehicle)
+    const impairments = this.calculateImpairments(vehicle, originalChasePoints, originalChasePoints + chasePoints)
+    const updatedVehicle = this.addImpairments(vehicle, impairments)
+    const updatedChasePoints = Math.max(0, originalChasePoints + chasePoints)
 
-    return VehicleService.updateActionValue(updatedVehicle, "Chase Points", Math.max(0, originalChasePoints + chasePoints))
+    return this.updateActionValue(updatedVehicle, "Chase Points", updatedChasePoints)
   },
 
-  takeRawChasePoints: (vehicle: Vehicle, chasePoints: number): Vehicle => {
-    const originalChasePoints = VehicleService.chasePoints(vehicle)
-    return VehicleService.updateActionValue(vehicle, "Chase Points", Math.max(0, originalChasePoints + chasePoints))
+  takeRawChasePoints: function(vehicle: Vehicle, chasePoints: number): Vehicle {
+    const originalChasePoints = this.chasePoints(vehicle)
+    return this.updateActionValue(vehicle, "Chase Points", Math.max(0, originalChasePoints + chasePoints))
   },
 
-  calculateConditionPoints: (vehicle: Vehicle, smackdown: number): number => {
-    const toughness = VehicleService.rawActionValue(vehicle, "Frame")
+  calculateConditionPoints: function(vehicle: Vehicle, smackdown: number): number {
+    const toughness = this.rawActionValue(vehicle, "Frame")
     const conditionPoints = Math.max(0, smackdown - toughness)
 
     return conditionPoints
   },
 
-  takeConditionPoints: (vehicle: Vehicle, smackdown: number): Vehicle => {
-    const conditionPoints = VehicleService.calculateConditionPoints(vehicle, smackdown)
-    const originalConditionPoints = VehicleService.conditionPoints(vehicle)
+  takeConditionPoints: function(vehicle: Vehicle, smackdown: number): Vehicle {
+    const conditionPoints = this.calculateConditionPoints(vehicle, smackdown)
+    const originalConditionPoints = this.conditionPoints(vehicle)
 
-    return VehicleService.updateActionValue(vehicle, "Condition Points", Math.max(0, originalConditionPoints + conditionPoints))
+    return this.updateActionValue(vehicle, "Condition Points", Math.max(0, originalConditionPoints + conditionPoints))
   },
 
-  healChasePoints: (vehicle: Vehicle, value: number): Vehicle => {
-    const originalChasePoints = VehicleService.chasePoints(vehicle)
-    const impairments = VehicleService.calculateImpairments(vehicle, originalChasePoints - value, originalChasePoints)
-    let updatedVehicle = VehicleService.addImpairments(vehicle, -impairments)
+  healChasePoints: function(vehicle: Vehicle, value: number): Vehicle {
+    const originalChasePoints = this.chasePoints(vehicle)
+    const impairments = this.calculateImpairments(vehicle, originalChasePoints - value, originalChasePoints)
+    let updatedVehicle = this.addImpairments(vehicle, -impairments)
 
-    return VehicleService.updateActionValue(updatedVehicle, "Chase Points", Math.max(0, originalChasePoints - value))
+    return this.updateActionValue(updatedVehicle, "Chase Points", Math.max(0, originalChasePoints - value))
   },
 
-  addImpairments: (vehicle: Vehicle, value: number): Vehicle => {
-    return VehicleService.updateValue(vehicle, "impairments", Math.max(0, vehicle.impairments + value))
+  updatePosition: function(vehicle: Vehicle, position: Position): Vehicle {
+    return this.updateActionValue(vehicle, "Position", position)
   },
 
-  updateValue: (vehicle: Vehicle, key: string, value: number | string): Vehicle => {
-    return {
-      ...vehicle,
-      [key]: value
-    } as Vehicle
+  updatePursuer: function(vehicle: Vehicle, pursuer: boolean): Vehicle {
+    return this.updateActionValue(vehicle, "Pursuer", pursuer ? "true" : "false")
   },
 
-  updateActionValue: (vehicle: Vehicle, key: string, value: number | string): Vehicle => {
-    return {
-      ...vehicle,
-      action_values: {
-        ...vehicle.action_values,
-        [key]: value
-      }
-    } as Vehicle
-  },
-
-  updatePosition: (vehicle: Vehicle, position: Position): Vehicle => {
-    return VehicleService.updateActionValue(vehicle, "Position", position)
-  },
-
-  updatePursuer: (vehicle: Vehicle, pursuer: boolean): Vehicle => {
-    return VehicleService.updateActionValue(vehicle, "Pursuer", pursuer ? "true" : "false")
-  },
-
-  updateDriver: (vehicle: Vehicle, driver: Character | null): Vehicle => {
+  updateDriver: function(vehicle: Vehicle, driver: Character | null): Vehicle {
     if (!driver?.id) {
       return { ...vehicle, driver: { id: "", name: "" } } as Vehicle
     }
