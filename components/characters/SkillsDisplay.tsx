@@ -3,6 +3,7 @@ import ArticleIcon from '@mui/icons-material/Article'
 import { useState } from "react"
 import type { Character, SkillValue, SkillValues } from "../../types/types"
 import CS from "../../services/CharacterService"
+import { colorForValue } from "./ActionValueDisplay"
 
 interface SkillsDisplayProps {
   character: Character
@@ -36,9 +37,15 @@ export default function SkillsDisplay({ character }: SkillsDisplayProps) {
       <Popover anchorEl={anchorEl} open={open} onClose={closePopover} anchorOrigin={{vertical: 'bottom', horizontal: 'center'}}>
         <Box p={2} sx={{backgroundColor: colors.lightBlue[100]}}>
           {
-            skillValues.map(([name, value]: SkillValue) => (
-              <Typography key={name} gutterBottom sx={{color: "primary.dark"}}><strong>{name}</strong>: {value}</Typography>
-            ))
+            skillValues.map(([name, value]: SkillValue) => {
+              const color = CS.impairments(character) ? "red" : "primary.dark"
+              return (
+                <Typography key={name} gutterBottom sx={{color: "primary.dark"}}>
+                  <strong>{name}</strong>:
+                  <Typography component="span" sx={{color: color}}>{value}</Typography>
+                </Typography>
+              )
+            })
           }
         </Box>
       </Popover>

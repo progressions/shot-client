@@ -95,7 +95,10 @@ const CharacterService = {
   },
 
   knownSkills: function(character: Character): SkillValue[] {
-    return Object.entries(character.skills).filter(([name, value]: SkillValue) => (value as number > 0))
+    return Object
+    .entries(character.skills)
+    .filter(([name, value]: SkillValue) => (value as number > 0))
+    .map(([name, _value]: SkillValue) => ([name, this.skill(character, name)]))
   },
 
   updateSkill: function(character: Character, key: string, value: number): Character {

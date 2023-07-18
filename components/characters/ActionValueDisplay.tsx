@@ -14,7 +14,7 @@ interface ActionValueDisplayParams {
   sx?: SxProps<Theme>
 }
 
-const colorForValue = (changed: number): string => {
+export const colorForValue = (changed: number): string => {
   if (changed === -1) return "red"
   if (changed == 1) return "green"
 

@@ -68,7 +68,8 @@ const SharedService = {
   },
 
   addImpairments: function(character: Character | Vehicle, value: number): Character | Vehicle {
-    return this.updateValue(character, "impairments", value)
+    const impairments = this.impairments(character)
+    return this.updateValue(character, "impairments", impairments + value)
   },
 
   calculateImpairments: function(character: Character | Vehicle, originalWounds:number, newWounds: number): number {
