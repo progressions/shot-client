@@ -78,7 +78,7 @@ export default function EditCharacter({ character:initialCharacter }: EditCharac
 
   const handleDeathMarks = (event: React.SyntheticEvent<Element, Event>, newValue: number | null) => {
     const { action_values } = character || {}
-    const value = (newValue === CS.deathMarks(character)) ? 0 : newValue
+    const value = (newValue === CS.marksOfDeath(character)) ? 0 : newValue
     dispatchCharacter({ type: CharacterActions.ACTION_VALUE, name: "Marks of Death", value: value as number })
   }
 
