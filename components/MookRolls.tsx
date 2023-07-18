@@ -1,6 +1,6 @@
 import { Tooltip, Divider, Grid, Stack, Dialog, DialogTitle, DialogContent, DialogActions, DialogContentText, Button, Box, Typography, TextField } from "@mui/material"
 import React, { useEffect, useState } from "react"
-import { rollDie, rollExplodingDie } from "./dice/DiceRoller"
+import { rollDie, rollExplodingDie, rollSwerve } from "./dice/DiceRoller"
 import CasinoIcon from "@mui/icons-material/Casino"
 import { StyledTextField, SaveCancelButtons, StyledDialog } from "./StyledFields"
 import EnemiesAutocomplete from "./mooks/EnemiesAutocomplete"
@@ -8,6 +8,7 @@ import type { Character } from "../types/types"
 import { defaultCharacter } from "../types/types"
 import Smackdowns from "./mooks/Smackdowns"
 import CS from "../services/CharacterService"
+import AS, { AttackRollType } from "../services/ActionService"
 
 interface MookRollsParams {
   count?: number,
@@ -25,15 +26,15 @@ export interface MookRollValue {
 }
 
 export interface RollOutcomeParams {
-  outcome: number,
-  value: MookRollValue
+  actionResult: number,
+  defense: number
 }
 
 export default function MookRolls({ count, attack, damage, icon }: MookRollsParams) {
   const defaultValue:MookRollValue = {count: count || 10, attack: attack || 8, defense: 13, damage: damage || 7}
   const [open, setOpen] = useState<boolean>(false)
   const [value, setValue] = useState<MookRollValue>(defaultValue)
-  const [rolls, setRolls] = useState<number[]>([])
+  const [rolls, setRolls] = useState<AttackRollType[]>([])
   const [enemy, setEnemy] = useState<Character>(defaultCharacter)
 
   useEffect(() => {
@@ -60,22 +61,17 @@ export default function MookRolls({ count, attack, damage, icon }: MookRollsPara
   const generateRolls = (event: React.ChangeEvent<HTMLInputElement>): void => {
     event.preventDefault()
     setRolls([])
-    const count: number = value.count
-    for (var i = 0; i < count; i++) {
-      const [dieRolls, result]: [number[], number] = rollExplodingDie(rollDie)
-      setRolls((oldArray: number[]) => [...oldArray, (result + value.attack)])
-    }
+    const attacks = AS.attacks({ count: value.count, actionValue: value.attack, defense: value.defense, damage: value.damage, toughness: CS.toughness(enemy) })
+    setRolls(attacks)
   }
 
-  const RollOutcome = ({ outcome, value }: RollOutcomeParams) => {
-    const defense: number = value.defense
-    const winner: boolean = outcome >= defense
-    const style = (value.defense && winner) ? {color: 'red', fontWeight: 'bold'} : {}
+  const RollOutcome = ({ attackRoll }: { attackRoll: AttackRollType }) => {
+    const style = (attackRoll.success) ? {color: "red", fontWeight: "bold"} : {}
 
     return (
       <Grid item xs={2}>
         <Typography sx={style} variant='h5'>
-          {outcome}
+          {attackRoll.actionResult}
         </Typography>
       </Grid>
     )
@@ -123,13 +119,13 @@ export default function MookRolls({ count, attack, damage, icon }: MookRollsPara
             <Box py={2}>
               <Grid container sx={{width: "100%"}}>
                 {
-                  rolls.map((outcome, index) => <RollOutcome outcome={outcome} value={value} key={index} />)
+                  rolls.map((attackRoll: AttackRollType, index: number) => <RollOutcome attackRoll={attackRoll} key={index} />)
                 }
               </Grid>
             </Box>
             <Divider />
             <Box py={2}>
-              <Smackdowns enemy={enemy} rolls={rolls} value={value} handleClose={handleClose} />
+              <Smackdowns enemy={enemy} attackRolls={rolls} value={value} handleClose={handleClose} />
             </Box>
           </Box>
         </DialogContent>
