@@ -1,4 +1,4 @@
-import type { Vehicle, Character } from "../types/types"
+import type { Faction, Vehicle, Character } from "../types/types"
 
 interface woundThresholdType {
   low: number,
@@ -59,7 +59,7 @@ const SharedService = {
     return character.action_values[key] as string || ""
   },
 
-  faction: function(character: Character | Vehicle): string {
+  faction: function(character: Character | Vehicle): Faction | null {
     return character.faction
   },
 

@@ -43,7 +43,7 @@ const CharacterService = {
   },
 
   archetype: function(character: Character): string {
-    return character.otherActionValues["Archetype"] as string || ""
+    return this.otherActionValue(character, "Archetype")
   },
 
   // Not modified by Impairment
