@@ -1,4 +1,4 @@
-import type { Fight, Character, CharacterEffect } from "../types/types"
+import type { SkillValue, Character, CharacterEffect } from "../types/types"
 
 interface woundThresholdType {
   low: number,
@@ -144,7 +144,7 @@ const CharacterService = {
 
   addDeathMarks: (character: Character, value: number): Character => {
     const deathMarks = character.action_values["Marks of Death"] as number || 0
-    return CharacterService.updateActionValue(updatedCharacter, "Marks of Death", Math.max(0, deathMarks + value))
+    return CharacterService.updateActionValue(character, "Marks of Death", Math.max(0, deathMarks + value))
   },
 
   knownSkills: (character: Character): SkillValue[] => {

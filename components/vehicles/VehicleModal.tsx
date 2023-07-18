@@ -37,7 +37,7 @@ export default function VehicleModal({ open, setOpen, character:activeVehicle, r
 
   const [saving, setSaving] = useState(false);
 
-  const [character, setCharacter] = useState<Vehicle>(activeVehicle)
+  const [character, setCharacter] = useState<Vehicle>(activeVehicle || defaultVehicle)
 
   const newVehicle = !character.id
 
