@@ -2,6 +2,7 @@ import { Link, TableRow, TableCell, Typography } from "@mui/material"
 import { User, Character } from "../../../types/types"
 import ActionValues from "../../characters/ActionValues"
 import AvatarBadge from "../../characters/AvatarBadge"
+import CS from "../../../services/CharacterService"
 
 interface CharacterDisplayProps {
   character: Character
@@ -26,9 +27,9 @@ export default function CharacterDisplay({ character, user }: CharacterDisplayPr
           </Link> }
         </Typography>
       </TableCell>
-      <TableCell>{character.action_values["Type"]}</TableCell>
-      <TableCell>{character.action_values["Archetype"]}</TableCell>
-      <TableCell>{character.faction?.name}</TableCell>
+      <TableCell>{CS.type(character)}</TableCell>
+      <TableCell>{CS.archetype(character)}</TableCell>
+      <TableCell>{CS.faction(character)?.name}</TableCell>
       <TableCell>{character.user?.first_name} {character.user?.last_name}</TableCell>
     </TableRow>
   )

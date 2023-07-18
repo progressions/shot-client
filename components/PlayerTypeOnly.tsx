@@ -1,4 +1,5 @@
 import type { Character, CharacterType } from "../types/types"
+import CS from "../services/CharacterService"
 
 interface PlayerTypeOnlyProps {
   character: Character
@@ -7,14 +8,14 @@ interface PlayerTypeOnlyProps {
 }
 
 export default function PlayerTypeOnly({ character, only, children, except }: React.PropsWithChildren<PlayerTypeOnlyProps>) {
-  if (only && [only].flat().includes(character.action_values["Type"] as CharacterType)) {
+  if (only && CS.isType(character, only)) {
     return (
       <>
         { children }
       </>
     )
   }
-  if (except && ![except].flat().includes(character.action_values["Type"] as CharacterType)) {
+  if (except && !CS.isType(character, except)) {
     return (
       <>
         { children }

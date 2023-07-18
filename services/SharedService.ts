@@ -59,6 +59,10 @@ const SharedService = {
     return character.action_values[key] as string || ""
   },
 
+  faction: function(character: Character | Vehicle): string {
+    return character.faction
+  },
+
   impairments: function(character: Character | Vehicle): number {
     return character.impairments || 0
   },

@@ -42,6 +42,10 @@ const CharacterService = {
     return this.rawActionValue(character, "Max Fortune")
   },
 
+  archetype: function(character: Character): string {
+    return character.otherActionValues["Archetype"] as string || ""
+  },
+
   // Not modified by Impairment
   toughness: function(character: Character): number {
     return this.rawActionValue(character, "Toughness")
