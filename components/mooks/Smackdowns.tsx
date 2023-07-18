@@ -6,6 +6,7 @@ import { useToast } from "../../contexts/ToastContext"
 import { FightActions } from "../../reducers/fightState"
 import type { Character, ActionValues } from "../../types/types"
 import type { MookRollValue } from "../MookRolls"
+import CS from "../../services/CharacterService"
 
 interface SmackdownsParams {
   enemy: Character
@@ -19,45 +20,26 @@ export default function Smackdowns({ enemy, rolls, value, handleClose }: Smackdo
   const { toastError, toastSuccess } = useToast()
   const { fight, dispatch } = useFight()
 
-  const actualToughness = (enemy: Character): number => {
-    if (enemy.action_values["Toughness"]) {
-      const impairments = enemy.impairments || 0
-      const toughness = enemy.action_values["Toughness"] || 0
-      const modifiedToughness = toughness as number - impairments as number
-      return Math.max(0, modifiedToughness)
-    } else {
-      return 0
-    }
-  }
-
-  const damageMessage = (enemy: Character, outcome: number) => {
-    const originalToughness = enemy.action_values["Toughness"] || 0
-    const toughness = actualToughness(enemy)
+  const damage = (enemy: Character, outcome: number): number => {
     const smackdown = outcome - value.defense + value.damage
-    const wounds = Math.max(0, smackdown - toughness)
+    return CS.calculateWounds(enemy, smackdown)
+  }
+  const damageMessage = (enemy: Character, outcome: number) => {
+    const originalToughness = CS.rawActionValue(enemy, "Toughness")
+    const toughness = CS.toughness(enemy)
+    const smackdown = outcome - value.defense + value.damage
+    const wounds = damage(enemy, outcome)
     const toughnessDisplay = (toughness < originalToughness) ? (<><strong style={{color: "red"}}>{toughness}</strong> ({enemy.action_values["Toughness"]})</>) : toughness
     const toughnessMessage = (toughness) ? (<> - Toughness {toughnessDisplay} = <strong style={{color: "red"}}>{wounds} Wounds</strong></>) : ""
 
     return [(<>{outcome}: Smackdown of {smackdown} {toughnessMessage}</>), wounds as number]
   }
 
-  const damage = (enemy: Character, outcome: number): number => {
-    const originalToughness = enemy.action_values["Toughness"] || 0
-    const toughness = actualToughness(enemy)
-    const smackdown = outcome - value.defense + value.damage
-    const wounds:number = Math.max(0, smackdown - toughness) as number
-
-    return wounds
-  }
-
   const applyWounds = async () => {
-    const originalWounds = parseInt(enemy.action_values["Wounds"] as string) || 0
-    const newWounds = originalWounds + total
-    const actionValues = enemy.action_values as ActionValues
-    actionValues['Wounds'] = newWounds
+    const updatedEnemy = CS.takeRawWounds(enemy, total)
 
     try {
-      await client.updateCharacter({ ...enemy, "action_values": actionValues}, fight)
+      await client.updateCharacter(updatedEnemy, fight)
       dispatch({ type: FightActions.EDIT })
       toastSuccess(`${enemy.name} took ${total} wounds.`)
     } catch(error) {
@@ -69,7 +51,7 @@ export default function Smackdowns({ enemy, rolls, value, handleClose }: Smackdo
 
   const successfulRolls = rolls.filter((roll: number) => (roll >= value.defense))
   const total:number = successfulRolls.reduce((total: number, outcome: number) => {
-    const wounds:number = damage(enemy, outcome) as number
+    const wounds = damage(enemy, outcome)
     return total + wounds
   }, 0)
 

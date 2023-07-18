@@ -14,8 +14,18 @@ const CharacterService = {
     return this.otherActionValue(character, "MainAttack")
   },
 
+  // Adjusted for Impairment
   mainAttackValue: function(character: Character): number {
     return this.actionValue(character, this.mainAttack(character))
+  },
+
+  secondaryAttack: function(character: Character): string {
+    return this.otherActionValue(character, "SecondaryAttack")
+  },
+
+  // Adjusted for Impairment
+  secondaryAttackValue: function(character: Character): number {
+    return this.actionValue(character, this.secondaryAttack(character))
   },
 
   fortuneType: function(character: Character): string {
@@ -27,16 +37,23 @@ const CharacterService = {
     return `Max ${fortuneType}`
   },
 
+  // Not modified by Impairment
   maxFortune: function(character: Character): number {
     return this.rawActionValue(character, "Max Fortune")
   },
 
-  marksOfDeath: function(character: Character): number {
-    return character.action_values["Marks of Death"] as number || 0
-  },
-
+  // Not modified by Impairment
   toughness: function(character: Character): number {
     return this.rawActionValue(character, "Toughness")
+  },
+
+  // Modified by Impairment
+  defense: function(character: Character): number {
+    return this.actionValue(character, "Defense")
+  },
+
+  marksOfDeath: function(character: Character): number {
+    return character.action_values["Marks of Death"] as number || 0
   },
 
   calculateWounds: function(character: Character, smackdown: number): number {
@@ -48,15 +65,20 @@ const CharacterService = {
 
   // Take a Smackdown, reduced by Toughness
   takeSmackdown: function(character: Character, smackdown: number): Character {
+    if (this.isType(character, "Mook")) {
+      return this.killMooks(character, smackdown)
+    }
+
     const wounds = this.calculateWounds(character, smackdown)
-    const originalWounds = this.rawActionValue(character, "Wounds")
+    const originalWounds = this.wounds(character)
     const impairments = this.calculateImpairments(character, originalWounds, originalWounds + wounds)
     const updatedCharacter = this.addImpairments(character, impairments)
-    return this.takeWounds(updatedCharacter, wounds)
+    return this.takeRawWounds(updatedCharacter, wounds)
   },
 
-  takeWounds: function(character: Character, wounds: number): Character {
-    const originalWounds = this.rawActionValue(character, "Wounds")
+  // Take raw Wounds, ignoring Toughness
+  takeRawWounds: function(character: Character, wounds: number): Character {
+    const originalWounds = this.wounds(character)
     return this.updateActionValue(character, "Wounds", Math.max(0, originalWounds + wounds))
   },
 
@@ -86,6 +108,7 @@ const CharacterService = {
     } as Character
   },
 
+  // Restore Wounds to 0, Fortune to Max Fortune, Impairments to 0, Marks of Death to 0
   fullHeal: function(character: Character): Character {
     if (this.isType(character, "Mook")) return character
 
@@ -100,19 +123,13 @@ const CharacterService = {
 
   wounds: function(character: Character): number {
     if (this.isType(character, "Mook")) {
-      return character.count || 0
+      return this.mooks(character)
     }
-    return character.action_values["Wounds"] as number || 0
+    return Math.max(0, character.action_values["Wounds"] as number || 0)
   },
 
   seriousWounds: function(character: Character): boolean {
-    if (this.isType(character, ["Boss", "Uber-Boss"]) && this.wounds(character) > 50) {
-      return true
-    }
-    if (!this.isType(character, "Mook") && this.wounds(character) > 35) {
-      return true
-    }
-    return false
+    return this.seriousPoints(character, this.wounds(character))
   },
 
 }

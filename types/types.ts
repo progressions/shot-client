@@ -278,7 +278,7 @@ export interface Vehicle {
   current_shot?: number | string
   impairments: number
   color: string
-  action_values: AVs
+  action_values: AVs | VehicleActionValues
   description: DescriptionValues
   faction_id: string | null
   faction: Faction
@@ -307,7 +307,7 @@ export interface Person {
   color: string
   faction_id: string | null
   faction: Faction
-  action_values: AVs
+  action_values: AVs | ActionValues
   description: DescriptionValues
   schticks: Schtick[]
   skills: SkillValues

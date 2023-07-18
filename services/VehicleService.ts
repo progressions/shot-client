@@ -11,6 +11,10 @@ const VehicleService = {
     return CS.skill(vehicle.driver, "Driving")
   },
 
+  handling: function(vehicle: Vehicle): number {
+    return this.rawActionValue(vehicle, "Handling")
+  },
+
   isPursuer: function(vehicle: Vehicle): boolean {
     return this.otherActionValue(vehicle, "Pursuer") === "true"
   },
@@ -40,20 +44,23 @@ const VehicleService = {
   },
 
   calculateChasePoints: function(vehicle: Vehicle, smackdown: number): number {
-    const toughness = this.actionValue(vehicle, "Handling")
+    const toughness = this.handling(vehicle)
     const chasePoints = Math.max(0, smackdown - toughness)
 
     return chasePoints
   },
 
   takeChasePoints: function(vehicle: Vehicle, smackdown: number): Vehicle {
+    if (this.isType(vehicle, "Mook")) {
+      return this.killMooks(vehicle, smackdown)
+    }
+
     const chasePoints = this.calculateChasePoints(vehicle, smackdown)
     const originalChasePoints = this.chasePoints(vehicle)
     const impairments = this.calculateImpairments(vehicle, originalChasePoints, originalChasePoints + chasePoints)
     const updatedVehicle = this.addImpairments(vehicle, impairments)
-    const updatedChasePoints = Math.max(0, originalChasePoints + chasePoints)
 
-    return this.updateActionValue(updatedVehicle, "Chase Points", updatedChasePoints)
+    return this.takeRawChasePoints(updatedVehicle, chasePoints)
   },
 
   takeRawChasePoints: function(vehicle: Vehicle, chasePoints: number): Vehicle {

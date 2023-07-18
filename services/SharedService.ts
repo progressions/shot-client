@@ -126,6 +126,17 @@ const SharedService = {
 
     return (value > threshold.serious)
   },
+
+  mooks: function(character: Character | Vehicle): number {
+    if (!this.isType(character, "Mook")) return 0
+
+    return character.count
+  },
+
+  killMooks: function(character: Character | Vehicle, mooks: number): Character | Vehicle {
+    const originalMooks = this.mooks(character)
+    return this.updateValue(character, "count", Math.max(0, originalMooks - mooks))
+  },
 }
 
 export default SharedService

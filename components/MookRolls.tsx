@@ -43,11 +43,8 @@ export default function MookRolls({ count, attack, damage, icon }: MookRollsPara
   }, [count])
 
   useEffect(() => {
-    if (CS.actionValue(enemy, "Defense")) {
-      setValue(oldValue => ({...oldValue, defense: CS.actionValue(enemy, "Defense")}))
-    } else {
-      setValue(oldValue => ({...oldValue, defense: defaultValue.defense}))
-    }
+    const defense = CS.defense(enemy)
+    setValue(oldValue => ({...oldValue, defense: defense || defaultValue.defense}))
   }, [enemy, defaultValue.defense])
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
@@ -83,7 +80,6 @@ export default function MookRolls({ count, attack, damage, icon }: MookRollsPara
       </Grid>
     )
   }
-
 
   const buttonWithTooltip = (icon: React.ReactElement | undefined) => {
     if (icon) {

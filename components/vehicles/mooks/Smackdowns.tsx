@@ -20,12 +20,17 @@ export default function Smackdowns({ enemy, rolls, value, handleClose }: Smackdo
   const { toastError, toastSuccess } = useToast()
   const { fight, dispatch } = useFight()
 
+  const damage = (enemy: Vehicle, outcome: number): number => {
+    const smackdown = outcome - value.defense + value.damage
+    return VS.calculateChasePoints(enemy, smackdown)
+  }
+
   const damageMessage = (enemy: Vehicle, outcome: number) => {
     const originalHandling = VS.rawActionValue(enemy, "Handling")
-    const toughness = VS.actionValue(enemy, "Handling")
+    const toughness = VS.handling(enemy)
     const smackdown = outcome - value.defense + value.damage
 
-    const chasePoints = VS.calculateChasePoints(enemy, smackdown)
+    const chasePoints = damage(enemy, outcome)
 
     const toughnessDisplay = (toughness < originalHandling) ? (<><strong style={{color: "red"}}>{toughness}</strong> ({originalHandling})</>) : toughness
     const toughnessMessage = (toughness) ? (<> - Handling {toughnessDisplay} = <strong style={{color: "red"}}>{chasePoints} Chase Points</strong></>) : ""
@@ -48,7 +53,7 @@ export default function Smackdowns({ enemy, rolls, value, handleClose }: Smackdo
 
   const successfulRolls = rolls.filter((roll: number) => (roll >= value.defense))
   const total:number = successfulRolls.reduce((total: number, outcome: number) => {
-    const chasePoints:number = VS.calculateChasePoints(enemy, outcome)
+    const chasePoints = damage(enemy, outcome)
     return total + chasePoints
   }, 0)
 
