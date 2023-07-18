@@ -7,6 +7,8 @@ import { rowMap } from "../../../utils/rowMap"
 import { useMemo } from "react"
 import { SkillValue, SkillValues } from "../../../types/types"
 
+import CS from "../../../services/CharacterService"
+
 export function knownSkills(skills: SkillValues) {
   return Object.entries(skills).filter(([name, value]: SkillValue) => (value as number > 0))
 }
@@ -18,6 +20,7 @@ interface SkillsProps {
 
 export default function Skills({ skills, onChange }: SkillsProps) {
 
+  const knownSkills = VS.knownSkills(skills)
   const rowsOfData = rowMap<SkillValue>(knownSkills(skills), 6)
 
   const outputRows = useMemo(() => {

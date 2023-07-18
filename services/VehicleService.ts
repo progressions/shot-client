@@ -1,4 +1,4 @@
-import type { Fight, Vehicle, CharacterEffect } from "../types/types"
+import type { Position, Fight, Vehicle, CharacterEffect } from "../types/types"
 import CS, { woundThresholds } from "./CharacterService"
 
 const VehicleService = {
@@ -23,7 +23,12 @@ const VehicleService = {
   },
 
   actionValue: (vehicle: Vehicle, key: string): number => {
-    return Math.max(0, vehicle.action_values[key] as number - (vehicle.impairments || 0))
+    const value = VehicleService.rawActionValue(vehicle, key)
+    return Math.max(0, value - (vehicle.impairments || 0))
+  },
+
+  rawActionValue: (vehicle: Vehicle, key: string): number => {
+    return vehicle.action_values[key] as number || 0
   },
 
   mainAttackValue: (vehicle: Vehicle): number => {
@@ -83,26 +88,48 @@ const VehicleService = {
 
   takeChasePoints: (vehicle: Vehicle, smackdown: number): Vehicle => {
     const chasePoints = VehicleService.calculateChasePoints(vehicle, smackdown)
-    const originalChasePoints = vehicle.action_values["ChasePoints"] as number
+    const originalChasePoints = VehicleService.rawActionValue(vehicle, "Chase Points")
     const impairments = VehicleService.calculateImpairments(vehicle, originalChasePoints, originalChasePoints + chasePoints)
-    const updatedCharacter = CharacterService.addImpairments(vehicle, impairments)
-    return VehicleService.updateActionValue(updatedCharacter, "Chase Points", Math.max(0, originalChasePoints + chasePoints))
+    const updatedVehicle = VehicleService.addImpairments(vehicle, impairments)
+
+    return VehicleService.updateActionValue(updatedVehicle, "Chase Points", Math.max(0, originalChasePoints + chasePoints))
+  },
+
+  takeRawChasePoints: (vehicle: Vehicle, chasePoints: number): Vehicle => {
+    const originalChasePoints = VehicleService.rawActionValue(vehicle, "Chase Points")
+    return VehicleService.updateActionValue(vehicle, "Chase Points", Math.max(0, originalChasePoints + chasePoints))
+  },
+
+  calculateConditionPoints: (vehicle: Vehicle, smackdown: number): number => {
+    const toughness = VehicleService.rawActionValue(vehicle, "Frame")
+    const conditionPoints = Math.max(0, smackdown - toughness)
+
+    return conditionPoints
   },
 
   takeConditionPoints: (vehicle: Vehicle, smackdown: number): Vehicle => {
+    const conditionPoints = VehicleService.calculateConditionPoints(vehicle, smackdown)
+    const originalConditionPoints = VehicleService.rawActionValue(vehicle, "Condition Points")
+
+    return VehicleService.updateActionValue(vehicle, "Condition Points", Math.max(0, originalConditionPoints + conditionPoints))
   },
 
   healChasePoints: (vehicle: Vehicle, value: number): Vehicle => {
     const originalWounds = VehicleService.chasePoints(vehicle)
     const impairments = VehicleService.calculateImpairments(vehicle, originalChasePoints - chasePoints, originalChasePoints)
     let updatedVehicle = VehicleService.addImpairments(vehicle, -impairments)
+
     return VehicleService.updateActionValue(updatedVehicle, "Chase Points", Math.max(0, originalChasePoints - chasePoints))
   },
 
-  addImpairment: (vehicle: Vehicle, value: number): Vehicle => {
+  addImpairments: (vehicle: Vehicle, value: number): Vehicle => {
+    return VehicleService.updateValue(vehicle, "impairments", Math.max(0, vehicle.impairments + value))
+  },
+
+  updateValue: (vehicle: Vehicle, key: string, value: number | string): Vehicle => {
     return {
       ...vehicle,
-      impairments: vehicle.impairments + value
+      [key]: value
     } as Vehicle
   },
 
@@ -114,6 +141,22 @@ const VehicleService = {
         [key]: value
       }
     } as Vehicle
+  },
+
+  updatePosition: (vehicle: Vehicle, position: Position): Vehicle => {
+    return VehicleService.updateActionValue(vehicle, "Position", position)
+  },
+
+  updatePursuer: (vehicle: Vehicle, pursuer: boolean): Vehicle => {
+    return VehicleService.updateActionValue(vehicle, "Pursuer", pursuer)
+  },
+
+  updateDriver: (vehicle: Vehicle, driver: Character | null): Vehicle => {
+    console.log("vehicle.driver", vehicle.driver)
+    if (!driver?.id) {
+      return VehicleService.updateValue(vehicle, "driver", { id: "" } as Character)
+    }
+    return VehicleService.updateValue(vehicle, "driver", driver)
   },
 
 }

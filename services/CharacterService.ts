@@ -45,8 +45,16 @@ const CharacterService = {
     return character.skills[key] as number || 7
   },
 
+  // Adjusted for Impairment
+  // Acceleration, Speed, Handling, and Toughness are all affected by Impairment
   actionValue: (character: Character, key: string): number => {
-    return Math.max(0, character.action_values[key] as number - (character.impairments || 0))
+    const value = CharacterService.rawActionValue(character, key)
+    return Math.max(0, value - (character.impairments || 0))
+  },
+
+  // Unadjusted for Impairment
+  rawActionValue: (character: Character, key: string): number => {
+    return character.action_values[key] as number || 0
   },
 
   mainAttack: (character: Character): string => {
@@ -54,8 +62,7 @@ const CharacterService = {
   },
 
   mainAttackValue: (character: Character): number => {
-    const impairments = character.impairments || 0
-    return CharacterService.actionValue(character, CharacterService.mainAttack(character)) - impairments
+    return CharacterService.actionValue(character, CharacterService.mainAttack(character))
   },
 
   marksOfDeath: (character: Character): number => {
@@ -112,11 +119,7 @@ const CharacterService = {
   },
 
   addImpairments: (character: Character, value: number): Character => {
-    console.log("addImpairments", value)
-    return {
-      ...character,
-      impairments: character.impairments + value
-    } as Character
+    return CharacterService.updateValue(character, "impairments", value)
   },
 
   healWounds: (character: Character, wounds: number): Character => {
@@ -131,6 +134,10 @@ const CharacterService = {
     return CharacterService.updateActionValue(updatedCharacter, "Marks of Death", Math.max(0, deathMarks + value))
   },
 
+  knownSkills: (character: Character): string[] => {
+    return Object.entries(character.skills).filter(([name, value]: SkillValue) => (value as number > 0))
+  },
+
   updateActionValue: (character: Character, key: string, value: number | string): Character => {
     return {
       ...character,
@@ -138,6 +145,23 @@ const CharacterService = {
         ...character.action_values,
         [key]: value
       }
+    } as Character
+  },
+
+  updateSkill: (character: Character, key: string, value: number): Character => {
+    return {
+      ...character,
+      skills: {
+        ...character.skills,
+        [key]: value
+      }
+    } as Character
+  },
+
+  updateValue: (character: Character, key: string, value: number | string): Character => {
+    return {
+      ...character,
+      [key]: value
     } as Character
   },
 

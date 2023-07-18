@@ -16,12 +16,6 @@ export default function DriverSelector({ vehicle, onChange }: DriverSelectorProp
   const [loading, setLoading] = useState<boolean>(false)
 
   useEffect(() => {
-    if (vehicle?.driver?.id) {
-      onChange(vehicle.driver)
-    }
-  }, [onChange, vehicle?.driver])
-
-  useEffect(() => {
     const getCharacters = async () => {
       const data = await client.getCharactersInFight(fight, { type: vehicle?.action_values?.["Type"] })
       setDrivers(data)

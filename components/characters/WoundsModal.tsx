@@ -30,7 +30,6 @@ export default function WoundsModal({open, setOpen, character }: WoundsModalPara
 
     const wounds = CS.calculateWounds(character, smackdown)
     const updatedCharacter = CS.takeSmackdown(character, smackdown)
-    console.log("character after taking smackdown", updatedCharacter)
 
     try {
       await client.updateCharacter(updatedCharacter, fight)

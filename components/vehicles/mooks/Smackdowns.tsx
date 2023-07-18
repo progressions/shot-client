@@ -6,6 +6,7 @@ import { useToast } from "../../../contexts/ToastContext"
 import { FightActions } from "../../../reducers/fightState"
 import type { Vehicle, VehicleActionValues } from "../../../types/types"
 import type { MookRollValue } from "./MookRolls"
+import VS from "../../../services/VehicleService"
 
 interface SmackdownsParams {
   enemy: Vehicle
@@ -19,45 +20,23 @@ export default function Smackdowns({ enemy, rolls, value, handleClose }: Smackdo
   const { toastError, toastSuccess } = useToast()
   const { fight, dispatch } = useFight()
 
-  const actualHandling = (enemy: Vehicle): number => {
-    if (enemy.action_values["Handling"]) {
-      const impairments = enemy.impairments || 0
-      const toughness = enemy.action_values["Handling"] || 0
-      const modifiedHandling = toughness as number - impairments as number
-      return Math.max(0, modifiedHandling)
-    } else {
-      return 0
-    }
-  }
-
   const damageMessage = (enemy: Vehicle, outcome: number) => {
-    const originalHandling = enemy.action_values["Handling"] || 0
-    const toughness = actualHandling(enemy)
+    const originalHandling = VS.rawActionValue(enemy, "Handling")
+    const toughness = VS.actionValue(enemy, "Handling")
     const smackdown = outcome - value.defense + value.damage
-    const chasePoints = Math.max(0, smackdown - toughness)
-    const toughnessDisplay = (toughness < originalHandling) ? (<><strong style={{color: "red"}}>{toughness}</strong> ({enemy.action_values["Handling"]})</>) : toughness
+
+    const chasePoints = VS.calculateChasePoints(enemy, smackdown)
+
+    const toughnessDisplay = (toughness < originalHandling) ? (<><strong style={{color: "red"}}>{toughness}</strong> ({originalHandling})</>) : toughness
     const toughnessMessage = (toughness) ? (<> - Handling {toughnessDisplay} = <strong style={{color: "red"}}>{chasePoints} Chase Points</strong></>) : ""
 
     return [(<>{outcome}: Smackdown of {smackdown} {toughnessMessage}</>), chasePoints as number]
   }
 
-  const damage = (enemy: Vehicle, outcome: number): number => {
-    const originalHandling = enemy.action_values["Handling"] || 0
-    const toughness = actualHandling(enemy)
-    const smackdown = outcome - value.defense + value.damage
-    const chasePoints:number = Math.max(0, smackdown - toughness) as number
-
-    return chasePoints
-  }
-
   const applyChasePoints = async () => {
-    const originalChasePoints = enemy.action_values["Chase Points"] || 0
-    const newChasePoints = originalChasePoints + total
-    const actionValues = enemy.action_values as VehicleActionValues
-    actionValues['Chase Points'] = newChasePoints
-
+    const updatedEnemy = VS.takeRawChasePoints(enemy, total)
     try {
-      await client.updateVehicle({ ...enemy, "action_values": actionValues}, fight)
+      await client.updateVehicle(updatedEnemy, fight)
       dispatch({ type: FightActions.EDIT })
       toastSuccess(`${enemy.name} took ${total} Chase Points.`)
     } catch(error) {
@@ -69,7 +48,7 @@ export default function Smackdowns({ enemy, rolls, value, handleClose }: Smackdo
 
   const successfulRolls = rolls.filter((roll: number) => (roll >= value.defense))
   const total:number = successfulRolls.reduce((total: number, outcome: number) => {
-    const chasePoints:number = damage(enemy, outcome) as number
+    const chasePoints:number = VS.calculateChasePoints(enemy, outcome)
     return total + chasePoints
   }, 0)
 

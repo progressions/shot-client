@@ -226,7 +226,7 @@ export interface SkillValues {
 }
 
 export interface VehicleActionValues {
-  [key: string]: string | number | Position | CharacterType | undefined
+  [key: string]: string | number | Position | CharacterType | undefined | boolean
   Acceleration: number
   Handling: number
   Squeal: number
@@ -235,6 +235,7 @@ export interface VehicleActionValues {
   "Chase Points": number
   "Condition Points": number
   Position: Position
+  Pursuer: boolean
   Type: CharacterType
 }
 

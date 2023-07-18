@@ -18,6 +18,7 @@ import type { Character, Vehicle, Fight } from "../../types/types"
 import { defaultVehicle } from "../../types/types"
 import { StyledTextField, SaveCancelButtons, StyledDialog } from "../StyledFields"
 import { FightActions } from '../../reducers/fightState'
+import VS from "../../services/VehicleService"
 
 interface VehicleModalParams {
   open: Vehicle,
@@ -36,15 +37,15 @@ export default function VehicleModal({ open, setOpen, character:activeVehicle, r
 
   const [saving, setSaving] = useState(false);
 
-  const [character, setCharacter] = useState<Vehicle>(activeVehicle || defaultVehicle)
+  const [character, setCharacter] = useState<Vehicle>(activeVehicle)
 
   const newVehicle = !character.id
 
   useEffect(() => {
-    if (activeVehicle) {
+    if (activeVehicle?.id) {
       setCharacter(activeVehicle)
     }
-  }, [activeVehicle])
+  }, [activeVehicle?.id])
 
   function handleClose() {
     cancelForm()
@@ -65,11 +66,7 @@ export default function VehicleModal({ open, setOpen, character:activeVehicle, r
   }
 
   const handleDriverChange = (driver: Character) => {
-    if (!driver?.id) {
-      setCharacter((prevState: Vehicle) => ({ ...prevState, driver: { id: "" } as Character }))
-    } else {
-      setCharacter((prevState: Vehicle) => ({ ...prevState, driver: driver as Character }))
-    }
+    setCharacter((prevState: Vehicle) => (VS.updateDriver(prevState, driver)))
   }
 
   const handleColor = (color: ColorResult) => {
@@ -123,7 +120,7 @@ export default function VehicleModal({ open, setOpen, character:activeVehicle, r
     }
   }
 
-  const woundsLabel = character.action_values["Type"] === "Mook" ? "Mooks" : "Chase"
+  const woundsLabel = VS.isType(character, "Mook") ? "Mooks" : "Chase"
   const dialogTitle = newVehicle ? "Create Vehicle" : "Update Vehicle"
 
   return (
