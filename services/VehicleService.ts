@@ -54,8 +54,12 @@ const VehicleService = {
     return VehicleService.otherActionValue(vehicle, "Position") as Position
   },
 
+  impairments: (vehicle: Vehicle): number => {
+    return vehicle.impairments || 0
+  },
+
   isImpaired: (vehicle: Vehicle): boolean => {
-    return vehicle.impairments > 0
+    return VehicleService.impairments(vehicle) > 0
   },
 
   chasePoints: (vehicle: Vehicle): number => {

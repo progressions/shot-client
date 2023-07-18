@@ -44,7 +44,7 @@ const CharacterService = {
   // Adjusted for Impairment
   skill: (character: Character, key: string): number => {
     const value = character.skills[key] as number || 7
-    returm Math.max(0, value - CharacterService.impairments(character))
+    return Math.max(0, value - CharacterService.impairments(character))
   },
 
   // Adjusted for Impairment
@@ -57,6 +57,11 @@ const CharacterService = {
   // Unadjusted for Impairment
   rawActionValue: (character: Character, key: string): number => {
     return character.action_values[key] as number || 0
+  },
+
+  // Use when fetching action values other than numbers.
+  otherActionValue: (character: Character, key: string): string => {
+    return character.action_values[key] as string || ""
   },
 
   mainAttack: (character: Character): string => {
@@ -82,6 +87,10 @@ const CharacterService = {
 
   marksOfDeath: (character: Character): number => {
     return character.action_values["Marks of Death"] as number || 0
+  },
+
+  impairments: (character: Character): number => {
+    return character.impairments || 0
   },
 
   isImpaired: (character: Character): boolean => {
