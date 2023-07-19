@@ -116,8 +116,6 @@ export default function VehicleDetails({ character, editingCharacter, setEditing
             hidden={hidden}
             shot={shot}
           />
-          <DriverDetails vehicle={character} />
-          <PositionDisplay character={character} />
           <GamemasterOnly user={user} character={character}>
             <Stack direction="row" spacing={1} justifyContent="space-between">
               <VehicleActionValues character={character} />
@@ -137,6 +135,8 @@ export default function VehicleDetails({ character, editingCharacter, setEditing
               </PlayerTypeOnly>
             </Stack>
           </GamemasterOnly>
+          <DriverDetails vehicle={character} />
+          <PositionDisplay character={character} />
           <GroupedEffects character={character} />
         </Stack>
         <VehicleActionModal
