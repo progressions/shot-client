@@ -1,47 +1,52 @@
 import type { Fight, Character, CharacterEffect } from "../types/types"
-import CharacterService from "./CharacterService"
-
-const valueChange = (original: number, newValue: number): number => {
-  if (newValue > original) return 1
-  if (newValue < original) return -1
-
-  return 0
-}
-
-const adjustedReturnValue = (original: number, newValue: number): [number, number] => {
-  return [valueChange(original, newValue), newValue]
-}
+import CS from "./CharacterService"
+import FS from "./FightService"
 
 const CharacterEffectService = {
-  effectForCharacter: (character: Character, effects: CharacterEffect[], name: string): CharacterEffect | undefined => {
-    const effect = effects.find((e: CharacterEffect) => {
+  effectsForCharacter: function(character: Character, effects: CharacterEffect[], name: string): CharacterEffect[] {
+    return effects.filter((e: CharacterEffect) => {
       if (e.action_value === name) {
         return true
       }
-      return (e.action_value === "MainAttack" && name === CharacterService.mainAttack(character))
+      return (e.action_value === "MainAttack" && name === CS.mainAttack(character))
     })
-
-    return effect
   },
 
-  adjustedActionValue: (character: Character, name: string, fight: Fight, ignoreImpairments: boolean): [number, number] => {
-    const impairments = ignoreImpairments ? 0 : character.impairments
-    const effects = fight.character_effects[character.shot_id as string] || []
-    const effect = CharacterEffectService.effectForCharacter(character, effects, name)
-    const original = (character.action_values[name] || 0) as number
-    const originalWithImpairments = original - impairments
+  adjustedActionValue: function(character: Character, name: string, fight: Fight, ignoreImpairments: boolean = false): [number, number] {
+    const effects = FS.characterEffects(fight, character)
+    const matchingEffects = this.effectsForCharacter(character, effects, name)
+    const value1 = CS.rawActionValue(character, name)
+    const value2 = value1 - (ignoreImpairments ? 0 : CS.impairments(character))
+
+    return this.actionValueAdjustedByEffects(character, matchingEffects, value1, value2)
+  },
+
+  actionValueAdjustedByEffects: function(character: Character, effects: CharacterEffect[], value1: number, value2: number): [number, number] {
+    const effect = effects[0]
 
     if (effect) {
       if (["+", "-"].includes(effect.change?.[0] as string)) {
-        const newValue = originalWithImpairments + parseInt(effect.change as string)
-        return adjustedReturnValue(originalWithImpairments, newValue)
+        const newValue2 = value2 + parseInt(effect.change as string)
+        return this.actionValueAdjustedByEffects(character, effects.slice(1), value1, newValue2)
       }
-      const newValue = (effect.change || 0) as number
-      return adjustedReturnValue(originalWithImpairments, newValue)
+      const newValue2 = (effect.change || 0) as number
+      return this.actionValueAdjustedByEffects(character, effects.slice(1), value1, newValue2)
     }
 
-    return adjustedReturnValue(original, originalWithImpairments)
+    return this.adjustedReturnValue(value1, value2)
   },
+
+  adjustedReturnValue: function(original: number, newValue: number): [number, number] {
+    return [this.valueChange(original, newValue), newValue]
+  },
+
+  valueChange: function(original: number, newValue: number): number {
+    if (newValue > original) return 1
+    if (newValue < original) return -1
+
+    return 0
+  },
+
 }
 
 export default CharacterEffectService

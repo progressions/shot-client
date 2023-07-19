@@ -5,7 +5,7 @@ import { useFight } from "../../contexts/FightContext"
 import { useToast } from "../../contexts/ToastContext"
 import { FightActions } from "../../reducers/fightState"
 import type { Character, ActionValues } from "../../types/types"
-import type { MookRollValue } from "../MookRolls"
+import type { MookRollValue } from "./MookRolls"
 import CS from "../../services/CharacterService"
 import AS, { AttackRollType } from "../../services/ActionService"
 

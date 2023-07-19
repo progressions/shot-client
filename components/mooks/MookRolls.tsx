@@ -1,17 +1,19 @@
 import { Tooltip, Divider, Grid, Stack, Dialog, DialogTitle, DialogContent, DialogActions, DialogContentText, Button, Box, Typography, TextField } from "@mui/material"
 import React, { useEffect, useState } from "react"
-import { rollDie, rollExplodingDie, rollSwerve } from "./dice/DiceRoller"
+import { rollDie, rollExplodingDie, rollSwerve } from "../dice/DiceRoller"
 import CasinoIcon from "@mui/icons-material/Casino"
-import { StyledTextField, SaveCancelButtons, StyledDialog } from "./StyledFields"
-import EnemiesAutocomplete from "./mooks/EnemiesAutocomplete"
-import type { Character } from "../types/types"
-import { defaultCharacter } from "../types/types"
-import Smackdowns from "./mooks/Smackdowns"
-import CS from "../services/CharacterService"
-import VS from "../services/VehicleService"
-import AS, { AttackRollType } from "../services/ActionService"
-import RollOutcome from "./mooks/RollOutcome"
-import ButtonWithTooltip from "./mooks/ButtonWithTooltip"
+import { StyledTextField, SaveCancelButtons, StyledDialog } from "../StyledFields"
+import EnemiesAutocomplete from "./EnemiesAutocomplete"
+import type { Character } from "../../types/types"
+import { defaultCharacter } from "../../types/types"
+import Smackdowns from "./Smackdowns"
+import CS from "../../services/CharacterService"
+import VS from "../../services/VehicleService"
+import AS, { AttackRollType } from "../../services/ActionService"
+import CES from "../../services/CharacterEffectService"
+import RollOutcome from "./RollOutcome"
+import ButtonWithTooltip from "./ButtonWithTooltip"
+import { useFight } from "../../contexts/FightContext"
 
 interface MookRollsParams {
   count?: number,
@@ -39,6 +41,7 @@ export default function MookRolls({ count, attack, damage, icon }: MookRollsPara
   const [value, setValue] = useState<MookRollValue>(defaultValue)
   const [rolls, setRolls] = useState<AttackRollType[]>([])
   const [enemy, setEnemy] = useState<Character>(defaultCharacter)
+  const { fight } = useFight()
 
   useEffect(() => {
     if (count) {
@@ -47,9 +50,9 @@ export default function MookRolls({ count, attack, damage, icon }: MookRollsPara
   }, [count])
 
   useEffect(() => {
-    const defense = CS.defense(enemy)
+    const [_adjustment, defense] = CES.adjustedActionValue(enemy, "Defense", fight)
     setValue(oldValue => ({...oldValue, defense: defense || defaultValue.defense}))
-  }, [enemy, defaultValue.defense])
+  }, [enemy, fight, defaultValue.defense])
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
     setValue({...value, [event.target.name]: parseInt(event.target.value)})
