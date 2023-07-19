@@ -55,7 +55,7 @@ export default function WeaponModal({ state, dispatch, open, setOpen, weapon:ini
 
   const handleCheck = (event: React.SyntheticEvent<Element, Event>) => {
     const target = event.target as HTMLInputElement
-    setWeapon(oldWeapon => ({ ...weapon, [event.target.name]: target.checked }))
+    setWeapon(oldWeapon => ({ ...weapon, [target.name]: target.checked }))
   }
 
   function changeCategory(event: React.SyntheticEvent<Element, Event>, newValue: WeaponCategory) {
