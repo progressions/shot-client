@@ -1,4 +1,4 @@
-import type { Character } from "../../../types/types"
+import type { Vehicle, Character } from "../../../types/types"
 import { Stack, colors, Paper, Typography, Box, Card, CardMedia, CardContent } from "@mui/material"
 import { StyledTextField } from "../../StyledFields"
 
