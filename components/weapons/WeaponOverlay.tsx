@@ -1,4 +1,4 @@
-import { Typography, Box, Card, CardMedia, CardContent } from "@mui/material"
+import { colors, Paper, Typography, Box, Card, CardMedia, CardContent } from "@mui/material"
 import type { Weapon } from "../../types/types"
 import WS from "../../services/WeaponService"
 
@@ -11,8 +11,8 @@ export default function WeaponOverlay({ weapon }: WeaponOverlayProps) {
   if (!weapon) return <></>
 
   return (
-    <Box m={2}>
-      <Card sx={{width: 450, maxWidth: 450, margin: 2}}>
+    <Box sx={{backgroundColor: colors.indigo[900]}}>
+      <Card>
         <CardMedia
           component="img"
           image={weapon?.image_url || ""}
@@ -23,7 +23,7 @@ export default function WeaponOverlay({ weapon }: WeaponOverlayProps) {
           }}
         />
       </Card>
-      <CardContent sx={{width: 450}}>
+      <CardContent sx={{width: 400}}>
         <Typography gutterBottom variant="h5" component="div">
           {WS.nameWithCategory(weapon)} {WS.stats(weapon)}
         </Typography>
