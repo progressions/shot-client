@@ -3,6 +3,7 @@ import ArticleIcon from '@mui/icons-material/Article'
 import { useState } from "react"
 import { GiDeathSkull, GiShotgun, GiPistolGun } from "react-icons/gi"
 import WS from "../../services/WeaponService"
+import ImageIcon from "@mui/icons-material/Image"
 
 import type { Weapon } from "../../types/types"
 
@@ -13,15 +14,30 @@ interface WeaponsDisplayProps {
 export default function WeaponsDisplay({ weapons }: WeaponsDisplayProps) {
   const [anchorEl, setAnchorEl] = useState<Element | null>(null)
   const [open, setOpen] = useState(false)
+  const [imageAnchor, setImageAnchor] = useState<Element | null>(null)
+  const [selectedWeapon, setSelectedWeapon] = useState<Weapon | null>(null)
 
   function closePopover() {
     setAnchorEl(null)
     setOpen(false)
+    closeImage()
+  }
+
+  function closeImage() {
+    setImageAnchor(null)
+    setSelectedWeapon(null)
   }
 
   function showWeapons(event: React.SyntheticEvent<Element, Event>) {
     setAnchorEl(event.target as Element)
     setOpen(true)
+  }
+
+  function showImage(event: React.SyntheticEvent<Element, Event>, weapon: Weapon) {
+    if (weapon.image_url) {
+      setImageAnchor(event.target as Element)
+      setSelectedWeapon(weapon)
+    }
   }
 
   if (!weapons.length) return <></>
@@ -39,7 +55,11 @@ export default function WeaponsDisplay({ weapons }: WeaponsDisplayProps) {
             weapons.map((weapon: Weapon, index: number) => (
               <Box key={weapon.name + index}>
                 <Stack direction="row" spacing={1} alignItems="center">
-                  <Typography gutterBottom sx={{color: "primary.dark"}}>
+                  { weapon.image_url &&
+                  <IconButton onMouseEnter={(event) => showImage(event, weapon)}>
+                    <ImageIcon />
+                  </IconButton> }
+                  <Typography gutterBottom sx={{color: "primary.dark"}} onMouseEnter={(event) => showImage(event, weapon)}>
                     {WS.nameWithCategory(weapon)} {WS.stats(weapon)}
                   </Typography>
                     {
@@ -88,6 +108,18 @@ export default function WeaponsDisplay({ weapons }: WeaponsDisplayProps) {
             ))
           }
         </Box>
+      </Popover>
+      <Popover anchorEl={imageAnchor} open={selectedWeapon} onClose={closeImage} anchorOrigin={{vertical: 'bottom', horizontal: 'center'}}>
+        <Box
+          m={2}
+          component="img"
+          sx={{
+            maxHeight: 300,
+            maxWidth: 450
+          }}
+          alt={selectedWeapon?.name}
+          src={selectedWeapon?.image_url}
+        />
       </Popover>
     </>
   )
