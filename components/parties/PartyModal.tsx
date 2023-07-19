@@ -83,7 +83,7 @@ export default function PartyModal({ state, dispatch, open, setOpen }: PartyModa
           disabled={loading}
         />
         <GamemasterOnly user={user}>
-          <FormControlLabel label="Active" name="secret" control={<Switch checked={party.secret} />} onChange={handleCheck} />
+          <FormControlLabel label="Secret" name="secret" control={<Switch checked={party.secret} />} onChange={handleCheck} />
         </GamemasterOnly>
       </Stack>
       <Stack direction="row" spacing={1} alignItems="center">
