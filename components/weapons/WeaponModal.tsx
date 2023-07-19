@@ -1,5 +1,5 @@
 import { StyledFormDialog, StyledAutocomplete, StyledSelect, StyledTextField, SaveCancelButtons } from "../StyledFields"
-import { DialogContent, createFilterOptions, MenuItem, Box, Stack, Typography } from "@mui/material"
+import { FormControlLabel, Switch, DialogContent, createFilterOptions, MenuItem, Box, Stack, Typography } from "@mui/material"
 import { useClient } from "../../contexts/ClientContext"
 import { useToast } from "../../contexts/ToastContext"
 import { useCharacter } from "../../contexts/CharacterContext"
@@ -51,6 +51,11 @@ export default function WeaponModal({ state, dispatch, open, setOpen, weapon:ini
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     // dispatch({ type: WeaponsActions.UPDATE, name: event.target.name, value: event.target.value })
     setWeapon(oldWeapon => ({ ...weapon, [event.target.name]: event.target.value }))
+  }
+
+  const handleCheck = (event: React.SyntheticEvent<Element, Event>) => {
+    const target = event.target as HTMLInputElement
+    setWeapon(oldWeapon => ({ ...weapon, [event.target.name]: target.checked }))
   }
 
   function changeCategory(event: React.SyntheticEvent<Element, Event>, newValue: WeaponCategory) {
@@ -201,6 +206,21 @@ export default function WeaponModal({ state, dispatch, open, setOpen, weapon:ini
               onChange={handleChange}
               disabled={loading}
             />
+            <Stack direction="row" spacing={1} alignItems="center">
+              <StyledTextField
+                sx={{width: 100}}
+                value={weapon?.mook_bonus}
+                name="mook_bonus"
+                label="Bonus vs Mooks"
+                onChange={handleChange}
+                disabled={loading}
+              />
+              <FormControlLabel
+                label="Ka-chunk"
+                name="kachunk"
+                control={<Switch checked={weapon?.kachunk} />}
+                onChange={handleCheck} />
+            </Stack>
           </Stack>
       </StyledFormDialog>
     </>
