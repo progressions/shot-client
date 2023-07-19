@@ -1,4 +1,4 @@
-import { Typography, Stack, TextField } from "@mui/material"
+import { Typography, Stack } from "@mui/material"
 import { Subhead, StyledTextField } from "../../StyledFields"
 import PlayerTypeOnly from "../../PlayerTypeOnly"
 import type { Character } from "../../../types/types"

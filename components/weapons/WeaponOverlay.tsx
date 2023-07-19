@@ -22,15 +22,15 @@ export default function WeaponOverlay({ weapon }: WeaponOverlayProps) {
             maxWidth: 450
           }}
         />
+        <CardContent sx={{width: 400, backgroundColor: colors.indigo[900]}}>
+          <Typography gutterBottom variant="h5" component="div">
+            {WS.nameWithCategory(weapon)} {WS.stats(weapon)}
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            {weapon.description}
+          </Typography>
+        </CardContent>
       </Card>
-      <CardContent sx={{width: 400}}>
-        <Typography gutterBottom variant="h5" component="div">
-          {WS.nameWithCategory(weapon)} {WS.stats(weapon)}
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          {weapon.description}
-        </Typography>
-      </CardContent>
     </Box>
   )
 }

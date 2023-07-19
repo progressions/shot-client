@@ -4,6 +4,7 @@ import { IoSkull, IoSkullOutline } from "react-icons/io5"
 import DeathMarks from "./DeathMarks"
 import EditButtons from "./EditButtons"
 import Location from "../locations/Location"
+import ImageDisplay from "./ImageDisplay"
 
 import GamemasterOnly from "../GamemasterOnly"
 import type { User, AuthSession, Character, Toast, Person, Vehicle } from "../../types/types"
@@ -60,6 +61,7 @@ export default function NameDisplay({ character, editCharacter, deleteCharacter,
       <Box>
         <Box onMouseEnter={showButtons} onMouseLeave={hideButtons}>
           <Stack direction="row" spacing={1} alignItems="baseline">
+            <ImageDisplay character={character} />
             <Typography variant="h4" sx={{fontWeight: 'bold', overflow: "hidden", textOverflow: "ellipsis", width: "100%"}}>
               <Link color="inherit" href={link} target="_blank">
                 { character.name }

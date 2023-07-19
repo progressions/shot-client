@@ -297,6 +297,7 @@ export interface Vehicle {
   shot_id: string
   driver?: Character
   location?: string
+  image_url: string | null
 }
 
 export interface Person {
@@ -324,6 +325,7 @@ export interface Person {
   shot_id: string
   driver?: Character
   location?: string
+  image_url: string | null
 }
 
 export interface Advancement {
@@ -483,6 +485,7 @@ export const defaultCharacter:Person = {
   weapons: [],
   count: 0,
   shot_id: "",
+  image_url: ""
 }
 
 export const defaultVehicle:Vehicle = {
@@ -526,6 +529,7 @@ export const defaultVehicle:Vehicle = {
   count: 0,
   shot_id: "",
   driver: defaultCharacter,
+  image_url: ""
 }
 
 export const defaultFight:Fight = {

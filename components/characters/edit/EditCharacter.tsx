@@ -14,6 +14,7 @@ import Skills from "./Skills"
 import Advancements from "../../advancements/Advancements"
 import Sites from "./sites/Sites"
 import Weapons from "../../weapons/Weapons"
+import CharacterImage from "./CharacterImage"
 
 import { useEffect } from "react"
 
@@ -147,6 +148,7 @@ export default function EditCharacter({ character:initialCharacter }: EditCharac
             <Advancements character={character} />
           </PlayerTypeOnly>
           <Sites character={character} />
+          <CharacterImage character={character} onChange={handleChange} />
           <Description character={character} onChange={handleDescriptionChange} />
           <Schticks state={schticksState} />
           <SchtickSelector />

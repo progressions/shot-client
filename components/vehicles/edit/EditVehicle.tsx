@@ -6,6 +6,7 @@ import EditActionValues from "./EditActionValues"
 import Faction from "../../characters/edit/Faction"
 import CharacterType from "../../characters/edit/CharacterType"
 import ColorPicker from "../../characters/edit/ColorPicker"
+import CharacterImage from "../../characters/edit/CharacterImage"
 
 import { useEffect } from "react"
 
@@ -118,6 +119,7 @@ export default function EditVehicle({ vehicle:initialVehicle }: EditVehicleProps
             <ColorPicker character={vehicle} onChange={handleChange} dispatch={dispatchVehicle} />
           </Stack>
           <EditActionValues vehicle={vehicle} onChange={handleAVChange as React.ChangeEventHandler} />
+          <CharacterImage character={vehicle} onChange={handleChange} />
         </Stack>
       </Box>
     </>
