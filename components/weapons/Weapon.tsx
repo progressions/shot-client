@@ -68,7 +68,7 @@ export default function Weapon({ weapon, state, dispatch }: WeaponProps) {
       <WeaponCardBase
         title={`${weapon.name} ${stats}`}
         subheader={`${weapon.juncture} ${weapon.category}`}
-        action={[deleteButton]}
+        action={[editButton, deleteButton]}
       >
         <Typography sx={{marginBottom: 3}} variant="body2" gutterBottom>
           {weapon.description}

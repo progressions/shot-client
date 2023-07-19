@@ -33,7 +33,7 @@ export default function WeaponModal({ state, dispatch, open, setOpen, weapon:ini
     }
 
     try {
-      weapon?.id ? await client.updateWeapon : await client.createWeapon(weapon)
+      weapon?.id ? await client.updateWeapon(weapon) : await client.createWeapon(weapon)
       if (dispatch) {
         dispatch({ type: WeaponsActions.EDIT })
       }
