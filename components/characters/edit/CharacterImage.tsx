@@ -10,7 +10,7 @@ interface CharacterImageProps {
 export default function CharacterImage({ character, onChange }: CharacterImageProps) {
   return (
     <>
-      <StyledTextField name="image_url" label="Image" value={character.image_url} onChange={onChange} sx={{width: 400}} />
+      <StyledTextField name="image_url" label="Image" value={character.image_url || ""} onChange={onChange} sx={{width: 400}} />
       { character.image_url &&
         <Box sx={{backgroundColor: colors.indigo[900]}}>
           <Card>
