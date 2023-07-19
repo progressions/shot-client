@@ -161,6 +161,7 @@ export interface Weapon {
   juncture: Juncture
   mook_bonus: number
   kachunk: boolean
+  image_url: string | null
 }
 
 export interface DescriptionValues {
@@ -618,7 +619,8 @@ export const defaultWeapon:Weapon = {
   juncture: "",
   category: "",
   mook_bonus: 0,
-  kachunk: false
+  kachunk: false,
+  image_url: ""
 }
 
 export const defaultPaginationMeta:PaginationMeta = {

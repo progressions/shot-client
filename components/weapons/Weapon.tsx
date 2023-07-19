@@ -70,6 +70,16 @@ export default function Weapon({ weapon, state, dispatch }: WeaponProps) {
         subheader={`${weapon.juncture} ${weapon.category}`}
         action={[editButton, deleteButton]}
       >
+        { weapon.image_url &&
+        <Box
+          component="img"
+          sx={{
+            maxHeight: { xs: 233, md: 167 },
+            maxWidth: { xs: 350, md: 250 },
+          }}
+          alt={weapon.name}
+          src={weapon.image_url}
+        /> }
         <Typography sx={{marginBottom: 3}} variant="body2" gutterBottom>
           {weapon.description}
         </Typography>
