@@ -1,4 +1,4 @@
-import { CardMedia, Card, colors, Stack, Typography, Box, Popover, Tooltip, IconButton } from "@mui/material"
+import { CardContent, CardMedia, Card, colors, Stack, Typography, Box, Popover, Tooltip, IconButton } from "@mui/material"
 import ArticleIcon from '@mui/icons-material/Article'
 import { useState } from "react"
 import { GiDeathSkull, GiShotgun, GiPistolGun } from "react-icons/gi"
@@ -110,19 +110,29 @@ export default function WeaponsDisplay({ weapons }: WeaponsDisplayProps) {
         </Box>
       </Popover>
       <Popover anchorEl={imageAnchor} open={!!selectedWeapon} onClose={closeImage} anchorOrigin={{vertical: 'bottom', horizontal: 'center'}}>
-        <Box m={2}>
-          <Card sx={{maxWidth: 450, margin: 2}}>
-            <CardMedia
-              component="img"
-              image={selectedWeapon?.image_url || ""}
-              alt={selectedWeapon?.name}
-              sx={{
-                maxHeight: 300,
-                maxWidth: 450
-              }}
-            />
-          </Card>
-        </Box>
+        { selectedWeapon &&
+          <Box m={2}>
+            <Card sx={{width: 450, maxWidth: 450, margin: 2}}>
+              <CardMedia
+                component="img"
+                image={selectedWeapon?.image_url || ""}
+                alt={selectedWeapon?.name}
+                sx={{
+                  maxHeight: 300,
+                  maxWidth: 450
+                }}
+              />
+            </Card>
+            <CardContent sx={{width: 450}}>
+              <Typography gutterBottom variant="h5" component="div">
+                {WS.nameWithCategory(selectedWeapon)} {WS.stats(selectedWeapon)}
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                {selectedWeapon.description}
+              </Typography>
+            </CardContent>
+          </Box>
+        }
       </Popover>
     </>
   )
