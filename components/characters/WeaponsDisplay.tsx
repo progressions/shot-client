@@ -4,6 +4,7 @@ import { useState } from "react"
 import { GiDeathSkull, GiShotgun, GiPistolGun } from "react-icons/gi"
 import WS from "../../services/WeaponService"
 import ImageIcon from "@mui/icons-material/Image"
+import WeaponOverlay from "../weapons/WeaponOverlay"
 
 import type { Weapon } from "../../types/types"
 
@@ -55,10 +56,7 @@ export default function WeaponsDisplay({ weapons }: WeaponsDisplayProps) {
             weapons.map((weapon: Weapon, index: number) => (
               <Box key={weapon.name + index}>
                 <Stack direction="row" spacing={1} alignItems="center">
-                  { weapon.image_url &&
-                  <IconButton onMouseEnter={(event) => showImage(event, weapon)}>
-                    <ImageIcon />
-                  </IconButton> }
+                  { weapon.image_url && <ImageIcon sx={{color: "primary.dark"}} onMouseEnter={(event) => showImage(event, weapon)} /> }
                   <Typography gutterBottom sx={{color: "primary.dark"}} onMouseEnter={(event) => showImage(event, weapon)}>
                     {WS.nameWithCategory(weapon)} {WS.stats(weapon)}
                   </Typography>
@@ -88,19 +86,19 @@ export default function WeaponsDisplay({ weapons }: WeaponsDisplayProps) {
               </Stack>
                 {
                   weapon.kachunk &&
-                    <Typography gutterBottom sx={{marginTop: -1, marginLeft: 2, color: "primary.main"}} variant="subtitle2">
+                    <Typography gutterBottom sx={{marginTop: 0, marginLeft: 4, color: "primary.main"}} variant="subtitle2">
                       Damage Value is 14 if you spend a shot to go “KA-CHUNK!”
                     </Typography>
                 }
                 {
                   weapon.mook_bonus === 1 &&
-                    <Typography gutterBottom sx={{marginTop: -1, marginLeft: 2, color: "primary.main"}} variant="subtitle2">
+                    <Typography gutterBottom sx={{marginTop: 0, marginLeft: 4, color: "primary.main"}} variant="subtitle2">
                       +1 Attack vs Mooks
                     </Typography>
                 }
                 {
                   weapon.mook_bonus === 2 &&
-                    <Typography gutterBottom sx={{marginTop: -1, marginLeft: 2, color: "primary.main"}} variant="subtitle2">
+                    <Typography gutterBottom sx={{marginTop: 0, marginLeft: 4, color: "primary.main"}} variant="subtitle2">
                       +2 Attack vs Mooks
                     </Typography>
                 }
@@ -110,29 +108,7 @@ export default function WeaponsDisplay({ weapons }: WeaponsDisplayProps) {
         </Box>
       </Popover>
       <Popover anchorEl={imageAnchor} open={!!selectedWeapon} onClose={closeImage} anchorOrigin={{vertical: 'bottom', horizontal: 'center'}}>
-        { selectedWeapon &&
-          <Box m={2}>
-            <Card sx={{width: 450, maxWidth: 450, margin: 2}}>
-              <CardMedia
-                component="img"
-                image={selectedWeapon?.image_url || ""}
-                alt={selectedWeapon?.name}
-                sx={{
-                  maxHeight: 300,
-                  maxWidth: 450
-                }}
-              />
-            </Card>
-            <CardContent sx={{width: 450}}>
-              <Typography gutterBottom variant="h5" component="div">
-                {WS.nameWithCategory(selectedWeapon)} {WS.stats(selectedWeapon)}
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                {selectedWeapon.description}
-              </Typography>
-            </CardContent>
-          </Box>
-        }
+        <WeaponOverlay weapon={selectedWeapon} />
       </Popover>
     </>
   )
