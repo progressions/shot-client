@@ -2,6 +2,7 @@ import { Stack, Box, TextField, MenuItem } from "@mui/material"
 import type { Party, InputParamsType } from "../../types/types"
 import { PartiesStateType, PartiesActionType, PartiesActions } from "../../reducers/partiesState"
 import { StyledAutocomplete, StyledTextField, StyledSelect } from "../StyledFields"
+import PS from "../../services/PartyService"
 
 interface PartyAutocompleteProps {
   state: PartiesStateType,
@@ -21,7 +22,8 @@ export default function PartyAutocomplete({ state, dispatch }: PartyAutocomplete
 
   const getOptionLabel = (option: Party) => {
     if (!option?.id) return ""
-    return `${option?.name} (${option?.characters?.length} characters)`
+
+    return PS.nameBadge(option)
   }
 
   return (

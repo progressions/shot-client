@@ -11,6 +11,7 @@ import type { PartiesStateType, PartiesActionType } from "../../reducers/parties
 import type { Character, Vehicle, Party as PartyType } from "../../types/types"
 import { PartiesActions } from "../../reducers/partiesState"
 import PartyModal from "./PartyModal"
+import PS from "../../services/PartyService"
 
 import { useState } from "react"
 
@@ -70,7 +71,7 @@ export default function Party({ party, state, dispatch }: PartyProps) {
   if (party.faction?.name) {
     subheader += `Faction: ${party.faction.name} `
   }
-  subheader += `(${party?.characters?.length} characters, ${party?.vehicles?.length} vehicles)`
+  subheader += PS.rosterSummary(party)
 
   function generateKey(character: Character | Vehicle, index: number): string {
     return `${character.id}-${index}`
