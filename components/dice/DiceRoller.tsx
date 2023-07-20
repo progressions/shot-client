@@ -3,7 +3,7 @@ import { Stack, Avatar, Tooltip, Button, IconButton, Dialog, DialogTitle, Dialog
 import CasinoIcon from '@mui/icons-material/Casino'
 import { useState } from 'react'
 
-export interface RollsType {
+export interface Swerve {
   result: number
   positiveRolls: number[]
   negativeRolls: number[]
@@ -34,7 +34,7 @@ export function rollExplodingDie(rollDie: () => number): ExplodingDiceRolls {
   return [total, total.reduce((sum, num) => {return (sum + num)}, 0)]
 }
 
-export function rollSwerve(): RollsType {
+export function rollSwerve(): Swerve {
   const [positiveRolls, positive] = rollExplodingDie(rollDie)
   const [negativeRolls, negative] = rollExplodingDie(rollDie)
 
@@ -47,7 +47,7 @@ export function rollSwerve(): RollsType {
 
 export default function DiceRoller() {
   const [open, setOpen] = useState<boolean>(false)
-  const [rolls, setRolls] = useState<RollsType>({ result: 0, positiveRolls: [], negativeRolls: [], positive: null, negative: null, boxcars: false })
+  const [rolls, setRolls] = useState<Swerve>({ result: 0, positiveRolls: [], negativeRolls: [], positive: null, negative: null, boxcars: false })
   const [title, setTitle] = useState<string>('')
 
   const showExplodingRoll = (): void => {
