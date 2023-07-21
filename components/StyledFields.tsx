@@ -102,6 +102,7 @@ export function StyledDialog(props: React.PropsWithChildren<AnyProps>) {
 export function StyledFormDialog(props: React.PropsWithChildren<AnyProps>) {
   return (
     <StyledDialog
+      {...props}
       open={props.open}
       onClose={props.onClose}
       aria-labelledby="modal-modal-title"

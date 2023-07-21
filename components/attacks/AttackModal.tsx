@@ -105,7 +105,7 @@ export default function AttackModal({ }: AttackModalProps) {
   }
 
   function resetAttack() {
-    dispatch({ type: AttackActions.UPDATE, payload: { edited: false } })
+    dispatch({ type: AttackActions.UPDATE, payload: { edited: false, typedSwerve: "" } })
   }
 
   async function applyWounds() {
@@ -191,7 +191,7 @@ export default function AttackModal({ }: AttackModalProps) {
               <StyledTextField disabled={edited} name="toughness" value={toughness} onChange={handleChange} label="Toughness" type="number" sx={{width: 110}} />
             </Stack>
             <Stack direction="row" spacing={5} alignItems="top">
-              { !edited && <StyledTextField name="typedSwerve" value={typedSwerve || ""} onChange={handleSwerve} label="Swerve" type="number" InputProps={{sx: {height: 80, width: 120, fontSize: 50, fontWeight: "bold"}}} /> }
+              { !edited && <StyledTextField name="typedSwerve" autoFocus value={typedSwerve || ""} onChange={handleSwerve} label="Swerve" type="number" InputProps={{sx: {height: 80, width: 120, fontSize: 50, fontWeight: "bold"}}} /> }
               { !edited &&
               <Button sx={{width: 400, fontSize: 20}} endIcon={typedSwerve ? <PlayArrowIcon /> : <CasinoIcon />} onClick={handleAttack} variant="contained" color="error">
                 { typedSwerve ? "Attack" : "Roll the Dice" }

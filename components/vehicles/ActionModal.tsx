@@ -55,6 +55,7 @@ export default function ActionModal({open, setOpen, character }: ActionModalPara
       saving={saving}
       onCancel={cancelForm}
       title="Spend Shots"
+      width="xs"
     >
       <StyledTextField autoFocus type="number" label="Shots" required name="shots" value={shots || ''} onChange={handleChange} />
     </StyledFormDialog>
