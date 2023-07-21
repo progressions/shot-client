@@ -28,6 +28,17 @@ const CharacterService = {
     return this.actionValue(character, this.secondaryAttack(character))
   },
 
+  attackValues: function(character: Character): string[] {
+    return [
+      this.mainAttack(character),
+      this.secondaryAttack(character),
+    ].filter((key) => this.actionValue(character, key) > 0)
+  },
+
+  damage: function(character: Character): number {
+    return this.rawActionValue(character, "Damage")
+  },
+
   fortuneType: function(character: Character): string {
     return character.action_values["FortuneType"] as string || "Fortune"
   },

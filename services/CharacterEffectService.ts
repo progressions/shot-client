@@ -3,6 +3,11 @@ import CS from "./CharacterService"
 import FS from "./FightService"
 
 const CharacterEffectService = {
+  adjustedMainAttack: function(character: Character, fight: Fight): [number, number] {
+    const mainAttack = CS.mainAttack(character)
+    return this.adjustedActionValue(character, mainAttack, fight, false)
+  },
+
   effectsForCharacter: function(character: Character, effects: CharacterEffect[], name: string): CharacterEffect[] {
     return effects.filter((e: CharacterEffect) => {
       if (e.action_value === name) {

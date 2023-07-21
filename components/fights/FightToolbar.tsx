@@ -8,6 +8,7 @@ import DiceRoller from '../dice/DiceRoller'
 import RollInitiative from "./RollInitiative"
 import GamemasterOnly from "../GamemasterOnly"
 import SelectParty from "../parties/SelectParty"
+import AttackModal from "../attacks/AttackModal"
 
 import type { Fight, Vehicle, Character } from "../../types/types"
 
@@ -71,6 +72,7 @@ export default function FightToolbar({ showHidden, setShowHidden }: FightToolbar
           <ButtonGroup>
             <SelectParty />
           </ButtonGroup>
+          <AttackModal />
           <GamemasterOnly user={user}>
             <FormControlLabel label="Show Hidden" control={<Switch checked={showHidden} />} onChange={show} />
           </GamemasterOnly>

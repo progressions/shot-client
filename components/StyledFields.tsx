@@ -84,6 +84,7 @@ export function Subhead(props: React.PropsWithChildren<AnyProps>) {
 export function StyledDialog(props: React.PropsWithChildren<AnyProps>) {
   return (
     <Dialog
+      {...props}
       open={props.open}
       onClose={props.onClose}
       disableRestoreFocus
@@ -91,7 +92,7 @@ export function StyledDialog(props: React.PropsWithChildren<AnyProps>) {
       <DialogTitle sx={{backgroundColor: colors.blueGrey[300], color: "black"}}>
         {props.title}
       </DialogTitle>
-      <Box component="form" onSubmit={props.onSubmit} pb={1} sx={{backgroundColor: colors.blueGrey[300], color: "black"}}>
+      <Box component="form" pb={1} sx={{backgroundColor: colors.blueGrey[300], color: "black", width: props.width || 600}}>
         {props.children}
       </Box>
     </Dialog>

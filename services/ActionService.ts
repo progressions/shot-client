@@ -18,16 +18,16 @@ const ActionService = {
     }, 0)
   },
 
-  attacks: function({ count, actionValue, defense, damage, toughness }: { count: number, actionValue: number, defense: number, damage: number, toughness: number }): AttackRollType[] {
+  attacks: function({ count, actionValue, defense, stunt, damage, toughness }: { count: number, actionValue: number, defense: number, stunt?: boolean, damage: number, toughness: number }): AttackRollType[] {
     const attacks = []
     for (let i = 0; i < count; i++) {
-      attacks.push(this.wounds({ actionValue, defense, damage, toughness }))
+      attacks.push(this.wounds({ actionValue, defense, stunt, damage, toughness }))
     }
     return attacks
   },
 
-  wounds: function({ swerve, actionValue, defense, damage, toughness }: { swerve?: Swerve, actionValue: number, defense: number, damage: number, toughness: number }): AttackRollType {
-    const smackdown = this.smackdown({ actionValue, defense, damage })
+  wounds: function({ swerve, actionValue, defense, stunt, damage, toughness }: { swerve?: Swerve, actionValue: number, defense: number, stunt?: boolean, damage: number, toughness: number }): AttackRollType {
+    const smackdown = this.smackdown({ swerve, actionValue, defense, stunt, damage })
     const wounds = Math.max(0, (smackdown.smackdown || 0) - toughness)
     console.log(`Wounds ${wounds} : Smackdown ${smackdown.smackdown} - Toughness ${toughness}`)
     return {
@@ -36,11 +36,11 @@ const ActionService = {
     }
   },
 
-  smackdown: function({ swerve, actionValue, defense, damage }: { swerve?: Swerve, actionValue: number, defense: number, damage: number }): AttackRollType {
-    const outcome = this.outcome({ actionValue, defense })
+  smackdown: function({ swerve, actionValue, defense, stunt, damage }: { swerve?: Swerve, actionValue: number, defense: number, stunt?: boolean, damage: number }): AttackRollType {
+    const outcome = this.outcome({ swerve, actionValue, defense, stunt })
     const success = (outcome.outcome || 0) > 0
-    const smackdown = success ? (outcome.outcome || 0) + damage : 0
-    console.log(`Smackdown ${smackdown} : Outcome ${outcome.outcome} + Damage ${damage}`)
+    const smackdown = success ? (outcome.outcome || 0) + (damage || 0) : 0
+    console.log(`Smackdown ${smackdown} : Outcome ${outcome.outcome} + Damage ${damage || 0}`)
     return {
       ...outcome,
       success,
@@ -48,10 +48,11 @@ const ActionService = {
     }
   },
 
-  outcome: function({ swerve, actionValue, defense }: { swerve?: Swerve, actionValue: number, defense: number }): AttackRollType {
-    const actionResult = this.actionResult({ actionValue })
-    const outcome = Math.max(0, actionResult.actionResult - defense)
-    console.log(`Outcome ${outcome} : ActionResult ${actionResult.actionResult} - Defense ${defense}`)
+  outcome: function({ swerve, actionValue, defense, stunt }: { swerve?: Swerve, actionValue: number, defense: number, stunt?: boolean }): AttackRollType {
+    const actionResult = this.actionResult({ swerve, actionValue })
+    const modifiedDefense = stunt ? defense + 2 : defense
+    const outcome = actionResult.actionResult - modifiedDefense
+    console.log(`Outcome ${outcome} : ActionResult ${actionResult.actionResult} - Defense ${modifiedDefense}${stunt ? "*" : ""}`)
     return {
       ...actionResult,
       outcome,
@@ -59,7 +60,7 @@ const ActionService = {
   },
 
   actionResult: function({ swerve, actionValue }: { swerve?: Swerve, actionValue: number }): AttackRollType {
-    const rolledSwerve = swerve || this.swerve()
+    const rolledSwerve = swerve === undefined ? this.swerve() : swerve
     const result = actionValue + rolledSwerve.result
     console.log(`ActionResult ${result} : Swerve $rolledSwerve.result} + ActionValue ${actionValue}`)
     return {
