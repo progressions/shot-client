@@ -109,7 +109,9 @@ export default function AttackModal({ }: AttackModalProps) {
   }
 
   async function applyWounds() {
-    const updatedTarget = CS.takeSmackdown(target, smackdown)
+    if (!smackdown) return
+
+    const updatedTarget = CS.takeSmackdown(target, smackdown as number)
 
     try {
       await client.updateCharacter(updatedTarget, fight)
@@ -191,13 +193,13 @@ export default function AttackModal({ }: AttackModalProps) {
             <Stack direction="row" spacing={5} alignItems="top">
               { !edited && <StyledTextField name="typedSwerve" value={typedSwerve || ""} onChange={handleSwerve} label="Swerve" type="number" InputProps={{sx: {height: 80, width: 120, fontSize: 50, fontWeight: "bold"}}} /> }
               { !edited &&
-              <Button sx={{width: 400, fontSize: 20}} endIcon={<PlayArrowIcon />} onClick={handleAttack} variant="contained" color="error">
+              <Button sx={{width: 400, fontSize: 20}} endIcon={typedSwerve ? <PlayArrowIcon /> : <CasinoIcon />} onClick={handleAttack} variant="contained" color="error">
                 { typedSwerve ? "Attack" : "Roll the Dice" }
               </Button>
               }
             </Stack>
             { edited && <Results state={state} /> }
-            { edited && target?.id && wounds > 0 && <>
+            { edited && target?.id && wounds && <>
               <Button sx={{width: 200}} endIcon={<HeartBrokenIcon />} variant="contained" color="error" onClick={applyWounds}>Apply Wounds</Button>
             </> }
             { edited && <Button onClick={resetAttack} variant="contained" color="primary">Reset</Button> }
