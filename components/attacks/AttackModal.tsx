@@ -1,4 +1,5 @@
 import { GiDeathSkull, GiShotgun, GiPistolGun } from "react-icons/gi"
+import HeartBrokenIcon from '@mui/icons-material/HeartBroken'
 import { FormControlLabel, Switch, Tooltip, DialogContent, Button, IconButton, Typography, Box, Stack } from "@mui/material"
 import { useFight } from "../../contexts/FightContext"
 import { useClient } from "../../contexts/ClientContext"
@@ -14,6 +15,7 @@ import AS from "../../services/ActionService"
 import CS from "../../services/CharacterService"
 import CES from "../../services/CharacterEffectService"
 import { defaultSwerve, AttackActions, initialAttackState, attackReducer } from "../../reducers/attackState"
+import { FightActions } from "../../reducers/fightState"
 import PlayArrowIcon from '@mui/icons-material/PlayArrow'
 import CasinoIcon from '@mui/icons-material/Casino'
 import Results from "./Results"
@@ -22,7 +24,7 @@ interface AttackModalProps {
 }
 
 export default function AttackModal({ }: AttackModalProps) {
-  const { fight } = useFight()
+  const { fight, dispatch:dispatchFight } = useFight()
   const { client } = useClient()
   const { toastSuccess, toastError } = useToast()
 
@@ -106,6 +108,20 @@ export default function AttackModal({ }: AttackModalProps) {
     dispatch({ type: AttackActions.UPDATE, payload: { edited: false } })
   }
 
+  async function applyWounds() {
+    const updatedTarget = CS.takeSmackdown(target, smackdown)
+
+    try {
+      await client.updateCharacter(updatedTarget, fight)
+      dispatchFight({ type: FightActions.EDIT })
+      toastSuccess(`${target.name} took ${wounds} wounds.`)
+    } catch(error) {
+      console.error(error)
+      toastError()
+    }
+    handleClose()
+  }
+
   return (
     <>
       <Button
@@ -181,7 +197,10 @@ export default function AttackModal({ }: AttackModalProps) {
               }
             </Stack>
             { edited && <Results state={state} /> }
-            { edited && <Button sx={{width: "100%"}} onClick={resetAttack} variant="contained" color="primary">Reset</Button> }
+            { edited && target?.id && wounds > 0 && <>
+              <Button sx={{width: 200}} endIcon={<HeartBrokenIcon />} variant="contained" color="error" onClick={applyWounds}>Apply Wounds</Button>
+            </> }
+            { edited && <Button onClick={resetAttack} variant="contained" color="primary">Reset</Button> }
           </Stack>
         </DialogContent>
       </StyledDialog>
