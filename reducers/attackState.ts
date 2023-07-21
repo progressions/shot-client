@@ -99,7 +99,7 @@ function process(state: AttackState): AttackState {
   }
 
   const [_adjustment, adjustedMainAttack] = CES.adjustedMainAttack(st.attacker, st.fight)
-  if (st.actionValueName && adjustedMainAttack != CS.mainAttackValue(st.attacker)) {
+  if (st.actionValueName && (adjustedMainAttack != CS.mainAttackValue(st.attacker) || CS.impairments(st.attacker) > 0)) {
     st.modifiedActionValue = `${st.actionValue}*`
   } else {
     st.modifiedActionValue = `${st.actionValue}`
