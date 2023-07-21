@@ -1,4 +1,5 @@
 import React from "react"
+import HeartBrokenIcon from '@mui/icons-material/HeartBroken'
 import { Button, Typography } from "@mui/material"
 import { useClient } from "../../contexts/ClientContext"
 import { useFight } from "../../contexts/FightContext"
@@ -60,7 +61,7 @@ export default function Smackdowns({ enemy, attackRolls, value, handleClose }: S
       })
     }
     { enemy?.id && total > 0 && <Typography variant="h5" py={2} sx={{color: "red"}}>Total Wounds: {total}</Typography> }
-    { enemy?.id && total > 0 && <Button variant="contained" color="primary" onClick={applyWounds}>Apply Wounds</Button> }
+    { enemy?.id && total > 0 && <Button endIcon={<HeartBrokenIcon />} variant="contained" color="error" onClick={applyWounds}>Apply Wounds</Button> }
     </>
   )
 }
