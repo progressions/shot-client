@@ -90,6 +90,11 @@ const VehicleService = {
     return this.updateActionValue(updatedVehicle, "Chase Points", Math.max(0, originalChasePoints - value))
   },
 
+  changePosition: function(vehicle: Vehicle): Vehicle {
+    const position = this.isNear(vehicle) ? "Far" : "Near"
+    return this.updatePosition(vehicle, position)
+  },
+
   updatePosition: function(vehicle: Vehicle, position: Position): Vehicle {
     return this.updateActionValue(vehicle, "Position", position)
   },
