@@ -28,7 +28,7 @@ export default function Results({ state }: ResultsProps) {
     return (<>
       <Typography variant="h4">{ boxcars && "Boxcars!" } { attacker.name || "You" } rolled an Action Result of {actionResult}!</Typography>
       <Typography variant="subtitle1" sx={subtitleStyle}>
-        Action Value { modifiedActionValue } + Swerve { result }
+        Swerve { result } + Action Value { modifiedActionValue }
       </Typography>
     </>)
   }
@@ -37,7 +37,7 @@ export default function Results({ state }: ResultsProps) {
     return (<>
       <Typography variant="h4">{ boxcars && "Boxcars!" } { attacker.name || "You" } rolled an Action Result of {actionResult}!</Typography>
       <Typography variant="subtitle1" sx={subtitleStyle}>
-        { actionValueName } { modifiedActionValue } + Swerve { result }
+        Swerve { result } + { actionValueName } { modifiedActionValue }
       </Typography>
     </>)
   }
@@ -46,7 +46,7 @@ export default function Results({ state }: ResultsProps) {
     return (<>
       <Typography variant="h4">{ boxcars && "Boxcars" } Miss!</Typography>
       <Typography variant="subtitle1" sx={subtitleStyle}>
-        Action Value { modifiedActionValue } + Swerve { result } &lt; { target.name ? `${target.name}'s` : "" } Defense { modifiedDefense }
+        Swerve { result } + Action Value { modifiedActionValue } &lt; { target.name ? `${target.name}'s` : "" } Defense { modifiedDefense }
       </Typography>
     </>)
   }
@@ -55,7 +55,7 @@ export default function Results({ state }: ResultsProps) {
     return (<>
       <Typography variant="h4">{ boxcars && "Boxcars" } Miss!</Typography>
       <Typography variant="subtitle1" sx={subtitleStyle}>
-        { actionValueName } { modifiedActionValue } + Swerve { result } &lt; { target.name ? `${target.name}'s` : "" } Defense { modifiedDefense }
+        Swerve { result } + { actionValueName } { modifiedActionValue } &lt; { target.name ? `${target.name}'s` : "" } Defense { modifiedDefense }
       </Typography>
     </>)
   }
@@ -64,7 +64,7 @@ export default function Results({ state }: ResultsProps) {
     return (<>
       <Typography variant="h4">{ boxcars && "Boxcars"} Hit! { attacker.name || "You" } rolled an Outcome of {outcome}!</Typography>
       <Typography variant="subtitle1" sx={subtitleStyle}>
-        Action Value { modifiedActionValue } + Swerve { result } - { target.name ? `${target.name}'s` : "" } Defense { modifiedDefense }
+        Swerve { result } + Action Value { modifiedActionValue } - { target.name ? `${target.name}'s` : "" } Defense { modifiedDefense }
       </Typography>
     </>)
   }
@@ -73,7 +73,7 @@ export default function Results({ state }: ResultsProps) {
     return (<>
       <Typography variant="h4">{ boxcars && "Boxcars" } Hit! { attacker.name || "You" } rolled a Smackdown of {smackdown}!</Typography>
       <Typography variant="subtitle1" sx={subtitleStyle}>
-        { actionValueName } { modifiedActionValue } + Swerve { result } - Defense { modifiedDefense } + { weapon?.name ? weapon.name : "Damage" }&nbsp;{ damage }
+        Swerve { result } + { actionValueName } { modifiedActionValue } - Defense { modifiedDefense } + { weapon?.name ? weapon.name : "Damage" }&nbsp;{ damage }
       </Typography>
     </>)
   }
@@ -82,7 +82,7 @@ export default function Results({ state }: ResultsProps) {
     return (<>
       <Typography variant="h4">{ boxcars && "Boxcars" } Hit! { attacker.name || "You" } inflicted { wounds || 0 } { wounds == 1 ? "Wound" : "Wounds" } { target.name ? `to ${target.name}` : ""}</Typography>
       <Typography variant="subtitle1" sx={subtitleStyle}>
-        { actionValueName } { modifiedActionValue } + Swerve { result } - { target.name ? `${target.name}'s` : "" } Defense { modifiedDefense } + { weapon?.name ? weapon.name : "Damage" }&nbsp;{ damage } - { target.name ? `${target.name}'s` : "" }&nbsp;Toughness&nbsp;{ toughness }
+        Swerve { result } + { actionValueName } { modifiedActionValue } - { target.name ? `${target.name}'s` : "" } Defense { modifiedDefense } + { weapon?.name ? weapon.name : "Damage" }&nbsp;{ damage } - { target.name ? `${target.name}'s` : "" }&nbsp;Toughness&nbsp;{ toughness }
       </Typography>
     </>)
   }
