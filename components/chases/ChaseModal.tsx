@@ -1,7 +1,7 @@
 import { StyledDialog } from "../StyledFields"
 import HeartBrokenIcon from "@mui/icons-material/HeartBroken"
 import PersonOffIcon from "@mui/icons-material/PersonOff"
-import { Button, DialogContent, Stack } from "@mui/material"
+import { Typography, Button, DialogContent, Stack } from "@mui/material"
 import { ChaseMethod, defaultSwerve, ChaseActions, initialChaseState, chaseReducer } from "../../reducers/chaseState"
 import { FightActions } from "../../reducers/fightState"
 import { useFight } from "../../contexts/FightContext"
@@ -32,7 +32,7 @@ export default function ChaseModal({ open, setOpen, anchorEl, setAnchorEl }: Cha
 
   const [state, dispatch] = useReducer(chaseReducer, initialChaseState)
   const { success, mookResults, count, smackdown, chasePoints, position,
-    method, typedSwerve, target, attacker, edited } = state
+    conditionPoints, method, typedSwerve, target, attacker, edited } = state
 
   useEffect(() => {
     dispatch({ type: ChaseActions.RESET })
@@ -74,7 +74,7 @@ export default function ChaseModal({ open, setOpen, anchorEl, setAnchorEl }: Cha
       await client.updateVehicle(attacker, fight)
 
       dispatchFight({ type: FightActions.EDIT })
-      toastSuccess(`${target.name} took ${chasePoints} Chase Points.`)
+      toastSuccess(`${target.name} took ${chasePoints} Chase Points and ${conditionPoints} Condition Points.`)
     } catch(error) {
       console.error(error)
       toastError()
@@ -90,7 +90,7 @@ export default function ChaseModal({ open, setOpen, anchorEl, setAnchorEl }: Cha
       await client.updateVehicle(attacker, fight)
 
       dispatchFight({ type: FightActions.EDIT })
-      toastSuccess(`${target.name} killed ${count} ${count == 1 ? "mook" : "mooks"}.`)
+      toastSuccess(`${attacker.name} killed ${count} ${count == 1 ? "mook" : "mooks"}.`)
     } catch(error) {
       console.error(error)
       toastError()

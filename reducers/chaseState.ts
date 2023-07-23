@@ -285,11 +285,17 @@ function resolveMookAttack(st: ChaseState): ChaseState {
     acc.attacker ||= st.attacker
     acc.target ||= st.target
 
+    const netChasePoints = VS.chasePoints(acc.target) - VS.chasePoints(curr.target)
+    const netConditionPoints = VS.conditionPoints(acc.target) - VS.conditionPoints(curr.target)
+
+    console.log(`netChasePoints: ${netChasePoints}`)
+    console.log(`netConditionPoints: ${netConditionPoints}`)
+
     const updated = resolveAttack(curr)
     return {
       ...acc,
-      chasePoints: acc.chasePoints + VS.chasePoints(updated.target) - VS.chasePoints(acc.target),
-      conditionPoints: acc.conditionPoints + VS.conditionPoints(updated.target) - VS.conditionPoints(acc.target),
+      chasePoints: acc.chasePoints + netChasePoints,
+      conditionPoints: acc.conditionPoints + netConditionPoints,
       attacker: updated.attacker,
       target: updated.target,
     }

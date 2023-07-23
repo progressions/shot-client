@@ -29,7 +29,7 @@ export default function Smackdowns({ state, handleClose }: SmackdownsParams) {
     const smackdown = st.smackdown
     const chasePoints = st.chasePoints
     const handlingDisplay = (st.handling < originalHandling) ? (<><strong style={{color: "red"}}>{handling}</strong> ({target.action_values["Handling"]})</>) : handling
-    const handlingMessage = (st.handling) ? (<> - Handling {handlingDisplay} = <strong style={{color: "red"}}>{chasePoints} Chase Points</strong></>) : ""
+    const handlingMessage = (st.handling) ? (<> - Handling {handlingDisplay} = <strong style={{color: "red"}}>{chasePoints || 0} Chase Points</strong></>) : ""
 
     return (<>{st.actionResult}: Smackdown of {st.smackdown} {handlingMessage}</>)
   }
