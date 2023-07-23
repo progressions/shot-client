@@ -259,7 +259,7 @@ export interface Schtick {
   color: string
 }
 
-export type Position = "Near" | "Far"
+export type Position = "near" | "far"
 
 export type Pursuer = "true" | "false"
 

@@ -34,6 +34,38 @@ const SharedService = {
     return (character.category === "vehicle")
   },
 
+  isFriendly: function(character: Character | Vehicle): boolean {
+    return this.isType(character, ["PC", "Ally"])
+  },
+
+  isUnfriendly: function(character: Character | Vehicle): boolean {
+    return !this.isFriendly(character)
+  },
+
+  isMook: function(character: Character | Vehicle): boolean {
+    return this.isType(character, "Mook")
+  },
+
+  isPC: function(character: Character | Vehicle): boolean {
+    return this.isType(character, "PC")
+  },
+
+  isAlly: function(character: Character | Vehicle): boolean {
+    return this.isType(character, "Ally")
+  },
+
+  isBoss: function(character: Character | Vehicle): boolean {
+    return this.isType(character, "Boss")
+  },
+
+  isFeaturedFoe: function(character: Character | Vehicle): boolean {
+    return this.isType(character, "Featured Foe")
+  },
+
+  isUberBoss: function(character: Character | Vehicle): boolean {
+    return this.isType(character, "Uber-Boss")
+  },
+
   isType: function(character: Character | Vehicle, type: string | string[]): boolean {
     if (Array.isArray(type)) {
       return type.includes(this.type(character))
@@ -77,7 +109,7 @@ const SharedService = {
   },
 
   calculateImpairments: function(character: Character | Vehicle, originalWounds:number, newWounds: number): number {
-    if (this.isType(character, "Mook")) return 0
+    if (this.isMook(character)) return 0
 
     const threshold = woundThresholds[this.type(character)]
 
@@ -124,7 +156,7 @@ const SharedService = {
   },
 
   seriousPoints: function(character: Character | Vehicle, value: number): boolean {
-    if (this.isType(character, "Mook")) return false
+    if (this.isMook(character)) return false
 
     const type = this.type(character)
     const threshold = woundThresholds[type]
@@ -133,7 +165,7 @@ const SharedService = {
   },
 
   mooks: function(character: Character | Vehicle): number {
-    if (!this.isType(character, "Mook")) return 0
+    if (!this.isMook(character)) return 0
 
     return character.count
   },

@@ -1,52 +1,52 @@
 import { GiDeathSkull, GiShotgun, GiPistolGun } from "react-icons/gi"
-import HeartBrokenIcon from '@mui/icons-material/HeartBroken'
-import { FormControlLabel, Switch, Tooltip, DialogContent, Button, IconButton, Typography, Box, Stack } from "@mui/material"
+import HeartBrokenIcon from "@mui/icons-material/HeartBroken"
+import PersonOffIcon from "@mui/icons-material/PersonOff"
+import TaxiAlertIcon from "@mui/icons-material/TaxiAlert"
+import { ButtonGroup, FormControlLabel, Switch, Tooltip, DialogContent, Button, IconButton, Typography, Box, Stack } from "@mui/material"
 import { useFight } from "../../contexts/FightContext"
 import { useClient } from "../../contexts/ClientContext"
 import { useToast } from "../../contexts/ToastContext"
 import { StyledDialog, StyledTextField } from "../StyledFields"
 import { useEffect, useReducer, useState } from "react"
 import CharactersAutocomplete from "./CharactersAutocomplete"
-import WeaponAutocomplete from "./WeaponAutocomplete"
 import type { Weapon, Character } from "../../types/types"
 import { defaultWeapon, defaultCharacter } from "../../types/types"
-import SwerveButton from "../dice/SwerveButton"
 import AS from "../../services/ActionService"
 import CS from "../../services/CharacterService"
 import CES from "../../services/CharacterEffectService"
 import { defaultSwerve, AttackActions, initialAttackState, attackReducer } from "../../reducers/attackState"
 import { FightActions } from "../../reducers/fightState"
-import PlayArrowIcon from '@mui/icons-material/PlayArrow'
-import CasinoIcon from '@mui/icons-material/Casino'
-import Results from "./Results"
+import ResultsDisplay from "./ResultsDisplay"
+import Attacker from "./Attacker"
+import Target from "./Target"
+import SwerveButton from "./SwerveButton"
 
 interface AttackModalProps {
+  open: boolean
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>
+  anchorEl: Element | null
+  setAnchorEl: React.Dispatch<React.SetStateAction<Element | null>>
 }
 
-export default function AttackModal({ }: AttackModalProps) {
+export default function AttackModal({ open, setOpen, anchorEl, setAnchorEl }: AttackModalProps) {
   const { fight, dispatch:dispatchFight } = useFight()
   const { client } = useClient()
   const { toastSuccess, toastError } = useToast()
 
-  const [open, setOpen] = useState<boolean>(false)
-  const [anchorEl, setAnchorEl] = useState<Element | null>(null)
-
   const [state, dispatch] = useReducer(attackReducer, initialAttackState)
-  const { weapon, damage, outcome, wounds, success, attacker, target, defense, swerve,
+  const { weapon, damage, outcome, wounds, success, attacker, target, defense, swerve, count,
     stunt, typedSwerve, edited, smackdown, toughness, actionValueName, actionValue, actionResult } = state
   const { result } = swerve
 
-  console.log(state)
-
-  function handleOpen(event: React.SyntheticEvent<Element, Event>) {
+  useEffect(() => {
     dispatch({ type: AttackActions.RESET })
 
     const firstUp = fight.shot_order[0][1][0]
-    dispatch({ type: AttackActions.UPDATE, payload: { fight: fight } })
-    setAttacker(firstUp)
-    setAnchorEl(event.currentTarget)
-    setOpen(true)
-  }
+    if (CS.isCharacter(firstUp)) {
+      dispatch({ type: AttackActions.UPDATE, payload: { fight: fight } })
+      setAttacker(firstUp)
+    }
+  }, [open])
 
   function handleClose() {
     setOpen(false)
@@ -63,14 +63,15 @@ export default function AttackModal({ }: AttackModalProps) {
   }
 
   function setAttacker(character: Character) {
-    const [_adjustment, adjustedMainAttack] = CES.adjustedMainAttack(character, fight)
-    dispatch({ type: AttackActions.UPDATE, payload: { attacker: character, actionValueName: CS.mainAttack(character) || "", actionValue: adjustedMainAttack, weapon: defaultWeapon, damage: CS.damage(character) || 7 } })
+    if (character?.id) {
+      dispatch({ type: AttackActions.ATTACKER, payload: { attacker: character } })
+    } else {
+      dispatch({ type: AttackActions.ATTACKER, payload: { attacker: defaultCharacter } })
+    }
   }
 
   function setTarget(character: Character) {
-    const [_defenseAdjustment, adjustedDefense] = CES.adjustedActionValue(character, "Defense", fight, false)
-    const [_toughnessAdjustment, adjustedToughness] = CES.adjustedActionValue(character, "Toughness", fight, true)
-    dispatch({ type: AttackActions.UPDATE, payload: { target: character, defense: adjustedDefense, toughness: adjustedToughness } })
+    dispatch({ type: AttackActions.TARGET, payload: { target: character } })
   }
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
@@ -88,6 +89,7 @@ export default function AttackModal({ }: AttackModalProps) {
   }
 
   function setAttack(actionValueName: string) {
+    // move this into the reducer
     const [_adjustment, actionValue] = CES.adjustedActionValue(attacker, actionValueName, fight, false)
     if (actionValueName == state.actionValueName) {
       dispatch({ type: AttackActions.UPDATE, payload: { actionValueName: "" } })
@@ -111,10 +113,8 @@ export default function AttackModal({ }: AttackModalProps) {
   async function applyWounds() {
     if (!smackdown) return
 
-    const updatedTarget = CS.takeSmackdown(target, smackdown as number)
-
     try {
-      await client.updateCharacter(updatedTarget, fight)
+      await client.updateCharacter(target, fight)
       dispatchFight({ type: FightActions.EDIT })
       toastSuccess(`${target.name} took ${wounds} wounds.`)
     } catch(error) {
@@ -124,16 +124,24 @@ export default function AttackModal({ }: AttackModalProps) {
     handleClose()
   }
 
+  async function killMooks() {
+    if (!count) return
+
+    const updatedTarget = CS.takeSmackdown(target, count as number)
+
+    try {
+      await client.updateCharacter(updatedTarget, fight)
+      dispatchFight({ type: FightActions.EDIT })
+      toastSuccess(`${target.name} killed ${count} ${count == 1 ? "mook" : "mooks"}.`)
+    } catch(error) {
+      console.error(error)
+      toastError()
+    }
+    handleClose()
+  }
+
   return (
     <>
-      <Button
-        variant="contained"
-        color="error"
-        startIcon={<GiPistolGun />}
-        onClick={handleOpen}
-      >
-        Attack
-      </Button>
       <StyledDialog
         open={open}
         onClose={handleClose}
@@ -156,51 +164,36 @@ export default function AttackModal({ }: AttackModalProps) {
               setCharacter={setAttacker}
               disabled={edited}
             />
-            <Stack direction="row" spacing={2} alignItems="top">
-              <StyledTextField
-                name="actionValue"
-                value={actionValue}
-                onChange={handleChange}
-                label="Action Value"
-                type="number"
-                sx={{width: 110}}
-                disabled={edited}
-              />
-              <Stack direction="row" spacing={2} alignItems="top">
-                { CS.attackValues(attacker).map((valueName) => (
-                  <Button
-                    key={valueName}
-                    variant={ actionValueName === valueName ? "contained" : "outlined" }
-                    disabled={edited || !attacker.id}
-                    onClick={() => setAttack(valueName)}
-                    disableElevation={actionValueName === valueName}
-                  >
-                    { attacker.id ? valueName : "Attack" } { CES.adjustedActionValue(attacker, valueName, fight, false)[1] }{ CS.impairments(attacker) ? "*" : "" }
-                  </Button>
-                ))}
-              </Stack>
-            </Stack>
-            <Stack direction="row" spacing={2} alignItems="top" sx={{height: 80}}>
-              <StyledTextField disabled={edited} name="damage" value={damage} onChange={handleChange} label="Damage" type="number" sx={{width: 80}} />
-              <WeaponAutocomplete disabled={edited} character={attacker} weapon={weapon} setWeapon={setWeapon} />
-              <FormControlLabel label="Stunt" name="stunt" control={<Switch checked={stunt} />} onChange={handleCheck} />
-            </Stack>
-            <CharactersAutocomplete disabled={edited} label="Target" character={target} setCharacter={setTarget} />
-            <Stack direction="row" spacing={2} alignItems="top">
-              <StyledTextField disabled={edited} name="defense" value={defense} onChange={handleChange} label="Defense" type="number" sx={{width: 110}} />
-              <StyledTextField disabled={edited} name="toughness" value={toughness} onChange={handleChange} label="Toughness" type="number" sx={{width: 110}} />
-            </Stack>
-            <Stack direction="row" spacing={5} alignItems="top">
-              { !edited && <StyledTextField name="typedSwerve" autoFocus value={typedSwerve || ""} onChange={handleSwerve} label="Swerve" type="number" InputProps={{sx: {height: 80, width: 120, fontSize: 50, fontWeight: "bold"}}} /> }
-              { !edited &&
-              <Button sx={{width: 400, fontSize: 20}} endIcon={typedSwerve ? <PlayArrowIcon /> : <CasinoIcon />} onClick={handleAttack} variant="contained" color="error">
-                { typedSwerve ? "Attack" : "Roll the Dice" }
-              </Button>
-              }
-            </Stack>
-            { edited && <Results state={state} /> }
-            { edited && target?.id && wounds && <>
+            <Attacker
+              state={state}
+              setAttacker={setAttacker}
+              setWeapon={setWeapon}
+              setAttack={setAttack}
+              handleChange={handleChange}
+              handleCheck={handleCheck}
+            />
+            <CharactersAutocomplete
+              disabled={edited}
+              label="Target"
+              character={target}
+              setCharacter={setTarget}
+            />
+            <Target
+              state={state}
+              setTarget={setTarget}
+              handleChange={handleChange}
+            />
+            <SwerveButton
+              state={state}
+              handleSwerve={handleSwerve}
+              handleAttack={handleAttack}
+            />
+            { edited && <ResultsDisplay state={state} handleClose={handleClose} /> }
+            { edited && !!target?.id && !CS.isMook(target) && !!wounds && <>
               <Button sx={{width: 200}} endIcon={<HeartBrokenIcon />} variant="contained" color="error" onClick={applyWounds}>Apply Wounds</Button>
+            </> }
+            { edited && !!target?.id && CS.isMook(target) && wounds && <>
+              <Button sx={{width: 200}} endIcon={<PersonOffIcon />} variant="contained" color="error" onClick={killMooks}>Kill Mooks</Button>
             </> }
             { edited && <Button onClick={resetAttack} variant="contained" color="primary">Reset</Button> }
           </Stack>

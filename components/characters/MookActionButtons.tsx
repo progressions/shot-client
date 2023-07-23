@@ -39,8 +39,6 @@ export default function MookActionButtons({ character, healWounds, takeWounds, t
   return (
     <Stack direction="row" spacing={1} sx={{height: 30}}>
       <ButtonGroup variant="contained" size="small">
-        { character.category === "character" && takeWounds &&
-          <MookRolls count={character.count} attack={mainAttack as number} damage={character.action_values["Damage"] as number} icon={<NewReleasesIcon />} /> }
         { takeWounds &&
           <Tooltip title={woundLabel} arrow>
             <Button onClick={() => {takeWounds(character)}}>

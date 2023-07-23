@@ -26,9 +26,7 @@ export default function PositionDisplay({ character }: PositionDisplayProps) {
 
   async function changePosition() {
     try {
-      console.log(character.action_values["Position"])
       const updatedCharacter = await VS.changePosition(character)
-      console.log(updatedCharacter.action_values["Position"])
       await client.updateVehicle(updatedCharacter, fight)
       toastSuccess(`${character.name} updated.`)
     } catch(error) {
