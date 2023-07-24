@@ -286,8 +286,8 @@ function resolveMookAttack(st: ChaseState): ChaseState {
 
     return {
       ...acc,
-      chasePoints: acc.chasePoints + upState.chasePoints,
-      conditionPoints: acc.conditionPoints + upState.conditionPoints,
+      chasePoints: (acc.chasePoints || 0) + (upState.chasePoints || 0),
+      conditionPoints: (acc.conditionPoints || 0) + (upState.conditionPoints || 0),
       attacker: upState.attacker,
       target: upState.target,
     }
