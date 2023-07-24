@@ -201,8 +201,12 @@ function process(state: AttackState): AttackState {
 }
 
 function resolveAttack(st: AttackState): AttackState {
-  const { target, smackdown } = st
-  const updatedTarget = CS.takeSmackdown(target, smackdown as number)
+  const { target, smackdown, count } = st
+  if (CS.isMook(target)) {
+    console.log("It's a mook", smackdown, count)
+  }
+  const dmg = CS.isMook(target) ? count : smackdown
+  const updatedTarget = CS.takeSmackdown(target, dmg as number)
 
   return {
     ...st,

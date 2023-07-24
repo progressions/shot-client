@@ -310,6 +310,8 @@ function killMooks(st: ChaseState): ChaseState {
 
   const { method, attacker, count, target } = st
 
+  console.log("count", count)
+
   switch (method) {
     case ChaseMethod.RAM_SIDESWIPE:
       [updatedAttacker, updatedTarget] = VS.ramSideswipe(attacker, count, target)

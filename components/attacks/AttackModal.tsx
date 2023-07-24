@@ -127,10 +127,8 @@ export default function AttackModal({ open, setOpen, anchorEl, setAnchorEl }: At
   async function killMooks() {
     if (!count) return
 
-    const updatedTarget = CS.takeSmackdown(target, count as number)
-
     try {
-      await client.updateCharacter(updatedTarget, fight)
+      await client.updateCharacter(target, fight)
       dispatchFight({ type: FightActions.EDIT })
       toastSuccess(`${target.name} killed ${count} ${count == 1 ? "mook" : "mooks"}.`)
     } catch(error) {
