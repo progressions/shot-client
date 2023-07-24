@@ -7,8 +7,6 @@ import DirectionsRunIcon from "@mui/icons-material/DirectionsRun"
 import FavoriteIcon from "@mui/icons-material/Favorite"
 import CommuteIcon from "@mui/icons-material/Commute"
 import CarCrashIcon from "@mui/icons-material/CarCrash"
-import NewReleasesIcon from "@mui/icons-material/NewReleases"
-import MookRolls from "./mooks/MookRolls"
 
 import GamemasterOnly from "../GamemasterOnly"
 import PlayerTypeOnly from "../PlayerTypeOnly"
@@ -37,7 +35,6 @@ export default function ActionButtons({ character, healWounds, takeWounds, takeC
   return (
     <Stack direction="row" spacing={1} sx={{height: 30}}>
       <ButtonGroup variant="contained" size="small">
-        <MookRolls count={character.count} attack={mainAttack as number} damage={character.action_values["Squeal"] as number} icon={<NewReleasesIcon />} />
         { takeWounds &&
           <Tooltip title={woundLabel} arrow>
             <Button onClick={() => {takeWounds(character)}}>
