@@ -9,6 +9,7 @@ import RemoveIcon from '@mui/icons-material/Remove'
 import PlayArrowIcon from '@mui/icons-material/PlayArrow'
 
 import RollInitiative from "./RollInitiative"
+import Initiative from "../initiative/Initiative"
 import GamemasterOnly from "../GamemasterOnly"
 import { Toast, Fight } from "../../types/types"
 import { FightActions } from "../../reducers/fightState"
@@ -59,6 +60,7 @@ export default function Sequence() {
       </ButtonGroup>
       <GamemasterOnly user={user}>
         <RollInitiative />
+        <Initiative />
       </GamemasterOnly>
     </Stack>
   )

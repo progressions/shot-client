@@ -1,4 +1,6 @@
 import type { Faction, Vehicle, Character } from "../types/types"
+import { parseToNumber } from "../utils/parseToNumber"
+import { rollDie } from "../components/dice/DiceRoller"
 
 interface woundThresholdType {
   low: number,
@@ -153,6 +155,23 @@ const SharedService = {
       ...character,
       [key]: value
     } as Character | Vehicle
+  },
+
+  setInitiative(character: Character | Vehicle, initiative: number): Character | Vehicle {
+    const initiativePenalty = parseToNumber(character.current_shot || 0)
+    const init = parseToNumber(initiative)
+    const updatedInit = Math.max(0, init + initiativePenalty)
+
+    return this.updateValue(character, "current_shot", updatedInit)
+  },
+
+  rollInitiative(character: Character | Vehicle, roll?: number | null): Character | Vehicle {
+    const dieResult = roll || rollDie()
+    const speedRoll = this.actionValue(character, "Speed") + dieResult
+    const initiativePenalty = parseToNumber(character.current_shot || 0)
+    const initiative = Math.max(0, parseToNumber(speedRoll) + initiativePenalty)
+
+    return this.updateValue(character, "current_shot", initiative)
   },
 
   seriousPoints: function(character: Character | Vehicle, value: number): boolean {

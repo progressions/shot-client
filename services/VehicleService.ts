@@ -13,6 +13,11 @@ const VehicleService = {
     return CS.skill(vehicle.driver, "Driving")
   },
 
+  // Not modified by Impairment
+  speed: function(vehicle: Vehicle): number {
+    return this.rawActionValue(vehicle, "Acceleration")
+  },
+
   // defense and attack in a chase both use the driver's Driving skill
   defense: function(vehicle: Vehicle): number {
     return this.mainAttackValue(vehicle)

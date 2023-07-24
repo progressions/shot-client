@@ -5,7 +5,6 @@ import CreateCharacter from '../characters/CreateCharacter'
 import SelectCharacter from '../characters/SelectCharacter'
 import CreateVehicle from '../vehicles/CreateVehicle'
 import DiceRoller from '../dice/DiceRoller'
-import RollInitiative from "./RollInitiative"
 import GamemasterOnly from "../GamemasterOnly"
 import SelectParty from "../parties/SelectParty"
 import AttackButton from "../attacks/AttackButton"

@@ -1,5 +1,6 @@
 import type { SkillValue, Character, CharacterEffect } from "../types/types"
 import SharedService, { woundThresholds } from "./SharedService"
+import { rollDie } from "../components/dice/DiceRoller"
 
 const CharacterService = {
   ...SharedService,
@@ -55,6 +56,11 @@ const CharacterService = {
 
   archetype: function(character: Character): string {
     return this.otherActionValue(character, "Archetype")
+  },
+
+  // Not modified by Impairment
+  speed: function(character: Character): number {
+    return this.rawActionValue(character, "Speed")
   },
 
   // Not modified by Impairment
