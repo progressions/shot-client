@@ -164,14 +164,14 @@ function calculateMookAttackValues(st: ChaseState): ChaseState {
 
 function closeGapPosition(st: ChaseState, success: boolean): string {
   if (success && !VS.isNear(st.attacker)) {
-    return "Near"
+    return "near"
   }
   return st.position
 }
 
 function widenGapPosition(st: ChaseState, success: boolean): string {
   if (success && VS.isNear(st.attacker)) {
-    return "Far"
+    return "far"
   }
   return st.position
 }
@@ -278,30 +278,28 @@ function process(state: ChaseState): ChaseState {
 
 // resolve attacks by mooks
 function resolveMookAttack(st: ChaseState): ChaseState {
-  const updatedState = st.mookResults.reduce((acc, curr) => {
+  const updatedState = st.mookResults.reduce((acc, result) => {
+    result.target = acc.target
+    result.attacker = acc.attacker
 
-    acc.chasePoints ||= 0
-    acc.conditionPoints ||= 0
-    acc.attacker ||= st.attacker
-    acc.target ||= st.target
+    const upState = resolveAttack(result)
 
-    const netChasePoints = VS.chasePoints(acc.target) - VS.chasePoints(curr.target)
-    const netConditionPoints = VS.conditionPoints(acc.target) - VS.conditionPoints(curr.target)
-
-    console.log(`netChasePoints: ${netChasePoints}`)
-    console.log(`netConditionPoints: ${netConditionPoints}`)
-
-    const updated = resolveAttack(curr)
     return {
       ...acc,
-      chasePoints: acc.chasePoints + netChasePoints,
-      conditionPoints: acc.conditionPoints + netConditionPoints,
-      attacker: updated.attacker,
-      target: updated.target,
+      chasePoints: acc.chasePoints + upState.chasePoints,
+      conditionPoints: acc.conditionPoints + upState.conditionPoints,
+      attacker: upState.attacker,
+      target: upState.target,
     }
   }, st)
 
-  return updatedState
+  return {
+    ...st,
+    attacker: updatedState.attacker,
+    target: updatedState.target,
+    chasePoints: updatedState.chasePoints,
+    conditionPoints: updatedState.conditionPoints,
+  }
 }
 
 function killMooks(st: ChaseState): ChaseState {
@@ -341,6 +339,8 @@ function resolveAttack(st: ChaseState): ChaseState {
   let updatedTarget = st.target
 
   const { method, attacker, smackdown, target } = st
+  const beforeChasePoints = VS.chasePoints(target)
+  const beforeConditionPoints = VS.conditionPoints(target)
 
   switch (method) {
     case ChaseMethod.RAM_SIDESWIPE:
@@ -357,8 +357,15 @@ function resolveAttack(st: ChaseState): ChaseState {
       break
   }
 
+  const afterChasePoints = VS.chasePoints(updatedTarget)
+  const afterConditionPoints = VS.conditionPoints(updatedTarget)
+  const chasePointsDifference = afterChasePoints - beforeChasePoints
+  const conditionPointsDifference = afterConditionPoints - beforeConditionPoints
+
   return {
     ...st,
+    chasePoints: chasePointsDifference,
+    conditionPoints: conditionPointsDifference,
     attacker: updatedAttacker,
     target: updatedTarget,
   }
