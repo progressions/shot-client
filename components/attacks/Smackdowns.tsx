@@ -29,7 +29,7 @@ export default function Smackdowns({ state, handleClose }: SmackdownsParams) {
     const smackdown = st.smackdown
     const wounds = st.wounds
     const toughnessDisplay = (st.toughness < originalToughness) ? (<><strong style={{color: "red"}}>{toughness}</strong> ({target.action_values["Toughness"]})</>) : toughness
-    const toughnessMessage = (st.toughness) ? (<> - Toughness {toughnessDisplay} = <strong style={{color: "red"}}>{wounds} Wounds</strong></>) : ""
+    const toughnessMessage = (st.toughness) ? (<> - Toughness {toughnessDisplay} = <strong style={{color: "red"}}>{wounds || 0} Wounds</strong></>) : ""
 
     return (<>{st.actionResult}: Smackdown of {st.smackdown} {toughnessMessage}</>)
   }
