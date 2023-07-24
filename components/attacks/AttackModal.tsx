@@ -130,7 +130,7 @@ export default function AttackModal({ open, setOpen, anchorEl, setAnchorEl }: At
     try {
       await client.updateCharacter(target, fight)
       dispatchFight({ type: FightActions.EDIT })
-      toastSuccess(`${target.name} killed ${count} ${count == 1 ? "mook" : "mooks"}.`)
+      toastSuccess(`${attacker.name} killed ${count} ${target.name} ${count == 1 ? "mook" : "mooks"}.`)
     } catch(error) {
       console.error(error)
       toastError()

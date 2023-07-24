@@ -242,7 +242,7 @@ export function attackReducer(state: AttackState, action: { type: AttackActions,
         attacker: attacker,
         actionValueName: CS.mainAttack(attacker) || "",
         actionValue: adjustedMainAttack,
-        weapon: defaultWeapon,
+        weapon: attacker.weapons[0] || defaultWeapon,
         damage: CS.damage(attacker) || 7,
         count: mookCount,
       })
