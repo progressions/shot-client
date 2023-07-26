@@ -43,11 +43,11 @@ export interface ChaseState {
   squeal: number
   frame: number
   crunch: number
-  outcome: number | null
+  outcome: number | null | undefined
   success: boolean
-  smackdown: number | null
-  chasePoints: number | null
-  conditionPoints: number | null
+  smackdown: number | null | undefined
+  chasePoints: number | null | undefined
+  conditionPoints: number | null | undefined
   position: Position
   mookDefense: number
   modifiedDefense: string
@@ -120,7 +120,7 @@ export function chaseReducer(state: ChaseState, action: { type: ChaseActions, pa
         crunch: VS.crunch(attacker),
         count: VS.isMook(attacker) ? VS.mooks(attacker) : 1,
         position: VS.position(attacker),
-        method: CRS.defaultMethod(attacker) as ChaseMethod,
+        method: CRS.R.defaultMethod(attacker) as ChaseMethod,
       })
     case ChaseActions.UPDATE:
       return CRS.process({

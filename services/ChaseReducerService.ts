@@ -6,50 +6,64 @@ import { ChaseMethod, ChaseState } from "../reducers/chaseState"
 import { parseToNumber } from "../utils/parseToNumber"
 
 const ChaseReducerService = {
-  convertToNumber: function(state: ChaseState): ChaseState {
-    return {
-      ...state,
-      swerve: {
-        ...state.swerve,
-        result: parseToNumber(state.swerve.result),
-      },
-      actionValue: parseToNumber(state.actionValue),
-      handling: parseToNumber(state.handling),
-      squeal: parseToNumber(state.squeal),
-      frame: parseToNumber(state.frame),
-      crunch: parseToNumber(state.crunch),
-      count: parseToNumber(state.count),
-      defense: parseToNumber(state.defense),
+  // change the "edited" flag to true to roll the attack and
+  // calculate the results.
+  process: function(state: ChaseState): ChaseState {
+    let st = this.convertToNumber(state)
+
+    if (st.edited) {
+      // make the attack roll
+      st = this.rollAttack(st)
+      // apply the attack results
+      return this.resolveAttack(st)
     }
+
+    return st
   },
 
-  calculateDefense: function(st: ChaseState): string {
-    if (st.stunt) {
-      return `${st.defense + 2}*`
-    } else if (this.VS.impairments(st.target) > 0) {
-      return `${st.defense}*`
-    }
-    return `${st.defense}`
-  },
-
-  calculateMainAttack: function(st: ChaseState): string {
-    return `${st.actionValue}`
-  },
-
-  targetMookDefense: function(st: ChaseState): number {
-    if (this.VS.isMook(st.target) && st.count > 1) {
-      return st.defense + st.count + (st.stunt ? 2 : 0)
-    }
-    return st.defense
-  },
-
-  makeAttack: function(st: ChaseState): ChaseState {
+  // roll the dice and generate attack rolls
+  rollAttack: function(st: ChaseState): ChaseState {
     if (this.VS.isMook(st.attacker) && st.count > 1) {
       return this.calculateMookAttackValues(st)
     }
     return this.calculateAttackValues(st)
   },
 
+  // Resolve the attack roll from a single attack, and apply the
+  // results to the target and the attacker.
+  //
+  // If the attacker is a Mook, call resolveMookAttack instead.
+  // If the target is a Mook, and the attacker is not, call killMooks.
+  //
+  // For a Ram/Sideswipe, the attacker uses their Crunch to apply damage, and the
+  // Target uses their Frame to resist damage.
+  //
+  // If the target's Frame is higher than the attacker's Frame, the Attacker will
+  // take a Bump of damage to its Chase Points and Condition Points.
+  //
+  resolveAttack: function(st: ChaseState): ChaseState {
+    if (this.VS.isMook(st.attacker)) return this.resolveMookAttack(st)
+    if (this.VS.isMook(st.target) && st.count > 1) return this.killMooks(st)
+
+    const { method, attacker, smackdown, target } = st
+    const beforeChasePoints = this.VS.chasePoints(target)
+    const beforeConditionPoints = this.VS.conditionPoints(target)
+
+    const [updatedAttacker, updatedTarget] = this.processMethod(st, smackdown as number)
+
+    const afterChasePoints = this.VS.chasePoints(updatedTarget)
+    const afterConditionPoints = this.VS.conditionPoints(updatedTarget)
+
+    return {
+      ...st,
+      chasePoints: afterChasePoints - beforeChasePoints,
+      conditionPoints: afterConditionPoints - beforeConditionPoints,
+      attacker: updatedAttacker,
+      target: updatedTarget,
+    }
+  },
+
+  // roll the dice for each mook
   calculateMookAttackValues: function(st: ChaseState): ChaseState {
     const results = []
     for (let i = 0; i < st.count; i++) {
@@ -68,121 +82,103 @@ const ChaseReducerService = {
     }
   },
 
-  closeGapPosition: function(st: ChaseState, success: boolean): string {
-    if (success && !this.VS.isNear(st.attacker)) {
-      return "near"
+  // roll the dice for a single attack
+  calculateAttackValues: function(st: ChaseState): ChaseState {
+    if (st.typedSwerve !== "") {
+      st.swerve = { ...st.swerve, result: parseToNumber(st.typedSwerve) }
     }
-    return st.position
+
+    st.modifiedDefense = this.R.defenseString(st)
+    st.modifiedActionValue = this.R.mainAttackString(st)
+    st.mookDefense = this.R.targetMookDefense(st)
+
+    return this.VS.isPursuer(st.attacker) ? this.pursue(st) : this.evade(st)
   },
 
-  widenGapPosition: function(st: ChaseState, success: boolean): string {
-    if (success && this.VS.isNear(st.attacker)) {
-      return "far"
-    }
-    return st.position
-  },
-
+  // If the attack is a success, apply Chase Points to the Target and
+  // return the position 'near'.
   pursue: function(st: ChaseState): ChaseState {
     const { success, actionResult, outcome, smackdown, wounds, wayAwfulFailure } = this.AS.wounds({
       swerve: st.swerve,
       actionValue: st.actionValue,
       defense: st.mookDefense,
       stunt: st.stunt,
-      toughness: this.calculateToughness(st),
-      damage: this.calculateDamage(st),
+      toughness: this.R.calculateToughness(st),
+      damage: this.R.calculateDamage(st),
     })
 
-    const position = this.closeGapPosition(st, success as boolean)
-
+    if (success) {
+      return {
+        ...st,
+        success: true,
+        actionResult: actionResult,
+        outcome: outcome || null,
+        smackdown: smackdown || null,
+        position: "near",
+        chasePoints: wounds || null,
+        conditionPoints: st.method === ChaseMethod.RAM_SIDESWIPE ? wounds as number : null,
+        boxcars: st.swerve.boxcars,
+        wayAwfulFailure: wayAwfulFailure,
+      }
+    }
+    // if success is false, the target is not hit and the position remains the same
     return {
       ...st,
-      // calculated values
+      success: false,
       actionResult: actionResult,
       outcome: outcome || null,
-      success: success as boolean,
-      smackdown: smackdown || null,
-      position: position as Position,
-      chasePoints: wounds || null,
-      conditionPoints: this.VS.isNear(st.attacker) ? wounds as number : null,
-      boxcars: st.swerve.boxcars,
-      wayAwfulFailure: wayAwfulFailure,
-    }
-  },
-
-  calculateToughness: function(st: ChaseState): number {
-    switch (st.method) {
-      case ChaseMethod.RAM_SIDESWIPE:
-        return st.frame
-      default:
-        return st.handling
-    }
-  },
-
-  calculateDamage: function(st: ChaseState): number {
-    switch (st.method) {
-      case ChaseMethod.RAM_SIDESWIPE:
-        return st.crunch
-      default:
-        return st.squeal
-    }
-  },
-
-  evade: function(st: ChaseState): ChaseState {
-    const { success, actionResult, outcome, smackdown, wounds, wayAwfulFailure } = AS.wounds({
-      swerve: st.swerve,
-      actionValue: st.actionValue,
-      defense: st.mookDefense,
-      stunt: st.stunt,
-      toughness: this.calculateToughness(st),
-      damage: this.calculateDamage(st),
-    })
-
-    const position = this.widenGapPosition(st, success as boolean)
-
-    return {
-      ...st,
-      // calculated values
-      actionResult: actionResult,
-      outcome: outcome || null,
-      success: success as boolean,
-      smackdown: smackdown || null,
-      position: position as Position,
-      chasePoints: wounds || null,
+      smackdown: null,
+      chasePoints: null,
       conditionPoints: null,
       boxcars: st.swerve.boxcars,
       wayAwfulFailure: wayAwfulFailure,
     }
   },
 
-  calculateAttackValues: function(st: ChaseState): ChaseState {
-    if (st.typedSwerve !== "") {
-      st.swerve = { ...st.swerve, result: parseToNumber(st.typedSwerve) }
+  // If the attack is a success, apply Chase Points to the Target and
+  // return the position 'far'.
+  evade: function(st: ChaseState): ChaseState {
+    const attack = AS.wounds({
+      swerve: st.swerve,
+      actionValue: st.actionValue,
+      defense: st.mookDefense,
+      stunt: st.stunt,
+      toughness: this.R.calculateToughness(st),
+      damage: this.R.calculateDamage(st),
+    })
+    const { success, actionResult, outcome, smackdown, wounds, wayAwfulFailure } = attack
+
+    if (success) {
+      return {
+        ...st,
+        success: true,
+        position: "far",
+        actionResult: actionResult,
+        outcome: outcome || null,
+        smackdown: smackdown || null,
+        chasePoints: wounds || null,
+        conditionPoints: null,
+        boxcars: st.swerve.boxcars,
+        wayAwfulFailure: wayAwfulFailure,
+      }
     }
-
-    st.modifiedDefense = this.calculateDefense(st)
-    st.modifiedActionValue = this.calculateMainAttack(st)
-    st.mookDefense = this.targetMookDefense(st)
-
-    if (this.VS.isPursuer(st.attacker)) {
-      return this.pursue(st)
+    // if success is false, the target is not hit and the position remains the same
+    return {
+      ...st,
+      success: false,
+      actionResult: actionResult,
+      outcome: outcome || null,
+      smackdown: null,
+      chasePoints: null,
+      conditionPoints: null,
+      boxcars: st.swerve.boxcars,
+      wayAwfulFailure: wayAwfulFailure,
     }
-
-    return this.evade(st)
   },
 
-  process: function(state: ChaseState): ChaseState {
-    let st = this.convertToNumber(state)
-
-    if (st.edited) {
-      st = this.makeAttack(st)
-      if (this.VS.isMook(st.attacker)) return this.resolveMookAttack(st)
-      return this.resolveAttack(st)
-    }
-
-    return st
-  },
-
-  // resolve attacks by mooks
+  // For each attack roll in the `mookResults` array, apply the attack
+  // to the target and calculate the net Chase Points and Condition Points.
+  //
   resolveMookAttack: function(st: ChaseState): ChaseState {
     const updatedState = st.mookResults.reduce((acc, result) => {
       result.target = acc.target
@@ -192,6 +188,7 @@ const ChaseReducerService = {
 
       return {
         ...acc,
+        success: acc.success || upState.success,
         chasePoints: (acc.chasePoints || 0) + (upState.chasePoints || 0),
         conditionPoints: (acc.conditionPoints || 0) + (upState.conditionPoints || 0),
         attacker: upState.attacker,
@@ -201,6 +198,7 @@ const ChaseReducerService = {
 
     return {
       ...st,
+      success: updatedState.success,
       attacker: updatedState.attacker,
       target: updatedState.target,
       chasePoints: updatedState.chasePoints,
@@ -208,28 +206,15 @@ const ChaseReducerService = {
     }
   },
 
+  // Remove a number of mooks if the attack was successful, factoring in any
+  // changes to the position of the attacker or target based on the method.
   killMooks: function(st: ChaseState): ChaseState {
     if (!st.success) return st
 
-    let updatedAttacker = st.attacker
-    let updatedTarget = st.target
-
-    const { method, attacker, count, target } = st
-
-    switch (method) {
-      case ChaseMethod.RAM_SIDESWIPE:
-        [updatedAttacker, updatedTarget] = this.VS.ramSideswipe(attacker, count, target)
-        break
-      case ChaseMethod.WIDEN_THE_GAP:
-        [updatedAttacker, updatedTarget] = this.VS.widenTheGap(attacker, count, target)
-        break
-      case ChaseMethod.NARROW_THE_GAP:
-        [updatedAttacker, updatedTarget] = this.VS.narrowTheGap(attacker, count, target)
-        break
-      case ChaseMethod.EVADE:
-        [updatedAttacker, updatedTarget] = this.VS.evade(attacker, count, target)
-        break
-    }
+    // We send st.count explicitly here because processMethod lets us
+    // choose whether to use count or smackdown, depending on whether
+    // we're attacking mooks or not.
+    const [updatedAttacker, updatedTarget] = this.processMethod(st, st.count)
 
     return {
       ...st,
@@ -238,52 +223,111 @@ const ChaseReducerService = {
     }
   },
 
-  resolveAttack: function(st: ChaseState): ChaseState {
-    if (this.VS.isMook(st.target) && st.count > 1) return this.killMooks(st)
-
-    let updatedAttacker = st.attacker
-    let updatedTarget = st.target
-
-    const { method, attacker, smackdown, target } = st
-    const beforeChasePoints = this.VS.chasePoints(target)
-    const beforeConditionPoints = this.VS.conditionPoints(target)
-
+  /*
+   * If the attacker is sideswiping the target, there is a chance that the
+   * attacker and target will both take some Chase Points and Condition Points.
+   * Sideswiping uses Crunch as the damage value and Frame as defense.
+   *
+   * If the attacker is trying to widen the gap, a sucessful result will
+   * change the attacker's and the target's positions to 'far'. It uses Squeal
+   * as the damage value and Handling as defense.
+   *
+   * If the attacker is trying to narrow the gap, a sucessful result will
+   * change the attacker's and the target's positions to 'near'. It uses Squeal
+   * as the damage value and Handling as defense.
+   *
+   * If the attacker is trying to evade, a sucessful result doesn't change
+   * the attacker's and target's positions, both are assumed to be 'far'. It
+   * uses Squeal as the damage value and Handling as defense.
+   *
+   */
+  processMethod: function(state: ChaseState, damage: number): [Vehicle, Vehicle] {
+    const { method, attacker, target } = state
     switch (method) {
       case ChaseMethod.RAM_SIDESWIPE:
-        [updatedAttacker, updatedTarget] = this.VS.ramSideswipe(attacker, smackdown as number, target)
-        break
+        return this.VS.ramSideswipe(attacker, damage, target)
       case ChaseMethod.WIDEN_THE_GAP:
-        [updatedAttacker, updatedTarget] = this.VS.widenTheGap(attacker, smackdown as number, target)
-        break
+        return this.VS.widenTheGap(attacker, damage, target)
       case ChaseMethod.NARROW_THE_GAP:
-        [updatedAttacker, updatedTarget] = this.VS.narrowTheGap(attacker, smackdown as number, target)
-        break
+        return this.VS.narrowTheGap(attacker, damage, target)
       case ChaseMethod.EVADE:
-        [updatedAttacker, updatedTarget] = this.VS.evade(attacker, smackdown as number, target)
-        break
+        return this.VS.evade(attacker, damage, target)
     }
+    return [attacker, target]
+  },
 
-    const afterChasePoints = this.VS.chasePoints(updatedTarget)
-    const afterConditionPoints = this.VS.conditionPoints(updatedTarget)
-    const chasePointsDifference = afterChasePoints - beforeChasePoints
-    const conditionPointsDifference = afterConditionPoints - beforeConditionPoints
+  /* These functions return values but don't make any changes */
+  R: {
+    defenseString: function(st: ChaseState): string {
+      if (st.stunt) {
+        return `${st.defense + 2}*`
+      } else if (this.VS.impairments(st.target) > 0) {
+        return `${st.defense}*`
+      }
+      return `${st.defense}`
+    },
 
+    mainAttackString: function(st: ChaseState): string {
+      return `${st.actionValue}`
+    },
+
+    targetMookDefense: function(st: ChaseState): number {
+      if (this.VS.isMook(st.target) && st.count > 1) {
+        return st.defense + st.count + (st.stunt ? 2 : 0)
+      }
+      return st.defense
+    },
+
+    calculateToughness: function(st: ChaseState): number {
+      switch (st.method) {
+        case ChaseMethod.RAM_SIDESWIPE:
+          return st.frame
+        default:
+          return st.handling
+      }
+    },
+
+    calculateDamage: function(st: ChaseState): number {
+      switch (st.method) {
+        case ChaseMethod.RAM_SIDESWIPE:
+          return st.crunch
+        default:
+          return st.squeal
+      }
+    },
+
+    defaultMethod: function(attacker: Vehicle): string {
+      if (this.VS.isPursuer(attacker) && VS.isNear(attacker)) return ChaseMethod.RAM_SIDESWIPE
+      if (this.VS.isPursuer(attacker) && VS.isFar(attacker)) return ChaseMethod.NARROW_THE_GAP
+      if (this.VS.isEvader(attacker) && VS.isNear(attacker)) return ChaseMethod.WIDEN_THE_GAP
+      return ChaseMethod.EVADE
+    },
+
+    // inject these dependencies so we can mock them in tests
+    AS: AS,
+    VS: VS,
+  },
+
+  /* These functions make changes to the state. The forms give us strings, but
+  *  we need number values. */
+  convertToNumber: function(state: ChaseState): ChaseState {
     return {
-      ...st,
-      chasePoints: chasePointsDifference,
-      conditionPoints: conditionPointsDifference,
-      attacker: updatedAttacker,
-      target: updatedTarget,
+      ...state,
+      swerve: {
+        ...state.swerve,
+        result: parseToNumber(state.swerve.result),
+      },
+      actionValue: parseToNumber(state.actionValue),
+      handling: parseToNumber(state.handling),
+      squeal: parseToNumber(state.squeal),
+      frame: parseToNumber(state.frame),
+      crunch: parseToNumber(state.crunch),
+      count: parseToNumber(state.count),
+      defense: parseToNumber(state.defense),
     }
   },
 
-  defaultMethod: function(attacker: Vehicle): string {
-    if (this.VS.isPursuer(attacker) && VS.isNear(attacker)) return ChaseMethod.RAM_SIDESWIPE
-    if (this.VS.isPursuer(attacker) && VS.isFar(attacker)) return ChaseMethod.NARROW_THE_GAP
-    if (this.VS.isEvader(attacker) && VS.isNear(attacker)) return ChaseMethod.WIDEN_THE_GAP
-    return ChaseMethod.EVADE
-  },
-
+  // inject these dependencies so we can mock them in tests
   AS: AS,
   VS: VS,
 }
