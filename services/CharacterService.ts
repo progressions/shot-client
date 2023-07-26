@@ -1,6 +1,5 @@
-import type { SkillValue, Character, CharacterEffect } from "../types/types"
+import type { Weapon, SkillValue, Character, CharacterEffect } from "../types/types"
 import SharedService, { woundThresholds } from "./SharedService"
-import { rollDie } from "../components/dice/DiceRoller"
 
 const CharacterService = {
   ...SharedService,
@@ -38,6 +37,10 @@ const CharacterService = {
 
   damage: function(character: Character): number {
     return this.rawActionValue(character, "Damage")
+  },
+
+  fortune: function(character: Character): number {
+    return this.rawActionValue(character, this.fortuneType(character))
   },
 
   fortuneType: function(character: Character): string {
@@ -136,7 +139,7 @@ const CharacterService = {
   fullHeal: function(character: Character): Character {
     if (this.isType(character, "Mook")) return character
 
-    const maxFortune = this.actionValue(character, "Max Fortune")
+    const maxFortune = this.maxFortune(character)
     let updatedCharacter = this.updateActionValue(character, "Wounds", 0)
     updatedCharacter = this.updateActionValue(updatedCharacter, "Marks of Death", 0)
     updatedCharacter = this.updateActionValue(updatedCharacter, "Fortune", maxFortune)
@@ -154,6 +157,13 @@ const CharacterService = {
 
   seriousWounds: function(character: Character): boolean {
     return this.seriousPoints(character, this.wounds(character))
+  },
+
+  weapons: function(character: Character): Weapon[] {
+    if (character.weapons && character.weapons.length) {
+      return character.weapons
+    }
+    return []
   },
 
 }

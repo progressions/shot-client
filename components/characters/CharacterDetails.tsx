@@ -125,6 +125,7 @@ export default function CharacterDetails({ character, editingCharacter, setEditi
     try {
       await client.hideCharacter(fight, character)
       dispatch({ type: FightActions.EDIT })
+      toastSuccess(`${character.name} hidden.`)
     } catch(error) {
       toastError()
     }
@@ -134,6 +135,7 @@ export default function CharacterDetails({ character, editingCharacter, setEditi
     try {
       await client.showCharacter(fight, character)
       dispatch({ type: FightActions.EDIT })
+      toastSuccess(`${character.name} revealed.`)
     } catch(error) {
       toastError()
     }

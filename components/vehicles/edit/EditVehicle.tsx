@@ -119,7 +119,6 @@ export default function EditVehicle({ vehicle:initialVehicle }: EditVehicleProps
             <ColorPicker character={vehicle} onChange={handleChange} dispatch={dispatchVehicle} />
           </Stack>
           <EditActionValues vehicle={vehicle} onChange={handleAVChange as React.ChangeEventHandler} />
-          <CharacterImage character={vehicle} onChange={handleChange} />
         </Stack>
       </Box>
     </>

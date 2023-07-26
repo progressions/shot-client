@@ -6,22 +6,25 @@ const FightService = {
   playerCharactersForInitiative: function(fight: Fight): Character[] {
     return this.playerCharacters(fight)
       .filter((character) => {
-        return (character.current_shot || 0) <= 0
+        if (SS.hidden(character)) return false
+
+        const shot = character.current_shot as number
+        return shot <= 0
       })
   },
 
   playerCharacters: function(fight: Fight): Character[] {
     return fight
-    .shot_order
-    .reduce((acc: any[], shot: ShotType) => {
-      shot[1].forEach((combatant) => {
-        if (SS.isPC(combatant)) {
-          combatant.current_shot = shot[0]
-          acc.push(combatant as Character)
-        }
-      })
-      return acc
-    }, [])
+      .shot_order
+      .reduce((acc: any[], shot: ShotType) => {
+        shot[1].forEach((combatant) => {
+          if (SS.isPC(combatant)) {
+            combatant.current_shot = shot[0]
+            acc.push(combatant as Character)
+          }
+        })
+        return acc
+      }, [])
   },
 
   startOfSequence: function(fight: Fight): boolean {

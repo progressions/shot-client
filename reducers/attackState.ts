@@ -1,6 +1,5 @@
-import type { Fight, Character, Weapon } from "../types/types"
-import { defaultFight, defaultWeapon, defaultCharacter } from "../types/types"
-import type { Swerve } from "../components/dice/DiceRoller"
+import type { Swerve, Fight, Character, Weapon } from "../types/types"
+import { defaultSwerve, defaultFight, defaultWeapon, defaultCharacter } from "../types/types"
 import AS from "../services/ActionService"
 import CS from "../services/CharacterService"
 import CES from "../services/CharacterEffectService"
@@ -41,15 +40,6 @@ export interface AttackState {
   boxcars: boolean
   wayAwfulFailure: boolean
   mookResults: AttackState[]
-}
-
-export const defaultSwerve:Swerve = {
-  result: 0,
-  positiveRolls: [],
-  negativeRolls: [],
-  positive: 0,
-  negative: 0,
-  boxcars: false,
 }
 
 export const initialAttackState: AttackState = {
@@ -242,7 +232,7 @@ export function attackReducer(state: AttackState, action: { type: AttackActions,
         attacker: attacker,
         actionValueName: CS.mainAttack(attacker) || "",
         actionValue: adjustedMainAttack,
-        weapon: attacker.weapons[0] || defaultWeapon,
+        weapon: CS.weapons(attacker)[0] || defaultWeapon,
         damage: CS.damage(attacker) || 7,
         count: mookCount,
       })

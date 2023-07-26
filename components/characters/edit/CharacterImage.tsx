@@ -1,27 +1,64 @@
-import type { Vehicle, Character } from "../../../types/types"
-import { Stack, colors, Paper, Typography, Box, Card, CardMedia, CardContent } from "@mui/material"
-import { StyledTextField } from "../../StyledFields"
+import { styled } from "@mui/material/styles"
+import { Typography } from "@mui/material"
+import Button from "@mui/material/Button"
+import IconButton from "@mui/material/IconButton"
+import PhotoCamera from "@mui/icons-material/PhotoCamera"
+import Stack from "@mui/material/Stack"
+import { useRef } from "react"
+import { Character } from "../../../types/types"
+import { useClient } from "../../../contexts/ClientContext"
+import { useToast } from "../../../contexts/ToastContext"
+import Api from "../../../utils/Api"
 
 interface CharacterImageProps {
-  character: Character | Vehicle
-  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void
+  character: Character
 }
 
-export default function CharacterImage({ character, onChange }: CharacterImageProps) {
+const Input = styled("input")({
+  display: "none",
+})
+
+export default function CharacterImage({ character }: CharacterImageProps) {
+  const inputRef = useRef<HTMLInputElement>(null)
+  const { jwt, client } = useClient()
+  const { toastError, toastSuccess } = useToast()
+  const api = new Api()
+
+  async function handleUpload(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
+    alert("upload")
+
+    const file = inputRef.current?.files?.[0]
+
+    console.log("A")
+    if (!file) return
+    console.log("B")
+    const formData = new FormData()
+    console.log("C")
+    formData.append("character[image]", file)
+    console.log("D")
+
+    console.log(formData)
+
+    await submitToAPI(formData)
+  }
+
+  async function submitToAPI(data: FormData) {
+    const url = api.allCharacters(character)
+    const response = await client.requestFormData("PATCH", url, data)
+    console.log(response)
+  }
+
   return (
-    <>
-      <StyledTextField name="image_url" label="Image" value={character.image_url || ""} onChange={onChange} sx={{width: 400}} />
-      { character.image_url &&
-        <Box sx={{backgroundColor: colors.indigo[900]}}>
-          <Card>
-            <CardMedia
-              component="img"
-              image={character.image_url || ""}
-              alt={character.name}
-            />
-          </Card>
-        </Box>
-      }
-    </>
-  );
+    <Stack direction="row" alignItems="center" spacing={2}>
+      <label htmlFor="contained-button-file">
+        <Input accept="image/*" id="contained-button-file" type="file" ref={inputRef} />
+        <Button variant="contained" component="span">
+          Upload
+        </Button>
+      </label>
+      <Button variant="outlined" onClick={handleUpload}>
+        Save
+      </Button>
+    </Stack>
+  )
 }

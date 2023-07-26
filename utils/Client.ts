@@ -1,4 +1,4 @@
-import axios from "axios"
+import axios, { AxiosResponse } from "axios"
 import Api from "./Api"
 import type {
   Location,
@@ -160,11 +160,11 @@ class Client {
   }
 
   async hideCharacter(fight: Fight, character: Character | ID):Promise<Character> {
-    return await this.patch(this.api.hideCharacter(fight, character as Character), {"character": character})
+    return await this.patch(this.api.hideCharacter(fight, { id: character.id } as Character), {"character": { id: character.id }})
   }
 
   async showCharacter(fight: Fight, character: Character | ID):Promise<Character> {
-    return await this.patch(this.api.revealCharacter(fight, character as Character), {"character": character})
+    return await this.patch(this.api.revealCharacter(fight, { id: character.id } as Character), {"character": { id: character.id } })
   }
 
   async addCharacter(fight: Fight, character: Character | ID):Promise<Character> {
@@ -499,6 +499,21 @@ class Client {
       }
     })
     .then(response => response.data)
+  }
+
+  async requestFormData<T>(method: string, url: string, formData: FormData): Promise<T> {
+
+    // Make the PATCH request with multipart/form-data
+    return await axios({
+      url: url,
+      method: method,
+      data: formData, // Use FormData as the request data
+      headers: {
+        'Content-Type': 'multipart/form-data', // Set the content type to multipart/form-data
+        'Authorization': this.jwt
+      }
+    })
+    .then((response: AxiosResponse<T>) => response.data);
   }
 
   queryParams(params={}) {

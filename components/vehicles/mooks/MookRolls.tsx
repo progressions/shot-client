@@ -1,15 +1,14 @@
 import { Tooltip, Divider, Grid, Stack, Dialog, DialogTitle, DialogContent, DialogActions, DialogContentText, Button, Box, Typography, TextField } from "@mui/material"
 import React, { useEffect, useState } from "react"
-import { rollDie, rollExplodingDie } from "../../dice/DiceRoller"
 import CasinoIcon from "@mui/icons-material/Casino"
 import { StyledTextField, SaveCancelButtons, StyledDialog } from "../../StyledFields"
 import EnemiesAutocomplete from "./EnemiesAutocomplete"
-import type { Vehicle } from "../../../types/types"
+import type { AttackRoll, Vehicle } from "../../../types/types"
 import { defaultVehicle } from "../../../types/types"
 import Smackdowns from "./Smackdowns"
 import CS from "../../../services/CharacterService"
 import VS from "../../../services/VehicleService"
-import AS, { AttackRollType } from "../../../services/ActionService"
+import AS from "../../../services/ActionService"
 import RollOutcome from "../../mooks/RollOutcome"
 import ButtonWithTooltip from "../../mooks/ButtonWithTooltip"
 
@@ -32,7 +31,7 @@ export default function MookRolls({ count, attack, damage, icon }: MookRollsPara
   const defaultValue:MookRollValue = {count: count || 10, attack: attack || 7, defense: 7, damage: damage || 7}
   const [open, setOpen] = useState<boolean>(false)
   const [value, setValue] = useState<MookRollValue>(defaultValue)
-  const [rolls, setRolls] = useState<AttackRollType[]>([])
+  const [rolls, setRolls] = useState<AttackRoll[]>([])
   const [enemy, setEnemy] = useState<Vehicle>(defaultVehicle)
 
   useEffect(() => {
@@ -96,7 +95,7 @@ export default function MookRolls({ count, attack, damage, icon }: MookRollsPara
             <Box py={2}>
               <Grid container sx={{width: "100%"}}>
                 {
-                  rolls.map((attackRoll: AttackRollType, index: number) => <RollOutcome attackRoll={attackRoll} key={index} />)
+                  rolls.map((attackRoll: AttackRoll, index: number) => <RollOutcome attackRoll={attackRoll} key={index} />)
                 }
               </Grid>
             </Box>

@@ -2,6 +2,31 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { Session, User as NextAuthUser } from "next-auth"
 import { AlertColor } from "@mui/material"
 
+export interface AttackRoll {
+  boxcars: boolean
+  wayAwfulFailure: boolean
+  swerve: number
+  actionResult: number
+  outcome?: number
+  success?: boolean
+  smackdown?: number
+  wounds?: number
+}
+
+export type ExplodingDiceRolls = [
+  number[],
+  number
+]
+
+export interface Swerve {
+  result: number
+  positiveRolls: number[]
+  negativeRolls: number[]
+  positive: number | null
+  negative: number | null
+  boxcars: boolean
+}
+
 export interface Location {
   id?: string
   name: string
@@ -638,3 +663,13 @@ export const defaultPaginationMeta:PaginationMeta = {
 export const defaultLocation:Location = {
   name: ""
 }
+
+export const defaultSwerve:Swerve = {
+  result: 0,
+  positiveRolls: [],
+  negativeRolls: [],
+  positive: 0,
+  negative: 0,
+  boxcars: false,
+}
+

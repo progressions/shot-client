@@ -7,10 +7,10 @@ import type { ShotType, Fight, Toast, Character, Person, Vehicle } from "../../t
 import { useFight } from "../../contexts/FightContext"
 import { useToast } from "../../contexts/ToastContext"
 import { useClient } from "../../contexts/ClientContext"
-import { rollDie } from "../dice/DiceRoller"
 import Client from "../../utils/Client"
 import { FightActions } from "../../reducers/fightState"
 import CS from "../../services/CharacterService"
+import DS from "../../services/DiceService"
 
 export default function RollInitiative() {
   const { fight, dispatch:dispatchFight } = useFight()
@@ -71,7 +71,7 @@ export default function RollInitiative() {
   }
 
   const updateCharacter = async (character: Person, shot: number) => {
-    const roll = CS.actionValue(character, "Speed") + rollDie() + shot
+    const roll = CS.actionValue(character, "Speed") + DS.rollDie() + shot
     const initiative = (roll > 1) ? roll : 1
     const updatedCharacter = CS.updateValue(character, "current_shot", initiative)
     try {
@@ -83,7 +83,7 @@ export default function RollInitiative() {
   }
 
   const updateVehicle = async (vehicle: Vehicle, shot: number) => {
-    const roll = (vehicle.action_values["Acceleration"] as number) - (vehicle.impairments || 0) + rollDie() + shot
+    const roll = (vehicle.action_values["Acceleration"] as number) - (vehicle.impairments || 0) + DS.rollDie() + shot
     const initiative = (roll > 1) ? roll : 1
     try {
       const data = await client.updateVehicle({...vehicle, "current_shot": initiative}, fight)

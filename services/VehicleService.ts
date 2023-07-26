@@ -10,7 +10,7 @@ const VehicleService = {
   mainAttackValue: function(vehicle: Vehicle): number {
     if (!vehicle.driver?.id) return Math.max(0, 7 - this.impairments(vehicle))
 
-    return CS.skill(vehicle.driver, "Driving")
+    return Math.max(0, CS.skill(vehicle.driver, "Driving") - this.impairments(vehicle))
   },
 
   // Not modified by Impairment
@@ -63,16 +63,16 @@ const VehicleService = {
     return this.rawActionValue(vehicle, "Chase Points")
   },
 
+  conditionPoints: function(vehicle: Vehicle): number {
+    return this.rawActionValue(vehicle, "Condition Points")
+  },
+
   seriousChasePoints: function(vehicle: Vehicle): boolean {
     return this.seriousPoints(vehicle, this.chasePoints(vehicle))
   },
 
   seriousConditionPoints: function(vehicle: Vehicle): boolean {
     return this.seriousPoints(vehicle, this.conditionPoints(vehicle))
-  },
-
-  conditionPoints: function(vehicle: Vehicle): number {
-    return this.rawActionValue(vehicle, "Condition Points")
   },
 
   damageReduction: function(vehicle: Vehicle, toughness: DamageReduction = "handling"): number {
@@ -92,11 +92,8 @@ const VehicleService = {
 
   narrowTheGap: function(attacker: Vehicle, smackdown: number, target: Vehicle): [Vehicle, Vehicle] {
     const updatedTarget = this.takeChasePoints(target, smackdown, "handling")
-    const nearAttacker = this.updatePosition(attacker, "near")
 
-    console.log("attacker position", nearAttacker.action_values["Position"])
-
-    return [nearAttacker, this.updatePosition(updatedTarget, "near")]
+    return [this.updatePosition(attacker, "near"), this.updatePosition(updatedTarget, "near")]
   },
 
   widenTheGap: function(attacker: Vehicle, smackdown: number, target: Vehicle): [Vehicle, Vehicle] {
@@ -192,7 +189,7 @@ const VehicleService = {
     if (!driver?.id) {
       return { ...vehicle, driver: { id: "", name: "" } } as Vehicle
     }
-    return { ...vehicle, driver: { id: driver.id, name: driver.name } } as Vehicle
+    return { ...vehicle, driver: driver } as Vehicle
   },
 
 }

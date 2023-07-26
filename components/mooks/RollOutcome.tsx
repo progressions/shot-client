@@ -1,8 +1,8 @@
 import { Grid, Tooltip, Typography } from '@mui/material'
-import type { AttackRollType } from "../../services/ActionService"
+import type { AttackRoll } from "../../types/types"
 
 export interface RollOutcomeParams {
-  attackRoll: AttackRollType
+  attackRoll: AttackRoll
 }
 
 export default function RollOutcome({ attackRoll }: RollOutcomeParams) {

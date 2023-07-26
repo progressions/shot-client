@@ -5,14 +5,14 @@ import { useClient } from "../../contexts/ClientContext"
 import { useFight } from "../../contexts/FightContext"
 import { useToast } from "../../contexts/ToastContext"
 import { FightActions } from "../../reducers/fightState"
-import type { Character, ActionValues } from "../../types/types"
+import type { AttackRoll, Character, ActionValues } from "../../types/types"
 import type { MookRollValue } from "./MookRolls"
 import CS from "../../services/CharacterService"
-import AS, { AttackRollType } from "../../services/ActionService"
+import AS from "../../services/ActionService"
 
 interface SmackdownsParams {
   enemy: Character
-  attackRolls: AttackRollType[]
+  attackRolls: AttackRoll[]
   value: MookRollValue
   handleClose: () => void
 }

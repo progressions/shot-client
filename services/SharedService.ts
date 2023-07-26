@@ -1,6 +1,6 @@
 import type { Faction, Vehicle, Character } from "../types/types"
 import { parseToNumber } from "../utils/parseToNumber"
-import { rollDie } from "../components/dice/DiceRoller"
+import Dice from "./DiceService"
 
 interface woundThresholdType {
   low: number,
@@ -12,8 +12,8 @@ interface woundThresholdsType {
 }
 
 export const woundThresholds: woundThresholdsType = {
-  "Boss": { low: 40, high: 45, serious: 50 },
   "Uber-Boss": { low: 40, high: 45, serious: 50 },
+  "Boss": { low: 40, high: 45, serious: 50 },
   "PC": { low: 25, high: 30, serious: 35 },
   "Ally": { low: 25, high: 30, serious: 35 },
   "Featured Foe": { low: 25, high: 30, serious: 35 },
@@ -26,6 +26,10 @@ const SharedService = {
 
   type: function(character: Character | Vehicle): string {
     return this.otherActionValue(character, "Type")
+  },
+
+  hidden: function(character: Character | Vehicle): boolean {
+    return character.current_shot === undefined || character.current_shot === null
   },
 
   isCharacter: function(character: Character | Vehicle): boolean {
@@ -119,7 +123,7 @@ const SharedService = {
     // goes from < 40 to between 40 and 44
     // A PC, Ally, Featured Foe gain 1 point of Impairment when their Wounds
     // go from < 25 to between 25 and 30
-    if (originalWounds < threshold.low && newWounds >= threshold.low && newWounds <= threshold.high) {
+    if (originalWounds < threshold.low && newWounds >= threshold.low && newWounds < threshold.high) {
       return 1
     }
     // Boss and Uber-Boss gain 1 point of Impairment when their Wounds go from
@@ -166,7 +170,7 @@ const SharedService = {
   },
 
   rollInitiative(character: Character | Vehicle, roll?: number | null): Character | Vehicle {
-    const dieResult = roll || rollDie()
+    const dieResult = roll || Dice.rollDie()
     const speedRoll = this.actionValue(character, "Speed") + dieResult
     const initiativePenalty = parseToNumber(character.current_shot || 0)
     const initiative = Math.max(0, parseToNumber(speedRoll) + initiativePenalty)
@@ -180,7 +184,7 @@ const SharedService = {
     const type = this.type(character)
     const threshold = woundThresholds[type]
 
-    return (value > threshold.serious)
+    return (value >= threshold.serious)
   },
 
   mooks: function(character: Character | Vehicle): number {

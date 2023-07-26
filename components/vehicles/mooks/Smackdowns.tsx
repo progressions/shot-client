@@ -4,14 +4,14 @@ import { useClient } from "../../../contexts/ClientContext"
 import { useFight } from "../../../contexts/FightContext"
 import { useToast } from "../../../contexts/ToastContext"
 import { FightActions } from "../../../reducers/fightState"
-import type { Vehicle, VehicleActionValues } from "../../../types/types"
+import type { AttackRoll, Vehicle, VehicleActionValues } from "../../../types/types"
 import type { MookRollValue } from "./MookRolls"
 import VS from "../../../services/VehicleService"
-import AS, { AttackRollType } from "../../../services/ActionService"
+import AS from "../../../services/ActionService"
 
 interface SmackdownsParams {
   enemy: Vehicle
-  attackRolls: AttackRollType[]
+  attackRolls: AttackRoll[]
   value: MookRollValue
   handleClose: () => void
 }
@@ -21,7 +21,7 @@ export default function Smackdowns({ enemy, attackRolls, value, handleClose }: S
   const { toastError, toastSuccess } = useToast()
   const { fight, dispatch } = useFight()
 
-  const damageMessage = (enemy: Vehicle, attackRoll: AttackRollType) => {
+  const damageMessage = (enemy: Vehicle, attackRoll: AttackRoll) => {
     const originalHandling = VS.rawActionValue(enemy, "Handling")
     const handling = VS.handling(enemy)
     const outcome = attackRoll.outcome
@@ -46,14 +46,14 @@ export default function Smackdowns({ enemy, attackRolls, value, handleClose }: S
     handleClose()
   }
 
-  const successfulRolls = attackRolls.filter((attackRoll: AttackRollType) => attackRoll.success)
+  const successfulRolls = attackRolls.filter((attackRoll: AttackRoll) => attackRoll.success)
   const total = AS.totalWounds({ attackRolls: successfulRolls, toughness: VS.handling(enemy) })
 
   return (<>
     { successfulRolls.length > 0 && enemy.name && <Typography variant="h5" py={2}>{enemy.name}</Typography> }
     {
       successfulRolls
-      .map((attackRoll: AttackRollType, index: number) => {
+      .map((attackRoll: AttackRoll, index: number) => {
         const message = damageMessage(enemy, attackRoll)
         return (<React.Fragment key={(Math.random() * 10000)}><Typography component="span">{message}</Typography><br /></React.Fragment>)
       })

@@ -1,15 +1,14 @@
 import { Tooltip, Divider, Grid, Stack, Dialog, DialogTitle, DialogContent, DialogActions, DialogContentText, Button, Box, Typography, TextField } from "@mui/material"
 import React, { useEffect, useState } from "react"
-import { rollDie, rollExplodingDie, rollSwerve } from "../dice/DiceRoller"
 import CasinoIcon from "@mui/icons-material/Casino"
 import { StyledTextField, SaveCancelButtons, StyledDialog } from "../StyledFields"
 import EnemiesAutocomplete from "./EnemiesAutocomplete"
-import type { Character } from "../../types/types"
+import type { AttackRoll, Character } from "../../types/types"
 import { defaultCharacter } from "../../types/types"
 import Smackdowns from "./Smackdowns"
 import CS from "../../services/CharacterService"
 import VS from "../../services/VehicleService"
-import AS, { AttackRollType } from "../../services/ActionService"
+import AS from "../../services/ActionService"
 import CES from "../../services/CharacterEffectService"
 import RollOutcome from "./RollOutcome"
 import ButtonWithTooltip from "./ButtonWithTooltip"
@@ -39,7 +38,7 @@ export default function MookRolls({ count, attack, damage, icon }: MookRollsPara
   const defaultValue:MookRollValue = {count: count || 10, attack: attack || 8, defense: 13, damage: damage || 7}
   const [open, setOpen] = useState<boolean>(false)
   const [value, setValue] = useState<MookRollValue>(defaultValue)
-  const [rolls, setRolls] = useState<AttackRollType[]>([])
+  const [rolls, setRolls] = useState<AttackRoll[]>([])
   const [enemy, setEnemy] = useState<Character>(defaultCharacter)
   const { fight } = useFight()
 
@@ -101,7 +100,7 @@ export default function MookRolls({ count, attack, damage, icon }: MookRollsPara
             <Box py={2}>
               <Grid container sx={{width: "100%"}}>
                 {
-                  rolls.map((attackRoll: AttackRollType, index: number) => <RollOutcome attackRoll={attackRoll} key={index} />)
+                  rolls.map((attackRoll: AttackRoll, index: number) => <RollOutcome attackRoll={attackRoll} key={index} />)
                 }
               </Grid>
             </Box>

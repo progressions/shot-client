@@ -1,9 +1,9 @@
 import type { Position, Fight, Vehicle, Weapon } from "../types/types"
-import { defaultFight, defaultWeapon, defaultVehicle } from "../types/types"
-import type { Swerve } from "../components/dice/DiceRoller"
+import { Swerve, defaultSwerve, defaultFight, defaultWeapon, defaultVehicle } from "../types/types"
 import AS from "../services/ActionService"
 import VS from "../services/VehicleService"
 import CES from "../services/CharacterEffectService"
+import CRS from "../services/ChaseReducerService"
 import { parseToNumber } from "../utils/parseToNumber"
 
 export enum ChaseActions {
@@ -57,15 +57,6 @@ export interface ChaseState {
   mookResults: ChaseState[]
 }
 
-export const defaultSwerve:Swerve = {
-  result: 0,
-  positiveRolls: [],
-  negativeRolls: [],
-  positive: 0,
-  negative: 0,
-  boxcars: false,
-}
-
 export const initialChaseState: ChaseState = {
   edited: false,
   // values you add
@@ -100,298 +91,17 @@ export const initialChaseState: ChaseState = {
   mookResults: []
 }
 
-function convertToNumber(state: ChaseState): ChaseState {
-  return {
-    ...state,
-    swerve: {
-      ...state.swerve,
-      result: parseToNumber(state.swerve.result),
-    },
-    actionValue: parseToNumber(state.actionValue),
-    handling: parseToNumber(state.handling),
-    squeal: parseToNumber(state.squeal),
-    frame: parseToNumber(state.frame),
-    crunch: parseToNumber(state.crunch),
-    count: parseToNumber(state.count),
-    defense: parseToNumber(state.defense),
-  }
-}
-
-function calculateDefense(st: ChaseState): string {
-  const [_defenseAdjustment, adjustedDefense] = CES.adjustedActionValue(st.target, "Defense", st.fight, false)
-  if (st.stunt) {
-    return `${st.defense + 2}*`
-  } else if (VS.impairments(st.target) > 0 || adjustedDefense != VS.defense(st.target)) {
-    return `${st.defense}*`
-  }
-  return `${st.defense}`
-}
-
-function calculateMainAttack(st: ChaseState): string {
-  return `${st.actionValue}`
-}
-
-function targetMookDefense(st: ChaseState): number {
-  if (VS.isMook(st.target) && st.count > 1) {
-    return st.defense + st.count + (st.stunt ? 2 : 0)
-  }
-  return st.defense
-}
-
-function makeAttack(st: ChaseState): ChaseState {
-  if (VS.isMook(st.attacker) && st.count > 1) {
-    return calculateMookAttackValues(st)
-  }
-  return calculateAttackValues(st)
-}
-
-function calculateMookAttackValues(st: ChaseState): ChaseState {
-  const results = []
-  for (let i = 0; i < st.count; i++) {
-    const swerve = AS.swerve()
-    const result = calculateAttackValues({
-      ...st,
-      swerve: swerve,
-      typedSwerve: "",
-    })
-    results.push(result)
-  }
-
-  return {
-    ...st,
-    mookResults: results,
-  }
-}
-
-function closeGapPosition(st: ChaseState, success: boolean): string {
-  if (success && !VS.isNear(st.attacker)) {
-    return "near"
-  }
-  return st.position
-}
-
-function widenGapPosition(st: ChaseState, success: boolean): string {
-  if (success && VS.isNear(st.attacker)) {
-    return "far"
-  }
-  return st.position
-}
-
-function pursue(st: ChaseState): ChaseState {
-  const { success, actionResult, outcome, smackdown, wounds, wayAwfulFailure } = AS.wounds({
-    swerve: st.swerve,
-    actionValue: st.actionValue,
-    defense: st.mookDefense,
-    stunt: st.stunt,
-    toughness: calculateToughness(st),
-    damage: calculateDamage(st),
-  })
-
-  const position = closeGapPosition(st, success as boolean)
-
-  return {
-    ...st,
-    // calculated values
-    actionResult: actionResult,
-    outcome: outcome || null,
-    success: success as boolean,
-    smackdown: smackdown || null,
-    position: position as Position,
-    chasePoints: wounds || null,
-    conditionPoints: VS.isNear(st.attacker) ? wounds as number : null,
-    boxcars: st.swerve.boxcars,
-    wayAwfulFailure: wayAwfulFailure,
-  }
-}
-
-function calculateToughness(st: ChaseState): number {
-  switch (st.method) {
-    case ChaseMethod.RAM_SIDESWIPE:
-      return st.frame
-    default:
-      return st.handling
-  }
-}
-
-function calculateDamage(st: ChaseState): number {
-  switch (st.method) {
-    case ChaseMethod.RAM_SIDESWIPE:
-      return st.crunch
-    default:
-      return st.squeal
-  }
-}
-
-function evade(st: ChaseState): ChaseState {
-  const { success, actionResult, outcome, smackdown, wounds, wayAwfulFailure } = AS.wounds({
-    swerve: st.swerve,
-    actionValue: st.actionValue,
-    defense: st.mookDefense,
-    stunt: st.stunt,
-    toughness: calculateToughness(st),
-    damage: calculateDamage(st),
-  })
-
-  const position = widenGapPosition(st, success as boolean)
-
-  return {
-    ...st,
-    // calculated values
-    actionResult: actionResult,
-    outcome: outcome || null,
-    success: success as boolean,
-    smackdown: smackdown || null,
-    position: position as Position,
-    chasePoints: wounds || null,
-    conditionPoints: null,
-    boxcars: st.swerve.boxcars,
-    wayAwfulFailure: wayAwfulFailure,
-  }
-}
-
-function calculateAttackValues(st: ChaseState): ChaseState {
-  if (st.typedSwerve !== "") {
-    st.swerve = { ...st.swerve, result: parseToNumber(st.typedSwerve) }
-  }
-
-  st.modifiedDefense = calculateDefense(st)
-  st.modifiedActionValue = calculateMainAttack(st)
-  st.mookDefense = targetMookDefense(st)
-
-  if (VS.isPursuer(st.attacker)) {
-    return pursue(st)
-  }
-
-  return evade(st)
-}
-
-function process(state: ChaseState): ChaseState {
-  let st = convertToNumber(state)
-
-  if (st.edited) {
-    st = makeAttack(st)
-    if (VS.isMook(st.attacker)) return resolveMookAttack(st)
-    return resolveAttack(st)
-  }
-
-  return st
-}
-
-// resolve attacks by mooks
-function resolveMookAttack(st: ChaseState): ChaseState {
-  const updatedState = st.mookResults.reduce((acc, result) => {
-    result.target = acc.target
-    result.attacker = acc.attacker
-
-    const upState = resolveAttack(result)
-
-    return {
-      ...acc,
-      chasePoints: (acc.chasePoints || 0) + (upState.chasePoints || 0),
-      conditionPoints: (acc.conditionPoints || 0) + (upState.conditionPoints || 0),
-      attacker: upState.attacker,
-      target: upState.target,
-    }
-  }, st)
-
-  return {
-    ...st,
-    attacker: updatedState.attacker,
-    target: updatedState.target,
-    chasePoints: updatedState.chasePoints,
-    conditionPoints: updatedState.conditionPoints,
-  }
-}
-
-function killMooks(st: ChaseState): ChaseState {
-  if (!st.success) return st
-
-  let updatedAttacker = st.attacker
-  let updatedTarget = st.target
-
-  const { method, attacker, count, target } = st
-
-  console.log("count", count)
-
-  switch (method) {
-    case ChaseMethod.RAM_SIDESWIPE:
-      [updatedAttacker, updatedTarget] = VS.ramSideswipe(attacker, count, target)
-      break
-    case ChaseMethod.WIDEN_THE_GAP:
-      [updatedAttacker, updatedTarget] = VS.widenTheGap(attacker, count, target)
-      break
-    case ChaseMethod.NARROW_THE_GAP:
-      [updatedAttacker, updatedTarget] = VS.narrowTheGap(attacker, count, target)
-      break
-    case ChaseMethod.EVADE:
-      [updatedAttacker, updatedTarget] = VS.evade(attacker, count, target)
-      break
-  }
-
-  return {
-    ...st,
-    attacker: updatedAttacker,
-    target: updatedTarget
-  }
-}
-
-function resolveAttack(st: ChaseState): ChaseState {
-  if (VS.isMook(st.target) && st.count > 1) return killMooks(st)
-
-  let updatedAttacker = st.attacker
-  let updatedTarget = st.target
-
-  const { method, attacker, smackdown, target } = st
-  const beforeChasePoints = VS.chasePoints(target)
-  const beforeConditionPoints = VS.conditionPoints(target)
-
-  switch (method) {
-    case ChaseMethod.RAM_SIDESWIPE:
-      [updatedAttacker, updatedTarget] = VS.ramSideswipe(attacker, smackdown as number, target)
-      break
-    case ChaseMethod.WIDEN_THE_GAP:
-      [updatedAttacker, updatedTarget] = VS.widenTheGap(attacker, smackdown as number, target)
-      break
-    case ChaseMethod.NARROW_THE_GAP:
-      [updatedAttacker, updatedTarget] = VS.narrowTheGap(attacker, smackdown as number, target)
-      break
-    case ChaseMethod.EVADE:
-      [updatedAttacker, updatedTarget] = VS.evade(attacker, smackdown as number, target)
-      break
-  }
-
-  const afterChasePoints = VS.chasePoints(updatedTarget)
-  const afterConditionPoints = VS.conditionPoints(updatedTarget)
-  const chasePointsDifference = afterChasePoints - beforeChasePoints
-  const conditionPointsDifference = afterConditionPoints - beforeConditionPoints
-
-  return {
-    ...st,
-    chasePoints: chasePointsDifference,
-    conditionPoints: conditionPointsDifference,
-    attacker: updatedAttacker,
-    target: updatedTarget,
-  }
-}
-
-function defaultMethod(attacker: Vehicle): string {
-  if (VS.isPursuer(attacker) && VS.isNear(attacker)) return ChaseMethod.RAM_SIDESWIPE
-  if (VS.isPursuer(attacker) && VS.isFar(attacker)) return ChaseMethod.NARROW_THE_GAP
-  if (VS.isEvader(attacker) && VS.isNear(attacker)) return ChaseMethod.WIDEN_THE_GAP
-  return ChaseMethod.EVADE
-}
-
 export function chaseReducer(state: ChaseState, action: { type: ChaseActions, payload?: Partial<ChaseState> }): ChaseState {
   switch (action.type) {
     case ChaseActions.EDIT:
-      return process({
+      return CRS.process({
         ...state,
         ...action.payload,
         edited: true,
       })
     case ChaseActions.TARGET:
       const { target } = action.payload as ChaseState
-      return process({
+      return CRS.process({
         ...state,
         target: target,
         defense: VS.defense(target),
@@ -400,7 +110,7 @@ export function chaseReducer(state: ChaseState, action: { type: ChaseActions, pa
       })
     case ChaseActions.ATTACKER:
       const { attacker } = action.payload as ChaseState
-      return process({
+      return CRS.process({
         ...state,
         attacker: attacker,
         actionValue: VS.mainAttackValue(attacker),
@@ -410,16 +120,16 @@ export function chaseReducer(state: ChaseState, action: { type: ChaseActions, pa
         crunch: VS.crunch(attacker),
         count: VS.isMook(attacker) ? VS.mooks(attacker) : 1,
         position: VS.position(attacker),
-        method: defaultMethod(attacker) as ChaseMethod,
+        method: CRS.defaultMethod(attacker) as ChaseMethod,
       })
     case ChaseActions.UPDATE:
-      return process({
+      return CRS.process({
         ...state,
         ...action.payload,
       })
     case ChaseActions.RESET:
-      return process(initialChaseState)
+      return CRS.process(initialChaseState)
     default:
-      return process(state)
+      return CRS.process(state)
   }
 }

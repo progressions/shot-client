@@ -148,7 +148,7 @@ export default function EditCharacter({ character:initialCharacter }: EditCharac
             <Advancements character={character} />
           </PlayerTypeOnly>
           <Sites character={character} />
-          <CharacterImage character={character} onChange={handleChange} />
+          <CharacterImage character={character} />
           <Description character={character} onChange={handleDescriptionChange} />
           <Schticks state={schticksState} />
           <SchtickSelector />
