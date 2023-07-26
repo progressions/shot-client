@@ -9,22 +9,10 @@ const ActionService = {
     }, 0)
   },
 
-  totalChasePoints: function({ attackRolls, toughness }: { attackRolls: any[], toughness: number }): number {
-    return attackRolls.reduce((total: number, attackRoll: any) => {
-      return total + (attackRoll.chasePoints || 0)
-    }, 0)
-  },
-
-  totalConditionPoints: function({ attackRolls, toughness }: { attackRolls: any[], toughness: number }): number {
-    return attackRolls.reduce((total: number, attackRoll: any) => {
-      return total + (attackRoll.conditionPoints || 0)
-    }, 0)
-  },
-
-  attacks: function({ count, actionValue, defense, stunt, damage, toughness }: { count: number, actionValue: number, defense: number, stunt?: boolean, damage: number, toughness: number }): AttackRoll[] {
+  attacks: function({ count, swerve, actionValue, defense, stunt, damage, toughness }: { count: number, swerve?: Swerve, actionValue: number, defense: number, stunt?: boolean, damage: number, toughness: number }): AttackRoll[] {
     const attacks = []
     for (let i = 0; i < count; i++) {
-      attacks.push(this.wounds({ actionValue, defense, stunt, damage, toughness }))
+      attacks.push(this.wounds({ swerve, actionValue, defense, stunt, damage, toughness }))
     }
     return attacks
   },
