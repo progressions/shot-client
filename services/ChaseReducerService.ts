@@ -1,5 +1,4 @@
 import type { Position, Fight, Character, Vehicle } from "../types/types"
-import CS from "./CharacterService"
 import AS from "./ActionService"
 import CES from "./CharacterEffectService"
 import VS from "./VehicleService"
@@ -25,10 +24,9 @@ const ChaseReducerService = {
   },
 
   calculateDefense: function(st: ChaseState): string {
-    const [_defenseAdjustment, adjustedDefense] = CES.adjustedActionValue(st.target, "Defense", st.fight, false)
     if (st.stunt) {
       return `${st.defense + 2}*`
-    } else if (VS.impairments(st.target) > 0 || adjustedDefense != VS.defense(st.target)) {
+    } else if (this.VS.impairments(st.target) > 0) {
       return `${st.defense}*`
     }
     return `${st.defense}`
@@ -39,14 +37,14 @@ const ChaseReducerService = {
   },
 
   targetMookDefense: function(st: ChaseState): number {
-    if (VS.isMook(st.target) && st.count > 1) {
+    if (this.VS.isMook(st.target) && st.count > 1) {
       return st.defense + st.count + (st.stunt ? 2 : 0)
     }
     return st.defense
   },
 
   makeAttack: function(st: ChaseState): ChaseState {
-    if (VS.isMook(st.attacker) && st.count > 1) {
+    if (this.VS.isMook(st.attacker) && st.count > 1) {
       return this.calculateMookAttackValues(st)
     }
     return this.calculateAttackValues(st)
@@ -55,7 +53,7 @@ const ChaseReducerService = {
   calculateMookAttackValues: function(st: ChaseState): ChaseState {
     const results = []
     for (let i = 0; i < st.count; i++) {
-      const swerve = AS.swerve()
+      const swerve = this.AS.swerve()
       const result = this.calculateAttackValues({
         ...st,
         swerve: swerve,
@@ -71,21 +69,21 @@ const ChaseReducerService = {
   },
 
   closeGapPosition: function(st: ChaseState, success: boolean): string {
-    if (success && !VS.isNear(st.attacker)) {
+    if (success && !this.VS.isNear(st.attacker)) {
       return "near"
     }
     return st.position
   },
 
   widenGapPosition: function(st: ChaseState, success: boolean): string {
-    if (success && VS.isNear(st.attacker)) {
+    if (success && this.VS.isNear(st.attacker)) {
       return "far"
     }
     return st.position
   },
 
   pursue: function(st: ChaseState): ChaseState {
-    const { success, actionResult, outcome, smackdown, wounds, wayAwfulFailure } = AS.wounds({
+    const { success, actionResult, outcome, smackdown, wounds, wayAwfulFailure } = this.AS.wounds({
       swerve: st.swerve,
       actionValue: st.actionValue,
       defense: st.mookDefense,
@@ -105,7 +103,7 @@ const ChaseReducerService = {
       smackdown: smackdown || null,
       position: position as Position,
       chasePoints: wounds || null,
-      conditionPoints: VS.isNear(st.attacker) ? wounds as number : null,
+      conditionPoints: this.VS.isNear(st.attacker) ? wounds as number : null,
       boxcars: st.swerve.boxcars,
       wayAwfulFailure: wayAwfulFailure,
     }
@@ -165,7 +163,7 @@ const ChaseReducerService = {
     st.modifiedActionValue = this.calculateMainAttack(st)
     st.mookDefense = this.targetMookDefense(st)
 
-    if (VS.isPursuer(st.attacker)) {
+    if (this.VS.isPursuer(st.attacker)) {
       return this.pursue(st)
     }
 
@@ -177,7 +175,7 @@ const ChaseReducerService = {
 
     if (st.edited) {
       st = this.makeAttack(st)
-      if (VS.isMook(st.attacker)) return this.resolveMookAttack(st)
+      if (this.VS.isMook(st.attacker)) return this.resolveMookAttack(st)
       return this.resolveAttack(st)
     }
 
@@ -220,16 +218,16 @@ const ChaseReducerService = {
 
     switch (method) {
       case ChaseMethod.RAM_SIDESWIPE:
-        [updatedAttacker, updatedTarget] = VS.ramSideswipe(attacker, count, target)
+        [updatedAttacker, updatedTarget] = this.VS.ramSideswipe(attacker, count, target)
         break
       case ChaseMethod.WIDEN_THE_GAP:
-        [updatedAttacker, updatedTarget] = VS.widenTheGap(attacker, count, target)
+        [updatedAttacker, updatedTarget] = this.VS.widenTheGap(attacker, count, target)
         break
       case ChaseMethod.NARROW_THE_GAP:
-        [updatedAttacker, updatedTarget] = VS.narrowTheGap(attacker, count, target)
+        [updatedAttacker, updatedTarget] = this.VS.narrowTheGap(attacker, count, target)
         break
       case ChaseMethod.EVADE:
-        [updatedAttacker, updatedTarget] = VS.evade(attacker, count, target)
+        [updatedAttacker, updatedTarget] = this.VS.evade(attacker, count, target)
         break
     }
 
@@ -241,32 +239,32 @@ const ChaseReducerService = {
   },
 
   resolveAttack: function(st: ChaseState): ChaseState {
-    if (VS.isMook(st.target) && st.count > 1) return this.killMooks(st)
+    if (this.VS.isMook(st.target) && st.count > 1) return this.killMooks(st)
 
     let updatedAttacker = st.attacker
     let updatedTarget = st.target
 
     const { method, attacker, smackdown, target } = st
-    const beforeChasePoints = VS.chasePoints(target)
-    const beforeConditionPoints = VS.conditionPoints(target)
+    const beforeChasePoints = this.VS.chasePoints(target)
+    const beforeConditionPoints = this.VS.conditionPoints(target)
 
     switch (method) {
       case ChaseMethod.RAM_SIDESWIPE:
-        [updatedAttacker, updatedTarget] = VS.ramSideswipe(attacker, smackdown as number, target)
+        [updatedAttacker, updatedTarget] = this.VS.ramSideswipe(attacker, smackdown as number, target)
         break
       case ChaseMethod.WIDEN_THE_GAP:
-        [updatedAttacker, updatedTarget] = VS.widenTheGap(attacker, smackdown as number, target)
+        [updatedAttacker, updatedTarget] = this.VS.widenTheGap(attacker, smackdown as number, target)
         break
       case ChaseMethod.NARROW_THE_GAP:
-        [updatedAttacker, updatedTarget] = VS.narrowTheGap(attacker, smackdown as number, target)
+        [updatedAttacker, updatedTarget] = this.VS.narrowTheGap(attacker, smackdown as number, target)
         break
       case ChaseMethod.EVADE:
-        [updatedAttacker, updatedTarget] = VS.evade(attacker, smackdown as number, target)
+        [updatedAttacker, updatedTarget] = this.VS.evade(attacker, smackdown as number, target)
         break
     }
 
-    const afterChasePoints = VS.chasePoints(updatedTarget)
-    const afterConditionPoints = VS.conditionPoints(updatedTarget)
+    const afterChasePoints = this.VS.chasePoints(updatedTarget)
+    const afterConditionPoints = this.VS.conditionPoints(updatedTarget)
     const chasePointsDifference = afterChasePoints - beforeChasePoints
     const conditionPointsDifference = afterConditionPoints - beforeConditionPoints
 
@@ -280,11 +278,14 @@ const ChaseReducerService = {
   },
 
   defaultMethod: function(attacker: Vehicle): string {
-    if (VS.isPursuer(attacker) && VS.isNear(attacker)) return ChaseMethod.RAM_SIDESWIPE
-    if (VS.isPursuer(attacker) && VS.isFar(attacker)) return ChaseMethod.NARROW_THE_GAP
-    if (VS.isEvader(attacker) && VS.isNear(attacker)) return ChaseMethod.WIDEN_THE_GAP
+    if (this.VS.isPursuer(attacker) && VS.isNear(attacker)) return ChaseMethod.RAM_SIDESWIPE
+    if (this.VS.isPursuer(attacker) && VS.isFar(attacker)) return ChaseMethod.NARROW_THE_GAP
+    if (this.VS.isEvader(attacker) && VS.isNear(attacker)) return ChaseMethod.WIDEN_THE_GAP
     return ChaseMethod.EVADE
   },
+
+  AS: AS,
+  VS: VS,
 }
 
 export default ChaseReducerService

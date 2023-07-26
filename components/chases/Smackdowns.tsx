@@ -58,8 +58,15 @@ export default function Smackdowns({ state, handleClose }: SmackdownsParams) {
         return (<React.Fragment key={(Math.random() * 10000)}><Typography component="span">{message}</Typography><br /></React.Fragment>)
       })
     }
-    { target?.id && (chasePoints || 0) > 0 && <Typography variant="h5" py={2} sx={{color: "red"}}>Total Chase Points: {chasePoints}</Typography> }
-    { target?.id && (chasePoints || 0) > 0 && <Button endIcon={<HeartBrokenIcon />} variant="contained" color="error" onClick={applyWounds}>Apply Wounds</Button> }
+    {
+      target?.id && (chasePoints || 0) > 0 &&
+      <Typography variant="h5" py={2} sx={{color: "red"}}>
+        Total Chase Points: {chasePoints}
+      </Typography> }
+      { target?.id && (chasePoints || 0) > 0 &&
+      <Button endIcon={<HeartBrokenIcon />} variant="contained" color="error" onClick={applyWounds}>
+        Apply Wounds
+    </Button> }
     </>
   )
 }
