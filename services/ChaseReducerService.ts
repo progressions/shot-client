@@ -65,6 +65,7 @@ const ChaseReducerService = {
     st.modifiedDefense = this.R.defenseString(st)
     st.modifiedActionValue = this.R.mainAttackString(st)
     st.mookDefense = this.R.targetMookDefense(st)
+    console.log("YES MOOK DEFENSE", st.mookDefense)
 
     return this.VS.isPursuer(st.attacker) ? this.pursue(st) : this.evade(st)
   },

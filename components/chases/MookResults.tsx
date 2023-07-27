@@ -22,7 +22,7 @@ export default function MookResults({ state }: MookResultsProps) {
     }
   }
 
-  if (!success && mookDefense) {
+  if (!success) {
     return (<>
       <Typography variant="h4">{ statusMessage() } Miss!</Typography>
       <Typography variant="subtitle1" sx={subtitleStyle}>
@@ -31,7 +31,7 @@ export default function MookResults({ state }: MookResultsProps) {
     </>)
   }
 
-  if (success && mookDefense) {
+  if (success) {
     return (<>
       <Typography variant="h4">{ statusMessage() } Hit! { attacker.name || "You" } took out { count } { count == 1 ? "Mook" : "Mooks"}!</Typography>
       <Typography variant="subtitle1" sx={subtitleStyle}>
@@ -40,7 +40,7 @@ export default function MookResults({ state }: MookResultsProps) {
     </>)
   }
 
-  console.log(state)
+  console.log("OopS!", state)
 
   return (
     <><p>Hello</p></>

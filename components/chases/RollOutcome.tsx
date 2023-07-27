@@ -9,8 +9,6 @@ export interface RollOutcomeParams {
 export default function RollOutcome({ state }: RollOutcomeParams) {
   const { success, actionResult } = state
 
-  console.log("RollOutcome", state)
-
   const style = (success) ? {color: "red", fontWeight: "bold"} : {}
 
   return (
