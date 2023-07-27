@@ -55,7 +55,7 @@ export default function SchtickModal({ open, setOpen, state, dispatch, schtick:i
       await reloadSchticks()
       toastSuccess("Schtick updated.")
     } catch(error) {
-      console.log(error)
+      console.error(error)
       toastError()
     }
     cancelForm()

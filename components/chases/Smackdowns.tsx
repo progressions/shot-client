@@ -47,7 +47,6 @@ export default function Smackdowns({ state, handleClose }: SmackdownsParams) {
   }
 
   const successfulRolls = mookResults.filter((attackRoll: ChaseMookResult) => attackRoll.success)
-  console.log("successfulRolls", successfulRolls)
 
   return (<>
     { successfulRolls.length > 0 && target.name && <Typography variant="h5" py={2}>{target.name}</Typography> }

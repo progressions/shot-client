@@ -111,27 +111,10 @@ export function chaseReducer(state: ChaseState, action: { type: ChaseActions, pa
       })
     case ChaseActions.TARGET:
       const { target } = action.payload as ChaseState
-      return CRS.process({
-        ...state,
-        target: target,
-        defense: VS.defense(target),
-        handling: VS.isMook(target) ? 0 : VS.handling(target),
-        frame: VS.isMook(target) ? 0 : VS.frame(target),
-      })
+      return CRS.setTarget(state, target)
     case ChaseActions.ATTACKER:
       const { attacker } = action.payload as ChaseState
-      return CRS.process({
-        ...state,
-        attacker: attacker,
-        actionValue: VS.mainAttackValue(attacker),
-        handling: VS.handling(attacker),
-        squeal: VS.squeal(attacker),
-        frame: VS.frame(attacker),
-        crunch: VS.crunch(attacker),
-        count: VS.isMook(attacker) ? VS.mooks(attacker) : 1,
-        position: VS.position(attacker),
-        method: CRS.R.defaultMethod(attacker) as ChaseMethod,
-      })
+      return CRS.setAttacker(state, attacker)
     case ChaseActions.UPDATE:
       return CRS.process({
         ...state,

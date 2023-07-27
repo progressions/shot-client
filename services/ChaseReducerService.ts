@@ -34,9 +34,8 @@ const ChaseReducerService = {
   // take a Bump of damage to its Chase Points and Condition Points.
   //
   resolveAttack: function(state: ChaseState): ChaseState {
-    if (this.VS.isMook(state.target) && state.count > 1) return this.killMooks(state)
-
     const st = this.calculateAttackValues(state)
+    if (this.VS.isMook(state.target)) return this.killMooks(st)
 
     const { method, attacker, smackdown, target } = st
     const beforeChasePoints = this.VS.chasePoints(target)
@@ -65,7 +64,6 @@ const ChaseReducerService = {
     st.modifiedDefense = this.R.defenseString(st)
     st.modifiedActionValue = this.R.mainAttackString(st)
     st.mookDefense = this.R.targetMookDefense(st)
-    console.log("YES MOOK DEFENSE", st.mookDefense)
 
     return this.VS.isPursuer(st.attacker) ? this.pursue(st) : this.evade(st)
   },
@@ -242,6 +240,31 @@ const ChaseReducerService = {
         return this.VS.evade(attacker, damage, target)
     }
     return [attacker, target]
+  },
+
+  setAttacker: function(state: ChaseState, attacker: Vehicle): ChaseState {
+    return this.process({
+      ...state,
+      attacker: attacker,
+      actionValue: this.VS.mainAttackValue(attacker),
+      handling: this.VS.handling(attacker),
+      squeal: this.VS.squeal(attacker),
+      frame: this.VS.frame(attacker),
+      crunch: this.VS.crunch(attacker),
+      count: this.VS.isMook(attacker) ? this.VS.mooks(attacker) : 1,
+      position: this.VS.position(attacker),
+      method: this.R.defaultMethod(attacker) as ChaseMethod,
+    })
+  },
+
+  setTarget: function(state: ChaseState, target: Vehicle): ChaseState {
+    return this.process({
+      ...state,
+      target: target,
+      defense: this.VS.defense(target),
+      handling: this.VS.isMook(target) ? 0 : this.VS.handling(target),
+      frame: this.VS.isMook(target) ? 0 : this.VS.frame(target),
+    })
   },
 
   /* These functions return values but don't make any changes */

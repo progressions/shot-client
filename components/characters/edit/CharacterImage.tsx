@@ -29,23 +29,17 @@ export default function CharacterImage({ character }: CharacterImageProps) {
 
     const file = inputRef.current?.files?.[0]
 
-    console.log("A")
     if (!file) return
-    console.log("B")
     const formData = new FormData()
-    console.log("C")
     formData.append("character[image]", file)
-    console.log("D")
-
-    console.log(formData)
 
     await submitToAPI(formData)
+    toastSuccess("File uploaded.")
   }
 
   async function submitToAPI(data: FormData) {
     const url = api.allCharacters(character)
     const response = await client.requestFormData("PATCH", url, data)
-    console.log(response)
   }
 
   return (

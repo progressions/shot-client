@@ -31,7 +31,7 @@ export default function Location({ shot, character }: LocationProps) {
           setLocation(null)
         }
       } catch(error) {
-        console.log(error)
+        console.error(error)
         toastError()
       }
     }
@@ -53,7 +53,7 @@ export default function Location({ shot, character }: LocationProps) {
       }
       dispatch({ type: FightActions.EDIT })
     } catch(error) {
-      console.log(error)
+      console.error(error)
       toastError()
     }
   }

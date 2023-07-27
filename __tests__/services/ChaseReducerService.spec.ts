@@ -12,6 +12,46 @@ describe("ChaseReducerService", () => {
   }),
 
   describe("process", () => {
+    it("kills 1 out of 15 mooks", () => {
+      const calculateAttackValuesMock = jest.spyOn(CRS, "calculateAttackValues")
+      const swerve = {
+          ...defaultSwerve,
+          result: 25
+        }
+
+      let state = CRS.setAttacker(initialChaseState, brickMobile)
+      state = CRS.setTarget(state, motorcycles)
+
+      state.count = 1
+      state.swerve = swerve
+      state.edited = true
+      state = CRS.process(state)
+
+      expect(calculateAttackValuesMock).toHaveBeenCalled()
+      expect(state.success).toEqual(true)
+      expect(VS.mooks(state.target)).toEqual(VS.mooks(motorcycles) - 1)
+    }),
+
+    it("kills 5 out of 15 mooks", () => {
+      const calculateAttackValuesMock = jest.spyOn(CRS, "calculateAttackValues")
+      const swerve = {
+          ...defaultSwerve,
+          result: 25
+        }
+
+      let state = CRS.setAttacker(initialChaseState, brickMobile)
+      state = CRS.setTarget(state, motorcycles)
+
+      state.count = 5
+      state.swerve = swerve
+      state.edited = true
+      state = CRS.process(state)
+
+      expect(calculateAttackValuesMock).toHaveBeenCalled()
+      expect(state.success).toEqual(true)
+      expect(VS.mooks(state.target)).toEqual(VS.mooks(motorcycles) - 5)
+    }),
+
     it("calls resolveMookAttacks for a Mook attacker", () => {
       const state = {
         ...initialChaseState,

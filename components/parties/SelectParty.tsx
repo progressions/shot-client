@@ -54,7 +54,7 @@ export default function SelectParty() {
       await client.addPartyToFight(party, fight)
       toastSuccess(`${party.name} added.`)
     } catch(error) {
-      console.log(error)
+      console.error(error)
       toastError()
     }
     dispatchFight({ type: FightActions.EDIT })

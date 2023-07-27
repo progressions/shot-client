@@ -94,7 +94,7 @@ export default function Results({ state }: ResultsProps) {
     </>)
   }
 
-  console.log(state)
+  console.log("Something didn't work", state)
 
   return (
     <><p>Hello</p></>

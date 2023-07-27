@@ -43,7 +43,7 @@ export default function FightToolbar({ showHidden, setShowHidden }: FightToolbar
 
       toastSuccess(`${character.name} added.`)
     } catch(error) {
-      console.log(error)
+      console.error(error)
       toastError()
     }
     dispatch({ type: FightActions.EDIT })

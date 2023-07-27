@@ -40,8 +40,6 @@ export default function MookResults({ state }: MookResultsProps) {
     </>)
   }
 
-  console.log("OopS!", state)
-
   return (
     <><p>Hello</p></>
   )

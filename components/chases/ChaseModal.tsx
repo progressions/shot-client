@@ -120,8 +120,6 @@ export default function ChaseModal({ open, setOpen, anchorEl, setAnchorEl }: Cha
     dispatch({ type: ChaseActions.EDIT })
   }
 
-  console.log("ChaseModal", state)
-
   return (
     <>
       <StyledDialog
