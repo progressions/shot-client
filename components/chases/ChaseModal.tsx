@@ -169,7 +169,7 @@ export default function ChaseModal({ open, setOpen, anchorEl, setAnchorEl }: Cha
               handleAttack={handleAttack}
             />
             { edited && <ResultsDisplay state={state} handleClose={handleClose} /> }
-            { success && edited && !!target?.id && !VS.isMook(target) && !!chasePoints && <>
+            { success && edited && !!target?.id && !VS.isMook(target) && !VS.isMook(attacker) && !!chasePoints && <>
               <Button
                 sx={{width: 200}}
                 endIcon={<HeartBrokenIcon />}

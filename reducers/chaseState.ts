@@ -14,15 +14,23 @@ export enum ChaseActions {
   EDIT = "edit"
 }
 
-// a pursuer who is near the target can use the "Ram/Sideswipe" method
-// a pursuer who is far from the target can use the "Narrow the Gap" method
+// a pursuer who is near the target must use the "Ram/Sideswipe" method
+// a pursuer who is far from the target must use the "Narrow the Gap" method
 // an evader who is near the target can choose the "Widen the Gap" or "Ram/Sideswipe" method
-// an evader who is far from the target can use the "Evade" method
+// an evader who is far from the target must use the "Evade" method
 export enum ChaseMethod {
   RAM_SIDESWIPE = "Ram/Sideswipe",
   NARROW_THE_GAP = "Narrow the Gap",
   WIDEN_THE_GAP = "Widen the Gap",
   EVADE = "Evade",
+}
+
+export interface ChaseMookResult {
+  actionResult: number
+  success: boolean
+  smackdown: number
+  chasePoints: number
+  conditionPoints: number
 }
 
 export interface ChaseState {
@@ -54,7 +62,8 @@ export interface ChaseState {
   modifiedActionValue: string
   boxcars: boolean
   wayAwfulFailure: boolean
-  mookResults: ChaseState[]
+  mookResults: ChaseMookResult[]
+  mookRolls: number[]
 }
 
 export const initialChaseState: ChaseState = {
@@ -88,7 +97,8 @@ export const initialChaseState: ChaseState = {
   modifiedActionValue: "",
   boxcars: false,
   wayAwfulFailure: false,
-  mookResults: []
+  mookResults: [],
+  mookRolls: []
 }
 
 export function chaseReducer(state: ChaseState, action: { type: ChaseActions, payload?: Partial<ChaseState> }): ChaseState {

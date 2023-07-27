@@ -1,4 +1,4 @@
-import { AttackState } from "../../reducers/attackState"
+import { MookResult, AttackState } from "../../reducers/attackState"
 import { Divider, Box, Grid, Typography, Stack } from "@mui/material"
 import CS from "../../services/CharacterService"
 import RollOutcome from "./RollOutcome"
@@ -32,7 +32,7 @@ export default function MookResults({ state, handleClose }: MookResultsProps) {
       <Box py={2}>
         <Grid container sx={{width: "100%"}}>
           {
-            mookResults.map((attackRoll: AttackState, index: number) => <RollOutcome state={attackRoll} key={index} />)
+            mookResults.map((attackRoll: MookResult, index: number) => <RollOutcome result={attackRoll} key={index} />)
           }
         </Grid>
       </Box>

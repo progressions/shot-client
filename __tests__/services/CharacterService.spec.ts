@@ -1,18 +1,19 @@
 import CS from "../../services/CharacterService"
 import type { Faction, Weapon, Character } from "../../types/types"
 import { defaultFaction, defaultWeapon, defaultCharacter } from "../../types/types"
+import { brick, carolina, shing, zombies } from "../factories/Characters"
 
 describe("CharacterService", () => {
   describe("skill", () => {
-    it("should return a character's skill", async () => {
-      const character: Character = defaultCharacter
+    it("should return a character's skill", () => {
+      const character = brick
 
       expect(CS.skill(character, "Driving")).toBe(7)
     }),
 
-    it("should return a character's skill with a modifier", async () => {
+    it("should return a character's skill with a modifier", () => {
       const character: Character = {
-        ...defaultCharacter,
+        ...brick,
         impairments: 1
       }
       expect(CS.skill(character, "Driving")).toBe(6)
@@ -20,116 +21,67 @@ describe("CharacterService", () => {
   }),
 
   describe("mainAttack", () => {
-    it("should return a default character's main attack", async () => {
-      const character: Character = defaultCharacter
+    it("should return a default character's main attack", () => {
+      const character = carolina
 
       expect(CS.mainAttack(character)).toBe("Guns")
     }),
 
-    it("returns a martial artist's main attack", async () => {
-      const character: Character = {
-        ...defaultCharacter,
-        action_values: {
-          ...defaultCharacter.action_values,
-          "MainAttack": "Martial Arts"
-        }
-      }
+    it("returns a martial artist's main attack", () => {
+      const character = brick
 
       expect(CS.mainAttack(character)).toBe("Martial Arts")
     })
   }),
 
   describe("secondaryAttack", () => {
-    it("should return '' if they have no secondary attack", async () => {
-      const character: Character = defaultCharacter
+    it("should return '' if they have no secondary attack", () => {
+      const character = brick
 
       expect(CS.secondaryAttack(character)).toBe("")
     }),
 
-    it("should return a character's secondary attack", async () => {
-      const character: Character = {
-        ...defaultCharacter,
-        action_values: {
-          ...defaultCharacter.action_values,
-          "SecondaryAttack": "Guns"
-        }
-      }
+    it("should return a character's secondary attack", () => {
+      const character = carolina
 
-      expect(CS.secondaryAttack(character)).toBe("Guns")
+      expect(CS.secondaryAttack(character)).toBe("Martial Arts")
     })
   }),
 
   describe("mainAttackValue", () => {
-    it("should return a character's main attack value", async () => {
-      const character: Character = {
-        ...defaultCharacter,
-        action_values: {
-          ...defaultCharacter.action_values,
-          "MainAttack": "Guns",
-          "Guns": 14
-        }
-      }
+    it("should return a character's main attack value", () => {
+      const character = brick
 
       expect(CS.mainAttackValue(character)).toBe(14)
     }),
 
-    it("should return a character's main attack value with a modifier", async () => {
+    it("should return a character's main attack value with a modifier", () => {
       const character: Character = {
-        ...defaultCharacter,
+        ...brick,
         impairments: 1,
-        action_values: {
-          ...defaultCharacter.action_values,
-          "MainAttack": "Guns",
-          "Guns": 14
-        }
       }
 
       expect(CS.mainAttackValue(character)).toBe(13)
-    }),
-
-    it("should return a Martial Artist's main attack value", async () => {
-      const character: Character = {
-        ...defaultCharacter,
-        action_values: {
-          ...defaultCharacter.action_values,
-          "MainAttack": "Martial Arts",
-          "Martial Arts": 14
-        }
-      }
-
-      expect(CS.mainAttackValue(character)).toBe(14)
     })
   }),
 
   describe("secondaryAttackValue", () => {
-    it("should return a character's secondary attack value", async () => {
-      const character: Character = {
-        ...defaultCharacter,
-        action_values: {
-          ...defaultCharacter.action_values,
-          "SecondaryAttack": "Guns",
-          "Guns": 14
-        }
-      }
+    it("should return a character's secondary attack value", () => {
+      const character = carolina
 
-      expect(CS.secondaryAttackValue(character)).toBe(14)
+      expect(CS.secondaryAttackValue(character)).toBe(12)
     }),
 
-    it("should return a character's secondary attack value with a modifier", async () => {
+    it("should return a character's secondary attack value with a modifier", () => {
       const character: Character = {
-        ...defaultCharacter,
+        ...carolina,
         impairments: 1,
-        action_values: {
-          ...defaultCharacter.action_values,
-          "SecondaryAttack": "Guns",
-          "Guns": 14
-        }
       }
 
-      expect(CS.secondaryAttackValue(character)).toBe(13)
+      expect(CS.secondaryAttackValue(character)).toBe(11)
     }),
 
-    it("should return a Martial Artist's secondary attack value", async () => {
+    it("should return a Martial Artist's secondary attack value", () => {
       const character: Character = {
         ...defaultCharacter,
         action_values: {
@@ -144,7 +96,7 @@ describe("CharacterService", () => {
   }),
 
   describe("damage", () => {
-    it("should return a character's damage", async () => {
+    it("should return a character's damage", () => {
       const character: Character = {
         ...defaultCharacter,
         action_values: {
@@ -156,14 +108,10 @@ describe("CharacterService", () => {
       expect(CS.damage(character)).toBe(9)
     }),
 
-    it("should return a character's damage with no impairment modifier", async () => {
+    it("should return a character's damage with no impairment modifier", () => {
       const character: Character = {
-        ...defaultCharacter,
+        ...shing,
         impairments: 1,
-        action_values: {
-          ...defaultCharacter.action_values,
-          "Damage": 9
-        }
       }
 
       expect(CS.damage(character)).toBe(9)
@@ -171,76 +119,48 @@ describe("CharacterService", () => {
   }),
 
   describe("fortuneType", () => {
-    it("should return a character's fortune type", async () => {
-      const character: Character = {
-        ...defaultCharacter,
-        action_values: {
-          ...defaultCharacter.action_values,
-          "FortuneType": "Chi"
-        }
-      }
+    it("should return a character's fortune type", () => {
+      const character = brick
 
-      expect(CS.fortuneType(character)).toBe("Chi")
+      expect(CS.fortuneType(character)).toBe("Fortune")
     })
   }),
 
   describe("maxFortuneLabel", () => {
-    it("should return a character's max fortune label", async () => {
-      const character: Character = {
-        ...defaultCharacter,
-        action_values: {
-          ...defaultCharacter.action_values,
-          "FortuneType": "Chi"
-        }
-      }
+    it("should return a character's max fortune label", () => {
+      const character = brick
 
-      expect(CS.maxFortuneLabel(character)).toBe("Max Chi")
+      expect(CS.maxFortuneLabel(character)).toBe("Max Fortune")
     })
   }),
 
   describe("archetype", () => {
-    it("should return a character's archetype", async () => {
-      const character: Character = {
-        ...defaultCharacter,
-        action_values: {
-          ...defaultCharacter.action_values,
-          Archetype: "Bruiser"
-        }
-      }
+    it("should return a character's archetype", () => {
+      const character = brick
 
-      expect(CS.archetype(character)).toBe("Bruiser")
+      expect(CS.archetype(character)).toBe("Everyday Hero")
     })
   }),
 
   describe("speed", () => {
-    it("should return a character's speed", async () => {
-      const character: Character = {
-        ...defaultCharacter,
-        action_values: {
-          ...defaultCharacter.action_values,
-          Speed: 4
-        }
-      }
+    it("should return a character's speed", () => {
+      const character = brick
 
-      expect(CS.speed(character)).toBe(4)
+      expect(CS.speed(character)).toBe(5)
     })
 
-    it("should returns speed without impairment", async () => {
+    it("should returns speed without impairment", () => {
       const character: Character = {
-        ...defaultCharacter,
+        ...brick,
         impairments: 1,
-        action_values: {
-          ...defaultCharacter.action_values,
-          Speed: 4
-        }
       }
 
-      expect(CS.speed(character)).toBe(4)
+      expect(CS.speed(character)).toBe(5)
     })
   }),
 
   describe("toughness", () => {
-    it("should return a character's toughness", async () => {
+    it("should return a character's toughness", () => {
       const character: Character = {
         ...defaultCharacter,
         action_values: {
@@ -252,7 +172,7 @@ describe("CharacterService", () => {
       expect(CS.toughness(character)).toBe(4)
     }),
 
-    it("should return a character's toughness without impairment", async () => {
+    it("should return a character's toughness without impairment", () => {
       const character: Character = {
         ...defaultCharacter,
         impairments: 1,
@@ -267,7 +187,7 @@ describe("CharacterService", () => {
   }),
 
   describe("defense", () => {
-    it("should return a character's defense", async () => {
+    it("should return a character's defense", () => {
       const character: Character = {
         ...defaultCharacter,
         action_values: {
@@ -279,7 +199,7 @@ describe("CharacterService", () => {
       expect(CS.defense(character)).toBe(14)
     }),
 
-    it("should return a character's defense with impairment", async () => {
+    it("should return a character's defense with impairment", () => {
       const character: Character = {
         ...defaultCharacter,
         impairments: 1,
@@ -298,7 +218,7 @@ describe("CharacterService", () => {
       expect(CS.marksOfDeath(defaultCharacter)).toBe(0)
     }),
 
-    it("should return a character's marks of death", async () => {
+    it("should return a character's marks of death", () => {
       const character: Character = {
         ...defaultCharacter,
         action_values: {
@@ -312,7 +232,7 @@ describe("CharacterService", () => {
   }),
 
   describe("calculateWounds", () => {
-    it("should reduce smackdown taken by toughness", async () => {
+    it("should reduce smackdown taken by toughness", () => {
       const character: Character = {
         ...defaultCharacter,
         action_values: {
@@ -324,7 +244,7 @@ describe("CharacterService", () => {
       expect(CS.calculateWounds(character, 4)).toBe(0)
     }),
 
-    it("should not go below zero", async () => {
+    it("should not go below zero", () => {
       const character: Character = {
         ...defaultCharacter,
         action_values: {
@@ -336,7 +256,7 @@ describe("CharacterService", () => {
       expect(CS.calculateWounds(character, 3)).toBe(0)
     }),
 
-    it("should not be affected by impairments", async () => {
+    it("should not be affected by impairments", () => {
       const character: Character = {
         ...defaultCharacter,
         impairments: 1,
@@ -352,7 +272,7 @@ describe("CharacterService", () => {
 
   describe("takeSmackdown", () => {
     describe("mooks", () => {
-      it("should kill mooks ignoring toughness", async () => {
+      it("should kill mooks ignoring toughness", () => {
         const mook: Character = {
           ...defaultCharacter,
           count: 15,
@@ -368,7 +288,7 @@ describe("CharacterService", () => {
       })
     }),
 
-    it("should return a character with wounds", async () => {
+    it("should return a character with wounds", () => {
       const character: Character = {
         ...defaultCharacter,
         action_values: {
@@ -381,7 +301,7 @@ describe("CharacterService", () => {
       expect(CS.wounds(updatedCharacter)).toBe(10)
     }),
 
-    it("should return a character with wounds", async () => {
+    it("should return a character with wounds", () => {
       const character: Character = {
         ...defaultCharacter,
         action_values: {
@@ -394,7 +314,7 @@ describe("CharacterService", () => {
       expect(CS.wounds(updatedCharacter)).toBe(0)
     }),
 
-    it("should return a character with wounds", async () => {
+    it("should return a character with wounds", () => {
       const character: Character = {
         ...defaultCharacter,
         action_values: {
@@ -408,7 +328,7 @@ describe("CharacterService", () => {
     }),
 
     describe("Uber-Boss impairments", () => {
-      it("should add 1 impairment when an Uber-Boss goes from 39 to 40 wounds", async () => {
+      it("should add 1 impairment when an Uber-Boss goes from 39 to 40 wounds", () => {
         const character: Character = {
           ...defaultCharacter,
           action_values: {
@@ -424,7 +344,7 @@ describe("CharacterService", () => {
         expect(CS.impairments(updatedCharacter)).toBe(1)
       }),
 
-      it("should add 1 impairment when an Uber-Boss goes from 44 to 45 wounds", async () => {
+      it("should add 1 impairment when an Uber-Boss goes from 44 to 45 wounds", () => {
         const character: Character = {
           ...defaultCharacter,
           impairments: 1,
@@ -442,7 +362,7 @@ describe("CharacterService", () => {
       })
     }),
 
-    it("should add 2 impairments when an Uber-Boss goes from 39 to 45 wounds", async () => {
+    it("should add 2 impairments when an Uber-Boss goes from 39 to 45 wounds", () => {
       const character: Character = {
         ...defaultCharacter,
         action_values: {
@@ -459,7 +379,7 @@ describe("CharacterService", () => {
     }),
 
     describe("Boss impairments", () => {
-      it("should add 1 impairment when a Boss goes from 39 to 40 wounds", async () => {
+      it("should add 1 impairment when a Boss goes from 39 to 40 wounds", () => {
         const character: Character = {
           ...defaultCharacter,
           action_values: {
@@ -475,7 +395,7 @@ describe("CharacterService", () => {
         expect(CS.impairments(updatedCharacter)).toBe(1)
       }),
 
-      it("should add 1 impairment when a Boss goes from 44 to 45 wounds", async () => {
+      it("should add 1 impairment when a Boss goes from 44 to 45 wounds", () => {
         const character: Character = {
           ...defaultCharacter,
           impairments: 1,
@@ -493,7 +413,7 @@ describe("CharacterService", () => {
       })
     }),
 
-    it("should add 2 impairments when a Boss goes from 39 to 45 wounds", async () => {
+    it("should add 2 impairments when a Boss goes from 39 to 45 wounds", () => {
       const character: Character = {
         ...defaultCharacter,
         action_values: {
@@ -510,7 +430,7 @@ describe("CharacterService", () => {
     }),
 
     describe("Featured Foe impairments", () => {
-      it("should add 1 impairment when a Featured Foe goes from 24 to 25 wounds", async () => {
+      it("should add 1 impairment when a Featured Foe goes from 24 to 25 wounds", () => {
         const character: Character = {
           ...defaultCharacter,
           action_values: {
@@ -526,7 +446,7 @@ describe("CharacterService", () => {
         expect(CS.impairments(updatedCharacter)).toBe(1)
       }),
 
-      it("should add 1 impairment when a Featured Foe goes from 29 to 30 wounds", async () => {
+      it("should add 1 impairment when a Featured Foe goes from 29 to 30 wounds", () => {
         const character: Character = {
           ...defaultCharacter,
           impairments: 1,
@@ -544,7 +464,7 @@ describe("CharacterService", () => {
       })
     }),
 
-    it("should add 2 impairments when a Featured Foe goes from 24 to 30 wounds", async () => {
+    it("should add 2 impairments when a Featured Foe goes from 24 to 30 wounds", () => {
       const character: Character = {
         ...defaultCharacter,
         action_values: {
@@ -561,7 +481,7 @@ describe("CharacterService", () => {
     }),
 
     describe("Ally impairments", () => {
-      it("should add 1 impairment when a Ally goes from 24 to 25 wounds", async () => {
+      it("should add 1 impairment when a Ally goes from 24 to 25 wounds", () => {
         const character: Character = {
           ...defaultCharacter,
           action_values: {
@@ -577,7 +497,7 @@ describe("CharacterService", () => {
         expect(CS.impairments(updatedCharacter)).toBe(1)
       }),
 
-      it("should add 1 impairment when a Ally goes from 29 to 30 wounds", async () => {
+      it("should add 1 impairment when a Ally goes from 29 to 30 wounds", () => {
         const character: Character = {
           ...defaultCharacter,
           impairments: 1,
@@ -595,7 +515,7 @@ describe("CharacterService", () => {
       })
     }),
 
-    it("should add 2 impairments when a Ally goes from 24 to 30 wounds", async () => {
+    it("should add 2 impairments when a Ally goes from 24 to 30 wounds", () => {
       const character: Character = {
         ...defaultCharacter,
         action_values: {
@@ -612,7 +532,7 @@ describe("CharacterService", () => {
     }),
 
     describe("PC impairments", () => {
-      it("should add 1 impairment when a PC goes from 24 to 25 wounds", async () => {
+      it("should add 1 impairment when a PC goes from 24 to 25 wounds", () => {
         const character: Character = {
           ...defaultCharacter,
           action_values: {
@@ -628,7 +548,7 @@ describe("CharacterService", () => {
         expect(CS.impairments(updatedCharacter)).toBe(1)
       }),
 
-      it("should add 1 impairment when a PC goes from 29 to 30 wounds", async () => {
+      it("should add 1 impairment when a PC goes from 29 to 30 wounds", () => {
         const character: Character = {
           ...defaultCharacter,
           impairments: 1,
@@ -646,7 +566,7 @@ describe("CharacterService", () => {
       })
     }),
 
-    it("should add 2 impairments when a PC goes from 24 to 30 wounds", async () => {
+    it("should add 2 impairments when a PC goes from 24 to 30 wounds", () => {
       const character: Character = {
         ...defaultCharacter,
         action_values: {
@@ -664,7 +584,7 @@ describe("CharacterService", () => {
   }),
 
   describe("takeRawWounds", () => {
-    it("adds wounds to the character without subtracting toughness", async () => {
+    it("adds wounds to the character without subtracting toughness", () => {
       const character: Character = {
         ...defaultCharacter,
         action_values: {
@@ -678,7 +598,7 @@ describe("CharacterService", () => {
       expect(CS.wounds(updatedCharacter)).toBe(20)
     })
 
-    it("doesn't add impairments", async () => {
+    it("doesn't add impairments", () => {
       const character: Character = {
         ...defaultCharacter,
         action_values: {
@@ -694,7 +614,7 @@ describe("CharacterService", () => {
   }),
 
   describe("healWounds", () => {
-    it("should heal wounds", async () => {
+    it("should heal wounds", () => {
       const character: Character = {
         ...defaultCharacter,
         action_values: {
@@ -708,7 +628,7 @@ describe("CharacterService", () => {
       expect(CS.wounds(updatedCharacter)).toBe(10)
     })
 
-    it("should not heal more wounds than the character has", async () => {
+    it("should not heal more wounds than the character has", () => {
       const character: Character = {
         ...defaultCharacter,
         action_values: {
@@ -722,7 +642,7 @@ describe("CharacterService", () => {
       expect(CS.wounds(updatedCharacter)).toBe(0)
     }),
 
-    it("should reduce impairments by 1 when a PC goes from 30 to 29 wounds", async () => {
+    it("should reduce impairments by 1 when a PC goes from 30 to 29 wounds", () => {
       const character: Character = {
         ...defaultCharacter,
         impairments: 2,
@@ -739,7 +659,7 @@ describe("CharacterService", () => {
       expect(CS.impairments(updatedCharacter)).toBe(1)
     }),
 
-    it("should reduce impairments by 2 when a PC goes from 30 to 24 wounds", async () => {
+    it("should reduce impairments by 2 when a PC goes from 30 to 24 wounds", () => {
       const character: Character = {
         ...defaultCharacter,
         impairments: 2,
@@ -758,7 +678,7 @@ describe("CharacterService", () => {
   }),
 
   describe("addDeathMarks", () => {
-    it("should add death marks", async () => {
+    it("should add death marks", () => {
       const character: Character = {
         ...defaultCharacter,
         action_values: {
@@ -773,7 +693,7 @@ describe("CharacterService", () => {
   }),
 
   describe("knownSkills", () => {
-    it("returns all skills with a value greater than 0", async () => {
+    it("returns all skills with a value greater than 0", () => {
       const character: Character = {
         ...defaultCharacter,
         skills: {
@@ -788,7 +708,7 @@ describe("CharacterService", () => {
   }),
 
   describe("updateSkill", () => {
-    it("should update a skill", async () => {
+    it("should update a skill", () => {
       const character: Character = {
         ...defaultCharacter,
         skills: {
@@ -803,7 +723,7 @@ describe("CharacterService", () => {
   }),
 
   describe("fullHeal", () => {
-    it("restores wounds to 0, fortune to max, and removes all impairments", async () => {
+    it("restores wounds to 0, fortune to max, and removes all impairments", () => {
       const character: Character = {
         ...defaultCharacter,
         action_values: {
@@ -827,7 +747,7 @@ describe("CharacterService", () => {
   }),
 
   describe("wounds", () => {
-    it("returns the number of wounds", async () => {
+    it("returns the number of wounds", () => {
       const character: Character = {
         ...defaultCharacter,
         action_values: {
@@ -842,7 +762,7 @@ describe("CharacterService", () => {
   }),
 
   describe("seriousWounds", () => {
-    it("returns true if an Uber-Boss has more than 50 wounds", async () => {
+    it("returns true if an Uber-Boss has more than 50 wounds", () => {
       const character: Character = {
         ...defaultCharacter,
         action_values: {
@@ -856,7 +776,7 @@ describe("CharacterService", () => {
       expect(CS.seriousWounds(character)).toBe(true)
     }),
 
-    it("returns true if a Boss has more than 50 wounds", async () => {
+    it("returns true if a Boss has more than 50 wounds", () => {
       const character: Character = {
         ...defaultCharacter,
         action_values: {
@@ -870,7 +790,7 @@ describe("CharacterService", () => {
       expect(CS.seriousWounds(character)).toBe(true)
     }),
 
-    it("returns true if a Featured Foe has more than 35 wounds", async () => {
+    it("returns true if a Featured Foe has more than 35 wounds", () => {
       const character: Character = {
         ...defaultCharacter,
         action_values: {
@@ -884,7 +804,7 @@ describe("CharacterService", () => {
       expect(CS.seriousWounds(character)).toBe(true)
     })
 
-    it("returns true if an Ally has more than 35 wounds", async () => {
+    it("returns true if an Ally has more than 35 wounds", () => {
       const character: Character = {
         ...defaultCharacter,
         action_values: {
@@ -898,7 +818,7 @@ describe("CharacterService", () => {
       expect(CS.seriousWounds(character)).toBe(true)
     }),
 
-    it("returns true if a PC has more than 35 wounds", async () => {
+    it("returns true if a PC has more than 35 wounds", () => {
       const character: Character = {
         ...defaultCharacter,
         action_values: {
@@ -912,7 +832,7 @@ describe("CharacterService", () => {
       expect(CS.seriousWounds(character)).toBe(true)
     }),
 
-    it("returns false for a mook", async () => {
+    it("returns false for a mook", () => {
       const character: Character = {
         ...defaultCharacter,
         count: 5,
@@ -927,13 +847,34 @@ describe("CharacterService", () => {
   }),
 
   describe("weapons", () => {
-    it("returns an array of weapons", async () => {
+    it("returns an array of weapons", () => {
       const character: Character = {
         ...defaultCharacter,
         weapons: [defaultWeapon, defaultWeapon]
       }
 
       expect(CS.weapons(character)).toEqual([defaultWeapon, defaultWeapon])
+    })
+  }),
+
+  describe("chain", () => {
+    it("chains two functions together", () => {
+      const character = brick
+
+      const updatedCharacter = CS.chain(brick, [
+        ["updateActionValue", ["Toughness", 9]],
+        ["updateActionValue", ["Wounds", 30]]
+      ])
+      expect(CS.wounds(updatedCharacter)).toBe(30)
+      expect(CS.toughness(updatedCharacter)).toBe(9)
+
+      const updatedBrick = CS.chainz(brick)
+        .updateActionValue("Toughness", 9)
+        .updateActionValue("Wounds", 30)
+        .done()
+      expect(CS.wounds(updatedBrick)).toBe(30)
+      expect(CS.toughness(updatedBrick)).toBe(9)
+
     })
   })
 })

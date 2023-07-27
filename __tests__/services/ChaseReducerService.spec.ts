@@ -3,6 +3,7 @@ import { defaultSwerve, defaultCharacter, defaultVehicle } from "../../types/typ
 import { ChaseMethod, initialChaseState, ChaseState } from "../../reducers/chaseState"
 import CRS from "../../services/ChaseReducerService"
 import VS from "../../services/VehicleService"
+import { brickMobile, copCar, battleTruck, motorcycles } from "../factories/Vehicles"
 
 describe("ChaseReducerService", () => {
   beforeEach(() => {
@@ -11,117 +12,46 @@ describe("ChaseReducerService", () => {
   }),
 
   describe("process", () => {
+    it("calls resolveMookAttacks for a Mook attacker", () => {
+      const state = {
+        ...initialChaseState,
+        edited: true,
+        attacker: motorcycles,
+        count: 5,
+        defense: 13,
+      }
+      const resolveMookAttacksMock = jest.spyOn(CRS, 'resolveMookAttacks')
+      CRS.process(state)
+      expect(resolveMookAttacksMock).toHaveBeenCalled()
+    }),
+
     it("rolls attack and resolves it", () => {
-      const rollAttackMock = jest.spyOn(CRS, "rollAttack")
       const resolveAttackMock = jest.spyOn(CRS, "resolveAttack")
       const state = {
         ...initialChaseState,
         edited: true
       }
       CRS.process(state)
-      expect(rollAttackMock).toHaveBeenCalled()
       expect(resolveAttackMock).toHaveBeenCalled()
     }),
 
     it("doesn't roll attacks if edited is false", () => {
-      const rollAttackMock = jest.spyOn(CRS, "rollAttack")
       const resolveAttackMock = jest.spyOn(CRS, "resolveAttack")
       const state = {
         ...initialChaseState,
         edited: false
       }
       CRS.process(state)
-      expect(rollAttackMock).not.toHaveBeenCalled()
       expect(resolveAttackMock).not.toHaveBeenCalled()
     })
   }),
 
-  describe("rollAttack", () => {
-    it("calls calculateMookAttackValues for a Mook", () => {
-      const vehicle: Vehicle = {
-        ...defaultVehicle,
-        count: 5,
-        action_values: {
-          ...defaultVehicle.action_values,
-          Type: "Mook"
-        }
-      }
-      const state = {
-        ...initialChaseState,
-        attacker: vehicle,
-        count: 5,
-        defense: 13,
-      }
-      const calculateAttackValuesMock = jest.spyOn(CRS, 'calculateAttackValues')
-      const calculateMookAttackValuesMock = jest.spyOn(CRS, 'calculateMookAttackValues')
-      CRS.rollAttack(state)
-      expect(calculateAttackValuesMock).toHaveBeenCalledTimes(5)
-      expect(calculateMookAttackValuesMock).toHaveBeenCalled()
-    }),
-
-    it("calls calculateAttackValues for a non-Mook", () => {
-      const vehicle: Vehicle = {
-        ...defaultVehicle,
-        action_values: {
-          ...defaultVehicle.action_values,
-          Type: "PC"
-        }
-      }
-      const state = {
-        ...initialChaseState,
-        attacker: vehicle,
-        count: 5,
-        defense: 13,
-      }
-      const calculateAttackValuesMock = jest.spyOn(CRS, 'calculateAttackValues')
-      const calculateMookAttackValuesMock = jest.spyOn(CRS, 'calculateMookAttackValues')
-      CRS.rollAttack(state)
-      expect(calculateAttackValuesMock).toHaveBeenCalled()
-      expect(calculateMookAttackValuesMock).not.toHaveBeenCalled()
-    })
-  }),
-
   describe("resolveAttack", () => {
-    it("calls resolveMookAttack for a Mook attacker", () => {
-      const vehicle: Vehicle = {
-        ...defaultVehicle,
-        count: 5,
-        action_values: {
-          ...defaultVehicle.action_values,
-          Type: "Mook"
-        }
-      }
-      const state = {
-        ...initialChaseState,
-        attacker: vehicle,
-        count: 5,
-        defense: 13,
-      }
-      const resolveMookAttackMock = jest.spyOn(CRS, 'resolveMookAttack')
-      CRS.resolveAttack(state)
-      expect(resolveMookAttackMock).toHaveBeenCalled()
-    }),
-
     it("calls killMooks for a Mook target", () => {
-      const attacker: Vehicle = {
-        ...defaultVehicle,
-        action_values: {
-          ...defaultVehicle.action_values,
-          Type: "PC"
-        }
-      }
-      const target: Vehicle = {
-        ...defaultVehicle,
-        count: 5,
-        action_values: {
-          ...defaultVehicle.action_values,
-          Type: "Mook"
-        }
-      }
       const state = {
         ...initialChaseState,
-        attacker: attacker,
-        target: target,
+        attacker: brickMobile,
+        target: motorcycles,
         count: 5,
         defense: 13,
       }
@@ -131,41 +61,25 @@ describe("ChaseReducerService", () => {
     }),
 
     it("calls processMethod for a non-Mook attacker and target", () => {
-      const attacker: Vehicle = {
-        ...defaultVehicle,
-        action_values: {
-          ...defaultVehicle.action_values,
-          "Chase Points": 0,
-          "Condition Points": 0,
-          Type: "PC"
-        }
-      }
-      const target: Vehicle = {
-        ...defaultVehicle,
-        action_values: {
-          ...defaultVehicle.action_values,
-          Type: "Featured Foe",
-          "Chase Points": 0,
-          "Condition Points": 0,
-        }
-      }
       const state = {
         ...initialChaseState,
-        attacker: attacker,
-        target: target,
+        attacker: brickMobile,
+        target: battleTruck,
         defense: 13,
         smackdown: 15
       }
       const updatedTarget = {
-        ...target,
+        ...brickMobile,
         action_values: {
-          ...target.action_values,
+          ...brickMobile.action_values,
           "Chase Points": 10,
           "Condition Points": 10,
         }
       }
       const processMethodMock = jest.spyOn(CRS, 'processMethod')
-      processMethodMock.mockReturnValue([attacker, updatedTarget])
+      processMethodMock.mockReturnValue([brickMobile, updatedTarget])
+      const calculateAttackValuesMock = jest.spyOn(CRS, 'calculateAttackValues')
+      calculateAttackValuesMock.mockReturnValue(state)
 
       const result = CRS.resolveAttack(state)
 
@@ -177,112 +91,21 @@ describe("ChaseReducerService", () => {
     })
   }),
 
-  describe("calculateMookAttackValues", () => {
-    it("compiles an Array of attack results", () => {
-      const attacker: Vehicle = {
-        ...defaultVehicle,
-        count: 2,
-        action_values: {
-          ...defaultVehicle.action_values,
-          Type: "Mook",
-          "Squeal": 8
-        }
-      }
-      const target: Vehicle = {
-        ...defaultVehicle,
-        action_values: {
-          ...defaultVehicle.action_values,
-          "Handling": 6,
-        }
-      }
-      const state = {
-        ...initialChaseState,
-        attacker: attacker,
-        target: target,
-        count: 2,
-        defense: 13,
-        actionValue: 15,
-        handling: 6
-      }
-
-      const swerve6 = {
-        ...defaultSwerve,
-        result: 6
-      }
-      const swerve9 = {
-        ...defaultSwerve,
-        result: 9
-      }
-
-      const swerveMock = jest.spyOn(CRS.AS, "swerve")
-      swerveMock
-        .mockReturnValueOnce(swerve6)
-        .mockReturnValueOnce(swerve9)
-      const calculateAttackValuesMock = jest.spyOn(CRS, "calculateAttackValues")
-      calculateAttackValuesMock
-        .mockReturnValueOnce({
-          ...state,
-          swerve: swerve6,
-          modifiedActionValue: "15",
-          modifiedDefense: "13",
-          mookDefense: 13
-        })
-        .mockReturnValueOnce({
-          ...state,
-          swerve: swerve9,
-          modifiedActionValue: "66",
-          modifiedDefense: "13",
-          mookDefense: 13
-        })
-
-      const result = CRS.calculateMookAttackValues(state)
-      expect(calculateAttackValuesMock).toHaveBeenCalledTimes(2)
-
-      const calls = calculateAttackValuesMock.mock.calls
-      expect(calls[0][0]).toEqual({ ...state, swerve: swerve6 })
-      expect(calls[1][0]).toEqual({ ...state, swerve: swerve9 })
-
-      expect(result.mookResults.length).toEqual(2)
-      expect(result.mookResults[0].swerve).toEqual(swerve6)
-      expect(result.mookResults[1].swerve).toEqual(swerve9)
-    })
-  }),
-
-  describe("resolveMookAttack", () => {
+  describe("resolveMookAttacks", () => {
     it("collects the results of mook attacks", () => {
-      const resolveAttackMock = jest.spyOn(CRS, "resolveAttack")
+      const calculateAttackValuesMock = jest.spyOn(CRS, "calculateAttackValues")
 
-      const attacker: Vehicle = {
-        ...defaultVehicle,
-        count: 2,
-        action_values: {
-          ...defaultVehicle.action_values,
-          Type: "Mook",
-          "Squeal": 8
-        }
-      }
-      const target: Vehicle = {
-        ...defaultVehicle,
-        action_values: {
-          ...defaultVehicle.action_values,
-          "Handling": 6,
-        }
-      }
       const state: ChaseState = {
         ...initialChaseState,
-        attacker: attacker,
-        target: target,
+        attacker: motorcycles,
+        target: brickMobile,
         count: 2,
         defense: 13,
         actionValue: 15,
         handling: 6,
       }
-      state.mookResults = [
-        state,
-        state
-      ]
 
-      resolveAttackMock
+      calculateAttackValuesMock
         .mockReturnValueOnce({
           ...state,
           success: true,
@@ -294,46 +117,26 @@ describe("ChaseReducerService", () => {
           chasePoints: 10
         })
 
-      const result = CRS.resolveMookAttack(state)
+      const result = CRS.resolveMookAttacks(state)
       expect(result.chasePoints).toEqual(15)
       expect(result.conditionPoints).toEqual(0)
       expect(result.success).toEqual(true)
     }),
 
     it("collects the results of failed mook attacks", () => {
-      const resolveAttackMock = jest.spyOn(CRS, "resolveAttack")
+      const calculateAttackValuesMock = jest.spyOn(CRS, "calculateAttackValues")
 
-      const attacker: Vehicle = {
-        ...defaultVehicle,
-        count: 2,
-        action_values: {
-          ...defaultVehicle.action_values,
-          Type: "Mook",
-          "Squeal": 8
-        }
-      }
-      const target: Vehicle = {
-        ...defaultVehicle,
-        action_values: {
-          ...defaultVehicle.action_values,
-          "Handling": 6,
-        }
-      }
       const state: ChaseState = {
         ...initialChaseState,
-        attacker: attacker,
-        target: target,
+        attacker: motorcycles,
+        target: brickMobile,
         count: 2,
         defense: 13,
         actionValue: 15,
         handling: 6,
       }
-      state.mookResults = [
-        state,
-        state
-      ]
 
-      resolveAttackMock
+      calculateAttackValuesMock
         .mockReturnValueOnce({
           ...state,
           success: false,
@@ -345,46 +148,26 @@ describe("ChaseReducerService", () => {
           chasePoints: null
         })
 
-      const result = CRS.resolveMookAttack(state)
+      const result = CRS.resolveMookAttacks(state)
       expect(result.chasePoints).toEqual(0)
       expect(result.conditionPoints).toEqual(0)
       expect(result.success).toEqual(false)
     }),
 
     it("collects the results of mixed mook attacks", () => {
-      const resolveAttackMock = jest.spyOn(CRS, "resolveAttack")
+      const calculateAttackValuesMock = jest.spyOn(CRS, "calculateAttackValues")
 
-      const attacker: Vehicle = {
-        ...defaultVehicle,
-        count: 2,
-        action_values: {
-          ...defaultVehicle.action_values,
-          Type: "Mook",
-          "Squeal": 8
-        }
-      }
-      const target: Vehicle = {
-        ...defaultVehicle,
-        action_values: {
-          ...defaultVehicle.action_values,
-          "Handling": 6,
-        }
-      }
       const state: ChaseState = {
         ...initialChaseState,
-        attacker: attacker,
-        target: target,
+        attacker: motorcycles,
+        target: brickMobile,
         count: 2,
         defense: 13,
         actionValue: 15,
         handling: 6,
       }
-      state.mookResults = [
-        state,
-        state
-      ]
 
-      resolveAttackMock
+      calculateAttackValuesMock
         .mockReturnValueOnce({
           ...state,
           success: false,
@@ -396,7 +179,7 @@ describe("ChaseReducerService", () => {
           chasePoints: 5
         })
 
-      const result = CRS.resolveMookAttack(state)
+      const result = CRS.resolveMookAttacks(state)
       expect(result.chasePoints).toEqual(5)
       expect(result.conditionPoints).toEqual(0)
       expect(result.success).toEqual(true)
@@ -405,23 +188,9 @@ describe("ChaseReducerService", () => {
 
   describe("killMooks", () => {
     it("reduces the mook count by the number of mooks killed", () => {
-      const attacker: Vehicle = {
-        ...defaultVehicle,
-        action_values: {
-          ...defaultVehicle.action_values,
-          Type: "PC",
-          "Squeal": 8
-        }
-      }
-      const target: Vehicle = {
-        ...defaultVehicle,
-        count: 20,
-        action_values: {
-          ...defaultVehicle.action_values,
-          "Type": "Mook",
-          "Handling": 6,
-        }
-      }
+      const attacker = brickMobile
+      const target = motorcycles
+
       const state = {
         ...initialChaseState,
         success: true,
@@ -452,23 +221,9 @@ describe("ChaseReducerService", () => {
 
   describe("calculateAttackValues", () => {
     it("calculates modified display values for a Mook", () => {
-      const attacker: Vehicle = {
-        ...defaultVehicle,
-        count: 2,
-        action_values: {
-          ...defaultVehicle.action_values,
-          Type: "PC",
-          "Squeal": 8
-        }
-      }
-      const target: Vehicle = {
-        ...defaultVehicle,
-        action_values: {
-          ...defaultVehicle.action_values,
-          Type: "Mook",
-          "Handling": 6,
-        }
-      }
+      const attacker = brickMobile
+      const target = motorcycles
+
       const swerve6 = {
         ...defaultSwerve,
         result: 6
@@ -489,23 +244,8 @@ describe("ChaseReducerService", () => {
     }),
 
     it("calculates modified display values for a non-Mook", () => {
-      const attacker: Vehicle = {
-        ...defaultVehicle,
-        count: 2,
-        action_values: {
-          ...defaultVehicle.action_values,
-          Type: "PC",
-          "Squeal": 8
-        }
-      }
-      const target: Vehicle = {
-        ...defaultVehicle,
-        action_values: {
-          ...defaultVehicle.action_values,
-          Type: "Featured Foe",
-          "Handling": 6,
-        }
-      }
+      const attacker = brickMobile
+      const target = copCar
       const swerve6 = {
         ...defaultSwerve,
         result: 6
@@ -525,24 +265,8 @@ describe("ChaseReducerService", () => {
     }),
 
     it("calls this.pursue for a Pursuer", () => {
-      const attacker: Vehicle = {
-        ...defaultVehicle,
-        count: 2,
-        action_values: {
-          ...defaultVehicle.action_values,
-          Type: "PC",
-          "Pursuer": "true",
-          "Squeal": 8
-        }
-      }
-      const target: Vehicle = {
-        ...defaultVehicle,
-        action_values: {
-          ...defaultVehicle.action_values,
-          Type: "Featured Foe",
-          "Handling": 6,
-        }
-      }
+      const attacker = VS.updateActionValue(brickMobile, "Pursuer", "true")
+      const target = VS.updateActionValue(motorcycles, "Pursuer", "false")
       const swerve6 = {
         ...defaultSwerve,
         result: 6
@@ -574,24 +298,8 @@ describe("ChaseReducerService", () => {
     }),
 
     it("calls this.evade for an Evader", () => {
-      const attacker: Vehicle = {
-        ...defaultVehicle,
-        count: 2,
-        action_values: {
-          ...defaultVehicle.action_values,
-          Type: "PC",
-          "Pursuer": "false",
-          "Squeal": 8
-        }
-      }
-      const target: Vehicle = {
-        ...defaultVehicle,
-        action_values: {
-          ...defaultVehicle.action_values,
-          Type: "Featured Foe",
-          "Handling": 6,
-        }
-      }
+      const attacker = VS.updateActionValue(brickMobile, "Pursuer", "false")
+      const target = VS.updateActionValue(motorcycles, "Pursuer", "true")
       const swerve6 = {
         ...defaultSwerve,
         result: 6
@@ -626,20 +334,8 @@ describe("ChaseReducerService", () => {
 
   describe("pursue", () => {
     it("returns a successful result", () => {
-      const attacker: Vehicle = {
-        ...defaultVehicle,
-        action_values: {
-          ...defaultVehicle.action_values,
-          Type: "PC"
-        }
-      }
-      const target: Vehicle = {
-        ...defaultVehicle,
-        action_values: {
-          ...defaultVehicle.action_values,
-          Type: "Featured Foe"
-        }
-      }
+      const attacker = VS.updateActionValue(brickMobile, "Pursuer", "true")
+      const target = VS.updateActionValue(copCar, "Pursuer", "false")
       const state = {
         ...initialChaseState,
         swerve: {
@@ -669,20 +365,8 @@ describe("ChaseReducerService", () => {
     }),
 
     it("returns a successful sideswipe", () => {
-      const attacker: Vehicle = {
-        ...defaultVehicle,
-        action_values: {
-          ...defaultVehicle.action_values,
-          Type: "PC"
-        }
-      }
-      const target: Vehicle = {
-        ...defaultVehicle,
-        action_values: {
-          ...defaultVehicle.action_values,
-          Type: "Featured Foe"
-        }
-      }
+      const attacker = VS.updateActionValue(brickMobile, "Pursuer", "true")
+      const target = VS.updateActionValue(copCar, "Pursuer", "false")
       const state = {
         ...initialChaseState,
         swerve: {
@@ -715,20 +399,8 @@ describe("ChaseReducerService", () => {
     }),
 
     it("returns an unsuccessful result", () => {
-      const attacker: Vehicle = {
-        ...defaultVehicle,
-        action_values: {
-          ...defaultVehicle.action_values,
-          Type: "PC"
-        }
-      }
-      const target: Vehicle = {
-        ...defaultVehicle,
-        action_values: {
-          ...defaultVehicle.action_values,
-          Type: "Featured Foe"
-        }
-      }
+      const attacker = VS.updateActionValue(brickMobile, "Pursuer", "true")
+      const target = VS.updateActionValue(copCar, "Pursuer", "false")
       const state = {
         ...initialChaseState,
         swerve: {
@@ -759,20 +431,8 @@ describe("ChaseReducerService", () => {
 
   describe("evade", () => {
     it("returns a successful result", () => {
-      const attacker: Vehicle = {
-        ...defaultVehicle,
-        action_values: {
-          ...defaultVehicle.action_values,
-          Type: "PC"
-        }
-      }
-      const target: Vehicle = {
-        ...defaultVehicle,
-        action_values: {
-          ...defaultVehicle.action_values,
-          Type: "Featured Foe"
-        }
-      }
+      const attacker = VS.updateActionValue(brickMobile, "Pursuer", "false")
+      const target = VS.updateActionValue(copCar, "Pursuer", "true")
       const state = {
         ...initialChaseState,
         swerve: {
@@ -817,13 +477,7 @@ describe("ChaseReducerService", () => {
 
     describe("targetMookDefense", () => {
       it("returns the given defense for a non-Mook", () => {
-        const vehicle: Vehicle = {
-          ...defaultVehicle,
-          action_values: {
-            ...defaultVehicle.action_values,
-            Type: "PC"
-          }
-        }
+        const vehicle = brickMobile
         const state = {
           ...initialChaseState,
           target: vehicle,
@@ -835,13 +489,7 @@ describe("ChaseReducerService", () => {
       }),
 
       it("returns the given defense for a count of 1", () => {
-        const vehicle: Vehicle = {
-          ...defaultVehicle,
-          action_values: {
-            ...defaultVehicle.action_values,
-            Type: "Mook"
-          }
-        }
+        const vehicle = motorcycles
         const state = {
           ...initialChaseState,
           target: vehicle,
@@ -853,13 +501,7 @@ describe("ChaseReducerService", () => {
       }),
 
       it("adds 5 to the given defense for a count of 5", () => {
-        const vehicle: Vehicle = {
-          ...defaultVehicle,
-          action_values: {
-            ...defaultVehicle.action_values,
-            Type: "Mook"
-          }
-        }
+        const vehicle = motorcycles
         const state = {
           ...initialChaseState,
           target: vehicle,
@@ -871,13 +513,7 @@ describe("ChaseReducerService", () => {
       }),
 
       it("adds 2 to the defense for a stunt", () => {
-        const vehicle: Vehicle = {
-          ...defaultVehicle,
-          action_values: {
-            ...defaultVehicle.action_values,
-            Type: "Mook"
-          }
-        }
+        const vehicle = motorcycles
         const state = {
           ...initialChaseState,
           target: vehicle,
@@ -892,17 +528,7 @@ describe("ChaseReducerService", () => {
 
     describe("defenseString", () => {
       it("returns the state's defense value", () => {
-        const driver: Character = {
-          ...defaultCharacter,
-          action_values: {
-            ...defaultCharacter.action_values,
-            "Driving": 13
-          }
-        }
-        const vehicle: Vehicle = {
-          ...defaultVehicle,
-          driver: driver
-        }
+        const vehicle = copCar
         const state = {
           ...initialChaseState,
           defense: 13,
@@ -913,17 +539,7 @@ describe("ChaseReducerService", () => {
       }),
 
       it("returns a defense value with a +2 bonus if the state's stunt is true", () => {
-        const driver: Character = {
-          ...defaultCharacter,
-          action_values: {
-            ...defaultCharacter.action_values,
-            "Driving": 13
-          }
-        }
-        const vehicle: Vehicle = {
-          ...defaultVehicle,
-          driver: driver
-        }
+        const vehicle = copCar
         const state = {
           ...initialChaseState,
           defense: 13,
@@ -935,17 +551,9 @@ describe("ChaseReducerService", () => {
       }),
 
       it("returns a defense value with a * if the target is impaired", () => {
-        const driver: Character = {
-          ...defaultCharacter,
-          action_values: {
-            ...defaultCharacter.action_values,
-            "Driving": 13
-          }
-        }
         const vehicle: Vehicle = {
-          ...defaultVehicle,
+          ...copCar,
           impairments: 1,
-          driver: driver
         }
         const state = {
           ...initialChaseState,

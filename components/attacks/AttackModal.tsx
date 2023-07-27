@@ -111,7 +111,7 @@ export default function AttackModal({ open, setOpen, anchorEl, setAnchorEl }: At
   }
 
   async function applyWounds() {
-    if (!smackdown) return
+    if (!wounds) return
 
     try {
       await client.updateCharacter(target, fight)
@@ -127,6 +127,7 @@ export default function AttackModal({ open, setOpen, anchorEl, setAnchorEl }: At
   async function killMooks() {
     if (!count) return
 
+    console.log("target count", CS.mooks(target))
     try {
       await client.updateCharacter(target, fight)
       dispatchFight({ type: FightActions.EDIT })

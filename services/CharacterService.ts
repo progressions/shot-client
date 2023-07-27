@@ -1,8 +1,85 @@
 import type { Weapon, SkillValue, Character, CharacterEffect } from "../types/types"
 import SharedService, { woundThresholds } from "./SharedService"
 
+interface Service {
+  [key: string]: (character: Character, ...args: any[]) => Character
+}
+
 const CharacterService = {
   ...SharedService,
+
+  chain: function(character: Character, calls: Array<[string, any[]]>): Character {
+    let char = character
+    for (const [funcName, args] of calls) {
+      const unknownService = this as unknown
+      const service = unknownService as Service
+
+      char = service[funcName](char, ...args);
+    }
+    return char
+  },
+
+  chainz: function(character: Character): ServiceChain {
+    return new ServiceChain(character)
+  },
+
+  /* Writer functions, change the state */
+
+  // Take a Smackdown, reduced by Toughness
+  takeSmackdown: function(character: Character, smackdown: number): Character {
+    if (this.isType(character, "Mook")) {
+      return this.killMooks(character, smackdown)
+    }
+
+    const wounds = this.calculateWounds(character, smackdown)
+    const originalWounds = this.wounds(character)
+    const impairments = this.calculateImpairments(character, originalWounds, originalWounds + wounds)
+    const updatedCharacter = this.addImpairments(character, impairments)
+    return this.takeRawWounds(updatedCharacter, wounds)
+  },
+
+  // Take raw Wounds, ignoring Toughness
+  takeRawWounds: function(character: Character, wounds: number): Character {
+    const originalWounds = this.wounds(character)
+    return this.updateActionValue(character, "Wounds", Math.max(0, originalWounds + wounds))
+  },
+
+  healWounds: function(character: Character, wounds: number): Character {
+    const originalWounds = this.wounds(character)
+    const impairments = this.calculateImpairments(character, originalWounds - wounds, originalWounds)
+    let updatedCharacter = this.addImpairments(character, -impairments)
+    return this.updateActionValue(updatedCharacter, "Wounds", Math.max(0, originalWounds - wounds))
+  },
+
+  addDeathMarks: function(character: Character, value: number): Character {
+    const deathMarks = character.action_values["Marks of Death"] as number || 0
+    return this.updateActionValue(character, "Marks of Death", Math.max(0, deathMarks + value))
+  },
+
+  updateSkill: function(character: Character, key: string, value: number): Character {
+    return {
+      ...character,
+      skills: {
+        ...character.skills,
+        [key]: value
+      }
+    } as Character
+  },
+
+  // Restore Wounds to 0, Fortune to Max Fortune, Impairments to 0, Marks of Death to 0
+  fullHeal: function(character: Character): Character {
+    if (this.isType(character, "Mook")) return character
+
+    const maxFortune = this.maxFortune(character)
+    let updatedCharacter = this.updateActionValue(character, "Wounds", 0)
+    updatedCharacter = this.updateActionValue(updatedCharacter, "Marks of Death", 0)
+    updatedCharacter = this.updateActionValue(updatedCharacter, "Fortune", maxFortune)
+    updatedCharacter.impairments = 0
+
+    return updatedCharacter
+  },
+
+  /* Reader functions, don't change the state, just return values */
 
   // Adjusted for Impairment
   skill: function(character: Character, key: string): number {
@@ -87,65 +164,11 @@ const CharacterService = {
     return wounds
   },
 
-  // Take a Smackdown, reduced by Toughness
-  takeSmackdown: function(character: Character, smackdown: number): Character {
-    if (this.isType(character, "Mook")) {
-      return this.killMooks(character, smackdown)
-    }
-
-    const wounds = this.calculateWounds(character, smackdown)
-    const originalWounds = this.wounds(character)
-    const impairments = this.calculateImpairments(character, originalWounds, originalWounds + wounds)
-    const updatedCharacter = this.addImpairments(character, impairments)
-    return this.takeRawWounds(updatedCharacter, wounds)
-  },
-
-  // Take raw Wounds, ignoring Toughness
-  takeRawWounds: function(character: Character, wounds: number): Character {
-    const originalWounds = this.wounds(character)
-    return this.updateActionValue(character, "Wounds", Math.max(0, originalWounds + wounds))
-  },
-
-  healWounds: function(character: Character, wounds: number): Character {
-    const originalWounds = this.wounds(character)
-    const impairments = this.calculateImpairments(character, originalWounds - wounds, originalWounds)
-    let updatedCharacter = this.addImpairments(character, -impairments)
-    return this.updateActionValue(updatedCharacter, "Wounds", Math.max(0, originalWounds - wounds))
-  },
-
-  addDeathMarks: function(character: Character, value: number): Character {
-    const deathMarks = character.action_values["Marks of Death"] as number || 0
-    return this.updateActionValue(character, "Marks of Death", Math.max(0, deathMarks + value))
-  },
-
   knownSkills: function(character: Character): SkillValue[] {
     return Object
     .entries(character.skills)
     .filter(([name, value]: SkillValue) => (value as number > 0))
     .map(([name, _value]: SkillValue) => ([name, this.skill(character, name)]))
-  },
-
-  updateSkill: function(character: Character, key: string, value: number): Character {
-    return {
-      ...character,
-      skills: {
-        ...character.skills,
-        [key]: value
-      }
-    } as Character
-  },
-
-  // Restore Wounds to 0, Fortune to Max Fortune, Impairments to 0, Marks of Death to 0
-  fullHeal: function(character: Character): Character {
-    if (this.isType(character, "Mook")) return character
-
-    const maxFortune = this.maxFortune(character)
-    let updatedCharacter = this.updateActionValue(character, "Wounds", 0)
-    updatedCharacter = this.updateActionValue(updatedCharacter, "Marks of Death", 0)
-    updatedCharacter = this.updateActionValue(updatedCharacter, "Fortune", maxFortune)
-    updatedCharacter.impairments = 0
-
-    return updatedCharacter
   },
 
   wounds: function(character: Character): number {
@@ -164,8 +187,23 @@ const CharacterService = {
       return character.weapons
     }
     return []
-  },
+  }
 
+}
+
+class ServiceChain {
+  character: Character
+
+  constructor(character: Character) {
+    this.character = character
+  }
+
+  updateActionValue(key: string, value: number): ServiceChain {
+    this.character = CharacterService.updateActionValue(this.character as Character, key, value)
+    return this
+  }
+
+  done: () => Character = () => this.character
 }
 
 export default CharacterService

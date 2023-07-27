@@ -1,8 +1,7 @@
 import type { Position, Fight, Character, Vehicle } from "../types/types"
 import AS from "./ActionService"
-import CES from "./CharacterEffectService"
 import VS from "./VehicleService"
-import { ChaseMethod, ChaseState } from "../reducers/chaseState"
+import { ChaseMookResult, ChaseMethod, ChaseState } from "../reducers/chaseState"
 import { parseToNumber } from "../utils/parseToNumber"
 
 const ChaseReducerService = {
@@ -12,27 +11,20 @@ const ChaseReducerService = {
     let st = this.convertToNumber(state)
 
     if (st.edited) {
-      // make the attack roll
-      st = this.rollAttack(st)
-      // apply the attack results
+      // roll attacks for all mooks
+      if (this.VS.isMook(st.attacker)) return this.resolveMookAttacks(st)
+
+      // roll the attack and apply the attack results
       return this.resolveAttack(st)
     }
 
     return st
   },
 
-  // roll the dice and generate attack rolls
-  rollAttack: function(st: ChaseState): ChaseState {
-    if (this.VS.isMook(st.attacker) && st.count > 1) {
-      return this.calculateMookAttackValues(st)
-    }
-    return this.calculateAttackValues(st)
-  },
-
   // Resolve the attack roll from a single attack, and apply the
   // results to the target and the attacker.
   //
-  // If the attacker is a Mook, call resolveMookAttack instead.
+  // If the attacker is a Mook, call resolveMookAttacks instead.
   // If the target is a Mook, and the attacker is not, call killMooks.
   //
   // For a Ram/Sideswipe, the attacker uses their Crunch to apply damage, and the
@@ -41,9 +33,10 @@ const ChaseReducerService = {
   // If the target's Frame is higher than the attacker's Frame, the Attacker will
   // take a Bump of damage to its Chase Points and Condition Points.
   //
-  resolveAttack: function(st: ChaseState): ChaseState {
-    if (this.VS.isMook(st.attacker)) return this.resolveMookAttack(st)
-    if (this.VS.isMook(st.target) && st.count > 1) return this.killMooks(st)
+  resolveAttack: function(state: ChaseState): ChaseState {
+    if (this.VS.isMook(state.target) && state.count > 1) return this.killMooks(state)
+
+    const st = this.calculateAttackValues(state)
 
     const { method, attacker, smackdown, target } = st
     const beforeChasePoints = this.VS.chasePoints(target)
@@ -63,25 +56,6 @@ const ChaseReducerService = {
     }
   },
 
-  // roll the dice for each mook
-  calculateMookAttackValues: function(st: ChaseState): ChaseState {
-    const results = []
-    for (let i = 0; i < st.count; i++) {
-      const swerve = this.AS.swerve()
-      const result = this.calculateAttackValues({
-        ...st,
-        swerve: swerve,
-        typedSwerve: "",
-      })
-      results.push(result)
-    }
-
-    return {
-      ...st,
-      mookResults: results,
-    }
-  },
-
   // roll the dice for a single attack
   calculateAttackValues: function(st: ChaseState): ChaseState {
     if (st.typedSwerve !== "") {
@@ -95,7 +69,7 @@ const ChaseReducerService = {
     return this.VS.isPursuer(st.attacker) ? this.pursue(st) : this.evade(st)
   },
 
-  // If the attack is a success, apply Chase Points to the Target and
+  // If the attack is a success, return the number of Chase Points to apply to the target
   // return the position 'near'.
   pursue: function(st: ChaseState): ChaseState {
     const { success, actionResult, outcome, smackdown, wounds, wayAwfulFailure } = this.AS.wounds({
@@ -176,33 +150,46 @@ const ChaseReducerService = {
     }
   },
 
-  // For each attack roll in the `mookResults` array, apply the attack
+  // For each attack roll in the `mookRolls` array, apply the attack
   // to the target and calculate the net Chase Points and Condition Points.
   //
-  resolveMookAttack: function(st: ChaseState): ChaseState {
-    const updatedState = st.mookResults.reduce((acc, result) => {
-      result.target = acc.target
-      result.attacker = acc.attacker
+  // This version ignores the position and bump rules.
+  //
+  resolveMookAttacks: function(st: ChaseState): ChaseState {
+    const results:ChaseMookResult[] = []
+    let chasePoints = 0
+    let conditionPoints = 0
+    let success = st.success
 
-      const upState = this.resolveAttack(result)
+    for (let i = 0; i < st.count; i++) {
+      const swerve = this.AS.swerve()
+      const result = this.calculateAttackValues({
+        ...st,
+        swerve: swerve,
+        typedSwerve: "",
+      })
 
-      return {
-        ...acc,
-        success: acc.success || upState.success,
-        chasePoints: (acc.chasePoints || 0) + (upState.chasePoints || 0),
-        conditionPoints: (acc.conditionPoints || 0) + (upState.conditionPoints || 0),
-        attacker: upState.attacker,
-        target: upState.target,
-      }
-    }, st)
+      chasePoints += result.chasePoints as number
+      conditionPoints += result.conditionPoints as number
+      success ||= result.success
+
+      results.push({
+        actionResult: result.actionResult,
+        success: result.success,
+        smackdown: result.smackdown as number,
+        chasePoints: result.chasePoints as number,
+        conditionPoints: result.conditionPoints as number,
+      })
+    }
 
     return {
       ...st,
-      success: updatedState.success,
-      attacker: updatedState.attacker,
-      target: updatedState.target,
-      chasePoints: updatedState.chasePoints,
-      conditionPoints: updatedState.conditionPoints,
+      success: success,
+      attacker: st.attacker,
+      target: st.target,
+      mookResults: results,
+      chasePoints: chasePoints,
+      conditionPoints: conditionPoints,
     }
   },
 

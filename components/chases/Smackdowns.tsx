@@ -6,7 +6,7 @@ import { useFight } from "../../contexts/FightContext"
 import { useToast } from "../../contexts/ToastContext"
 import { FightActions } from "../../reducers/fightState"
 import type { Character, ActionValues } from "../../types/types"
-import type { ChaseState } from "../../reducers/chaseState"
+import type { ChaseMookResult, ChaseState } from "../../reducers/chaseState"
 import VS from "../../services/VehicleService"
 import AS from "../../services/ActionService"
 
@@ -22,16 +22,15 @@ export default function Smackdowns({ state, handleClose }: SmackdownsParams) {
 
   const { attacker, chasePoints, conditionPoints, target, mookResults } = state
 
-  const damageMessage = (st: ChaseState) => {
+  const damageMessage = (st: ChaseMookResult) => {
     const originalHandling = VS.rawActionValue(target, "Handling")
     const handling = VS.handling(target)
-    const outcome = st.outcome
     const smackdown = st.smackdown
     const chasePoints = st.chasePoints
-    const handlingDisplay = (st.handling < originalHandling) ? (<><strong style={{color: "red"}}>{handling}</strong> ({target.action_values["Handling"]})</>) : handling
-    const handlingMessage = (st.handling) ? (<> - Handling {handlingDisplay} = <strong style={{color: "red"}}>{chasePoints || 0} Chase Points</strong></>) : ""
+    const handlingDisplay = (state.handling < originalHandling) ? (<><strong style={{color: "red"}}>{handling}</strong> ({target.action_values["Handling"]})</>) : handling
+    const handlingMessage = (state.handling) ? (<> - Handling {handlingDisplay} = <strong style={{color: "red"}}>{chasePoints || 0} Chase Points</strong></>) : ""
 
-    return (<>{st.actionResult}: Smackdown of {st.smackdown} {handlingMessage}</>)
+    return (<>Smackdown of {st.smackdown} {handlingMessage}</>)
   }
 
   const applyWounds = async () => {
@@ -47,13 +46,14 @@ export default function Smackdowns({ state, handleClose }: SmackdownsParams) {
     handleClose()
   }
 
-  const successfulRolls = mookResults.filter((attackRoll: ChaseState) => attackRoll.success)
+  const successfulRolls = mookResults.filter((attackRoll: ChaseMookResult) => attackRoll.success)
+  console.log("successfulRolls", successfulRolls)
 
   return (<>
     { successfulRolls.length > 0 && target.name && <Typography variant="h5" py={2}>{target.name}</Typography> }
     {
       successfulRolls
-      .map((attackRoll: ChaseState, index: number) => {
+      .map((attackRoll: ChaseMookResult, index: number) => {
         const message = damageMessage(attackRoll)
         return (<React.Fragment key={(Math.random() * 10000)}><Typography component="span">{message}</Typography><br /></React.Fragment>)
       })
@@ -65,7 +65,7 @@ export default function Smackdowns({ state, handleClose }: SmackdownsParams) {
       </Typography> }
       { target?.id && (chasePoints || 0) > 0 &&
       <Button endIcon={<HeartBrokenIcon />} variant="contained" color="error" onClick={applyWounds}>
-        Apply Wounds
+        Apply Results
     </Button> }
     </>
   )

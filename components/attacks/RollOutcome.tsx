@@ -1,13 +1,13 @@
 import { Grid, Tooltip, Typography } from '@mui/material'
-import type { AttackState } from "../../reducers/attackState"
+import type { MookResult } from "../../reducers/attackState"
 import type { ChaseState } from "../../reducers/chaseState"
 
 export interface RollOutcomeParams {
-  state: AttackState | ChaseState
+  result: MookResult
 }
 
-export default function RollOutcome({ state }: RollOutcomeParams) {
-  const { success, actionResult } = state
+export default function RollOutcome({ result }: RollOutcomeParams) {
+  const { success, actionResult } = result
 
   const style = (success) ? {color: "red", fontWeight: "bold"} : {}
 
