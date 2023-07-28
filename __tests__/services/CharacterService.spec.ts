@@ -17,6 +17,10 @@ describe("CharacterService", () => {
         impairments: 1
       }
       expect(CS.skill(character, "Driving")).toBe(6)
+    }),
+
+    it("returns 7 if the character does not have the skill", () => {
+      expect(CS.skill(brick, "Anything")).toBe(7)
     })
   }),
 
