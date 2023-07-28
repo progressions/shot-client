@@ -388,6 +388,9 @@ describe("AttackReducerService", () => {
     }),
 
     it("fails to hit", () => {
+      // Both attacks:
+      // Swerve -2 + Action Value 8 - Defense 13 = Outcome -7
+      // attack is a miss
       const swerveSpy = jest.spyOn(ARS.AS, "swerve")
       swerveSpy
         .mockReturnValueOnce(roll(-2))
@@ -397,6 +400,79 @@ describe("AttackReducerService", () => {
 
       // attack is a miss
       expect(result.success).toEqual(false)
+    }),
+
+    it("1 mook hits, 1 misses", () => {
+      // First attack: Swerve 8 + Action Value 8 - Defense 13 = Outcome 3
+      // Outcome 3 + Damage 7 - Toughness 7 = Wounds 3
+      // Second attack: Swerve -2 + Action Value 8 - Defense 13 = Outcome -7
+      // attack is a miss
+      //
+      // Total wounds: 3
+      const swerveSpy = jest.spyOn(ARS.AS, "swerve")
+      swerveSpy
+        .mockReturnValueOnce(roll(8))
+        .mockReturnValueOnce(roll(-2))
+
+      const result = ARS.process(state)
+
+      // attack is a success
+      expect(result.success).toEqual(true)
+
+      expectAttackResults(state, result, {
+        swerve: 0,
+        outcome: 0,
+        smackdown: 0,
+        wounds: 3
+      })
+    }),
+
+    it("2 mooks hit", () => {
+      // First attack: Swerve 8 + Action Value 8 - Defense 13 = Outcome 3
+      // Outcome 3 + Damage 7 - Toughness 7 = Wounds 3
+      // Second attack: Swerve 12 + Action Value 8 - Defense 13 = Outcome 7
+      // Outcome 7 + Damage 7 - Toughness 7 = Wounds 7
+      //
+      // Total wounds: 10
+      const swerveSpy = jest.spyOn(ARS.AS, "swerve")
+      swerveSpy
+        .mockReturnValueOnce(roll(8))
+        .mockReturnValueOnce(roll(12))
+
+      const result = ARS.process(state)
+
+      // attack is a success
+      expect(result.success).toEqual(true)
+
+      expectAttackResults(state, result, {
+        swerve: 0,
+        outcome: 0,
+        smackdown: 0,
+        wounds: 10
+      })
+    }),
+
+    it("30 mooks hit", () => {
+      // Each attack: Swerve 8 + Action Value 8 - Defense 13 = Outcome 3
+      // Outcome 3 + Damage 7 - Toughness 7 = Wounds 3
+      //
+      // Total wounds: 90
+      const swerveSpy = jest.spyOn(ARS.AS, "swerve")
+      swerveSpy
+        .mockReturnValue(roll(8))
+
+      state.count = 30
+      const result = ARS.process(state)
+
+      // attack is a success
+      expect(result.success).toEqual(true)
+
+      expectAttackResults(state, result, {
+        swerve: 0,
+        outcome: 0,
+        smackdown: 0,
+        wounds: 90
+      })
     })
   })
 })

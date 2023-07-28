@@ -65,8 +65,12 @@ const AttackReducerService = {
       })
     }
 
+    // apply the wounds to the target
+    const target = CS.takeRawWounds(st.target, wounds)
+
     return {
       ...st,
+      target: target,
       success: success,
       mookResults: results,
       wounds: wounds,

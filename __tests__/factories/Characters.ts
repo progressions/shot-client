@@ -96,7 +96,7 @@ export const zombies: Character = {
   action_values: {
     ...defaultCharacter.action_values,
     "Type": "Mook",
-    "MainAttack": "Create",
+    "MainAttack": "Creature",
     "SecondaryAttack": null,
     "Creature": 8,
     "Defense": 13,
