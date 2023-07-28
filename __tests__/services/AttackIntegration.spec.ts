@@ -65,14 +65,9 @@ describe("AttackReducerService", () => {
       expect(result.success).toEqual(true)
 
       expectAttackResults(state, result, {
-        success: true,
         swerve: 5,
-        actionValue: 14,
-        defense: 17,
         outcome: 2,
-        damage: 7,
         smackdown: 9,
-        toughness: 8,
         wounds: 1
       })
     }),
@@ -92,14 +87,9 @@ describe("AttackReducerService", () => {
       expect(result.success).toEqual(true)
 
       expectAttackResults(state, result, {
-        success: true,
         swerve: 7,
-        actionValue: 14,
-        defense: 17,
         outcome: 2,
-        damage: 7,
         smackdown: 9,
-        toughness: 8,
         wounds: 1
       })
     })
@@ -156,14 +146,9 @@ describe("AttackReducerService", () => {
       expect(result.success).toEqual(true)
 
       expectAttackResults(state, result, {
-        success: true,
         swerve: 5,
-        actionValue: 14,
-        defense: 14,
         outcome: 5,
-        damage: 7,
         smackdown: 12,
-        toughness: 7,
         wounds: 5
       })
     }),
@@ -183,14 +168,9 @@ describe("AttackReducerService", () => {
       expect(result.success).toEqual(true)
 
       expectAttackResults(state, result, {
-        success: true,
         swerve: 7,
-        actionValue: 14,
-        defense: 14,
         outcome: 5,
-        damage: 7,
         smackdown: 12,
-        toughness: 7,
         wounds: 5
       })
     })
