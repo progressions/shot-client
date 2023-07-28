@@ -176,7 +176,7 @@ const AttackReducerService = {
 
     targetMookDefense: function(st: AttackState): number {
       if (this.CS.isMook(st.target) && st.count > 1) {
-        return st.defense + st.count + (st.stunt ? 2 : 0)
+        return st.defense + st.count
       }
       return st.defense
     },

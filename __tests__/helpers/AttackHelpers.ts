@@ -7,8 +7,8 @@ interface PartialAttackState {
   defense?: number
   damage?: number
   toughness?: number
-  wounds: number
-  smackdown: number
+  wounds?: number
+  smackdown?: number
   outcome: number
   mooks?: number
 }
@@ -27,20 +27,21 @@ export function expectTargetUnharmed(state: AttackState, result: AttackState) {
 }
 
 export function expectAttackResults(state: AttackState, result: AttackState, values: PartialAttackState) {
-  const { swerve, outcome, wounds } = values
+  const { swerve, outcome } = values
+
+  const mooks = values.mooks
 
   // console.log(`Swerve ${swerve} + Action Value ${actionValue} - Defense ${defense} = Outcome ${swerve + actionValue - defense}`)
   // console.log(`Outcome ${swerve + actionValue - defense} + Damage ${damage} - Toughness ${toughness} = Wounds ${wounds}`)
 
-  const smackdown = values.smackdown
-
   expect(result.swerve.result).toEqual(swerve)
-
-  const mooks = values.mooks
 
   if (mooks) {
     expect(CS.mooks(result.target)).toEqual(CS.mooks(state.target) - mooks)
   } else {
+    const wounds = values.wounds
+    const smackdown = values.smackdown
+
     // defense values belong to the target
     const defense = values.defense || CS.defense(state.target)
     const toughness = values.toughness || CS.toughness(state.target)

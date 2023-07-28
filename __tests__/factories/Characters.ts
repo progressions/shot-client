@@ -74,6 +74,21 @@ export const huanKen: Character = {
   },
 }
 
+export const hitman: Character = {
+  ...defaultCharacter,
+  name: "Hitman",
+  action_values: {
+    ...defaultCharacter.action_values,
+    "Type": "Featured Foe",
+    "MainAttack": "Guns",
+    "SecondaryAttack": null,
+    "Guns": 14,
+    "Defense": 13,
+    "Toughness": 7,
+    "Damage": 9,
+  },
+}
+
 export const zombies: Character = {
   ...defaultCharacter,
   name: "Zombies",
