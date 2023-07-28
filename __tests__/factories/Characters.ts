@@ -51,11 +51,27 @@ export const shing: Character = {
     "SecondaryAttack": null,
     "Guns": 17,
     "Defense": 14,
-    "Damage": 9
+    "Damage": 9,
+    "Toughness": 7
   },
   skills: {
     "Driving": 15
   }
+}
+
+export const huanKen: Character = {
+  ...defaultCharacter,
+  name: "Huan Ken",
+  action_values: {
+    ...defaultCharacter.action_values,
+    "Type": "Uber-Boss",
+    "MainAttack": "Sorcery",
+    "SecondaryAttack": null,
+    "Sorcery": 19,
+    "Defense": 17,
+    "Damage": 12,
+    "Toughness": 8
+  },
 }
 
 export const zombies: Character = {

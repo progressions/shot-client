@@ -2,6 +2,8 @@ import type { AttackState } from "../reducers/attackState"
 import DS from "./DiceService"
 import { AttackRoll, Swerve } from "../types/types"
 
+const verbose = false
+
 const ActionService = {
   totalWounds: function({ attackRolls, toughness }: { attackRolls: any[], toughness: number }): number {
     return attackRolls.reduce((total: number, attackRoll: any) => {
@@ -20,7 +22,9 @@ const ActionService = {
   wounds: function({ swerve, actionValue, defense, stunt, damage, toughness }: { swerve?: Swerve, actionValue: number, defense: number, stunt?: boolean, damage: number, toughness: number }): AttackRoll {
     const smackdown = this.smackdown({ swerve, actionValue, defense, stunt, damage })
     const wounds = Math.max(0, (smackdown.smackdown || 0) - toughness)
-    // console.log(`Wounds ${wounds} : Smackdown ${smackdown.smackdown} - Toughness ${toughness}`)
+    if (verbose) {
+      console.log(`Wounds ${wounds} : Smackdown ${smackdown.smackdown} - Toughness ${toughness}`)
+    }
     return {
       ...smackdown,
       wounds,
@@ -30,7 +34,9 @@ const ActionService = {
   smackdown: function({ swerve, actionValue, defense, stunt, damage }: { swerve?: Swerve, actionValue: number, defense: number, stunt?: boolean, damage: number }): AttackRoll {
     const outcome = this.outcome({ swerve, actionValue, defense, stunt })
     const smackdown = outcome.success ? (outcome.outcome || 0) + (damage || 0) : 0
-    // console.log(`Smackdown ${smackdown} : Outcome ${outcome.outcome} + Damage ${damage || 0}`)
+    if (verbose) {
+      console.log(`Smackdown ${smackdown} : Outcome ${outcome.outcome} + Damage ${damage || 0}`)
+    }
     return {
       ...outcome,
       smackdown,
@@ -42,7 +48,9 @@ const ActionService = {
     const modifiedDefense = stunt ? defense + 2 : defense
     const outcome = actionResult.actionResult - modifiedDefense
     const success = outcome >= 0
-    // console.log(`Outcome ${outcome} : ActionResult ${actionResult.actionResult} - Defense ${modifiedDefense}${stunt ? "*" : ""}`)
+    if (verbose) {
+      console.log(`Outcome ${outcome} : ActionResult ${actionResult.actionResult} - Defense ${modifiedDefense}${stunt ? "*" : ""}`)
+    }
     return {
       ...actionResult,
       outcome,
@@ -54,7 +62,9 @@ const ActionService = {
   actionResult: function({ swerve, actionValue }: { swerve?: Swerve, actionValue: number }): AttackRoll {
     const rolledSwerve = swerve === undefined ? this.swerve() : swerve
     const result = actionValue + rolledSwerve.result
-    // console.log(`ActionResult ${result} : Swerve ${rolledSwerve.result} + ActionValue ${actionValue}`)
+    if (verbose) {
+      console.log(`ActionResult ${result} : Swerve ${rolledSwerve.result} + ActionValue ${actionValue}`)
+    }
     return {
       boxcars: rolledSwerve.boxcars,
       swerve: rolledSwerve.result,

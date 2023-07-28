@@ -4,41 +4,8 @@ import { ChaseMethod, initialChaseState, ChaseState } from "../../reducers/chase
 import CRS from "../../services/ChaseReducerService"
 import VS from "../../services/VehicleService"
 import { pursuer, evader, hondas, brickMobile, copCar, battleTruck, motorcycles } from "../factories/Vehicles"
-
-function roll(result: number) {
-  return {
-    ...defaultSwerve,
-    result: result
-  }
-}
-
-function expectTargetUnharmed(state: ChaseState, result: ChaseState) {
-  // the target has taken no damage
-  expect(VS.chasePoints(result.target)).toEqual(VS.chasePoints(state.target))
-  expect(VS.conditionPoints(result.target)).toEqual(VS.conditionPoints(state.target))
-}
-
-function expectAttackerUnharmed(state: ChaseState, result: ChaseState) {
-
-  if (VS.isMook(result.attacker)) {
-    expect(VS.mooks(result.attacker)).toEqual(VS.mooks(state.attacker))
-  }
-  // the attacker has taken no damage
-  expect(VS.chasePoints(result.attacker)).toEqual(VS.chasePoints(state.attacker))
-  expect(VS.conditionPoints(result.attacker)).toEqual(VS.conditionPoints(state.attacker))
-}
-
-function expectPositionsUnchanged(state: ChaseState, result: ChaseState) {
-  // their positions haven't changed
-  expect(VS.position(result.attacker)).toEqual(VS.position(state.attacker))
-  expect(VS.position(result.target)).toEqual(VS.position(state.target))
-}
-
-function expectNoChanges(state: ChaseState, result: ChaseState) {
-  expectAttackerUnharmed(state, result)
-  expectTargetUnharmed(state, result)
-  expectPositionsUnchanged(state, result)
-}
+import { roll } from "../helpers/Helpers"
+import { expectChaseResults, expectTargetUnharmed, expectNoChanges, expectAttackerUnharmed, expectPositionsUnchanged } from "../helpers/ChaseHelpers"
 
 describe("ChaseReducerService", () => {
   let state: ChaseState
@@ -60,13 +27,34 @@ describe("ChaseReducerService", () => {
         state.edited = true
       }),
 
-      it("tries to evade", () => {
+      it("fails to evade", () => {
         // Swerve 0 + Action Value 7 - Defense 15
         expect(state.actionValue).toEqual(7)
         expect(state.defense).toEqual(15)
         state.swerve = roll(0)
+
         const result = CRS.process(state)
+
+        // attack is a miss
         expect(result.success).toEqual(false)
+
+        expectNoChanges(state, result)
+      }),
+
+      it("fails to evade as a stunt", () => {
+        state.stunt = true
+
+        // Swerve 2 + Action Value 7 - Defense 15 - Stunt 2
+        expect(state.actionValue).toEqual(7)
+        expect(state.defense).toEqual(15)
+        state.swerve = roll(0)
+
+        const result = CRS.process(state)
+
+        // attack is a miss
+        expect(result.success).toEqual(false)
+
+        expectNoChanges(state, result)
       }),
 
       it("evades", () => {
@@ -75,12 +63,44 @@ describe("ChaseReducerService", () => {
         // Smackdown 14 - Handling 6 = 8 Chase Points
         state.swerve = roll(12)
         const result = CRS.process(state)
+
+        // attack was a success
         expect(result.success).toEqual(true)
-        expect(VS.chasePoints(result.target)).toEqual(8)
-        expect(VS.conditionPoints(result.target)).toEqual(0)
+
+        expectChaseResults(state, result, {
+          swerve: 12,
+          outcome: 4,
+          smackdown: 14,
+          chasePoints: 8,
+          conditionPoints: 0
+        })
 
         // no bump when evading
-        expect(VS.chasePoints(result.attacker)).toEqual(0)
+        expectAttackerUnharmed(state, result)
+      }),
+
+      it("evades as a stunt", () => {
+        state.stunt = true
+
+        // Swerve 12 + Action Value 7 - Defense 15 - Stunt 2 = Outcome 2
+        // Outcome 2 + Squeal 10 = Smackdown 12
+        // Smackdown 12 - Handling 6 = 6 Chase Points
+        state.swerve = roll(12)
+        const result = CRS.process(state)
+
+        // attack was a success
+        expect(result.success).toEqual(true)
+
+        expectChaseResults(state, result, {
+          swerve: 12,
+          outcome: 2,
+          smackdown: 12,
+          chasePoints: 6,
+          conditionPoints: 0
+        })
+
+        // no bump when evading
+        expectAttackerUnharmed(state, result)
       })
     }),
 
@@ -95,10 +115,22 @@ describe("ChaseReducerService", () => {
         state.edited = true
       }),
 
-      it("tries to widen the gap", () => {
+      it("fails to widen the gap", () => {
         // Swerve 0 + Action Value 7 - Defense 15
-        expect(state.actionValue).toEqual(7)
-        expect(state.defense).toEqual(15)
+        state.swerve = roll(0)
+
+        const result = CRS.process(state)
+
+        // the attack was a miss
+        expect(result.success).toEqual(false)
+
+        expectNoChanges(state, result)
+      }),
+
+      it("fails to widen the gap as a stunt", () => {
+        // Swerve 2 + Action Value 7 - Defense 15 - Stunt 2
+        // Outcome 2 + Squeal 10 = Smackdown 12
+        state.stunt = true
         state.swerve = roll(0)
 
         const result = CRS.process(state)
@@ -121,15 +153,40 @@ describe("ChaseReducerService", () => {
         // the attack was a success
         expect(result.success).toEqual(true)
 
+        expectChaseResults(state, result, {
+          swerve: 12,
+          outcome: 4,
+          smackdown: 14,
+          chasePoints: 8,
+          conditionPoints: 0,
+          position: "far"
+        })
+
         expectAttackerUnharmed(state, result)
+      }),
 
-        // the target has taken 8 Chase Points and no Condition Points
-        expect(VS.chasePoints(result.target)).toEqual(8)
-        expect(VS.conditionPoints(result.target)).toEqual(0)
+      it("widens the gap as a stunt", () => {
+        // Swerve 12 + Action Value 7 - Defense 15 - Stunt 2 = Outcome 2
+        // Outcome 2 + Squeal 10 = Smackdown 12
+        // Smackdown 12 - Handling 6 = 6 Chase Points
+        state.stunt = true
+        state.swerve = roll(12)
 
-        // they've widened the gap, they're now "far"
-        expect(VS.position(result.attacker)).toEqual("far")
-        expect(VS.position(result.target)).toEqual("far")
+        const result = CRS.process(state)
+
+        // the attack was a success
+        expect(result.success).toEqual(true)
+
+        expectChaseResults(state, result, {
+          swerve: 12,
+          outcome: 2,
+          smackdown: 12,
+          chasePoints: 6,
+          conditionPoints: 0,
+          position: "far"
+        })
+
+        expectAttackerUnharmed(state, result)
       })
     }),
 
@@ -144,8 +201,21 @@ describe("ChaseReducerService", () => {
         state.edited = true
       })
 
-      it("tries to narrow the gap", () => {
+      it("fails to narrow the gap", () => {
         // Swerve 0 + Action Value 7 - Defense 15
+        state.swerve = roll(0)
+
+        const result = CRS.process(state)
+
+        // the attack is a miss
+        expect(result.success).toEqual(false)
+
+        expectNoChanges(state, result)
+      }),
+
+      it("fails to narrow the gap as a stunt", () => {
+        // Swerve 2 + Action Value 7 - Defense 15
+        state.stunt = true
         state.swerve = roll(0)
 
         const result = CRS.process(state)
@@ -160,7 +230,6 @@ describe("ChaseReducerService", () => {
         // Swerve 12 + Action Value 7 - Defense 15 = Outcome 4
         // Outcome 4 + Squeal 10 = Smackdown 14
         // Smackdown 14 - Handling 6 = 8 Chase Points
-        state.method = ChaseMethod.NARROW_THE_GAP
         state.swerve = roll(12)
 
         const result = CRS.process(state)
@@ -168,15 +237,40 @@ describe("ChaseReducerService", () => {
         // the attack is a success
         expect(result.success).toEqual(true)
 
+        expectChaseResults(state, result, {
+          swerve: 12,
+          outcome: 4,
+          smackdown: 14,
+          chasePoints: 8,
+          conditionPoints: 0,
+          position: "near"
+        })
+
         expectAttackerUnharmed(state, result)
+      }),
 
-        // the target takes 8 Chase Points and no Condition Points
-        expect(VS.chasePoints(result.target)).toEqual(8)
-        expect(VS.conditionPoints(result.target)).toEqual(0)
+      it("narrows the gap as a stunt", () => {
+        // Swerve 12 + Action Value 7 - Defense 15 - Stunt 2 = Outcome 2
+        // Outcome 2 + Squeal 10 = Smackdown 12
+        // Smackdown 12 - Handling 6 = 6 Chase Points
+        state.stunt = true
+        state.swerve = roll(12)
 
-        // they've narrowed the gap, they're now "near"
-        expect(VS.position(result.attacker)).toEqual("near")
-        expect(VS.position(result.target)).toEqual("near")
+        const result = CRS.process(state)
+
+        // the attack is a success
+        expect(result.success).toEqual(true)
+
+        expectChaseResults(state, result, {
+          swerve: 12,
+          outcome: 2,
+          smackdown: 12,
+          chasePoints: 6,
+          conditionPoints: 0,
+          position: "near"
+        })
+
+        expectAttackerUnharmed(state, result)
       })
     }),
 
@@ -187,14 +281,27 @@ describe("ChaseReducerService", () => {
 
         state = CRS.setAttacker(initialChaseState, attacker)
         state = CRS.setTarget(state, target)
+        state.method = ChaseMethod.RAM_SIDESWIPE
         state.edited = true
       }),
 
-      it("tries to ram/sideswipe the boss", () => {
+      it("fails to ram/sideswipe the boss", () => {
         // Swerve 0 + Action Value 7 - Defense 15
-        expect(state.actionValue).toEqual(7)
-        expect(state.defense).toEqual(15)
         state.swerve = roll(0)
+
+        const result = CRS.process(state)
+
+        // the attack was a miss
+        expect(result.success).toEqual(false)
+
+        expectNoChanges(state, result)
+      }),
+
+      it("fails to ram/sideswipe the boss as a stunt", () => {
+        // Swerve 9 + Action Value 7 - Defense 15 - Stunt 2 = Outcome -1
+        state.stunt = true
+        state.swerve = roll(9)
+
         const result = CRS.process(state)
 
         // the attack was a miss
@@ -214,19 +321,44 @@ describe("ChaseReducerService", () => {
         // the attack is a success
         expect(result.success).toEqual(true)
 
-        // the target has taken 2 Chase Points and 2 Condition Points
-        expect(VS.chasePoints(result.target)).toEqual(2)
-        expect(VS.conditionPoints(result.target)).toEqual(2)
+        expectChaseResults(state, result, {
+          swerve: 12,
+          outcome: 4,
+          smackdown: 12,
+          chasePoints: 2,
+          conditionPoints: 2,
+          bump: 4
+        })
+      }),
 
-        // attacker takes a bump of 4 chase points
+      it("rams/sideswipes the boss as a stunt", () => {
+        // Swerve 14 + Action Value 7 - Defense 15 - Stunt 2 = Outcome 4
+        // Outcome 4 + Crunch 8 = Smackdown 12
+        // Smackdown 12 - Frame 10 = 2 Chase Points
+        state.stunt = true
+        state.swerve = roll(14)
+
+        const result = CRS.process(state)
+
+        // the attack is a success
+        expect(result.success).toEqual(true)
+
+        expectChaseResults(state, result, {
+          swerve: 14,
+          outcome: 2,
+          smackdown: 12,
+          chasePoints: 2,
+          conditionPoints: 2,
+          bump: 4
+        })
+
+        // attacker takes a bump of 4 condition points
         expect(VS.chasePoints(result.attacker)).toEqual(4)
         expect(VS.conditionPoints(result.attacker)).toEqual(4)
-
-        expectPositionsUnchanged(state, result)
       })
     }),
 
-    describe("PCs vs Mooks evades", () => {
+    describe("PC vs Mooks evades", () => {
       beforeEach(() => {
         let attacker = evader(brickMobile, "far")
         let target = pursuer(hondas, "far")
@@ -238,7 +370,7 @@ describe("ChaseReducerService", () => {
         state.edited = true
       }),
 
-      it("PCs vs Mooks fail to evade", () => {
+      it("fails to evade", () => {
         // Swerve 0 + Action Value 7 - Defense 7
         // Attack fails, no mooks killed
         state.count = 1
@@ -253,8 +385,8 @@ describe("ChaseReducerService", () => {
         expectNoChanges(state, result)
       }),
 
-      it("PCs vs Mooks evades 1 mook", () => {
-        // Swerve 0 + Action Value 7 - Defense 7
+      it("evades 1 mook", () => {
+        // Swerve 0 + Action Value 7 - Defense 7 = Outcome 0
         // Attack success, 1 mook killed
         state.swerve = roll(0)
         state.count = 1
@@ -264,17 +396,39 @@ describe("ChaseReducerService", () => {
         // the attack is a success
         expect(result.success).toEqual(true)
 
+        expectChaseResults(state, result, {
+          swerve: 0,
+          outcome: 0,
+          mooks: 1,
+          position: "far"
+        })
+
         expectAttackerUnharmed(state, result)
-
-        // the target has lost 1 mook
-        expect(VS.mooks(result.target)).toEqual(VS.mooks(state.target) - 1)
-
-        // they've evaded, they're now "far"
-        expect(VS.position(result.attacker)).toEqual("far")
-        expect(VS.position(result.target)).toEqual("far")
       }),
 
-      it("PCs vs Mooks evades 5 mooks", () => {
+      it("evades 1 mook as a stunt", () => {
+        // Swerve 2 + Action Value 7 - Defense 7 = Outcome 0
+        // Attack success, 1 mook killed
+        state.stunt = true
+        state.swerve = roll(2)
+        state.count = 1
+
+        const result = CRS.process(state)
+
+        // the attack is a success
+        expect(result.success).toEqual(true)
+
+        expectChaseResults(state, result, {
+          swerve: 2,
+          outcome: 0,
+          mooks: 1,
+          position: "far"
+        })
+
+        expectAttackerUnharmed(state, result)
+      }),
+
+      it("evades 5 mooks", () => {
         // Swerve 12 + Action Value 7 - Defense 7 = Outcome 12
         // Attack success, 5 mooks killed
         state.swerve = roll(12)
@@ -285,18 +439,41 @@ describe("ChaseReducerService", () => {
         // the attack is a success
         expect(result.success).toEqual(true)
 
+        expectChaseResults(state, result, {
+          swerve: 12,
+          outcome: 12,
+          mooks: 5,
+          position: "far"
+        })
+
         expectAttackerUnharmed(state, result)
+      }),
 
-        // the target has lost 5 mooks
-        expect(VS.mooks(result.target)).toEqual(VS.mooks(state.target) - 5)
+      it("evades 5 mooks as a sunt", () => {
+        state.stunt = true
 
-        // they've evaded, they're now "far"
-        expect(VS.position(result.attacker)).toEqual("far")
-        expect(VS.position(result.target)).toEqual("far")
+        // Swerve 14 + Action Value 7 - Defense 7 = Outcome 12
+        // Attack success, 5 mooks killed
+        state.swerve = roll(14)
+        state.count = 5
+
+        const result = CRS.process(state)
+
+        // the attack is a success
+        expect(result.success).toEqual(true)
+
+        expectChaseResults(state, result, {
+          swerve: 14,
+          outcome: 12,
+          mooks: 5,
+          position: "far"
+        })
+
+        expectAttackerUnharmed(state, result)
       })
     }),
 
-    describe("PCs vs Mooks widens the gap", () => {
+    describe("PC vs Mooks widens the gap", () => {
       beforeEach(() => {
         let attacker = pursuer(brickMobile, "near")
         let target = evader(hondas, "near")
@@ -345,7 +522,7 @@ describe("ChaseReducerService", () => {
       }),
 
       it("widens the gap taking out 5 mooks", () => {
-        // Swerve 12 + Action Value 7 - Defense 15
+        // Swerve 12 + Action Value 7 - Defense 15 = Outcome 4
         // Attack success, 5 mooks killed
         state.swerve = roll(12)
         state.count = 5
@@ -355,18 +532,41 @@ describe("ChaseReducerService", () => {
         // the attack is a success
         expect(result.success).toEqual(true)
 
+        expectChaseResults(state, result, {
+          swerve: 12,
+          outcome: 4,
+          mooks: 5,
+          position: "far"
+        })
+
         expectAttackerUnharmed(state, result)
+      }),
 
-        // the target has lost 5 mooks
-        expect(VS.mooks(result.target)).toEqual(VS.mooks(state.target) - 5)
+      it("widens the gap taking out 5 mooks as a stunt", () => {
+        state.stunt = true
 
-        // they've widened the gap, they're now "far"
-        expect(VS.position(result.attacker)).toEqual("far")
-        expect(VS.position(result.target)).toEqual("far")
+        // Swerve 12 + Action Value 7 - Defense 15 = Outcome 4
+        // Attack success, 5 mooks killed
+        state.swerve = roll(12)
+        state.count = 5
+
+        const result = CRS.process(state)
+
+        // the attack is a success
+        expect(result.success).toEqual(true)
+
+        expectChaseResults(state, result, {
+          swerve: 12,
+          outcome: 2,
+          mooks: 5,
+          position: "far"
+        })
+
+        expectAttackerUnharmed(state, result)
       })
     }),
 
-    describe("PCs vs Mooks narrows the gap", () => {
+    describe("PC vs Mooks narrows the gap", () => {
       beforeEach(() => {
         let attacker = pursuer(brickMobile, "far")
         let target = evader(hondas, "far")
@@ -404,14 +604,35 @@ describe("ChaseReducerService", () => {
         // the attack is a success
         expect(result.success).toEqual(true)
 
+        expectChaseResults(state, result, {
+          swerve: 0,
+          outcome: 0,
+          mooks: 1,
+          position: "near"
+        })
+
         expectAttackerUnharmed(state, result)
+      }),
 
-        // the target has lost 1 mook
-        expect(VS.mooks(result.target)).toEqual(VS.mooks(state.target) - 1)
+      it("narrows the gap taking out 1 mook as a stunt", () => {
+        // Swerve 0 + Action Value 7 - Defense 7
+        // Attack success, 1 mook killed
+        state.swerve = roll(2)
+        state.count = 1
 
-        // they've narrowed the gap, they're now "near"
-        expect(VS.position(result.attacker)).toEqual("near")
-        expect(VS.position(result.target)).toEqual("near")
+        const result = CRS.process(state)
+
+        // the attack is a success
+        expect(result.success).toEqual(true)
+
+        expectChaseResults(state, result, {
+          swerve: 2,
+          outcome: 0,
+          mooks: 1,
+          position: "near"
+        })
+
+        expectAttackerUnharmed(state, result)
       }),
 
       it("narrows the gap taking out 5 mooks", () => {
@@ -427,16 +648,39 @@ describe("ChaseReducerService", () => {
 
         expectAttackerUnharmed(state, result)
 
-        // the target has lost 5 mooks
-        expect(VS.mooks(result.target)).toEqual(VS.mooks(state.target) - 5)
+        expectChaseResults(state, result, {
+          swerve: 12,
+          outcome: 12,
+          mooks: 5,
+          position: "near"
+        })
+      }),
 
-        // they've narrowed the gap, they're now "near"
-        expect(VS.position(result.attacker)).toEqual("near")
-        expect(VS.position(result.target)).toEqual("near")
+      it("narrows the gap taking out 5 mooks as a stunt", () => {
+        state.stunt = true
+
+        // Swerve 12 + Action Value 7 - Defense 7
+        // Attack success, 5 mooks killed
+        state.swerve = roll(14)
+        state.count = 5
+
+        const result = CRS.process(state)
+
+        // the attack is a success
+        expect(result.success).toEqual(true)
+
+        expectAttackerUnharmed(state, result)
+
+        expectChaseResults(state, result, {
+          swerve: 14,
+          outcome: 12,
+          mooks: 5,
+          position: "near"
+        })
       })
     }),
 
-    describe("PCs vs Mooks sideswipes", () => {
+    describe("PC vs Mooks sideswipes", () => {
       beforeEach(() => {
         let attacker = pursuer(brickMobile, "near")
         let target = evader(hondas, "near")
@@ -474,11 +718,35 @@ describe("ChaseReducerService", () => {
         // the attack is a success
         expect(result.success).toEqual(true)
 
-        // the target lost 1 mook
-        expect(VS.mooks(result.target)).toEqual(VS.mooks(motorcycles) - 1)
+        expectChaseResults(state, result, {
+          swerve: 25,
+          outcome: 17,
+          mooks: 1,
+        })
 
         expectAttackerUnharmed(state, result)
-        expectPositionsUnchanged(state, result)
+      }),
+
+      it("sideswipes 1 mook as a stunt", () => {
+        state.stunt = true
+
+        // Swerve 27 + Action Value 7 - Defense 15 = Outcome 17
+        // Attack succeeds, kills 1 Mook
+        state.count = 1
+        state.swerve = roll(27)
+        state.edited = true
+        const result = CRS.process(state)
+
+        // the attack is a success
+        expect(result.success).toEqual(true)
+
+        expectChaseResults(state, result, {
+          swerve: 27,
+          outcome: 17,
+          mooks: 1,
+        })
+
+        expectAttackerUnharmed(state, result)
       }),
 
       it("sideswipes 5 mooks", () => {
@@ -493,11 +761,36 @@ describe("ChaseReducerService", () => {
         // the attack is a success
         expect(result.success).toEqual(true)
 
-        // the target lost 5 mooks
-        expect(VS.mooks(result.target)).toEqual(VS.mooks(motorcycles) - 5)
+        expectChaseResults(state, result, {
+          swerve: 25,
+          outcome: 12,
+          mooks: 5,
+        })
 
         expectAttackerUnharmed(state, result)
-        expectPositionsUnchanged(state, result)
+      }),
+
+      it("sideswipes 5 mooks as a stunt", () => {
+        state.stunt = true
+
+        // Swerve 25 + Action Value 7 - Defense 20 = Outcome 12
+        // Attack succeeds, kills 5 Mooks
+        state.count = 5
+        state.swerve = roll(27)
+        state.edited = true
+
+        const result = CRS.process(state)
+
+        // the attack is a success
+        expect(result.success).toEqual(true)
+
+        expectChaseResults(state, result, {
+          swerve: 27,
+          outcome: 12,
+          mooks: 5,
+        })
+
+        expectAttackerUnharmed(state, result)
       })
     }),
 
@@ -552,17 +845,15 @@ describe("ChaseReducerService", () => {
         // the attack was a success
         expect(result.success).toEqual(true)
 
-        // the state knows the total Chase Points and no Condition Points
-        expect(result.chasePoints).toEqual(23)
-        expect(result.conditionPoints).toEqual(0)
+        expectChaseResults(state, result, {
+          // these values are 0 because the results are not used
+          swerve: 0,
+          outcome: 0,
+          smackdown: 0,
 
-        expectAttackerUnharmed(state, result)
-
-        // the target has taken 23 Chase Points and no Condition Points
-        expect(VS.chasePoints(result.target)).toEqual(23)
-        expect(VS.conditionPoints(result.target)).toEqual(0)
-
-        expectPositionsUnchanged(state, result)
+          chasePoints: 23,
+          conditionPoints: 0
+        })
       })
     }),
 
@@ -617,17 +908,17 @@ describe("ChaseReducerService", () => {
         // the attack is a success
         expect(result.success).toEqual(true)
 
-        // the state knows the total Chase Points and no Condition Points
-        expect(result.chasePoints).toEqual(23)
-        expect(result.conditionPoints).toEqual(0)
+        expectChaseResults(state, result, {
+          // these values are 0 because the results are not used
+          swerve: 0,
+          outcome: 0,
+          smackdown: 0,
 
-        // the target has 23 Chase Points and no Condition Points
-        expect(VS.chasePoints(result.target)).toEqual(23)
-        expect(VS.conditionPoints(result.target)).toEqual(0)
-
-        // they've widened the gap, they're now "far"
-        expect(VS.position(result.attacker)).toEqual("far")
-        expect(VS.position(result.target)).toEqual("far")
+          chasePoints: 23,
+          conditionPoints: 0,
+          position: "far"
+        })
+        expectAttackerUnharmed(state, result)
       })
     }),
 
@@ -682,19 +973,17 @@ describe("ChaseReducerService", () => {
         // the attack was a success
         expect(result.success).toEqual(true)
 
-        // the state knows the total Chase Points and no Condition Points
-        expect(result.chasePoints).toEqual(23)
-        expect(result.conditionPoints).toEqual(0)
+        expectChaseResults(state, result, {
+          // these values are 0 because the results are not used
+          swerve: 0,
+          outcome: 0,
+          smackdown: 0,
 
+          chasePoints: 23,
+          conditionPoints: 0,
+          position: "near"
+        })
         expectAttackerUnharmed(state, result)
-
-        // the target has 23 Chase Points and no Condition Points
-        expect(VS.chasePoints(result.target)).toEqual(23)
-        expect(VS.conditionPoints(result.target)).toEqual(0)
-
-        // they've narrowed the gap, they're both "near"
-        expect(VS.position(result.attacker)).toEqual("near")
-        expect(VS.position(result.target)).toEqual("near")
       })
     }),
 
@@ -749,17 +1038,18 @@ describe("ChaseReducerService", () => {
         // the attack is a success
         expect(result.success).toEqual(true)
 
-        // the state knows the total Chase Points and Condition Points
-        expect(result.chasePoints).toEqual(19)
-        expect(result.conditionPoints).toEqual(19)
+        expectChaseResults(state, result, {
+          // these values are 0 because the results are not used
+          swerve: 0,
+          outcome: 0,
+          smackdown: 0,
 
-        // the target has taken 19 Chase Points and 19 Condition Points
-        expect(VS.chasePoints(result.target)).toEqual(19)
-        expect(VS.conditionPoints(result.target)).toEqual(19)
+          chasePoints: 19,
+          conditionPoints: 19,
 
-        expectPositionsUnchanged(state, result)
+          bump: 1
+        })
       })
     })
   })
 })
-
