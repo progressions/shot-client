@@ -1,5 +1,9 @@
+import type { Vehicle } from "../../types/types"
 import { ChaseMethod, initialChaseState, ChaseState } from "../../reducers/chaseState"
 import VS from "../../services/VehicleService"
+import { pursuer, evader } from "../factories/Vehicles"
+import CRS from "../../services/ChaseReducerService"
+import { roll } from "../helpers/Helpers"
 
 interface PartialChaseState {
   swerve: number
@@ -16,6 +20,73 @@ interface PartialChaseState {
   position?: string
   bump?: number
   mooks?: number
+}
+
+export function expectPursuitAttack(attacker: Vehicle, target: Vehicle, method: ChaseMethod, startingPosition: string, dieRoll: number, stunt: boolean = false) {
+  let state = initialChaseState
+
+  attacker = pursuer(attacker, startingPosition)
+  target = evader(target, startingPosition)
+
+  state = CRS.setAttacker(state, attacker)
+  state = CRS.setTarget(state, target)
+  state.method = method
+  state.edited = true
+  state.swerve = roll(dieRoll)
+
+  const result = CRS.process(state)
+
+  const toughness = method === ChaseMethod.RAM_SIDESWIPE ? state.frame : state.handling
+  const damage = method === ChaseMethod.RAM_SIDESWIPE ? state.crunch : state.squeal
+  const outcome = dieRoll + state.actionValue - state.defense - (stunt ? 2 : 0)
+  const smackdown = outcome >= 0 ? outcome + damage : null
+  const chasePoints = smackdown ? smackdown - toughness : 0
+  const bump = outcome >= 0 && method === ChaseMethod.RAM_SIDESWIPE && Math.max(0, VS.frame(target) - VS.frame(attacker))
+
+  expectChaseResults(state, result, {
+    swerve: dieRoll,
+    outcome: outcome,
+    smackdown: smackdown as number,
+    chasePoints: chasePoints as number,
+    conditionPoints: (method === ChaseMethod.RAM_SIDESWIPE ? chasePoints : 0) as number,
+    position: outcome >= 0 ? "near" : startingPosition,
+    bump: bump as number,
+  })
+}
+
+export function expectEvasionAttack(attacker: Vehicle, target: Vehicle, method: ChaseMethod, startingPosition: string, dieRoll: number, stunt: boolean = false) {
+  let state = initialChaseState
+
+  attacker = evader(attacker, startingPosition)
+  target = pursuer(target, startingPosition)
+
+  state = CRS.setAttacker(state, attacker)
+  state = CRS.setTarget(state, target)
+  state.method = method
+  state.edited = true
+  state.swerve = roll(dieRoll)
+
+  const result = CRS.process(state)
+
+  const toughness = method === ChaseMethod.RAM_SIDESWIPE ? state.frame : state.handling
+  const damage = method === ChaseMethod.RAM_SIDESWIPE ? state.crunch : state.squeal
+  const outcome = dieRoll + state.actionValue - state.defense - (stunt ? 2 : 0)
+  const success = outcome >= 0
+  const smackdown = success ? outcome + damage : null
+  const chasePoints = smackdown ? smackdown - toughness : 0
+  const bump = success && method === ChaseMethod.RAM_SIDESWIPE && Math.max(0, VS.frame(target) - VS.frame(attacker))
+  let endingPosition = success ? "far" : startingPosition
+  if (success && method === ChaseMethod.RAM_SIDESWIPE) endingPosition = "near"
+
+  expectChaseResults(state, result, {
+    swerve: dieRoll,
+    outcome: outcome,
+    smackdown: smackdown as number,
+    chasePoints: chasePoints as number,
+    conditionPoints: (method === ChaseMethod.RAM_SIDESWIPE ? chasePoints : 0) as number,
+    position: endingPosition,
+    bump: bump as number,
+  })
 }
 
 export function expectTargetUnharmed(state: ChaseState, result: ChaseState) {
@@ -88,8 +159,8 @@ export function expectChaseResults(state: ChaseState, result: ChaseState, values
     expect(result.crunch).toEqual(crunch)
 
     // the state knows how much damage was dealt
-    expect(result.chasePoints).toEqual(chasePoints)
-    expect(result.conditionPoints).toEqual(conditionPoints)
+    expect(result.chasePoints).toEqual(chasePoints || 0)
+    expect(result.conditionPoints).toEqual(conditionPoints || 0)
 
     expect(VS.chasePoints(result.target)).toEqual(chasePoints)
     expect(VS.conditionPoints(result.target)).toEqual(conditionPoints)
