@@ -149,12 +149,7 @@ const ChaseReducerService = {
     }
   },
 
-  // For each attack roll in the `mookRolls` array, apply the attack
-  // to the target and calculate the net Chase Points and Condition Points.
-  //
-  // This version ignores the position and bump rules.
-  //
-  resolveMookAttacks: function(st: ChaseState): ChaseState {
+  rollMookAttacks: function(st: ChaseState): ChaseState {
     const results:ChaseMookResult[] = []
     let chasePoints = 0
     let conditionPoints = 0
@@ -181,27 +176,37 @@ const ChaseReducerService = {
       })
     }
 
-    let returnState = {
+    return {
       ...st,
+      chasePoints: chasePoints as number,
+      conditionPoints: conditionPoints as number,
       success: success,
       mookResults: results,
-      chasePoints: chasePoints,
-      conditionPoints: conditionPoints,
     }
+  },
+
+  // For each attack roll in the `mookRolls` array, apply the attack
+  // to the target and calculate the net Chase Points and Condition Points.
+  //
+  // This version ignores the position and bump rules.
+  //
+  resolveMookAttacks: function(state: ChaseState): ChaseState {
+    const results:ChaseMookResult[] = []
+    const st = this.rollMookAttacks(state)
 
     // apply changes to the attacker and target based on the method
     // but don't add Chase Points
-    let [attacker, target] = this.processMethod(returnState, 0)
+    let [attacker, target] = this.processMethod(st, 0)
 
-    if (success) {
-      target = VS.takeRawChasePoints(target, chasePoints)
-      if (st.method === ChaseMethod.RAM_SIDESWIPE) {
-        target = VS.takeRawConditionPoints(target, conditionPoints)
-      }
+    if (st.success) {
+      target = VS.takeRawChasePoints(target, st.chasePoints || 0)
+    }
+    if (st.success && st.method === ChaseMethod.RAM_SIDESWIPE) {
+      target = VS.takeRawConditionPoints(target, st.conditionPoints || 0)
     }
 
     return {
-      ...returnState,
+      ...st,
       attacker: attacker,
       target: target
     }

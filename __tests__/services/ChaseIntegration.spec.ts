@@ -302,7 +302,19 @@ describe("ChaseReducerService", () => {
           .mockReturnValueOnce(roll(-2))
 
         const result = CRS.process(state)
+
+        // the attack is a miss
         expect(result.success).toEqual(false)
+
+        // the attacker has taken no damage
+        expect(VS.chasePoints(result.attacker)).toEqual(0)
+        expect(VS.conditionPoints(result.attacker)).toEqual(0)
+
+        // the target has taken no damage
+        expect(VS.chasePoints(result.target)).toEqual(0)
+        expect(VS.conditionPoints(result.target)).toEqual(0)
+
+        // their positions haven't changed
         expect(VS.position(result.attacker)).toEqual("near")
         expect(VS.position(result.target)).toEqual("near")
       }),
@@ -325,18 +337,20 @@ describe("ChaseReducerService", () => {
           .mockReturnValueOnce(roll(12))
           .mockReturnValueOnce(roll(5))
 
-        expect(state.method).toEqual(ChaseMethod.WIDEN_THE_GAP)
-        expect(VS.position(state.attacker)).toEqual("near")
-        expect(VS.position(state.target)).toEqual("near")
-        expect(VS.chasePoints(state.target)).toEqual(0)
-
         const result = CRS.process(state)
 
+        // the attack is a success
         expect(result.success).toEqual(true)
+
+        // the state knows the total Chase Points and no Condition Points
         expect(result.chasePoints).toEqual(23)
         expect(result.conditionPoints).toEqual(0)
+
+        // the target has 23 Chase Points and no Condition Points
         expect(VS.chasePoints(result.target)).toEqual(23)
         expect(VS.conditionPoints(result.target)).toEqual(0)
+
+        // they've widened the gap, they're now "far"
         expect(VS.position(result.attacker)).toEqual("far")
         expect(VS.position(result.target)).toEqual("far")
       })
@@ -363,11 +377,19 @@ describe("ChaseReducerService", () => {
           .mockReturnValueOnce(roll(-2))
 
         const result = CRS.process(state)
+
+        // the attack is a miss
         expect(result.success).toEqual(false)
+
+        // the attacker has taken no damage
         expect(VS.chasePoints(result.attacker)).toEqual(0)
         expect(VS.conditionPoints(result.attacker)).toEqual(0)
+
+        // the target has taken no damage
         expect(VS.chasePoints(result.target)).toEqual(0)
         expect(VS.conditionPoints(result.target)).toEqual(0)
+
+        // their positions haven't changed
         expect(VS.position(result.attacker)).toEqual("far")
         expect(VS.position(result.target)).toEqual("far")
       }),
@@ -391,14 +413,103 @@ describe("ChaseReducerService", () => {
           .mockReturnValueOnce(roll(5))
 
         const result = CRS.process(state)
+
+        // the attack was a success
         expect(result.success).toEqual(true)
 
+        // the state knows the total Chase Points and no Condition Points
         expect(result.chasePoints).toEqual(23)
         expect(result.conditionPoints).toEqual(0)
+
+        // the attacker has taken no damage from this attack
+        expect(VS.chasePoints(result.attacker)).toEqual(0)
+        expect(VS.conditionPoints(result.attacker)).toEqual(0)
+
+        // the target has 23 Chase Points and no Condition Points
         expect(VS.chasePoints(result.target)).toEqual(23)
         expect(VS.conditionPoints(result.target)).toEqual(0)
+
+        // they've narrowed the gap, they're both "near"
         expect(VS.position(result.attacker)).toEqual("near")
         expect(VS.position(result.target)).toEqual("near")
+      })
+    }),
+
+    describe("Mooks vs PC evades", () => {
+      beforeEach(() => {
+        let attacker = evader(hondas, "far")
+        let target = pursuer(brickMobile, "far")
+
+        state = CRS.setAttacker(initialChaseState, attacker)
+        state = CRS.setTarget(state, target)
+        state.method = ChaseMethod.EVADE
+        state.count = 2
+        state.edited = true
+      }),
+
+      it("fails to evade", () => {
+        // Swerve -2 + Action Value 7 - Defense 7
+        // Attack fails, no damage
+        const swerveSpy = jest.spyOn(CRS.AS, "swerve")
+        swerveSpy
+          .mockReturnValueOnce(roll(-2))
+          .mockReturnValueOnce(roll(-2))
+
+        const result = CRS.process(state)
+        // the attack was a miss
+        expect(result.success).toEqual(false)
+
+        // the attacker has taken no damage from this attempt
+        expect(VS.chasePoints(result.attacker)).toEqual(0)
+        expect(VS.conditionPoints(result.attacker)).toEqual(0)
+
+        // the target has taken no damage from this attempt
+        expect(VS.chasePoints(result.target)).toEqual(0)
+        expect(VS.conditionPoints(result.target)).toEqual(0)
+
+        // their positions have not changed
+        expect(VS.position(result.attacker)).toEqual("far")
+        expect(VS.position(result.target)).toEqual("far")
+      }),
+
+      it("evades", () => {
+        // First attack:
+        // Swerve 12 + Action Value 7 - Defense 7 = Outcome 12
+        // Outcome 12 + Squeal 11 = Smackdown 23
+        // Smackdown 23 - Handling 8 = 15 Chase Points
+        //
+        // Second attack:
+        // Swerve 5 + Action Value 7 - Defense 7 = Outcome 5
+        // Outcome 5 + Squeal 11 = Smackdown 16
+        // Smackdown 16 - Handling 8 = 8 Chase Points
+        //
+        // Total Chase Points = 23
+        //
+        const swerveSpy = jest.spyOn(CRS.AS, "swerve")
+        swerveSpy
+          .mockReturnValueOnce(roll(12))
+          .mockReturnValueOnce(roll(5))
+
+        const result = CRS.process(state)
+
+        // the attack was a success
+        expect(result.success).toEqual(true)
+
+        // the state knows the total Chase Points and no Condition Points
+        expect(result.chasePoints).toEqual(23)
+        expect(result.conditionPoints).toEqual(0)
+
+        // the attacker has taken no damage from this attempt
+        expect(VS.chasePoints(result.attacker)).toEqual(0)
+        expect(VS.conditionPoints(result.attacker)).toEqual(0)
+
+        // the target has taken 23 Chase Points and no Condition Points
+        expect(VS.chasePoints(result.target)).toEqual(23)
+        expect(VS.conditionPoints(result.target)).toEqual(0)
+
+        // their positions have not changed
+        expect(VS.position(result.attacker)).toEqual("far")
+        expect(VS.position(result.target)).toEqual("far")
       })
     })
   })
