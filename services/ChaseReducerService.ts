@@ -181,14 +181,29 @@ const ChaseReducerService = {
       })
     }
 
-    return {
+    let returnState = {
       ...st,
       success: success,
-      attacker: st.attacker,
-      target: st.target,
       mookResults: results,
       chasePoints: chasePoints,
       conditionPoints: conditionPoints,
+    }
+
+    // apply changes to the attacker and target based on the method
+    // but don't add Chase Points
+    let [attacker, target] = this.processMethod(returnState, 0)
+
+    if (success) {
+      target = VS.takeRawChasePoints(target, chasePoints)
+      if (st.method === ChaseMethod.RAM_SIDESWIPE) {
+        target = VS.takeRawConditionPoints(target, conditionPoints)
+      }
+    }
+
+    return {
+      ...returnState,
+      attacker: attacker,
+      target: target
     }
   },
 
@@ -228,7 +243,10 @@ const ChaseReducerService = {
    *
    */
   processMethod: function(state: ChaseState, damage: number): [Vehicle, Vehicle] {
+    if (!state.success) return [state.attacker, state.target]
+
     const { method, attacker, target } = state
+
     switch (method) {
       case ChaseMethod.RAM_SIDESWIPE:
         return this.VS.ramSideswipe(attacker, damage, target)

@@ -52,6 +52,9 @@ export const shing: Character = {
     "Guns": 17,
     "Defense": 14,
     "Damage": 9
+  },
+  skills: {
+    "Driving": 15
   }
 }
 

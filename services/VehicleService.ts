@@ -2,15 +2,29 @@ import type { Fight, Character, Position, Vehicle, CharacterEffect } from "../ty
 import CS from "./CharacterService"
 import SharedService, { woundThresholds } from "./SharedService"
 
+interface Service {
+  [key: string]: (character: Vehicle, ...args: any) => Vehicle
+}
+
 export type DamageReduction = "handling" | "frame"
 
 const VehicleService = {
   ...SharedService,
 
-  mainAttackValue: function(vehicle: Vehicle): number {
-    if (!vehicle.driver?.id) return Math.max(0, 7 - this.impairments(vehicle))
+  chain: function(character: Vehicle, calls: Array<[...any]>): Vehicle {
+    let char = character
+    for (const [funcName, ...args] of calls) {
+      const unknownService = this as unknown
+      const service = unknownService as Service
 
-    return Math.max(0, CS.skill(vehicle.driver, "Driving") - this.impairments(vehicle))
+      char = service[funcName](char, ...args);
+    }
+    return char
+  },
+
+  mainAttackValue: function(vehicle: Vehicle): number {
+    const value = vehicle.driver ? CS.skill(vehicle.driver as Character, "Driving") : 7
+    return Math.max(0, value - this.impairments(vehicle))
   },
 
   // Not modified by Impairment

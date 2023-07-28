@@ -874,7 +874,6 @@ describe("CharacterService", () => {
         .done()
       expect(CS.wounds(updatedBrick)).toBe(30)
       expect(CS.toughness(updatedBrick)).toBe(9)
-
     })
   })
 })

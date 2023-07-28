@@ -22,6 +22,42 @@ describe("AttackReducerService", () => {
       state = ARS.setTarget(state, shing)
     })
 
+    it.only("kills 1 out of 15 mooks", () => {
+      state = ARS.setTarget(state, zombies)
+
+      const swerve = {
+          ...defaultSwerve,
+          result: 25
+        }
+      state.count = 1
+      state.swerve = swerve
+      state.edited = true
+
+      const result = ARS.process(state)
+
+      expect(result.success).toEqual(true)
+      expect(CS.mooks(result.target)).toEqual(CS.mooks(zombies) - 1)
+    }),
+
+    it.only("kills 5 out of 15 mooks", () => {
+      const calculateAttackValuesMock = jest.spyOn(ARS, "calculateAttackValues")
+      state = ARS.setTarget(state, zombies)
+
+      const swerve = {
+          ...defaultSwerve,
+          result: 25
+        }
+      state.count = 5
+      state.swerve = swerve
+      state.edited = true
+
+      const result = ARS.process(state)
+
+      expect(calculateAttackValuesMock).toHaveBeenCalled()
+      expect(result.success).toEqual(true)
+      expect(CS.mooks(result.target)).toEqual(CS.mooks(zombies) - 5)
+    }),
+
     it("calls resolveAttack if it's edited", () => {
       const resolveAttackSpy = jest.spyOn(ARS, "resolveAttack")
       state.edited = true
