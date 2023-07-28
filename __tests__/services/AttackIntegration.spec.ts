@@ -5,12 +5,25 @@ import ARS from "../../services/AttackReducerService"
 import CS from "../../services/CharacterService"
 import { hitman, huanKen, brick, carolina, shing, zombies } from "../factories/Characters"
 import { roll } from "../helpers/Helpers"
-import { expectNoChanges, expectAttackerUnharmed, expectTargetUnharmed, expectAttackResults } from "../helpers/AttackHelpers"
+import { expectAttack, expectMookAttack, expectNoChanges, expectAttackerUnharmed, expectTargetUnharmed, expectAttackResults } from "../helpers/AttackHelpers"
 
 describe("AttackReducerService", () => {
   beforeEach(() => {
     // Reset the mocked function before each test
     jest.restoreAllMocks();
+  }),
+
+  it("tests a lot of attacks", () => {
+    expectAttack(defaultCharacter, defaultCharacter, 10)
+    expectAttack(brick, hitman, 10)
+    expectAttack(brick, hitman, -10)
+    expectAttack(brick, shing, 10, true)
+    expectAttack(carolina, hitman, -10)
+    expectAttack(carolina, shing, -10)
+    expectAttack(hitman, brick, -5)
+    expectAttack(hitman, brick, 15)
+    expectAttack(shing, brick, 15, true)
+    expectAttack(shing, brick, -12)
   }),
 
   describe("PC vs Uber-Boss", () => {
@@ -336,7 +349,7 @@ describe("AttackReducerService", () => {
     }),
 
     it("hits 5 mooks", () => {
-      // Swerve 5 + Action Value 14 - Defense 18 = Outcome 4
+      // Swerve 5 + Action Value 14 - Defense 18 = Outcome 1
       state.swerve = roll(5)
       state.count = 5
 
@@ -347,7 +360,7 @@ describe("AttackReducerService", () => {
 
       expectAttackResults(state, result, {
         swerve: 5,
-        outcome: 4,
+        outcome: 1,
         mooks: 5
       })
     }),
@@ -385,6 +398,13 @@ describe("AttackReducerService", () => {
 
       state.count = 2
       state.edited = true
+    }),
+
+    it("tests mook attacks", () => {
+      expectMookAttack(zombies, defaultCharacter, [-2, -2, 5, 14, 9, -12])
+      expectMookAttack(zombies, brick, [-2, -2])
+      expectMookAttack(zombies, brick, [10, 12, 26, -9])
+      expectMookAttack(zombies, brick, [26, 9, -4, 13, 8, 7, 6, 5, 4, 3, 2, 1])
     }),
 
     it("fails to hit", () => {
