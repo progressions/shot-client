@@ -24,6 +24,7 @@ export default function WeaponAutocomplete({ character, weapon, setWeapon, disab
 
       const uniqueWeapons = data?.weapons.filter((weapon, index, self) => self.findIndex(w => w.id === weapon.id) === index)
       setWeapons(uniqueWeapons || [])
+      setWeapon(uniqueWeapons[0] || defaultWeapon)
     }
 
     if (character?.id) {

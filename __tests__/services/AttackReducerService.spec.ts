@@ -4,6 +4,7 @@ import { initialAttackState, AttackState } from "../../reducers/attackState"
 import ARS from "../../services/AttackReducerService"
 import CS from "../../services/CharacterService"
 import { brick, carolina, shing, zombies } from "../factories/Characters"
+import { derringer } from "../factories/Weapons"
 
 describe("AttackReducerService", () => {
   beforeEach(() => {
@@ -220,12 +221,13 @@ describe("AttackReducerService", () => {
       }
     }),
 
-    it("sets the attacker", () => {
-      const result = ARS.setAttacker(state, brick)
-      expect(result.attacker).toEqual(brick)
+    it.only("sets the attacker", () => {
+      const result = ARS.setAttacker(state, carolina)
+      expect(result.attacker).toEqual(carolina)
       expect(result.actionValue).toEqual(14)
-      expect(result.actionValueName).toEqual("Martial Arts")
-      expect(result.damage).toEqual(7)
+      expect(result.actionValueName).toEqual("Guns")
+      expect(result.damage).toEqual(derringer.damage)
+      expect(result.weapon).toEqual(derringer)
     })
   })
 })

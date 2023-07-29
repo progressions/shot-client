@@ -129,13 +129,13 @@ const AttackReducerService = {
     const mookCount = this.CS.isMook(attacker) ? this.CS.mooks(attacker) : 1
     const weapon = CS.weapons(attacker)[0] || defaultWeapon
 
+    const st = this.setWeapon(state, weapon)
+
     return this.process({
-      ...state,
+      ...st,
       attacker: attacker,
       actionValueName: CS.mainAttack(attacker) || "",
       actionValue: adjustedMainAttack,
-      weapon: CS.weapons(attacker)[0] || defaultWeapon,
-      damage: weapon?.damage || 7,
       count: mookCount,
     })
   },
