@@ -1,5 +1,6 @@
 import type { Character } from "../../types/types"
 import { defaultCharacter } from "../../types/types"
+import { derringer, ak47 } from "./Weapons"
 
 export const brick: Character = {
   ...defaultCharacter,
@@ -38,7 +39,10 @@ export const carolina: Character = {
   skills: {
     ...defaultCharacter.skills,
     "Driving": 13
-  }
+  },
+  weapons: [
+    derringer
+  ]
 }
 
 export const shing: Character = {
@@ -56,7 +60,8 @@ export const shing: Character = {
   },
   skills: {
     "Driving": 15
-  }
+  },
+  weapons: [ak47]
 }
 
 export const huanKen: Character = {

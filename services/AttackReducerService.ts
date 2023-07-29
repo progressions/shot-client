@@ -1,4 +1,4 @@
-import type { Fight, Character, Vehicle } from "../types/types"
+import type { Weapon, Fight, Character, Vehicle } from "../types/types"
 import { defaultWeapon, defaultCharacter } from "../types/types"
 import CS from "./CharacterService"
 import AS from "./ActionService"
