@@ -35,7 +35,6 @@ export default function Attacker({ state, setAttacker, handleChange, handleCheck
         disabled={edited}
       />
       <StyledTextField disabled={edited} name="squeal" value={squeal} onChange={handleChange} label="Squeal" type="number" sx={{width: 80}} />
-      <StyledTextField disabled={edited} name="frame" value={frame} onChange={handleChange} label="Frame" type="number" sx={{width: 80}} />
       <StyledTextField disabled={edited} name="crunch" value={crunch} onChange={handleChange} label="Crunch" type="number" sx={{width: 80}} />
       <FormControlLabel disabled={edited} label="Stunt" name="stunt" control={<Switch checked={stunt} />} onChange={handleCheck} />
     </Stack>
