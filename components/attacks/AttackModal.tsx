@@ -59,7 +59,7 @@ export default function AttackModal({ open, setOpen, anchorEl, setAnchorEl }: At
   }
 
   function setWeapon(weapon: Weapon) {
-    dispatch({ type: AttackActions.UPDATE, payload: { weapon, damage: weapon?.damage } })
+    dispatch({ type: AttackActions.WEAPON, payload: { weapon } })
   }
 
   function setAttacker(character: Character) {

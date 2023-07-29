@@ -8,6 +8,7 @@ import ARS from "../services/AttackReducerService"
 export enum AttackActions {
   ATTACKER = "attacker",
   TARGET = "target",
+  WEAPON = "weapon",
   UPDATE = "update",
   RESET = "reset",
   EDIT = "edit"
@@ -97,6 +98,9 @@ export function attackReducer(state: AttackState, action: { type: AttackActions,
         ...action.payload,
         edited: true,
       })
+    case AttackActions.WEAPON:
+      const { weapon } = action.payload as AttackState
+      return ARS.setWeapon(state, weapon)
     case AttackActions.UPDATE:
       return ARS.process({
         ...state,

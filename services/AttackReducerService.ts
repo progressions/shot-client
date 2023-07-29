@@ -127,6 +127,7 @@ const AttackReducerService = {
   setAttacker: function(state: AttackState, attacker: Character | Vehicle): AttackState {
     const [_adjustment, adjustedMainAttack] = this.CES.adjustedMainAttack(attacker, state.fight)
     const mookCount = this.CS.isMook(attacker) ? this.CS.mooks(attacker) : 1
+    const weapon = CS.weapons(attacker)[0] || defaultWeapon
 
     return this.process({
       ...state,
@@ -134,7 +135,7 @@ const AttackReducerService = {
       actionValueName: CS.mainAttack(attacker) || "",
       actionValue: adjustedMainAttack,
       weapon: CS.weapons(attacker)[0] || defaultWeapon,
-      damage: CS.damage(attacker) || 7,
+      damage: weapon?.damage || 7,
       count: mookCount,
     })
   },
@@ -148,6 +149,14 @@ const AttackReducerService = {
       target: target,
       defense: adjustedDefense,
       toughness: this.CS.isMook(target) ? 0 : adjustedToughness,
+    })
+  },
+
+  setWeapon: function(state: AttackState, weapon: Weapon): AttackState {
+    return this.process({
+      ...state,
+      weapon: weapon,
+      damage: weapon?.damage || 7,
     })
   },
 
