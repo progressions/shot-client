@@ -24,14 +24,19 @@ describe("ChaseReducerService", () => {
   }),
 
   it("tests a lot of chases", () => {
+    // failure
     expectPursuitAttack(brickMobile, battleTruck, ChaseMethod.RAM_SIDESWIPE, "near", 0)
     expectPursuitAttack(brickMobile, battleTruck, ChaseMethod.NARROW_THE_GAP, "far", 0)
+    // success
+    expectPursuitAttack(brickMobile, battleTruck, ChaseMethod.RAM_SIDESWIPE, "near", 12)
+    expectPursuitAttack(brickMobile, battleTruck, ChaseMethod.NARROW_THE_GAP, "far", 12)
+
+    //failure
     expectEvasionAttack(brickMobile, battleTruck, ChaseMethod.RAM_SIDESWIPE, "near", 0)
     expectEvasionAttack(brickMobile, battleTruck, ChaseMethod.WIDEN_THE_GAP, "near", 0)
     expectEvasionAttack(brickMobile, battleTruck, ChaseMethod.EVADE, "far", 0)
 
-    expectPursuitAttack(brickMobile, battleTruck, ChaseMethod.RAM_SIDESWIPE, "near", 12)
-    expectPursuitAttack(brickMobile, battleTruck, ChaseMethod.NARROW_THE_GAP, "far", 12)
+    // success
     expectEvasionAttack(brickMobile, battleTruck, ChaseMethod.RAM_SIDESWIPE, "near", 12)
     expectEvasionAttack(brickMobile, battleTruck, ChaseMethod.WIDEN_THE_GAP, "near", 12)
     expectEvasionAttack(brickMobile, battleTruck, ChaseMethod.EVADE, "far", 12)
@@ -428,7 +433,7 @@ describe("ChaseReducerService", () => {
     }),
 
     it("evades 1 mook as a stunt", () => {
-      // Swerve 2 + Action Value 7 - Defense 7 = Outcome 0
+      // Swerve 2 + Action Value 7 - Defense 7 - Stunt 2 = Outcome 0
       // Attack success, 1 mook killed
       state.stunt = true
       state.swerve = roll(2)

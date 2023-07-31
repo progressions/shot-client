@@ -24,7 +24,6 @@ const ChaseReducerService = {
   // Resolve the attack roll from a single attack, and apply the
   // results to the target and the attacker.
   //
-  // If the attacker is a Mook, call resolveMookAttacks instead.
   // If the target is a Mook, and the attacker is not, call killMooks.
   //
   // For a Ram/Sideswipe, the attacker uses their Crunch to apply damage, and the
@@ -307,7 +306,7 @@ const ChaseReducerService = {
 
     targetMookDefense: function(st: ChaseState): number {
       if (this.VS.isMook(st.target) && st.count > 1) {
-        return st.defense + st.count + (st.stunt ? 2 : 0)
+        return st.defense + st.count
       }
       return st.defense
     },

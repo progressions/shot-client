@@ -519,19 +519,6 @@ describe("ChaseReducerService", () => {
         }
         const defense = CRS.R.targetMookDefense(state)
         expect(defense).toEqual(18)
-      }),
-
-      it("adds 2 to the defense for a stunt", () => {
-        const vehicle = motorcycles
-        const state = {
-          ...initialChaseState,
-          target: vehicle,
-          count: 5,
-          defense: 13,
-          stunt: true
-        }
-        const defense = CRS.R.targetMookDefense(state)
-        expect(defense).toEqual(20)
       })
     }),
 
