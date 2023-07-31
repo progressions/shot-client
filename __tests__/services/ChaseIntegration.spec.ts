@@ -526,6 +526,22 @@ describe("ChaseReducerService", () => {
       expectNoChanges(state, result)
     }),
 
+    it("fails to widen the gap as a stunt", () => {
+      // Swerve 1 + Action Value 7 - Defense 15 - Stunt 2
+      // Attack fails, no mooks killed
+      state.count = 1
+      state.stunt = true
+      state.swerve = roll(-2)
+      state.edited = true
+
+      const result = CRS.process(state)
+
+      // the attack is a miss
+      expect(result.success).toEqual(false)
+
+      expectNoChanges(state, result)
+    }),
+
     it("widens the gap taking out 1 mook", () => {
       // Swerve 0 + Action Value 7 - Defense 15
       // Attack success, 1 mook killed
@@ -590,6 +606,22 @@ describe("ChaseReducerService", () => {
 
       expectAttackerUnharmed(state, result)
     })
+
+    it("fails to widens the gap taking out 5 mooks as a stunt", () => {
+      state.stunt = true
+
+      // Swerve 5 + Action Value 7 - Defense 12 - Stunt 2 = Outcome -2
+      // Attack fails, no mooks killed
+      state.swerve = roll(5)
+      state.count = 5
+
+      const result = CRS.process(state)
+
+      // the attack is a success
+      expect(result.success).toEqual(false)
+
+      expectNoChanges(state, result)
+    })
   }),
 
   describe("PC vs Mooks narrows the gap", () => {
@@ -643,7 +675,7 @@ describe("ChaseReducerService", () => {
     it("narrows the gap taking out 1 mook as a stunt", () => {
       // Swerve 0 + Action Value 7 - Defense 7
       // Attack success, 1 mook killed
-      state.swerve = roll(2)
+      state.swerve = roll(0)
       state.count = 1
 
       const result = CRS.process(state)
@@ -652,13 +684,28 @@ describe("ChaseReducerService", () => {
       expect(result.success).toEqual(true)
 
       expectChaseResults(state, result, {
-        swerve: 2,
+        swerve: 0,
         outcome: 0,
         mooks: 1,
         position: "near"
       })
 
       expectAttackerUnharmed(state, result)
+    }),
+
+    it("fails to narrow the gap taking out 1 mook as a stunt", () => {
+      state.stunt = true
+
+      // Swerve 0 + Action Value 7 - Defense 7 - Stunt 2 = Outcome -2
+      // Attack success, 1 mook killed
+      state.swerve = roll(0)
+      state.count = 1
+
+      const result = CRS.process(state)
+
+      // the attack is a miss
+      expect(result.success).toEqual(false)
+      expectNoChanges(state, result)
     }),
 
     it("narrows the gap taking out 5 mooks", () => {
@@ -703,6 +750,21 @@ describe("ChaseReducerService", () => {
         mooks: 5,
         position: "near"
       })
+    }),
+
+    it("fails to narrow the gap taking out 5 mooks as a stunt", () => {
+      state.stunt = true
+
+      // Swerve 1 + Action Value 7 - Defense 7 - Stunt 2 = Outcome -1
+      // Attack failed, no mooks killed
+      state.swerve = roll(1)
+      state.count = 5
+
+      const result = CRS.process(state)
+
+      // the attack is a success
+      expect(result.success).toEqual(false)
+      expectNoChanges(state, result)
     })
   }),
 
