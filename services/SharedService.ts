@@ -115,11 +115,6 @@ const SharedService = {
     return character.impairments > 0
   },
 
-  addImpairments: function(character: Character | Vehicle, value: number): Character | Vehicle {
-    const impairments = this.impairments(character)
-    return this.updateValue(character, "impairments", impairments + value)
-  },
-
   calculateImpairments: function(character: Character | Vehicle, originalWounds:number, newWounds: number): number {
     if (this.isMook(character)) return 0
 
@@ -148,6 +143,37 @@ const SharedService = {
     }
 
     return 0
+  },
+
+  seriousPoints: function(character: Character | Vehicle, value: number): boolean {
+    if (this.isMook(character)) return false
+
+    const type = this.type(character)
+    const threshold = woundThresholds[type]! as WoundThresholds
+    if (threshold === undefined) return false
+
+    return (value >= threshold.serious)
+  },
+
+  mooks: function(character: Character | Vehicle): number {
+    if (!this.isMook(character)) return 0
+
+    return character.count
+  },
+
+  woundsLabel: function(character: Character | Vehicle): string {
+    if (this.isMook(character)) return "Mooks"
+
+    if (this.isTask(character)) return "Points"
+
+    return "Wounds"
+  },
+
+  // Update values, makes changes to the character
+
+  addImpairments: function(character: Character | Vehicle, value: number): Character | Vehicle {
+    const impairments = this.impairments(character)
+    return this.updateValue(character, "impairments", impairments + value)
   },
 
   updateActionValue: function(character: Character | Vehicle, key: string, value: number | string): Character | Vehicle {
@@ -182,22 +208,6 @@ const SharedService = {
     const initiative = Math.max(0, parseToNumber(speedRoll) + initiativePenalty)
 
     return this.updateValue(character, "current_shot", initiative)
-  },
-
-  seriousPoints: function(character: Character | Vehicle, value: number): boolean {
-    if (this.isMook(character)) return false
-
-    const type = this.type(character)
-    const threshold = woundThresholds[type]! as WoundThresholds
-    if (threshold === undefined) return false
-
-    return (value >= threshold.serious)
-  },
-
-  mooks: function(character: Character | Vehicle): number {
-    if (!this.isMook(character)) return 0
-
-    return character.count
   },
 
   killMooks: function(character: Character | Vehicle, mooks: number): Character | Vehicle {

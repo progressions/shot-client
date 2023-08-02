@@ -20,12 +20,14 @@ export default function WoundsDisplay({ character, user }: WoundsDisplayProps) {
 
   const wounds = CS.wounds(character)
 
+  const label = CS.woundsLabel(character)
+
   return (
     <GamemasterOnly user={user} character={character}>
       <Stack direction="column" sx={{width: 70, backgroundColor: backgroundColor, borderRadius: 2}} alignItems="center" p={1}>
         <Typography variant="h4" sx={{color: color}}>{wounds}</Typography>
         <Typography variant="subtitle1" sx={{color: color}}>
-          { character.action_values["Type"] === "Mook" ? "Mooks" : "Wounds" }
+          { label }
         </Typography>
       </Stack>
     </GamemasterOnly>
