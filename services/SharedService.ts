@@ -188,7 +188,8 @@ const SharedService = {
     if (this.isMook(character)) return false
 
     const type = this.type(character)
-    const threshold = woundThresholds[type]!
+    const threshold = woundThresholds[type]! as WoundThresholds
+    if (threshold === undefined) return false
 
     return (value >= threshold.serious)
   },

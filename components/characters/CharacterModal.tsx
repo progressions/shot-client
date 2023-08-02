@@ -138,6 +138,7 @@ export default function CharacterModal({ open, setOpen, character:activeCharacte
             <Stack direction="row" spacing={2}>
               <CharacterType value={character.action_values?.['Type'] as string || ''} onChange={handleAVChange} />
               { character.action_values["Type"] === "PC" && <StyledTextField name="Archetype" label="Archetype" fullWidth value={character.action_values["Archetype"]} onChange={handleAVChange} /> }
+              <FormControlLabel label="Task" name="task" control={<Switch checked={character.task} />} onChange={handleCheck} />
               <FormControlLabel label="Active" name="active" control={<Switch checked={character.active} />} onChange={handleCheck} />
             </Stack>
             <Stack direction="row" spacing={2}>
