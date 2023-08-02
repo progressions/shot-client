@@ -1,5 +1,5 @@
 import type { Character } from "../../types/types"
-import { defaultCharacter } from "../../types/types"
+import { CharacterTypes, defaultCharacter } from "../../types/types"
 import { derringer, ak47 } from "./Weapons"
 
 export const brick: Character = {
@@ -7,7 +7,7 @@ export const brick: Character = {
   name: "Brick Manly",
   action_values: {
     ...defaultCharacter.action_values,
-    "Type": "PC",
+    "Type": CharacterTypes.PC,
     "Archetype": "Everyday Hero",
     "MainAttack": "Martial Arts",
     "SecondaryAttack": null,
@@ -26,7 +26,7 @@ export const carolina: Character = {
   name: "Carolina Kominsky",
   action_values: {
     ...defaultCharacter.action_values,
-    "Type": "PC",
+    "Type": CharacterTypes.PC,
     "Archetype": "Maverick Cop",
     "MainAttack": "Guns",
     "SecondaryAttack": "Martial Arts",
@@ -50,7 +50,7 @@ export const shing: Character = {
   name: "Ugly Shing",
   action_values: {
     ...defaultCharacter.action_values,
-    "Type": "Boss",
+    "Type": CharacterTypes.Boss,
     "MainAttack": "Guns",
     "SecondaryAttack": null,
     "Guns": 17,
@@ -69,7 +69,7 @@ export const huanKen: Character = {
   name: "Huan Ken",
   action_values: {
     ...defaultCharacter.action_values,
-    "Type": "Uber-Boss",
+    "Type": CharacterTypes.UberBoss,
     "MainAttack": "Sorcery",
     "SecondaryAttack": null,
     "Sorcery": 19,
@@ -84,7 +84,7 @@ export const hitman: Character = {
   name: "Hitman",
   action_values: {
     ...defaultCharacter.action_values,
-    "Type": "Featured Foe",
+    "Type": CharacterTypes.FeaturedFoe,
     "MainAttack": "Guns",
     "SecondaryAttack": null,
     "Guns": 14,
@@ -100,7 +100,7 @@ export const zombies: Character = {
   count: 15,
   action_values: {
     ...defaultCharacter.action_values,
-    "Type": "Mook",
+    "Type": CharacterTypes.Mook,
     "MainAttack": "Creature",
     "SecondaryAttack": null,
     "Creature": 8,

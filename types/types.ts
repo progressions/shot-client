@@ -284,11 +284,25 @@ export interface Schtick {
   color: string
 }
 
+export enum Positions {
+  Near = "near",
+  Far = "far",
+}
+
 export type Position = "near" | "far"
 
 export type Pursuer = "true" | "false"
 
-export type CharacterType = "" | "PC" | "Ally" | "Mook" | "Featured Foe" | "Boss" | "Uber-Boss"
+export enum CharacterTypes {
+  PC = "PC",
+  Ally = "Ally",
+  Mook = "Mook",
+  FeaturedFoe = "Featured Foe",
+  Boss = "Boss",
+  UberBoss = "Uber-Boss",
+}
+
+export type CharacterType = keyof typeof CharacterTypes
 
 export interface ID {
   id: string
@@ -323,6 +337,7 @@ export interface Vehicle {
   driver?: Character
   location?: string
   image_url: string | null
+  task: boolean
 }
 
 export interface Person {
@@ -351,6 +366,7 @@ export interface Person {
   driver?: Character
   location?: string
   image_url: string | null
+  task: boolean
 }
 
 export interface Advancement {
@@ -510,7 +526,8 @@ export const defaultCharacter:Person = {
   weapons: [],
   count: 0,
   shot_id: "",
-  image_url: ""
+  image_url: "",
+  task: false
 }
 
 export const defaultVehicle:Vehicle = {
@@ -554,7 +571,8 @@ export const defaultVehicle:Vehicle = {
   count: 0,
   shot_id: "",
   driver: defaultCharacter,
-  image_url: ""
+  image_url: "",
+  task: false
 }
 
 export const defaultFight:Fight = {

@@ -1,7 +1,7 @@
 import VS from "../../services/VehicleService"
 import CS from "../../services/CharacterService"
 import type { Faction, Character, Vehicle } from "../../types/types"
-import { defaultCharacter, defaultVehicle } from "../../types/types"
+import { CharacterTypes, defaultCharacter, defaultVehicle } from "../../types/types"
 
 describe("VehicleService", () => {
   describe("mainAttackValue", () => {
@@ -256,7 +256,7 @@ describe("VehicleService", () => {
         ...defaultVehicle,
         action_values: {
           ...defaultVehicle.action_values,
-          Type: "Uber-Boss",
+          Type: CharacterTypes.UberBoss,
           Toughness: 8,
           "Chase Points": 51
         }
@@ -270,7 +270,7 @@ describe("VehicleService", () => {
         ...defaultVehicle,
         action_values: {
           ...defaultVehicle.action_values,
-          Type: "Boss",
+          Type: CharacterTypes.Boss,
           Toughness: 8,
           "Chase Points": 51
         }
@@ -284,7 +284,7 @@ describe("VehicleService", () => {
         ...defaultVehicle,
         action_values: {
           ...defaultVehicle.action_values,
-          Type: "Featured Foe",
+          Type: CharacterTypes.FeaturedFoe,
           Toughness: 8,
           "Chase Points": 36
         }
@@ -298,7 +298,7 @@ describe("VehicleService", () => {
         ...defaultVehicle,
         action_values: {
           ...defaultVehicle.action_values,
-          Type: "Ally",
+          Type: CharacterTypes.Ally,
           Toughness: 8,
           "Chase Points": 36
         }
@@ -312,7 +312,7 @@ describe("VehicleService", () => {
         ...defaultVehicle,
         action_values: {
           ...defaultVehicle.action_values,
-          Type: "PC",
+          Type: CharacterTypes.PC,
           Toughness: 8,
           "Chase Points": 36
         }
@@ -327,7 +327,7 @@ describe("VehicleService", () => {
         count: 5,
         action_values: {
           ...defaultVehicle.action_values,
-          Type: "Mook",
+          Type: CharacterTypes.Mook,
         }
       }
 
@@ -341,7 +341,7 @@ describe("VehicleService", () => {
         ...defaultVehicle,
         action_values: {
           ...defaultVehicle.action_values,
-          Type: "Uber-Boss",
+          Type: CharacterTypes.UberBoss,
           Toughness: 8,
           "Condition Points": 51
         }
@@ -355,7 +355,7 @@ describe("VehicleService", () => {
         ...defaultVehicle,
         action_values: {
           ...defaultVehicle.action_values,
-          Type: "Boss",
+          Type: CharacterTypes.Boss,
           Toughness: 8,
           "Condition Points": 51
         }
@@ -369,7 +369,7 @@ describe("VehicleService", () => {
         ...defaultVehicle,
         action_values: {
           ...defaultVehicle.action_values,
-          Type: "Featured Foe",
+          Type: CharacterTypes.FeaturedFoe,
           Toughness: 8,
           "Condition Points": 36
         }
@@ -383,7 +383,7 @@ describe("VehicleService", () => {
         ...defaultVehicle,
         action_values: {
           ...defaultVehicle.action_values,
-          Type: "Ally",
+          Type: CharacterTypes.Ally,
           Toughness: 8,
           "Condition Points": 36
         }
@@ -397,7 +397,7 @@ describe("VehicleService", () => {
         ...defaultVehicle,
         action_values: {
           ...defaultVehicle.action_values,
-          Type: "PC",
+          Type: CharacterTypes.PC,
           Toughness: 8,
           "Condition Points": 36
         }
@@ -412,7 +412,7 @@ describe("VehicleService", () => {
         count: 5,
         action_values: {
           ...defaultVehicle.action_values,
-          Type: "Mook",
+          Type: CharacterTypes.Mook,
         }
       }
 
@@ -503,7 +503,7 @@ describe("VehicleService", () => {
     }),
 
     it("adds an Impairment when a PC goes from 24 to 25 Chase Points", async () => {
-      const target = { ...defaultVehicle, action_values: { ...defaultVehicle.action_values, Type: "PC" } }
+      const target = { ...defaultVehicle, action_values: { ...defaultVehicle.action_values, Type: CharacterTypes.PC } }
       const updatedTarget = VS.takeChasePoints(target, 25)
       expect(VS.chasePoints(updatedTarget)).toEqual(25)
       expect(VS.conditionPoints(updatedTarget)).toEqual(0)
@@ -511,7 +511,7 @@ describe("VehicleService", () => {
     }),
 
     it("adds a second Impairment when a PC goes from 29 to 30 Chase Points", async () => {
-      const target = { ...defaultVehicle, impairments: 1, action_values: { ...defaultVehicle.action_values, Type: "PC", "Chase Points": 29 } }
+      const target = { ...defaultVehicle, impairments: 1, action_values: { ...defaultVehicle.action_values, Type: CharacterTypes.PC, "Chase Points": 29 } }
       const updatedTarget = VS.takeChasePoints(target, 1)
       expect(VS.chasePoints(updatedTarget)).toEqual(30)
       expect(VS.conditionPoints(updatedTarget)).toEqual(0)
@@ -519,7 +519,7 @@ describe("VehicleService", () => {
     }),
 
     it("adds 2 impairments when a PC goes from 24 to 30 Chase Points", async () => {
-      const target = { ...defaultVehicle, action_values: { ...defaultVehicle.action_values, Type: "PC", "Chase Points": 24 } }
+      const target = { ...defaultVehicle, action_values: { ...defaultVehicle.action_values, Type: CharacterTypes.PC, "Chase Points": 24 } }
       const updatedTarget = VS.takeChasePoints(target, 6)
       expect(VS.chasePoints(updatedTarget)).toEqual(30)
       expect(VS.conditionPoints(updatedTarget)).toEqual(0)

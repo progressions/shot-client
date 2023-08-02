@@ -1,6 +1,6 @@
 import VS from "../../services/VehicleService"
 import type { Faction, Weapon, Character, Vehicle } from "../../types/types"
-import { defaultFaction, defaultCharacter, defaultVehicle } from "../../types/types"
+import { CharacterTypes, defaultFaction, defaultCharacter, defaultVehicle } from "../../types/types"
 
 describe("SharedService", () => {
   describe("Vehicle", () => {
@@ -41,11 +41,11 @@ describe("SharedService", () => {
           ...defaultVehicle,
           action_values: {
             ...defaultVehicle.action_values,
-            Type: "PC"
+            Type: CharacterTypes.PC
           }
         }
 
-        expect(VS.type(vehicle)).toBe("PC")
+        expect(VS.type(vehicle)).toBe(CharacterTypes.PC)
       })
     }),
 
@@ -71,7 +71,7 @@ describe("SharedService", () => {
           ...defaultVehicle,
           action_values: {
             ...defaultVehicle.action_values,
-            Type: "PC"
+            Type: CharacterTypes.PC
           }
         }
 
@@ -83,7 +83,7 @@ describe("SharedService", () => {
           ...defaultVehicle,
           action_values: {
             ...defaultVehicle.action_values,
-            Type: "Ally"
+            Type: CharacterTypes.Ally
           }
         }
 
@@ -95,7 +95,7 @@ describe("SharedService", () => {
           ...defaultVehicle,
           action_values: {
             ...defaultVehicle.action_values,
-            Type: "Uber-Boss"
+            Type: CharacterTypes.UberBoss
           }
         }
 
@@ -107,7 +107,7 @@ describe("SharedService", () => {
           ...defaultVehicle,
           action_values: {
             ...defaultVehicle.action_values,
-            Type: "Boss"
+            Type: CharacterTypes.Boss
           }
         }
 
@@ -119,7 +119,7 @@ describe("SharedService", () => {
           ...defaultVehicle,
           action_values: {
             ...defaultVehicle.action_values,
-            Type: "Featured Foe"
+            Type: CharacterTypes.FeaturedFoe
           }
         }
 
@@ -131,7 +131,7 @@ describe("SharedService", () => {
           ...defaultVehicle,
           action_values: {
             ...defaultVehicle.action_values,
-            Type: "Mook"
+            Type: CharacterTypes.Mook
           }
         }
 
@@ -145,7 +145,7 @@ describe("SharedService", () => {
           ...defaultVehicle,
           action_values: {
             ...defaultVehicle.action_values,
-            Type: "PC"
+            Type: CharacterTypes.PC
           }
         }
 
@@ -157,7 +157,7 @@ describe("SharedService", () => {
           ...defaultVehicle,
           action_values: {
             ...defaultVehicle.action_values,
-            Type: "Ally"
+            Type: CharacterTypes.Ally
           }
         }
 
@@ -169,7 +169,7 @@ describe("SharedService", () => {
           ...defaultVehicle,
           action_values: {
             ...defaultVehicle.action_values,
-            Type: "Uber-Boss"
+            Type: CharacterTypes.UberBoss
           }
         }
 
@@ -181,7 +181,7 @@ describe("SharedService", () => {
           ...defaultVehicle,
           action_values: {
             ...defaultVehicle.action_values,
-            Type: "Boss"
+            Type: CharacterTypes.Boss
           }
         }
 
@@ -193,7 +193,7 @@ describe("SharedService", () => {
           ...defaultVehicle,
           action_values: {
             ...defaultVehicle.action_values,
-            Type: "Featured Foe"
+            Type: CharacterTypes.FeaturedFoe
           }
         }
 
@@ -205,7 +205,7 @@ describe("SharedService", () => {
           ...defaultVehicle,
           action_values: {
             ...defaultVehicle.action_values,
-            Type: "Mook"
+            Type: CharacterTypes.Mook
           }
         }
 
@@ -219,7 +219,7 @@ describe("SharedService", () => {
           ...defaultVehicle,
           action_values: {
             ...defaultVehicle.action_values,
-            Type: "Mook"
+            Type: CharacterTypes.Mook
           }
         }
 
@@ -231,7 +231,7 @@ describe("SharedService", () => {
           ...defaultVehicle,
           action_values: {
             ...defaultVehicle.action_values,
-            Type: "Uber-Boss"
+            Type: CharacterTypes.UberBoss
           }
         }
 
@@ -243,7 +243,7 @@ describe("SharedService", () => {
           ...defaultVehicle,
           action_values: {
             ...defaultVehicle.action_values,
-            Type: "Boss"
+            Type: CharacterTypes.Boss
           }
         }
 
@@ -255,7 +255,7 @@ describe("SharedService", () => {
           ...defaultVehicle,
           action_values: {
             ...defaultVehicle.action_values,
-            Type: "Featured Foe"
+            Type: CharacterTypes.FeaturedFoe
           }
         }
 
@@ -267,7 +267,7 @@ describe("SharedService", () => {
           ...defaultVehicle,
           action_values: {
             ...defaultVehicle.action_values,
-            Type: "Ally"
+            Type: CharacterTypes.Ally
           }
         }
 
@@ -279,7 +279,7 @@ describe("SharedService", () => {
           ...defaultVehicle,
           action_values: {
             ...defaultVehicle.action_values,
-            Type: "PC"
+            Type: CharacterTypes.PC
           }
         }
 
@@ -293,7 +293,7 @@ describe("SharedService", () => {
           ...defaultVehicle,
           action_values: {
             ...defaultVehicle.action_values,
-            Type: "Mook"
+            Type: CharacterTypes.Mook
           }
         }
 
@@ -305,7 +305,7 @@ describe("SharedService", () => {
           ...defaultVehicle,
           action_values: {
             ...defaultVehicle.action_values,
-            Type: "Uber-Boss"
+            Type: CharacterTypes.UberBoss
           }
         }
 
@@ -317,7 +317,7 @@ describe("SharedService", () => {
           ...defaultVehicle,
           action_values: {
             ...defaultVehicle.action_values,
-            Type: "Boss"
+            Type: CharacterTypes.Boss
           }
         }
 
@@ -329,7 +329,7 @@ describe("SharedService", () => {
           ...defaultVehicle,
           action_values: {
             ...defaultVehicle.action_values,
-            Type: "Featured Foe"
+            Type: CharacterTypes.FeaturedFoe
           }
         }
 
@@ -341,7 +341,7 @@ describe("SharedService", () => {
           ...defaultVehicle,
           action_values: {
             ...defaultVehicle.action_values,
-            Type: "Ally"
+            Type: CharacterTypes.Ally
           }
         }
 
@@ -353,7 +353,7 @@ describe("SharedService", () => {
           ...defaultVehicle,
           action_values: {
             ...defaultVehicle.action_values,
-            Type: "PC"
+            Type: CharacterTypes.PC
           }
         }
 
@@ -367,7 +367,7 @@ describe("SharedService", () => {
           ...defaultVehicle,
           action_values: {
             ...defaultVehicle.action_values,
-            Type: "Mook"
+            Type: CharacterTypes.Mook
           }
         }
 
@@ -379,7 +379,7 @@ describe("SharedService", () => {
           ...defaultVehicle,
           action_values: {
             ...defaultVehicle.action_values,
-            Type: "Uber-Boss"
+            Type: CharacterTypes.UberBoss
           }
         }
 
@@ -391,7 +391,7 @@ describe("SharedService", () => {
           ...defaultVehicle,
           action_values: {
             ...defaultVehicle.action_values,
-            Type: "Featured Foe"
+            Type: CharacterTypes.FeaturedFoe
           }
         }
 
@@ -403,7 +403,7 @@ describe("SharedService", () => {
           ...defaultVehicle,
           action_values: {
             ...defaultVehicle.action_values,
-            Type: "Ally"
+            Type: CharacterTypes.Ally
           }
         }
 
@@ -415,7 +415,7 @@ describe("SharedService", () => {
           ...defaultVehicle,
           action_values: {
             ...defaultVehicle.action_values,
-            Type: "PC"
+            Type: CharacterTypes.PC
           }
         }
 
@@ -429,7 +429,7 @@ describe("SharedService", () => {
           ...defaultVehicle,
           action_values: {
             ...defaultVehicle.action_values,
-            Type: "Mook"
+            Type: CharacterTypes.Mook
           }
         }
 
@@ -441,7 +441,7 @@ describe("SharedService", () => {
           ...defaultVehicle,
           action_values: {
             ...defaultVehicle.action_values,
-            Type: "Uber-Boss"
+            Type: CharacterTypes.UberBoss
           }
         }
 
@@ -453,7 +453,7 @@ describe("SharedService", () => {
           ...defaultVehicle,
           action_values: {
             ...defaultVehicle.action_values,
-            Type: "Boss"
+            Type: CharacterTypes.Boss
           }
         }
 
@@ -465,7 +465,7 @@ describe("SharedService", () => {
           ...defaultVehicle,
           action_values: {
             ...defaultVehicle.action_values,
-            Type: "Featured Foe"
+            Type: CharacterTypes.FeaturedFoe
           }
         }
 
@@ -477,7 +477,7 @@ describe("SharedService", () => {
           ...defaultVehicle,
           action_values: {
             ...defaultVehicle.action_values,
-            Type: "Ally"
+            Type: CharacterTypes.Ally
           }
         }
 
@@ -489,11 +489,26 @@ describe("SharedService", () => {
           ...defaultVehicle,
           action_values: {
             ...defaultVehicle.action_values,
-            Type: "PC"
+            Type: CharacterTypes.PC
           }
         }
 
         expect(VS.isBoss(vehicle)).toBe(false)
+      })
+    }),
+
+    describe("isTask", () => {
+      it.only("returns true for a Task", () => {
+        const vehicle: Vehicle = {
+          ...defaultVehicle,
+          task: true
+        }
+
+        expect(VS.isTask(vehicle)).toBe(true)
+      }),
+
+      it("returns false for a non-Task", () => {
+        expect(VS.isTask(defaultVehicle)).toBe(false)
       })
     }),
 
@@ -503,7 +518,7 @@ describe("SharedService", () => {
           ...defaultVehicle,
           action_values: {
             ...defaultVehicle.action_values,
-            Type: "Mook"
+            Type: CharacterTypes.Mook
           }
         }
 
@@ -515,7 +530,7 @@ describe("SharedService", () => {
           ...defaultVehicle,
           action_values: {
             ...defaultVehicle.action_values,
-            Type: "Uber-Boss"
+            Type: CharacterTypes.UberBoss
           }
         }
 
@@ -527,7 +542,7 @@ describe("SharedService", () => {
           ...defaultVehicle,
           action_values: {
             ...defaultVehicle.action_values,
-            Type: "Boss"
+            Type: CharacterTypes.Boss
           }
         }
 
@@ -539,7 +554,7 @@ describe("SharedService", () => {
           ...defaultVehicle,
           action_values: {
             ...defaultVehicle.action_values,
-            Type: "Featured Foe"
+            Type: CharacterTypes.FeaturedFoe
           }
         }
 
@@ -551,7 +566,7 @@ describe("SharedService", () => {
           ...defaultVehicle,
           action_values: {
             ...defaultVehicle.action_values,
-            Type: "Ally"
+            Type: CharacterTypes.Ally
           }
         }
 
@@ -563,7 +578,7 @@ describe("SharedService", () => {
           ...defaultVehicle,
           action_values: {
             ...defaultVehicle.action_values,
-            Type: "PC"
+            Type: CharacterTypes.PC
           }
         }
 
@@ -577,7 +592,7 @@ describe("SharedService", () => {
           ...defaultVehicle,
           action_values: {
             ...defaultVehicle.action_values,
-            Type: "Mook"
+            Type: CharacterTypes.Mook
           }
         }
 
@@ -589,7 +604,7 @@ describe("SharedService", () => {
           ...defaultVehicle,
           action_values: {
             ...defaultVehicle.action_values,
-            Type: "Uber-Boss"
+            Type: CharacterTypes.UberBoss
           }
         }
 
@@ -601,7 +616,7 @@ describe("SharedService", () => {
           ...defaultVehicle,
           action_values: {
             ...defaultVehicle.action_values,
-            Type: "Boss"
+            Type: CharacterTypes.Boss
           }
         }
 
@@ -613,7 +628,7 @@ describe("SharedService", () => {
           ...defaultVehicle,
           action_values: {
             ...defaultVehicle.action_values,
-            Type: "Featured Foe"
+            Type: CharacterTypes.FeaturedFoe
           }
         }
 
@@ -625,7 +640,7 @@ describe("SharedService", () => {
           ...defaultVehicle,
           action_values: {
             ...defaultVehicle.action_values,
-            Type: "Ally"
+            Type: CharacterTypes.Ally
           }
         }
 
@@ -637,7 +652,7 @@ describe("SharedService", () => {
           ...defaultVehicle,
           action_values: {
             ...defaultVehicle.action_values,
-            Type: "PC"
+            Type: CharacterTypes.PC
           }
         }
 
@@ -651,11 +666,11 @@ describe("SharedService", () => {
           ...defaultVehicle,
           action_values: {
             ...defaultVehicle.action_values,
-            Type: "Mook"
+            Type: CharacterTypes.Mook
           }
         }
 
-        expect(VS.isType(vehicle, "Mook")).toBe(true)
+        expect(VS.isType(vehicle, CharacterTypes.Mook)).toBe(true)
       })
     }),
 
@@ -791,7 +806,7 @@ describe("SharedService", () => {
           ...defaultVehicle,
           action_values: {
             ...defaultVehicle.action_values,
-            Type: "Mook"
+            Type: CharacterTypes.Mook
           }
         }
 
@@ -803,7 +818,7 @@ describe("SharedService", () => {
           ...defaultVehicle,
           action_values: {
             ...defaultVehicle.action_values,
-            Type: "Uber-Boss"
+            Type: CharacterTypes.UberBoss
           }
         }
 
@@ -815,7 +830,7 @@ describe("SharedService", () => {
           ...defaultVehicle,
           action_values: {
             ...defaultVehicle.action_values,
-            Type: "Uber-Boss"
+            Type: CharacterTypes.UberBoss
           }
         }
 
@@ -827,7 +842,7 @@ describe("SharedService", () => {
           ...defaultVehicle,
           action_values: {
             ...defaultVehicle.action_values,
-            Type: "Uber-Boss"
+            Type: CharacterTypes.UberBoss
           }
         }
 
@@ -839,7 +854,7 @@ describe("SharedService", () => {
           ...defaultVehicle,
           action_values: {
             ...defaultVehicle.action_values,
-            Type: "Boss"
+            Type: CharacterTypes.Boss
           }
         }
 
@@ -851,7 +866,7 @@ describe("SharedService", () => {
           ...defaultVehicle,
           action_values: {
             ...defaultVehicle.action_values,
-            Type: "Boss"
+            Type: CharacterTypes.Boss
           }
         }
 
@@ -863,7 +878,7 @@ describe("SharedService", () => {
           ...defaultVehicle,
           action_values: {
             ...defaultVehicle.action_values,
-            Type: "Boss"
+            Type: CharacterTypes.Boss
           }
         }
 
@@ -875,7 +890,7 @@ describe("SharedService", () => {
           ...defaultVehicle,
           action_values: {
             ...defaultVehicle.action_values,
-            Type: "PC"
+            Type: CharacterTypes.PC
           }
         }
 
@@ -887,7 +902,7 @@ describe("SharedService", () => {
           ...defaultVehicle,
           action_values: {
             ...defaultVehicle.action_values,
-            Type: "PC"
+            Type: CharacterTypes.PC
           }
         }
 
@@ -899,7 +914,7 @@ describe("SharedService", () => {
           ...defaultVehicle,
           action_values: {
             ...defaultVehicle.action_values,
-            Type: "PC"
+            Type: CharacterTypes.PC
           }
         }
 
@@ -911,7 +926,7 @@ describe("SharedService", () => {
           ...defaultVehicle,
           action_values: {
             ...defaultVehicle.action_values,
-            Type: "Ally"
+            Type: CharacterTypes.Ally
           }
         }
 
@@ -923,7 +938,7 @@ describe("SharedService", () => {
           ...defaultVehicle,
           action_values: {
             ...defaultVehicle.action_values,
-            Type: "Ally"
+            Type: CharacterTypes.Ally
           }
         }
 
@@ -935,7 +950,7 @@ describe("SharedService", () => {
           ...defaultVehicle,
           action_values: {
             ...defaultVehicle.action_values,
-            Type: "Ally"
+            Type: CharacterTypes.Ally
           }
         }
 
@@ -947,7 +962,7 @@ describe("SharedService", () => {
           ...defaultVehicle,
           action_values: {
             ...defaultVehicle.action_values,
-            Type: "Featured Foe"
+            Type: CharacterTypes.FeaturedFoe
           }
         }
 
@@ -959,7 +974,7 @@ describe("SharedService", () => {
           ...defaultVehicle,
           action_values: {
             ...defaultVehicle.action_values,
-            Type: "Featured Foe"
+            Type: CharacterTypes.FeaturedFoe
           }
         }
 
@@ -971,7 +986,7 @@ describe("SharedService", () => {
           ...defaultVehicle,
           action_values: {
             ...defaultVehicle.action_values,
-            Type: "Featured Foe"
+            Type: CharacterTypes.FeaturedFoe
           }
         }
 
@@ -1046,7 +1061,7 @@ describe("SharedService", () => {
           ...defaultVehicle,
           action_values: {
             ...defaultVehicle.action_values,
-            Type: "Mook"
+            Type: CharacterTypes.Mook
           },
         }
 
@@ -1058,7 +1073,7 @@ describe("SharedService", () => {
           ...defaultVehicle,
           action_values: {
             ...defaultVehicle.action_values,
-            Type: "Uber-Boss"
+            Type: CharacterTypes.UberBoss
           },
         }
 
@@ -1070,7 +1085,7 @@ describe("SharedService", () => {
           ...defaultVehicle,
           action_values: {
             ...defaultVehicle.action_values,
-            Type: "Boss"
+            Type: CharacterTypes.Boss
           },
         }
 
@@ -1082,7 +1097,7 @@ describe("SharedService", () => {
           ...defaultVehicle,
           action_values: {
             ...defaultVehicle.action_values,
-            Type: "PC"
+            Type: CharacterTypes.PC
           },
         }
 
@@ -1094,7 +1109,7 @@ describe("SharedService", () => {
           ...defaultVehicle,
           action_values: {
             ...defaultVehicle.action_values,
-            Type: "Ally"
+            Type: CharacterTypes.Ally
           },
         }
 
@@ -1106,7 +1121,7 @@ describe("SharedService", () => {
           ...defaultVehicle,
           action_values: {
             ...defaultVehicle.action_values,
-            Type: "Featured Foe"
+            Type: CharacterTypes.FeaturedFoe
           },
         }
 
@@ -1121,7 +1136,7 @@ describe("SharedService", () => {
           count: 15,
           action_values: {
             ...defaultVehicle.action_values,
-            Type: "Mook"
+            Type: CharacterTypes.Mook
           },
         }
 
@@ -1140,7 +1155,7 @@ describe("SharedService", () => {
           count: 15,
           action_values: {
             ...defaultVehicle.action_values,
-            Type: "Mook"
+            Type: CharacterTypes.Mook
           },
         }
 

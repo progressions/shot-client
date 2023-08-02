@@ -3,7 +3,7 @@ import { Stack, Box, TextField, MenuItem } from "@mui/material"
 import type { Character, Archetype, Faction, InputParamsType } from "../../types/types"
 import { CharactersStateType, CharactersActionType, CharactersActions } from "../../reducers/charactersState"
 import { StyledAutocomplete, StyledTextField, StyledSelect } from "../StyledFields"
-import { defaultFaction } from "../../types/types"
+import { CharacterTypes, defaultFaction } from "../../types/types"
 
 interface CharacterFiltersProps {
   state: CharactersStateType,
@@ -38,12 +38,12 @@ export default function CharacterFilters({ state, dispatch }: CharacterFiltersPr
         <Box sx={{width: 155}}>
           <StyledSelect fullWidth name="character_type" label="Character Type" select value={character_type} onChange={handleChange}>
             <MenuItem value="">All</MenuItem>
-            <MenuItem value="PC">Player Character</MenuItem>
-            <MenuItem value="Ally">Ally</MenuItem>
-            <MenuItem value="Mook">Mook</MenuItem>
-            <MenuItem value="Featured Foe">Featured Foe</MenuItem>
-            <MenuItem value="Boss">Boss</MenuItem>
-            <MenuItem value="Uber-Boss">Uber-Boss</MenuItem>
+            <MenuItem value={CharacterTypes.PC}>{CharacterTypes.PC}</MenuItem>
+            <MenuItem value={CharacterTypes.Ally}>{CharacterTypes.Ally}</MenuItem>
+            <MenuItem value={CharacterTypes.Mook}>{CharacterTypes.Mook}</MenuItem>
+            <MenuItem value={CharacterTypes.FeaturedFoe}>{CharacterTypes.FeaturedFoe}</MenuItem>
+            <MenuItem value={CharacterTypes.Boss}>{CharacterTypes.Boss}</MenuItem>
+            <MenuItem value={CharacterTypes.UberBoss}>{CharacterTypes.UberBoss}</MenuItem>
           </StyledSelect>
         </Box>
         <Box sx={{width: 155}}>

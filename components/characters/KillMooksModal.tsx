@@ -14,22 +14,6 @@ interface WoundsModalParams {
   character: Person,
 }
 
-interface woundThresholdType {
-  low: number,
-  high: number,
-}
-interface woundThresholdsType {
-  [key: string]: woundThresholdType,
-}
-
-const woundThresholds: woundThresholdsType = {
-  "Boss": { "low": 40, "high": 45 },
-  "Uber-Boss": { "low": 40, "high": 45 },
-  "PC": { "low": 25, "high": 30 },
-  "Ally": { "low": 25, "high": 30 },
-  "Featured Foe": { "low": 25, "high": 30 },
-}
-
 export default function WoundsModal({open, setOpen, character }: WoundsModalParams) {
   const { fight, dispatch:dispatchFight } = useFight()
   const [mooksKilled, setMooksKilled] = useState<number>(0)

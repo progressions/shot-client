@@ -1,6 +1,6 @@
 import CS from "../../services/CharacterService"
 import type { Faction, Weapon, Character } from "../../types/types"
-import { defaultFaction, defaultWeapon, defaultCharacter } from "../../types/types"
+import { CharacterTypes, defaultFaction, defaultWeapon, defaultCharacter } from "../../types/types"
 import { brick, carolina, shing, zombies } from "../factories/Characters"
 
 describe("CharacterService", () => {
@@ -282,7 +282,7 @@ describe("CharacterService", () => {
           count: 15,
           action_values: {
             ...defaultCharacter.action_values,
-            Type: "Mook",
+            Type: CharacterTypes.Mook,
             Toughness: 4
           }
         }
@@ -337,7 +337,7 @@ describe("CharacterService", () => {
           ...defaultCharacter,
           action_values: {
             ...defaultCharacter.action_values,
-            Type: "Uber-Boss",
+            Type: CharacterTypes.UberBoss,
             Toughness: 8,
             Wounds: 39
           }
@@ -354,7 +354,7 @@ describe("CharacterService", () => {
           impairments: 1,
           action_values: {
             ...defaultCharacter.action_values,
-            Type: "Uber-Boss",
+            Type: CharacterTypes.UberBoss,
             Toughness: 8,
             Wounds: 44
           }
@@ -371,7 +371,7 @@ describe("CharacterService", () => {
         ...defaultCharacter,
         action_values: {
           ...defaultCharacter.action_values,
-          Type: "Uber-Boss",
+          Type: CharacterTypes.UberBoss,
           Toughness: 8,
           Wounds: 39
         }
@@ -388,7 +388,7 @@ describe("CharacterService", () => {
           ...defaultCharacter,
           action_values: {
             ...defaultCharacter.action_values,
-            Type: "Boss",
+            Type: CharacterTypes.Boss,
             Toughness: 8,
             Wounds: 39
           }
@@ -405,7 +405,7 @@ describe("CharacterService", () => {
           impairments: 1,
           action_values: {
             ...defaultCharacter.action_values,
-            Type: "Boss",
+            Type: CharacterTypes.Boss,
             Toughness: 8,
             Wounds: 44
           }
@@ -422,7 +422,7 @@ describe("CharacterService", () => {
         ...defaultCharacter,
         action_values: {
           ...defaultCharacter.action_values,
-          Type: "Boss",
+          Type: CharacterTypes.Boss,
           Toughness: 8,
           Wounds: 39
         }
@@ -439,7 +439,7 @@ describe("CharacterService", () => {
           ...defaultCharacter,
           action_values: {
             ...defaultCharacter.action_values,
-            Type: "Featured Foe",
+            Type: CharacterTypes.FeaturedFoe,
             Toughness: 8,
             Wounds: 24
           }
@@ -456,7 +456,7 @@ describe("CharacterService", () => {
           impairments: 1,
           action_values: {
             ...defaultCharacter.action_values,
-            Type: "Featured Foe",
+            Type: CharacterTypes.FeaturedFoe,
             Toughness: 8,
             Wounds: 29
           }
@@ -473,7 +473,7 @@ describe("CharacterService", () => {
         ...defaultCharacter,
         action_values: {
           ...defaultCharacter.action_values,
-          Type: "Featured Foe",
+          Type: CharacterTypes.FeaturedFoe,
           Toughness: 8,
           Wounds: 24
         }
@@ -490,7 +490,7 @@ describe("CharacterService", () => {
           ...defaultCharacter,
           action_values: {
             ...defaultCharacter.action_values,
-            Type: "Ally",
+            Type: CharacterTypes.Ally,
             Toughness: 8,
             Wounds: 24
           }
@@ -507,7 +507,7 @@ describe("CharacterService", () => {
           impairments: 1,
           action_values: {
             ...defaultCharacter.action_values,
-            Type: "Ally",
+            Type: CharacterTypes.Ally,
             Toughness: 8,
             Wounds: 29
           }
@@ -524,7 +524,7 @@ describe("CharacterService", () => {
         ...defaultCharacter,
         action_values: {
           ...defaultCharacter.action_values,
-          Type: "Ally",
+          Type: CharacterTypes.Ally,
           Toughness: 8,
           Wounds: 24
         }
@@ -541,7 +541,7 @@ describe("CharacterService", () => {
           ...defaultCharacter,
           action_values: {
             ...defaultCharacter.action_values,
-            Type: "PC",
+            Type: CharacterTypes.PC,
             Toughness: 8,
             Wounds: 24
           }
@@ -558,7 +558,7 @@ describe("CharacterService", () => {
           impairments: 1,
           action_values: {
             ...defaultCharacter.action_values,
-            Type: "PC",
+            Type: CharacterTypes.PC,
             Toughness: 8,
             Wounds: 29
           }
@@ -575,7 +575,7 @@ describe("CharacterService", () => {
         ...defaultCharacter,
         action_values: {
           ...defaultCharacter.action_values,
-          Type: "PC",
+          Type: CharacterTypes.PC,
           Toughness: 8,
           Wounds: 24
         }
@@ -652,7 +652,7 @@ describe("CharacterService", () => {
         impairments: 2,
         action_values: {
           ...defaultCharacter.action_values,
-          Type: "PC",
+          Type: CharacterTypes.PC,
           Toughness: 8,
           Wounds: 30
         }
@@ -669,7 +669,7 @@ describe("CharacterService", () => {
         impairments: 2,
         action_values: {
           ...defaultCharacter.action_values,
-          Type: "PC",
+          Type: CharacterTypes.PC,
           Toughness: 8,
           Wounds: 30
         }
@@ -771,7 +771,7 @@ describe("CharacterService", () => {
         ...defaultCharacter,
         action_values: {
           ...defaultCharacter.action_values,
-          Type: "Uber-Boss",
+          Type: CharacterTypes.UberBoss,
           Toughness: 8,
           Wounds: 51
         }
@@ -785,7 +785,7 @@ describe("CharacterService", () => {
         ...defaultCharacter,
         action_values: {
           ...defaultCharacter.action_values,
-          Type: "Boss",
+          Type: CharacterTypes.Boss,
           Toughness: 8,
           Wounds: 51
         }
@@ -799,7 +799,7 @@ describe("CharacterService", () => {
         ...defaultCharacter,
         action_values: {
           ...defaultCharacter.action_values,
-          Type: "Featured Foe",
+          Type: CharacterTypes.FeaturedFoe,
           Toughness: 8,
           Wounds: 36
         }
@@ -813,7 +813,7 @@ describe("CharacterService", () => {
         ...defaultCharacter,
         action_values: {
           ...defaultCharacter.action_values,
-          Type: "Ally",
+          Type: CharacterTypes.Ally,
           Toughness: 8,
           Wounds: 36
         }
@@ -827,7 +827,7 @@ describe("CharacterService", () => {
         ...defaultCharacter,
         action_values: {
           ...defaultCharacter.action_values,
-          Type: "PC",
+          Type: CharacterTypes.PC,
           Toughness: 8,
           Wounds: 36
         }
@@ -842,7 +842,7 @@ describe("CharacterService", () => {
         count: 5,
         action_values: {
           ...defaultCharacter.action_values,
-          Type: "Mook",
+          Type: CharacterTypes.Mook,
         }
       }
 

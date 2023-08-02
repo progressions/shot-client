@@ -1,22 +1,24 @@
-import type { Faction, Vehicle, Character } from "../types/types"
+import { CharacterTypes, Faction, Vehicle, Character } from "../types/types"
 import { parseToNumber } from "../utils/parseToNumber"
 import Dice from "./DiceService"
 
-interface woundThresholdType {
-  low: number,
-  high: number,
-  serious: number,
-}
-interface woundThresholdsType {
-  [key: string]: woundThresholdType,
+// Define the type for the wound thresholds
+interface WoundThresholds {
+  low: number;
+  high: number;
+  serious: number;
 }
 
-export const woundThresholds: woundThresholdsType = {
-  "Uber-Boss": { low: 40, high: 45, serious: 50 },
-  "Boss": { low: 40, high: 45, serious: 50 },
-  "PC": { low: 25, high: 30, serious: 35 },
-  "Ally": { low: 25, high: 30, serious: 35 },
-  "Featured Foe": { low: 25, high: 30, serious: 35 },
+// Create the woundThresholds object with optional keys for Mook
+export const woundThresholds: {
+  [key in CharacterTypes]?: WoundThresholds;
+} = {
+  [CharacterTypes.UberBoss]: { low: 40, high: 45, serious: 50 },
+  [CharacterTypes.Boss]: { low: 40, high: 45, serious: 50 },
+  [CharacterTypes.PC]: { low: 25, high: 30, serious: 35 },
+  [CharacterTypes.Ally]: { low: 25, high: 30, serious: 35 },
+  [CharacterTypes.FeaturedFoe]: { low: 25, high: 30, serious: 35 },
+  // Mook key is optional and can be omitted if not needed
 }
 
 const SharedService = {
@@ -24,8 +26,8 @@ const SharedService = {
     return character.name
   },
 
-  type: function(character: Character | Vehicle): string {
-    return this.otherActionValue(character, "Type")
+  type: function(character: Character | Vehicle): CharacterTypes {
+    return this.otherActionValue(character, "Type") as CharacterTypes
   },
 
   hidden: function(character: Character | Vehicle): boolean {
@@ -41,7 +43,7 @@ const SharedService = {
   },
 
   isFriendly: function(character: Character | Vehicle): boolean {
-    return this.isType(character, ["PC", "Ally"])
+    return this.isType(character, [CharacterTypes.PC, CharacterTypes.Ally])
   },
 
   isUnfriendly: function(character: Character | Vehicle): boolean {
@@ -49,27 +51,31 @@ const SharedService = {
   },
 
   isMook: function(character: Character | Vehicle): boolean {
-    return this.isType(character, "Mook")
+    return this.isType(character, CharacterTypes.Mook)
   },
 
   isPC: function(character: Character | Vehicle): boolean {
-    return this.isType(character, "PC")
+    return this.isType(character, CharacterTypes.PC)
   },
 
   isAlly: function(character: Character | Vehicle): boolean {
-    return this.isType(character, "Ally")
+    return this.isType(character, CharacterTypes.Ally)
   },
 
   isBoss: function(character: Character | Vehicle): boolean {
-    return this.isType(character, "Boss")
+    return this.isType(character, CharacterTypes.Boss)
   },
 
   isFeaturedFoe: function(character: Character | Vehicle): boolean {
-    return this.isType(character, "Featured Foe")
+    return this.isType(character, CharacterTypes.FeaturedFoe)
   },
 
   isUberBoss: function(character: Character | Vehicle): boolean {
-    return this.isType(character, "Uber-Boss")
+    return this.isType(character, CharacterTypes.UberBoss)
+  },
+
+  isTask: function(character: Character | Vehicle): boolean {
+    return !!character.task
   },
 
   isType: function(character: Character | Vehicle, type: string | string[]): boolean {
@@ -117,7 +123,7 @@ const SharedService = {
   calculateImpairments: function(character: Character | Vehicle, originalWounds:number, newWounds: number): number {
     if (this.isMook(character)) return 0
 
-    const threshold = woundThresholds[this.type(character)]
+    const threshold = woundThresholds[this.type(character)]!
 
     // a Boss and an Uber-Boss gain 1 point of Impairment when their Wounds
     // goes from < 40 to between 40 and 44
@@ -182,7 +188,7 @@ const SharedService = {
     if (this.isMook(character)) return false
 
     const type = this.type(character)
-    const threshold = woundThresholds[type]
+    const threshold = woundThresholds[type]!
 
     return (value >= threshold.serious)
   },

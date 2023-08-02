@@ -2,29 +2,15 @@ import { Badge, Avatar, Box, Typography } from "@mui/material"
 import GamemasterOnly from '../GamemasterOnly'
 import DirectionsCarIcon from "@mui/icons-material/DirectionsCar"
 
-import type { User, Character } from "../../types/types"
+import CS from "../../services/CharacterService"
+import { User, Character } from "../../types/types"
 
 interface AvatarBadgeParams {
   character: Character,
   user: User | null
 }
 
-interface Names {
-  [key: string]: string
-}
-
 export default function AvatarBadge({ character, user }: AvatarBadgeParams) {
-  const names:Names = {
-    "PC": "PC",
-    "Ally": "Ally",
-    "Mook": "Mook",
-    "Featured Foe": "Foe",
-    "Boss": "Boss",
-    "Uber-Boss": "Uber"
-  }
-
-  const charType = character.action_values['Type']
-
   return (
     <>
       <Badge color='error' badgeContent={character.impairments}>
@@ -32,7 +18,7 @@ export default function AvatarBadge({ character, user }: AvatarBadgeParams) {
       </Badge>
       <GamemasterOnly user={user} character={character}>
         <Box width={40} sx={{textAlign: 'center'}}>
-          <Typography variant="caption" sx={{color: 'text.secondary'}}>{charType && names[charType as string]}</Typography>
+          <Typography variant="caption" sx={{color: 'text.secondary'}}>{CS.type(character)}</Typography>
         </Box>
         <Box width={40} sx={{textAlign: 'center'}}>
           { character.category === "vehicle" &&

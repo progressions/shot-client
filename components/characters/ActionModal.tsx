@@ -6,6 +6,7 @@ import { useFight } from "../../contexts/FightContext"
 import { useToast } from "../../contexts/ToastContext"
 import { useClient } from "../../contexts/ClientContext"
 import type { Character, Fight, Toast } from "../../types/types"
+import { CharacterTypes } from "../../types/types"
 import { FightActions } from '../../reducers/fightState'
 import { StyledFormDialog, StyledTextField } from "../StyledFields"
 import CS from "../../services/CharacterService"
@@ -24,7 +25,7 @@ export default function ActionModal({open, setOpen, character }: ActionModalPara
   const { client } = useClient()
 
   useEffect(() => {
-    if (CS.isType(character, ["Boss", "Uber-Boss"])) {
+    if (CS.isType(character, [CharacterTypes.Boss, CharacterTypes.UberBoss])) {
       setShots(2)
     }
   }, [character])
