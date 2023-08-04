@@ -1,4 +1,5 @@
 import type { Weapon, SkillValue, Character, CharacterEffect } from "../types/types"
+import { DescriptionValues, DescriptionKeys } from "../types/types"
 import SharedService, { woundThresholds } from "./SharedService"
 
 interface Service {
@@ -187,6 +188,10 @@ const CharacterService = {
       return character.weapons
     }
     return []
+  },
+
+  description: function(character: Character, key: keyof DescriptionValues): string {
+    return character.description[key] as string || ""
   }
 
 }

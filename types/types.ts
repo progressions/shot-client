@@ -189,18 +189,23 @@ export interface Weapon {
   image_url: string | null
 }
 
-export interface DescriptionValues {
-  [key: string]: string
-  Nicknames: string
-  Age: string
-  Height: string
-  Weight: string
-  "Hair Color": string
-  "Eye Color": string
-  "Style of Dress": string
-  Appearance: string
-  Background: string
-  "Melodramatic Hook": string
+// Enum definition for description keys
+export enum DescriptionKeys {
+  Nicknames = "Nicknames",
+  Age = "Age",
+  Height = "Height",
+  Weight = "Weight",
+  HairColor = "Hair Color",
+  EyeColor = "Eye Color",
+  StyleOfDress = "Style of Dress",
+  Appearance = "Appearance",
+  Background = "Background",
+  MelodramaticHook = "Melodramatic Hook",
+}
+
+// Type for DescriptionValues
+export type DescriptionValues = {
+  [key in DescriptionKeys]: string
 }
 
 export interface AVs {

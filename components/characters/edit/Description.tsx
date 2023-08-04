@@ -2,6 +2,8 @@ import { Typography, Stack } from "@mui/material"
 import { Subhead, StyledTextField } from "../../StyledFields"
 import PlayerTypeOnly from "../../PlayerTypeOnly"
 import type { Character } from "../../../types/types"
+import { DescriptionKeys as D } from "../../../types/types"
+import CS from "../../../services/CharacterService"
 
 interface DescriptionProps {
   character: Character
@@ -15,19 +17,19 @@ export default function Description({ character, onChange }: DescriptionProps) {
     <>
       <Subhead>Description</Subhead>
       <PlayerTypeOnly character={character} only="PC">
-        <StyledTextField name="Melodramatic Hook" label="Melodramatic Hook" value={description["Melodramatic Hook"]} onChange={onChange} multiline rows={4} />
+        <StyledTextField name={D.MelodramaticHook} label="Melodramatic Hook" value={CS.description(character, D.MelodramaticHook)} onChange={onChange} multiline rows={4} />
       </PlayerTypeOnly>
-      <StyledTextField name="Nicknames" label="Nicknames" value={description["Nicknames"]} onChange={onChange} />
+      <StyledTextField name={D.Nicknames} label="Nicknames" value={CS.description(character, D.Nicknames)} onChange={onChange} />
       <Stack direction="row" spacing={1}>
-        <StyledTextField name="Age" label="Age" value={description["Age"]} onChange={onChange} />
-        <StyledTextField name="Height" label="Height" value={description["Height"]} onChange={onChange} />
-        <StyledTextField name="Weight" label="Weight" value={description["Weight"]} onChange={onChange} />
-        <StyledTextField name="Hair Color" label="Hair Color" value={description["Hair Color"]} onChange={onChange} />
-        <StyledTextField name="Eye Color" label="Eye Color" value={description["Eye Color"]} onChange={onChange} />
+        <StyledTextField name={D.Age} label="Age" value={CS.description(character, D.Age)} onChange={onChange} />
+        <StyledTextField name={D.Height} label="Height" value={CS.description(character, D.Height)} onChange={onChange} />
+        <StyledTextField name={D.Weight} label="Weight" value={CS.description(character, D.Weight)} onChange={onChange} />
+        <StyledTextField name={D.HairColor} label="Hair Color" value={CS.description(character, D.HairColor)} onChange={onChange} />
+        <StyledTextField name={D.EyeColor} label="Eye Color" value={CS.description(character, D.EyeColor)} onChange={onChange} />
       </Stack>
-        <StyledTextField fullWidth name="Style of Dress" label="Style of Dress" value={description["Style of Dress"]} onChange={onChange} />
-      <StyledTextField name="Appearance" label="Appearance" value={description["Appearance"]} onChange={onChange} multiline rows={4} />
-      <StyledTextField name="Background" label="Background" value={description["Background"]} onChange={onChange} multiline rows={4} />
+        <StyledTextField fullWidth name={D.StyleOfDress} label="Style of Dress" value={CS.description(character, D.StyleOfDress)} onChange={onChange} />
+      <StyledTextField name={D.Appearance} label="Appearance" value={CS.description(character, D.Appearance)} onChange={onChange} multiline rows={4} />
+      <StyledTextField name={D.Background} label="Background" value={CS.description(character, D.Background)} onChange={onChange} multiline rows={4} />
     </>
   )
 }
