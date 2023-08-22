@@ -3,6 +3,10 @@ import CS from "./CharacterService"
 import SS from "./SharedService"
 
 const FightService = {
+  firstUp: function(fight: Fight): Character | Vehicle | undefined {
+    return fight.shot_order?.[0]?.[1]?.[0]
+  },
+
   playerCharactersForInitiative: function(fight: Fight): Character[] {
     return this.playerCharacters(fight)
       .filter((character) => {

@@ -17,6 +17,7 @@ import type { Vehicle } from "../../types/types"
 import { defaultVehicle } from "../../types/types"
 import SwerveButton from "../attacks/SwerveButton"
 import ResultsDisplay from "./ResultsDisplay"
+import FightService from "../../services/FightService"
 
 interface ChaseModalProps {
   open: boolean
@@ -37,8 +38,8 @@ export default function ChaseModal({ open, setOpen, anchorEl, setAnchorEl }: Cha
   useEffect(() => {
     dispatch({ type: ChaseActions.RESET })
 
-    const firstUp = fight.shot_order[0][1][0]
-    if (VS.isVehicle(firstUp)) {
+    const firstUp = FightService.firstUp(fight)
+    if (firstUp && VS.isVehicle(firstUp)) {
       dispatch({ type: ChaseActions.UPDATE, payload: { fight: fight } })
       setAttacker(firstUp)
     }

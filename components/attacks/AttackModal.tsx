@@ -20,6 +20,7 @@ import ResultsDisplay from "./ResultsDisplay"
 import Attacker from "./Attacker"
 import Target from "./Target"
 import SwerveButton from "./SwerveButton"
+import FightService from "../../services/FightService"
 
 interface AttackModalProps {
   open: boolean
@@ -41,8 +42,8 @@ export default function AttackModal({ open, setOpen, anchorEl, setAnchorEl }: At
   useEffect(() => {
     dispatch({ type: AttackActions.RESET })
 
-    const firstUp = fight.shot_order[0][1][0]
-    if (CS.isCharacter(firstUp)) {
+    const firstUp = FightService.firstUp(fight)
+    if (firstUp && CS.isCharacter(firstUp)) {
       dispatch({ type: AttackActions.UPDATE, payload: { fight: fight } })
       setAttacker(firstUp)
     }
