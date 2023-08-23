@@ -373,6 +373,10 @@ class Client {
     return await this.get(this.api.factions())
   }
 
+  async createFaction(faction: Faction):Promise<Faction> {
+    return await this.post(this.api.factions(), {"faction": faction})
+  }
+
   async getSchticks(params={}):Promise<SchticksResponse> {
     const query = Object.entries(params).map(([key, value]) => `${key}=${value || ""}`).join("&")
     return await this.get(`${this.api.schticks()}?${query}`)

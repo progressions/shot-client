@@ -55,8 +55,14 @@ export default function Faction({ faction, onChange }: FactionProps) {
     }
   }
 
-  function changeFaction(event: React.ChangeEvent<HTMLInputElement>, newFaction: Faction) {
-    onChange({...event, target: {...event.target, name: "faction_id", value: newFaction.id as string}}, newFaction.id as string)
+  async function changeFaction(event: React.ChangeEvent<HTMLInputElement>, newFaction: Faction) {
+    if (newFaction?.id === undefined && newFaction?.name !== undefined) {
+      const data = await client.createFaction({ name: newFaction.name })
+      console.log(data)
+      onChange({...event, target: {...event.target, name: "faction_id", value: data.id as string}}, data.id as string)
+      return
+    }
+    onChange({...event, target: {...event.target, name: "faction_id", value: newFaction?.id || "" as string}}, newFaction?.id || "" as string)
   }
 
   return (
@@ -73,6 +79,13 @@ export default function Faction({ faction, onChange }: FactionProps) {
           openOnFocus
           renderInput={(params: InputParamsType) => <StyledTextField name="faction_id" {...params} label="Faction" />}
           getOptionLabel={(option: Faction) => option.name || ""}
+          filterOptions={(options: Faction[], params: any) => {
+            const filtered = options.filter((option: Faction) => option.name.toLowerCase().includes(params.inputValue.toLowerCase()))
+            if (filtered.length === 0 && params.inputValue !== "") {
+              filtered.push({ name: params.inputValue } as Faction)
+            }
+            return filtered
+          }}
         />
       </Stack>
     </>
