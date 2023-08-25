@@ -1,5 +1,5 @@
-import type { Vehicle } from "../types/types"
-import { defaultVehicle } from "../types/types"
+import type { Vehicle } from "@/types/types"
+import { defaultVehicle } from "@/types/types"
 
 export enum VehicleActions {
   EDITED = "edited",

@@ -1,5 +1,5 @@
-import type { Advancement } from "../types/types"
-import { defaultAdvancement } from "../types/types"
+import type { Advancement } from "@/types/types"
+import { defaultAdvancement } from "@/types/types"
 
 export enum AdvancementActions {
   SAVING = "saving",
