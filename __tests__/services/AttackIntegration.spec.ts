@@ -1,11 +1,11 @@
-import type { Swerve, Character, Vehicle } from "../../types/types"
-import { defaultSwerve, defaultCharacter, defaultVehicle } from "../../types/types"
-import { initialAttackState, AttackState } from "../../reducers/attackState"
-import ARS from "../../services/AttackReducerService"
-import CS from "../../services/CharacterService"
-import { hitman, huanKen, brick, carolina, shing, zombies } from "../factories/Characters"
-import { roll } from "../helpers/Helpers"
-import { expectAttack, expectMookAttack, expectNoChanges, expectAttackerUnharmed, expectTargetUnharmed, expectAttackResults } from "../helpers/AttackHelpers"
+import type { Swerve, Character, Vehicle } from "@/types/types"
+import { defaultSwerve, defaultCharacter, defaultVehicle } from "@/types/types"
+import { initialAttackState, AttackState } from "@/reducers/attackState"
+import ARS from "@/services/AttackReducerService"
+import CS from "@/services/CharacterService"
+import { hitman, huanKen, brick, carolina, shing, zombies } from "@/__tests__/factories/Characters"
+import { roll } from "@/__tests__/helpers/Helpers"
+import { expectAttack, expectMookAttack, expectNoChanges, expectAttackerUnharmed, expectTargetUnharmed, expectAttackResults } from "@/__tests__/helpers/AttackHelpers"
 
 describe("AttackReducerService", () => {
   beforeEach(() => {
