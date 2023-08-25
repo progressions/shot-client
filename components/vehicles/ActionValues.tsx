@@ -2,8 +2,8 @@ import { Tooltip, TableContainer, Table, TableHead, TableBody, TableCell, TableR
 import { Box, Stack, Typography } from '@mui/material'
 import { tableCellClasses } from "@mui/material/TableCell"
 
-import type { Character, ActionValues } from "../../types/types"
-import ActionValueDisplay from "../characters/ActionValueDisplay"
+import type { Character, ActionValues } from "@/types/types"
+import ActionValueDisplay from "@/components/characters/ActionValueDisplay"
 
 interface ActionValuesParams {
   character: Character

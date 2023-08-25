@@ -1,13 +1,13 @@
 import { useState } from 'react'
 import { Box, Stack, TextField, Button, Dialog } from '@mui/material'
-import { useToast } from "../../contexts/ToastContext"
-import { useClient } from "../../contexts/ClientContext"
-import { useFight } from "../../contexts/FightContext"
+import { useToast } from "@/contexts/ToastContext"
+import { useClient } from "@/contexts/ClientContext"
+import { useFight } from "@/contexts/FightContext"
 
-import type { Vehicle, Character, Fight, Toast, VehicleActionValues } from "../../types/types"
-import { FightActions } from '../../reducers/fightState'
-import { StyledFormDialog, StyledTextField } from "../StyledFields"
-import VS from "../../services/VehicleService"
+import type { Vehicle, Character, Fight, Toast, VehicleActionValues } from "@/types/types"
+import { FightActions } from '@/reducers/fightState'
+import { StyledFormDialog, StyledTextField } from "@/components/StyledFields"
+import VS from "@/services/VehicleService"
 
 interface ChasePointsModalParams {
   open: boolean,

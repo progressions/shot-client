@@ -1,4 +1,4 @@
-import type { Vehicle, Character } from "../../types/types"
+import type { Vehicle, Character } from "@/types/types"
 import { Typography } from "@mui/material"
 
 interface DriverDetailsProps {

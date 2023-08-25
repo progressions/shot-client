@@ -4,21 +4,21 @@ import CommuteIcon from '@mui/icons-material/Commute'
 import CarCrashIcon from '@mui/icons-material/CarCrash'
 import { BlockPicker, ColorResult } from 'react-color'
 
-import PlayerTypeOnly from "../PlayerTypeOnly"
-import CharacterType from '../characters/edit/CharacterType'
+import PlayerTypeOnly from "@/components/PlayerTypeOnly"
+import CharacterType from '@/components/characters/edit/CharacterType'
 
-import PositionSelector from "./PositionSelector"
-import PursuerSelector from "./PursuerSelector"
-import DriverSelector from "./DriverSelector"
+import PositionSelector from "@/components/vehicles/PositionSelector"
+import PursuerSelector from "@/components/vehicles/PursuerSelector"
+import DriverSelector from "@/components/vehicles/DriverSelector"
 
-import { useToast } from "../../contexts/ToastContext"
-import { useFight } from "../../contexts/FightContext"
-import { useClient } from "../../contexts/ClientContext"
-import type { Character, Vehicle, Fight } from "../../types/types"
-import { defaultVehicle } from "../../types/types"
-import { StyledTextField, SaveCancelButtons, StyledDialog } from "../StyledFields"
-import { FightActions } from '../../reducers/fightState'
-import VS from "../../services/VehicleService"
+import { useToast } from "@/contexts/ToastContext"
+import { useFight } from "@/contexts/FightContext"
+import { useClient } from "@/contexts/ClientContext"
+import type { Character, Vehicle, Fight } from "@/types/types"
+import { defaultVehicle } from "@/types/types"
+import { StyledTextField, SaveCancelButtons, StyledDialog } from "@/components/StyledFields"
+import { FightActions } from '@/reducers/fightState'
+import VS from "@/services/VehicleService"
 
 interface VehicleModalParams {
   open: Vehicle,

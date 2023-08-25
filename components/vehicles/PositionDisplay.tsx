@@ -1,14 +1,14 @@
 import { FaCarSide } from "react-icons/fa"
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
 
-import { useToast } from "../../contexts/ToastContext"
-import { useFight } from "../../contexts/FightContext"
-import { useClient } from "../../contexts/ClientContext"
+import { useToast } from "@/contexts/ToastContext"
+import { useFight } from "@/contexts/FightContext"
+import { useClient } from "@/contexts/ClientContext"
 
 import { IconButton, Typography, Stack, Box } from "@mui/material"
-import { Vehicle } from "../../types/types"
-import VS from "../../services/VehicleService"
-import { FightActions } from '../../reducers/fightState'
+import { Vehicle } from "@/types/types"
+import VS from "@/services/VehicleService"
+import { FightActions } from '@/reducers/fightState'
 
 interface PositionDisplayProps {
   character: Vehicle

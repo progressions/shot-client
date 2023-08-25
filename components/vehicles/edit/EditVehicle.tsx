@@ -1,12 +1,12 @@
-import { useClient } from "../../../contexts/ClientContext"
-import { useToast } from "../../../contexts/ToastContext"
-import { useVehicle } from "../../../contexts/VehicleContext"
+import { useClient } from "@/contexts/ClientContext"
+import { useToast } from "@/contexts/ToastContext"
+import { useVehicle } from "@/contexts/VehicleContext"
 
-import EditActionValues from "./EditActionValues"
-import Faction from "../../characters/edit/Faction"
-import CharacterType from "../../characters/edit/CharacterType"
-import ColorPicker from "../../characters/edit/ColorPicker"
-import CharacterImage from "../../characters/edit/CharacterImage"
+import EditActionValues from "@/components/vehicles/edit/EditActionValues"
+import Faction from "@/components/characters/edit/Faction"
+import CharacterType from "@/components/characters/edit/CharacterType"
+import ColorPicker from "@/components/characters/edit/ColorPicker"
+import CharacterImage from "@/components/characters/edit/CharacterImage"
 
 import { useEffect } from "react"
 
@@ -14,11 +14,11 @@ import { colors, Typography, Box, Stack, TextField, FormControlLabel, Switch, Bu
 import CommuteIcon from '@mui/icons-material/Commute'
 import CarCrashIcon from '@mui/icons-material/CarCrash'
 
-import PlayerTypeOnly from "../../PlayerTypeOnly"
-import { Subhead, StyledTextField } from "../../StyledFields"
+import PlayerTypeOnly from "@/components/PlayerTypeOnly"
+import { Subhead, StyledTextField } from "@/components/StyledFields"
 
-import type { Vehicle } from "../../../types/types"
-import { VehicleActions } from "../../../reducers/vehicleState"
+import type { Vehicle } from "@/types/types"
+import { VehicleActions } from "@/reducers/vehicleState"
 
 interface EditVehicleProps {
   vehicle: Vehicle
