@@ -1,7 +1,7 @@
-import type { Vehicle, Character } from "../../types/types"
-import { defaultVehicle, defaultCharacter } from "../../types/types"
-import { carolina, shing } from "./Characters"
-import VS from "../../services/VehicleService"
+import type { Vehicle, Character } from "@/types/types"
+import { defaultVehicle, defaultCharacter } from "@/types/types"
+import { carolina, shing } from "@/__tests__/factories/Characters"
+import VS from "@/services/VehicleService"
 
 export function pursuer(vehicle: Vehicle, position: string) {
   return VS.chain(vehicle, [

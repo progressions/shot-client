@@ -1,5 +1,5 @@
-import type { Weapon } from "../../types/types"
-import { defaultWeapon } from "../../types/types"
+import type { Weapon } from "@/types/types"
+import { defaultWeapon } from "@/types/types"
 
 export const derringer: Weapon = {
   ...defaultWeapon,

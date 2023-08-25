@@ -1,9 +1,9 @@
-import type { Vehicle } from "../../types/types"
-import { ChaseMethod, initialChaseState, ChaseState } from "../../reducers/chaseState"
-import VS from "../../services/VehicleService"
-import { pursuer, evader } from "../factories/Vehicles"
-import CRS from "../../services/ChaseReducerService"
-import { roll } from "../helpers/Helpers"
+import type { Vehicle } from "@/types/types"
+import { ChaseMethod, initialChaseState, ChaseState } from "@/reducers/chaseState"
+import VS from "@/services/VehicleService"
+import { pursuer, evader } from "@/__tests__/factories/Vehicles"
+import CRS from "@/services/ChaseReducerService"
+import { roll } from "@/__tests__/helpers/Helpers"
 
 interface PartialChaseState {
   swerve: number

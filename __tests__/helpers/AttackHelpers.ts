@@ -1,8 +1,8 @@
-import { Character } from "../../types/types"
-import { initialAttackState, AttackState } from "../../reducers/attackState"
-import CS from "../../services/CharacterService"
-import ARS from "../../services/AttackReducerService"
-import { roll } from "../helpers/Helpers"
+import { Character } from "@/types/types"
+import { initialAttackState, AttackState } from "@/reducers/attackState"
+import CS from "@/services/CharacterService"
+import ARS from "@/services/AttackReducerService"
+import { roll } from "@/__tests__/helpers/Helpers"
 
 interface PartialAttackState {
   swerve: number
