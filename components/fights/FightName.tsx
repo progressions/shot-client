@@ -2,13 +2,13 @@ import { Box, Button, ButtonGroup, Stack, Tooltip, Typography } from "@mui/mater
 import EditIcon from '@mui/icons-material/Edit'
 import { useState } from "react"
 
-import type { Fight } from "../../types/types"
+import type { Fight } from "@/types/types"
 
-import { StyledTextField, SaveCancelButtons } from "../StyledFields"
-import { useFight } from "../../contexts/FightContext"
-import { useClient } from "../../contexts/ClientContext"
-import { useToast } from "../../contexts/ToastContext"
-import { FightActions } from "../../reducers/fightState"
+import { StyledTextField, SaveCancelButtons } from "@/components/StyledFields"
+import { useFight } from "@/contexts/FightContext"
+import { useClient } from "@/contexts/ClientContext"
+import { useToast } from "@/contexts/ToastContext"
+import { FightActions } from "@/reducers/fightState"
 
 interface FightNameProps {
   fight: Fight

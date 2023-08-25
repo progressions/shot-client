@@ -1,16 +1,16 @@
 import { colors, Paper, TableContainer, Table, TableHead, TableBody, TableRow, TableCell } from "@mui/material"
 
-import { useFight } from "../../contexts/FightContext"
-import FightName from "./FightName"
-import FightToolbar from './FightToolbar'
-import Shot from '../../components/shots/Shot'
-import CharacterModal from '../../components/characters/CharacterModal'
-import VehicleModal from '../../components/vehicles/VehicleModal'
-import Sequence from "./Sequence"
+import { useFight } from "@/contexts/FightContext"
+import FightName from "@/components/fights/FightName"
+import FightToolbar from '@/components/fights/FightToolbar'
+import Shot from '@/components/shots/Shot'
+import CharacterModal from '@/components/characters/CharacterModal'
+import VehicleModal from '@/components/vehicles/VehicleModal'
+import Sequence from "@/components/fights/Sequence"
 
-import { defaultCharacter, ServerSideProps } from "../../types/types"
+import { defaultCharacter, ServerSideProps } from "@/types/types"
 
-import type { Person, Vehicle, ShotType, Character, Fight } from "../../types/types"
+import type { Person, Vehicle, ShotType, Character, Fight } from "@/types/types"
 
 import { useMemo, useState } from "react"
 
