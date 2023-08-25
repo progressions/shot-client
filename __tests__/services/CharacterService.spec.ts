@@ -1,7 +1,7 @@
-import CS from "../../services/CharacterService"
-import type { Faction, Weapon, Character } from "../../types/types"
-import { CharacterTypes, defaultFaction, defaultWeapon, defaultCharacter } from "../../types/types"
-import { brick, carolina, shing, zombies } from "../factories/Characters"
+import CS from "@/services/CharacterService"
+import type { Faction, Weapon, Character } from "@/types/types"
+import { CharacterTypes, defaultFaction, defaultWeapon, defaultCharacter } from "@/types/types"
+import { brick, carolina, shing, zombies } from "@/__tests__/factories/Characters"
 
 describe("CharacterService", () => {
   describe("skill", () => {

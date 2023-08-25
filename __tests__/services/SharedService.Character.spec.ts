@@ -1,6 +1,6 @@
-import CS from "../../services/CharacterService"
-import type { Faction, Weapon, Character } from "../../types/types"
-import { CharacterTypes, defaultFaction, defaultWeapon, defaultCharacter } from "../../types/types"
+import CS from "@/services/CharacterService"
+import type { Faction, Weapon, Character } from "@/types/types"
+import { CharacterTypes, defaultFaction, defaultWeapon, defaultCharacter } from "@/types/types"
 
 describe("SharedService", () => {
   describe("Character", () => {

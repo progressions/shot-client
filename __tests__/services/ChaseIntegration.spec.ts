@@ -1,10 +1,10 @@
-import type { Swerve, Character, Vehicle } from "../../types/types"
-import { defaultSwerve, defaultCharacter, defaultVehicle } from "../../types/types"
-import { ChaseMethod, initialChaseState, ChaseState } from "../../reducers/chaseState"
-import CRS from "../../services/ChaseReducerService"
-import VS from "../../services/VehicleService"
-import { pursuer, evader, hondas, brickMobile, copCar, battleTruck, motorcycles } from "../factories/Vehicles"
-import { roll } from "../helpers/Helpers"
+import type { Swerve, Character, Vehicle } from "@/types/types"
+import { defaultSwerve, defaultCharacter, defaultVehicle } from "@/types/types"
+import { ChaseMethod, initialChaseState, ChaseState } from "@/reducers/chaseState"
+import CRS from "@/services/ChaseReducerService"
+import VS from "@/services/VehicleService"
+import { pursuer, evader, hondas, brickMobile, copCar, battleTruck, motorcycles } from "@/__tests__/factories/Vehicles"
+import { roll } from "@/__tests__/helpers/Helpers"
 import {
   expectEvasionAttack,
   expectPursuitAttack,
@@ -13,7 +13,7 @@ import {
   expectNoChanges,
   expectAttackerUnharmed,
   expectPositionsUnchanged
-} from "../helpers/ChaseHelpers"
+} from "@/__tests__/helpers/ChaseHelpers"
 
 describe("ChaseReducerService", () => {
   let state: ChaseState

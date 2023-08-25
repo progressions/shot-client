@@ -1,9 +1,9 @@
-import type { Swerve, Character, Vehicle } from "../../types/types"
-import { defaultSwerve, defaultCharacter, defaultVehicle } from "../../types/types"
-import { ChaseMethod, initialChaseState, ChaseState } from "../../reducers/chaseState"
-import CRS from "../../services/ChaseReducerService"
-import VS from "../../services/VehicleService"
-import { pursuer, evader, hondas, brickMobile, copCar, battleTruck, motorcycles } from "../factories/Vehicles"
+import type { Swerve, Character, Vehicle } from "@/types/types"
+import { defaultSwerve, defaultCharacter, defaultVehicle } from "@/types/types"
+import { ChaseMethod, initialChaseState, ChaseState } from "@/reducers/chaseState"
+import CRS from "@/services/ChaseReducerService"
+import VS from "@/services/VehicleService"
+import { pursuer, evader, hondas, brickMobile, copCar, battleTruck, motorcycles } from "@/__tests__/factories/Vehicles"
 
 function roll(result: number) {
   return {

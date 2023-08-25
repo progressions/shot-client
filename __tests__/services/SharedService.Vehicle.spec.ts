@@ -1,6 +1,6 @@
-import VS from "../../services/VehicleService"
-import type { Faction, Weapon, Character, Vehicle } from "../../types/types"
-import { CharacterTypes, defaultFaction, defaultCharacter, defaultVehicle } from "../../types/types"
+import VS from "@/services/VehicleService"
+import type { Faction, Weapon, Character, Vehicle } from "@/types/types"
+import { CharacterTypes, defaultFaction, defaultCharacter, defaultVehicle } from "@/types/types"
 
 describe("SharedService", () => {
   describe("Vehicle", () => {
