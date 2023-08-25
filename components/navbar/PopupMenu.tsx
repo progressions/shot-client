@@ -4,7 +4,7 @@ import MenuIcon from '@mui/icons-material/Menu'
 import { signIn, signOut } from 'next-auth/react'
 
 import PopupState, { bindTrigger, bindMenu } from 'material-ui-popup-state';
-import type { Campaign, User } from "../../types/types"
+import type { Campaign, User } from "@/types/types"
 
 interface MenuPopupStateProps {
   campaign: Campaign | null

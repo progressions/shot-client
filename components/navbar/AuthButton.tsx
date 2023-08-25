@@ -1,7 +1,7 @@
 import { Stack, Link, Typography, Button, Tooltip, IconButton, Avatar } from "@mui/material"
 import { signIn, signOut } from 'next-auth/react'
 
-import type { User } from "../../types/types"
+import type { User } from "@/types/types"
 
 interface AuthButtonParams {
   status: string,

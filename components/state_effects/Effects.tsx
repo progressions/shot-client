@@ -7,8 +7,8 @@ import { useFight } from "@/contexts/FightContext"
 
 import { useMemo, useState } from "react"
 
-import type { Severity, CharacterEffect, Character } from "../../types/types"
-import { FightActions } from "../../reducers/fightState"
+import type { Severity, CharacterEffect, Character } from "@/types/types"
+import { FightActions } from "@/reducers/fightState"
 
 interface EffectsProps {
   effects: CharacterEffect[]

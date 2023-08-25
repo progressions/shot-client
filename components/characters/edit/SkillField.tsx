@@ -1,6 +1,6 @@
 import { IconButton, Typography, TextField } from "@mui/material"
 import ClearIcon from '@mui/icons-material/Clear'
-import { StyledTextField } from "../../StyledFields"
+import { StyledTextField } from "@/components/StyledFields"
 
 interface SkillFieldProps {
   name: string
