@@ -1,10 +1,10 @@
 import { Tooltip, TableContainer, Table, TableHead, TableBody, TableCell, TableRow } from '@mui/material'
 import { Box, Stack, Typography } from '@mui/material'
 
-import type { Character, ActionValues } from "../../types/types"
-import ActionValueDisplay from "./ActionValueDisplay"
-import PlayerTypeOnly from "../PlayerTypeOnly"
-import CS from "../../services/CharacterService"
+import type { Character, ActionValues } from "@/types/types"
+import ActionValueDisplay from "@/components/characters/ActionValueDisplay"
+import PlayerTypeOnly from "@/components/PlayerTypeOnly"
+import CS from "@/services/CharacterService"
 
 interface ActionValuesParams {
   character: Character

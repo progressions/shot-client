@@ -1,5 +1,5 @@
-import type { Campaign, User, Character } from "../types/types"
-import { useCampaign } from "../contexts/CampaignContext"
+import type { Campaign, User, Character } from "@/types/types"
+import { useCampaign } from "@/contexts/CampaignContext"
 
 interface GamemasterOnlyProps {
   user: User | null

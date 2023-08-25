@@ -2,8 +2,8 @@ import { Badge, Avatar, Box, Typography } from "@mui/material"
 import GamemasterOnly from '../GamemasterOnly'
 import DirectionsCarIcon from "@mui/icons-material/DirectionsCar"
 
-import CS from "../../services/CharacterService"
-import { User, Character } from "../../types/types"
+import CS from "@/services/CharacterService"
+import { User, Character } from "@/types/types"
 
 interface AvatarBadgeParams {
   character: Character,

@@ -7,11 +7,11 @@ import NewReleasesIcon from '@mui/icons-material/NewReleases'
 import DirectionsRunIcon from '@mui/icons-material/DirectionsRun'
 import FavoriteIcon from '@mui/icons-material/Favorite'
 
-import GamemasterOnly from "../GamemasterOnly"
-import PlayerTypeOnly from "../PlayerTypeOnly"
-import { useClient } from "../../contexts/ClientContext"
+import GamemasterOnly from "@/components/GamemasterOnly"
+import PlayerTypeOnly from "@/components/PlayerTypeOnly"
+import { useClient } from "@/contexts/ClientContext"
 
-import type { Character, CharacterType } from "../../types/types"
+import type { Character, CharacterType } from "@/types/types"
 
 interface ActionButtonsParams {
   character: Character,
