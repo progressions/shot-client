@@ -58,7 +58,6 @@ export default function Faction({ faction, onChange }: FactionProps) {
   async function changeFaction(event: React.ChangeEvent<HTMLInputElement>, newFaction: Faction) {
     if (newFaction?.id === undefined && newFaction?.name !== undefined) {
       const data = await client.createFaction({ name: newFaction.name })
-      console.log(data)
       onChange({...event, target: {...event.target, name: "faction_id", value: data.id as string}}, data.id as string)
       return
     }

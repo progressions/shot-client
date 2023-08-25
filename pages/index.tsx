@@ -110,7 +110,7 @@ export default function Home({ currentCampaign, fights:initialFights, meta }: Ho
             <GamemasterOnly user={user}>
               <ButtonBar>
                 <Stack direction="row" spacing={2}>
-                  { currentCampaign?.id && <AddFight state={state} dispatch={dispatch} /> }
+                  { <AddFight state={state} dispatch={dispatch} /> }
                   <FormControlLabel label="Show Hidden" control={<Switch checked={showHidden} />} onChange={show} />
                 </Stack>
               </ButtonBar>
