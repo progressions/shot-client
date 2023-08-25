@@ -2,13 +2,13 @@ import { Button, Tooltip, Alert, AlertTitle, Popover, Box, Stack, Typography, Ic
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 import DeleteIcon from '@mui/icons-material/Delete'
 import { useState } from "react"
-import { useToast } from "../../contexts/ToastContext"
-import { useClient } from "../../contexts/ClientContext"
-import { useFight } from "../../contexts/FightContext"
-import type { FightContextType } from "../../contexts/FightContext"
+import { useToast } from "@/contexts/ToastContext"
+import { useClient } from "@/contexts/ClientContext"
+import { useFight } from "@/contexts/FightContext"
+import type { FightContextType } from "@/contexts/FightContext"
 
-import type { Effect, Severity } from "../../types/types"
-import { FightActions } from "../../reducers/fightState"
+import type { Effect, Severity } from "@/types/types"
+import { FightActions } from "@/reducers/fightState"
 
 interface EffectsProps {
   effects: Effect[]

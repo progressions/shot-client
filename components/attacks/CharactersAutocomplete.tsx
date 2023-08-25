@@ -1,9 +1,9 @@
-import { StyledAutocomplete, StyledSelect } from "../StyledFields"
-import { useFight } from "../../contexts/FightContext"
-import { useClient } from "../../contexts/ClientContext"
+import { StyledAutocomplete, StyledSelect } from "@/components/StyledFields"
+import { useFight } from "@/contexts/FightContext"
+import { useClient } from "@/contexts/ClientContext"
 import { useState, useEffect } from "react"
-import type { Character, InputParamsType } from "../../types/types"
-import { defaultCharacter } from "../../types/types"
+import type { Character, InputParamsType } from "@/types/types"
+import { defaultCharacter } from "@/types/types"
 
 interface CharactersAutocompleteParams {
   label?: string,

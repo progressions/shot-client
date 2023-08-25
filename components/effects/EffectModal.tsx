@@ -1,13 +1,13 @@
 import { MenuItem, Box, Dialog, DialogTitle, DialogContent, DialogContentText, Stack, Button, TextField } from "@mui/material"
 import { useState } from "react"
-import { useToast } from "../../contexts/ToastContext"
-import { useClient } from "../../contexts/ClientContext"
-import { useFight } from "../../contexts/FightContext"
+import { useToast } from "@/contexts/ToastContext"
+import { useClient } from "@/contexts/ClientContext"
+import { useFight } from "@/contexts/FightContext"
 
-import type { Toast, Effect, Fight } from "../../types/types"
-import { defaultEffect } from "../../types/types"
-import { FightActions } from "../../reducers/fightState"
-import { StyledFormDialog, StyledTextField } from "../StyledFields"
+import type { Toast, Effect, Fight } from "@/types/types"
+import { defaultEffect } from "@/types/types"
+import { FightActions } from "@/reducers/fightState"
+import { StyledFormDialog, StyledTextField } from "@/components/StyledFields"
 
 interface EffectModalProps {
   shot: number
