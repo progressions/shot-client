@@ -1,14 +1,14 @@
-import Layout from '../../components/Layout'
+import Layout from '@/components/Layout'
 import Head from 'next/head'
 
 import { Skeleton, Box, Paper, IconButton, Button, Stack, Link, Container, Typography, TableContainer, Table, TableHead, TableBody, TableRow, TableCell } from "@mui/material"
-import { useClient } from '../../contexts/ClientContext'
+import { useClient } from '@/contexts/ClientContext'
 import { useReducer, useEffect } from 'react'
-import { useToast } from '../../contexts/ToastContext'
-import { sitesReducer, initialSitesState, SitesActions } from '../../reducers/sitesState'
-import Sites from '../../components/sites/Sites'
-import { ButtonBar } from "../../components/StyledFields"
-import FilterSites from "../../components/sites/FilterSites"
+import { useToast } from '@/contexts/ToastContext'
+import { sitesReducer, initialSitesState, SitesActions } from '@/reducers/sitesState'
+import Sites from '@/components/sites/Sites'
+import { ButtonBar } from "@/components/StyledFields"
+import FilterSites from "@/components/sites/FilterSites"
 
 export default function Home() {
   const { user, client } = useClient()

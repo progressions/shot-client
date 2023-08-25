@@ -1,20 +1,20 @@
 import Head from 'next/head'
 import { Switch, FormControlLabel, Stack, Paper, Container, Table, TableContainer, TableBody, TableHead, TableRow, TableCell, Typography } from '@mui/material'
-import { getServerClient } from "../utils/getServerClient"
+import { getServerClient } from "@/utils/getServerClient"
 
-import { ButtonBar } from "../components/StyledFields"
-import AddFight from '../components/fights/AddFight'
-import FightDetail from '../components/fights/FightDetail'
-import Layout from '../components/Layout'
+import { ButtonBar } from "@/components/StyledFields"
+import AddFight from '@/components/fights/AddFight'
+import FightDetail from '@/components/fights/FightDetail'
+import Layout from '@/components/Layout'
 import { useReducer, useEffect } from 'react'
 
-import { useToast } from "../contexts/ToastContext"
-import { useLocalStorage } from "../contexts/LocalStorageContext"
-import { useClient } from "../contexts/ClientContext"
-import GamemasterOnly from "../components/GamemasterOnly"
-import { FightsActions, initialFightsState, fightsReducer } from "../reducers/fightsState"
+import { useToast } from "@/contexts/ToastContext"
+import { useLocalStorage } from "@/contexts/LocalStorageContext"
+import { useClient } from "@/contexts/ClientContext"
+import GamemasterOnly from "@/components/GamemasterOnly"
+import { FightsActions, initialFightsState, fightsReducer } from "@/reducers/fightsState"
 
-import type { FightsResponse, Campaign, Fight, ServerSideProps } from "../types/types"
+import type { FightsResponse, Campaign, Fight, ServerSideProps } from "@/types/types"
 import axios, { AxiosError } from 'axios'
 
 interface HomeProps extends FightsResponse {
