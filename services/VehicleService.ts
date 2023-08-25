@@ -1,6 +1,6 @@
-import type { Fight, Character, Position, Vehicle, CharacterEffect } from "../types/types"
-import CS from "./CharacterService"
-import SharedService, { woundThresholds } from "./SharedService"
+import type { Fight, Character, Position, Vehicle, CharacterEffect } from "@/types/types"
+import CS from "@/services/CharacterService"
+import SharedService, { woundThresholds } from "@/services/SharedService"
 
 interface Service {
   [key: string]: (character: Vehicle, ...args: any) => Vehicle

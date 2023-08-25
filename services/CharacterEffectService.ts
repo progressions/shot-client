@@ -1,6 +1,6 @@
-import type { Fight, Character, CharacterEffect } from "../types/types"
-import CS from "./CharacterService"
-import FS from "./FightService"
+import type { Fight, Character, CharacterEffect } from "@/types/types"
+import CS from "@/services/CharacterService"
+import FS from "@/services/FightService"
 
 const CharacterEffectService = {
   adjustedMainAttack: function(character: Character, fight: Fight): [number, number] {

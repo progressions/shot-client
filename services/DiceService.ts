@@ -1,4 +1,4 @@
-import type { Swerve, ExplodingDiceRolls } from "../types/types"
+import type { Swerve, ExplodingDiceRolls } from "@/types/types"
 
 const DiceService = {
   rollDie: function(): number {

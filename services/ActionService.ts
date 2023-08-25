@@ -1,6 +1,6 @@
-import type { AttackState } from "../reducers/attackState"
-import DS from "./DiceService"
-import { AttackRoll, Swerve } from "../types/types"
+import type { AttackState } from "@/reducers/attackState"
+import DS from "@/services/DiceService"
+import { AttackRoll, Swerve } from "@/types/types"
 
 const verbose = false
 

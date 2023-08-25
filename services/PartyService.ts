@@ -1,4 +1,4 @@
-import type { Party } from "../types/types"
+import type { Party } from "@/types/types"
 
 const PartyService = {
   nameBadge: function(party: Party): string {

@@ -1,4 +1,4 @@
-import type { Weapon } from "../types/types"
+import type { Weapon } from "@/types/types"
 
 const WeaponService = {
   nameWithCategory: function(weapon: Weapon) {
