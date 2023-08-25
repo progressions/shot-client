@@ -1,9 +1,9 @@
 import { Typography, Stack } from "@mui/material"
-import { Subhead, StyledTextField } from "../../StyledFields"
-import PlayerTypeOnly from "../../PlayerTypeOnly"
-import type { Character } from "../../../types/types"
-import { DescriptionKeys as D } from "../../../types/types"
-import CS from "../../../services/CharacterService"
+import { Subhead, StyledTextField } from "@/components/StyledFields"
+import PlayerTypeOnly from "@/components/PlayerTypeOnly"
+import type { Character } from "@/types/types"
+import { DescriptionKeys as D } from "@/types/types"
+import CS from "@/services/CharacterService"
 
 interface DescriptionProps {
   character: Character

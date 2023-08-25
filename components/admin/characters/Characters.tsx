@@ -3,19 +3,19 @@ import { Box, Button, FormControlLabel, Link, Paper, Stack, Switch, Table, Table
 import { useEffect, useReducer, useState } from "react"
 import { useRouter } from 'next/router'
 
-import { useClient } from "../../../contexts/ClientContext"
-import { useToast } from "../../../contexts/ToastContext"
-import { Character, CharacterFilter, CharactersResponse, defaultCharacter, PaginationMeta } from "../../../types/types"
-import ActionValues from "../../characters/ActionValues"
-import AvatarBadge from "../../characters/AvatarBadge"
-import CharacterFilters from "../../characters/CharacterFilters"
-import CreateCharacter from "../../characters/CreateCharacter"
-import GamemasterOnly from "../../GamemasterOnly"
-import { ButtonBar } from "../../StyledFields"
-import CreateVehicle from "../../vehicles/CreateVehicle"
-import CharactersToolbar from "./CharactersToolbar"
-import CharacterDisplay from "./CharacterDisplay"
-import { CharactersActions, initialCharactersState, charactersReducer } from "../../../reducers/charactersState"
+import { useClient } from "@/contexts/ClientContext"
+import { useToast } from "@/contexts/ToastContext"
+import { Character, CharacterFilter, CharactersResponse, defaultCharacter, PaginationMeta } from "@/types/types"
+import ActionValues from "@/components/characters/ActionValues"
+import AvatarBadge from "@/components/characters/AvatarBadge"
+import CharacterFilters from "@/components/characters/CharacterFilters"
+import CreateCharacter from "@/components/characters/CreateCharacter"
+import GamemasterOnly from "@/components/GamemasterOnly"
+import { ButtonBar } from "@/components/StyledFields"
+import CreateVehicle from "@/components/vehicles/CreateVehicle"
+import CharactersToolbar from "@/components/admin/characters/CharactersToolbar"
+import CharacterDisplay from "@/components/admin/characters/CharacterDisplay"
+import { CharactersActions, initialCharactersState, charactersReducer } from "@/reducers/charactersState"
 
 export default function Characters(charactersResponse: CharactersResponse) {
   const { client, session, user } = useClient()

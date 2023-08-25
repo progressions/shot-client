@@ -1,12 +1,12 @@
 import { Stack, FormControlLabel, Switch } from "@mui/material"
-import { useClient } from "../../../contexts/ClientContext"
-import { CharacterFilter } from "../../../types/types"
-import CharacterFilters from "../../characters/CharacterFilters"
-import CreateCharacter from "../../characters/CreateCharacter"
-import GamemasterOnly from "../../GamemasterOnly"
-import { ButtonBar } from "../../StyledFields"
-import CreateVehicle from "../../vehicles/CreateVehicle"
-import { CharactersStateType, CharactersActionType, CharactersActions } from "../../../reducers/charactersState"
+import { useClient } from "@/contexts/ClientContext"
+import { CharacterFilter } from "@/types/types"
+import CharacterFilters from "@/components/characters/CharacterFilters"
+import CreateCharacter from "@/components/characters/CreateCharacter"
+import GamemasterOnly from "@/components/GamemasterOnly"
+import { ButtonBar } from "@/components/StyledFields"
+import CreateVehicle from "@/components/vehicles/CreateVehicle"
+import { CharactersStateType, CharactersActionType, CharactersActions } from "@/reducers/charactersState"
 
 interface CharactersToolbarProps {
   state: CharactersStateType

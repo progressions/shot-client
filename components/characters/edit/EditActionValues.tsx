@@ -1,8 +1,8 @@
 import { Box, Stack, TextField, MenuItem } from "@mui/material"
-import PlayerTypeOnly from "../../PlayerTypeOnly"
-import { Subhead, StyledSelect, StyledTextField } from "../../StyledFields"
+import PlayerTypeOnly from "@/components/PlayerTypeOnly"
+import { Subhead, StyledSelect, StyledTextField } from "@/components/StyledFields"
 
-import type { Character } from "../../../types/types"
+import type { Character } from "@/types/types"
 
 interface EditActionValuesProps {
   character: Character
