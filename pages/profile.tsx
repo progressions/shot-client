@@ -1,13 +1,13 @@
 import type { NextApiRequest, NextApiResponse } from "next"
 import Head from 'next/head'
 import { Avatar, Box, Button, Stack, Container, Typography, TextField } from '@mui/material'
-import Layout from '../components/Layout'
-import Client from '../utils/Client'
+import Layout from '@/components/Layout'
+import Client from '@/utils/Client'
 import { useState } from 'react'
 import Router from "next/router"
-import { getServerClient } from "../utils/getServerClient"
+import { getServerClient } from "@/utils/getServerClient"
 
-import type { AuthSession, User, ServerSideProps } from "../types/types"
+import type { AuthSession, User, ServerSideProps } from "@/types/types"
 
 interface ProfileProps {
   jwt: string,

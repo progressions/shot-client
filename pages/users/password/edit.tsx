@@ -1,17 +1,17 @@
-import Layout from '../../../components/Layout'
+import Layout from '@/components/Layout'
 import Head from 'next/head'
 import type { NextApiRequest, NextApiResponse } from "next"
 
-import Navbar from "../../../components/navbar/Navbar"
+import Navbar from "@/components/navbar/Navbar"
 
 import { TextField, Button, Stack, Link, Container, Typography, Box } from "@mui/material"
 
 import { useRouter } from 'next/router'
-import Client from '../../../utils/Client'
-import { QueryType, AuthSession, ServerSideProps, PasswordWithConfirmation, User } from "../../../types/types"
-import { useClient } from "../../../contexts/ClientContext"
-import { useToast } from "../../../contexts/ToastContext"
-import { getServerClient } from "../../../utils/getServerClient"
+import Client from '@/utils/Client'
+import { QueryType, AuthSession, ServerSideProps, PasswordWithConfirmation, User } from "@/types/types"
+import { useClient } from "@/contexts/ClientContext"
+import { useToast } from "@/contexts/ToastContext"
+import { getServerClient } from "@/utils/getServerClient"
 
 import { useState } from "react"
 

@@ -1,4 +1,4 @@
-import Layout from '../../components/Layout'
+import Layout from '@/components/Layout'
 import Head from 'next/head'
 import URL from "node:url"
 import type { NextApiRequest, NextApiResponse } from "next"
@@ -8,16 +8,16 @@ import { useEffect, useState } from "react"
 
 import { Link, TextField, Button, Box, Stack, TableContainer, Table, TableRow, TableHead, TableBody, TableCell, Container, Typography } from "@mui/material"
 
-import CreateInvitation from "../../components/invitations/CreateInvitation"
-import Client from '../../utils/Client'
+import CreateInvitation from "@/components/invitations/CreateInvitation"
+import Client from '@/utils/Client'
 import { GetServerSideProps } from 'next'
-import Navbar from "../../components/navbar/Navbar"
+import Navbar from "@/components/navbar/Navbar"
 import * as cookie from 'cookie'
 import { signIn, signOut } from 'next-auth/react'
-import { useClient } from "../../contexts/ClientContext"
-import { getServerClient } from "../../utils/getServerClient"
+import { useClient } from "@/contexts/ClientContext"
+import { getServerClient } from "@/utils/getServerClient"
 
-import { ParamsType, ErrorMessages, AuthSession, ServerSideProps, Invitation, User, Campaign } from "../../types/types"
+import { ParamsType, ErrorMessages, AuthSession, ServerSideProps, Invitation, User, Campaign } from "@/types/types"
 
 export async function getServerSideProps<GetServerSideProps>({ req, res, params }: ServerSideProps) {
   const { client } = await getServerClient(req, res)

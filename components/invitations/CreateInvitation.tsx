@@ -1,11 +1,11 @@
 import { Stack, Box, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, TextField, Typography, Button } from "@mui/material"
 
 import { useState } from "react"
-import { useToast } from "../../contexts/ToastContext"
-import { useClient } from "../../contexts/ClientContext"
+import { useToast } from "@/contexts/ToastContext"
+import { useClient } from "@/contexts/ClientContext"
 import Router from 'next/router'
 
-import type { Campaign, Invitation } from "../../types/types"
+import type { Campaign, Invitation } from "@/types/types"
 
 interface CreateInvitationProps {
   campaign: Campaign

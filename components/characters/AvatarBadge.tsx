@@ -1,5 +1,5 @@
 import { Badge, Avatar, Box, Typography } from "@mui/material"
-import GamemasterOnly from '../GamemasterOnly'
+import GamemasterOnly from '@/components/GamemasterOnly'
 import DirectionsCarIcon from "@mui/icons-material/DirectionsCar"
 
 import CS from "@/services/CharacterService"

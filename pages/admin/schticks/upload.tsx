@@ -1,17 +1,17 @@
-import Layout from '../../../components/Layout'
+import Layout from '@/components/Layout'
 import Head from 'next/head'
 import type { NextApiRequest, NextApiResponse } from "next"
 
 import { useState } from "react"
 import { Stack, Box, Button, Container, Typography, TextField } from "@mui/material"
-import { useClient } from "../../../contexts/ClientContext"
-import { useToast } from "../../../contexts/ToastContext"
-import { useCampaign } from "../../../contexts/CampaignContext"
+import { useClient } from "@/contexts/ClientContext"
+import { useToast } from "@/contexts/ToastContext"
+import { useCampaign } from "@/contexts/CampaignContext"
 
-import Client from "../../../utils/Client"
-import { getServerClient } from "../../../utils/getServerClient"
+import Client from "@/utils/Client"
+import { getServerClient } from "@/utils/getServerClient"
 
-import type { AuthSession, Schtick, ServerSideProps, Campaign } from "../../../types/types"
+import type { AuthSession, Schtick, ServerSideProps, Campaign } from "@/types/types"
 import { GetServerSideProps } from 'next'
 import { InferGetServerSidePropsType } from 'next'
 
