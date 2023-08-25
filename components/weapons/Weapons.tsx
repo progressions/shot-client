@@ -1,13 +1,13 @@
 import { Button, Box, Stack } from "@mui/material"
-import { Subhead } from "../StyledFields"
-import type { Weapon as WeaponType } from "../../types/types"
-import Weapon from "./Weapon"
-import { useCharacter } from "../../contexts/CharacterContext"
-import { rowMap } from "../../utils/rowMap"
-import AddWeapon from "./AddWeapon"
+import { Subhead } from "@/components/StyledFields"
+import type { Weapon as WeaponType } from "@/types/types"
+import Weapon from "@/components/weapons/Weapon"
+import { useCharacter } from "@/contexts/CharacterContext"
+import { rowMap } from "@/utils/rowMap"
+import AddWeapon from "@/components/weapons/AddWeapon"
 
-import { WeaponsActions } from "../../reducers/weaponsState"
-import type { WeaponsStateType, WeaponsActionType } from "../../reducers/weaponsState"
+import { WeaponsActions } from "@/reducers/weaponsState"
+import type { WeaponsStateType, WeaponsActionType } from "@/reducers/weaponsState"
 
 interface WeaponsProps {
   state: WeaponsStateType

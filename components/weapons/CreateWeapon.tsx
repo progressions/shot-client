@@ -1,8 +1,8 @@
 import { Stack, DialogContent, Tooltip, Button, Typography } from "@mui/material"
-import { StyledDialog, ButtonBar } from "../StyledFields"
-import WeaponModal from "./WeaponModal"
+import { StyledDialog, ButtonBar } from "@/components/StyledFields"
+import WeaponModal from "@/components/weapons/WeaponModal"
 import { useState } from "react"
-import type { WeaponsStateType, WeaponsActionType } from "../../reducers/weaponsState"
+import type { WeaponsStateType, WeaponsActionType } from "@/reducers/weaponsState"
 
 interface CreateWeaponProps {
   state: WeaponsStateType

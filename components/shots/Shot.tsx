@@ -2,20 +2,20 @@ import { IconButton, Button, Box, Stack, TableContainer, Table } from '@mui/mate
 import TableRow from '@mui/material/TableRow'
 import TableCell from '@mui/material/TableCell'
 import Typography from '@mui/material/Typography'
-import CharacterDetails from '../characters/CharacterDetails'
-import VehicleDetails from '../vehicles/VehicleDetails'
-import ShotButton from "./ShotButton"
+import CharacterDetails from '@/components/characters/CharacterDetails'
+import VehicleDetails from '@/components/vehicles/VehicleDetails'
+import ShotButton from "@/components/shots/ShotButton"
 import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined'
-import EffectModal from "../effects/EffectModal"
-import GroupedEffects from "../effects/GroupedEffects"
+import EffectModal from "@/components/effects/EffectModal"
+import GroupedEffects from "@/components/effects/GroupedEffects"
 
-import type { User, Vehicle, Character, Fight, Toast } from "../../types/types"
+import type { User, Vehicle, Character, Fight, Toast } from "@/types/types"
 
-import { useFight } from "../../contexts/FightContext"
-import { useClient } from "../../contexts/ClientContext"
+import { useFight } from "@/contexts/FightContext"
+import { useClient } from "@/contexts/ClientContext"
 import { useState } from "react"
 
-import GamemasterOnly from "../GamemasterOnly"
+import GamemasterOnly from "@/components/GamemasterOnly"
 
 interface ShotParams {
   shot: number

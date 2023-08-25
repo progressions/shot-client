@@ -1,13 +1,13 @@
-import { StyledSelect, StyledDialog, StyledTextField, SaveButton, CancelButton } from "../StyledFields"
+import { StyledSelect, StyledDialog, StyledTextField, SaveButton, CancelButton } from "@/components/StyledFields"
 import { Box, DialogContent, DialogContentText, DialogActions, Button, Stack, Typography } from "@mui/material"
-import { useClient } from "../../contexts/ClientContext"
-import { useToast } from "../../contexts/ToastContext"
-import { useCharacter } from "../../contexts/CharacterContext"
-import FilterWeapons from "./FilterWeapons"
-import { WeaponsActions, initialWeaponsState, weaponsReducer } from "../../reducers/weaponsState"
+import { useClient } from "@/contexts/ClientContext"
+import { useToast } from "@/contexts/ToastContext"
+import { useCharacter } from "@/contexts/CharacterContext"
+import FilterWeapons from "@/components/weapons/FilterWeapons"
+import { WeaponsActions, initialWeaponsState, weaponsReducer } from "@/reducers/weaponsState"
 
-import type { Character, Weapon } from "../../types/types"
-import { defaultWeapon } from "../../types/types"
+import type { Character, Weapon } from "@/types/types"
+import { defaultWeapon } from "@/types/types"
 
 import { useState, useEffect, useReducer } from "react"
 

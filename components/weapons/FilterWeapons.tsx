@@ -1,13 +1,13 @@
 import { useEffect, useState, useMemo, useReducer } from "react"
 import { Autocomplete, Button, Stack, Typography, TextField, MenuItem, Box } from "@mui/material"
-import { useClient } from "../../contexts/ClientContext"
-import { useCharacter } from "../../contexts/CharacterContext"
-import { useToast } from "../../contexts/ToastContext"
-import WeaponAutocomplete from "./WeaponAutocomplete"
-import JunctureAutocomplete from "./JunctureAutocomplete"
-import CategoryAutocomplete from "./CategoryAutocomplete"
-import CreateWeapon from "./CreateWeapon"
-import type { WeaponsStateType, WeaponsActionType } from "../../reducers/weaponsState"
+import { useClient } from "@/contexts/ClientContext"
+import { useCharacter } from "@/contexts/CharacterContext"
+import { useToast } from "@/contexts/ToastContext"
+import WeaponAutocomplete from "@/components/weapons/WeaponAutocomplete"
+import JunctureAutocomplete from "@/components/weapons/JunctureAutocomplete"
+import CategoryAutocomplete from "@/components/weapons/CategoryAutocomplete"
+import CreateWeapon from "@/components/weapons/CreateWeapon"
+import type { WeaponsStateType, WeaponsActionType } from "@/reducers/weaponsState"
 
 interface FilterWeaponsProps {
   state: WeaponsStateType

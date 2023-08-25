@@ -1,6 +1,6 @@
 import { colors, Paper, Typography, Box, Card, CardMedia, CardContent } from "@mui/material"
-import type { Weapon } from "../../types/types"
-import WS from "../../services/WeaponService"
+import type { Weapon } from "@/types/types"
+import WS from "@/services/WeaponService"
 
 interface WeaponOverlayProps {
   weapon: Weapon | null
