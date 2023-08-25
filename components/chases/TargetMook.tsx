@@ -1,9 +1,9 @@
 import { MenuItem, Stack } from "@mui/material"
-import { ChaseMethod } from "../../reducers/chaseState"
-import { StyledSelect, StyledTextField } from "../StyledFields"
-import type { Vehicle } from "../../types/types"
-import type { ChaseState } from "../../reducers/chaseState"
-import VS from "../../services/VehicleService"
+import { ChaseMethod } from "@/reducers/chaseState"
+import { StyledSelect, StyledTextField } from "@/components/StyledFields"
+import type { Vehicle } from "@/types/types"
+import type { ChaseState } from "@/reducers/chaseState"
+import VS from "@/services/VehicleService"
 
 interface TargetMookProps {
   state: ChaseState

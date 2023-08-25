@@ -1,6 +1,6 @@
-import { ChaseMethod, ChaseState } from "../../reducers/chaseState"
+import { ChaseMethod, ChaseState } from "@/reducers/chaseState"
 import { Typography, Stack } from "@mui/material"
-import VS from "../../services/VehicleService"
+import VS from "@/services/VehicleService"
 
 interface ResultsProps {
   state: ChaseState

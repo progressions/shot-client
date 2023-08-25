@@ -1,6 +1,6 @@
 import { Grid, Tooltip, Typography } from '@mui/material'
-import type { AttackState } from "../../reducers/attackState"
-import type { ChaseMookResult, ChaseState } from "../../reducers/chaseState"
+import type { AttackState } from "@/reducers/attackState"
+import type { ChaseMookResult, ChaseState } from "@/reducers/chaseState"
 
 export interface RollOutcomeParams {
   state: ChaseMookResult

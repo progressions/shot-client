@@ -1,6 +1,6 @@
-import { ChaseState } from "../../reducers/chaseState"
+import { ChaseState } from "@/reducers/chaseState"
 import { Typography, Stack } from "@mui/material"
-import CS from "../../services/CharacterService"
+import CS from "@/services/CharacterService"
 
 interface MookResultsProps {
   state: ChaseState

@@ -1,10 +1,10 @@
-import { ChaseState } from "../../reducers/chaseState"
+import { ChaseState } from "@/reducers/chaseState"
 import { Divider, Box, Grid, Typography, Stack } from "@mui/material"
-import CS from "../../services/CharacterService"
-import RollOutcome from "./RollOutcome"
-import Smackdowns from "./Smackdowns"
-import type { ChaseMookResult } from "../../reducers/chaseState"
-import { ChaseMethod } from "../../reducers/chaseState"
+import CS from "@/services/CharacterService"
+import RollOutcome from "@/components/chases/RollOutcome"
+import Smackdowns from "@/components/chases/Smackdowns"
+import type { ChaseMookResult } from "@/reducers/chaseState"
+import { ChaseMethod } from "@/reducers/chaseState"
 
 interface MookResultsProps {
   state: ChaseState

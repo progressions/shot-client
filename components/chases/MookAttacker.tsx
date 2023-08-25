@@ -1,10 +1,10 @@
 import { Stack, Button, FormControlLabel, Switch } from "@mui/material"
-import { StyledTextField } from "../StyledFields"
-import type { ChaseState } from "../../reducers/chaseState"
-import type { Vehicle, Character } from "../../types/types"
-import VS from "../../services/VehicleService"
-import CS from "../../services/CharacterService"
-import { useFight } from "../../contexts/FightContext"
+import { StyledTextField } from "@/components/StyledFields"
+import type { ChaseState } from "@/reducers/chaseState"
+import type { Vehicle, Character } from "@/types/types"
+import VS from "@/services/VehicleService"
+import CS from "@/services/CharacterService"
+import { useFight } from "@/contexts/FightContext"
 
 interface MookAttacksProps {
   state: ChaseState

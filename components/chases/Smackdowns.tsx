@@ -1,14 +1,14 @@
 import React from "react"
 import HeartBrokenIcon from '@mui/icons-material/HeartBroken'
 import { Button, Typography } from "@mui/material"
-import { useClient } from "../../contexts/ClientContext"
-import { useFight } from "../../contexts/FightContext"
-import { useToast } from "../../contexts/ToastContext"
-import { FightActions } from "../../reducers/fightState"
-import type { Character, ActionValues } from "../../types/types"
-import type { ChaseMookResult, ChaseState } from "../../reducers/chaseState"
-import VS from "../../services/VehicleService"
-import AS from "../../services/ActionService"
+import { useClient } from "@/contexts/ClientContext"
+import { useFight } from "@/contexts/FightContext"
+import { useToast } from "@/contexts/ToastContext"
+import { FightActions } from "@/reducers/fightState"
+import type { Character, ActionValues } from "@/types/types"
+import type { ChaseMookResult, ChaseState } from "@/reducers/chaseState"
+import VS from "@/services/VehicleService"
+import AS from "@/services/ActionService"
 
 interface SmackdownsParams {
   state: ChaseState

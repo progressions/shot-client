@@ -1,9 +1,9 @@
-import { ChaseState } from "../../reducers/chaseState"
+import { ChaseState } from "@/reducers/chaseState"
 import { Typography, Stack } from "@mui/material"
-import MookResults from "./MookResults"
-import MookAttackResults from "./MookAttackResults"
-import Results from "./Results"
-import VS from "../../services/VehicleService"
+import MookResults from "@/components/chases/MookResults"
+import MookAttackResults from "@/components/chases/MookAttackResults"
+import Results from "@/components/chases/Results"
+import VS from "@/services/VehicleService"
 
 interface ResultsDisplayProps {
   state: ChaseState
