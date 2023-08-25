@@ -1,5 +1,5 @@
 import { IconButton, Typography, Link } from '@mui/material'
-import type { Character, Vehicle } from "../../types/types"
+import type { Character, Vehicle } from "@/types/types"
 import ClearIcon from '@mui/icons-material/Clear'
 
 interface MemberProps {

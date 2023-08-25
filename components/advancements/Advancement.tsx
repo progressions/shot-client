@@ -1,9 +1,9 @@
 import { IconButton, Stack, Typography } from "@mui/material"
-import { useClient } from "../../contexts/ClientContext"
-import { useToast } from "../../contexts/ToastContext"
-import { useCharacter } from "../../contexts/CharacterContext"
+import { useClient } from "@/contexts/ClientContext"
+import { useToast } from "@/contexts/ToastContext"
+import { useCharacter } from "@/contexts/CharacterContext"
 import ClearIcon from '@mui/icons-material/Clear'
-import type { Advancement as AdvancementType } from "../../types/types"
+import type { Advancement as AdvancementType } from "@/types/types"
 
 interface AdvancementProps {
   advancement: AdvancementType

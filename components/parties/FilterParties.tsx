@@ -1,14 +1,14 @@
 import { useEffect, useState, useMemo, useReducer } from "react"
 import { FormControlLabel, Switch, Autocomplete, Button, Stack, Typography, TextField, MenuItem, Box } from "@mui/material"
-import { useClient } from "../../contexts/ClientContext"
-import { useCharacter } from "../../contexts/CharacterContext"
-import { useToast } from "../../contexts/ToastContext"
-import CreateParty from "./CreateParty"
-import { PartiesActions, PartiesStateType, PartiesActionType } from "../../reducers/partiesState"
-import { StyledSelect } from "../StyledFields"
-import PartyAutocomplete from "./PartyAutocomplete"
-import type { Faction, Party } from "../../types/types"
-import GamemasterOnly from "../GamemasterOnly"
+import { useClient } from "@/contexts/ClientContext"
+import { useCharacter } from "@/contexts/CharacterContext"
+import { useToast } from "@/contexts/ToastContext"
+import CreateParty from "@/components/parties/CreateParty"
+import { PartiesActions, PartiesStateType, PartiesActionType } from "@/reducers/partiesState"
+import { StyledSelect } from "@/components/StyledFields"
+import PartyAutocomplete from "@/components/parties/PartyAutocomplete"
+import type { Faction, Party } from "@/types/types"
+import GamemasterOnly from "@/components/GamemasterOnly"
 
 interface FilterPartiesProps {
   state: PartiesStateType

@@ -1,8 +1,8 @@
 import { Stack, DialogContent, Tooltip, Button, Typography } from "@mui/material"
-import { StyledDialog, ButtonBar } from "../StyledFields"
-import PartyModal from "./PartyModal"
+import { StyledDialog, ButtonBar } from "@/components/StyledFields"
+import PartyModal from "@/components/parties/PartyModal"
 import { useState } from "react"
-import type { PartiesStateType, PartiesActionType } from "../../reducers/partiesState"
+import type { PartiesStateType, PartiesActionType } from "@/reducers/partiesState"
 
 interface CreatePartyProps {
   state: PartiesStateType

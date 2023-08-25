@@ -1,8 +1,8 @@
 import { Stack } from "@mui/material"
-import type { Site as SiteType } from "../../types/types"
-import { SitesStateType, SitesActionType, SitesActions } from "../../reducers/sitesState"
-import Site from "./Site"
-import { Subhead } from "../StyledFields"
+import type { Site as SiteType } from "@/types/types"
+import { SitesStateType, SitesActionType, SitesActions } from "@/reducers/sitesState"
+import Site from "@/components/sites/Site"
+import { Subhead } from "@/components/StyledFields"
 
 interface SitesProps {
   state: SitesStateType,

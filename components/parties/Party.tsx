@@ -1,17 +1,17 @@
 import { DialogContent, Stack, IconButton, Box, Typography } from "@mui/material"
-import { useClient } from "../../contexts/ClientContext"
-import { useToast } from "../../contexts/ToastContext"
-import Member from "./Member"
-import PartyCardBase from "./PartyCardBase"
+import { useClient } from "@/contexts/ClientContext"
+import { useToast } from "@/contexts/ToastContext"
+import Member from "@/components/parties/Member"
+import PartyCardBase from "@/components/parties/PartyCardBase"
 import ClearIcon from '@mui/icons-material/Clear'
 import EditIcon from '@mui/icons-material/Edit'
-import { StyledDialog } from "../StyledFields"
+import { StyledDialog } from "@/components/StyledFields"
 
-import type { PartiesStateType, PartiesActionType } from "../../reducers/partiesState"
-import type { Character, Vehicle, Party as PartyType } from "../../types/types"
-import { PartiesActions } from "../../reducers/partiesState"
-import PartyModal from "./PartyModal"
-import PS from "../../services/PartyService"
+import type { PartiesStateType, PartiesActionType } from "@/reducers/partiesState"
+import type { Character, Vehicle, Party as PartyType } from "@/types/types"
+import { PartiesActions } from "@/reducers/partiesState"
+import PartyModal from "@/components/parties/PartyModal"
+import PS from "@/services/PartyService"
 
 import { useState } from "react"
 

@@ -1,7 +1,7 @@
 import { Stack, Box, TextField, MenuItem } from "@mui/material"
-import type { Site, InputParamsType } from "../../types/types"
-import { SitesStateType, SitesActionType, SitesActions } from "../../reducers/sitesState"
-import { StyledAutocomplete, StyledTextField, StyledSelect } from "../StyledFields"
+import type { Site, InputParamsType } from "@/types/types"
+import { SitesStateType, SitesActionType, SitesActions } from "@/reducers/sitesState"
+import { StyledAutocomplete, StyledTextField, StyledSelect } from "@/components/StyledFields"
 
 interface SiteAutocompleteProps {
   state: SitesStateType,

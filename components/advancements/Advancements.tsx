@@ -1,13 +1,13 @@
-import { useClient } from "../../contexts/ClientContext"
-import { useToast } from "../../contexts/ToastContext"
-import { useCharacter } from "../../contexts/CharacterContext"
-import { Subhead } from "../StyledFields"
-import NewAdvancement from "./NewAdvancement"
-import Advancement from "./Advancement"
+import { useClient } from "@/contexts/ClientContext"
+import { useToast } from "@/contexts/ToastContext"
+import { useCharacter } from "@/contexts/CharacterContext"
+import { Subhead } from "@/components/StyledFields"
+import NewAdvancement from "@/components/advancements/NewAdvancement"
+import Advancement from "@/components/advancements/Advancement"
 
 import { Grid } from "@mui/material"
 
-import type { Advancement as AdvancementType, Character } from "../../types/types"
+import type { Advancement as AdvancementType, Character } from "@/types/types"
 
 interface AdvancementsProps {
   character: Character
