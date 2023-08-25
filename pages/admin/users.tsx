@@ -1,22 +1,22 @@
 import Head from 'next/head'
 import { Box, Paper, IconButton, Typography, Container, Table, TableContainer, TableBody, TableHead, TableRow, TableCell } from '@mui/material'
 import { useState } from 'react'
-import Layout from '../../components/Layout'
-import Client from "../../utils/Client"
-import UserModal from '../../components/UserModal'
+import Layout from '@/components/Layout'
+import Client from "@/utils/Client"
+import UserModal from '@/components/UserModal'
 import Router from 'next/router'
 import type { NextApiRequest, NextApiResponse } from "next"
 
-import { getServerClient } from "../../utils/getServerClient"
+import { getServerClient } from "@/utils/getServerClient"
 
 import DeleteIcon from '@mui/icons-material/Delete'
 import EditIcon from '@mui/icons-material/Edit'
 import CheckIcon from '@mui/icons-material/Check'
 
-import { useToast } from "../../contexts/ToastContext"
-import type { AuthSession, User, Toast, ServerSideProps } from "../../types/types"
+import { useToast } from "@/contexts/ToastContext"
+import type { AuthSession, User, Toast, ServerSideProps } from "@/types/types"
 
-import { defaultUser } from "../../types/types"
+import { defaultUser } from "@/types/types"
 
 interface UsersAdminProps {
   jwt: string
