@@ -39,7 +39,7 @@ export default function MookAttacker({ state, handleChange, handleCheck, setWeap
         disabled={edited}
       />
       <Stack direction="row" spacing={2} alignItems="top">
-        { CS.attackValues(attacker).map((valueName) => (
+        { CS.attackValues(attacker).map((valueName: string) => (
           <Button
             key={valueName}
             variant={ actionValueName === valueName ? "contained" : "outlined" }

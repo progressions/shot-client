@@ -41,7 +41,7 @@ export default function Attacker({ state, setAttacker, handleChange, setWeapon, 
         disabled={edited}
       />
       <Stack direction="row" spacing={2} alignItems="top">
-        { CS.attackValues(attacker).map((valueName) => (
+        { CS.attackValues(attacker).map((valueName: string) => (
           <Button
             key={valueName}
             variant={ actionValueName === valueName ? "contained" : "outlined" }
