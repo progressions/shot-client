@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from "axios"
-import Api from "./Api"
+import Api from "@/utils/Api"
 import type {
   Location,
   Shot,
@@ -27,7 +27,7 @@ import type {
   Fight,
   Party,
   User
-} from "../types/types"
+} from "@/types/types"
 
 interface ClientParams {
   jwt?: string

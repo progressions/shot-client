@@ -3,15 +3,15 @@ import AppBar from '@mui/material/AppBar'
 import Box from '@mui/material/Box'
 import Toolbar from '@mui/material/Toolbar'
 import Link from '@mui/material/Link'
-import AuthButton from "./AuthButton"
-import CurrentCampaign from "../campaigns/CurrentCampaign"
-import PopupMenu from "./PopupMenu"
-import DiceRoller from '../dice/DiceRoller'
+import AuthButton from "@/components/navbar/AuthButton"
+import CurrentCampaign from "@/components/campaigns/CurrentCampaign"
+import PopupMenu from "@/components/navbar/PopupMenu"
+import DiceRoller from '@/components/dice/DiceRoller'
 
-import { defaultCampaign } from "../../types/types"
+import { defaultCampaign } from "@/types/types"
 
-import { useCampaign, CampaignContextType } from "../../contexts/CampaignContext"
-import { useClient } from "../../contexts/ClientContext"
+import { useCampaign, CampaignContextType } from "@/contexts/CampaignContext"
+import { useClient } from "@/contexts/ClientContext"
 
 export default function Navbar() {
   const { session, user, client } = useClient()
