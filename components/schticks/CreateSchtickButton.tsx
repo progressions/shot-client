@@ -1,8 +1,8 @@
 import { Tooltip, Button, Typography } from "@mui/material"
-import { ButtonBar } from "../StyledFields"
-import SchtickModal from "./SchtickModal"
+import { ButtonBar } from "@/components/StyledFields"
+import SchtickModal from "@/components/schticks/SchtickModal"
 import { useState } from "react"
-import type { SchticksStateType, SchticksActionType } from "../../reducers/schticksState"
+import type { SchticksStateType, SchticksActionType } from "@/reducers/schticksState"
 
 interface CreateSchtickButtonProps {
   state: SchticksStateType

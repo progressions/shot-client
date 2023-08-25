@@ -1,4 +1,4 @@
-import type { Campaign } from "../../types/types"
+import type { Campaign } from "@/types/types"
 import { Stack, Button, Typography } from "@mui/material"
 import PlayCircleIcon from '@mui/icons-material/PlayCircle'
 

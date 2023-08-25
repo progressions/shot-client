@@ -1,15 +1,15 @@
-import { FightActions } from "../../reducers/fightState"
-import { useFight } from "../../contexts/FightContext"
-import { useToast } from "../../contexts/ToastContext"
-import { useClient } from "../../contexts/ClientContext"
-import { SaveCancelButtons, StyledTextField, StyledDialog } from "../StyledFields"
+import { FightActions } from "@/reducers/fightState"
+import { useFight } from "@/contexts/FightContext"
+import { useToast } from "@/contexts/ToastContext"
+import { useClient } from "@/contexts/ClientContext"
+import { SaveCancelButtons, StyledTextField, StyledDialog } from "@/components/StyledFields"
 import { Button, DialogContent, Stack, Box, Typography } from "@mui/material"
 import { useState } from "react"
 import PlayArrowIcon from '@mui/icons-material/PlayArrow'
-import FS from "../../services/FightService"
-import CS from "../../services/CharacterService"
-import VS from "../../services/VehicleService"
-import type { Vehicle, Character, Fight } from "../../types/types"
+import FS from "@/services/FightService"
+import CS from "@/services/CharacterService"
+import VS from "@/services/VehicleService"
+import type { Vehicle, Character, Fight } from "@/types/types"
 
 type InitPenalty = [Character | Vehicle, string]
 

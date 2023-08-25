@@ -1,13 +1,13 @@
 import { Typography, TextField, MenuItem, Box, Stack, Button } from "@mui/material"
 import { useReducer, useEffect, useState } from "react"
 
-import { useClient } from "../../contexts/ClientContext"
-import { useToast } from "../../contexts/ToastContext"
-import { useCharacter } from "../../contexts/CharacterContext"
-import FilterSchticks from "./FilterSchticks"
-import { SchticksActions, initialSchticksState, schticksReducer } from "../../reducers/schticksState"
-import { SaveCancelButtons, StyledTextField } from "../StyledFields"
-import { CharacterActions } from "../../reducers/characterState"
+import { useClient } from "@/contexts/ClientContext"
+import { useToast } from "@/contexts/ToastContext"
+import { useCharacter } from "@/contexts/CharacterContext"
+import FilterSchticks from "@/components/schticks/FilterSchticks"
+import { SchticksActions, initialSchticksState, schticksReducer } from "@/reducers/schticksState"
+import { SaveCancelButtons, StyledTextField } from "@/components/StyledFields"
+import { CharacterActions } from "@/reducers/characterState"
 
 export default function SchtickSelector() {
   const [state, dispatch] = useReducer(schticksReducer, initialSchticksState)

@@ -1,9 +1,9 @@
 import { Tooltip, IconButton, TableRow, TableCell } from "@mui/material"
-import { useClient } from "../../contexts/ClientContext"
-import { useToast } from "../../contexts/ToastContext"
+import { useClient } from "@/contexts/ClientContext"
+import { useToast } from "@/contexts/ToastContext"
 import DeleteIcon from '@mui/icons-material/Delete'
 
-import type { Campaign, User } from "../../types/types"
+import type { Campaign, User } from "@/types/types"
 
 interface PlayerDetailsProps {
   campaign: Campaign

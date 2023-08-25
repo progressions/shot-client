@@ -1,12 +1,12 @@
 import AddLocationIcon from '@mui/icons-material/AddLocation'
 import { Typography } from '@mui/material'
-import type { Vehicle, Character } from "../../types/types"
+import type { Vehicle, Character } from "@/types/types"
 import { useState, useEffect } from 'react'
-import { useClient } from '../../contexts/ClientContext'
-import { useFight } from '../../contexts/FightContext'
-import { useToast } from '../../contexts/ToastContext'
-import { FightActions } from "../../reducers/fightState"
-import GamemasterOnly from "../GamemasterOnly"
+import { useClient } from '@/contexts/ClientContext'
+import { useFight } from '@/contexts/FightContext'
+import { useToast } from '@/contexts/ToastContext'
+import { FightActions } from "@/reducers/fightState"
+import GamemasterOnly from "@/components/GamemasterOnly"
 
 interface LocationProps {
   shot: number

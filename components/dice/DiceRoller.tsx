@@ -1,9 +1,9 @@
-import { StyledDialog } from "../StyledFields"
+import { StyledDialog } from "@/components/StyledFields"
 import { Stack, Avatar, Tooltip, Button, IconButton, Dialog, DialogTitle, DialogContent, Box, Typography } from '@mui/material'
 import CasinoIcon from '@mui/icons-material/Casino'
 import { useState } from 'react'
-import DS from "../../services/DiceService"
-import { Swerve } from "../../types/types"
+import DS from "@/services/DiceService"
+import { Swerve } from "@/types/types"
 
 export default function DiceRoller() {
   const [open, setOpen] = useState<boolean>(false)

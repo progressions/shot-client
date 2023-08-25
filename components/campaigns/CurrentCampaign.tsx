@@ -1,12 +1,12 @@
 import { Button, IconButton, Box, TextField, MenuItem, Stack, Typography } from "@mui/material"
-import { useCampaign, CampaignContextType } from "../../contexts/CampaignContext"
+import { useCampaign, CampaignContextType } from "@/contexts/CampaignContext"
 import PlayCircleIcon from '@mui/icons-material/PlayCircle'
 import StopCircleIcon from '@mui/icons-material/StopCircle'
-import { useToast } from "../../contexts/ToastContext"
+import { useToast } from "@/contexts/ToastContext"
 import CampaignSelector from "./CampaignSelector"
 import Router from 'next/router'
 
-import { Campaign } from "../../types/types"
+import { Campaign } from "@/types/types"
 
 interface CampaignNameProps {
   campaign: Campaign | null

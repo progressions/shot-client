@@ -6,8 +6,8 @@ import TextField from '@mui/material/TextField'
 import CampaignModal from './CampaignModal'
 import PersonAddIcon from '@mui/icons-material/PersonAdd'
 
-import type { Person, Campaign, Fight, ID } from "../../types/types"
-import { defaultCampaign } from "../../types/types"
+import type { Person, Campaign, Fight, ID } from "@/types/types"
+import { defaultCampaign } from "@/types/types"
 
 interface CreateCampaignProps {
   reload: () => Promise<void>

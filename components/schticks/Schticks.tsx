@@ -1,13 +1,13 @@
 import { Button, Box, Stack, Typography } from "@mui/material"
-import SchtickCard from "./SchtickCard"
-import { useClient } from "../../contexts/ClientContext"
-import { Subhead } from "../StyledFields"
-import { rowMap } from "../../utils/rowMap"
+import SchtickCard from "@/components/schticks/SchtickCard"
+import { useClient } from "@/contexts/ClientContext"
+import { Subhead } from "@/components/StyledFields"
+import { rowMap } from "@/utils/rowMap"
 
 import { useState, useMemo } from "react"
-import type { SchticksStateType, SchticksActionType } from "../../reducers/schticksState"
-import { SchticksActions } from "../../reducers/schticksState"
-import { Schtick } from "../../types/types"
+import type { SchticksStateType, SchticksActionType } from "@/reducers/schticksState"
+import { SchticksActions } from "@/reducers/schticksState"
+import { Schtick } from "@/types/types"
 
 interface SchticksProps {
   state: SchticksStateType

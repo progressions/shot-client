@@ -3,11 +3,11 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import PlayCircleIcon from '@mui/icons-material/PlayCircle'
 import StopCircleIcon from '@mui/icons-material/StopCircle'
 
-import { useToast } from "../../contexts/ToastContext"
-import { useCampaign } from "../../contexts/CampaignContext"
-import { useClient } from "../../contexts/ClientContext"
+import { useToast } from "@/contexts/ToastContext"
+import { useCampaign } from "@/contexts/CampaignContext"
+import { useClient } from "@/contexts/ClientContext"
 
-import type { Campaign } from "../../types/types"
+import type { Campaign } from "@/types/types"
 
 interface CampaignsProps {
   campaigns: Campaign[]
