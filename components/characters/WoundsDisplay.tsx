@@ -1,8 +1,8 @@
 import { Stack, Typography } from "@mui/material"
-import GamemasterOnly from "../GamemasterOnly"
-import CS from "../../services/CharacterService"
+import GamemasterOnly from "@/components/GamemasterOnly"
+import CS from "@/services/CharacterService"
 
-import type { User, Person } from "../../types/types"
+import type { User, Person } from "@/types/types"
 
 interface WoundsDisplayProps {
   character: Person

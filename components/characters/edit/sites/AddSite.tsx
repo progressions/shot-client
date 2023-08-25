@@ -1,12 +1,12 @@
 import { Box, Stack, Typography } from "@mui/material"
 import { useEffect, useReducer } from "react"
 
-import { SaveCancelButtons, StyledAutocomplete, StyledSelect } from "../../../StyledFields"
-import { useCharacter } from "../../../../contexts/CharacterContext"
-import { useClient } from "../../../../contexts/ClientContext"
-import { useToast } from "../../../../contexts/ToastContext"
-import { sitesReducer, initialSitesState, SitesActions } from "../../../../reducers/sitesState"
-import { defaultSite, InputParamsType, Site } from "../../../../types/types"
+import { SaveCancelButtons, StyledAutocomplete, StyledSelect } from "@/components/StyledFields"
+import { useCharacter } from "@/contexts/CharacterContext"
+import { useClient } from "@/contexts/ClientContext"
+import { useToast } from "@/contexts/ToastContext"
+import { sitesReducer, initialSitesState, SitesActions } from "@/reducers/sitesState"
+import { defaultSite, InputParamsType, Site } from "@/types/types"
 
 export default function AddSite() {
   const { character, dispatch:dispatchCharacter, reloadCharacter } = useCharacter()

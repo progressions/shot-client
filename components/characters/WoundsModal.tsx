@@ -1,13 +1,13 @@
 import { useState } from "react"
 import { DialogContent, Box, Stack, TextField, Button, Dialog } from "@mui/material"
 
-import { useFight } from "../../contexts/FightContext"
-import { useToast } from "../../contexts/ToastContext"
-import { useClient } from "../../contexts/ClientContext"
-import type { Person, Character, Fight, Toast, ActionValues } from "../../types/types"
-import { FightActions } from "../../reducers/fightState"
-import { StyledFormDialog, StyledTextField } from "../StyledFields"
-import CS from "../../services/CharacterService"
+import { useFight } from "@/contexts/FightContext"
+import { useToast } from "@/contexts/ToastContext"
+import { useClient } from "@/contexts/ClientContext"
+import type { Person, Character, Fight, Toast, ActionValues } from "@/types/types"
+import { FightActions } from "@/reducers/fightState"
+import CS from "@/services/CharacterService"
+import { StyledFormDialog, StyledTextField } from "@/components/StyledFields"
 
 interface WoundsModalParams {
   open: boolean,

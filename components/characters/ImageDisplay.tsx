@@ -1,9 +1,9 @@
 import { Dialog, DialogTitle, DialogContent, IconButton, Box, Card, CardContent, CardMedia, colors, Typography } from "@mui/material"
-import CS from "../../services/CharacterService"
+import CS from "@/services/CharacterService"
 import ImageIcon from "@mui/icons-material/Image"
 import { useState } from "react"
-import { StyledDialog } from "../../components/StyledFields"
-import type { Character } from "../../types/types"
+import { StyledDialog } from "@/components/StyledFields"
+import type { Character } from "@/types/types"
 
 interface ImageDisplayProps {
   character: Character

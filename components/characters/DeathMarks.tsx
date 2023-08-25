@@ -2,8 +2,8 @@ import { Rating } from "@mui/material"
 import { styled } from '@mui/material/styles'
 import { IoSkull, IoSkullOutline } from "react-icons/io5"
 
-import type { Character } from "../../types/types"
-import CS from "../../services/CharacterService"
+import type { Character } from "@/types/types"
+import CS from "@/services/CharacterService"
 
 const StyledRating = styled(Rating)({
   '& .MuiRating-icon': {

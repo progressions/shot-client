@@ -1,9 +1,9 @@
 import { useEffect, useMemo, createContext, useContext, useState } from "react"
 
-import type { Campaign } from "../types/types"
-import { defaultCampaign } from "../types/types"
-import { useClient } from "./ClientContext"
-import { useLocalStorage } from "./LocalStorageContext"
+import type { Campaign } from "@/types/types"
+import { defaultCampaign } from "@/types/types"
+import { useClient } from "@/contexts/ClientContext"
+import { useLocalStorage } from "@/contexts/LocalStorageContext"
 
 export interface CampaignContextType {
   campaign: Campaign | null

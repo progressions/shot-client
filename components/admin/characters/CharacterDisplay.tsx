@@ -1,8 +1,8 @@
 import { Link, TableRow, TableCell, Typography } from "@mui/material"
-import { User, Character } from "../../../types/types"
-import ActionValues from "../../characters/ActionValues"
-import AvatarBadge from "../../characters/AvatarBadge"
-import CS from "../../../services/CharacterService"
+import { User, Character } from "@/types/types"
+import ActionValues from "@/components/characters/ActionValues"
+import AvatarBadge from "@/components/characters/AvatarBadge"
+import CS from "@/services/CharacterService"
 
 interface CharacterDisplayProps {
   character: Character

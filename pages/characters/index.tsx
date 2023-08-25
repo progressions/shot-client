@@ -1,12 +1,12 @@
 import Head from "next/head"
-import Layout from "../../components/Layout"
-import { getServerClient } from "../../utils/getServerClient"
+import Layout from "@/components/Layout"
+import { getServerClient } from "@/utils/getServerClient"
 import axios from "axios"
 
 import { Link, Paper, Switch, FormControlLabel, Stack, Avatar, Box, TableContainer, Table, TableHead, TableBody, TableRow, TableCell, Container, Typography } from "@mui/material"
 
-import type { PaginationMeta, AuthSession, Person, Vehicle, Character, CharacterFilter, ServerSideProps, Toast, CharactersResponse } from "../../types/types"
-import Characters from "../../components/admin/characters/Characters"
+import type { PaginationMeta, AuthSession, Person, Vehicle, Character, CharacterFilter, ServerSideProps, Toast, CharactersResponse } from "@/types/types"
+import Characters from "@/components/admin/characters/Characters"
 import { AxiosError } from "axios"
 
 interface CharactersProps {

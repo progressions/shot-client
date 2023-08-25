@@ -2,11 +2,11 @@ import { CardContent, CardMedia, Card, colors, Stack, Typography, Box, Popover, 
 import ArticleIcon from '@mui/icons-material/Article'
 import { useState } from "react"
 import { GiDeathSkull, GiShotgun, GiPistolGun } from "react-icons/gi"
-import WS from "../../services/WeaponService"
+import WS from "@/services/WeaponService"
 import ImageIcon from "@mui/icons-material/Image"
-import WeaponOverlay from "../weapons/WeaponOverlay"
+import WeaponOverlay from "@/components/weapons/WeaponOverlay"
 
-import type { Weapon } from "../../types/types"
+import type { Weapon } from "@/types/types"
 
 interface WeaponsDisplayProps {
   weapons: Weapon[]

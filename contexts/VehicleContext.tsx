@@ -1,9 +1,9 @@
 import { useEffect, useReducer, createContext, useContext } from "react"
 
-import { defaultVehicle } from "../types/types"
-import type { Vehicle, User } from "../types/types"
-import { useClient } from "./ClientContext"
-import { useToast } from "./ToastContext"
+import { defaultVehicle } from "@/types/types"
+import type { Vehicle, User } from "@/types/types"
+import { useClient } from "@/contexts/ClientContext"
+import { useToast } from "@/contexts/ToastContext"
 
 import { VehicleActions, VehicleStateAction, VehicleStateType, initialVehicleState, vehicleReducer } from "../reducers/vehicleState"
 

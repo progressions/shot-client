@@ -6,8 +6,8 @@ import TextField from '@mui/material/TextField'
 import CharacterModal from './CharacterModal'
 import PersonAddIcon from '@mui/icons-material/PersonAdd'
 
-import type { Person, Character, Fight, ID } from "../../types/types"
-import { defaultCharacter } from "../../types/types"
+import type { Person, Character, Fight, ID } from "@/types/types"
+import { defaultCharacter } from "@/types/types"
 
 interface CreateCharacterParams {
   fight?: Fight,

@@ -1,7 +1,7 @@
 import { createContext, useContext, useState } from "react"
 
-import type { Toast } from "../types/types"
-import { defaultToast } from "../types/types"
+import type { Toast } from "@/types/types"
+import { defaultToast } from "@/types/types"
 
 interface ToastProviderProps {
   children: React.ReactNode

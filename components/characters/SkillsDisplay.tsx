@@ -1,9 +1,9 @@
 import { colors, Typography, Box, Popover, Tooltip, IconButton } from "@mui/material"
 import ArticleIcon from '@mui/icons-material/Article'
 import { useState } from "react"
-import type { Character, SkillValue, SkillValues } from "../../types/types"
-import CS from "../../services/CharacterService"
-import { colorForValue } from "./ActionValueDisplay"
+import type { Character, SkillValue, SkillValues } from "@/types/types"
+import CS from "@/services/CharacterService"
+import { colorForValue } from "@/components/characters/ActionValueDisplay"
 
 interface SkillsDisplayProps {
   character: Character

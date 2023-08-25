@@ -1,20 +1,20 @@
 import { useEffect, useReducer, useCallback, useState } from 'react'
 import { colors, FormControlLabel, Switch, Stack, Popover, Box, Button } from '@mui/material'
-import GamemasterOnly from "../GamemasterOnly"
-import { StyledTextField } from "../StyledFields"
+import GamemasterOnly from "@/components/GamemasterOnly"
+import { StyledTextField } from "@/components/StyledFields"
 
 import PersonIcon from '@mui/icons-material/Person'
 import PersonAddIcon from '@mui/icons-material/PersonAdd'
 import DirectionsCarFilledIcon from '@mui/icons-material/DirectionsCarFilled'
 
-import { useToast } from "../../contexts/ToastContext"
-import { useClient } from "../../contexts/ClientContext"
-import { useFight } from "../../contexts/FightContext"
-import type { InputParamsType, Fight, Character, Vehicle } from "../../types/types"
-import { defaultCharacter } from "../../types/types"
-import { CharactersActions, initialCharactersState, charactersReducer } from "../../reducers/charactersState"
-import CharacterFilters from './CharacterFilters'
-import { FightActions } from '../../reducers/fightState'
+import { useToast } from "@/contexts/ToastContext"
+import { useClient } from "@/contexts/ClientContext"
+import { useFight } from "@/contexts/FightContext"
+import type { InputParamsType, Fight, Character, Vehicle } from "@/types/types"
+import { defaultCharacter } from "@/types/types"
+import CharacterFilters from '@/components/characters/CharacterFilters'
+import { CharactersActions, initialCharactersState, charactersReducer } from "@/reducers/charactersState"
+import { FightActions } from '@/reducers/fightState'
 
 interface SelectCharacterProps {
   addCharacter: (character: Character | Vehicle) => Promise<void>
