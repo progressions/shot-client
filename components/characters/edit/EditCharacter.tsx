@@ -13,8 +13,9 @@ import SchtickSelector from "@/components/schticks/SchtickSelector"
 import Skills from "@/components/characters/edit/Skills"
 import Advancements from "@/components/advancements/Advancements"
 import Sites from "@/components/characters/edit/sites/Sites"
+import ImageManager from "@/components/characters/edit/ImageManager"
 import Weapons from "@/components/weapons/Weapons"
-import CharacterImage from "@/components/characters/edit/CharacterImage"
+import UploadImage from "@/components/characters/edit/UploadImage"
 import ImageDisplay from "@/components/characters/ImageDisplay"
 
 import { useEffect } from "react"
@@ -133,12 +134,7 @@ export default function EditCharacter({ character:initialCharacter }: EditCharac
                 <StyledTextField name="Archetype" label="Archetype" autoFocus fullWidth onChange={handleAVChange as React.ChangeEventHandler} value={action_values.Archetype} />
               </Stack>
             </Stack>
-            <Box
-              border={1}
-              component="img"
-              alt={character.name}
-              src={`${character.image_url}?tr=w-200,h-300,c-maintain_ratio`}
-            />
+            <ImageManager character={character} />
           </Stack>
           <Stack spacing={2} direction="row" alignItems='center'>
             <StyledTextField label={woundsLabel}
@@ -166,7 +162,6 @@ export default function EditCharacter({ character:initialCharacter }: EditCharac
             <Advancements character={character} />
           </PlayerTypeOnly>
           <Sites character={character} />
-          <CharacterImage character={character} />
           <Description character={character} onChange={handleDescriptionChange} />
           <Schticks state={schticksState} />
           <SchtickSelector />

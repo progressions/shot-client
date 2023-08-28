@@ -10,7 +10,7 @@ import { useClient } from "@/contexts/ClientContext"
 import { useToast } from "@/contexts/ToastContext"
 import Api from "@/utils/Api"
 
-interface CharacterImageProps {
+interface UploadImageProps {
   character: Character
 }
 
@@ -18,23 +18,25 @@ const Input = styled("input")({
   display: "none",
 })
 
-export default function CharacterImage({ character }: CharacterImageProps) {
+export default function UploadImage({ character }: UploadImageProps) {
   const inputRef = useRef<HTMLInputElement>(null)
-  const { jwt, client } = useClient()
+  const { client } = useClient()
   const { toastError, toastSuccess } = useToast()
   const api = new Api()
 
   async function handleUpload(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
-    alert("upload")
-
     const file = inputRef.current?.files?.[0]
 
     if (!file) return
     const formData = new FormData()
     formData.append("character[image]", file)
 
-    await submitToAPI(formData)
-    toastSuccess("File uploaded.")
+    try {
+      await submitToAPI(formData)
+      toastSuccess("File uploaded.")
+    } catch (error) {
+      toastError("Error uploading file.")
+    }
   }
 
   async function submitToAPI(data: FormData) {
@@ -44,13 +46,13 @@ export default function CharacterImage({ character }: CharacterImageProps) {
 
   return (
     <Stack direction="row" alignItems="center" spacing={2}>
-      <label htmlFor="contained-button-file">
-        <Input accept="image/*" id="contained-button-file" type="file" ref={inputRef} />
+      <label htmlFor="button-file">
+        <Input accept="image/*" id="button-file" type="file" ref={inputRef} />
         <Button variant="contained" component="span">
           Upload
         </Button>
       </label>
-      <Button variant="outlined" onClick={handleUpload}>
+      <Button variant="contained" color="primary" onClick={handleUpload}>
         Save
       </Button>
     </Stack>

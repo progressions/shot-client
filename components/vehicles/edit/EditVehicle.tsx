@@ -6,7 +6,7 @@ import EditActionValues from "@/components/vehicles/edit/EditActionValues"
 import Faction from "@/components/characters/edit/Faction"
 import CharacterType from "@/components/characters/edit/CharacterType"
 import ColorPicker from "@/components/characters/edit/ColorPicker"
-import CharacterImage from "@/components/characters/edit/CharacterImage"
+import UploadImage from "@/components/characters/edit/UploadImage"
 
 import { useEffect } from "react"
 
