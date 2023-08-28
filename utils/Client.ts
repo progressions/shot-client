@@ -155,6 +155,11 @@ class Client {
     return await this.delete(this.api.characters(fight, { id: character.shot_id } as Character))
   }
 
+  async deleteCharacterImage(character: Character):Promise<void> {
+    console.log(`${this.api.characters(null, character)}/image`)
+    return await this.delete(`${this.api.characters(null, character)}/image`)
+  }
+
   async actCharacter(character: Character, fight: Fight, shots: number):Promise<Character> {
     return await this.patch(this.api.actCharacter(fight, { id: character.id } as Character), {"character": { id: character.id, shot_id: character.shot_id } as Character, "shots": shots})
   }
