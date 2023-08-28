@@ -102,6 +102,7 @@ export default function Characters(charactersResponse: CharactersResponse) {
       <CharactersToolbar
         state={state}
         dispatch={dispatch}
+        textSearch={true}
       />
       <TableContainer component={Paper}>
         <Table size="small">

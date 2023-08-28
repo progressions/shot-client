@@ -11,9 +11,10 @@ import { CharactersStateType, CharactersActionType, CharactersActions } from "@/
 interface CharactersToolbarProps {
   state: CharactersStateType
   dispatch: React.Dispatch<CharactersActionType>
+  textSearch?: boolean
 }
 
-export default function CharactersToolbar({ state, dispatch }: CharactersToolbarProps) {
+export default function CharactersToolbar({ state, dispatch, textSearch }: CharactersToolbarProps) {
   const { client, session, user } = useClient()
   const { showHidden } = state
 
@@ -25,7 +26,7 @@ export default function CharactersToolbar({ state, dispatch }: CharactersToolbar
     <GamemasterOnly user={user}>
       <ButtonBar>
         <Stack direction="row" spacing={2} alignItems="center">
-          <CharacterFilters state={state} dispatch={dispatch} />
+          <CharacterFilters state={state} dispatch={dispatch} textSearch={textSearch} />
           <CreateCharacter />
           <CreateVehicle />
           <FormControlLabel label="All" control={<Switch checked={showHidden} />} onChange={show} />

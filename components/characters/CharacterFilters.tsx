@@ -8,9 +8,10 @@ import { CharacterTypes, defaultFaction } from "@/types/types"
 interface CharacterFiltersProps {
   state: CharactersStateType,
   dispatch: React.Dispatch<CharactersActionType>
+  textSearch?: boolean
 }
 
-export default function CharacterFilters({ state, dispatch }: CharacterFiltersProps) {
+export default function CharacterFilters({ state, dispatch, textSearch = false }: CharacterFiltersProps) {
   const { loading, character, characters, character_type, faction, factions, archetype, archetypes, search } = state
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -19,6 +20,10 @@ export default function CharacterFilters({ state, dispatch }: CharacterFiltersPr
 
   const selectCharacter = (event: React.ChangeEvent<HTMLInputElement>, value: Character) => {
     dispatch({ type: CharactersActions.CHARACTER, payload: value })
+  }
+
+  const searchCharacter = (event: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch({ type: CharactersActions.UPDATE, name: "search", value: event.target.value })
   }
 
   const getOptionLabel = (character: Character) => {
@@ -69,18 +74,32 @@ export default function CharacterFilters({ state, dispatch }: CharacterFiltersPr
             }
           </StyledSelect>
         </Box>
-        <Box sx={{width: 155}}>
-          <StyledAutocomplete
-            disabled={loading}
-            freeSolo
-            options={characters}
-            sx={{ width: 155 }}
-            value={character}
-            onChange={selectCharacter}
-            getOptionLabel={getOptionLabel}
-            renderInput={(params: InputParamsType) => <StyledTextField autoFocus {...params} label="Character" />}
-          />
-        </Box>
+        { !textSearch &&
+          <Box sx={{width: 155}}>
+            <StyledAutocomplete
+              disabled={loading}
+              freeSolo
+              options={characters}
+              sx={{ width: 155 }}
+              value={character}
+              onChange={selectCharacter}
+              getOptionLabel={getOptionLabel}
+              renderInput={(params: InputParamsType) => <StyledTextField autoFocus {...params} label="Character" />}
+            />
+          </Box>
+        }
+        { textSearch &&
+          <Box sx={{width: 155}}>
+            <StyledTextField
+              label="Character"
+              name="search"
+              disabled={loading}
+              sx={{ width: 155 }}
+              value={search}
+              onChange={handleChange}
+            />
+          </Box>
+        }
       </Stack>
     </>
   )
