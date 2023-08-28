@@ -27,12 +27,19 @@ export default function ImageDisplay({ character }: ImageDisplayProps) {
 
   return (
     <>
+      { character.image_url &&
         <Avatar
           onClick={showImage}
           src={character.image_url && `${character.image_url}?tr=w-75,h-75,fo-face`}
           variant="rounded"
           sx={{ bgcolor: character.color || 'secondary', width: 75, height: 75, borderColor: character.color, borderWidth: 2, borderStyle: "solid", borderRadius: 1, cursor: "pointer" }}
-        />
+        /> }
+      { !character.image_url &&
+        <Avatar
+          onClick={showImage}
+          variant="rounded"
+          sx={{ bgcolor: character.color || 'secondary', width: 75, height: 75, borderColor: character.color, borderWidth: 2, borderStyle: "solid", borderRadius: 1, cursor: "pointer" }}
+        /> }
       <Dialog open={open} onClose={closeImage}>
         <DialogTitle sx={{backgroundColor: backgroundColor, color: "primary.dark"}}>
           { CS.name(character) }
