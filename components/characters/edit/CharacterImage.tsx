@@ -5,10 +5,10 @@ import IconButton from "@mui/material/IconButton"
 import PhotoCamera from "@mui/icons-material/PhotoCamera"
 import Stack from "@mui/material/Stack"
 import { useRef } from "react"
-import { Character } from "../../../types/types"
-import { useClient } from "../../../contexts/ClientContext"
-import { useToast } from "../../../contexts/ToastContext"
-import Api from "../../../utils/Api"
+import { Character } from "@/types/types"
+import { useClient } from "@/contexts/ClientContext"
+import { useToast } from "@/contexts/ToastContext"
+import Api from "@/utils/Api"
 
 interface CharacterImageProps {
   character: Character

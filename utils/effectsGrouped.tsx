@@ -1,4 +1,4 @@
-import type { Severity, Fight, CharacterEffect, Effect } from "../types/types"
+import type { Severity, Fight, CharacterEffect, Effect } from "@/types/types"
 
 interface GroupedEffects<T> {
   [key: string]: T[]

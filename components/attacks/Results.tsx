@@ -1,4 +1,4 @@
-import { AttackState } from "../../reducers/attackState"
+import { AttackState } from "@/reducers/attackState"
 import { Typography, Stack } from "@mui/material"
 
 interface ResultsProps {

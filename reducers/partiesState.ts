@@ -1,4 +1,4 @@
-import { Faction, defaultFaction, defaultParty, Party, PartiesResponse, PaginationMeta, defaultPaginationMeta } from "../types/types"
+import { Faction, defaultFaction, defaultParty, Party, PartiesResponse, PaginationMeta, defaultPaginationMeta } from "@/types/types"
 
 export enum PartiesActions {
   EDIT = "edit",

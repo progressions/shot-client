@@ -1,12 +1,12 @@
 import { TextField, Button, Tooltip, Box, Stack, Dialog, DialogTitle, DialogContent, DialogActions } from "@mui/material"
 import { useEffect, useState } from "react"
-import Client from "../../utils/Client"
+import Client from "@/utils/Client"
 
-import { defaultCampaign } from "../../types/types"
-import { useToast } from "../../contexts/ToastContext"
-import { useClient } from "../../contexts/ClientContext"
+import { defaultCampaign } from "@/types/types"
+import { useToast } from "@/contexts/ToastContext"
+import { useClient } from "@/contexts/ClientContext"
 
-import type { Campaign } from "../../types/types"
+import type { Campaign } from "@/types/types"
 
 interface CampaignModalProps {
   open: Campaign

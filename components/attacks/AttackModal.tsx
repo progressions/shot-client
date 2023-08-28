@@ -3,23 +3,25 @@ import HeartBrokenIcon from "@mui/icons-material/HeartBroken"
 import PersonOffIcon from "@mui/icons-material/PersonOff"
 import TaxiAlertIcon from "@mui/icons-material/TaxiAlert"
 import { ButtonGroup, FormControlLabel, Switch, Tooltip, DialogContent, Button, IconButton, Typography, Box, Stack } from "@mui/material"
-import { useFight } from "../../contexts/FightContext"
-import { useClient } from "../../contexts/ClientContext"
-import { useToast } from "../../contexts/ToastContext"
-import { StyledDialog, StyledTextField } from "../StyledFields"
+import { useFight } from "@/contexts/FightContext"
+import { useClient } from "@/contexts/ClientContext"
+import { useToast } from "@/contexts/ToastContext"
+import { StyledDialog, StyledTextField } from "@/components/StyledFields"
 import { useEffect, useReducer, useState } from "react"
-import CharactersAutocomplete from "./CharactersAutocomplete"
-import type { Weapon, Character } from "../../types/types"
-import { defaultWeapon, defaultCharacter } from "../../types/types"
-import AS from "../../services/ActionService"
-import CS from "../../services/CharacterService"
-import CES from "../../services/CharacterEffectService"
-import { AttackActions, initialAttackState, attackReducer } from "../../reducers/attackState"
-import { FightActions } from "../../reducers/fightState"
-import ResultsDisplay from "./ResultsDisplay"
-import Attacker from "./Attacker"
-import Target from "./Target"
-import SwerveButton from "./SwerveButton"
+import type { Weapon, Character } from "@/types/types"
+import { defaultWeapon, defaultCharacter } from "@/types/types"
+import AS from "@/services/ActionService"
+import CS from "@/services/CharacterService"
+import CES from "@/services/CharacterEffectService"
+import { AttackActions, initialAttackState, attackReducer } from "@/reducers/attackState"
+import { FightActions } from "@/reducers/fightState"
+import FightService from "@/services/FightService"
+
+import Attacker from "@/components/attacks/Attacker"
+import Target from "@/components/attacks/Target"
+import SwerveButton from "@/components/attacks/SwerveButton"
+import ResultsDisplay from "@/components/attacks/ResultsDisplay"
+import CharactersAutocomplete from "@/components/attacks/CharactersAutocomplete"
 
 interface AttackModalProps {
   open: boolean
@@ -41,8 +43,8 @@ export default function AttackModal({ open, setOpen, anchorEl, setAnchorEl }: At
   useEffect(() => {
     dispatch({ type: AttackActions.RESET })
 
-    const firstUp = fight.shot_order[0][1][0]
-    if (CS.isCharacter(firstUp)) {
+    const firstUp = FightService.firstUp(fight)
+    if (firstUp && CS.isCharacter(firstUp)) {
       dispatch({ type: AttackActions.UPDATE, payload: { fight: fight } })
       setAttacker(firstUp)
     }

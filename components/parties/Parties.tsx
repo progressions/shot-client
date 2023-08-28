@@ -1,8 +1,8 @@
 import { Stack } from "@mui/material"
-import type { Party as PartyType } from "../../types/types"
-import { PartiesStateType, PartiesActionType, PartiesActions } from "../../reducers/partiesState"
-import Party from "./Party"
-import { Subhead } from "../StyledFields"
+import type { Party as PartyType } from "@/types/types"
+import { PartiesStateType, PartiesActionType, PartiesActions } from "@/reducers/partiesState"
+import Party from "@/components/parties/Party"
+import { Subhead } from "@/components/StyledFields"
 
 interface PartiesProps {
   state: PartiesStateType,

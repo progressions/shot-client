@@ -1,7 +1,7 @@
-import VS from "../../services/VehicleService"
-import CS from "../../services/CharacterService"
-import type { Faction, Character, Vehicle } from "../../types/types"
-import { CharacterTypes, defaultCharacter, defaultVehicle } from "../../types/types"
+import VS from "@/services/VehicleService"
+import CS from "@/services/CharacterService"
+import type { Faction, Character, Vehicle } from "@/types/types"
+import { CharacterTypes, defaultCharacter, defaultVehicle } from "@/types/types"
 
 describe("VehicleService", () => {
   describe("mainAttackValue", () => {

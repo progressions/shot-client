@@ -1,12 +1,12 @@
 import { Grid, Typography, Box, Stack, Autocomplete, TextField } from "@mui/material"
-import SkillField from "./SkillField"
-import NewSkill from "./NewSkill"
-import { Subhead } from "../../StyledFields"
+import SkillField from "@/components/characters/edit/SkillField"
+import NewSkill from "@/components/characters/edit/NewSkill"
+import { Subhead } from "@/components/StyledFields"
 
 import { useMemo } from "react"
-import { Character, SkillValue, SkillValues } from "../../../types/types"
+import { Character, SkillValue, SkillValues } from "@/types/types"
 
-import CS from "../../../services/CharacterService"
+import CS from "@/services/CharacterService"
 
 interface SkillsProps {
   character: Character

@@ -1,20 +1,21 @@
-import { useClient } from "../../../contexts/ClientContext"
-import { useToast } from "../../../contexts/ToastContext"
-import { useCharacter } from "../../../contexts/CharacterContext"
+import { useClient } from "@/contexts/ClientContext"
+import { useToast } from "@/contexts/ToastContext"
+import { useCharacter } from "@/contexts/CharacterContext"
 
-import ColorPicker from "./ColorPicker"
-import EditActionValues from "./EditActionValues"
-import CharacterType from "./CharacterType"
-import FortuneSelect from "./FortuneSelect"
-import Description from "./Description"
-import Faction from "./Faction"
-import Schticks from "../../schticks/Schticks"
-import SchtickSelector from "../../schticks/SchtickSelector"
-import Skills from "./Skills"
-import Advancements from "../../advancements/Advancements"
-import Sites from "./sites/Sites"
-import Weapons from "../../weapons/Weapons"
-import CharacterImage from "./CharacterImage"
+import ColorPicker from "@/components/characters/edit/ColorPicker"
+import EditActionValues from "@/components/characters/edit/EditActionValues"
+import CharacterType from "@/components/characters/edit/CharacterType"
+import FortuneSelect from "@/components/characters/edit/FortuneSelect"
+import Description from "@/components/characters/edit/Description"
+import Faction from "@/components/characters/edit/Faction"
+import Schticks from "@/components/schticks/Schticks"
+import SchtickSelector from "@/components/schticks/SchtickSelector"
+import Skills from "@/components/characters/edit/Skills"
+import Advancements from "@/components/advancements/Advancements"
+import Sites from "@/components/characters/edit/sites/Sites"
+import Weapons from "@/components/weapons/Weapons"
+import CharacterImage from "@/components/characters/edit/CharacterImage"
+import ImageDisplay from "@/components/characters/ImageDisplay"
 
 import { useEffect } from "react"
 
@@ -22,17 +23,17 @@ import { colors, Typography, Box, Stack, TextField, FormControlLabel, Switch, Bu
 import FavoriteIcon from '@mui/icons-material/Favorite'
 import PeopleIcon from '@mui/icons-material/People'
 
-import PlayerTypeOnly from "../../PlayerTypeOnly"
-import DeathMarks from "../DeathMarks"
-import { Subhead, StyledTextField } from "../../StyledFields"
+import PlayerTypeOnly from "@/components/PlayerTypeOnly"
+import DeathMarks from "@/components/characters/DeathMarks"
+import { Subhead, StyledTextField } from "@/components/StyledFields"
 
-import type { Character } from "../../../types/types"
-import type { SchticksStateType } from "../../../reducers/schticksState"
-import { initialSchticksState as initialSchticksState } from "../../../reducers/schticksState"
-import type { WeaponsStateType } from "../../../reducers/weaponsState"
-import { initialWeaponsState as initialWeaponsState } from "../../../reducers/weaponsState"
-import { CharacterActions } from "../../../reducers/characterState"
-import CS from "../../../services/CharacterService"
+import type { Character } from "@/types/types"
+import type { SchticksStateType } from "@/reducers/schticksState"
+import { initialSchticksState as initialSchticksState } from "@/reducers/schticksState"
+import type { WeaponsStateType } from "@/reducers/weaponsState"
+import { initialWeaponsState as initialWeaponsState } from "@/reducers/weaponsState"
+import { CharacterActions } from "@/reducers/characterState"
+import CS from "@/services/CharacterService"
 
 interface EditCharacterProps {
   character: Character
@@ -113,15 +114,31 @@ export default function EditCharacter({ character:initialCharacter }: EditCharac
     <>
       <Box component="form" onSubmit={handleSubmit}>
         <Stack spacing={2}>
-          <Stack direction="row" spacing={1}>
-            <StyledTextField name="name" label="Name" required autoFocus fullWidth onChange={handleChange} value={character.name} />
-            <Faction faction={character.faction} onChange={handleFactionChange} />
-            <FormControlLabel label="Task" name="task" control={<Switch checked={character.task} />} onChange={handleCheck} />
-            <FormControlLabel label="Active" name="active" control={<Switch checked={character.active} />} onChange={handleCheck} />
-          </Stack>
-          <Stack direction="row" spacing={1}>
-            <CharacterType value={action_values.Type as string} onChange={handleAVChange} />
-            <StyledTextField name="Archetype" label="Archetype" autoFocus fullWidth onChange={handleAVChange as React.ChangeEventHandler} value={action_values.Archetype} />
+          <Stack direction="row" spacing={1} justifyContent="space-between">
+            <Stack spacing={2}>
+              <Stack direction="row" spacing={1} width={600}>
+                <FormControlLabel label="Task" name="task" control={<Switch checked={character.task} />} onChange={handleCheck} />
+                <FormControlLabel label="Active" name="active" control={<Switch checked={character.active} />} onChange={handleCheck} />
+              </Stack>
+              <Stack direction="row" spacing={1}>
+                <StyledTextField name="name" label="Name" required autoFocus fullWidth onChange={handleChange} value={character.name} />
+              </Stack>
+              <Stack direction="row" spacing={1}>
+                <Faction faction={character.faction} onChange={handleFactionChange} />
+              </Stack>
+              <Stack direction="row" spacing={1}>
+                <CharacterType value={action_values.Type as string} onChange={handleAVChange} />
+              </Stack>
+              <Stack direction="row" spacing={1}>
+                <StyledTextField name="Archetype" label="Archetype" autoFocus fullWidth onChange={handleAVChange as React.ChangeEventHandler} value={action_values.Archetype} />
+              </Stack>
+            </Stack>
+            <Box
+              border={1}
+              component="img"
+              alt={character.name}
+              src={`${character.image_url}?tr=w-200,h-300,c-maintain_ratio`}
+            />
           </Stack>
           <Stack spacing={2} direction="row" alignItems='center'>
             <StyledTextField label={woundsLabel}

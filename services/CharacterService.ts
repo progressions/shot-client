@@ -1,6 +1,6 @@
-import type { Weapon, SkillValue, Character, CharacterEffect } from "../types/types"
-import { DescriptionValues, DescriptionKeys } from "../types/types"
-import SharedService, { woundThresholds } from "./SharedService"
+import type { Weapon, SkillValue, Character, CharacterEffect } from "@/types/types"
+import { DescriptionValues, DescriptionKeys } from "@/types/types"
+import SharedService, { woundThresholds } from "@/services/SharedService"
 
 interface Service {
   [key: string]: (character: Character, ...args: any[]) => Character

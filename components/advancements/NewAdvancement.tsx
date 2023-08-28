@@ -1,12 +1,12 @@
-import { SaveCancelButtons, StyledTextField } from "../StyledFields"
+import { SaveCancelButtons, StyledTextField } from "@/components/StyledFields"
 import { Box, Stack, Typography } from "@mui/material"
-import { useClient } from "../../contexts/ClientContext"
-import { useToast } from "../../contexts/ToastContext"
-import { useCharacter } from "../../contexts/CharacterContext"
-import type { Character, Advancement } from "../../types/types"
-import { defaultAdvancement } from "../../types/types"
+import { useClient } from "@/contexts/ClientContext"
+import { useToast } from "@/contexts/ToastContext"
+import { useCharacter } from "@/contexts/CharacterContext"
+import type { Character, Advancement } from "@/types/types"
+import { defaultAdvancement } from "@/types/types"
 import { useEffect, useReducer } from "react"
-import { AdvancementActions, initialState, advancementReducer } from "../../reducers/advancementState"
+import { AdvancementActions, initialState, advancementReducer } from "@/reducers/advancementState"
 
 export default function NewAdvancement() {
   const { character, dispatch:dispatchCharacter, reloadCharacter } = useCharacter()

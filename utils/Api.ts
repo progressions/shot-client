@@ -16,7 +16,7 @@ import type {
   User,
   Person,
   ID
-} from "../types/types"
+} from "@/types/types"
 
 class Api {
   base():string { return process.env.NEXT_PUBLIC_SERVER_URL as string }

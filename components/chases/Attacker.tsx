@@ -1,9 +1,9 @@
 import { Stack, Button, FormControlLabel, Switch } from "@mui/material"
-import { StyledTextField } from "../StyledFields"
-import type { ChaseState } from "../../reducers/chaseState"
-import type { Character, Weapon } from "../../types/types"
-import VS from "../../services/VehicleService"
-import MookAttacker from "./MookAttacker"
+import { StyledTextField } from "@/components/StyledFields"
+import type { ChaseState } from "@/reducers/chaseState"
+import type { Character, Weapon } from "@/types/types"
+import VS from "@/services/VehicleService"
+import MookAttacker from "@/components/chases/MookAttacker"
 
 interface AttackerProps {
   state: ChaseState

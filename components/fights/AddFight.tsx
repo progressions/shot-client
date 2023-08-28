@@ -3,16 +3,16 @@ import { Alert, Snackbar, Box, Paper, Stack, Typography, TextField, Button } fro
 import Router from "next/router"
 import KeyboardDoubleArrowDownIcon from "@mui/icons-material/KeyboardDoubleArrowDown"
 import KeyboardDoubleArrowUpIcon from "@mui/icons-material/KeyboardDoubleArrowUp"
-import Client from "../../utils/Client"
+import Client from "@/utils/Client"
 
-import { useToast } from "../../contexts/ToastContext"
-import { useFight } from "../../contexts/FightContext"
-import { useClient } from "../../contexts/ClientContext"
-import type { Fight, Toast } from "../../types/types"
-import { defaultFight } from "../../types/types"
-import { FightsStateType, FightsActionType, FightsActions } from "../../reducers/fightsState"
-import { FightStateType, FightActionType, FightActions } from "../../reducers/fightState"
-import { StyledTextField, SaveCancelButtons } from "../StyledFields"
+import { useToast } from "@/contexts/ToastContext"
+import { useFight } from "@/contexts/FightContext"
+import { useClient } from "@/contexts/ClientContext"
+import type { Fight, Toast } from "@/types/types"
+import { defaultFight } from "@/types/types"
+import { FightsStateType, FightsActionType, FightsActions } from "@/reducers/fightsState"
+import { FightStateType, FightActionType, FightActions } from "@/reducers/fightState"
+import { StyledTextField, SaveCancelButtons } from "@/components/StyledFields"
 
 interface AddFightProps {
   state: FightsStateType

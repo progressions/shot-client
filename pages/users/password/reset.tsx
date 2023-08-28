@@ -1,15 +1,15 @@
-import Layout from '../../../components/Layout'
+import Layout from '@/components/Layout'
 import Head from 'next/head'
-import Navbar from "../../../components/navbar/Navbar"
+import Navbar from "@/components/navbar/Navbar"
 
 import { TextField, Button, Stack, Link, Container, Typography, Box } from "@mui/material"
 
 import { useRouter } from 'next/router'
-import { User } from "../../../types/types"
-import { useClient } from "../../../contexts/ClientContext"
-import { useToast } from "../../../contexts/ToastContext"
+import { User } from "@/types/types"
+import { useClient } from "@/contexts/ClientContext"
+import { useToast } from "@/contexts/ToastContext"
 import { useReducer } from "react"
-import { resetReducer, initialState } from "../../../components/passwords/resetReducer"
+import { resetReducer, initialState } from "@/components/passwords/resetReducer"
 
 export default function SendResetPasswordView() {
   const { client } = useClient()

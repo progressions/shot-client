@@ -1,5 +1,5 @@
 import { Radio, FormControl, FormControlLabel, FormLabel, RadioGroup, Typography, Box, Stack } from "@mui/material"
-import type { Vehicle } from "../../types/types"
+import type { Vehicle } from "@/types/types"
 
 interface PositionSelectorProps {
   character: Vehicle

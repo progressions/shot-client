@@ -3,13 +3,13 @@ import PeopleAltIcon from "@mui/icons-material/PeopleAlt"
 import GroupAddIcon from '@mui/icons-material/GroupAdd'
 import { useEffect, useReducer } from 'react'
 
-import { useToast } from "../../contexts/ToastContext"
-import { useClient } from "../../contexts/ClientContext"
-import { useFight } from "../../contexts/FightContext"
-import type { InputParamsType, Party, Fight } from "../../types/types"
-import { PartiesActions, initialPartiesState, partiesReducer } from "../../reducers/partiesState"
-import { FightActions } from '../../reducers/fightState'
-import PartyAutocomplete from "./PartyAutocomplete"
+import { useToast } from "@/contexts/ToastContext"
+import { useClient } from "@/contexts/ClientContext"
+import { useFight } from "@/contexts/FightContext"
+import type { InputParamsType, Party, Fight } from "@/types/types"
+import { PartiesActions, initialPartiesState, partiesReducer } from "@/reducers/partiesState"
+import { FightActions } from '@/reducers/fightState'
+import PartyAutocomplete from "@/components/parties/PartyAutocomplete"
 
 export default function SelectParty() {
   const { user, client } = useClient()

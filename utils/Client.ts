@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from "axios"
-import Api from "./Api"
+import Api from "@/utils/Api"
 import type {
   Location,
   Shot,
@@ -27,7 +27,7 @@ import type {
   Fight,
   Party,
   User
-} from "../types/types"
+} from "@/types/types"
 
 interface ClientParams {
   jwt?: string
@@ -371,6 +371,10 @@ class Client {
 
   async getFactions():Promise<Faction[]> {
     return await this.get(this.api.factions())
+  }
+
+  async createFaction(faction: Faction):Promise<Faction> {
+    return await this.post(this.api.factions(), {"faction": faction})
   }
 
   async getSchticks(params={}):Promise<SchticksResponse> {

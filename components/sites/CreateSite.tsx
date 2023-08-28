@@ -1,8 +1,8 @@
 import { Stack, DialogContent, Tooltip, Button, Typography } from "@mui/material"
-import { StyledDialog, ButtonBar } from "../StyledFields"
-import SiteModal from "./SiteModal"
+import { StyledDialog, ButtonBar } from "@/components/StyledFields"
+import SiteModal from "@/components/sites/SiteModal"
 import { useState } from "react"
-import type { SitesStateType, SitesActionType } from "../../reducers/sitesState"
+import type { SitesStateType, SitesActionType } from "@/reducers/sitesState"
 
 interface CreateSiteProps {
   state: SitesStateType

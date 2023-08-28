@@ -1,4 +1,4 @@
-import { Fight, PaginationMeta, defaultPaginationMeta, defaultFight } from "../types/types"
+import { Fight, PaginationMeta, defaultPaginationMeta, defaultFight } from "@/types/types"
 
 export enum FightActions {
   RESET = "reset",

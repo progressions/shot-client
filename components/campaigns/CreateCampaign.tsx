@@ -3,11 +3,11 @@ import { Box, Paper, Container, Typography } from '@mui/material'
 import Stack from '@mui/material/Stack'
 import Button from '@mui/material/Button'
 import TextField from '@mui/material/TextField'
-import CampaignModal from './CampaignModal'
+import CampaignModal from '@/components/campaigns/CampaignModal'
 import PersonAddIcon from '@mui/icons-material/PersonAdd'
 
-import type { Person, Campaign, Fight, ID } from "../../types/types"
-import { defaultCampaign } from "../../types/types"
+import type { Person, Campaign, Fight, ID } from "@/types/types"
+import { defaultCampaign } from "@/types/types"
 
 interface CreateCampaignProps {
   reload: () => Promise<void>

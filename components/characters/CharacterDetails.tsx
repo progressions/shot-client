@@ -8,33 +8,33 @@ import { AlertColor } from "@mui/material"
 import BloodtypeIcon from '@mui/icons-material/Bloodtype'
 import WhatshotIcon from '@mui/icons-material/Whatshot'
 
-import ActionValues from './ActionValues'
-import ActionModal from './ActionModal'
-import WoundsModal from './WoundsModal'
-import KillMooksModal from './KillMooksModal'
-import HealModal from './HealModal'
-import ActionButtons from './ActionButtons'
-import MookActionButtons from './MookActionButtons'
-import AvatarBadge from './AvatarBadge'
-import GamemasterOnly from '../GamemasterOnly'
-import DeathMarks from "./DeathMarks"
-import NameDisplay from "./NameDisplay"
-import WoundsDisplay from "./WoundsDisplay"
-import GroupedEffects from "../state_effects/GroupedEffects"
-import SkillsDisplay from "./SkillsDisplay"
-import SchticksDisplay from "./SchticksDisplay"
-import WeaponsDisplay from "./WeaponsDisplay"
+import ActionValues from '@/components/characters/ActionValues'
+import ActionModal from '@/components/characters/ActionModal'
+import WoundsModal from '@/components/characters/WoundsModal'
+import KillMooksModal from '@/components/characters/KillMooksModal'
+import HealModal from '@/components/characters/HealModal'
+import ActionButtons from '@/components/characters/ActionButtons'
+import MookActionButtons from '@/components/characters/MookActionButtons'
+import AvatarBadge from '@/components/characters/AvatarBadge'
+import DeathMarks from "@/components/characters/DeathMarks"
+import NameDisplay from "@/components/characters/NameDisplay"
+import WoundsDisplay from "@/components/characters/WoundsDisplay"
+import SkillsDisplay from "@/components/characters/SkillsDisplay"
+import SchticksDisplay from "@/components/characters/SchticksDisplay"
+import WeaponsDisplay from "@/components/characters/WeaponsDisplay"
 
-import { useFight } from "../../contexts/FightContext"
-import { useToast } from "../../contexts/ToastContext"
-import { useClient } from "../../contexts/ClientContext"
-import Client from "../../utils/Client"
-import PlayerTypeOnly from "../PlayerTypeOnly"
-import CS from "../../services/CharacterService"
+import GroupedEffects from "@/components/state_effects/GroupedEffects"
+import GamemasterOnly from '@/components/GamemasterOnly'
+import { useFight } from "@/contexts/FightContext"
+import { useToast } from "@/contexts/ToastContext"
+import { useClient } from "@/contexts/ClientContext"
+import Client from "@/utils/Client"
+import PlayerTypeOnly from "@/components/PlayerTypeOnly"
+import CS from "@/services/CharacterService"
 
-import type { Vehicle, CharacterEffect, User, Person, Character, Fight, Toast, ID } from "../../types/types"
-import { defaultCharacter } from "../../types/types"
-import { FightActions } from '../../reducers/fightState'
+import type { Vehicle, CharacterEffect, User, Person, Character, Fight, Toast, ID } from "@/types/types"
+import { defaultCharacter } from "@/types/types"
+import { FightActions } from '@/reducers/fightState'
 
 interface CharacterDetailsParams {
   character: Character,

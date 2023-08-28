@@ -1,9 +1,9 @@
-import { Dialog, DialogTitle, DialogContent, IconButton, Box, Card, CardContent, CardMedia, colors, Typography } from "@mui/material"
-import CS from "../../services/CharacterService"
+import { Avatar, Dialog, DialogTitle, DialogContent, IconButton, Box, Card, CardContent, CardMedia, colors, Typography } from "@mui/material"
+import CS from "@/services/CharacterService"
 import ImageIcon from "@mui/icons-material/Image"
 import { useState } from "react"
-import { StyledDialog } from "../../components/StyledFields"
-import type { Character } from "../../types/types"
+import { StyledDialog } from "@/components/StyledFields"
+import type { Character } from "@/types/types"
 
 interface ImageDisplayProps {
   character: Character
@@ -25,13 +25,21 @@ export default function ImageDisplay({ character }: ImageDisplayProps) {
 
   const backgroundColor = colors.orange[50]
 
-  if (!character.image_url) return null
-
   return (
     <>
-      <IconButton sx={{color: "inherit", "&:hover": { color: "primary.light" }}} onClick={showImage}>
-        <ImageIcon sx={{fontSize: 30}} />
-      </IconButton>
+      { character.image_url &&
+        <Avatar
+          onClick={showImage}
+          src={character.image_url && `${character.image_url}?tr=w-75,h-75,fo-face`}
+          variant="rounded"
+          sx={{ bgcolor: character.color || 'secondary', width: 75, height: 75, borderColor: character.color, borderWidth: 2, borderStyle: "solid", borderRadius: 1, cursor: "pointer" }}
+        /> }
+      { !character.image_url &&
+        <Avatar
+          onClick={showImage}
+          variant="rounded"
+          sx={{ bgcolor: character.color || 'secondary', width: 75, height: 75, borderColor: character.color, borderWidth: 2, borderStyle: "solid", borderRadius: 1, cursor: "pointer" }}
+        /> }
       <Dialog open={open} onClose={closeImage}>
         <DialogTitle sx={{backgroundColor: backgroundColor, color: "primary.dark"}}>
           { CS.name(character) }

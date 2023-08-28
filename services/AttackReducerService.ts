@@ -1,10 +1,10 @@
-import type { Weapon, Fight, Character, Vehicle } from "../types/types"
-import { defaultWeapon, defaultCharacter } from "../types/types"
-import CS from "./CharacterService"
-import AS from "./ActionService"
-import CES from "./CharacterEffectService"
-import { parseToNumber } from "../utils/parseToNumber"
-import { MookResult, AttackState } from "../reducers/attackState"
+import type { Weapon, Fight, Character, Vehicle } from "@/types/types"
+import { defaultWeapon, defaultCharacter } from "@/types/types"
+import CS from "@/services/CharacterService"
+import AS from "@/services/ActionService"
+import CES from "@/services/CharacterEffectService"
+import { parseToNumber } from "@/utils/parseToNumber"
+import { MookResult, AttackState } from "@/reducers/attackState"
 
 const AttackReducerService = {
   process: function(state: AttackState): AttackState {

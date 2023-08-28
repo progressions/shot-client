@@ -1,10 +1,10 @@
 import { Autocomplete, TextField } from "@mui/material"
 import { useMemo } from "react"
-import { StyledAutocomplete, StyledSelect } from "../StyledFields"
-import type { WeaponCategory, InputParamsType } from "../../types/types"
+import { StyledAutocomplete, StyledSelect } from "@/components/StyledFields"
+import type { WeaponCategory, InputParamsType } from "@/types/types"
 
-import type { WeaponsStateType, WeaponsActionType } from "../../reducers/weaponsState"
-import { WeaponsActions } from "../../reducers/weaponsState"
+import type { WeaponsStateType, WeaponsActionType } from "@/reducers/weaponsState"
+import { WeaponsActions } from "@/reducers/weaponsState"
 
 interface CategoryAutocompleteProps {
   state: WeaponsStateType

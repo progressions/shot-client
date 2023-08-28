@@ -2,10 +2,10 @@ import { useEffect, useMemo, createContext, useContext, useState } from "react"
 
 import { Session } from "next-auth"
 import { useSession } from 'next-auth/react'
-import Client from "../utils/Client"
+import Client from "@/utils/Client"
 
-import { defaultUser } from "../types/types"
-import type { AuthSession, User } from "../types/types"
+import { defaultUser } from "@/types/types"
+import type { AuthSession, User } from "@/types/types"
 
 interface ClientContextType {
   client: Client

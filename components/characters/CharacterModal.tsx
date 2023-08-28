@@ -2,26 +2,26 @@ import { MouseEventHandler, useState, useEffect, SyntheticEvent } from "react"
 import { colors, FormControl, Switch, Tooltip, Typography, DialogActions, FormControlLabel, MenuItem, Checkbox, InputAdornment, Dialog, DialogTitle, DialogContent, DialogContentText, Box, Stack, TextField, Button, Paper, Popover } from "@mui/material"
 import FavoriteIcon from "@mui/icons-material/Favorite"
 import PeopleIcon from "@mui/icons-material/People"
-import { StyledTextField, SaveCancelButtons, SaveButton, CancelButton, StyledDialog } from "../StyledFields"
+import { StyledTextField, SaveCancelButtons, SaveButton, CancelButton, StyledDialog } from "@/components/StyledFields"
 
 import Router from "next/router"
 
-import ColorPicker from "./edit/ColorPicker"
-import CharacterType from "./edit/CharacterType"
-import FortuneSelect from "./edit/FortuneSelect"
-import EditActionValues from "./edit/EditActionValues"
+import ColorPicker from "@/components/characters/edit/ColorPicker"
+import CharacterType from "@/components/characters/edit/CharacterType"
+import FortuneSelect from "@/components/characters/edit/FortuneSelect"
+import EditActionValues from "@/components/characters/edit/EditActionValues"
 
-import DeathMarks from "./DeathMarks"
-import PlayerTypeOnly from "../PlayerTypeOnly"
+import DeathMarks from "@/components/characters/DeathMarks"
+import PlayerTypeOnly from "@/components/PlayerTypeOnly"
 
-import { useToast } from "../../contexts/ToastContext"
-import { useFight } from "../../contexts/FightContext"
-import { useClient } from "../../contexts/ClientContext"
+import { useToast } from "@/contexts/ToastContext"
+import { useFight } from "@/contexts/FightContext"
+import { useClient } from "@/contexts/ClientContext"
 
-import type { Person, Fight, Character, Toast, ID } from "../../types/types"
-import { defaultCharacter } from "../../types/types"
-import { FightActions } from "../../reducers/fightState"
-import CS from "../../services/CharacterService"
+import type { Person, Fight, Character, Toast, ID } from "@/types/types"
+import { defaultCharacter } from "@/types/types"
+import { FightActions } from "@/reducers/fightState"
+import CS from "@/services/CharacterService"
 
 interface CharacterModalParams {
   open: Character,

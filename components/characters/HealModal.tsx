@@ -1,14 +1,14 @@
 import { useState } from 'react'
 import { DialogContent, Box, Stack, TextField, Button, Dialog } from '@mui/material'
-import Client from "../../utils/Client"
+import Client from "@/utils/Client"
 
-import { useFight } from "../../contexts/FightContext"
-import { useToast } from "../../contexts/ToastContext"
-import { useClient } from "../../contexts/ClientContext"
-import type { Person, Character, Fight, Toast, ActionValues } from "../../types/types"
-import { FightActions } from '../../reducers/fightState'
-import { StyledTextField, StyledFormDialog, SaveCancelButtons } from '../StyledFields'
-import CS from "../../services/CharacterService"
+import { useFight } from "@/contexts/FightContext"
+import { useToast } from "@/contexts/ToastContext"
+import { useClient } from "@/contexts/ClientContext"
+import type { Person, Character, Fight, Toast, ActionValues } from "@/types/types"
+import { FightActions } from '@/reducers/fightState'
+import { StyledTextField, StyledFormDialog, SaveCancelButtons } from '@/components/StyledFields'
+import CS from "@/services/CharacterService"
 
 interface HealModalParams {
   open: boolean,

@@ -1,14 +1,14 @@
 import { Autocomplete, Box, Stack, TextField, Button, Dialog } from '@mui/material'
 import { useState, useEffect, useReducer } from "react"
-import type { Schtick } from "../../types/types"
-import { defaultSchtick } from "../../types/types"
-import { useClient } from "../../contexts/ClientContext"
-import { useToast } from "../../contexts/ToastContext"
-import { StyledTextField, StyledDialog, SaveCancelButtons } from "../StyledFields"
-import { initialSchticksState, schticksReducer } from "../../reducers/schticksState"
-import { SchticksActions } from "../../reducers/schticksState"
+import type { Schtick } from "@/types/types"
+import { defaultSchtick } from "@/types/types"
+import { useClient } from "@/contexts/ClientContext"
+import { useToast } from "@/contexts/ToastContext"
+import { StyledTextField, StyledDialog, SaveCancelButtons } from "@/components/StyledFields"
+import { initialSchticksState, schticksReducer } from "@/reducers/schticksState"
+import { SchticksActions } from "@/reducers/schticksState"
 
-import type { SchticksStateType, SchticksActionType } from "../../reducers/schticksState"
+import type { SchticksStateType, SchticksActionType } from "@/reducers/schticksState"
 
 interface SchtickModalProps {
   open: boolean

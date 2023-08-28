@@ -1,16 +1,16 @@
-import Layout from '../../components/Layout'
+import Layout from '@/components/Layout'
 import Head from 'next/head'
 import type { NextApiRequest, NextApiResponse } from "next"
 
-import Navbar from "../../components/navbar/Navbar"
+import Navbar from "@/components/navbar/Navbar"
 
 import { Stack, Link, Container, Typography, Box } from "@mui/material"
 
 import { useRouter } from 'next/router'
-import { getServerClient } from "../../utils/getServerClient"
+import { getServerClient } from "@/utils/getServerClient"
 
-import Client from '../../utils/Client'
-import type { QueryType, AuthSession, ServerSideProps, User } from "../../types/types"
+import Client from '@/utils/Client'
+import type { QueryType, AuthSession, ServerSideProps, User } from "@/types/types"
 
 export async function getServerSideProps<GetServerSideProps>({ req, res, params, query }: ServerSideProps) {
   const { client } = await getServerClient(req, res)

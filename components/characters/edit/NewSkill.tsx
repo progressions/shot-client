@@ -1,11 +1,11 @@
 import { createFilterOptions, Typography, Button, Stack, Box, Tooltip, IconButton } from "@mui/material"
-import { useCharacter } from "../../../contexts/CharacterContext"
+import { useCharacter } from "@/contexts/CharacterContext"
 import AddIcon from '@mui/icons-material/Add'
-import { StyledTextField, StyledAutocomplete } from "../../StyledFields"
+import { StyledTextField, StyledAutocomplete } from "@/components/StyledFields"
 
 import { useEffect, useMemo, useState } from "react"
-import type { OptionType, FilterParamsType, InputParamsType } from "../../../types/types"
-import { CharacterActions } from "../../../reducers/characterState"
+import type { OptionType, FilterParamsType, InputParamsType } from "@/types/types"
+import { CharacterActions } from "@/reducers/characterState"
 
 const filter = createFilterOptions<string>();
 

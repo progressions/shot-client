@@ -1,5 +1,5 @@
-import type { Character, CharacterType } from "../types/types"
-import CS from "../services/CharacterService"
+import type { Character, CharacterType } from "@/types/types"
+import CS from "@/services/CharacterService"
 
 interface PlayerTypeOnlyProps {
   character: Character

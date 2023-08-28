@@ -1,14 +1,14 @@
-import { StyledFormDialog, StyledAutocomplete, StyledSelect, StyledTextField, SaveCancelButtons } from "../StyledFields"
+import { StyledFormDialog, StyledAutocomplete, StyledSelect, StyledTextField, SaveCancelButtons } from "@/components/StyledFields"
 import { FormControlLabel, Switch, DialogContent, createFilterOptions, MenuItem, Box, Stack, Typography } from "@mui/material"
-import { useClient } from "../../contexts/ClientContext"
-import { useToast } from "../../contexts/ToastContext"
-import { useCharacter } from "../../contexts/CharacterContext"
+import { useClient } from "@/contexts/ClientContext"
+import { useToast } from "@/contexts/ToastContext"
+import { useCharacter } from "@/contexts/CharacterContext"
 
-import type { WeaponCategory, FilterParamsType, OptionType, Juncture, InputParamsType, Character, Weapon } from "../../types/types"
-import { defaultWeapon } from "../../types/types"
+import type { WeaponCategory, FilterParamsType, OptionType, Juncture, InputParamsType, Character, Weapon } from "@/types/types"
+import { defaultWeapon } from "@/types/types"
 import { useState, useEffect, useReducer } from "react"
-import type { WeaponsStateType, WeaponsActionType } from "../../reducers/weaponsState"
-import { WeaponsActions } from "../../reducers/weaponsState"
+import type { WeaponsStateType, WeaponsActionType } from "@/reducers/weaponsState"
+import { WeaponsActions } from "@/reducers/weaponsState"
 
 const filterOptions = createFilterOptions<Juncture>();
 

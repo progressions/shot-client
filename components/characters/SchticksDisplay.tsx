@@ -1,7 +1,7 @@
 import LightbulbIcon from '@mui/icons-material/Lightbulb'
 import { colors, Typography, Box, Popover, Tooltip, IconButton } from "@mui/material"
 import { useState } from "react"
-import type { Schtick } from "../../types/types"
+import type { Schtick } from "@/types/types"
 
 interface SchticksDisplayProps {
   schticks: Schtick[]

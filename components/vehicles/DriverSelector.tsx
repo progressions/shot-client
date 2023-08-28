@@ -1,9 +1,9 @@
-import { StyledAutocomplete, StyledSelect } from "../StyledFields"
-import type { InputParamsType, Vehicle, Character } from "../../types/types"
-import { useFight } from "../../contexts/FightContext"
-import { useClient } from "../../contexts/ClientContext"
+import { StyledAutocomplete, StyledSelect } from "@/components/StyledFields"
+import type { InputParamsType, Vehicle, Character } from "@/types/types"
+import { useFight } from "@/contexts/FightContext"
+import { useClient } from "@/contexts/ClientContext"
 import { useState, useEffect } from "react"
-import { defaultCharacter } from "../../types/types"
+import { defaultCharacter } from "@/types/types"
 
 interface DriverSelectorProps {
   vehicle: Vehicle | null

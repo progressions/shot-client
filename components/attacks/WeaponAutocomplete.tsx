@@ -1,10 +1,10 @@
-import { StyledAutocomplete, StyledSelect } from "../StyledFields"
+import { StyledAutocomplete, StyledSelect } from "@/components/StyledFields"
 import { useState, useEffect } from "react"
-import type { Character, Weapon, InputParamsType } from "../../types/types"
-import { defaultWeapon } from "../../types/types"
-import type { WeaponsStateType, WeaponsActionType } from "../../reducers/weaponsState"
-import { WeaponsActions } from "../../reducers/weaponsState"
-import { useClient } from "../../contexts/ClientContext"
+import type { Character, Weapon, InputParamsType } from "@/types/types"
+import { defaultWeapon } from "@/types/types"
+import type { WeaponsStateType, WeaponsActionType } from "@/reducers/weaponsState"
+import { WeaponsActions } from "@/reducers/weaponsState"
+import { useClient } from "@/contexts/ClientContext"
 
 interface WeaponAutocompleteProps {
   character: Character,

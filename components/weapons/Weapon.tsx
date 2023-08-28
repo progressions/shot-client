@@ -1,15 +1,15 @@
 import { Box, IconButton, Stack, Typography } from "@mui/material"
-import { useClient } from "../../contexts/ClientContext"
-import { useToast } from "../../contexts/ToastContext"
-import { useCharacter } from "../../contexts/CharacterContext"
+import { useClient } from "@/contexts/ClientContext"
+import { useToast } from "@/contexts/ToastContext"
+import { useCharacter } from "@/contexts/CharacterContext"
 import ClearIcon from '@mui/icons-material/Clear'
 import EditIcon from '@mui/icons-material/Edit'
-import WeaponCardBase from "./WeaponCardBase"
+import WeaponCardBase from "@/components/weapons/WeaponCardBase"
 import { GiDeathSkull, GiShotgun, GiPistolGun } from "react-icons/gi"
-import { Weapon as WeaponType } from "../../types/types"
-import type { WeaponsStateType, WeaponsActionType } from "../../reducers/weaponsState"
-import { WeaponsActions } from "../../reducers/weaponsState"
-import WeaponModal from "./WeaponModal"
+import { Weapon as WeaponType } from "@/types/types"
+import type { WeaponsStateType, WeaponsActionType } from "@/reducers/weaponsState"
+import { WeaponsActions } from "@/reducers/weaponsState"
+import WeaponModal from "@/components/weapons/WeaponModal"
 import { useState } from "react"
 
 interface WeaponProps {

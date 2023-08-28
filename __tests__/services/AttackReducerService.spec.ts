@@ -1,10 +1,10 @@
-import type { Swerve, Character, Vehicle } from "../../types/types"
-import { defaultSwerve, defaultCharacter, defaultVehicle } from "../../types/types"
-import { initialAttackState, AttackState } from "../../reducers/attackState"
-import ARS from "../../services/AttackReducerService"
-import CS from "../../services/CharacterService"
-import { brick, carolina, shing, zombies } from "../factories/Characters"
-import { derringer } from "../factories/Weapons"
+import type { Swerve, Character, Vehicle } from "@/types/types"
+import { defaultSwerve, defaultCharacter, defaultVehicle } from "@/types/types"
+import { initialAttackState, AttackState } from "@/reducers/attackState"
+import ARS from "@/services/AttackReducerService"
+import CS from "@/services/CharacterService"
+import { brick, carolina, shing, zombies } from "@/__tests__/factories/Characters"
+import { derringer } from "@/__tests__/factories/Weapons"
 
 describe("AttackReducerService", () => {
   beforeEach(() => {

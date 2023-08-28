@@ -1,9 +1,9 @@
 import { Stack } from "@mui/material"
-import { StyledTextField } from "../StyledFields"
-import type { AttackState } from "../../reducers/attackState"
-import type { Character } from "../../types/types"
-import CS from "../../services/CharacterService"
-import TargetMook from "./TargetMook"
+import { StyledTextField } from "@/components/StyledFields"
+import type { AttackState } from "@/reducers/attackState"
+import type { Character } from "@/types/types"
+import CS from "@/services/CharacterService"
+import TargetMook from "@/components/attacks/TargetMook"
 
 interface TargetProps {
   state: AttackState

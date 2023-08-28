@@ -4,7 +4,7 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import VisibilityIcon from '@mui/icons-material/Visibility'
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
 
-import type { Vehicle, Character, CharacterType } from "../../types/types"
+import type { Vehicle, Character, CharacterType } from "@/types/types"
 
 interface EditButtonsProps {
   character: Character,

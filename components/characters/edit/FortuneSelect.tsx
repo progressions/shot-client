@@ -1,7 +1,7 @@
 import { Typography, Stack, Box, TextField, MenuItem } from "@mui/material"
-import type { Character } from "../../../types/types"
-import { Subhead, StyledSelect, StyledTextField } from "../../StyledFields"
-import CS from "../../../services/CharacterService"
+import type { Character } from "@/types/types"
+import { Subhead, StyledSelect, StyledTextField } from "@/components/StyledFields"
+import CS from "@/services/CharacterService"
 
 interface FortuneSelectProps {
   character: Character

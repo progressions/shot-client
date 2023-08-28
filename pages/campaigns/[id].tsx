@@ -1,4 +1,4 @@
-import Layout from '../../components/Layout'
+import Layout from '@/components/Layout'
 import Head from 'next/head'
 import DeleteIcon from '@mui/icons-material/Delete'
 import SendIcon from '@mui/icons-material/Send'
@@ -6,19 +6,19 @@ import type { NextApiRequest, NextApiResponse } from "next"
 
 import { Tooltip, IconButton, Box, Stack, TableContainer, Table, TableRow, TableHead, TableBody, TableCell, Container, Typography } from "@mui/material"
 
-import { ButtonBar } from "../../components/StyledFields"
-import CreateInvitation from "../../components/invitations/CreateInvitation"
-import CreateOpenInvitation from "../../components/invitations/CreateOpenInvitation"
-import Client from '../../utils/Client'
+import { ButtonBar } from "@/components/StyledFields"
+import CreateInvitation from "@/components/invitations/CreateInvitation"
+import CreateOpenInvitation from "@/components/invitations/CreateOpenInvitation"
+import Client from '@/utils/Client'
 import { GetServerSideProps } from 'next'
-import { getServerClient } from "../../utils/getServerClient"
+import { getServerClient } from "@/utils/getServerClient"
 
-import PlayerDetails from "../../components/campaigns/PlayerDetails"
-import { useClient } from "../../contexts/ClientContext"
-import { useToast } from "../../contexts/ToastContext"
+import PlayerDetails from "@/components/campaigns/PlayerDetails"
+import { useClient } from "@/contexts/ClientContext"
+import { useToast } from "@/contexts/ToastContext"
 
 import { useState } from "react"
-import { ParamsType, AuthSession, ServerSideProps, Invitation, User, Campaign } from "../../types/types"
+import { ParamsType, AuthSession, ServerSideProps, Invitation, User, Campaign } from "@/types/types"
 
 export async function getServerSideProps<GetServerSideProps>({ req, res, params }: ServerSideProps) {
   const { client } = await getServerClient(req, res)

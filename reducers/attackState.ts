@@ -1,9 +1,9 @@
-import type { Swerve, Fight, Character, Weapon } from "../types/types"
-import { defaultSwerve, defaultFight, defaultWeapon, defaultCharacter } from "../types/types"
-import AS from "../services/ActionService"
-import CS from "../services/CharacterService"
-import CES from "../services/CharacterEffectService"
-import ARS from "../services/AttackReducerService"
+import type { Swerve, Fight, Character, Weapon } from "@/types/types"
+import { defaultSwerve, defaultFight, defaultWeapon, defaultCharacter } from "@/types/types"
+import AS from "@/services/ActionService"
+import CS from "@/services/CharacterService"
+import CES from "@/services/CharacterEffectService"
+import ARS from "@/services/AttackReducerService"
 
 export enum AttackActions {
   ATTACKER = "attacker",

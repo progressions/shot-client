@@ -1,6 +1,6 @@
-import { CharacterTypes, Faction, Vehicle, Character } from "../types/types"
-import { parseToNumber } from "../utils/parseToNumber"
-import Dice from "./DiceService"
+import { CharacterTypes, Faction, Vehicle, Character } from "@/types/types"
+import { parseToNumber } from "@/utils/parseToNumber"
+import Dice from "@/services/DiceService"
 
 // Define the type for the wound thresholds
 interface WoundThresholds {

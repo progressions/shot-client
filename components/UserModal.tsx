@@ -8,13 +8,13 @@ import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
 import Router from "next/router"
 
-import Client from "../utils/Client"
+import Client from "@/utils/Client"
 
-import { useClient } from "../contexts/ClientContext"
-import { useToast } from "../contexts/ToastContext"
-import { defaultUser } from "../types/types"
-import type { User } from "../types/types"
-import { loadUsers } from "../pages/admin/users"
+import { useClient } from "@/contexts/ClientContext"
+import { useToast } from "@/contexts/ToastContext"
+import { defaultUser } from "@/types/types"
+import type { User } from "@/types/types"
+import { loadUsers } from "@/pages/admin/users"
 
 interface UserModalParams {
   user: User

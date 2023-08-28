@@ -3,15 +3,15 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
 import VisibilityIcon from '@mui/icons-material/Visibility'
 
-import GamemasterOnly from "../GamemasterOnly"
+import GamemasterOnly from "@/components/GamemasterOnly"
 
-import { useToast } from "../../contexts/ToastContext"
-import { useFight } from "../../contexts/FightContext"
-import { useClient } from "../../contexts/ClientContext"
-import type { Fight, Toast } from "../../types/types"
-import { defaultFight } from "../../types/types"
-import type { FightsStateType, FightsActionType } from "../../reducers/fightsState"
-import { FightsActions } from "../../reducers/fightsState"
+import { useToast } from "@/contexts/ToastContext"
+import { useFight } from "@/contexts/FightContext"
+import { useClient } from "@/contexts/ClientContext"
+import type { Fight, Toast } from "@/types/types"
+import { defaultFight } from "@/types/types"
+import type { FightsStateType, FightsActionType } from "@/reducers/fightsState"
+import { FightsActions } from "@/reducers/fightsState"
 
 interface FightParams {
   fight: Fight

@@ -53,7 +53,7 @@ export interface Party {
 export interface Faction {
   id?: string
   name: string
-  description: string
+  description?: string
 }
 
 export interface PartiesResponse {

@@ -1,12 +1,12 @@
 import { useState } from 'react'
 import { Box, Stack, TextField, Button, Dialog } from '@mui/material'
 
-import { useFight } from "../../contexts/FightContext"
-import { useToast } from "../../contexts/ToastContext"
-import { useClient } from "../../contexts/ClientContext"
-import type { Vehicle, Character, Fight, Toast } from "../../types/types"
-import { FightActions } from '../../reducers/fightState'
-import { StyledFormDialog, StyledTextField } from "../StyledFields"
+import { useFight } from "@/contexts/FightContext"
+import { useToast } from "@/contexts/ToastContext"
+import { useClient } from "@/contexts/ClientContext"
+import type { Vehicle, Character, Fight, Toast } from "@/types/types"
+import { FightActions } from '@/reducers/fightState'
+import { StyledFormDialog, StyledTextField } from "@/components/StyledFields"
 
 interface ActionModalParams {
   open: boolean,

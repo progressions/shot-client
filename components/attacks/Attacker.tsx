@@ -1,11 +1,11 @@
 import { Stack, Button, FormControlLabel, Switch } from "@mui/material"
-import { StyledTextField } from "../StyledFields"
-import type { AttackState } from "../../reducers/attackState"
-import type { Character, Weapon } from "../../types/types"
-import WeaponAutocomplete from "./WeaponAutocomplete"
-import CS from "../../services/CharacterService"
-import CES from "../../services/CharacterEffectService"
-import MookAttacker from "./MookAttacker"
+import { StyledTextField } from "@/components/StyledFields"
+import type { AttackState } from "@/reducers/attackState"
+import type { Character, Weapon } from "@/types/types"
+import CS from "@/services/CharacterService"
+import CES from "@/services/CharacterEffectService"
+import MookAttacker from "@/components/attacks/MookAttacker"
+import WeaponAutocomplete from "@/components/attacks/WeaponAutocomplete"
 
 interface AttackerProps {
   state: AttackState
@@ -41,7 +41,7 @@ export default function Attacker({ state, setAttacker, handleChange, setWeapon, 
         disabled={edited}
       />
       <Stack direction="row" spacing={2} alignItems="top">
-        { CS.attackValues(attacker).map((valueName) => (
+        { CS.attackValues(attacker).map((valueName: string) => (
           <Button
             key={valueName}
             variant={ actionValueName === valueName ? "contained" : "outlined" }

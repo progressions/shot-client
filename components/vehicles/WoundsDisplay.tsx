@@ -1,9 +1,9 @@
 import { Divider, Box, Stack, Typography } from "@mui/material"
-import GamemasterOnly from "../GamemasterOnly"
-import PlayerTypeOnly from "../PlayerTypeOnly"
+import GamemasterOnly from "@/components/GamemasterOnly"
+import PlayerTypeOnly from "@/components/PlayerTypeOnly"
 
-import type { User, Vehicle } from "../../types/types"
-import VS from "../../services/VehicleService"
+import type { User, Vehicle } from "@/types/types"
+import VS from "@/services/VehicleService"
 
 interface WoundsDisplayProps {
   character: Vehicle

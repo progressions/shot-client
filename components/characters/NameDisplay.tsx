@@ -1,16 +1,16 @@
 import { Link, Stack, Box, Typography } from "@mui/material"
 import DirectionsCarIcon from "@mui/icons-material/DirectionsCar"
 import { IoSkull, IoSkullOutline } from "react-icons/io5"
-import DeathMarks from "./DeathMarks"
-import EditButtons from "./EditButtons"
-import Location from "../locations/Location"
-import ImageDisplay from "./ImageDisplay"
+import DeathMarks from "@/components/characters/DeathMarks"
+import EditButtons from "@/components/characters/EditButtons"
+import ImageDisplay from "@/components/characters/ImageDisplay"
+import Location from "@/components/locations/Location"
 
-import GamemasterOnly from "../GamemasterOnly"
-import type { User, AuthSession, Character, Toast, Person, Vehicle } from "../../types/types"
+import GamemasterOnly from "@/components/GamemasterOnly"
+import type { User, AuthSession, Character, Toast, Person, Vehicle } from "@/types/types"
 import { useState } from "react"
 import { useSession } from 'next-auth/react'
-import { useClient } from "../../contexts/ClientContext"
+import { useClient } from "@/contexts/ClientContext"
 
 interface NameDisplayProps {
   character: Character
@@ -61,7 +61,6 @@ export default function NameDisplay({ character, editCharacter, deleteCharacter,
       <Box>
         <Box onMouseEnter={showButtons} onMouseLeave={hideButtons}>
           <Stack direction="row" spacing={1} alignItems="baseline">
-            <ImageDisplay character={character} />
             <Typography variant="h4" sx={{fontWeight: 'bold', overflow: "hidden", textOverflow: "ellipsis", width: "100%"}}>
               <Link color="inherit" href={link} target="_blank">
                 { character.name }

@@ -5,18 +5,18 @@ import { useRouter } from 'next/router'
 import { useState, useEffect } from 'react'
 import Router from "next/router"
 
-import Layout from '../../components/Layout'
-import ShotCounter from "../../components/fights/ShotCounter"
-import Client from '../../utils/Client'
+import Layout from '@/components/Layout'
+import ShotCounter from "@/components/fights/ShotCounter"
+import Client from '@/utils/Client'
 
-import { getServerClient } from "../../utils/getServerClient"
-import { useFight } from "../../contexts/FightContext"
+import { getServerClient } from "@/utils/getServerClient"
+import { useFight } from "@/contexts/FightContext"
 
-import type { ParamsType, AuthSession, ShotType, Vehicle, Person, Character, Fight, ID } from "../../types/types"
-import { ServerSideProps } from "../../types/types"
-import { FightActions, initialFightState, fightReducer } from "../../reducers/fightState"
-import { useClient } from "../../contexts/ClientContext"
-import Loading from "../../components/fights/Loading"
+import type { ParamsType, AuthSession, ShotType, Vehicle, Person, Character, Fight, ID } from "@/types/types"
+import { ServerSideProps } from "@/types/types"
+import { FightActions, initialFightState, fightReducer } from "@/reducers/fightState"
+import { useClient } from "@/contexts/ClientContext"
+import Loading from "@/components/fights/Loading"
 
 interface FightParams {
   fight: Fight | null

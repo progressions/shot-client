@@ -1,11 +1,11 @@
 import { Stack, Button, FormControlLabel, Switch } from "@mui/material"
-import { StyledTextField } from "../StyledFields"
-import type { AttackState } from "../../reducers/attackState"
-import type { Character, Weapon } from "../../types/types"
-import WeaponAutocomplete from "./WeaponAutocomplete"
-import CS from "../../services/CharacterService"
-import CES from "../../services/CharacterEffectService"
-import { useFight } from "../../contexts/FightContext"
+import { StyledTextField } from "@/components/StyledFields"
+import type { AttackState } from "@/reducers/attackState"
+import type { Character, Weapon } from "@/types/types"
+import WeaponAutocomplete from "@/components/attacks/WeaponAutocomplete"
+import CS from "@/services/CharacterService"
+import CES from "@/services/CharacterEffectService"
+import { useFight } from "@/contexts/FightContext"
 
 interface MookAttackerProps {
   state: AttackState
@@ -39,7 +39,7 @@ export default function MookAttacker({ state, handleChange, handleCheck, setWeap
         disabled={edited}
       />
       <Stack direction="row" spacing={2} alignItems="top">
-        { CS.attackValues(attacker).map((valueName) => (
+        { CS.attackValues(attacker).map((valueName: string) => (
           <Button
             key={valueName}
             variant={ actionValueName === valueName ? "contained" : "outlined" }

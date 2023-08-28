@@ -7,10 +7,10 @@ import NewReleasesIcon from '@mui/icons-material/NewReleases'
 import DirectionsRunIcon from '@mui/icons-material/DirectionsRun'
 import CommuteIcon from '@mui/icons-material/Commute'
 
-import GamemasterOnly from "../GamemasterOnly"
-import { useClient } from "../../contexts/ClientContext"
-import type { Character, CharacterType } from "../../types/types"
-import CS from "../../services/CharacterService"
+import GamemasterOnly from "@/components/GamemasterOnly"
+import { useClient } from "@/contexts/ClientContext"
+import type { Character, CharacterType } from "@/types/types"
+import CS from "@/services/CharacterService"
 
 interface ActionButtonsParams {
   character: Character,

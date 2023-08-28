@@ -1,21 +1,21 @@
-import Layout from '../../components/Layout'
+import Layout from '@/components/Layout'
 import Head from 'next/head'
 import type { NextApiRequest, NextApiResponse } from "next"
 
 import { useCallback, useMemo, useEffect, useState } from "react"
 import { Box, Paper, IconButton, Button, Stack, Link, Container, Typography, TableContainer, Table, TableHead, TableBody, TableRow, TableCell } from "@mui/material"
-import { useClient } from "../../contexts/ClientContext"
-import { useCampaign } from "../../contexts/CampaignContext"
+import { useClient } from "@/contexts/ClientContext"
+import { useCampaign } from "@/contexts/CampaignContext"
 
-import { ButtonBar } from "../../components/StyledFields"
-import CreateCampaign from "../../components/campaigns/CreateCampaign"
-import Campaigns from "../../components/campaigns/Campaigns"
-import GamemasterOnly from "../../components/GamemasterOnly"
+import { ButtonBar } from "@/components/StyledFields"
+import CreateCampaign from "@/components/campaigns/CreateCampaign"
+import Campaigns from "@/components/campaigns/Campaigns"
+import GamemasterOnly from "@/components/GamemasterOnly"
 
-import { getServerClient } from "../../utils/getServerClient"
-import Client from "../../utils/Client"
+import { getServerClient } from "@/utils/getServerClient"
+import Client from "@/utils/Client"
 
-import type { AuthSession, CampaignsResponse, ServerSideProps, Campaign } from "../../types/types"
+import type { AuthSession, CampaignsResponse, ServerSideProps, Campaign } from "@/types/types"
 import { GetServerSideProps } from 'next'
 import { InferGetServerSidePropsType } from 'next'
 

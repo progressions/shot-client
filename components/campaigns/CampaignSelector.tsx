@@ -1,12 +1,12 @@
 import { IconButton, Box, Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, TextField, MenuItem, Stack, Typography } from "@mui/material"
-import { CampaignContextType, useCampaign } from "../../contexts/CampaignContext"
-import { useClient } from "../../contexts/ClientContext"
+import { CampaignContextType, useCampaign } from "@/contexts/CampaignContext"
+import { useClient } from "@/contexts/ClientContext"
 import { useMemo, useCallback, useEffect, useState } from "react"
-import Client from "../../utils/Client"
-import NameDisplay from "./NameDisplay"
+import Client from "@/utils/Client"
+import NameDisplay from "@/components/campaigns/NameDisplay"
 
-import type { Campaign, CampaignsResponse } from "../../types/types"
-import { defaultCampaign } from "../../types/types"
+import type { Campaign, CampaignsResponse } from "@/types/types"
+import { defaultCampaign } from "@/types/types"
 
 interface CampaignSelectorProps {
   startCampaign: (campaign: Campaign) => Promise<void>

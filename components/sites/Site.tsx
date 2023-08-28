@@ -1,16 +1,16 @@
 import { DialogContent, Stack, IconButton, Box, Typography } from "@mui/material"
-import { useClient } from "../../contexts/ClientContext"
-import { useToast } from "../../contexts/ToastContext"
-import Member from "./Member"
-import SiteCardBase from "./SiteCardBase"
+import { useClient } from "@/contexts/ClientContext"
+import { useToast } from "@/contexts/ToastContext"
+import Member from "@/components/sites/Member"
+import SiteCardBase from "@/components/sites/SiteCardBase"
 import ClearIcon from '@mui/icons-material/Clear'
 import EditIcon from '@mui/icons-material/Edit'
-import { StyledDialog } from "../StyledFields"
+import { StyledDialog } from "@/components/StyledFields"
 
-import type { SitesStateType, SitesActionType } from "../../reducers/sitesState"
-import type { Character, Vehicle, Site as SiteType } from "../../types/types"
-import { SitesActions } from "../../reducers/sitesState"
-import SiteModal from "./SiteModal"
+import type { SitesStateType, SitesActionType } from "@/reducers/sitesState"
+import type { Character, Vehicle, Site as SiteType } from "@/types/types"
+import { SitesActions } from "@/reducers/sitesState"
+import SiteModal from "@/components/sites/SiteModal"
 
 import { useState } from "react"
 

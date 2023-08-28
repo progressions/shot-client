@@ -1,10 +1,9 @@
-import type { Position, Fight, Vehicle, Weapon } from "../types/types"
-import { Swerve, defaultSwerve, defaultFight, defaultWeapon, defaultVehicle } from "../types/types"
-import AS from "../services/ActionService"
-import VS from "../services/VehicleService"
-import CES from "../services/CharacterEffectService"
-import CRS from "../services/ChaseReducerService"
-import { parseToNumber } from "../utils/parseToNumber"
+import type { Position, Fight, Vehicle, Weapon } from "@/types/types"
+import { Swerve, defaultSwerve, defaultFight, defaultWeapon, defaultVehicle } from "@/types/types"
+import AS from "@/services/ActionService"
+import VS from "@/services/VehicleService"
+import CES from "@/services/CharacterEffectService"
+import CRS from "@/services/ChaseReducerService"
 
 export enum ChaseActions {
   UPDATE = "update",

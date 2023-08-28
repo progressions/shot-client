@@ -1,10 +1,10 @@
 import { useEffect, createContext, useContext, useReducer } from "react"
-import { FightActions, initialFightState, fightReducer } from "../reducers/fightState"
-import type { FightStateType, FightActionType } from "../reducers/fightState"
+import { FightActions, initialFightState, fightReducer } from "@/reducers/fightState"
+import type { FightStateType, FightActionType } from "@/reducers/fightState"
 
-import type { Fight } from "../types/types"
-import { defaultFight } from "../types/types"
-import { useClient } from "./ClientContext"
+import type { Fight } from "@/types/types"
+import { defaultFight } from "@/types/types"
+import { useClient } from "@/contexts/ClientContext"
 
 export interface FightContextType {
   fight: Fight

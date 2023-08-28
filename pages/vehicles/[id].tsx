@@ -1,15 +1,15 @@
-import Layout from '../../components/Layout'
+import Layout from '@/components/Layout'
 import Head from 'next/head'
 
 import { colors, Typography, Paper, Container } from "@mui/material"
 
-import { VehicleProvider } from "../../contexts/VehicleContext"
-import EditVehicle from "../../components/vehicles/edit/EditVehicle"
+import { VehicleProvider } from "@/contexts/VehicleContext"
+import EditVehicle from "@/components/vehicles/edit/EditVehicle"
 import { GetServerSideProps } from 'next'
 
-import { getServerClient } from "../../utils/getServerClient"
+import { getServerClient } from "@/utils/getServerClient"
 
-import { ParamsType, AuthSession, ServerSideProps, User, Vehicle } from "../../types/types"
+import { ParamsType, AuthSession, ServerSideProps, User, Vehicle } from "@/types/types"
 import { AxiosError } from 'axios'
 
 export async function getServerSideProps<GetServerSideProps>({ req, res, params }: ServerSideProps) {

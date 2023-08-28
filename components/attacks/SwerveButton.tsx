@@ -1,8 +1,8 @@
 import { Stack, Button } from "@mui/material"
-import { StyledTextField } from "../StyledFields"
-import type { AttackState } from "../../reducers/attackState"
-import type { ChaseState } from "../../reducers/chaseState"
-import SS from "../../services/SharedService"
+import { StyledTextField } from "@/components/StyledFields"
+import type { AttackState } from "@/reducers/attackState"
+import type { ChaseState } from "@/reducers/chaseState"
+import SS from "@/services/SharedService"
 import PlayArrowIcon from '@mui/icons-material/PlayArrow'
 import CasinoIcon from '@mui/icons-material/Casino'
 

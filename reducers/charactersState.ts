@@ -1,4 +1,4 @@
-import { Archetype, CharacterTypes, CharacterType, Character, PaginationMeta, CharacterCategory, defaultPaginationMeta, defaultCharacter, defaultFaction, Faction, CharactersResponse, CharactersAndVehiclesResponse } from "../types/types"
+import { Archetype, CharacterTypes, CharacterType, Character, PaginationMeta, CharacterCategory, defaultPaginationMeta, defaultCharacter, defaultFaction, Faction, CharactersResponse, CharactersAndVehiclesResponse } from "@/types/types"
 
 export enum CharactersActions {
   RESET = "reset",
@@ -21,7 +21,7 @@ export interface CharactersStateType {
   saving: boolean
   showHidden: boolean
   page: number
-  character_type: CharacterTypes
+  character_type: CharacterTypes | string
   character_types: CharacterTypes[]
   characters: Character[]
   character: Character
@@ -59,7 +59,7 @@ export const initialCharactersState:CharactersStateType = {
   loading: true,
   saving: false,
   page: 1,
-  character_type: CharacterTypes.FeaturedFoe,
+  character_type: "",
   character_types: [],
   faction: defaultFaction,
   factions: [],

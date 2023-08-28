@@ -1,11 +1,11 @@
 import { useEffect, useReducer, createContext, useContext } from "react"
 
-import { defaultCharacter } from "../types/types"
-import type { Character, User } from "../types/types"
-import { useClient } from "./ClientContext"
-import { useToast } from "./ToastContext"
+import { defaultCharacter } from "@/types/types"
+import type { Character, User } from "@/types/types"
+import { useClient } from "@/contexts/ClientContext"
+import { useToast } from "@/contexts/ToastContext"
 
-import { CharacterActions, CharacterStateAction, CharacterStateType, initialCharacterState, characterReducer } from "../reducers/characterState"
+import { CharacterActions, CharacterStateAction, CharacterStateType, initialCharacterState, characterReducer } from "@/reducers/characterState"
 
 interface CharacterContextType {
   state: CharacterStateType

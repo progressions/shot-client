@@ -4,9 +4,9 @@ import { useReducer, useEffect } from 'react'
 import { signIn, signOut } from 'next-auth/react'
 import Router from 'next/router'
 
-import Layout from '../../components/Layout'
-import type { ServerSideProps } from "../../types/types"
-import { initialState, loginReducer } from "../../reducers/loginReducer"
+import Layout from '@/components/Layout'
+import type { ServerSideProps } from "@/types/types"
+import { initialState, loginReducer } from "@/reducers/loginReducer"
 
 interface SignInPageProps {
   referer: string | null

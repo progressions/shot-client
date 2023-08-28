@@ -1,22 +1,23 @@
-import { StyledDialog } from "../StyledFields"
+import { StyledDialog } from "@/components/StyledFields"
 import HeartBrokenIcon from "@mui/icons-material/HeartBroken"
 import PersonOffIcon from "@mui/icons-material/PersonOff"
-import { Typography, Button, DialogContent, Stack } from "@mui/material"
-import { ChaseMethod, ChaseActions, initialChaseState, chaseReducer } from "../../reducers/chaseState"
-import { FightActions } from "../../reducers/fightState"
-import { useFight } from "../../contexts/FightContext"
-import { useClient } from "../../contexts/ClientContext"
-import { useToast } from "../../contexts/ToastContext"
-import VS from "../../services/VehicleService"
-import AS from "../../services/ActionService"
+import { Button, DialogContent, Stack } from "@mui/material"
+import { ChaseActions, initialChaseState, chaseReducer } from "@/reducers/chaseState"
+import { FightActions } from "@/reducers/fightState"
+import { useFight } from "@/contexts/FightContext"
+import { useClient } from "@/contexts/ClientContext"
+import { useToast } from "@/contexts/ToastContext"
+import VS from "@/services/VehicleService"
+import AS from "@/services/ActionService"
 import { useEffect, useReducer } from "react"
-import VehiclesAutocomplete from "./VehiclesAutocomplete"
-import Attacker from "./Attacker"
-import Target from "./Target"
-import type { Vehicle } from "../../types/types"
-import { defaultVehicle } from "../../types/types"
-import SwerveButton from "../attacks/SwerveButton"
-import ResultsDisplay from "./ResultsDisplay"
+import type { Vehicle } from "@/types/types"
+import { defaultVehicle } from "@/types/types"
+import SwerveButton from "@/components/attacks/SwerveButton"
+import ResultsDisplay from "@/components/chases/ResultsDisplay"
+import VehiclesAutocomplete from "@/components/chases/VehiclesAutocomplete"
+import Attacker from "@/components/chases/Attacker"
+import Target from "@/components/chases/Target"
+import FightService from "@/services/FightService"
 
 interface ChaseModalProps {
   open: boolean
@@ -37,8 +38,8 @@ export default function ChaseModal({ open, setOpen, anchorEl, setAnchorEl }: Cha
   useEffect(() => {
     dispatch({ type: ChaseActions.RESET })
 
-    const firstUp = fight.shot_order[0][1][0]
-    if (VS.isVehicle(firstUp)) {
+    const firstUp = FightService.firstUp(fight)
+    if (firstUp && VS.isVehicle(firstUp)) {
       dispatch({ type: ChaseActions.UPDATE, payload: { fight: fight } })
       setAttacker(firstUp)
     }

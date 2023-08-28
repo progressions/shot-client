@@ -1,5 +1,5 @@
 import { Radio, FormControl, FormControlLabel, FormLabel, RadioGroup, Typography, Box, Stack } from "@mui/material"
-import { Vehicle } from "../../types/types"
+import { Vehicle } from "@/types/types"
 
 interface PursuerSelectorProps {
   character: Vehicle

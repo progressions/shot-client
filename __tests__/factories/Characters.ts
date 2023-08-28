@@ -1,6 +1,6 @@
-import type { Character } from "../../types/types"
-import { CharacterTypes, defaultCharacter } from "../../types/types"
-import { derringer, ak47 } from "./Weapons"
+import type { Character } from "@/types/types"
+import { CharacterTypes, defaultCharacter } from "@/types/types"
+import { derringer, ak47 } from "@/__tests__/factories/Weapons"
 
 export const brick: Character = {
   ...defaultCharacter,

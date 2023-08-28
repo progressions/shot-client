@@ -1,8 +1,12 @@
-import type { ShotType, Vehicle, Fight, Character, CharacterEffect } from "../types/types"
-import CS from "./CharacterService"
-import SS from "./SharedService"
+import type { ShotType, Vehicle, Fight, Character, CharacterEffect } from "@/types/types"
+import CS from "@/services/CharacterService"
+import SS from "@/services/SharedService"
 
 const FightService = {
+  firstUp: function(fight: Fight): Character | Vehicle | undefined {
+    return fight.shot_order?.[0]?.[1]?.[0]
+  },
+
   playerCharactersForInitiative: function(fight: Fight): Character[] {
     return this.playerCharacters(fight)
       .filter((character) => {

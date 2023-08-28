@@ -3,17 +3,17 @@ import DeleteIcon from "@mui/icons-material/Delete"
 import ClearIcon from '@mui/icons-material/Clear'
 import EditIcon from '@mui/icons-material/Edit'
 
-import SchtickCardBase from "./SchtickCardBase"
-import { useClient } from "../../contexts/ClientContext"
-import { useToast } from "../../contexts/ToastContext"
-import { useCharacter } from "../../contexts/CharacterContext"
+import SchtickCardBase from "@/components/schticks/SchtickCardBase"
+import { useClient } from "@/contexts/ClientContext"
+import { useToast } from "@/contexts/ToastContext"
+import { useCharacter } from "@/contexts/CharacterContext"
 import { useState, useMemo } from "react"
-import SchtickModal from "./SchtickModal"
+import SchtickModal from "@/components/schticks/SchtickModal"
 
-import { SchticksActions } from "../../reducers/schticksState"
-import type { Character, Schtick } from "../../types/types"
-import type { SchticksStateType, SchticksActionType } from "../../reducers/schticksState"
-import { CharacterActions } from "../../reducers/characterState"
+import { SchticksActions } from "@/reducers/schticksState"
+import type { Character, Schtick } from "@/types/types"
+import type { SchticksStateType, SchticksActionType } from "@/reducers/schticksState"
+import { CharacterActions } from "@/reducers/characterState"
 
 /*
 

@@ -2,8 +2,8 @@ import { GiPistolGun } from "react-icons/gi"
 import TaxiAlertIcon from "@mui/icons-material/TaxiAlert"
 import { ButtonGroup, Button } from "@mui/material"
 import { useState } from "react"
-import AttackModal from "./AttackModal"
-import ChaseModal from "../chases/ChaseModal"
+import AttackModal from "@/components/attacks/AttackModal"
+import ChaseModal from "@/components/chases/ChaseModal"
 
 export default function AttackButton() {
   const [attackOpen, setAttackOpen] = useState<boolean>(false)

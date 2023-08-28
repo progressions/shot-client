@@ -3,12 +3,12 @@ import { Container, Typography, Avatar, Stack, TextField, Button, Box } from "@m
 import { useState } from "react"
 import Router from 'next/router'
 
-import Layout from '../../components/Layout'
-import Api from '../../utils/Api'
-import Client from "../../utils/Client"
+import Layout from '@/components/Layout'
+import Api from '@/utils/Api'
+import Client from "@/utils/Client"
 
-import type { User, ServerSideProps } from "../../types/types"
-import { defaultUser } from "../../types/types"
+import type { User, ServerSideProps } from "@/types/types"
+import { defaultUser } from "@/types/types"
 
 export async function getServerSideProps({ req }: ServerSideProps) {
 

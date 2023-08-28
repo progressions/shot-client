@@ -1,9 +1,9 @@
 import { Grid } from "@mui/material"
-import { Character } from "../../../../types/types"
-import type { Site as SiteType } from "../../../../types/types"
-import { Subhead } from "../../../StyledFields"
-import AddSite from "./AddSite"
-import Site from "./Site"
+import { Character } from "@/types/types"
+import type { Site as SiteType } from "@/types/types"
+import { Subhead } from "@/components/StyledFields"
+import AddSite from "@/components/characters/edit/sites/AddSite"
+import Site from "@/components/characters/edit/sites/Site"
 
 
 interface SitesProps {

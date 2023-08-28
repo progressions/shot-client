@@ -1,8 +1,8 @@
-import { MookResult, AttackState } from "../../reducers/attackState"
+import { MookResult, AttackState } from "@/reducers/attackState"
 import { Divider, Box, Grid, Typography, Stack } from "@mui/material"
-import CS from "../../services/CharacterService"
-import RollOutcome from "./RollOutcome"
-import Smackdowns from "./Smackdowns"
+import CS from "@/services/CharacterService"
+import RollOutcome from "@/components/attacks/RollOutcome"
+import Smackdowns from "@/components/attacks/Smackdowns"
 
 interface MookResultsProps {
   state: AttackState

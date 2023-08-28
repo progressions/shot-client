@@ -1,9 +1,9 @@
 import { Box, Tooltip, Stack, Typography } from "@mui/material"
 import { SxProps, Theme } from '@mui/material/styles'
-import type { Fight, CharacterEffect, Character } from "../../types/types"
-import { useFight } from "../../contexts/FightContext"
-import CS from "../../services/CharacterService"
-import CES from "../../services/CharacterEffectService"
+import type { Fight, CharacterEffect, Character } from "@/types/types"
+import { useFight } from "@/contexts/FightContext"
+import CS from "@/services/CharacterService"
+import CES from "@/services/CharacterEffectService"
 
 interface ActionValueDisplayParams {
   name: string

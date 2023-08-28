@@ -2,14 +2,14 @@ import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOu
 import { Button, Dialog, DialogTitle, Box, TextField, MenuItem, DialogContent, DialogActions, IconButton, Stack } from "@mui/material"
 
 import { useMemo, useState } from "react"
-import { useToast } from "../../contexts/ToastContext"
-import { useClient } from "../../contexts/ClientContext"
-import { useFight } from "../../contexts/FightContext"
+import { useToast } from "@/contexts/ToastContext"
+import { useClient } from "@/contexts/ClientContext"
+import { useFight } from "@/contexts/FightContext"
 
-import type { Character, CharacterEffect } from "../../types/types"
-import { defaultCharacterEffect } from "../../types/types"
-import { FightActions } from '../../reducers/fightState'
-import { StyledFormDialog, StyledTextField } from "../StyledFields"
+import type { Character, CharacterEffect } from "@/types/types"
+import { defaultCharacterEffect } from "@/types/types"
+import { FightActions } from '@/reducers/fightState'
+import { StyledFormDialog, StyledTextField } from "@/components/StyledFields"
 
 interface EffectsModalProps {
   character: Character

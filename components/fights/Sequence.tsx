@@ -1,18 +1,18 @@
 import { Stack, Button, Typography, IconButton, ButtonGroup } from "@mui/material"
 
-import { useFight } from "../../contexts/FightContext"
-import { useToast } from "../../contexts/ToastContext"
-import { useClient } from "../../contexts/ClientContext"
+import { useFight } from "@/contexts/FightContext"
+import { useToast } from "@/contexts/ToastContext"
+import { useClient } from "@/contexts/ClientContext"
 
 import AddIcon from '@mui/icons-material/Add'
 import RemoveIcon from '@mui/icons-material/Remove'
 import PlayArrowIcon from '@mui/icons-material/PlayArrow'
 
-import RollInitiative from "./RollInitiative"
-import Initiative from "../initiative/Initiative"
-import GamemasterOnly from "../GamemasterOnly"
-import { Toast, Fight } from "../../types/types"
-import { FightActions } from "../../reducers/fightState"
+import RollInitiative from "@/components/fights/RollInitiative"
+import Initiative from "@/components/initiative/Initiative"
+import GamemasterOnly from "@/components/GamemasterOnly"
+import { Toast, Fight } from "@/types/types"
+import { FightActions } from "@/reducers/fightState"
 
 export default function Sequence() {
   const { user, client } = useClient()

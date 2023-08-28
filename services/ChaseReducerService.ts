@@ -1,8 +1,8 @@
-import type { Position, Fight, Character, Vehicle } from "../types/types"
-import AS from "./ActionService"
-import VS from "./VehicleService"
-import { ChaseMookResult, ChaseMethod, ChaseState } from "../reducers/chaseState"
-import { parseToNumber } from "../utils/parseToNumber"
+import type { Position, Fight, Character, Vehicle } from "@/types/types"
+import AS from "@/services/ActionService"
+import VS from "@/services/VehicleService"
+import { ChaseMookResult, ChaseMethod, ChaseState } from "@/reducers/chaseState"
+import { parseToNumber } from "@/utils/parseToNumber"
 
 const ChaseReducerService = {
   // change the "edited" flag to true to roll the attack and

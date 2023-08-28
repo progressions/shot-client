@@ -2,15 +2,15 @@ import { Button } from "@mui/material"
 import { useMemo, useEffect, useState } from "react"
 import PlayArrowIcon from '@mui/icons-material/PlayArrow'
 
-import type { ShotType, Fight, Toast, Character, Person, Vehicle } from "../../types/types"
+import type { ShotType, Fight, Toast, Character, Person, Vehicle } from "@/types/types"
 
-import { useFight } from "../../contexts/FightContext"
-import { useToast } from "../../contexts/ToastContext"
-import { useClient } from "../../contexts/ClientContext"
-import Client from "../../utils/Client"
-import { FightActions } from "../../reducers/fightState"
-import CS from "../../services/CharacterService"
-import DS from "../../services/DiceService"
+import { useFight } from "@/contexts/FightContext"
+import { useToast } from "@/contexts/ToastContext"
+import { useClient } from "@/contexts/ClientContext"
+import Client from "@/utils/Client"
+import { FightActions } from "@/reducers/fightState"
+import CS from "@/services/CharacterService"
+import DS from "@/services/DiceService"
 
 export default function RollInitiative() {
   const { fight, dispatch:dispatchFight } = useFight()

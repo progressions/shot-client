@@ -1,8 +1,8 @@
 import { Tooltip, IconButton } from "@mui/material"
-import Effects from "./Effects"
+import Effects from "@/components/effects/Effects"
 
-import { effectsForShot, effectsGroupedByType } from "../../utils/effectsGrouped"
-import type { Severity, Effect, Fight } from "../../types/types"
+import { effectsForShot, effectsGroupedByType } from "@/utils/effectsGrouped"
+import type { Severity, Effect, Fight } from "@/types/types"
 import { useMemo } from "react"
 
 interface GroupedEffectsParams {

@@ -1,21 +1,21 @@
 import { colors, Box, Paper, ButtonGroup, Switch, FormControlLabel, Stack } from '@mui/material'
 
-import { ButtonBar } from "../StyledFields"
-import CreateCharacter from '../characters/CreateCharacter'
-import SelectCharacter from '../characters/SelectCharacter'
-import CreateVehicle from '../vehicles/CreateVehicle'
-import DiceRoller from '../dice/DiceRoller'
-import GamemasterOnly from "../GamemasterOnly"
-import SelectParty from "../parties/SelectParty"
-import AttackButton from "../attacks/AttackButton"
+import { ButtonBar } from "@/components/StyledFields"
+import CreateCharacter from '@/components/characters/CreateCharacter'
+import SelectCharacter from '@/components/characters/SelectCharacter'
+import CreateVehicle from '@/components/vehicles/CreateVehicle'
+import DiceRoller from '@/components/dice/DiceRoller'
+import GamemasterOnly from "@/components/GamemasterOnly"
+import SelectParty from "@/components/parties/SelectParty"
+import AttackButton from "@/components/attacks/AttackButton"
 
-import type { Fight, Vehicle, Character } from "../../types/types"
+import type { Fight, Vehicle, Character } from "@/types/types"
 
-import { useFight } from "../../contexts/FightContext"
-import { useClient } from "../../contexts/ClientContext"
-import { useLocalStorage } from "../../contexts/LocalStorageContext"
-import { useToast } from "../../contexts/ToastContext"
-import { FightActions } from "../../reducers/fightState"
+import { useFight } from "@/contexts/FightContext"
+import { useClient } from "@/contexts/ClientContext"
+import { useLocalStorage } from "@/contexts/LocalStorageContext"
+import { useToast } from "@/contexts/ToastContext"
+import { FightActions } from "@/reducers/fightState"
 
 import { useEffect } from "react"
 
