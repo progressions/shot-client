@@ -1,4 +1,4 @@
-import { Dialog, DialogTitle, DialogContent, IconButton, Box, Card, CardContent, CardMedia, colors, Typography } from "@mui/material"
+import { Avatar, Dialog, DialogTitle, DialogContent, IconButton, Box, Card, CardContent, CardMedia, colors, Typography } from "@mui/material"
 import CS from "@/services/CharacterService"
 import ImageIcon from "@mui/icons-material/Image"
 import { useState } from "react"
@@ -30,12 +30,10 @@ export default function ImageDisplay({ character }: ImageDisplayProps) {
   return (
     <>
       <IconButton sx={{color: "inherit", "&:hover": { color: "primary.light" }}} onClick={showImage}>
-        <Box
-          width={75}
-          height={75}
-          component="img"
-          src={`${character.image_url}?tr=w-75,h-75,fo-face`}
-          sx={{ borderColor: character.color, borderWidth: 2, borderStyle: "solid", borderRadius: 1 }}
+        <Avatar
+          src={character.image_url && `${character.image_url}?tr=w-75,h-75,fo-face`}
+          bgcolor={character.color || "secondary"}
+          sx={{ width: 75, height: 75, borderColor: character.color, borderWidth: 2, borderStyle: "solid", borderRadius: 1 }}
         />
       </IconButton>
       <Dialog open={open} onClose={closeImage}>

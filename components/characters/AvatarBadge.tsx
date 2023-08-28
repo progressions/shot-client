@@ -15,8 +15,7 @@ export default function AvatarBadge({ character, user }: AvatarBadgeParams) {
   return (
     <>
       <Badge color='error' badgeContent={character.impairments}>
-        { !character.image_url && <Avatar sx={{width: 75, height: 75, bgcolor: character.color || 'secondary'}} variant="rounded">{character.name[0]}</Avatar> }
-        { character.image_url && <ImageDisplay character={character} /> }
+        { <ImageDisplay character={character} /> }
       </Badge>
       <GamemasterOnly user={user} character={character}>
         <Box width={75} sx={{textAlign: 'center'}}>
