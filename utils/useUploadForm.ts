@@ -16,11 +16,11 @@ export const useUploadForm = (url: string) => {
         'Authorization': jwt
       },
       onUploadProgress: (progressEvent) => {
-        const progress = (progressEvent.loaded / progressEvent.total) * 50
+        const progress = (progressEvent.loaded / (progressEvent.total || 1)) * 50
         setProgress(progress)
       },
       onDownloadProgress: (progressEvent) => {
-        const progress = 50 + (progressEvent.loaded / progressEvent.total) * 50
+        const progress = 50 + (progressEvent.loaded / (progressEvent.total || 1)) * 50
         setProgress(progress)
       },
     })

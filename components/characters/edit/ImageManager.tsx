@@ -32,7 +32,7 @@ export default function ImageManager({ character }: ImageManagerProps) {
 
   const file = inputRef.current?.files?.[0]
 
-  const fileUploaded = inputRef.current?.files?.length > 0
+  const fileUploaded = inputRef?.current?.files && inputRef.current?.files?.length > 0
 
   async function removeImage(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
     event.preventDefault()
@@ -41,7 +41,9 @@ export default function ImageManager({ character }: ImageManagerProps) {
       await client.deleteCharacterImage(character)
       toastSuccess("Image deleted.")
       await updateCharacter()
-      inputRef.current.value = null
+      if (inputRef?.current?.value) {
+        inputRef.current.value = ""
+      }
     } catch (error) {
       console.error(error)
       toastError("Error deleting image.")
@@ -58,7 +60,9 @@ export default function ImageManager({ character }: ImageManagerProps) {
       await submitToAPI(formData)
       toastSuccess("Image uploaded.")
       await updateCharacter()
-      inputRef.current.value = null
+      if (inputRef?.current?.value) {
+        inputRef.current.value = ""
+      }
     } catch (error) {
       console.error(error)
       toastError("Error uploading file.")
@@ -86,15 +90,15 @@ export default function ImageManager({ character }: ImageManagerProps) {
           }}
         >
         <Stack direction="row" justifyContent="center" spacing={1}>
-          <IconButton variant="contained" onClick={removeImage}>
+          <IconButton onClick={removeImage}>
             <DeleteIcon sx={{ color: "white" }} />
           </IconButton>
           <label htmlFor="contained-button-file">
             <Input accept="image/*" id="contained-button-file" type="file" ref={inputRef} />
               { !fileUploaded &&
-                <IconButton variant="contained" component="span">
+                <Button component="span">
                   <AddAPhotoIcon sx={{ color: "white" }} />
-                </IconButton>
+                </Button>
               }
             </label>
           </Stack>
@@ -111,7 +115,7 @@ export default function ImageManager({ character }: ImageManagerProps) {
                 visibility: open ? 'visible' : 'hidden',
               }}
               >
-              <Typography>{inputRef.current.files[0].name}</Typography>
+              <Typography>{inputRef?.current?.files?.[0]?.name}</Typography>
           </Box> || "" }
           { progress > 0 && <LinearProgress variant="determinate" value={progress} /> }
         </Box>
