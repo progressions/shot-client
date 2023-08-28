@@ -30,7 +30,13 @@ export default function ImageDisplay({ character }: ImageDisplayProps) {
   return (
     <>
       <IconButton sx={{color: "inherit", "&:hover": { color: "primary.light" }}} onClick={showImage}>
-        <ImageIcon sx={{fontSize: 30}} />
+        <Box
+          width={75}
+          height={75}
+          component="img"
+          src={`${character.image_url}?tr=w-75,h-75,fo-face`}
+          sx={{ borderColor: character.color, borderWidth: 2, borderStyle: "solid", borderRadius: 1 }}
+        />
       </IconButton>
       <Dialog open={open} onClose={closeImage}>
         <DialogTitle sx={{backgroundColor: backgroundColor, color: "primary.dark"}}>

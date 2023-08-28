@@ -15,6 +15,7 @@ import Advancements from "@/components/advancements/Advancements"
 import Sites from "@/components/characters/edit/sites/Sites"
 import Weapons from "@/components/weapons/Weapons"
 import CharacterImage from "@/components/characters/edit/CharacterImage"
+import ImageDisplay from "@/components/characters/ImageDisplay"
 
 import { useEffect } from "react"
 
@@ -113,15 +114,31 @@ export default function EditCharacter({ character:initialCharacter }: EditCharac
     <>
       <Box component="form" onSubmit={handleSubmit}>
         <Stack spacing={2}>
-          <Stack direction="row" spacing={1}>
-            <StyledTextField name="name" label="Name" required autoFocus fullWidth onChange={handleChange} value={character.name} />
-            <Faction faction={character.faction} onChange={handleFactionChange} />
-            <FormControlLabel label="Task" name="task" control={<Switch checked={character.task} />} onChange={handleCheck} />
-            <FormControlLabel label="Active" name="active" control={<Switch checked={character.active} />} onChange={handleCheck} />
-          </Stack>
-          <Stack direction="row" spacing={1}>
-            <CharacterType value={action_values.Type as string} onChange={handleAVChange} />
-            <StyledTextField name="Archetype" label="Archetype" autoFocus fullWidth onChange={handleAVChange as React.ChangeEventHandler} value={action_values.Archetype} />
+          <Stack direction="row" spacing={1} justifyContent="space-between">
+            <Stack spacing={2}>
+              <Stack direction="row" spacing={1} width={600}>
+                <FormControlLabel label="Task" name="task" control={<Switch checked={character.task} />} onChange={handleCheck} />
+                <FormControlLabel label="Active" name="active" control={<Switch checked={character.active} />} onChange={handleCheck} />
+              </Stack>
+              <Stack direction="row" spacing={1}>
+                <StyledTextField name="name" label="Name" required autoFocus fullWidth onChange={handleChange} value={character.name} />
+              </Stack>
+              <Stack direction="row" spacing={1}>
+                <Faction faction={character.faction} onChange={handleFactionChange} />
+              </Stack>
+              <Stack direction="row" spacing={1}>
+                <CharacterType value={action_values.Type as string} onChange={handleAVChange} />
+              </Stack>
+              <Stack direction="row" spacing={1}>
+                <StyledTextField name="Archetype" label="Archetype" autoFocus fullWidth onChange={handleAVChange as React.ChangeEventHandler} value={action_values.Archetype} />
+              </Stack>
+            </Stack>
+            <Box
+              border={1}
+              component="img"
+              alt={character.name}
+              src={`${character.image_url}?tr=w-200,h-300,fo-face`}
+            />
           </Stack>
           <Stack spacing={2} direction="row" alignItems='center'>
             <StyledTextField label={woundsLabel}

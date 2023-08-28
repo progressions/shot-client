@@ -61,7 +61,6 @@ export default function NameDisplay({ character, editCharacter, deleteCharacter,
       <Box>
         <Box onMouseEnter={showButtons} onMouseLeave={hideButtons}>
           <Stack direction="row" spacing={1} alignItems="baseline">
-            <ImageDisplay character={character} />
             <Typography variant="h4" sx={{fontWeight: 'bold', overflow: "hidden", textOverflow: "ellipsis", width: "100%"}}>
               <Link color="inherit" href={link} target="_blank">
                 { character.name }
