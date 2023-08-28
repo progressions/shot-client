@@ -25,17 +25,14 @@ export default function ImageDisplay({ character }: ImageDisplayProps) {
 
   const backgroundColor = colors.orange[50]
 
-  if (!character.image_url) return null
-
   return (
     <>
-      <IconButton sx={{color: "inherit", "&:hover": { color: "primary.light" }}} onClick={showImage}>
         <Avatar
+          onClick={showImage}
           src={character.image_url && `${character.image_url}?tr=w-75,h-75,fo-face`}
-          bgcolor={character.color || "secondary"}
-          sx={{ width: 75, height: 75, borderColor: character.color, borderWidth: 2, borderStyle: "solid", borderRadius: 1 }}
+          variant="rounded"
+          sx={{ bgcolor: character.color || 'secondary', width: 75, height: 75, borderColor: character.color, borderWidth: 2, borderStyle: "solid", borderRadius: 1, cursor: "pointer" }}
         />
-      </IconButton>
       <Dialog open={open} onClose={closeImage}>
         <DialogTitle sx={{backgroundColor: backgroundColor, color: "primary.dark"}}>
           { CS.name(character) }
