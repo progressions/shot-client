@@ -137,7 +137,7 @@ export default function EditCharacter({ character:initialCharacter }: EditCharac
               border={1}
               component="img"
               alt={character.name}
-              src={`${character.image_url}?tr=w-200,h-300,fo-face`}
+              src={`${character.image_url}?tr=w-200,h-300,c-maintain_ratio`}
             />
           </Stack>
           <Stack spacing={2} direction="row" alignItems='center'>
