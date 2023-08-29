@@ -90,9 +90,11 @@ export default function ImageManager({ character }: ImageManagerProps) {
           }}
         >
         <Stack direction="row" justifyContent="center" spacing={1}>
-          <IconButton onClick={removeImage}>
-            <DeleteIcon sx={{ color: "white" }} />
-          </IconButton>
+          { !fileUploaded && character.image_url &&
+            <IconButton onClick={removeImage}>
+              <DeleteIcon sx={{ color: "white" }} />
+            </IconButton>
+          }
           <label htmlFor="contained-button-file">
             <Input accept="image/*" id="contained-button-file" type="file" ref={inputRef} />
               { !fileUploaded &&
