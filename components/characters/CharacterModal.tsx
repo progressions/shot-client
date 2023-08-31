@@ -61,7 +61,7 @@ export default function CharacterModal({ open, setOpen, character:activeCharacte
   }
 
   const handleWounds = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const updatedCharacter = CS.updateWounds(character, event.target.value)
+    const updatedCharacter = CS.updateWounds(character, parseInt(event.target.value) || 0)
     setCharacter(updatedCharacter as Person)
   }
 
