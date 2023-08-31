@@ -60,6 +60,11 @@ export default function CharacterModal({ open, setOpen, character:activeCharacte
     setCharacter((prevState: Person) => ({ ...prevState, [target.name]: target.checked }))
   }
 
+  const handleWounds = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const updatedCharacter = CS.updateWounds(character, event.target.value)
+    setCharacter(updatedCharacter as Person)
+  }
+
   const handleAVChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const updatedCharacter = CS.updateActionValue(character, event.target.name, event.target.value)
     setCharacter(updatedCharacter as Person)
@@ -138,8 +143,8 @@ export default function CharacterModal({ open, setOpen, character:activeCharacte
             <Stack direction="row" spacing={2}>
               <CharacterType value={character.action_values?.['Type'] as string || ''} onChange={handleAVChange} />
               { character.action_values["Type"] === "PC" && <StyledTextField name="Archetype" label="Archetype" fullWidth value={character.action_values["Archetype"]} onChange={handleAVChange} /> }
-              <FormControlLabel label="Task" name="task" control={<Switch checked={character.task} />} onChange={handleCheck} />
-              <FormControlLabel label="Active" name="active" control={<Switch checked={character.active} />} onChange={handleCheck} />
+              <FormControlLabel label="Task" name="task" control={<Switch checked={!!character.task} />} onChange={handleCheck} />
+              <FormControlLabel label="Active" name="active" control={<Switch checked={!!character.active} />} onChange={handleCheck} />
             </Stack>
             <Stack direction="row" spacing={2}>
               <StyledTextField autoFocus label="Name" size="medium" sx={{paddingBottom: 2}} fullWidth required name="name" value={character.name} onChange={handleChange} />

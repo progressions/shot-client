@@ -765,6 +765,36 @@ describe("CharacterService", () => {
     })
   }),
 
+  describe("updateWounds", () => {
+    it("should update wounds", () => {
+      const character: Character = {
+        ...defaultCharacter,
+        action_values: {
+          ...defaultCharacter.action_values,
+          Toughness: 8,
+          Wounds: 20
+        }
+      }
+
+      const updatedCharacter = CS.updateWounds(character, 10)
+      expect(CS.wounds(updatedCharacter)).toBe(10)
+    }),
+
+    it("should update count", () => {
+      const character: Character = {
+        ...defaultCharacter,
+        action_values: {
+          ...defaultCharacter.action_values,
+          Toughness: 8,
+          Wounds: 20
+        }
+      }
+
+      const updatedCharacter = CS.updateWounds(character, 10)
+      expect(updatedCharacter.count).toBe(10)
+    })
+  }),
+
   describe("seriousWounds", () => {
     it("returns true if an Uber-Boss has more than 50 wounds", () => {
       const character: Character = {

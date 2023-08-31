@@ -42,6 +42,7 @@ const CharacterService = {
   // Take raw Wounds, ignoring Toughness
   takeRawWounds: function(character: Character, wounds: number): Character {
     const originalWounds = this.wounds(character)
+    const char = this.updateValue(character, "count", Math.max(0, originalWounds + wounds))
     return this.updateActionValue(character, "Wounds", Math.max(0, originalWounds + wounds))
   },
 
@@ -55,6 +56,11 @@ const CharacterService = {
   addDeathMarks: function(character: Character, value: number): Character {
     const deathMarks = character.action_values["Marks of Death"] as number || 0
     return this.updateActionValue(character, "Marks of Death", Math.max(0, deathMarks + value))
+  },
+
+  updateWounds: function(character: Character, wounds: number): Character {
+    const updatedCharacter = this.updateValue(character, "count", Math.max(0, wounds))
+    return this.updateActionValue(updatedCharacter, "Wounds", Math.max(0, wounds))
   },
 
   updateSkill: function(character: Character, key: string, value: number): Character {
