@@ -42,15 +42,14 @@ const CharacterService = {
   // Take raw Wounds, ignoring Toughness
   takeRawWounds: function(character: Character, wounds: number): Character {
     const originalWounds = this.wounds(character)
-    const char = this.updateValue(character, "count", Math.max(0, originalWounds + wounds))
-    return this.updateActionValue(character, "Wounds", Math.max(0, originalWounds + wounds))
+    return this.updateWounds(character, Math.max(0, originalWounds + wounds))
   },
 
   healWounds: function(character: Character, wounds: number): Character {
     const originalWounds = this.wounds(character)
     const impairments = this.calculateImpairments(character, originalWounds - wounds, originalWounds)
     let updatedCharacter = this.addImpairments(character, -impairments)
-    return this.updateActionValue(updatedCharacter, "Wounds", Math.max(0, originalWounds - wounds))
+    return this.updateWounds(updatedCharacter, Math.max(0, originalWounds - wounds))
   },
 
   addDeathMarks: function(character: Character, value: number): Character {
@@ -78,7 +77,7 @@ const CharacterService = {
     if (this.isType(character, "Mook")) return character
 
     const maxFortune = this.maxFortune(character)
-    let updatedCharacter = this.updateActionValue(character, "Wounds", 0)
+    let updatedCharacter = this.updateWounds(character, 0)
     updatedCharacter = this.updateActionValue(updatedCharacter, "Marks of Death", 0)
     updatedCharacter = this.updateActionValue(updatedCharacter, "Fortune", maxFortune)
     updatedCharacter.impairments = 0
