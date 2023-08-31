@@ -36,7 +36,6 @@ export default function ImageDisplay({ character }: ImageDisplayProps) {
         /> }
       { !character.image_url &&
         <Avatar
-          onClick={showImage}
           variant="rounded"
           sx={{ bgcolor: character.color || 'secondary', width: 75, height: 75, borderColor: character.color, borderWidth: 2, borderStyle: "solid", borderRadius: 1, cursor: "pointer" }}
         /> }
