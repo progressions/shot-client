@@ -178,10 +178,10 @@ const CharacterService = {
   },
 
   wounds: function(character: Character): number {
-    if (this.isType(character, "Mook")) {
-      return this.mooks(character)
+    if (!this.isType(character, "PC")) {
+      return this.rawActionValue(character, "Wounds")
     }
-    return Math.max(0, character.action_values["Wounds"] as number || 0)
+    return Math.max(0, character.count || 0)
   },
 
   seriousWounds: function(character: Character): boolean {
@@ -210,6 +210,11 @@ class ServiceChain {
 
   updateActionValue(key: string, value: number): ServiceChain {
     this.character = CharacterService.updateActionValue(this.character as Character, key, value)
+    return this
+  }
+
+  updateWounds(value: number): ServiceChain {
+    this.character = CharacterService.updateWounds(this.character as Character, value)
     return this
   }
 

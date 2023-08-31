@@ -539,11 +539,11 @@ describe("CharacterService", () => {
       it("should add 1 impairment when a PC goes from 24 to 25 wounds", () => {
         const character: Character = {
           ...defaultCharacter,
+          count: 24,
           action_values: {
             ...defaultCharacter.action_values,
             Type: CharacterTypes.PC,
             Toughness: 8,
-            Wounds: 24
           }
         }
 
@@ -556,11 +556,11 @@ describe("CharacterService", () => {
         const character: Character = {
           ...defaultCharacter,
           impairments: 1,
+          count: 29,
           action_values: {
             ...defaultCharacter.action_values,
             Type: CharacterTypes.PC,
             Toughness: 8,
-            Wounds: 29
           }
         }
 
@@ -573,11 +573,11 @@ describe("CharacterService", () => {
     it("should add 2 impairments when a PC goes from 24 to 30 wounds", () => {
       const character: Character = {
         ...defaultCharacter,
+        count: 24,
         action_values: {
           ...defaultCharacter.action_values,
           Type: CharacterTypes.PC,
           Toughness: 8,
-          Wounds: 24
         }
       }
 
@@ -650,11 +650,11 @@ describe("CharacterService", () => {
       const character: Character = {
         ...defaultCharacter,
         impairments: 2,
+        count: 30,
         action_values: {
           ...defaultCharacter.action_values,
           Type: CharacterTypes.PC,
           Toughness: 8,
-          Wounds: 30
         }
       }
 
@@ -667,11 +667,11 @@ describe("CharacterService", () => {
       const character: Character = {
         ...defaultCharacter,
         impairments: 2,
+        count: 30,
         action_values: {
           ...defaultCharacter.action_values,
           Type: CharacterTypes.PC,
           Toughness: 8,
-          Wounds: 30
         }
       }
 
@@ -797,71 +797,71 @@ describe("CharacterService", () => {
 
   describe("seriousWounds", () => {
     it("returns true if an Uber-Boss has more than 50 wounds", () => {
-      const character: Character = {
+      let character: Character = {
         ...defaultCharacter,
         action_values: {
           ...defaultCharacter.action_values,
           Type: CharacterTypes.UberBoss,
           Toughness: 8,
-          Wounds: 51
         }
       }
+      character = CS.updateWounds(character, 51)
 
       expect(CS.seriousWounds(character)).toBe(true)
     }),
 
     it("returns true if a Boss has more than 50 wounds", () => {
-      const character: Character = {
+      let character: Character = {
         ...defaultCharacter,
         action_values: {
           ...defaultCharacter.action_values,
           Type: CharacterTypes.Boss,
           Toughness: 8,
-          Wounds: 51
         }
       }
+      character = CS.updateWounds(character, 51)
 
       expect(CS.seriousWounds(character)).toBe(true)
     }),
 
     it("returns true if a Featured Foe has more than 35 wounds", () => {
-      const character: Character = {
+      let character: Character = {
         ...defaultCharacter,
         action_values: {
           ...defaultCharacter.action_values,
           Type: CharacterTypes.FeaturedFoe,
           Toughness: 8,
-          Wounds: 36
         }
       }
+      character = CS.updateWounds(character, 36)
 
       expect(CS.seriousWounds(character)).toBe(true)
     })
 
     it("returns true if an Ally has more than 35 wounds", () => {
-      const character: Character = {
+      let character: Character = {
         ...defaultCharacter,
         action_values: {
           ...defaultCharacter.action_values,
           Type: CharacterTypes.Ally,
           Toughness: 8,
-          Wounds: 36
         }
       }
+      character = CS.updateWounds(character, 36)
 
       expect(CS.seriousWounds(character)).toBe(true)
     }),
 
     it("returns true if a PC has more than 35 wounds", () => {
-      const character: Character = {
+      let character: Character = {
         ...defaultCharacter,
         action_values: {
           ...defaultCharacter.action_values,
           Type: CharacterTypes.PC,
           Toughness: 8,
-          Wounds: 36
         }
       }
+      character = CS.updateWounds(character, 36)
 
       expect(CS.seriousWounds(character)).toBe(true)
     }),
@@ -897,14 +897,14 @@ describe("CharacterService", () => {
 
       const updatedCharacter = CS.chain(brick, [
         ["updateActionValue", ["Toughness", 9]],
-        ["updateActionValue", ["Wounds", 30]]
+        ["updateWounds", [30]]
       ])
       expect(CS.wounds(updatedCharacter)).toBe(30)
       expect(CS.toughness(updatedCharacter)).toBe(9)
 
       const updatedBrick = CS.chainz(brick)
         .updateActionValue("Toughness", 9)
-        .updateActionValue("Wounds", 30)
+        .updateWounds(30)
         .done()
       expect(CS.wounds(updatedBrick)).toBe(30)
       expect(CS.toughness(updatedBrick)).toBe(9)

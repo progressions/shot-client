@@ -157,7 +157,7 @@ export default function CharacterModal({ open, setOpen, character:activeCharacte
                   type="number"
                   name="Wounds"
                   value={character.action_values?.["Wounds"] || ""}
-                  onChange={handleAVChange}
+                  onChange={handleWounds}
                   InputProps={
                     {startAdornment: woundsAdornment()}
                   }

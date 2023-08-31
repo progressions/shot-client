@@ -18,7 +18,6 @@ interface WoundsModalParams {
 export default function WoundsModal({open, setOpen, character }: WoundsModalParams) {
   const { fight, dispatch:dispatchFight } = useFight()
   const [smackdown, setSmackdown] = useState<number>(0)
-  const [saving, setSaving] = useState<boolean>(false)
   const { toastError, toastSuccess } = useToast()
   const { client } = useClient()
 
@@ -54,7 +53,6 @@ export default function WoundsModal({open, setOpen, character }: WoundsModalPara
       onClose={() => setOpen(false)}
       title={label}
       onSubmit={submitWounds}
-      saving={saving}
       onCancel={cancelForm}
     >
       <StyledTextField autoFocus type="number" label={label} required name="wounds" value={smackdown || ""} onChange={handleChange} />

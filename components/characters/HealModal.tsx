@@ -19,7 +19,6 @@ interface HealModalParams {
 export default function HealModal({open, setOpen, character }: HealModalParams) {
   const { fight, dispatch:dispatchFight } = useFight()
   const [healing, setHealing] = useState<number>(0)
-  const [saving, setSaving] = useState<boolean>(false)
   const { toastSuccess, toastError } = useToast()
   const { client } = useClient()
 
@@ -52,7 +51,6 @@ export default function HealModal({open, setOpen, character }: HealModalParams) 
       onClose={() => setOpen(false)}
       onSubmit={submitWounds}
       title="Heal Wounds"
-      saving={saving}
       onCancel={cancelForm}
     >
       <StyledTextField autoFocus type="number" label="Heal Wounds" required name="healing" value={healing || ""} onChange={handleChange} />
