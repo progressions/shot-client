@@ -178,7 +178,7 @@ const CharacterService = {
   },
 
   wounds: function(character: Character): number {
-    if (!this.isType(character, "PC")) {
+    if (this.isType(character, "PC")) {
       return this.rawActionValue(character, "Wounds")
     }
     return Math.max(0, character.count || 0)

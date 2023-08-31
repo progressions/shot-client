@@ -335,11 +335,11 @@ describe("CharacterService", () => {
       it("should add 1 impairment when an Uber-Boss goes from 39 to 40 wounds", () => {
         const character: Character = {
           ...defaultCharacter,
+          count: 39,
           action_values: {
             ...defaultCharacter.action_values,
             Type: CharacterTypes.UberBoss,
             Toughness: 8,
-            Wounds: 39
           }
         }
 
@@ -352,11 +352,11 @@ describe("CharacterService", () => {
         const character: Character = {
           ...defaultCharacter,
           impairments: 1,
+          count: 44,
           action_values: {
             ...defaultCharacter.action_values,
             Type: CharacterTypes.UberBoss,
             Toughness: 8,
-            Wounds: 44
           }
         }
 
@@ -369,11 +369,11 @@ describe("CharacterService", () => {
     it("should add 2 impairments when an Uber-Boss goes from 39 to 45 wounds", () => {
       const character: Character = {
         ...defaultCharacter,
+        count: 39,
         action_values: {
           ...defaultCharacter.action_values,
           Type: CharacterTypes.UberBoss,
           Toughness: 8,
-          Wounds: 39
         }
       }
 
@@ -386,11 +386,11 @@ describe("CharacterService", () => {
       it("should add 1 impairment when a Boss goes from 39 to 40 wounds", () => {
         const character: Character = {
           ...defaultCharacter,
+          count: 39,
           action_values: {
             ...defaultCharacter.action_values,
             Type: CharacterTypes.Boss,
             Toughness: 8,
-            Wounds: 39
           }
         }
 
@@ -403,11 +403,11 @@ describe("CharacterService", () => {
         const character: Character = {
           ...defaultCharacter,
           impairments: 1,
+          count: 44,
           action_values: {
             ...defaultCharacter.action_values,
             Type: CharacterTypes.Boss,
             Toughness: 8,
-            Wounds: 44
           }
         }
 
@@ -420,11 +420,11 @@ describe("CharacterService", () => {
     it("should add 2 impairments when a Boss goes from 39 to 45 wounds", () => {
       const character: Character = {
         ...defaultCharacter,
+        count: 39,
         action_values: {
           ...defaultCharacter.action_values,
           Type: CharacterTypes.Boss,
           Toughness: 8,
-          Wounds: 39
         }
       }
 
@@ -437,11 +437,11 @@ describe("CharacterService", () => {
       it("should add 1 impairment when a Featured Foe goes from 24 to 25 wounds", () => {
         const character: Character = {
           ...defaultCharacter,
+          count: 24,
           action_values: {
             ...defaultCharacter.action_values,
             Type: CharacterTypes.FeaturedFoe,
             Toughness: 8,
-            Wounds: 24
           }
         }
 
@@ -454,11 +454,11 @@ describe("CharacterService", () => {
         const character: Character = {
           ...defaultCharacter,
           impairments: 1,
+          count: 29,
           action_values: {
             ...defaultCharacter.action_values,
             Type: CharacterTypes.FeaturedFoe,
             Toughness: 8,
-            Wounds: 29
           }
         }
 
@@ -471,11 +471,11 @@ describe("CharacterService", () => {
     it("should add 2 impairments when a Featured Foe goes from 24 to 30 wounds", () => {
       const character: Character = {
         ...defaultCharacter,
+        count: 24,
         action_values: {
           ...defaultCharacter.action_values,
           Type: CharacterTypes.FeaturedFoe,
           Toughness: 8,
-          Wounds: 24
         }
       }
 
@@ -488,11 +488,11 @@ describe("CharacterService", () => {
       it("should add 1 impairment when a Ally goes from 24 to 25 wounds", () => {
         const character: Character = {
           ...defaultCharacter,
+          count: 24,
           action_values: {
             ...defaultCharacter.action_values,
             Type: CharacterTypes.Ally,
             Toughness: 8,
-            Wounds: 24
           }
         }
 
@@ -505,11 +505,11 @@ describe("CharacterService", () => {
         const character: Character = {
           ...defaultCharacter,
           impairments: 1,
+          count: 29,
           action_values: {
             ...defaultCharacter.action_values,
             Type: CharacterTypes.Ally,
             Toughness: 8,
-            Wounds: 29
           }
         }
 
@@ -522,11 +522,11 @@ describe("CharacterService", () => {
     it("should add 2 impairments when a Ally goes from 24 to 30 wounds", () => {
       const character: Character = {
         ...defaultCharacter,
+        count: 24,
         action_values: {
           ...defaultCharacter.action_values,
           Type: CharacterTypes.Ally,
           Toughness: 8,
-          Wounds: 24
         }
       }
 
@@ -539,11 +539,11 @@ describe("CharacterService", () => {
       it("should add 1 impairment when a PC goes from 24 to 25 wounds", () => {
         const character: Character = {
           ...defaultCharacter,
-          count: 24,
           action_values: {
             ...defaultCharacter.action_values,
             Type: CharacterTypes.PC,
             Toughness: 8,
+            Wounds: 24,
           }
         }
 
@@ -556,11 +556,11 @@ describe("CharacterService", () => {
         const character: Character = {
           ...defaultCharacter,
           impairments: 1,
-          count: 29,
           action_values: {
             ...defaultCharacter.action_values,
             Type: CharacterTypes.PC,
             Toughness: 8,
+            Wounds: 29,
           }
         }
 
@@ -573,11 +573,11 @@ describe("CharacterService", () => {
     it("should add 2 impairments when a PC goes from 24 to 30 wounds", () => {
       const character: Character = {
         ...defaultCharacter,
-        count: 24,
         action_values: {
           ...defaultCharacter.action_values,
           Type: CharacterTypes.PC,
           Toughness: 8,
+          Wounds: 24,
         }
       }
 
@@ -591,6 +591,7 @@ describe("CharacterService", () => {
     it("adds wounds to the character without subtracting toughness", () => {
       const character: Character = {
         ...defaultCharacter,
+        count: 10,
         action_values: {
           ...defaultCharacter.action_values,
           Toughness: 8,
@@ -621,10 +622,10 @@ describe("CharacterService", () => {
     it("should heal wounds", () => {
       const character: Character = {
         ...defaultCharacter,
+        count: 20,
         action_values: {
           ...defaultCharacter.action_values,
           Toughness: 8,
-          Wounds: 20
         }
       }
 
@@ -650,11 +651,11 @@ describe("CharacterService", () => {
       const character: Character = {
         ...defaultCharacter,
         impairments: 2,
-        count: 30,
         action_values: {
           ...defaultCharacter.action_values,
           Type: CharacterTypes.PC,
           Toughness: 8,
+          Wounds: 30,
         }
       }
 
@@ -667,11 +668,11 @@ describe("CharacterService", () => {
       const character: Character = {
         ...defaultCharacter,
         impairments: 2,
-        count: 30,
         action_values: {
           ...defaultCharacter.action_values,
           Type: CharacterTypes.PC,
           Toughness: 8,
+          Wounds: 30
         }
       }
 
@@ -752,14 +753,14 @@ describe("CharacterService", () => {
 
   describe("wounds", () => {
     it("returns the number of wounds", () => {
-      const character: Character = {
+      let character: Character = {
         ...defaultCharacter,
         action_values: {
           ...defaultCharacter.action_values,
           Toughness: 8,
-          Wounds: 20
         }
       }
+      character = CS.updateWounds(character, 20)
 
       expect(CS.wounds(character)).toBe(20)
     })
