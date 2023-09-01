@@ -16,7 +16,7 @@ type Entity = Site
 interface ImageManagerProps {
   name: string
   entity: Entity
-  updateEntity: (event: React.ChangeEvent<HTMLInputElement>) => Promise<void>
+  updateEntity: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => Promise<void>
   deleteImage: (entity: Entity) => Promise<void>
   apiEndpoint: string
 }
@@ -30,7 +30,7 @@ export default function ImageManager({ name, entity, updateEntity, apiEndpoint, 
   const [open, setOpen] = useState(true)
   const { client } = useClient()
   const { toastError, toastSuccess } = useToast()
-  const api = new Api()
+  const api = new Api() as any
   const { isSuccess, uploadForm, progress } = useUploadForm(
     api[apiEndpoint](entity),
   )
@@ -62,7 +62,7 @@ export default function ImageManager({ name, entity, updateEntity, apiEndpoint, 
     formData.append(`${name}[image]`, file)
 
     try {
-      await uploadForm(data)
+      await uploadForm(formData)
       toastSuccess("Image uploaded.")
       await updateEntity(event)
       if (inputRef?.current?.value) {

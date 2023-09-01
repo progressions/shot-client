@@ -13,24 +13,22 @@ interface ClientContextType {
   session: AuthSession
   jwt: string
   user: User
-  api: Api
 }
 
 interface ClientProviderProps {
   children: React.ReactNode
 }
 
-const ClientContext = createContext<ClientContextType>({client: (new Client()), session: {} as AuthSession, jwt: "", user: defaultUser, api: (new Api())})
+const ClientContext = createContext<ClientContextType>({client: (new Client()), session: {} as AuthSession, jwt: "", user: defaultUser})
 
 export function ClientProvider({ children }: ClientProviderProps) {
   const session = useSession({ required: false }) as any
   const jwt = session?.data?.authorization as string
   const client = useMemo(() => (new Client({ jwt })), [jwt])
   const user = session?.data?.user as User
-  const api = useMemo(() => (new Api({ jwt })), [jwt])
 
   return (
-    <ClientContext.Provider value={{client, session, jwt, user, api }}>
+    <ClientContext.Provider value={{client, session, jwt, user }}>
       {children}
     </ClientContext.Provider>
   )

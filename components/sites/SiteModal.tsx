@@ -29,7 +29,7 @@ export default function SiteModal({ state, dispatch, open, setOpen }: SiteModalP
   const { loading, site } = state
   const api = new Api()
 
-  async function updateSite(event: React.ChangeEvent<HTMLInputElement>) {
+  async function updateSite(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
     event.preventDefault()
     dispatch({ type: SitesActions.SAVING })
 

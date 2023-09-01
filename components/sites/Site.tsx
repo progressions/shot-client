@@ -80,7 +80,7 @@ export default function Site({ site, state, dispatch }: SiteProps) {
         title={site.name}
         subheader={subheader}
         action={deleteButton}
-        avatar={<Avatar variant="rounded" src={site.image_url} sx={{ width: 100, height: 100 }} /> }
+        avatar={site.image_url ? <Avatar variant="rounded" src={site.image_url} sx={{ width: 100, height: 100 }} /> : null }
       >
         <Stack direction="row" spacing={2}>
           <Box>
