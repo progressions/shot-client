@@ -1,4 +1,4 @@
-import { DialogContent, Stack, IconButton, Box, Typography } from "@mui/material"
+import { Avatar, DialogContent, Stack, IconButton, Box, Typography } from "@mui/material"
 import { useClient } from "@/contexts/ClientContext"
 import { useToast } from "@/contexts/ToastContext"
 import Member from "@/components/parties/Member"
@@ -83,6 +83,7 @@ export default function Party({ party, state, dispatch }: PartyProps) {
         title={party.name}
         subheader={subheader}
         action={deleteButton}
+        avatar={party.image_url ? <Avatar variant="rounded" src={party.image_url} sx={{ width: 100, height: 100 }} /> : null }
       >
         <Typography>{party.description}</Typography>
         <Typography variant="h6" mt={2} gutterBottom>Members</Typography>

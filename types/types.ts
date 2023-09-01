@@ -44,10 +44,11 @@ export interface Party {
   id?: string
   name: string
   description?: string
-  faction?: Faction | null,
+  faction?: Faction | null
   characters: Character[]
   vehicles: Vehicle[]
   secret: boolean
+  image_url: string | null
 }
 
 export interface Faction {
