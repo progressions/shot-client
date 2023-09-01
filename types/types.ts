@@ -662,7 +662,8 @@ export const defaultParty:Party = {
   faction: null,
   characters: [],
   vehicles: [],
-  secret: false
+  secret: false,
+  image_url: null
 }
 
 export const defaultWeapon:Weapon = {

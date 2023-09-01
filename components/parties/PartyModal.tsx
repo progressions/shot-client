@@ -29,7 +29,7 @@ export default function PartyModal({ state, dispatch, open, setOpen }: PartyModa
   const { loading, party } = state
   const api = new Api()
 
-  async function updateParty(event: React.ChangeEvent<HTMLInputElement>) {
+  async function updateParty(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
     event.preventDefault()
     dispatch({ type: PartiesActions.SAVING })
 

@@ -9,15 +9,15 @@ import { useUploadForm } from "@/utils/useUploadForm"
 import DeleteIcon from "@mui/icons-material/Delete"
 import AddAPhotoIcon from "@mui/icons-material/AddAPhoto"
 
-import type { Site } from '@/types/types'
+import type { Site, Party } from '@/types/types'
 
-type Entity = Site
+type Entity = Site | Party
 
 interface ImageManagerProps {
   name: string
-  entity: Entity
+  entity: any
   updateEntity: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => Promise<void>
-  deleteImage: (entity: Entity) => Promise<void>
+  deleteImage: (entity: any) => Promise<void>
   apiEndpoint: string
 }
 

@@ -93,6 +93,10 @@ class Client {
     return await this.patch(this.api.parties(party), {"party": party})
   }
 
+  async deletePartyImage(party: Party):Promise<void> {
+    return await this.delete(`${this.api.parties(party)}/image`)
+  }
+
   async addPartyToFight(party: Party | ID, fight: Fight | ID):Promise<Party> {
     return await this.post(this.api.addPartyToFight(party, fight))
   }
