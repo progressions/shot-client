@@ -6,7 +6,7 @@ import { StyledDialog } from "@/components/StyledFields"
 import type { Character } from "@/types/types"
 
 interface ImageDisplayProps {
-  character: Character | Vehicle
+  character: Character
 }
 
 export default function ImageDisplay({ character }: ImageDisplayProps) {
