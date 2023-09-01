@@ -13,6 +13,8 @@ import { SitesActions } from "@/reducers/sitesState"
 import Faction from "@/components/characters/edit/Faction"
 import CharacterFilters from "@/components/characters/CharacterFilters"
 import SelectCharacter from "@/components/characters/SelectCharacter"
+import ImageManager from "@/components/images/ImageManager"
+import Api from "@/utils/Api"
 
 interface SiteModalProps {
   state: SitesStateType
@@ -25,8 +27,9 @@ export default function SiteModal({ state, dispatch, open, setOpen }: SiteModalP
   const { toastSuccess, toastError } = useToast()
   const { client, user } = useClient()
   const { loading, site } = state
+  const api = new Api()
 
-  async function addSite(event: React.ChangeEvent<HTMLInputElement>) {
+  async function updateSite(event: React.ChangeEvent<HTMLInputElement>) {
     event.preventDefault()
     dispatch({ type: SitesActions.SAVING })
 
@@ -42,6 +45,10 @@ export default function SiteModal({ state, dispatch, open, setOpen }: SiteModalP
       toastError()
     }
     dispatch({ type: SitesActions.RESET })
+  }
+
+  async function deleteImage(site: Site) {
+    await client.deleteSiteImage(site as Site)
   }
 
   function cancelForm() {
@@ -70,38 +77,44 @@ export default function SiteModal({ state, dispatch, open, setOpen }: SiteModalP
 
   return (
     <>
-      <Stack direction="row" spacing={1} alignItems="center">
-        <StyledTextField
-          sx={{width: 400}}
-          required
-          autoFocus
-          value={site?.name || ""}
-          name="name"
-          label="Name"
-          onChange={handleChange}
-          disabled={loading}
-        />
-        <GamemasterOnly user={user}>
-          <FormControlLabel label="Active" name="secret" control={<Switch checked={site.secret} />} onChange={handleCheck} />
-        </GamemasterOnly>
-      </Stack>
-      <Stack direction="row" spacing={1} alignItems="center">
-        <StyledTextField
-          fullWidth
-          multiline
-          rows={3}
-          value={site?.description || ""}
-          name="description"
-          label="Description"
-          onChange={handleChange}
-          disabled={loading}
-        />
-      </Stack>
-      <Faction faction={site.faction || defaultFaction} onChange={handleChange} />
-      { site?.id && <SelectCharacter addCharacter={addCharacter} /> }
-      <Stack direction="row" spacing={1} alignItems="center">
-        <CancelButton disabled={loading} onClick={cancelForm} />
-        <SaveButton disabled={loading} onClick={addSite}>{ site?.id ? "Save" : "Add" }</SaveButton>
+      <GamemasterOnly user={user}>
+        <FormControlLabel label="Hidden" name="secret" control={<Switch checked={site.secret} />} onChange={handleCheck} />
+      </GamemasterOnly>
+      <Stack spacing={2} direction="row">
+        <Stack spacing={1}>
+          <Stack direction="row" spacing={1} alignItems="center">
+            <StyledTextField
+              sx={{width: 300}}
+              required
+              autoFocus
+              value={site?.name || ""}
+              name="name"
+              label="Name"
+              onChange={handleChange}
+              disabled={loading}
+            />
+          </Stack>
+          <Stack direction="row" spacing={1} alignItems="center">
+            <StyledTextField
+              sx={{width: 300}}
+              fullWidth
+              multiline
+              rows={3}
+              value={site?.description || ""}
+              name="description"
+              label="Description"
+              onChange={handleChange}
+              disabled={loading}
+            />
+          </Stack>
+          <Faction faction={site.faction || defaultFaction} onChange={handleChange} />
+          { site?.id && <SelectCharacter addCharacter={addCharacter} /> }
+          <Stack direction="row" spacing={1} alignItems="center">
+            <CancelButton disabled={loading} onClick={cancelForm} />
+            <SaveButton disabled={loading} onClick={updateSite}>{ site?.id ? "Save" : "Add" }</SaveButton>
+          </Stack>
+        </Stack>
+        { site?.id && <ImageManager name="site" entity={site} updateEntity={updateSite} deleteImage={deleteImage} apiEndpoint="allSites" /> }
       </Stack>
     </>
   )

@@ -156,7 +156,6 @@ class Client {
   }
 
   async deleteCharacterImage(character: Character):Promise<void> {
-    console.log(`${this.api.characters(null, character)}/image`)
     return await this.delete(`${this.api.characters(null, character)}/image`)
   }
 
@@ -239,6 +238,10 @@ class Client {
 
   async updateSite(site: Site):Promise<Site> {
     return await this.patch(this.api.allSites(site), {"site": site})
+  }
+
+  async deleteSiteImage(site: Site):Promise<void> {
+    return await this.delete(`${this.api.allSites(site)}/image`)
   }
 
   async addCharacterToSite(site: Site, character: Character):Promise<Site> {

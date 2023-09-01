@@ -9,7 +9,7 @@ interface SiteCardBaseProps {
 
 export default function SiteCardBase({ title, subheader, avatar, action, children }: React.PropsWithChildren<SiteCardBaseProps>) {
   return (
-    <Card sx={{backgroundColor: colors.blueGrey["500"], minHeight: 200}}>
+    <Card sx={{backgroundColor: colors.blueGrey["500"], minHeight: 200, width: 800}}>
       <CardHeader
         title={title}
         subheader={subheader}

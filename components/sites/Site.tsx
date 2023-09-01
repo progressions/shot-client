@@ -1,4 +1,4 @@
-import { DialogContent, Stack, IconButton, Box, Typography } from "@mui/material"
+import { Avatar, DialogContent, Stack, IconButton, Box, Typography } from "@mui/material"
 import { useClient } from "@/contexts/ClientContext"
 import { useToast } from "@/contexts/ToastContext"
 import Member from "@/components/sites/Member"
@@ -80,19 +80,24 @@ export default function Site({ site, state, dispatch }: SiteProps) {
         title={site.name}
         subheader={subheader}
         action={deleteButton}
+        avatar={<Avatar variant="rounded" src={site.image_url} sx={{ width: 100, height: 100 }} /> }
       >
-        <Typography>{site.description}</Typography>
-        <Typography variant="h6" mt={2} gutterBottom>Attuned</Typography>
-        { !!site?.characters?.length &&
-        <>
-            {
-              site.characters.map((character, index) => {
-                const key = generateKey(character, index)
-                return (<Member key={key} character={character} removeCharacter={removeCharacter} />)
-              })
-            }
-          </>
-          }
+        <Stack direction="row" spacing={2}>
+          <Box>
+            <Typography>{site.description}</Typography>
+            <Typography variant="h6" mt={2} gutterBottom>Attuned</Typography>
+            { !!site?.characters?.length &&
+            <>
+                {
+                  site.characters.map((character, index) => {
+                    const key = generateKey(character, index)
+                    return (<Member key={key} character={character} removeCharacter={removeCharacter} />)
+                  })
+                }
+              </>
+              }
+          </Box>
+        </Stack>
       </SiteCardBase>
       <StyledDialog
         open={open}

@@ -383,9 +383,10 @@ export interface Site {
   id?: string
   name: string
   description?: string
-  faction?: Faction | null,
+  faction?: Faction | null
   characters?: Character[]
   secret: boolean
+  image_url: string | null
 }
 
 export interface Effect {
@@ -650,7 +651,8 @@ export const defaultSite:Site = {
   name: "",
   description: "",
   faction: null,
-  secret: false
+  secret: false,
+  image_url: null
 }
 
 export const defaultParty:Party = {
