@@ -19,6 +19,7 @@ import { Subhead, StyledTextField } from "@/components/StyledFields"
 
 import type { Vehicle } from "@/types/types"
 import { VehicleActions } from "@/reducers/vehicleState"
+import ImageManager from "@/components/images/ImageManager"
 
 interface EditVehicleProps {
   vehicle: Vehicle
@@ -36,6 +37,10 @@ export default function EditVehicle({ vehicle:initialVehicle }: EditVehicleProps
     event.preventDefault()
 
     await updateVehicle()
+  }
+
+  async function deleteImage(vehicle: Vehicle) {
+    await client.deleteVehicleImage(vehicle as Vehicle)
   }
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement>): void {
@@ -86,14 +91,23 @@ export default function EditVehicle({ vehicle:initialVehicle }: EditVehicleProps
     <>
       <Box component="form" onSubmit={handleSubmit}>
         <Stack spacing={2}>
-          <Stack direction="row" spacing={1}>
-            <StyledTextField name="name" label="Name" required autoFocus fullWidth onChange={handleChange} value={vehicle.name} />
-            <Faction faction={vehicle.faction} onChange={handleFactionChange} />
-            <FormControlLabel label="Task" name="task" control={<Switch checked={vehicle.task} />} onChange={handleCheck} />
-            <FormControlLabel label="Active" name="active" control={<Switch checked={vehicle.active} />} onChange={handleCheck} />
-          </Stack>
-          <Stack direction="row" spacing={1}>
-            <CharacterType value={action_values.Type as string} onChange={handleAVChange} />
+          <Stack direction="row" spacing={1} justifyContent="space-between">
+            <Stack spacing={2}>
+              <Stack direction="row" spacing={1} width={600}>
+                <FormControlLabel label="Task" name="task" control={<Switch checked={vehicle.task} />} onChange={handleCheck} />
+                <FormControlLabel label="Active" name="active" control={<Switch checked={vehicle.active} />} onChange={handleCheck} />
+              </Stack>
+              <Stack direction="row" spacing={1}>
+                <StyledTextField name="name" label="Name" required autoFocus fullWidth onChange={handleChange} value={vehicle.name} />
+              </Stack>
+              <Stack direction="row" spacing={1}>
+                <Faction faction={vehicle.faction} onChange={handleFactionChange} />
+              </Stack>
+              <Stack direction="row" spacing={1}>
+                <CharacterType value={action_values.Type as string} onChange={handleAVChange} />
+              </Stack>
+            </Stack>
+            { vehicle?.id && <ImageManager name="vehicle" entity={vehicle} updateEntity={updateVehicle} deleteImage={deleteImage} apiEndpoint="allVehicles" /> }
           </Stack>
           <Stack spacing={2} direction="row" alignItems='center'>
             <StyledTextField label={woundsLabel}

@@ -191,6 +191,10 @@ class Client {
     return await this.delete(this.api.vehicles(fight, { id: vehicle.shot_id } as Vehicle))
   }
 
+  async deleteVehicleImage(vehicle: Vehicle):Promise<void> {
+    return await this.delete(`${this.api.allVehicles(vehicle)}/image`)
+  }
+
   async actVehicle(vehicle: Vehicle, fight: Fight, shots: number):Promise<Vehicle> {
     return await this.patch(this.api.actVehicle(fight, vehicle), {"vehicle": { id: vehicle.id, shot_id: vehicle.shot_id } as Vehicle, "shots": shots})
   }

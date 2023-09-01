@@ -121,9 +121,7 @@ export default function EditCharacter({ character:initialCharacter }: EditCharac
                 <FormControlLabel label="Task" name="task" control={<Switch checked={character.task} />} onChange={handleCheck} />
                 <FormControlLabel label="Active" name="active" control={<Switch checked={character.active} />} onChange={handleCheck} />
               </Stack>
-              <Stack direction="row" spacing={1}>
                 <StyledTextField name="name" label="Name" required autoFocus fullWidth onChange={handleChange} value={character.name} />
-              </Stack>
               <Stack direction="row" spacing={1}>
                 <Faction faction={character.faction} onChange={handleFactionChange} />
               </Stack>
