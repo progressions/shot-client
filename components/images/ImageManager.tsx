@@ -15,7 +15,7 @@ type Entity = Site | Party
 
 interface ImageManagerProps {
   name: string
-  entity: any
+  entity: Entity
   updateEntity: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => Promise<void>
   deleteImage: (entity: any) => Promise<void>
   apiEndpoint: string
