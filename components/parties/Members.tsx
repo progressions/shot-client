@@ -1,5 +1,6 @@
 import { Stack, Typography } from '@mui/material'
 import Member from '@/components/parties/Member'
+import type { Character, Vehicle, Party } from '@/types/types'
 
 interface MembersProps {
   party: Party
