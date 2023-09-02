@@ -54,8 +54,8 @@ export default function EditCharacter({ character:initialCharacter }: EditCharac
     await updateCharacter()
   }
 
-  async function deleteImage(vehicle: Vehicle) {
-    await client.deleteVehicleImage(vehicle as Vehicle)
+  async function deleteImage(character: Character) {
+    await client.deleteCharacterImage(character as Character)
   }
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement>): void {
