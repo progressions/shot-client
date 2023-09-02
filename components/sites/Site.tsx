@@ -11,6 +11,7 @@ import type { SitesStateType, SitesActionType } from "@/reducers/sitesState"
 import type { Character, Vehicle, Site as SiteType } from "@/types/types"
 import { SitesActions } from "@/reducers/sitesState"
 import SiteModal from "@/components/sites/SiteModal"
+import ImageDisplay from "@/components/images/ImageDisplay"
 
 import { useState } from "react"
 
@@ -74,13 +75,15 @@ export default function Site({ site, state, dispatch }: SiteProps) {
     return `${character.id}-${index}`
   }
 
+  const avatar = site.image_url ? <ImageDisplay entity={site} /> : null
+
   return (
     <>
       <SiteCardBase
         title={site.name}
         subheader={subheader}
         action={deleteButton}
-        avatar={site.image_url ? <Avatar variant="rounded" src={site.image_url} sx={{ width: 100, height: 100 }} /> : null }
+        avatar={avatar}
       >
         <Stack direction="row" spacing={2}>
           <Box>

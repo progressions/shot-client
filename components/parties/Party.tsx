@@ -6,6 +6,7 @@ import PartyCardBase from "@/components/parties/PartyCardBase"
 import ClearIcon from '@mui/icons-material/Clear'
 import EditIcon from '@mui/icons-material/Edit'
 import { StyledDialog } from "@/components/StyledFields"
+import ImageDisplay from "@/components/images/ImageDisplay"
 
 import type { PartiesStateType, PartiesActionType } from "@/reducers/partiesState"
 import type { Character, Vehicle, Party as PartyType } from "@/types/types"
@@ -77,13 +78,15 @@ export default function Party({ party, state, dispatch }: PartyProps) {
     return `${character.id}-${index}`
   }
 
+  const avatar = party.image_url ? <ImageDisplay entity={party} /> : null
+
   return (
     <>
       <PartyCardBase
         title={party.name}
         subheader={subheader}
         action={deleteButton}
-        avatar={party.image_url ? <Avatar variant="rounded" src={party.image_url} sx={{ width: 100, height: 100 }} /> : null }
+        avatar={avatar}
       >
         <Typography>{party.description}</Typography>
         <Typography variant="h6" mt={2} gutterBottom>Members</Typography>
