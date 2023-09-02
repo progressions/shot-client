@@ -33,12 +33,12 @@ export default function ImageDisplay({ entity }: ImageDisplayProps) {
           onClick={showImage}
           src={entity.image_url && `${entity.image_url}?tr=w-75,h-75,fo-face`}
           variant="rounded"
-          sx={{ bgcolor: entity.color || 'secondary', width: 75, height: 75, borderColor: entity.color, borderWidth: 2, borderStyle: "solid", borderRadius: 1, cursor: "pointer" }}
+          sx={{ bgcolor: 'secondary', width: 75, height: 75, borderColor: "secondary", borderWidth: 2, borderStyle: "solid", borderRadius: 1, cursor: "pointer" }}
         /> }
       { !entity.image_url &&
         <Avatar
           variant="rounded"
-          sx={{ bgcolor: entity.color || "secondary", width: 75, height: 75, borderColor: entity.color || "secondary", borderWidth: 2, borderStyle: "solid", borderRadius: 1, cursor: "pointer" }}
+          sx={{ bgcolor: "secondary", width: 75, height: 75, borderColor: "secondary", borderWidth: 2, borderStyle: "solid", borderRadius: 1, cursor: "pointer" }}
         /> }
       <Dialog open={open} onClose={closeImage}>
         <DialogTitle sx={{backgroundColor: backgroundColor, color: "primary.dark"}}>

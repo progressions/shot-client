@@ -88,7 +88,7 @@ export default function Party({ party, state, dispatch }: PartyProps) {
         action={deleteButton}
         avatar={avatar}
       >
-        <CardMedia image={party.image_url} sx={{padding: 2}}>
+        <CardMedia image={party.image_url || ""} sx={{padding: 2}}>
           <Stack direction="row" spacing={2}>
             <Box sx={{ backgroundColor: 'rgba(0,0,0,0.5)', padding: 2, borderRadius: 0.5}}>
               <Typography>{party.description}</Typography>

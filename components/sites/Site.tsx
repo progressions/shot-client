@@ -85,7 +85,7 @@ export default function Site({ site, state, dispatch }: SiteProps) {
         action={deleteButton}
         avatar={avatar}
       >
-        <CardMedia image={site.image_url} sx={{padding: 2}}>
+        <CardMedia image={site.image_url || ""} sx={{padding: 2}}>
           <Stack direction="row" spacing={2}>
             <Box sx={{ backgroundColor: 'rgba(0,0,0,0.5)', padding: 2, borderRadius: 0.5}}>
               <Typography>{site.description}</Typography>
