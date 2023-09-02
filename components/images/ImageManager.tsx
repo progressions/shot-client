@@ -9,9 +9,9 @@ import { useUploadForm } from "@/utils/useUploadForm"
 import DeleteIcon from "@mui/icons-material/Delete"
 import AddAPhotoIcon from "@mui/icons-material/AddAPhoto"
 
-import type { Site, Party } from '@/types/types'
+import type { Character, Site, Party, Vehicle } from '@/types/types'
 
-type Entity = Site | Party
+type Entity = Site | Party | Vehicle | Character
 
 interface ImageManagerProps {
   name: string

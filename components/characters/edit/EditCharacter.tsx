@@ -13,7 +13,7 @@ import SchtickSelector from "@/components/schticks/SchtickSelector"
 import Skills from "@/components/characters/edit/Skills"
 import Advancements from "@/components/advancements/Advancements"
 import Sites from "@/components/characters/edit/sites/Sites"
-import ImageManager from "@/components/characters/edit/ImageManager"
+import ImageManager from "@/components/images/ImageManager"
 import Weapons from "@/components/weapons/Weapons"
 import UploadImage from "@/components/characters/edit/UploadImage"
 import ImageDisplay from "@/components/characters/ImageDisplay"
@@ -52,6 +52,10 @@ export default function EditCharacter({ character:initialCharacter }: EditCharac
     event.preventDefault()
 
     await updateCharacter()
+  }
+
+  async function deleteImage(vehicle: Vehicle) {
+    await client.deleteVehicleImage(vehicle as Vehicle)
   }
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement>): void {
@@ -132,7 +136,7 @@ export default function EditCharacter({ character:initialCharacter }: EditCharac
                 <StyledTextField name="Archetype" label="Archetype" autoFocus fullWidth onChange={handleAVChange as React.ChangeEventHandler} value={action_values.Archetype} />
               </Stack>
             </Stack>
-            <ImageManager character={character} />
+            { character?.id && <ImageManager name="character" entity={character} updateEntity={updateCharacter} deleteImage={deleteImage} apiEndpoint="allCharacters" /> }
           </Stack>
           <Stack spacing={2} direction="row" alignItems='center'>
             <StyledTextField label={woundsLabel}
