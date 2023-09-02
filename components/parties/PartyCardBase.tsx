@@ -18,7 +18,7 @@ export default function PartyCardBase({ title, subheader, avatar, action, childr
         subheaderTypographyProps={{variant: "subtitle1"}}
         action={action}
       />
-      <CardContent>
+      <CardContent sx={{paddingBottom: 2}}>
         { children }
       </CardContent>
       <CardActions>

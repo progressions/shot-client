@@ -1,4 +1,4 @@
-import { Avatar, DialogContent, Stack, IconButton, Box, Typography } from "@mui/material"
+import { Avatar, CardMedia, DialogContent, Stack, IconButton, Box, Typography } from "@mui/material"
 import { useClient } from "@/contexts/ClientContext"
 import { useToast } from "@/contexts/ToastContext"
 import Member from "@/components/parties/Member"
@@ -88,27 +88,33 @@ export default function Party({ party, state, dispatch }: PartyProps) {
         action={deleteButton}
         avatar={avatar}
       >
-        <Typography>{party.description}</Typography>
-        <Typography variant="h6" mt={2} gutterBottom>Members</Typography>
-        { !!party?.characters?.length &&
-        <>
-            {
-              party.characters.map((character, index) => {
-                const key = generateKey(character, index)
-                return (<Member key={key} character={character} removeCharacter={removeCharacter} />)
-              })
-            }
-          </>
-          }
-          { !!party?.vehicles?.length &&
-          <>
-            {
-              party.vehicles.map((character, index) => {
-                const key = generateKey(character, index)
-                return (<Member key={key} character={character} removeCharacter={removeCharacter} />)
-              })
-            }
-          </> }
+        <CardMedia image={party.image_url} sx={{padding: 2}}>
+          <Stack direction="row" spacing={2}>
+            <Box sx={{ backgroundColor: 'rgba(0,0,0,0.5)', padding: 2, borderRadius: 0.5}}>
+              <Typography>{party.description}</Typography>
+              <Typography variant="h6" mt={2} gutterBottom>Members</Typography>
+              { !!party?.characters?.length &&
+              <>
+                  {
+                    party.characters.map((character, index) => {
+                      const key = generateKey(character, index)
+                      return (<Member key={key} character={character} removeCharacter={removeCharacter} />)
+                    })
+                  }
+                </>
+                }
+                { !!party?.vehicles?.length &&
+                <>
+                  {
+                    party.vehicles.map((character, index) => {
+                      const key = generateKey(character, index)
+                      return (<Member key={key} character={character} removeCharacter={removeCharacter} />)
+                    })
+                  }
+              </> }
+            </Box>
+          </Stack>
+        </CardMedia>
       </PartyCardBase>
       <StyledDialog
         open={open}

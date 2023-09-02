@@ -1,4 +1,4 @@
-import { Avatar, DialogContent, Stack, IconButton, Box, Typography } from "@mui/material"
+import { Avatar, CardMedia, DialogContent, Stack, IconButton, Box, Typography } from "@mui/material"
 import { useClient } from "@/contexts/ClientContext"
 import { useToast } from "@/contexts/ToastContext"
 import Member from "@/components/sites/Member"
@@ -85,22 +85,24 @@ export default function Site({ site, state, dispatch }: SiteProps) {
         action={deleteButton}
         avatar={avatar}
       >
-        <Stack direction="row" spacing={2}>
-          <Box>
-            <Typography>{site.description}</Typography>
-            <Typography variant="h6" mt={2} gutterBottom>Attuned</Typography>
-            { !!site?.characters?.length &&
-            <>
-                {
-                  site.characters.map((character, index) => {
-                    const key = generateKey(character, index)
-                    return (<Member key={key} character={character} removeCharacter={removeCharacter} />)
-                  })
+        <CardMedia image={site.image_url} sx={{padding: 2}}>
+          <Stack direction="row" spacing={2}>
+            <Box sx={{ backgroundColor: 'rgba(0,0,0,0.5)', padding: 2, borderRadius: 0.5}}>
+              <Typography>{site.description}</Typography>
+              { !!site?.characters?.length &&
+              <>
+                <Typography variant="h6" mt={2} gutterBottom>Attuned</Typography>
+                  {
+                    site.characters.map((character, index) => {
+                      const key = generateKey(character, index)
+                      return (<Member key={key} character={character} removeCharacter={removeCharacter} />)
+                    })
+                  }
+                </>
                 }
-              </>
-              }
-          </Box>
-        </Stack>
+            </Box>
+          </Stack>
+        </CardMedia>
       </SiteCardBase>
       <StyledDialog
         open={open}
