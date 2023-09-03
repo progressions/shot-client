@@ -93,7 +93,7 @@ export default function EditVehicle({ vehicle:initialVehicle }: EditVehicleProps
         <Stack spacing={2}>
           <Stack direction="row" spacing={1} justifyContent="space-between">
             <Stack spacing={2}>
-              <Stack direction="row" spacing={1} width={600}>
+              <Stack direction="row" spacing={1}>
                 <FormControlLabel label="Task" name="task" control={<Switch checked={vehicle.task} />} onChange={handleCheck} />
                 <FormControlLabel label="Active" name="active" control={<Switch checked={vehicle.active} />} onChange={handleCheck} />
               </Stack>
@@ -102,36 +102,38 @@ export default function EditVehicle({ vehicle:initialVehicle }: EditVehicleProps
               </Stack>
               <Stack direction="row" spacing={1}>
                 <Faction faction={vehicle.faction} onChange={handleFactionChange} />
-              </Stack>
-              <Stack direction="row" spacing={1}>
                 <CharacterType value={action_values.Type as string} onChange={handleAVChange} />
               </Stack>
-            </Stack>
-            { vehicle?.id && <ImageManager name="vehicle" entity={vehicle} updateEntity={updateVehicle} deleteImage={deleteImage} apiEndpoint="allVehicles" /> }
-          </Stack>
-          <Stack spacing={2} direction="row" alignItems='center'>
-            <StyledTextField label={woundsLabel}
-              type="number"
-              name="Chase Points"
-              value={vehicle.action_values?.['Chase Points'] || ''}
-              onChange={handleAVChange as React.ChangeEventHandler}
-              InputProps={
-                {startAdornment: woundsAdornment()}
-              }
-            />
-            { vehicle.action_values["Type"] != "Mook" &&
-              <StyledTextField label="Condition Points"
-                type="number"
-                name="Condition Points"
-                value={vehicle.action_values?.['Condition Points'] || ''}
-                onChange={handleAVChange as React.ChangeEventHandler}
-                InputProps={
-                  {startAdornment: <InputAdornment position="start"><CarCrashIcon color='error' /></InputAdornment>}
+              <Stack spacing={2} direction="row" alignItems='center'>
+                <StyledTextField label={woundsLabel}
+                  type="number"
+                  name="Chase Points"
+                  value={vehicle.action_values?.['Chase Points'] || ''}
+                  onChange={handleAVChange as React.ChangeEventHandler}
+                  InputProps={
+                    {startAdornment: woundsAdornment()}
+                  }
+                />
+                { vehicle.action_values["Type"] != "Mook" &&
+                  <StyledTextField label="Condition Points"
+                    type="number"
+                    name="Condition Points"
+                    value={vehicle.action_values?.['Condition Points'] || ''}
+                    onChange={handleAVChange as React.ChangeEventHandler}
+                    InputProps={
+                      {startAdornment: <InputAdornment position="start"><CarCrashIcon color='error' /></InputAdornment>}
+                    }
+                  />
                 }
-              />
-            }
-            <StyledTextField label="Impairments" type="number" name="impairments" value={vehicle.impairments || ''} onChange={handleChange} />
-            <ColorPicker character={vehicle} onChange={handleChange} dispatch={dispatchVehicle} />
+                <Stack spacing={2} direction="row" alignItems='center'>
+                  <StyledTextField label="Impairments" type="number" name="impairments" value={vehicle.impairments || ''} onChange={handleChange} />
+                  <ColorPicker character={vehicle} onChange={handleChange} dispatch={dispatchVehicle} />
+                </Stack>
+              </Stack>
+            </Stack>
+            <Stack sx={{width: 300}}>
+              { vehicle?.id && <ImageManager name="vehicle" entity={vehicle} updateEntity={updateVehicle} deleteImage={deleteImage} apiEndpoint="allVehicles" /> }
+            </Stack>
           </Stack>
           <EditActionValues vehicle={vehicle} onChange={handleAVChange as React.ChangeEventHandler} />
         </Stack>
