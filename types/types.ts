@@ -344,6 +344,7 @@ export interface Vehicle {
   location?: string
   image_url: string | null
   task: boolean
+  notion_page_id: string | null
 }
 
 export interface Person {
@@ -373,6 +374,7 @@ export interface Person {
   location?: string
   image_url: string | null
   task: boolean
+  notion_page_id: string | null
 }
 
 export interface Advancement {
@@ -534,7 +536,8 @@ export const defaultCharacter:Person = {
   count: 0,
   shot_id: "",
   image_url: "",
-  task: false
+  task: false,
+  notion_page_id: null,
 }
 
 export const defaultVehicle:Vehicle = {
@@ -579,7 +582,8 @@ export const defaultVehicle:Vehicle = {
   shot_id: "",
   driver: defaultCharacter,
   image_url: "",
-  task: false
+  task: false,
+  notion_page_id: null,
 }
 
 export const defaultFight:Fight = {

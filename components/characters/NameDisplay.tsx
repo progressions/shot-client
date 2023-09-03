@@ -1,5 +1,6 @@
 import { Link, Stack, Box, Typography } from "@mui/material"
 import DirectionsCarIcon from "@mui/icons-material/DirectionsCar"
+import LaunchIcon from '@mui/icons-material/Launch'
 import { IoSkull, IoSkullOutline } from "react-icons/io5"
 import DeathMarks from "@/components/characters/DeathMarks"
 import EditButtons from "@/components/characters/EditButtons"
@@ -47,7 +48,7 @@ export default function NameDisplay({ character, editCharacter, deleteCharacter,
     return (
       <Typography variant="caption" sx={{textTransform: "uppercase", color: "text.secondary"}}>
         { character.action_values["Archetype"] }
-        { (character.action_values["Archetype"] && character.faction) && " - " }
+        { (character.action_values["Archetype"] && character.faction?.name) && " - " }
         { character.faction?.name }
         &nbsp;
         <DeathMarks character={character} readOnly />
@@ -56,6 +57,7 @@ export default function NameDisplay({ character, editCharacter, deleteCharacter,
   }
 
   const link = character?.category == "vehicle" ? `/vehicles/${character.id}` : `/characters/${character.id}`
+  const notionLink = character?.notion_page_id ? `https://www.notion.so/isaacrpg/${character.notion_page_id.replace(/-/g, "")}` : null
 
   return (
       <Box>
@@ -65,6 +67,12 @@ export default function NameDisplay({ character, editCharacter, deleteCharacter,
               <Link color="inherit" href={link} target="_blank">
                 { character.name }
               </Link>
+              &nbsp;
+              { character.notion_page_id &&
+                <Link color="inherit" href={notionLink} target="_blank">
+                  <LaunchIcon fontSize="small" />
+                </Link>
+              }
               <Location shot={shot} character={character} />
             </Typography>
             <GamemasterOnly user={user} character={character}>
