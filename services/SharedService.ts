@@ -169,6 +169,10 @@ const SharedService = {
     return "Wounds"
   },
 
+  notionLink: function(character: Character): string | null {
+    return character?.notion_page_id ? `https://www.notion.so/isaacrpg/${character.notion_page_id.replace(/-/g, "")}` : null
+  },
+
   // Update values, makes changes to the character
 
   addImpairments: function(character: Character | Vehicle, value: number): Character | Vehicle {

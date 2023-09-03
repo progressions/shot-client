@@ -115,6 +115,7 @@ export default function EditCharacter({ character:initialCharacter }: EditCharac
 
   const schticksState:SchticksStateType = { ...initialSchticksState, schticks: schticks }
   const weaponsState:WeaponsStateType = { ...initialWeaponsState, weapons: weapons }
+  const notionLink = CS.notionLink(character)
 
   return (
     <>
@@ -128,8 +129,8 @@ export default function EditCharacter({ character:initialCharacter }: EditCharac
               </Stack>
               <Stack direction="row" spacing={1} width={600}>
                 <StyledTextField name="name" label="Name" required autoFocus fullWidth onChange={handleChange} value={character.name} />
-                { CS.notionLink(character) &&
-                  <Link color="inherit" href={CS.notionLink(character)} target="_blank">
+                { notionLink &&
+                  <Link color="inherit" href={notionLink} target="_blank">
                     <LaunchIcon fontSize="large" />
                   </Link>
                 }
