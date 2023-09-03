@@ -137,8 +137,6 @@ export default function EditCharacter({ character:initialCharacter }: EditCharac
               </Stack>
               <Stack direction="row" spacing={1}>
                 <Faction faction={character.faction} onChange={handleFactionChange} />
-              </Stack>
-              <Stack direction="row" spacing={1}>
                 <CharacterType value={action_values.Type as string} onChange={handleAVChange} />
               </Stack>
               <Stack direction="row" spacing={1}>
