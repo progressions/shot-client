@@ -20,9 +20,10 @@ import ImageDisplay from "@/components/characters/ImageDisplay"
 
 import { useEffect } from "react"
 
-import { colors, Typography, Box, Stack, TextField, FormControlLabel, Switch, Button, InputAdornment } from "@mui/material"
+import { Link, colors, Typography, Box, Stack, TextField, FormControlLabel, Switch, Button, InputAdornment } from "@mui/material"
 import FavoriteIcon from '@mui/icons-material/Favorite'
 import PeopleIcon from '@mui/icons-material/People'
+import LaunchIcon from '@mui/icons-material/Launch'
 
 import PlayerTypeOnly from "@/components/PlayerTypeOnly"
 import DeathMarks from "@/components/characters/DeathMarks"
@@ -125,7 +126,14 @@ export default function EditCharacter({ character:initialCharacter }: EditCharac
                 <FormControlLabel label="Task" name="task" control={<Switch checked={character.task} />} onChange={handleCheck} />
                 <FormControlLabel label="Active" name="active" control={<Switch checked={character.active} />} onChange={handleCheck} />
               </Stack>
+              <Stack direction="row" spacing={1} width={600}>
                 <StyledTextField name="name" label="Name" required autoFocus fullWidth onChange={handleChange} value={character.name} />
+                { CS.notionLink(character) &&
+                  <Link color="inherit" href={CS.notionLink(character)} target="_blank">
+                    <LaunchIcon fontSize="large" />
+                  </Link>
+                }
+              </Stack>
               <Stack direction="row" spacing={1}>
                 <Faction faction={character.faction} onChange={handleFactionChange} />
               </Stack>

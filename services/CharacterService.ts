@@ -197,6 +197,10 @@ const CharacterService = {
 
   description: function(character: Character, key: keyof DescriptionValues): string {
     return character.description[key] as string || ""
+  },
+
+  notionLink: function(character: Character): string {
+    return character?.notion_page_id ? `https://www.notion.so/isaacrpg/${character.notion_page_id.replace(/-/g, "")}` : null
   }
 
 }
