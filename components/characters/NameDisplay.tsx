@@ -68,7 +68,7 @@ export default function NameDisplay({ character, editCharacter, deleteCharacter,
                 { character.name }
               </Link>
               &nbsp;
-              { character.notion_page_id &&
+              { notionLink &&
                 <Link color="inherit" href={notionLink} target="_blank">
                   <LaunchIcon fontSize="small" />
                 </Link>
