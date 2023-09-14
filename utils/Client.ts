@@ -147,7 +147,7 @@ class Client {
 
   async updateCharacter(character: Character, fight?: Fight | null):Promise<Person> {
     // No need to send the character's schticks or weapons to the server
-    const updatedCharacter = {...character, schticks: undefined, weapons: undefined}
+    const updatedCharacter = {...character, advancements: undefined, sites: undefined, schticks: undefined, weapons: undefined}
     return await this.patch(this.api.characters(fight, {id: character.id} as ID), {"character": updatedCharacter})
   }
 
