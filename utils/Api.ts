@@ -233,6 +233,10 @@ class Api {
     return `${this.api()}/factions`
   }
 
+  notionCharacters(): string {
+    return `${this.api()}/notion/characters`
+  }
+
   characterSchticks(character: Character | ID, schtick?: Schtick | ID): string {
     if (schtick?.id) {
       return `${this.allCharacters(character)}/schticks/${schtick.id}`

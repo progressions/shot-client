@@ -17,6 +17,7 @@ import ImageManager from "@/components/images/ImageManager"
 import Weapons from "@/components/weapons/Weapons"
 import UploadImage from "@/components/characters/edit/UploadImage"
 import ImageDisplay from "@/components/characters/ImageDisplay"
+import LinkCharacter from "@/components/notion/LinkCharacter"
 
 import { useEffect } from "react"
 
@@ -127,8 +128,9 @@ export default function EditCharacter({ character:initialCharacter }: EditCharac
                 <FormControlLabel label="Task" name="task" control={<Switch checked={character.task} />} onChange={handleCheck} />
                 <FormControlLabel label="Active" name="active" control={<Switch checked={character.active} />} onChange={handleCheck} />
               </Stack>
-              <Stack direction="row" spacing={1} width={600}>
+              <Stack direction="row" spacing={1} width={600} alignItems="center">
                 <StyledTextField name="name" label="Name" required autoFocus fullWidth onChange={handleChange} value={character.name} />
+                <LinkCharacter pageId={character?.notion_page_id} />
                 { notionLink &&
                   <Link color="inherit" href={notionLink} target="_blank">
                     <LaunchIcon fontSize="large" />

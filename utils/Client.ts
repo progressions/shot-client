@@ -44,6 +44,11 @@ class Client {
     this.api = new Api()
   }
 
+  async getNotionCharacters(params = {}) {
+    const query = Object.entries(params).map(([key, value]) => `${key}=${value || ""}`).join("&")
+    return this.get(`${this.api.notionCharacters()}?${query}`)
+  }
+
   async getLocationForCharacter(character: Character):Promise<Location> {
     return this.get(this.api.locations(), {"shot_id": character.shot_id} as Character)
   }
