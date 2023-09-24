@@ -9,7 +9,7 @@ import type { Character } from '@/types/types'
 import { CharacterActions } from "@/reducers/characterState"
 
 interface LinkCharacterProps {
-  pageId: string
+  pageId: string | null
 }
 
 export default function LinkCharacter({ pageId }: LinkCharacterProps) {
@@ -23,13 +23,13 @@ export default function LinkCharacter({ pageId }: LinkCharacterProps) {
   useEffect(() => {
     if (open) {
       const data = client.getNotionCharacters({ name: character?.name }).then(data => {
-        setPages(data)
+        setPages(data as any)
         setLoading(false)
 
         return data
       })
     }
-  }, [open])
+  }, [open, client, character?.name])
 
   function handleClick() {
     setNotionPageId(pageId)
@@ -41,7 +41,7 @@ export default function LinkCharacter({ pageId }: LinkCharacterProps) {
   }
 
   async function onSubmit() {
-    dispatchCharacter({ type: CharacterActions.UPDATE, name: "notion_page_id", value: notionPageId })
+    dispatchCharacter({ type: CharacterActions.UPDATE, name: "notion_page_id", value: notionPageId as string})
     setOpen(false)
   }
 
