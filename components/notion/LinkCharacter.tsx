@@ -3,22 +3,21 @@ import { IconButton, Box, DialogContent, DialogContentText, DialogActions, Butto
 import { useCharacter } from "@/contexts/CharacterContext"
 import { useClient } from "@/contexts/ClientContext"
 import { useToast } from "@/contexts/ToastContext"
-import { StyledSelect, StyledDialog, StyledTextField, SaveButton, CancelButton } from "@/components/StyledFields"
+import { StyledAutocomplete, StyledSelect, StyledDialog, StyledTextField, SaveButton, CancelButton } from "@/components/StyledFields"
 import { useState, useEffect } from "react"
 import type { Character } from '@/types/types'
 import { CharacterActions } from "@/reducers/characterState"
 
 interface LinkCharacterProps {
-  pageId: string | null
 }
 
-export default function LinkCharacter({ pageId }: LinkCharacterProps) {
-  const { character, dispatch:dispatchCharacter, updateCharacter, reloadCharacter } = useCharacter()
+export default function LinkCharacter({ }: LinkCharacterProps) {
+  const { character, dispatch, updateCharacter, reloadCharacter } = useCharacter()
   const { user, client } = useClient()
   const [open, setOpen] = useState(false)
   const [loading, setLoading] = useState(true)
   const [pages, setPages] = useState([])
-  const [notionPageId, setNotionPageId] = useState(pageId)
+  const [pageId, setPageId] = useState(character?.notion_page_id || "")
 
   useEffect(() => {
     if (open) {
@@ -31,8 +30,13 @@ export default function LinkCharacter({ pageId }: LinkCharacterProps) {
     }
   }, [open, client, character?.name])
 
+  function filterData(data: any[]) {
+    return data.filter((item: any) => {
+      return item.properties.Name?.title?.[0]?.plain_text
+    })
+  }
+
   function handleClick() {
-    setNotionPageId(pageId)
     setOpen(true)
   }
 
@@ -40,10 +44,20 @@ export default function LinkCharacter({ pageId }: LinkCharacterProps) {
     setOpen(false)
   }
 
-  async function onSubmit() {
-    dispatchCharacter({ type: CharacterActions.UPDATE, name: "notion_page_id", value: notionPageId as string})
+  function onSubmit() {
+    dispatch({ type: CharacterActions.UPDATE, name: "notion_page_id", value: pageId as string})
     setOpen(false)
   }
+
+  function handleSelect(event: React.ChangeEvent<HTMLInputElement>, newValue: any) {
+    setPageId(newValue?.id || "")
+  }
+
+  function getOptionLabel(page: any) {
+    return page?.properties?.Name?.title?.[0]?.plain_text || ""
+  }
+
+  const helperText = (pages.length) ? "": "There are no available pages."
 
   return (
     <>
@@ -58,21 +72,16 @@ export default function LinkCharacter({ pageId }: LinkCharacterProps) {
       >
         <DialogContent>
           <Stack spacing={2}>
-            { pages && pages?.map((page: any) => (
-              <Stack direction="row" key={page.id} spacing={1} divider={<Box sx={{ height: 1 }} />}>
-                <Box sx={{width: 90}}>
-                  { notionPageId === page.id ? (
-                    <Button variant="contained" color="primary" onClick={() => setNotionPageId("")}>Unlink</Button>
-                  ) : (
-                    <Button variant="contained" color="primary" onClick={() => setNotionPageId(page.id)}>Link</Button>
-                  )}
-                </Box>
-                <Box>
-                  <Typography variant="h6">{page?.properties?.Name?.title?.[0]?.plain_text}</Typography>
-                  <Typography variant="body1">{page?.properties?.Description?.rich_text?.[0]?.plain_text}</Typography>
-                </Box>
-              </Stack>
-            ))}
+            <StyledAutocomplete
+              value={pages.find((page: any) => page.id === pageId) || null}
+              disabled={loading}
+              options={pages || []}
+              sx={{ width: 250 }}
+              onChange={handleSelect}
+              getOptionLabel={getOptionLabel}
+              isOptionEqualToValue={(option: any, value: any) => option?.id === value?.id}
+              renderInput={(params: InputParamsType) => <StyledSelect helperText={helperText} {...params} label="Notion Page" />}
+            />
           </Stack>
         </DialogContent>
         <DialogActions>
