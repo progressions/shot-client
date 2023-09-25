@@ -130,7 +130,7 @@ export default function EditCharacter({ character:initialCharacter }: EditCharac
               </Stack>
               <Stack direction="row" spacing={1} width={600} alignItems="center">
                 <StyledTextField name="name" label="Name" required autoFocus fullWidth onChange={handleChange} value={character.name} />
-                <LinkCharacter pageId={character?.notion_page_id} />
+                <LinkCharacter />
                 { notionLink &&
                   <Link color="inherit" href={notionLink} target="_blank">
                     <LaunchIcon fontSize="large" />

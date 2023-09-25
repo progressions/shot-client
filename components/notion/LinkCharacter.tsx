@@ -5,7 +5,7 @@ import { useClient } from "@/contexts/ClientContext"
 import { useToast } from "@/contexts/ToastContext"
 import { StyledAutocomplete, StyledSelect, StyledDialog, StyledTextField, SaveButton, CancelButton } from "@/components/StyledFields"
 import { useState, useEffect } from "react"
-import type { Character } from '@/types/types'
+import type { Character, InputParamsType } from '@/types/types'
 import { CharacterActions } from "@/reducers/characterState"
 
 interface LinkCharacterProps {
