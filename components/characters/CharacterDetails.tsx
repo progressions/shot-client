@@ -48,7 +48,7 @@ interface CharacterDetailsParams {
 export default function CharacterDetails({ character, editingCharacter, setEditingCharacter, className, hidden, shot }: CharacterDetailsParams) {
   const { fight, dispatch } = useFight()
 
-  const { session, client, user } = useClient()
+  const { client, user } = useClient()
 
   const [open, setOpen] = useState<Character>(defaultCharacter)
   const [openAction, setOpenAction] = useState(false)
