@@ -36,9 +36,8 @@ export default function AttackModal({ open, setOpen, anchorEl, setAnchorEl }: At
   const { toastSuccess, toastError } = useToast()
 
   const [state, dispatch] = useReducer(attackReducer, initialAttackState)
-  const { weapon, damage, outcome, wounds, success, attacker, target, defense, swerve, count,
-    stunt, typedSwerve, edited, smackdown, toughness, actionValueName, actionValue, actionResult } = state
-  const { result } = swerve
+  const { wounds, attacker, target, swerve, count,
+    typedSwerve, edited } = state
 
   useEffect(() => {
     dispatch({ type: AttackActions.RESET })
@@ -182,6 +181,7 @@ export default function AttackModal({ open, setOpen, anchorEl, setAnchorEl }: At
               state={state}
               setTarget={setTarget}
               handleChange={handleChange}
+              dispatch={dispatch}
             />
             <SwerveButton
               state={state}

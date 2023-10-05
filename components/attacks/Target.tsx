@@ -10,18 +10,23 @@ import { useToast } from "@/contexts/ToastContext"
 import { useClient } from "@/contexts/ClientContext"
 import { useFight } from "@/contexts/FightContext"
 import { FightActions } from '@/reducers/fightState'
+import { AttackActions } from "@/reducers/attackState"
 
 interface TargetProps {
   state: AttackState
   setTarget: (character: Character) => void
   handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void
+  dispatch: React.Dispatch<{
+    type: AttackActions;
+    payload?: Partial<AttackState> | undefined;
+  }>
 }
 
-export default function Target({ state, setTarget, handleChange }: TargetProps) {
+export default function Target({ state, setTarget, handleChange, dispatch }: TargetProps) {
   const { attacker, target, defense, toughness, edited } = state
   const [dodged, setDodged] = useState(false)
   const { client } = useClient()
-  const { fight, dispatch } = useFight()
+  const { fight, dispatch:dispatchFight } = useFight()
   const { toastSuccess, toastError } = useToast()
 
   if (CS.isMook(target)) return (
@@ -36,8 +41,8 @@ export default function Target({ state, setTarget, handleChange }: TargetProps) 
     try {
       await client.actCharacter(character, fight, 1)
       toastSuccess(`${character.name} dodged for 1 shot.`)
-      handleChange({ target: { name: "defense", value: defense + 3 } } as React.ChangeEvent<HTMLInputElement>)
-      dispatch({ type: FightActions.EDIT })
+      dispatch({ type: AttackActions.UPDATE, payload: { defense: defense + 3 } })
+      dispatchFight({ type: FightActions.EDIT })
     } catch(error) {
       toastError()
     }
