@@ -3,7 +3,7 @@ import SystemUpdateAltIcon from '@mui/icons-material/SystemUpdateAlt'
 import { useClient } from "@/contexts/ClientContext"
 import { useToast } from "@/contexts/ToastContext"
 import { useCharacter } from "@/contexts/CharacterContext"
-import CS from "@/services/CharacterService"
+import CS from 
 import { useState } from "react"
 
 export default function SyncCharacter() {

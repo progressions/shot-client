@@ -17,12 +17,11 @@ import ImageManager from "@/components/images/ImageManager"
 import Weapons from "@/components/weapons/Weapons"
 import UploadImage from "@/components/characters/edit/UploadImage"
 import ImageDisplay from "@/components/characters/ImageDisplay"
-import LinkCharacter from "@/components/notion/LinkCharacter"
-import SyncCharacter from "@/components/notion/SyncCharacter"
+import NotionLink from "@/components/notion/NotionLink"
 
 import { useEffect } from "react"
 
-import { Link, colors, Typography, Box, Stack, TextField, FormControlLabel, Switch, Button, InputAdornment } from "@mui/material"
+import { ButtonGroup, Link, colors, Typography, Box, Stack, TextField, FormControlLabel, Switch, Button, InputAdornment } from "@mui/material"
 import FavoriteIcon from '@mui/icons-material/Favorite'
 import PeopleIcon from '@mui/icons-material/People'
 import LaunchIcon from '@mui/icons-material/Launch'
@@ -131,8 +130,7 @@ export default function EditCharacter({ character:initialCharacter }: EditCharac
               </Stack>
               <Stack direction="row" spacing={1} width={600} alignItems="center">
                 <StyledTextField name="name" label="Name" required autoFocus fullWidth onChange={handleChange} value={character.name} />
-                <SyncCharacter />
-                <LinkCharacter />
+                <NotionLink />
                 { notionLink && <>
                   <Link color="inherit" href={notionLink} target="_blank">
                     <LaunchIcon fontSize="large" />

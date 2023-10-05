@@ -1,5 +1,6 @@
 import LibraryAddIcon from '@mui/icons-material/LibraryAdd'
-import { Tooltip, IconButton, Box, DialogContent, DialogContentText, DialogActions, Button, Stack, Typography } from "@mui/material"
+import SystemUpdateAltIcon from '@mui/icons-material/SystemUpdateAlt'
+import { ButtonGroup, Tooltip, IconButton, Box, DialogContent, DialogContentText, DialogActions, Button, Stack, Typography } from "@mui/material"
 import { useCharacter } from "@/contexts/CharacterContext"
 import { useClient } from "@/contexts/ClientContext"
 import { useToast } from "@/contexts/ToastContext"
@@ -8,16 +9,14 @@ import { useState, useEffect } from "react"
 import type { Character, InputParamsType } from '@/types/types'
 import { CharacterActions } from "@/reducers/characterState"
 
-interface LinkCharacterProps {
-}
-
-export default function LinkCharacter({ }: LinkCharacterProps) {
-  const { character, dispatch, updateCharacter, reloadCharacter } = useCharacter()
+export default function NotionLink() {
+  const { character, dispatch, syncCharacter, updateCharacter, reloadCharacter } = useCharacter()
   const { user, client } = useClient()
   const [open, setOpen] = useState(false)
   const [loading, setLoading] = useState(true)
   const [pages, setPages] = useState([])
   const [pageId, setPageId] = useState(character?.notion_page_id || "")
+  const [saving, setSaving] = useState(false)
 
   useEffect(() => {
     if (open) {
@@ -36,7 +35,13 @@ export default function LinkCharacter({ }: LinkCharacterProps) {
     })
   }
 
-  function handleClick() {
+  async function handleSync(): Promise<void> {
+    setSaving(true)
+    await syncCharacter()
+    setSaving(false)
+  }
+
+  function handleLink() {
     setOpen(true)
   }
 
@@ -61,11 +66,14 @@ export default function LinkCharacter({ }: LinkCharacterProps) {
 
   return (
     <>
-      <Tooltip title="Link Character to Notion" placement="top">
-        <IconButton color="inherit" onClick={handleClick}>
-          <LibraryAddIcon fontSize="large" color="inherit" />
-        </IconButton>
-      </Tooltip>
+      <ButtonGroup variant="contained">
+        <Button onClick={handleLink}>
+          <LibraryAddIcon />
+        </Button>
+        <Button onClick={handleSync} disabled={saving}>
+          <SystemUpdateAltIcon />
+        </Button>
+      </ButtonGroup>
       <StyledDialog
         open={open}
         onClose={handleClose}
