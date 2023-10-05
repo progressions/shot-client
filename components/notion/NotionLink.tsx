@@ -1,6 +1,7 @@
 import LibraryAddIcon from '@mui/icons-material/LibraryAdd'
 import SystemUpdateAltIcon from '@mui/icons-material/SystemUpdateAlt'
-import { ButtonGroup, Tooltip, IconButton, Box, DialogContent, DialogContentText, DialogActions, Button, Stack, Typography } from "@mui/material"
+import LaunchIcon from '@mui/icons-material/Launch'
+import { Link, ButtonGroup, Tooltip, IconButton, Box, DialogContent, DialogContentText, DialogActions, Button, Stack, Typography } from "@mui/material"
 import { useCharacter } from "@/contexts/CharacterContext"
 import { useClient } from "@/contexts/ClientContext"
 import { useToast } from "@/contexts/ToastContext"
@@ -8,6 +9,7 @@ import { StyledAutocomplete, StyledSelect, StyledDialog, StyledTextField, SaveBu
 import { useState, useEffect } from "react"
 import type { Character, InputParamsType } from '@/types/types'
 import { CharacterActions } from "@/reducers/characterState"
+import CS from "@/services/CharacterService"
 
 export default function NotionLink() {
   const { character, dispatch, syncCharacter, updateCharacter, reloadCharacter } = useCharacter()
@@ -63,17 +65,25 @@ export default function NotionLink() {
   }
 
   const helperText = (pages.length) ? "": "There are no available pages."
+  const notionLink = CS.notionLink(character)
 
   return (
     <>
-      <ButtonGroup variant="contained">
-        <Button onClick={handleLink}>
-          <LibraryAddIcon />
-        </Button>
-        <Button onClick={handleSync} disabled={saving}>
-          <SystemUpdateAltIcon />
-        </Button>
-      </ButtonGroup>
+      <Stack direction="row" spacing={1} alignItems="center">
+        <ButtonGroup variant="contained">
+          <Button onClick={handleLink}>
+            <LibraryAddIcon />
+          </Button>
+          <Button onClick={handleSync} disabled={saving}>
+            <SystemUpdateAltIcon />
+          </Button>
+        </ButtonGroup>
+        { notionLink && <>
+          <Link color="inherit" href={notionLink} target="_blank">
+            <LaunchIcon fontSize="large" />
+          </Link>
+        </> }
+      </Stack>
       <StyledDialog
         open={open}
         onClose={handleClose}

@@ -21,10 +21,9 @@ import NotionLink from "@/components/notion/NotionLink"
 
 import { useEffect } from "react"
 
-import { ButtonGroup, Link, colors, Typography, Box, Stack, TextField, FormControlLabel, Switch, Button, InputAdornment } from "@mui/material"
+import { Grid, ButtonGroup, Link, colors, Typography, Box, Stack, TextField, FormControlLabel, Switch, Button, InputAdornment } from "@mui/material"
 import FavoriteIcon from '@mui/icons-material/Favorite'
 import PeopleIcon from '@mui/icons-material/People'
-import LaunchIcon from '@mui/icons-material/Launch'
 
 import PlayerTypeOnly from "@/components/PlayerTypeOnly"
 import DeathMarks from "@/components/characters/DeathMarks"
@@ -124,18 +123,17 @@ export default function EditCharacter({ character:initialCharacter }: EditCharac
         <Stack spacing={2}>
           <Stack direction="row" spacing={1} justifyContent="space-between">
             <Stack spacing={2}>
-              <Stack direction="row" spacing={1} width={600}>
-                <FormControlLabel label="Task" name="task" control={<Switch checked={character.task} />} onChange={handleCheck} />
-                <FormControlLabel label="Active" name="active" control={<Switch checked={character.active} />} onChange={handleCheck} />
-              </Stack>
+              <Grid container spacing={2} alignItems="flex-end">
+                <Grid item xs={8}>
+                  <FormControlLabel label="Task" name="task" control={<Switch checked={character.task} />} onChange={handleCheck} />
+                  <FormControlLabel label="Active" name="active" control={<Switch checked={character.active} />} onChange={handleCheck} />
+                </Grid>
+                <Grid item xs={4}>
+                  <NotionLink />
+                </Grid>
+              </Grid>
               <Stack direction="row" spacing={1} width={600} alignItems="center">
                 <StyledTextField name="name" label="Name" required autoFocus fullWidth onChange={handleChange} value={character.name} />
-                <NotionLink />
-                { notionLink && <>
-                  <Link color="inherit" href={notionLink} target="_blank">
-                    <LaunchIcon fontSize="large" />
-                  </Link>
-                </> }
               </Stack>
               <Stack direction="row" spacing={1}>
                 <Faction faction={character.faction} onChange={handleFactionChange} />
