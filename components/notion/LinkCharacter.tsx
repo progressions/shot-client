@@ -1,5 +1,5 @@
 import LibraryAddIcon from '@mui/icons-material/LibraryAdd'
-import { IconButton, Box, DialogContent, DialogContentText, DialogActions, Button, Stack, Typography } from "@mui/material"
+import { Tooltip, IconButton, Box, DialogContent, DialogContentText, DialogActions, Button, Stack, Typography } from "@mui/material"
 import { useCharacter } from "@/contexts/CharacterContext"
 import { useClient } from "@/contexts/ClientContext"
 import { useToast } from "@/contexts/ToastContext"
@@ -61,9 +61,11 @@ export default function LinkCharacter({ }: LinkCharacterProps) {
 
   return (
     <>
-      <IconButton color="inherit" onClick={handleClick}>
-        <LibraryAddIcon fontSize="large" color="inherit" />
-      </IconButton>
+      <Tooltip title="Link Character to Notion" placement="top">
+        <IconButton color="inherit" onClick={handleClick}>
+          <LibraryAddIcon fontSize="large" color="inherit" />
+        </IconButton>
+      </Tooltip>
       <StyledDialog
         open={open}
         onClose={handleClose}

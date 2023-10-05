@@ -18,6 +18,7 @@ import Weapons from "@/components/weapons/Weapons"
 import UploadImage from "@/components/characters/edit/UploadImage"
 import ImageDisplay from "@/components/characters/ImageDisplay"
 import LinkCharacter from "@/components/notion/LinkCharacter"
+import SyncCharacter from "@/components/notion/SyncCharacter"
 
 import { useEffect } from "react"
 
@@ -130,12 +131,13 @@ export default function EditCharacter({ character:initialCharacter }: EditCharac
               </Stack>
               <Stack direction="row" spacing={1} width={600} alignItems="center">
                 <StyledTextField name="name" label="Name" required autoFocus fullWidth onChange={handleChange} value={character.name} />
+                <SyncCharacter />
                 <LinkCharacter />
-                { notionLink &&
+                { notionLink && <>
                   <Link color="inherit" href={notionLink} target="_blank">
                     <LaunchIcon fontSize="large" />
                   </Link>
-                }
+                </> }
               </Stack>
               <Stack direction="row" spacing={1}>
                 <Faction faction={character.faction} onChange={handleFactionChange} />

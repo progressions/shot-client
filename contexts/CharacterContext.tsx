@@ -13,6 +13,7 @@ interface CharacterContextType {
   character: Character
   updateCharacter: () => Promise<void>
   reloadCharacter: () => Promise<void>
+  syncCharacter: () => Promise<void>
 }
 
 const defaultCharacterContext: CharacterContextType = {
@@ -20,6 +21,7 @@ const defaultCharacterContext: CharacterContextType = {
   dispatch: () => {},
   updateCharacter: () => { return new Promise(() => {})},
   reloadCharacter: () => { return new Promise(() => {})},
+  syncCharacter: () => { return new Promise(() => {})},
   character: defaultCharacter
 }
 
@@ -85,8 +87,21 @@ export function CharacterProvider({ character, children }: CharacterProviderProp
     }
   }
 
+  async function syncCharacter():Promise<void> {
+    dispatch({ type: CharacterActions.SUBMIT })
+
+    try {
+      const data = await client.syncCharacter(state.character)
+      dispatch({ type: CharacterActions.CHARACTER, payload: data })
+      toastSuccess("Character updated.")
+    } catch(error) {
+      dispatch({ type: CharacterActions.RESET })
+      toastError()
+    }
+  }
+
   return (
-    <CharacterContext.Provider value={{state, character, dispatch, updateCharacter, reloadCharacter}}>
+    <CharacterContext.Provider value={{state, character, dispatch, updateCharacter, reloadCharacter, syncCharacter}}>
       {children}
     </CharacterContext.Provider>
   )

@@ -169,6 +169,10 @@ class Client {
     return await this.delete(`${this.api.characters(null, character)}/image`)
   }
 
+  async syncCharacter(character: Character):Promise<Person> {
+    return await this.post(`${this.api.characters(null, character)}/sync`)
+  }
+
   async actCharacter(character: Character, fight: Fight, shots: number):Promise<Character> {
     return await this.patch(this.api.actCharacter(fight, { id: character.id } as Character), {"character": { id: character.id, shot_id: character.shot_id } as Character, "shots": shots})
   }
