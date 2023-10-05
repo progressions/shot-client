@@ -469,6 +469,10 @@ class Client {
     return await this.delete(this.api.weapons(weapon))
   }
 
+  async deleteWeaponImage(weapon: Weapon):Promise<void> {
+    return await this.delete(`${this.api.weapons(weapon)}/image`)
+  }
+
   async addWeapon(character: Character | ID, weapon: Weapon):Promise<Character> {
     return await this.post(this.api.characterWeapons(character), {
       "weapon": weapon

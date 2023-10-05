@@ -27,7 +27,7 @@ export default function WeaponModal({ state, dispatch, open, setOpen, weapon:ini
   const { loading, categories, junctures } = state
   const [weapon, setWeapon] = useState<Weapon>(initialWeapon || defaultWeapon)
 
-  async function updateWeapon(event: React.ChangeEvent<HTMLInputElement>) {
+  async function updateWeapon(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
     event.preventDefault()
     if (dispatch) {
       dispatch({ type: WeaponsActions.SAVING })
@@ -44,7 +44,7 @@ export default function WeaponModal({ state, dispatch, open, setOpen, weapon:ini
     }
   }
 
-  async function deleteImage(site: Site) {
+  async function deleteImage(weapon: Weapon) {
     await client.deleteWeaponImage(weapon as Weapon)
   }
 
