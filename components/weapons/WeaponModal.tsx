@@ -9,6 +9,7 @@ import { defaultWeapon } from "@/types/types"
 import { useState, useEffect, useReducer } from "react"
 import type { WeaponsStateType, WeaponsActionType } from "@/reducers/weaponsState"
 import { WeaponsActions } from "@/reducers/weaponsState"
+import ImageManager from "@/components/images/ImageManager"
 
 const filterOptions = createFilterOptions<Juncture>();
 
@@ -26,7 +27,7 @@ export default function WeaponModal({ state, dispatch, open, setOpen, weapon:ini
   const { loading, categories, junctures } = state
   const [weapon, setWeapon] = useState<Weapon>(initialWeapon || defaultWeapon)
 
-  async function addWeapon(event: React.ChangeEvent<HTMLInputElement>) {
+  async function updateWeapon(event: React.ChangeEvent<HTMLInputElement>) {
     event.preventDefault()
     if (dispatch) {
       dispatch({ type: WeaponsActions.SAVING })
@@ -41,6 +42,10 @@ export default function WeaponModal({ state, dispatch, open, setOpen, weapon:ini
     } catch(error) {
       toastError()
     }
+  }
+
+  async function deleteImage(site: Site) {
+    await client.deleteWeaponImage(weapon as Weapon)
   }
 
   function cancelForm() {
@@ -88,7 +93,7 @@ export default function WeaponModal({ state, dispatch, open, setOpen, weapon:ini
         onClose={() => setOpen(false)}
         title="Weapon"
         onCancel={cancelForm}
-        onSubmit={addWeapon}
+        onSubmit={updateWeapon}
       >
           <Stack direction="column" spacing={2}>
             <Stack direction="row" spacing={1} alignItems="center">
@@ -221,6 +226,7 @@ export default function WeaponModal({ state, dispatch, open, setOpen, weapon:ini
                 control={<Switch checked={weapon?.kachunk} />}
                 onChange={handleCheck} />
             </Stack>
+            { weapon?.id && <ImageManager name="weapon" entity={weapon} updateEntity={updateWeapon} deleteImage={deleteImage} apiEndpoint="weapons" /> }
           </Stack>
       </StyledFormDialog>
     </>
