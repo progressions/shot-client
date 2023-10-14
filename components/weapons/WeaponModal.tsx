@@ -95,8 +95,8 @@ export default function WeaponModal({ state, dispatch, open, setOpen, weapon:ini
         onCancel={cancelForm}
         onSubmit={updateWeapon}
       >
-          <Stack direction="column" spacing={2}>
-            <Stack direction="row" spacing={1} alignItems="center">
+        <Stack direction="column" spacing={2}>
+          <Stack direction="row" spacing={1} alignItems="center">
               <StyledTextField
                 sx={{width: 400}}
                 required

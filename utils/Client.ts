@@ -182,7 +182,7 @@ class Client {
   }
 
   async showCharacter(fight: Fight, character: Character | ID):Promise<Character> {
-    return await this.patch(this.api.revealCharacter(fight, { id: character.id } as Character), {"character": { id: character.id } })
+    return await this.patch(this.api.revealCharacter(fight, { id: character.id } as Character), {"character": { id: character.id, shot_id: character.shot_id } })
   }
 
   async addCharacter(fight: Fight, character: Character | ID):Promise<Character> {
