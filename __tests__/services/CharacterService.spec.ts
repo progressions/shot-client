@@ -11,12 +11,12 @@ describe("CharacterService", () => {
       expect(CS.skill(character, "Driving")).toBe(7)
     }),
 
-    it("should return a character's skill with a modifier", () => {
+    it("should return a character's skill without a modifier", () => {
       const character: Character = {
         ...brick,
         impairments: 1
       }
-      expect(CS.skill(character, "Driving")).toBe(6)
+      expect(CS.skill(character, "Driving")).toBe(7)
     }),
 
     it("returns 7 if the character does not have the skill", () => {

@@ -120,11 +120,14 @@ describe("VehicleService", () => {
           Driving: 13
         }
       }
-      const updatedCharacter = VS.addImpairments(character, 1)
+      const updatedCharacter = CS.addImpairments(character, 1)
       const vehicle: Vehicle = {
         ...defaultVehicle,
         driver: updatedCharacter
       }
+      expect(CS.impairments(updatedCharacter)).toEqual(1)
+      expect(VS.impairments(vehicle)).toEqual(0)
+      expect(VS.totalImpairments(vehicle)).toEqual(1)
       expect(VS.defense(vehicle)).toEqual(12)
     })
   }),

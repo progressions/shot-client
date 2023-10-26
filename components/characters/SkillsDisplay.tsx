@@ -38,11 +38,10 @@ export default function SkillsDisplay({ character }: SkillsDisplayProps) {
         <Box p={2} sx={{backgroundColor: colors.lightBlue[100]}}>
           {
             skillValues.map(([name, value]: SkillValue) => {
-              const color = CS.impairments(character) ? "red" : "primary.dark"
               return (
                 <Typography key={name} gutterBottom sx={{color: "primary.dark"}}>
                   <strong>{name}</strong>:
-                  <Typography component="span" sx={{color: color}}>{value}</Typography>
+                  <Typography component="span">{value}</Typography>
                 </Typography>
               )
             })

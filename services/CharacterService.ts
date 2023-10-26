@@ -89,8 +89,7 @@ const CharacterService = {
 
   // Adjusted for Impairment
   skill: function(character: Character, key: string): number {
-    const value = (character.skills && character.skills[key] as number) || 7
-    return Math.max(0, value - this.impairments(character))
+    return (character.skills && character.skills[key] as number) || 7
   },
 
   mainAttack: function(character: Character): string {
