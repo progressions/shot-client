@@ -77,7 +77,7 @@ export default function Initiative() {
       title="Initiative"
     >
       <DialogContent>
-        <Typography marginBottom>Ask each player to roll Initiative, enter the values below. They should use the Acceleration of their vehicle if they are driving, and Speed if they are not.</Typography>
+        <Typography>Ask each player to roll Initiative, enter the values below. They should use the Acceleration of their vehicle if they are driving, and Speed if they are not.</Typography>
         <Stack spacing={2}>
           {
             combatants.map((combatant) => {
