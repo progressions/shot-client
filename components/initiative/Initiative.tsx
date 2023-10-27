@@ -55,10 +55,7 @@ export default function Initiative() {
   }
 
   async function updateInitiative(character: Character | Vehicle, initiative: number) {
-    if (CS.isVehicle(character)) {
-      const updatedVehicle = VS.setInitiative(character, initiative)
-      await client.updateVehicle(updatedVehicle, fight)
-    } else {
+    if (CS.isCharacter(character)) {
       const updatedCharacter = CS.setInitiative(character, initiative)
       await client.updateCharacter(updatedCharacter, fight)
     }
@@ -80,10 +77,11 @@ export default function Initiative() {
       title="Initiative"
     >
       <DialogContent>
-        <Typography>Set initiative values. (Don&lsquo;t add Speed.)</Typography>
+        <Typography marginBottom>Ask each player to roll Initiative, enter the values below. They should use the Acceleration of their vehicle if they are driving, and Speed if they are not.</Typography>
         <Stack spacing={2}>
           {
             combatants.map((combatant) => {
+              if (VS.isVehicle(combatant)) return null
               const key = `${combatant.category},${combatant.shot_id}`
               return (
                 <Stack key={key} direction="row" spacing={2} alignItems="center">
