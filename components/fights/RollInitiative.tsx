@@ -63,7 +63,13 @@ export default function RollInitiative() {
       eligibleCharacters.map(async (character: Character) => {
         if (CS.isCharacter(character)) {
           await updateCharacter(character as Person, shot)
-        } else {
+        }
+      })
+    )
+
+    await Promise.all(
+      eligibleCharacters.map(async (character: Character) => {
+        if (!CS.isCharacter(character)) {
           await updateVehicle(character as Vehicle, shot)
         }
       })
@@ -71,9 +77,7 @@ export default function RollInitiative() {
   }
 
   const updateCharacter = async (character: Person, shot: number) => {
-    const roll = CS.actionValue(character, "Speed") + DS.rollDie() + shot
-    const initiative = (roll > 1) ? roll : 1
-    const updatedCharacter = CS.updateValue(character, "current_shot", initiative)
+    const updatedCharacter = CS.rollInitiative(character)
     try {
       const data = await client.updateCharacter(updatedCharacter, fight)
       return !!data
@@ -83,10 +87,8 @@ export default function RollInitiative() {
   }
 
   const updateVehicle = async (vehicle: Vehicle, shot: number) => {
-    const roll = (vehicle.action_values["Acceleration"] as number) - (vehicle.impairments || 0) + DS.rollDie() + shot
-    const initiative = (roll > 1) ? roll : 1
     try {
-      const data = await client.updateVehicle({...vehicle, "current_shot": initiative}, fight)
+      const data = await client.updateVehicle({...vehicle, "current_shot": 0}, fight)
       return !!data
     } catch(error) {
       return false

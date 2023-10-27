@@ -22,6 +22,7 @@ import WoundsDisplay from "@/components/characters/WoundsDisplay"
 import SkillsDisplay from "@/components/characters/SkillsDisplay"
 import SchticksDisplay from "@/components/characters/SchticksDisplay"
 import WeaponsDisplay from "@/components/characters/WeaponsDisplay"
+import DrivingDetails from "@/components/characters/DrivingDetails"
 
 import GroupedEffects from "@/components/state_effects/GroupedEffects"
 import GamemasterOnly from '@/components/GamemasterOnly'
@@ -191,6 +192,7 @@ export default function CharacterDetails({ character, editingCharacter, setEditi
               <WeaponsDisplay weapons={character.weapons} />
             </Stack>
           </GamemasterOnly>
+          <DrivingDetails character={character} />
           <GroupedEffects character={character} />
         </Stack>
       <ActionModal open={openAction}

@@ -345,6 +345,7 @@ export interface Vehicle {
   image_url: string | null
   task: boolean
   notion_page_id: string | null
+  driving?: Vehicle
 }
 
 export interface Person {
@@ -375,6 +376,7 @@ export interface Person {
   image_url: string | null
   task: boolean
   notion_page_id: string | null
+  driving?: Vehicle
 }
 
 export interface Advancement {

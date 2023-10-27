@@ -100,7 +100,13 @@ const SharedService = {
 
   // Use when fetching action values other than numbers.
   otherActionValue: function(character: Character | Vehicle, key: string): string {
-    return character.action_values[key] as string || ""
+    try {
+      return character.action_values[key] as string || ""
+    } catch (e) {
+      console.log("character", character)
+      console.log("key", key)
+      return ""
+    }
   },
 
   faction: function(character: Character | Vehicle): Faction | null {
@@ -207,7 +213,9 @@ const SharedService = {
 
   rollInitiative(character: Character | Vehicle, roll?: number | null): Character | Vehicle {
     const dieResult = roll || Dice.rollDie()
-    const speedRoll = this.actionValue(character, "Speed") + dieResult
+    const accelerationValue = character?.driving ? this.actionValue(character?.driving, "Acceleration") : 0
+    const initiativeSpeedValue = accelerationValue || this.actionValue(character, "Speed")
+    const speedRoll = initiativeSpeedValue + dieResult
     const initiativePenalty = parseToNumber(character.current_shot || 0)
     const initiative = Math.max(0, parseToNumber(speedRoll) + initiativePenalty)
 
