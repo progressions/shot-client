@@ -213,7 +213,7 @@ const SharedService = {
 
   rollInitiative(character: Character | Vehicle, roll?: number | null): Character | Vehicle {
     const dieResult = roll || Dice.rollDie()
-    const accelerationValue = character?.driving ? this.actionValue(character?.driving, "Acceleration") : 0
+    const accelerationValue = character?.driving?.id ? this.actionValue(character?.driving, "Acceleration") : 0
     const initiativeSpeedValue = accelerationValue || this.actionValue(character, "Speed")
     const speedRoll = initiativeSpeedValue + dieResult
     const initiativePenalty = parseToNumber(character.current_shot || 0)

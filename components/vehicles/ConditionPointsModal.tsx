@@ -62,6 +62,7 @@ const ConditionPointsModal = ({open, setOpen, character }: ConditionPointsModalP
       onSubmit={submitConditionPoints}
       saving={saving}
       onCancel={cancelForm}
+      width="xs"
     >
       <StyledTextField autoFocus type="number" label={label} required name="Condition Points" value={conditionPoints || ""} onChange={handleChange} />
     </StyledFormDialog>

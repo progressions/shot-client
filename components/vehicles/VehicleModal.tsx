@@ -136,7 +136,6 @@ export default function VehicleModal({ open, setOpen, character:activeVehicle, r
             <Stack direction="row" spacing={2}>
               <CharacterType value={character.action_values?.['Type'] as string || ''} onChange={handleAVChange} />
               <FormControlLabel label="Task" name="task" control={<Switch checked={!!character.task} />} onChange={handleCheck} />
-              <FormControlLabel label="Active" name="active" control={<Switch checked={!!character.active} />} onChange={handleCheck} />
             </Stack>
             <Stack direction="row" spacing={2}>
               <StyledTextField

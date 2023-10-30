@@ -123,14 +123,12 @@ export default function VehicleDetails({ character, editingCharacter, setEditing
                 <ActionButtons character={character}
                   takeWounds={takeChasePoints}
                   takeConditionPoints={takeConditionPoints}
-                  takeAction={takeAction}
                 />
               </PlayerTypeOnly>
               <PlayerTypeOnly character={character} only="Mook">
                 <MookActionButtons character={character}
                   takeWounds={takeChasePoints}
                   takeConditionPoints={takeConditionPoints}
-                  takeAction={takeAction}
                 />
               </PlayerTypeOnly>
             </Stack>

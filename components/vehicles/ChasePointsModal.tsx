@@ -57,6 +57,7 @@ const ChasePointsModal = ({open, setOpen, character }: ChasePointsModalParams) =
       onSubmit={submitChasePoints}
       saving={saving}
       onCancel={cancelForm}
+      width="xs"
     >
       <StyledTextField autoFocus type="number" label={label} required name="chasePoints" value={chasePoints || ""} onChange={handleChange} />
     </StyledFormDialog>

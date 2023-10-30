@@ -54,6 +54,7 @@ export default function WoundsModal({open, setOpen, character }: WoundsModalPara
       title={label}
       onSubmit={submitWounds}
       onCancel={cancelForm}
+      width="xs"
     >
       <StyledTextField autoFocus type="number" label={label} required name="wounds" value={smackdown || ""} onChange={handleChange} />
     </StyledFormDialog>
