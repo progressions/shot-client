@@ -102,7 +102,6 @@ export default function EditVehicle({ vehicle:initialVehicle }: EditVehicleProps
               </Stack>
               <Stack direction="row" spacing={1}>
                 <Faction faction={vehicle.faction} onChange={handleFactionChange} />
-                <CharacterType value={action_values.Type as string} onChange={handleAVChange} />
               </Stack>
               <Stack spacing={2} direction="row" alignItems='center'>
                 <StyledTextField label={woundsLabel}

@@ -134,7 +134,6 @@ export default function VehicleModal({ open, setOpen, character:activeVehicle, r
         <DialogContent>
           <Stack spacing={2}>
             <Stack direction="row" spacing={2}>
-              <CharacterType value={character.action_values?.['Type'] as string || ''} onChange={handleAVChange} />
               <FormControlLabel label="Task" name="task" control={<Switch checked={!!character.task} />} onChange={handleCheck} />
             </Stack>
             <Stack direction="row" spacing={2}>
@@ -150,8 +149,6 @@ export default function VehicleModal({ open, setOpen, character:activeVehicle, r
                 value={character.name}
                 onChange={handleChange}
               />
-              { fight?.id &&
-              <StyledTextField label="Shot" type="number" name="current_shot" value={character.current_shot === null ? '' : character.current_shot} onChange={handleChange} sx={{width: 80}} /> }
             </Stack>
             <Stack spacing={2} direction="row" alignItems='center'>
               <PlayerTypeOnly character={character} except="Mook">
@@ -180,7 +177,7 @@ export default function VehicleModal({ open, setOpen, character:activeVehicle, r
               <StyledTextField label="Frame" type="number" sx={{width: 100}} name="Frame" value={character.action_values?.['Frame'] || ''} onChange={handleAVChange} />
               <StyledTextField label="Crunch" type="number" sx={{width: 100}} name="Crunch" value={character.action_values?.['Crunch'] || ''} onChange={handleAVChange} />
             </Stack>
-            <DriverSelector vehicle={character} onChange={handleDriverChange} />
+            { character?.id && <DriverSelector vehicle={character} onChange={handleDriverChange} /> }
             <Stack direction="row" spacing={2}>
               <PositionSelector character={character} onChange={handleAVChange} />
               <PursuerSelector character={character} onChange={handleAVChange} />
