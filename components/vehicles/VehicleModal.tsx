@@ -15,7 +15,7 @@ import ArchetypeSelector from "@/components/vehicles/VehicleArchetypeSelector"
 import { useToast } from "@/contexts/ToastContext"
 import { useFight } from "@/contexts/FightContext"
 import { useClient } from "@/contexts/ClientContext"
-import type { Character, Vehicle, Fight } from "@/types/types"
+import type { Character, Vehicle, Fight, VehicleArchetype } from "@/types/types"
 import { defaultVehicle } from "@/types/types"
 import { StyledTextField, SaveCancelButtons, StyledDialog } from "@/components/StyledFields"
 import { FightActions } from '@/reducers/fightState'
@@ -70,7 +70,7 @@ export default function VehicleModal({ open, setOpen, character:activeVehicle, r
     setCharacter((prevState: Vehicle) => (VS.updateDriver(prevState, driver)))
   }
 
-  const handleArchetypeChange = (archetype: any) => {
+  const handleArchetypeChange = (archetype: VehicleArchetype) => {
     console.log(archetype)
     setCharacter((prevState: Vehicle) => (VS.updateFromArchetype(prevState, archetype)))
   }
@@ -140,7 +140,7 @@ export default function VehicleModal({ open, setOpen, character:activeVehicle, r
         <DialogContent>
           <Stack spacing={2}>
             <Stack direction="row" spacing={2}>
-              <ArchetypeSelector character={character} onChange={handleArchetypeChange} />
+              <ArchetypeSelector vehicle={character} onChange={handleArchetypeChange} />
               <FormControlLabel label="Task" name="task" control={<Switch checked={!!character.task} />} onChange={handleCheck} />
             </Stack>
             <Stack direction="row" spacing={2}>

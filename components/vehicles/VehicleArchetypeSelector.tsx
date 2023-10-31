@@ -9,13 +9,13 @@ import { Typography } from "@mui/material"
 
 interface VehicleArchetypeSelectorProps {
   vehicle: Vehicle | null
-  onChange: (character: Character) => void
+  onChange: (archetype: VehicleArchetype) => void
 }
 
 export default function VehicleArchetypeSelector({ vehicle, onChange }: VehicleArchetypeSelectorProps) {
   const { fight } = useFight()
   const { client } = useClient()
-  const [archetypes, setArchetypes] = useState<Character[]>([])
+  const [archetypes, setArchetypes] = useState<VehicleArchetype[]>([])
   const [loading, setLoading] = useState<boolean>(false)
   const [archetype, setArchetype] = useState<VehicleArchetype | null>(null)
 

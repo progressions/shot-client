@@ -26,7 +26,8 @@ import type {
   ID,
   Fight,
   Party,
-  User
+  User,
+  VehicleArchetype
 } from "@/types/types"
 
 interface ClientParams {
