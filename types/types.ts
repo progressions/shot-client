@@ -2,6 +2,15 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { Session, User as NextAuthUser } from "next-auth"
 import { AlertColor } from "@mui/material"
 
+export interface VehicleArchetype {
+  name: string
+  Acceleration: number
+  Handling: number
+  Squeal: number
+  Frame: number
+  Crunch: number
+}
+
 export interface AttackRoll {
   boxcars: boolean
   wayAwfulFailure: boolean

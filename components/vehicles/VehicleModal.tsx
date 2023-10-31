@@ -10,6 +10,7 @@ import CharacterType from '@/components/characters/edit/CharacterType'
 import PositionSelector from "@/components/vehicles/PositionSelector"
 import PursuerSelector from "@/components/vehicles/PursuerSelector"
 import DriverSelector from "@/components/vehicles/DriverSelector"
+import ArchetypeSelector from "@/components/vehicles/VehicleArchetypeSelector"
 
 import { useToast } from "@/contexts/ToastContext"
 import { useFight } from "@/contexts/FightContext"
@@ -67,6 +68,11 @@ export default function VehicleModal({ open, setOpen, character:activeVehicle, r
 
   const handleDriverChange = (driver: Character) => {
     setCharacter((prevState: Vehicle) => (VS.updateDriver(prevState, driver)))
+  }
+
+  const handleArchetypeChange = (archetype: any) => {
+    console.log(archetype)
+    setCharacter((prevState: Vehicle) => (VS.updateFromArchetype(prevState, archetype)))
   }
 
   const handleColor = (color: ColorResult) => {
@@ -134,6 +140,7 @@ export default function VehicleModal({ open, setOpen, character:activeVehicle, r
         <DialogContent>
           <Stack spacing={2}>
             <Stack direction="row" spacing={2}>
+              <ArchetypeSelector character={character} onChange={handleArchetypeChange} />
               <FormControlLabel label="Task" name="task" control={<Switch checked={!!character.task} />} onChange={handleCheck} />
             </Stack>
             <Stack direction="row" spacing={2}>

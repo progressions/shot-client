@@ -150,6 +150,10 @@ class Client {
     return await this.get(this.api.vehicles(null, vehicle))
   }
 
+  async getVehicleArchetypes():Promise<VehicleArchetype[]> {
+    return await this.get(`${this.api.vehicles()}/archetypes`)
+  }
+
   async updateCharacter(character: Character, fight?: Fight | null):Promise<Person> {
     // No need to send the character's schticks or weapons to the server
     const updatedCharacter = {...character, advancements: undefined, sites: undefined, schticks: undefined, weapons: undefined}

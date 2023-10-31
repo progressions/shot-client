@@ -1,4 +1,4 @@
-import type { Fight, Character, Position, Vehicle, CharacterEffect } from "@/types/types"
+import type { Fight, Character, Position, Vehicle, CharacterEffect, VehicleArchetype } from "@/types/types"
 import CS from "@/services/CharacterService"
 import SharedService, { woundThresholds } from "@/services/SharedService"
 
@@ -218,6 +218,15 @@ const VehicleService = {
     }
     return { ...vehicle, driver: driver } as Vehicle
   },
+
+  updateFromArchetype: function(vehicle: Vehicle, archetype: VehicleArchetype): Vehicle {
+    try {
+      return { ...vehicle, name: archetype.name, action_values: { ...vehicle.action_values, "Acceleration": archetype["Acceleration"], "Handling": archetype["Handling"], "Squeal": archetype["Squeal"], "Frame": archetype["Frame"], "Crunch": archetype["Crunch"] } } as Vehicle
+    } catch(error) {
+      console.log(error)
+      return vehicle
+    }
+  }
 
 }
 
