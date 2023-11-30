@@ -52,6 +52,7 @@ export default function HealModal({open, setOpen, character }: HealModalParams) 
       onSubmit={submitWounds}
       title="Heal Wounds"
       onCancel={cancelForm}
+      width="xs"
     >
       <StyledTextField autoFocus type="number" label="Heal Wounds" required name="healing" value={healing || ""} onChange={handleChange} />
     </StyledFormDialog>
