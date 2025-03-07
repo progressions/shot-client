@@ -3,7 +3,7 @@ import { parseToNumber } from "@/utils/parseToNumber"
 import Dice from "@/services/DiceService"
 
 // Define the type for the wound thresholds
-interface WoundThresholds {
+type WoundThresholds = {
   low: number;
   high: number;
   serious: number;

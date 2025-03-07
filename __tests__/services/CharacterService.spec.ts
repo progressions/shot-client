@@ -6,21 +6,21 @@ import { brick, carolina, shing, zombies } from "@/__tests__/factories/Character
 describe("CharacterService", () => {
   describe("skill", () => {
     it("should return a character's skill", () => {
-      const character = brick
+      const character = carolina
 
-      expect(CS.skill(character, "Driving")).toBe(7)
+      expect(CS.skill(character, "Driving")).toBe(13)
     }),
 
     it("should return a character's skill without a modifier", () => {
       const character: Character = {
-        ...brick,
+        ...carolina,
         impairments: 1
       }
-      expect(CS.skill(character, "Driving")).toBe(7)
+      expect(CS.skill(character, "Driving")).toBe(13)
     }),
 
     it("returns 7 if the character does not have the skill", () => {
-      expect(CS.skill(brick, "Anything")).toBe(7)
+      expect(CS.skill(carolina, "Fix-It")).toBe(7)
     })
   }),
 
