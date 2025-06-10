@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { DialogContent, Box, Stack, TextField, Button, Dialog } from "@mui/material"
+import { DialogContent, Box, Stack, TextField, Typography, Button, Dialog } from "@mui/material"
 
 import { useFight } from "@/contexts/FightContext"
 import { useToast } from "@/contexts/ToastContext"
@@ -56,6 +56,9 @@ export default function UpCheckModal({open, setOpen, character }: UpCheckModalPa
       onCancel={cancelForm}
       width="xs"
     >
+      <Typography>
+        Add 1 Mark of Death for each Fortune die rolled.
+      </Typography>
       <StyledTextField autoFocus type="number" label={label} required name="wounds" value={smackdown || ""} onChange={handleChange} />
     </StyledFormDialog>
   )

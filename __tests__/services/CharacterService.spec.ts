@@ -697,6 +697,34 @@ describe("CharacterService", () => {
     })
   }),
 
+  describe("setDeathMarks", () => {
+    it("should set death marks", () => {
+      const character: Character = {
+        ...defaultCharacter,
+        action_values: {
+          ...defaultCharacter.action_values,
+          "Marks of Death": 0
+        }
+      }
+
+      const updatedCharacter = CS.setDeathMarks(character, 1)
+      expect(CS.marksOfDeath(updatedCharacter)).toBe(1)
+    }),
+
+    it("should set death marks to 0", () => {
+      const character: Character = {
+        ...defaultCharacter,
+        action_values: {
+          ...defaultCharacter.action_values,
+          "Marks of Death": 3
+        }
+      }
+
+      const updatedCharacter = CS.setDeathMarks(character, 0)
+      expect(CS.marksOfDeath(updatedCharacter)).toBe(0)
+    })
+  }),
+
   describe("knownSkills", () => {
     it("returns all skills with a value greater than 0", () => {
       const character: Character = {
