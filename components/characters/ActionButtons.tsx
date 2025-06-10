@@ -31,12 +31,14 @@ export default function ActionButtons({ character, healWounds, takeWounds, takeC
   const { user } = useClient()
 
   const woundLabel = CS.isMook(character) ? "Kill Mooks" : "Take Smackdown"
+  const makeUpCheck = CS.seriousWounds(character)
+  const makeDeathCheck = CS.marksOfDeath(character)
 
   return (
     <Stack direction="row" spacing={1} sx={{height: 30}}>
       <ButtonGroup variant="contained" size="small">
         <PlayerTypeOnly character={character} except="Mook">
-          { takeWounds &&
+          { !!makeDeathCheck &&
             <Tooltip title="Death Check" arrow>
               <Button onClick={() => {takeWounds(character)}}>
                 <IoSkull />
@@ -44,7 +46,7 @@ export default function ActionButtons({ character, healWounds, takeWounds, takeC
             </Tooltip> }
           </PlayerTypeOnly>
         <PlayerTypeOnly character={character} except="Mook">
-          { takeWounds &&
+          { makeUpCheck &&
             <Tooltip title="Up Check" arrow>
               <Button onClick={() => {takeWounds(character)}}>
                 <FileUploadIcon color="error" />
