@@ -20,6 +20,8 @@ interface ActionButtonsParams {
   character: Character,
   healWounds?: (character: Character) => void,
   takeWounds?: (character: Character) => void,
+  makeUpCheck?: (character: Character) => void,
+  makeDeathCheck?: (character: Character) => void,
   takeConditionPoints?: (character: Character) => void,
   takeAction?: (character: Character) => void,
   editCharacter?: (character: Character) => void,
@@ -27,42 +29,42 @@ interface ActionButtonsParams {
   takeDodgeAction?: (character: Character) => void,
 }
 
-export default function ActionButtons({ character, healWounds, takeWounds, takeConditionPoints, takeAction, editCharacter, deleteCharacter, takeDodgeAction }: ActionButtonsParams) {
+export default function ActionButtons({ character, healWounds, takeWounds, makeUpCheck, makeDeathCheck, takeConditionPoints, takeAction, editCharacter, deleteCharacter, takeDodgeAction }: ActionButtonsParams) {
   const { user } = useClient()
 
   const woundLabel = CS.isMook(character) ? "Kill Mooks" : "Take Smackdown"
-  const makeUpCheck = CS.seriousWounds(character)
-  const makeDeathCheck = CS.marksOfDeath(character)
+  const canMakeUpCheck = CS.seriousWounds(character)
+  const canMakeDeathCheck = CS.marksOfDeath(character)
 
   return (
     <Stack direction="row" spacing={1} sx={{height: 30}}>
       <ButtonGroup variant="contained" size="small">
         <PlayerTypeOnly character={character} except="Mook">
-          { !!makeDeathCheck &&
+          { !!canMakeDeathCheck &&
             <Tooltip title="Death Check" arrow>
-              <Button onClick={() => {takeWounds(character)}}>
+              <Button onClick={makeDeathCheck}>
                 <IoSkull />
               </Button>
             </Tooltip> }
           </PlayerTypeOnly>
         <PlayerTypeOnly character={character} except="Mook">
-          { makeUpCheck &&
+          { canMakeUpCheck &&
             <Tooltip title="Up Check" arrow>
-              <Button onClick={() => {takeWounds(character)}}>
+              <Button onClick={makeUpCheck}>
                 <FileUploadIcon color="error" />
               </Button>
             </Tooltip> }
         </PlayerTypeOnly>
         { takeWounds &&
           <Tooltip title={woundLabel} arrow>
-            <Button onClick={() => {takeWounds(character)}}>
+            <Button onClick={takeWounds}>
               <HeartBrokenIcon color='error' />
             </Button>
           </Tooltip> }
         { healWounds &&
         <PlayerTypeOnly character={character} except="Mook">
           <Tooltip title="Heal Wounds" arrow>
-            <Button variant="contained" onClick={() => {healWounds(character)}}>
+            <Button variant="contained" onClick={healWounds}>
               <FavoriteIcon color="error" />
             </Button>
           </Tooltip>

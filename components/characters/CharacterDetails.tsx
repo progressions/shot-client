@@ -11,6 +11,8 @@ import WhatshotIcon from '@mui/icons-material/Whatshot'
 import ActionValues from '@/components/characters/ActionValues'
 import ActionModal from '@/components/characters/ActionModal'
 import WoundsModal from '@/components/characters/WoundsModal'
+import UpCheckModal from '@/components/characters/UpCheckModal'
+import DeathCheckModal from '@/components/characters/DeathCheckModal'
 import KillMooksModal from '@/components/characters/KillMooksModal'
 import HealModal from '@/components/characters/HealModal'
 import ActionButtons from '@/components/characters/ActionButtons'
@@ -54,6 +56,8 @@ export default function CharacterDetails({ character, editingCharacter, setEditi
   const [open, setOpen] = useState<Character>(defaultCharacter)
   const [openAction, setOpenAction] = useState(false)
   const [openWounds, setOpenWounds] = useState(false)
+  const [openUpCheck, setOpenUpCheck] = useState(false)
+  const [openDeathCheck, setOpenDeathCheck] = useState(false)
   const [openHeal, setOpenHeal] = useState(false)
   const { toastSuccess, toastError } = useToast()
 
@@ -78,15 +82,23 @@ export default function CharacterDetails({ character, editingCharacter, setEditi
     setEditingCharacter(character)
   }
 
-  function takeAction(character: Character): void {
+  function takeAction(): void {
     setOpenAction(true)
   }
 
-  function takeWounds(character: Character): void {
+  function takeWounds(): void {
     setOpenWounds(true)
   }
 
-  function healWounds(character: Character): void {
+  function makeUpCheck(): void {
+    setOpenUpCheck(true)
+  }
+
+  function makeDeathCheck(): void {
+    setOpenDeathCheck(true)
+  }
+
+  function healWounds(): void {
     setOpenHeal(true)
   }
 
@@ -174,6 +186,8 @@ export default function CharacterDetails({ character, editingCharacter, setEditi
                 <ActionButtons character={character}
                   healWounds={healWounds}
                   takeWounds={takeWounds}
+                  makeUpCheck={makeUpCheck}
+                  makeDeathCheck={makeDeathCheck}
                   takeAction={takeAction}
                   takeDodgeAction={takeDodgeAction}
                 />
@@ -199,6 +213,18 @@ export default function CharacterDetails({ character, editingCharacter, setEditi
         setOpen={setOpenAction}
         character={character}
       />
+      <PlayerTypeOnly character={character} except="Mook">
+        <UpCheckModal open={openUpCheck}
+          setOpen={setOpenUpCheck}
+          character={character as Person}
+        />
+      </PlayerTypeOnly>
+      <PlayerTypeOnly character={character} except="Mook">
+        <DeathCheckModal open={openDeathCheck}
+          setOpen={setOpenDeathCheck}
+          character={character as Person}
+        />
+      </PlayerTypeOnly>
       <PlayerTypeOnly character={character} except="Mook">
         <WoundsModal open={openWounds}
           setOpen={setOpenWounds}
