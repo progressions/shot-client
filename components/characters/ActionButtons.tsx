@@ -6,6 +6,9 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import NewReleasesIcon from '@mui/icons-material/NewReleases'
 import DirectionsRunIcon from '@mui/icons-material/DirectionsRun'
 import FavoriteIcon from '@mui/icons-material/Favorite'
+import FileUploadIcon from '@mui/icons-material/FileUpload'
+import { IoSkull } from "react-icons/io5"
+import CS from "@/services/CharacterService"
 
 import GamemasterOnly from "@/components/GamemasterOnly"
 import PlayerTypeOnly from "@/components/PlayerTypeOnly"
@@ -27,18 +30,31 @@ interface ActionButtonsParams {
 export default function ActionButtons({ character, healWounds, takeWounds, takeConditionPoints, takeAction, editCharacter, deleteCharacter, takeDodgeAction }: ActionButtonsParams) {
   const { user } = useClient()
 
-  const woundLabel = character.action_values["Type"] === "Mook" as CharacterType ? "Kill Mooks" : "Take Smackdown"
-  const woundIcon = <HeartBrokenIcon color='error' />
-
-  const mainAttack = character?.action_values?.[character?.action_values?.["MainAttack"] as string]
+  const woundLabel = CS.isMook(character) ? "Kill Mooks" : "Take Smackdown"
 
   return (
     <Stack direction="row" spacing={1} sx={{height: 30}}>
       <ButtonGroup variant="contained" size="small">
+        <PlayerTypeOnly character={character} except="Mook">
+          { takeWounds &&
+            <Tooltip title="Death Check" arrow>
+              <Button onClick={() => {takeWounds(character)}}>
+                <IoSkull />
+              </Button>
+            </Tooltip> }
+          </PlayerTypeOnly>
+        <PlayerTypeOnly character={character} except="Mook">
+          { takeWounds &&
+            <Tooltip title="Up Check" arrow>
+              <Button onClick={() => {takeWounds(character)}}>
+                <FileUploadIcon color="error" />
+              </Button>
+            </Tooltip> }
+        </PlayerTypeOnly>
         { takeWounds &&
           <Tooltip title={woundLabel} arrow>
             <Button onClick={() => {takeWounds(character)}}>
-              {woundIcon}
+              <HeartBrokenIcon color='error' />
             </Button>
           </Tooltip> }
         { healWounds &&
