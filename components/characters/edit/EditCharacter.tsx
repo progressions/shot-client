@@ -100,7 +100,7 @@ export default function EditCharacter({ character:initialCharacter }: EditCharac
     }
   }
 
-  const woundsLabel = CS.isType(character, "Mooks") ? "Mooks" : "Wounds"
+  const woundsLabel = CS.isMook(character) ? "Mooks" : "Wounds"
 
   const woundsAdornment = () => {
     if (CS.isType(character, "Mooks")) {
