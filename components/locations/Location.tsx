@@ -18,8 +18,10 @@ export default function Location({ shot, character }: LocationProps) {
   const { user, client } = useClient()
   const { fight, state, dispatch } = useFight()
   const { toastError } = useToast()
+  const [loading, setLoading] = useState(false)
 
   async function setLocationForShot() {
+    setLoading(true)
     try {
       const name = prompt("Location name")
       if (name === null) {
@@ -35,14 +37,16 @@ export default function Location({ shot, character }: LocationProps) {
       console.error(error)
       toastError()
     }
+    setLoading(false)
   }
 
   return (
     <Typography sx={{opacity: 0.5, display: "inline", ml: 1}} onClick={setLocationForShot}>
-      { character.location }
-      <GamemasterOnly user={user}>
+      { loading && "Loading..." }
+      { !loading && character.location }
+      { !loading && (<GamemasterOnly user={user}>
         <AddLocationIcon sx={{fontSize: "1em", ml: 0.5}} />
-      </GamemasterOnly>
+      </GamemasterOnly>) }
     </Typography>
   )
 }
