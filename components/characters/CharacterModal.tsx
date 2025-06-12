@@ -71,10 +71,8 @@ export default function CharacterModal({ open, setOpen, character:activeCharacte
   }
 
   const handleDeathMarks = (event: React.SyntheticEvent<Element, Event>, newValue: number | null) => {
-    if (newValue) {
-      const updatedCharacter = CS.addDeathMarks(character, newValue)
-      setCharacter(updatedCharacter as Person)
-    }
+    const updatedCharacter = CS.setDeathMarks(character, newValue || 0)
+    setCharacter(updatedCharacter as Person)
   }
 
   const cancelForm = () => {

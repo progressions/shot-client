@@ -57,6 +57,10 @@ const CharacterService = {
     return this.updateActionValue(character, "Marks of Death", Math.max(0, deathMarks + value))
   },
 
+  setDeathMarks: function(character: Character, value: number): Character {
+    return this.updateActionValue(character, "Marks of Death", Math.max(0, value))
+  },
+
   updateWounds: function(character: Character, wounds: number): Character {
     const updatedCharacter = this.updateValue(character, "count", Math.max(0, wounds))
     return this.updateActionValue(updatedCharacter, "Wounds", Math.max(0, wounds))
