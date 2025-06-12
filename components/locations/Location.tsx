@@ -7,6 +7,7 @@ import { useFight } from '@/contexts/FightContext'
 import { useToast } from '@/contexts/ToastContext'
 import { FightActions } from "@/reducers/fightState"
 import GamemasterOnly from "@/components/GamemasterOnly"
+import CS from "@/services/CharacterService"
 
 interface LocationProps {
   shot: number
@@ -17,28 +18,6 @@ export default function Location({ shot, character }: LocationProps) {
   const { user, client } = useClient()
   const { fight, state, dispatch } = useFight()
   const { toastError } = useToast()
-  const [location, setLocation] = useState<any>(null)
-
-  useEffect(() => {
-    const reload = async () => {
-      try {
-        const data = character?.category === "character" ?
-          await client.getLocationForCharacter(character as Character) :
-          await client.getLocationForVehicle(character as Vehicle)
-        if (data) {
-          setLocation(data)
-        } else {
-          setLocation(null)
-        }
-      } catch(error) {
-        console.error(error)
-        toastError()
-      }
-    }
-    if (user && character?.id) {
-      reload()
-    }
-  }, [user, client, fight, toastError, character, shot, state.edited])
 
   async function setLocationForShot() {
     try {
@@ -46,7 +25,7 @@ export default function Location({ shot, character }: LocationProps) {
       if (name === null) {
         return
       }
-      if (character?.category === "character") {
+      if (CS.isCharacter(character)) {
         await client.setCharacterLocation(character as Character, { name: name })
       } else {
         await client.setVehicleLocation(character as Vehicle, { name: name })
@@ -60,7 +39,7 @@ export default function Location({ shot, character }: LocationProps) {
 
   return (
     <Typography sx={{opacity: 0.5, display: "inline", ml: 1}} onClick={setLocationForShot}>
-      { location?.name }
+      { character.location }
       <GamemasterOnly user={user}>
         <AddLocationIcon sx={{fontSize: "1em", ml: 0.5}} />
       </GamemasterOnly>

@@ -5,6 +5,7 @@ import { IoSkull, IoSkullOutline } from "react-icons/io5"
 import DeathMarks from "@/components/characters/DeathMarks"
 import EditButtons from "@/components/characters/EditButtons"
 import ImageDisplay from "@/components/characters/ImageDisplay"
+import Location from "@/components/locations/Location"
 
 import GamemasterOnly from "@/components/GamemasterOnly"
 import type { User, AuthSession, Character, Toast, Person, Vehicle } from "@/types/types"
@@ -72,6 +73,7 @@ export default function NameDisplay({ character, editCharacter, deleteCharacter,
                   <LaunchIcon fontSize="small" />
                 </Link>
               }
+              <Location shot={shot} character={character} />
             </Typography>
             <GamemasterOnly user={user} character={character}>
               <Box visibility={open ? "visible" : "hidden"}>
