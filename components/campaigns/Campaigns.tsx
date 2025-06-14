@@ -61,6 +61,8 @@ export default function Campaigns({ campaigns, getCampaigns }: CampaignsProps) {
     )
   }
 
+  console.log("currentCampaign", currentCampaign)
+
   return (
     <TableContainer component={Paper} sx={{marginTop: 3}}>
       <Table size="small">
@@ -84,7 +86,7 @@ export default function Campaigns({ campaigns, getCampaigns }: CampaignsProps) {
                   </TableCell>
                   <TableCell sx={{width: 100}}>
                     { startStopCampaignButton(campaign, currentCampaign) }
-                    { campaign?.gamemaster?.id === user?.id &&
+                    { campaign?.gamemaster?.id === user?.id && campaign?.id !== currentCampaign?.id &&
                     <IconButton color="primary" onClick={() => deleteCampaign(campaign)}>
                       <DeleteIcon />
                     </IconButton> }
