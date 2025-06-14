@@ -6,6 +6,7 @@ import StopCircleIcon from '@mui/icons-material/StopCircle'
 import { useToast } from "@/contexts/ToastContext"
 import { useCampaign } from "@/contexts/CampaignContext"
 import { useClient } from "@/contexts/ClientContext"
+import Router from 'next/router'
 
 import type { Campaign } from "@/types/types"
 
@@ -36,8 +37,10 @@ export default function Campaigns({ campaigns, getCampaigns }: CampaignsProps) {
     await setCurrentCampaign(camp)
     if (camp) {
       toastSuccess(`${camp.name} activated`)
+      Router.push('/')
     } else {
       toastSuccess(`Campaign cleared`)
+      Router.push('/campaigns')
     }
     await getCampaigns()
     return ""

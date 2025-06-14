@@ -27,6 +27,8 @@ export function ClientProvider({ children }: ClientProviderProps) {
   const client = useMemo(() => (new Client({ jwt })), [jwt])
   const user = session?.data?.user as User
 
+  console.log("user", user)
+
   return (
     <ClientContext.Provider value={{client, session, jwt, user }}>
       {children}

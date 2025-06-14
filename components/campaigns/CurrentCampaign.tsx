@@ -20,10 +20,11 @@ export default function CurrentCampaign() {
     await setCurrentCampaign(camp)
     if (camp) {
       toastSuccess(`${camp.name} activated`)
+      Router.push('/')
     } else {
       toastSuccess(`Campaign cleared`)
+      Router.push('/campaigns')
     }
-    Router.reload()
   }
 
   const startStopCampaignButton = (camp: Campaign, current: Campaign | null) => {

@@ -1,7 +1,7 @@
 import { useEffect, useReducer, createContext, useContext } from "react"
 
 import { defaultCharacter } from "@/types/types"
-import type { Character, User } from "@/types/types"
+import type { Character } from "@/types/types"
 import { useClient } from "@/contexts/ClientContext"
 import { useToast } from "@/contexts/ToastContext"
 
