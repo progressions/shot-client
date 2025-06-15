@@ -32,7 +32,7 @@ export default function Locations() {
         });
         return acc;
       }, {});
-    }, [fight.shot_order]);
+    }, []);
   };
 
   const locations = useExtractLocations();

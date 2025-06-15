@@ -47,7 +47,7 @@ export default function AttackModal({ open, setOpen, anchorEl, setAnchorEl }: At
       dispatch({ type: AttackActions.UPDATE, payload: { fight: fight } })
       setAttacker(firstUp)
     }
-  }, [open])
+  }, [fight, open])
 
   function handleClose() {
     setOpen(false)

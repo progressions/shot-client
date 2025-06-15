@@ -43,7 +43,7 @@ export default function ChaseModal({ open, setOpen, anchorEl, setAnchorEl }: Cha
       dispatch({ type: ChaseActions.UPDATE, payload: { fight: fight } })
       setAttacker(firstUp)
     }
-  }, [open])
+  }, [fight, open])
 
   function handleClose() {
     setOpen(false)
