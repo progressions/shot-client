@@ -1,12 +1,12 @@
 import { useFight } from "@/contexts/FightContext";
 import { CancelButton, StyledDialog } from "@/components/StyledFields";
-import { colors, Box, Button, DialogContent, Stack, Typography, List, ListItem, ListItemText, ListItemIcon, Divider } from "@mui/material";
+import { colors, Box, Button, DialogContent, Stack, Typography, List, ListItem, ListItemText, ListItemIcon } from "@mui/material";
 import { useMemo, useState } from "react";
 import type { Vehicle, Character, Fight, ShotType } from "@/types/types";
 import HomeIcon from '@mui/icons-material/Home';
 
 export default function Locations() {
-  const { fight, dispatch } = useFight();
+  const { fight } = useFight();
   const [processing, setProcessing] = useState(false);
   const [open, setOpen] = useState(false);
 
@@ -52,29 +52,40 @@ export default function Locations() {
           {Object.keys(locations).length === 0 ? (
             <Typography variant="body1">No locations found.</Typography>
           ) : (
-            <List dense sx={{ bgcolor: colors.blueGrey["800"], color: 'white', borderRadius: 1 }}>
-              {Object.entries(locations).map(([location, names], index) => (
-                <Box key={index}>
-                  <ListItem>
-                    <ListItemIcon sx={{ color: 'white', minWidth: '36px' }}>
-                      <HomeIcon />
-                    </ListItemIcon>
-                    <ListItemText
-                      primary={location}
-                      primaryTypographyProps={{ fontSize: '1.5rem', fontWeight: 'bold' }}
-                    />
-                  </ListItem>
-                  {names.map((name, idx) => (
-                    <ListItem key={`${name},${idx}`}>
+            <List
+              dense
+              sx={{
+                bgcolor: colors.blueGrey["800"],
+                color: 'white',
+                borderRadius: 1,
+                maxHeight: '600px',
+                overflow: 'auto',
+              }}
+            >
+              {Object.entries(locations)
+                .sort(([locationA], [locationB]) => locationA.localeCompare(locationB, undefined, { sensitivity: 'base' }))
+                .map(([location, names], index) => (
+                  <Box key={index}>
+                    <ListItem>
+                      <ListItemIcon sx={{ color: 'white', minWidth: '36px' }}>
+                        <HomeIcon />
+                      </ListItemIcon>
                       <ListItemText
-                        primary={name}
-                        sx={{ pl: '36px' }} // Align with location text by matching ListItemIcon minWidth
-                        primaryTypographyProps={{ color: colors.blueGrey["200"], fontSize: '1.1rem' }}
+                        primary={location}
+                        primaryTypographyProps={{ fontSize: '1.5rem', fontWeight: 'bold' }}
                       />
                     </ListItem>
-                  ))}
-                </Box>
-              ))}
+                    {names.map((name, idx) => (
+                      <ListItem key={`${name},${idx}`}>
+                        <ListItemText
+                          primary={name}
+                          sx={{ pl: '36px' }}
+                          primaryTypographyProps={{ color: colors.blueGrey["200"], fontSize: '1.1rem' }}
+                        />
+                      </ListItem>
+                    ))}
+                  </Box>
+                ))}
             </List>
           )}
           <Stack direction="row" spacing={2} justifyContent="flex-end" sx={{ mt: 2 }}>
