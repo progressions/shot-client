@@ -10,9 +10,10 @@ import type { Weapon } from "@/types/types"
 
 interface WeaponsDisplayProps {
   weapons: Weapon[]
+  first?: boolean
 }
 
-export default function WeaponsDisplay({ weapons }: WeaponsDisplayProps) {
+export default function WeaponsDisplay({ weapons, first }: WeaponsDisplayProps) {
   const [anchorEl, setAnchorEl] = useState<Element | null>(null)
   const [open, setOpen] = useState(false)
   const [imageAnchor, setImageAnchor] = useState<Element | null>(null)
@@ -45,12 +46,22 @@ export default function WeaponsDisplay({ weapons }: WeaponsDisplayProps) {
 
   return (
     <>
-      <Tooltip title="Weapons">
+      { first &&
+        <Stack direction="row" spacing={1} alignItems="center" justifyContent="flex-start">
+          <IconButton onMouseEnter={showWeapons} color="inherit">
+            <GiPistolGun />
+          </IconButton>
+          <Typography gutterBottom>
+            {weapons.map((weapon: Weapon) => weapon.name).join(', ')}
+          </Typography>
+        </Stack>
+      }
+      { !first && <Tooltip title="Weapons">
         <IconButton onMouseEnter={showWeapons} color="inherit">
           <GiPistolGun />
         </IconButton>
-      </Tooltip>
-      <Popover anchorEl={anchorEl} open={open} onClose={closePopover} anchorOrigin={{vertical: 'bottom', horizontal: 'center'}}>
+      </Tooltip> }
+      <Popover anchorEl={anchorEl} open={open} onClose={closePopover} anchorOrigin={{vertical: 'bottom', horizontal: 'left'}}>
         <Box p={2} sx={{width: 500, backgroundColor: colors.green[100]}}>
           {
             weapons.map((weapon: Weapon, index: number) => (

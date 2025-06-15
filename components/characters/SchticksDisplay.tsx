@@ -1,13 +1,14 @@
 import LightbulbIcon from '@mui/icons-material/Lightbulb'
-import { colors, Typography, Box, Popover, Tooltip, IconButton } from "@mui/material"
+import { colors, Stack, Typography, Box, Popover, Tooltip, IconButton } from "@mui/material"
 import { useState } from "react"
 import type { Schtick } from "@/types/types"
 
 interface SchticksDisplayProps {
   schticks: Schtick[]
+  first?: boolean
 }
 
-export default function SchticksDisplay({ schticks }: SchticksDisplayProps) {
+export default function SchticksDisplay({ schticks, first }: SchticksDisplayProps) {
   const [anchorEl, setAnchorEl] = useState<Element | null>(null)
   const [open, setOpen] = useState(false)
 
@@ -25,12 +26,22 @@ export default function SchticksDisplay({ schticks }: SchticksDisplayProps) {
 
   return (
     <>
-      <Tooltip title="Schticks">
+      { first &&
+        <Stack direction="row" spacing={1} alignItems="center" justifyContent="flex-start">
+          <IconButton onMouseEnter={showSchticks} color="inherit">
+            <LightbulbIcon />
+          </IconButton>
+          <Typography gutterBottom>
+            {schticks.map((schtick: Schtick) => schtick.name).join(', ')}
+          </Typography>
+        </Stack>
+      }
+      { !first && <Tooltip title="Schticks">
         <IconButton onMouseEnter={showSchticks} color="inherit">
           <LightbulbIcon />
         </IconButton>
-      </Tooltip>
-      <Popover anchorEl={anchorEl} open={open} onClose={closePopover} anchorOrigin={{vertical: 'bottom', horizontal: 'center'}}>
+      </Tooltip> }
+      <Popover anchorEl={anchorEl} open={open} onClose={closePopover} anchorOrigin={{vertical: 'bottom', horizontal: 'left'}}>
         <Box p={2} sx={{width: 500, backgroundColor: colors.amber[100]}}>
           {
             schticks.map((schtick: Schtick) => (

@@ -1,4 +1,4 @@
-import { colors, Typography, Box, Popover, Tooltip, IconButton } from "@mui/material"
+import { colors, Stack, Typography, Box, Popover, Tooltip, IconButton } from "@mui/material"
 import ArticleIcon from '@mui/icons-material/Article'
 import { useState } from "react"
 import type { Character, SkillValue, SkillValues } from "@/types/types"
@@ -7,9 +7,10 @@ import { colorForValue } from "@/components/characters/ActionValueDisplay"
 
 interface SkillsDisplayProps {
   character: Character
+  first?: boolean
 }
 
-export default function SkillsDisplay({ character }: SkillsDisplayProps) {
+export default function SkillsDisplay({ character, first }: SkillsDisplayProps) {
   const [anchorEl, setAnchorEl] = useState<Element | null>(null)
   const [open, setOpen] = useState(false)
 
@@ -29,11 +30,21 @@ export default function SkillsDisplay({ character }: SkillsDisplayProps) {
 
   return (
     <>
-      <Tooltip title="Skills">
+      { first &&
+        <Stack direction="row" spacing={1} alignItems="center" justifyContent="flex-start">
+          <IconButton onMouseEnter={showSkills} color="inherit">
+            <ArticleIcon />
+          </IconButton>
+          <Typography gutterBottom>
+            {skillValues.map(([key, value]) => `${key}: ${value}`).join(', ')}
+          </Typography>
+        </Stack>
+      }
+      { !first && <Tooltip title="Skills">
         <IconButton onMouseEnter={showSkills} color="inherit">
           <ArticleIcon />
         </IconButton>
-      </Tooltip>
+      </Tooltip> }
       <Popover anchorEl={anchorEl} open={open} onClose={closePopover} anchorOrigin={{vertical: 'bottom', horizontal: 'center'}}>
         <Box p={2} sx={{backgroundColor: colors.lightBlue[100]}}>
           {

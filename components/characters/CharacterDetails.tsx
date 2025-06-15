@@ -57,6 +57,10 @@ export default function CharacterDetails({ character, editingCharacter, setEditi
   const [openHeal, setOpenHeal] = useState(false)
   const { toastSuccess, toastError } = useToast()
 
+  const firstShot = fight.shot_order[0][0]
+  // const firstCharacter = fight.shot_order[0][1][0]["id"] === character.id
+  const first = (shot == firstShot) // && firstCharacter
+
   function closeAction() {
     setOpenAction(false)
   }
@@ -186,11 +190,20 @@ export default function CharacterDetails({ character, editingCharacter, setEditi
                 />
               </PlayerTypeOnly>
             </Stack>
-            <Stack direction="row" spacing={1} alignItems="center">
-              <SchticksDisplay schticks={character.schticks} />
-              <SkillsDisplay character={character} />
-              <WeaponsDisplay weapons={character.weapons} />
-            </Stack>
+            { first &&
+              <Stack spacing={1}>
+                <SchticksDisplay schticks={character.schticks} first={first} />
+                <SkillsDisplay character={character} first={first} />
+                <WeaponsDisplay weapons={character.weapons} first={first} />
+              </Stack>
+            }
+            { !first &&
+              <Stack direction="row" spacing={1} alignItems="center">
+                <SchticksDisplay schticks={character.schticks} first={first} />
+                <SkillsDisplay character={character} first={first} />
+                <WeaponsDisplay weapons={character.weapons} first={first} />
+              </Stack>
+            }
           </GamemasterOnly>
           <DrivingDetails character={character} />
           <GroupedEffects character={character} />

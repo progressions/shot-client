@@ -20,24 +20,6 @@ export default function ShotCounter() {
   const [showHidden, setShowHidden] = useState<boolean>(false)
   const { fight } = useFight()
 
-  const extractLocations = () => {
-    return useMemo(() => {
-      return fight.shot_order.reduce((acc, [, characters]) => {
-        const locations = characters
-          .filter(character => fight.shot_order.includes(character.id))
-          .map(character => character.location)
-          .filter(location => location !== null && location !== '');
-        return [...new Set([...acc, ...locations])];
-      }, []);
-    }, [fight.shot_order]);
-  }
-
-  const hasPC = useMemo(() => fight.shot_order.some(([count, characters]) =>
-    count !== null && characters.some(character => CS.isPC(character))
-  ), [fight.shot_order])
-
-  const locations = extractLocations()
-
   const toolbar = useMemo(() => {
     if (fight?.id) {
       return <FightToolbar showHidden={showHidden} setShowHidden={setShowHidden} />
