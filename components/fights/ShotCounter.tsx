@@ -7,6 +7,7 @@ import Shot from '@/components/shots/Shot'
 import CharacterModal from '@/components/characters/CharacterModal'
 import VehicleModal from '@/components/vehicles/VehicleModal'
 import Sequence from "@/components/fights/Sequence"
+import CS from "@/services/CharacterService"
 
 import { defaultCharacter, ServerSideProps } from "@/types/types"
 
@@ -18,6 +19,24 @@ export default function ShotCounter() {
   const [editingCharacter, setEditingCharacter] = useState<Person | Vehicle>(defaultCharacter)
   const [showHidden, setShowHidden] = useState<boolean>(false)
   const { fight } = useFight()
+
+  const extractLocations = () => {
+    return useMemo(() => {
+      return fight.shot_order.reduce((acc, [, characters]) => {
+        const locations = characters
+          .filter(character => fight.shot_order.includes(character.id))
+          .map(character => character.location)
+          .filter(location => location !== null && location !== '');
+        return [...new Set([...acc, ...locations])];
+      }, []);
+    }, [fight.shot_order]);
+  }
+
+  const hasPC = useMemo(() => fight.shot_order.some(([count, characters]) =>
+    count !== null && characters.some(character => CS.isPC(character))
+  ), [fight.shot_order])
+
+  const locations = extractLocations()
 
   const toolbar = useMemo(() => {
     if (fight?.id) {

@@ -10,6 +10,7 @@ import PlayArrowIcon from '@mui/icons-material/PlayArrow'
 
 import RollInitiative from "@/components/fights/RollInitiative"
 import Initiative from "@/components/initiative/Initiative"
+import Locations from "@/components/fights/Locations"
 import GamemasterOnly from "@/components/GamemasterOnly"
 import { Toast, Fight } from "@/types/types"
 import { FightActions } from "@/reducers/fightState"
@@ -61,6 +62,7 @@ export default function Sequence() {
       <GamemasterOnly user={user}>
         <RollInitiative />
         <Initiative />
+        <Locations />
       </GamemasterOnly>
     </Stack>
   )
