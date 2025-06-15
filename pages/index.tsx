@@ -27,7 +27,6 @@ export async function getServerSideProps<GetServerSideProps>({ req, res }: Serve
   try {
     const currentCampaign = await client.getCurrentCampaign()
     if (!currentCampaign?.name) {
-      console.log("about to redirect")
       return {
         redirect: {
           destination: "/campaigns",
