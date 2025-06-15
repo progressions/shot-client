@@ -49,18 +49,20 @@ export default function Sequence() {
   return (
     <Grid container spacing={2} alignItems="center">
       <Grid item>
-        <Stack direction="row" width="270px">
+        <Stack direction="row" width="290px" spacing={2}>
           <Typography variant="h4">
             Sequence {fight.sequence}
           </Typography>
-          <ButtonGroup>
-            <Button size="small" onClick={minusSequence}>
-              <RemoveIcon />
-            </Button>
-            <Button variant="contained" size="small" onClick={addSequence}>
-              <AddIcon />
-            </Button>
-          </ButtonGroup>
+          <GamemasterOnly user={user}>
+            <ButtonGroup>
+              <Button size="small" onClick={minusSequence}>
+                <RemoveIcon />
+              </Button>
+              <Button variant="contained" size="small" onClick={addSequence}>
+                <AddIcon />
+              </Button>
+            </ButtonGroup>
+          </GamemasterOnly>
         </Stack>
       </Grid>
       <Grid item xs>

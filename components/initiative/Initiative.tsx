@@ -76,37 +76,44 @@ export default function Initiative() {
       onSubmit={handleSubmit}
       title="Initiative"
     >
-      <DialogContent>
-        <Typography>Ask each player to roll Initiative, enter the values below. They should use the Acceleration of their vehicle if they are driving, and Speed if they are not.</Typography>
-        <Stack spacing={2}>
-          {
-            combatants.map((combatant) => {
-              if (VS.isVehicle(combatant)) return null
-              const key = `${combatant.category},${combatant.shot_id}`
-              return (
-                <Stack key={key} direction="row" spacing={2} alignItems="center">
-                  <StyledTextField
-                    name="initiative"
-                    value={(values[key] && values[key][1]) || ""}
-                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => { handleChange(event, combatant) }}
-                    label="Initiative"
-                    type="number"
-                    sx={{width: 110}}
-                  />
-                  <Typography variant="h5" color="error" sx={{width: 20}}>{combatant.current_shot}</Typography>
-                  <Typography variant="h5" sx={{width: 400}}>{combatant.name}</Typography>
-                </Stack>
-              )
-            })
-          }
-        </Stack>
-        <Stack direction="row" spacing={2} justifyContent="flex-end">
-          <SaveCancelButtons
-            onSubmit={() => { alert("submit") }}
-            onCancel={handleClose}
-          />
-        </Stack>
-      </DialogContent>
+      { !!combatants.length &&
+        <DialogContent>
+          <Typography mb={3}>Ask each player to roll Initiative, enter the values below. They should use the Acceleration of their vehicle if they are driving, and Speed if they are not.</Typography>
+          <Stack spacing={2}>
+            {
+              combatants.map((combatant) => {
+                if (VS.isVehicle(combatant)) return null
+                const key = `${combatant.category},${combatant.shot_id}`
+                return (
+                  <Stack key={key} direction="row" spacing={2} alignItems="center">
+                    <StyledTextField
+                      name="initiative"
+                      value={(values[key] && values[key][1]) || ""}
+                      onChange={(event: React.ChangeEvent<HTMLInputElement>) => { handleChange(event, combatant) }}
+                      label="Initiative"
+                      type="number"
+                      sx={{width: 110}}
+                    />
+                    <Typography variant="h5" color="error" sx={{width: 20}}>{combatant.current_shot}</Typography>
+                    <Typography variant="h5" sx={{width: 400}}>{combatant.name}</Typography>
+                  </Stack>
+                )
+              })
+            }
+          </Stack>
+          <Stack direction="row" spacing={2} justifyContent="flex-end">
+            <SaveCancelButtons
+              onSubmit={() => { alert("submit") }}
+              onCancel={handleClose}
+            />
+          </Stack>
+        </DialogContent>
+      }
+      { !combatants.length &&
+        <DialogContent>
+          <Typography mb={3}>No characters available for Initiative.</Typography>
+        </DialogContent>
+      }
     </StyledDialog>
   </>)
 }
