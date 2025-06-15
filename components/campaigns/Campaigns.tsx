@@ -61,8 +61,6 @@ export default function Campaigns({ campaigns, getCampaigns }: CampaignsProps) {
     )
   }
 
-  console.log("currentCampaign", currentCampaign)
-
   return (
     <TableContainer component={Paper} sx={{marginTop: 3}}>
       <Table size="small">
