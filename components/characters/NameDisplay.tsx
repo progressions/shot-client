@@ -1,4 +1,4 @@
-import { Link, Stack, Box, Typography } from "@mui/material"
+import { Tooltip, Link, Stack, Box, Typography } from "@mui/material"
 import DirectionsCarIcon from "@mui/icons-material/DirectionsCar"
 import LaunchIcon from '@mui/icons-material/Launch'
 import { IoSkull, IoSkullOutline } from "react-icons/io5"
@@ -6,6 +6,8 @@ import DeathMarks from "@/components/characters/DeathMarks"
 import EditButtons from "@/components/characters/EditButtons"
 import ImageDisplay from "@/components/characters/ImageDisplay"
 import Location from "@/components/locations/Location"
+import CheckBoxIcon from '@mui/icons-material/CheckBox';
+import CS from '@/services/CharacterService'
 
 import GamemasterOnly from "@/components/GamemasterOnly"
 import type { User, AuthSession, Character, Toast, Person, Vehicle } from "@/types/types"
@@ -60,9 +62,15 @@ export default function NameDisplay({ character, editCharacter, deleteCharacter,
   const notionLink = character?.notion_page_id ? `https://www.notion.so/isaacrpg/${character.notion_page_id.replace(/-/g, "")}` : null
 
   return (
-      <Box>
-        <Box onMouseEnter={showButtons} onMouseLeave={hideButtons}>
-          <Stack direction="row" spacing={1} alignItems="baseline">
+    <Box>
+      <Box onMouseEnter={showButtons} onMouseLeave={hideButtons}>
+        <Stack direction="row" spacing={1} alignItems="center">
+          { CS.isTask(character) && 
+            <Tooltip title="Task" arrow>
+              <CheckBoxIcon sx={{fontSize: "2.5rem"}} /> 
+            </Tooltip>
+          }
+          <Stack direction="row" spacing={1} alignItems="baseline" sx={{width: '100%'}}>
             <Typography variant="h4" sx={{fontWeight: 'bold', overflow: "hidden", textOverflow: "ellipsis", width: "100%"}}>
               <Link color="inherit" href={link} target="_blank">
                 { character.name }
@@ -88,8 +96,9 @@ export default function NameDisplay({ character, editCharacter, deleteCharacter,
               </Box>
             </GamemasterOnly>
           </Stack>
-          { subheading() }
-        </Box>
+        </Stack>
+        { subheading() }
       </Box>
+    </Box>
   )
 }

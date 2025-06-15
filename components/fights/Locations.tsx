@@ -3,7 +3,7 @@ import { CancelButton, StyledDialog } from "@/components/StyledFields";
 import { colors, Box, Button, DialogContent, Stack, Typography, List, ListItem, ListItemText, ListItemIcon } from "@mui/material";
 import { useMemo, useState } from "react";
 import type { Vehicle, Character, Fight, ShotType } from "@/types/types";
-import HomeIcon from '@mui/icons-material/Home';
+import AddLocationIcon from '@mui/icons-material/AddLocation'
 
 export default function Locations() {
   const { fight } = useFight();
@@ -45,7 +45,7 @@ export default function Locations() {
         disabled={processing}
         onClick={handleClick}
       >
-        Locations
+        <AddLocationIcon />
       </Button>
       <StyledDialog open={open} onClose={handleClose} title="Locations">
         <DialogContent>
@@ -68,7 +68,7 @@ export default function Locations() {
                   <Box key={index}>
                     <ListItem>
                       <ListItemIcon sx={{ color: 'white', minWidth: '36px' }}>
-                        <HomeIcon />
+                        <AddLocationIcon />
                       </ListItemIcon>
                       <ListItemText
                         primary={location}
