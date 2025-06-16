@@ -46,6 +46,7 @@ export default function RollInitiative() {
     if (startOfSequence) {
       await addSequence()
       await FES.startFight(client, fight)
+      console.log("Starting fight, adding sequence")
     }
 
     await Promise.all(nonzeroShots.map(rollForShot))
