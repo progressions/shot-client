@@ -11,6 +11,7 @@ import Client from "@/utils/Client"
 import { FightActions } from "@/reducers/fightState"
 import CS from "@/services/CharacterService"
 import DS from "@/services/DiceService"
+import FES from "@/services/FightEventService"
 
 export default function RollInitiative() {
   const { fight, dispatch:dispatchFight } = useFight()
@@ -44,6 +45,8 @@ export default function RollInitiative() {
 
     if (startOfSequence) {
       await addSequence()
+      await FES.startFight(client, fight)
+      console.log("Starting fight, adding sequence")
     }
 
     await Promise.all(nonzeroShots.map(rollForShot))

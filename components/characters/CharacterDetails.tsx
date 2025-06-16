@@ -32,6 +32,7 @@ import { useClient } from "@/contexts/ClientContext"
 import Client from "@/utils/Client"
 import PlayerTypeOnly from "@/components/PlayerTypeOnly"
 import CS from "@/services/CharacterService"
+import FES from "@/services/FightEventService"
 
 import type { Vehicle, CharacterEffect, User, Person, Character, Fight, Toast, ID } from "@/types/types"
 import { defaultCharacter } from "@/types/types"
@@ -70,6 +71,7 @@ export default function CharacterDetails({ character, editingCharacter, setEditi
     if (doit) {
       try {
         await client.deleteCharacter(character, fight)
+        await FES.removeCharacter(client, fight, character)
         toastSuccess(`${character.name} removed.`)
         dispatch({ type: FightActions.EDIT })
       } catch(error) {
@@ -118,6 +120,7 @@ export default function CharacterDetails({ character, editingCharacter, setEditi
   const takeDodgeAction = async (character: Character) => {
     try {
       await client.actCharacter(character, fight, 1)
+      await FES.dodge(client, fight, character, 1)
       toastSuccess(`${character.name} dodged for 1 shot.`)
       await addDodgeEffect(character)
       dispatch({ type: FightActions.EDIT })

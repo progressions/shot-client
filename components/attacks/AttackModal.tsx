@@ -15,7 +15,8 @@ import CS from "@/services/CharacterService"
 import CES from "@/services/CharacterEffectService"
 import { AttackActions, initialAttackState, attackReducer } from "@/reducers/attackState"
 import { FightActions } from "@/reducers/fightState"
-import FightService from "@/services/FightService"
+import FS from "@/services/FightService"
+import FES from "@/services/FightEventService"
 
 import Attacker from "@/components/attacks/Attacker"
 import Target from "@/components/attacks/Target"
@@ -42,7 +43,7 @@ export default function AttackModal({ open, setOpen, anchorEl, setAnchorEl }: At
   useEffect(() => {
     dispatch({ type: AttackActions.RESET })
 
-    const firstUp = FightService.firstUp(fight)
+    const firstUp = FS.firstUp(fight)
     if (firstUp && CS.isCharacter(firstUp)) {
       dispatch({ type: AttackActions.UPDATE, payload: { fight: fight } })
       setAttacker(firstUp)
@@ -117,6 +118,7 @@ export default function AttackModal({ open, setOpen, anchorEl, setAnchorEl }: At
     try {
       await client.updateCharacter(target, fight)
       dispatchFight({ type: FightActions.EDIT })
+      await FES.attack(client, fight, attacker, target, wounds)
       toastSuccess(`${target.name} took ${wounds} wounds.`)
     } catch(error) {
       console.error(error)

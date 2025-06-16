@@ -432,6 +432,15 @@ interface CharacterEffects {
   [key: string]: CharacterEffect[]
 }
 
+export interface FightEvent {
+  id?: string
+  fight_id?: string
+  event_type: string
+  description: string
+  details?: any
+  created_at?: string
+}
+
 export interface Fight {
   id?: string
   active: boolean
@@ -446,6 +455,7 @@ export interface Fight {
   vehicle_effects: CharacterEffects
   created_at?: string
   actors?: Character[]
+  fight_events?: FightEvent[]
 }
 
 export interface User {

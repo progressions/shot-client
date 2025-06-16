@@ -20,6 +20,7 @@ import { useClient } from "@/contexts/ClientContext"
 import { useFight } from "@/contexts/FightContext"
 import GroupedEffects from "@/components/state_effects/GroupedEffects"
 import DriverDetails from "@/components/vehicles/DriverDetails"
+import FES from "@/services/FightEventService"
 
 import type { Character, Person, Vehicle, Fight, Toast, ID } from "@/types/types"
 import { defaultVehicle } from "@/types/types"
@@ -54,6 +55,7 @@ export default function VehicleDetails({ character, editingCharacter, setEditing
       try {
         await client.deleteVehicle(character as Vehicle, fight)
         dispatch({ type: FightActions.EDIT })
+        await FES.removeVehicle(client, fight, character as Vehicle)
         toastSuccess(`${character.name} removed.`)
         return
       } catch(error) {
