@@ -73,7 +73,9 @@ export default function NameDisplay({ character, editCharacter, deleteCharacter,
           }
           <Stack direction="row" spacing={1} alignItems="baseline" sx={{width: '100%'}}>
             <Typography variant="h4" sx={{fontWeight: 'bold', overflow: "hidden", textOverflow: "ellipsis", width: "100%"}}>
-              <GamemasterOnly user={user} character={character}>
+              <GamemasterOnly user={user} character={character}
+                except={character.name}
+              >
                 <Link color="inherit" href={link} target="_blank">
                   { character.name }
                 </Link>
@@ -84,9 +86,6 @@ export default function NameDisplay({ character, editCharacter, deleteCharacter,
                   </Link>
                 }
               </GamemasterOnly>
-              <PlayerOnly user={user} character={character}>
-                { character.name }
-              </PlayerOnly>
               <Location shot={shot} character={character} />
             </Typography>
             <GamemasterOnly user={user} character={character}>
