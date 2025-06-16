@@ -26,7 +26,7 @@ export default function CharactersToolbar({ state, dispatch, textSearch }: Chara
     <ButtonBar>
       <Stack direction="row" spacing={2} alignItems="center">
         <CharacterFilters state={state} dispatch={dispatch} textSearch={textSearch} />
-        <CreateCharacter user={user} />
+        <CreateCharacter />
         <CreateVehicle />
         <FormControlLabel label="All" control={<Switch checked={showHidden} />} onChange={show} />
       </Stack>
