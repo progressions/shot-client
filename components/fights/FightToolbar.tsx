@@ -16,6 +16,8 @@ import { useClient } from "@/contexts/ClientContext"
 import { useLocalStorage } from "@/contexts/LocalStorageContext"
 import { useToast } from "@/contexts/ToastContext"
 import { FightActions } from "@/reducers/fightState"
+import CS from "@/services/CharacterService"
+import FES from "@/services/FightEventService"
 
 import { useEffect } from "react"
 
@@ -37,9 +39,13 @@ export default function FightToolbar({ showHidden, setShowHidden }: FightToolbar
 
   const addCharacter = async (character: Character):Promise<void> => {
     try {
-      (character.category === "character") ?
+      if (CS.isCharacter(character)) {
         await client.addCharacter(fight, character as Character)
-      : await client.addVehicle(fight, character as Vehicle)
+        await FES.addCharacter(client, fight, character as Character)
+      } else {
+        await client.addVehicle(fight, character as Vehicle)
+        await FES.addVehicle(client, fight, character as Vehicle)
+      }
 
       toastSuccess(`${character.name} added.`)
     } catch(error) {

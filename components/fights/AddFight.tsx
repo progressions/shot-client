@@ -4,6 +4,7 @@ import Router from "next/router"
 import KeyboardDoubleArrowDownIcon from "@mui/icons-material/KeyboardDoubleArrowDown"
 import KeyboardDoubleArrowUpIcon from "@mui/icons-material/KeyboardDoubleArrowUp"
 import Client from "@/utils/Client"
+import FES from "@/services/FightEventService"
 
 import { useToast } from "@/contexts/ToastContext"
 import { useFight } from "@/contexts/FightContext"
@@ -35,8 +36,9 @@ export default function AddFight({ state:fightsState, dispatch:dispatchFights }:
     event.preventDefault()
 
     try {
-      await client.createFight(fight)
+      const newFight = await client.createFight(fight)
       cancelForm()
+      await FES.createFight(client, newFight)
       dispatchFights({ type: FightsActions.EDIT })
       toastSuccess(`Fight ${fight.name} created.`)
     } catch(error) {
