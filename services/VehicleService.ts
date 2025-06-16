@@ -23,7 +23,7 @@ const VehicleService = {
   },
 
   mainAttackValue: function(vehicle: Vehicle): number {
-    const value = vehicle.driver ? CS.skill(vehicle.driver as Character, "Driving") : 7
+    const value = vehicle.driver?.id ? CS.skill(vehicle.driver as Character, "Driving") : 7
 
     return Math.max(0, value - this.totalImpairments(vehicle))
   },
@@ -32,7 +32,7 @@ const VehicleService = {
     if (this.isBoss(vehicle) || this.isUberBoss(vehicle)) {
       return 0
     }
-    if (vehicle.driver && (CS.isBoss(vehicle.driver) || CS.isUberBoss(vehicle.driver))) {
+    if (vehicle.driver?.id && (CS.isBoss(vehicle.driver) || CS.isUberBoss(vehicle.driver))) {
       return 0
     }
     const driverImpairments = vehicle.driver ? CS.impairments(vehicle.driver as Character) : 0
