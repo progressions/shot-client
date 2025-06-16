@@ -4,6 +4,7 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import { useToast } from "@/contexts/ToastContext"
 import { useClient } from "@/contexts/ClientContext"
 import { useFight } from "@/contexts/FightContext"
+import GamemasterOnly from "@/components/GamemasterOnly"
 
 import { useMemo, useState } from "react"
 
@@ -11,16 +12,17 @@ import type { Severity, CharacterEffect, Character } from "@/types/types"
 import { FightActions } from "@/reducers/fightState"
 
 interface EffectsProps {
+  character: Character
   effects: CharacterEffect[]
   severity: Severity
 }
 
-export default function Effects({ effects, severity }: EffectsProps) {
+export default function Effects({ character, effects, severity }: EffectsProps) {
   const [open, setOpen] = useState<boolean>(false)
   const [anchorEl, setAnchorEl] = useState<Element | null>(null)
 
   const { fight, dispatch } = useFight()
-  const { jwt, client } = useClient()
+  const { user, client } = useClient()
   const { toastSuccess, toastError } = useToast()
 
   const closePopover = () => {
@@ -68,7 +70,9 @@ export default function Effects({ effects, severity }: EffectsProps) {
                 <AlertTitle>
                   <Box sx={{width: 100}}>{effect.name}</Box>
                 </AlertTitle>
-                <IconButton onClick={async () => await deleteEffect(effect)}><DeleteIcon sx={{marginTop: -1, color: toolbarColor}} /></IconButton>
+                <GamemasterOnly user={user} character={character}>
+                  <IconButton onClick={async () => await deleteEffect(effect)}><DeleteIcon sx={{marginTop: -1, color: toolbarColor}} /></IconButton>
+                </GamemasterOnly>
               </Stack>
               <Box mt={-1} pb={1}>
                 <Typography variant="caption">{effect.description}</Typography>

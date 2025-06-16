@@ -454,6 +454,7 @@ export interface Fight {
   character_effects: CharacterEffects
   vehicle_effects: CharacterEffects
   created_at?: string
+  updated_at?: string
   actors?: Character[]
   fight_events?: FightEvent[]
 }

@@ -105,7 +105,7 @@ export default function RedeemInvitation({ invitation }: RedeemInvitationProps) 
               </Typography>
                 { !currentUser?.id &&
                 <Typography>
-                  <Link href="/auth/signin">Click here</Link> to sign in.
+                  Check your email for a link to confirm your account and sign in.
                 </Typography> }
               <Typography variant="h3" gutterBottom>{invitation.campaign?.name}</Typography>
             </Box> }

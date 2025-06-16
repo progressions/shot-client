@@ -117,8 +117,8 @@ export default function AttackModal({ open, setOpen, anchorEl, setAnchorEl }: At
 
     try {
       await client.updateCharacter(target, fight)
-      dispatchFight({ type: FightActions.EDIT })
       await FES.attack(client, fight, attacker, target, wounds)
+      dispatchFight({ type: FightActions.EDIT })
       toastSuccess(`${target.name} took ${wounds} wounds.`)
     } catch(error) {
       console.error(error)
@@ -132,6 +132,7 @@ export default function AttackModal({ open, setOpen, anchorEl, setAnchorEl }: At
 
     try {
       await client.updateCharacter(target, fight)
+      await FES.killMooks(client, fight, attacker, target, count)
       dispatchFight({ type: FightActions.EDIT })
       toastSuccess(`${attacker.name} killed ${count} ${target.name} ${count == 1 ? "mook" : "mooks"}.`)
     } catch(error) {

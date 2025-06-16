@@ -19,8 +19,6 @@ export default function VehicleArchetypeSelector({ vehicle, onChange }: VehicleA
   const [loading, setLoading] = useState<boolean>(false)
   const [archetype, setArchetype] = useState<VehicleArchetype | null>(null)
 
-  console.log(archetypes)
-
   useEffect(() => {
     const getArchetypes = async () => {
       const data = await client.getVehicleArchetypes()

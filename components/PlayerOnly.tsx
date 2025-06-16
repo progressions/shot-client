@@ -1,21 +1,20 @@
 import type { Campaign, User, Character } from "@/types/types"
 import { useCampaign } from "@/contexts/CampaignContext"
 
-interface GamemasterOnlyProps {
+interface PlayerOnlyProps {
   user: User | null
   character?: Character
   campaign?: Campaign
   override?: boolean
-  except?: React.ReactNode | null
 }
 
-export default function GamemasterOnly({ user, children, character, override, except }: React.PropsWithChildren<GamemasterOnlyProps>) {
+export default function PlayerOnly({ user, children, character, override }: React.PropsWithChildren<PlayerOnlyProps>) {
   const { campaign } = useCampaign()
 
-  if (character && ["PC", "Ally"].includes(character.action_values['Type'] as string)) {
+  if (campaign?.gamemaster?.id !== user?.id && character && ["PC", "Ally"].includes(character.action_values['Type'] as string)) {
     // if the character is a PC or Ally, show the content
     return (<>{ children }</>)
-  } else if (campaign?.id && campaign.gamemaster?.id === user?.id && user?.gamemaster) {
+  } else if (campaign?.id && campaign.gamemaster?.id !== user?.id && !user?.gamemaster) {
     // if the current user is the gamemaster of the current campaign
     return (<>{ children }</>)
   } else if (!campaign?.id && user?.gamemaster) {
@@ -26,6 +25,7 @@ export default function GamemasterOnly({ user, children, character, override, ex
     return (<>{ children }</>)
   } else {
     // otherwise hide the content
-    return <>{except}</>
+    return <></>
   }
 }
+

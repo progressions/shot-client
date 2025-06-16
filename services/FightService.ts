@@ -18,6 +18,8 @@ const FightService = {
   },
 
   playerCharacters: function(fight: Fight): Character[] {
+    if (!fight?.shot_order) return []
+
     return fight
       .shot_order
       .reduce((acc: any[], shot: ShotType) => {
@@ -28,7 +30,7 @@ const FightService = {
           }
         })
         return acc
-      }, [])
+      }, []) || []
   },
 
   startOfSequence: function(fight: Fight): boolean {
@@ -36,7 +38,7 @@ const FightService = {
   },
 
   characterEffects: function(fight: Fight, character: Character): CharacterEffect[] {
-    return fight.character_effects[character.shot_id as string] || []
+    return fight?.character_effects[character.shot_id as string] || []
   }
 }
 

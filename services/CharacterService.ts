@@ -115,10 +115,10 @@ const CharacterService = {
   },
 
   attackValues: function(character: Character): string[] {
-    return [
+    return Array.from(new Set([
       this.mainAttack(character),
       this.secondaryAttack(character),
-    ].filter((key) => this.actionValue(character, key) > 0)
+    ].filter((key) => this.actionValue(character, key) > 0)));
   },
 
   damage: function(character: Character): number {

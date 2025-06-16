@@ -4,7 +4,6 @@ import type { FightStateType, FightActionType } from "@/reducers/fightState"
 
 import type { Fight } from "@/types/types"
 import { defaultFight } from "@/types/types"
-import { useClient } from "@/contexts/ClientContext"
 
 export interface FightContextType {
   fight: Fight
@@ -23,7 +22,6 @@ const FightContext = createContext<FightContextType>({
 })
 
 export function FightProvider({ children }: FightProviderProps) {
-  const { user, client } = useClient()
   const [state, dispatch] = useReducer(fightReducer, initialFightState)
   const { fight, edited } = state
 

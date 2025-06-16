@@ -211,26 +211,26 @@ export default function CharacterDetails({ character, editingCharacter, setEditi
           <DrivingDetails character={character} />
           <GroupedEffects character={character} />
         </Stack>
-      <ActionModal open={openAction}
-        setOpen={setOpenAction}
-        character={character}
-      />
-      <PlayerTypeOnly character={character} except="Mook">
-        <WoundsModal open={openWounds}
-          setOpen={setOpenWounds}
+        <ActionModal open={openAction}
+          setOpen={setOpenAction}
+          character={character}
+        />
+        <PlayerTypeOnly character={character} except="Mook">
+          <WoundsModal open={openWounds}
+            setOpen={setOpenWounds}
+            character={character as Person}
+          />
+        </PlayerTypeOnly>
+        <PlayerTypeOnly character={character} only="Mook">
+          <KillMooksModal open={openWounds}
+            setOpen={setOpenWounds}
+            character={character as Person}
+          />
+        </PlayerTypeOnly>
+        <HealModal open={openHeal}
+          setOpen={setOpenHeal}
           character={character as Person}
         />
-      </PlayerTypeOnly>
-      <PlayerTypeOnly character={character} only="Mook">
-        <KillMooksModal open={openWounds}
-          setOpen={setOpenWounds}
-          character={character as Person}
-        />
-      </PlayerTypeOnly>
-      <HealModal open={openHeal}
-        setOpen={setOpenHeal}
-        character={character as Person}
-      />
       </TableCell>
     </TableRow>
   )

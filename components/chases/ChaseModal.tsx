@@ -18,6 +18,7 @@ import VehiclesAutocomplete from "@/components/chases/VehiclesAutocomplete"
 import Attacker from "@/components/chases/Attacker"
 import Target from "@/components/chases/Target"
 import FightService from "@/services/FightService"
+import FES from "@/services/FightEventService"
 
 interface ChaseModalProps {
   open: boolean
@@ -73,6 +74,7 @@ export default function ChaseModal({ open, setOpen, anchorEl, setAnchorEl }: Cha
     try {
       await client.updateVehicle(target, fight)
       await client.updateVehicle(attacker, fight)
+      await FES.chaseAttack(client, fight, attacker, target, chasePoints || 0, conditionPoints || 0, method)
 
       dispatchFight({ type: FightActions.EDIT })
       toastSuccess(`${target.name} took ${chasePoints} Chase Points and ${conditionPoints} Condition Points.`)
@@ -89,6 +91,7 @@ export default function ChaseModal({ open, setOpen, anchorEl, setAnchorEl }: Cha
     try {
       await client.updateVehicle(target, fight)
       await client.updateVehicle(attacker, fight)
+      await FES.chaseMooks(client, fight, attacker, target, count, method)
 
       dispatchFight({ type: FightActions.EDIT })
       toastSuccess(`${attacker.name} killed ${count} ${count == 1 ? "mook" : "mooks"}.`)

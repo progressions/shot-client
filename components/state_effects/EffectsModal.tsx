@@ -10,6 +10,7 @@ import type { Character, CharacterEffect } from "@/types/types"
 import { defaultCharacterEffect } from "@/types/types"
 import { FightActions } from '@/reducers/fightState'
 import { StyledFormDialog, StyledTextField } from "@/components/StyledFields"
+import GamemasterOnly from "@/components/GamemasterOnly"
 
 interface EffectsModalProps {
   character: Character
@@ -30,7 +31,7 @@ export default function EffectsModal({ character }: EffectsModalProps) {
   const [effect, setEffect] = useState<CharacterEffect>(initialEffect)
   const [saving, setSaving] = useState<boolean>(false)
   const { toastSuccess, toastError } = useToast()
-  const { client } = useClient()
+  const { user, client } = useClient()
 
   const cancelForm = () => {
     setEffect(initialEffect)
@@ -79,9 +80,11 @@ export default function EffectsModal({ character }: EffectsModalProps) {
 
   return (
     <>
-      <IconButton color="inherit" onClick={() => setOpen(true)}>
-        <AddCircleOutlineOutlinedIcon />
-      </IconButton>
+      <GamemasterOnly user={user} character={character}>
+        <IconButton color="inherit" onClick={() => setOpen(true)}>
+          <AddCircleOutlineOutlinedIcon />
+        </IconButton>
+      </GamemasterOnly>
       <StyledFormDialog
         open={open}
         onClose={cancelForm}
