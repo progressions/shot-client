@@ -1,4 +1,4 @@
-import { DialogContent, colors, Stack, Button, Dialog, DialogTitle, Divider, Box, Typography, Autocomplete, Paper, TextField } from "@mui/material"
+import { DialogActions, DialogContent, colors, Stack, Button, Dialog, DialogTitle, Divider, Box, Typography, Autocomplete, Paper, TextField } from "@mui/material"
 import { styled } from "@mui/material/styles"
 
 const SelectProps = {
@@ -114,9 +114,11 @@ export function StyledFormDialog(props: React.PropsWithChildren<AnyProps>) {
       <DialogContent>
         <Stack spacing={2}>
           { props.children }
-          <SaveCancelButtons saving={props.saving} onCancel={props.onCancel} />
         </Stack>
       </DialogContent>
+      <DialogActions>
+        <SaveCancelButtons saving={props.saving} onCancel={props.onCancel} />
+      </DialogActions>
     </StyledDialog>
   )
 }

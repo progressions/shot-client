@@ -1,11 +1,6 @@
 import { useState } from 'react'
-import { FormGroup, FormControlLabel } from '@mui/material'
-import Dialog from '@mui/material/Dialog'
-import Checkbox from '@mui/material/Checkbox'
-import Box from '@mui/material/Box'
-import Stack from '@mui/material/Stack'
-import TextField from '@mui/material/TextField'
-import Button from '@mui/material/Button'
+import { StyledFormDialog, StyledTextField, StyledDialog, SaveCancelButtons } from "@/components/StyledFields"
+import { FormGroup, FormControlLabel, Checkbox, Box, Stack, TextField, Button, Dialog, DialogContent, DialogActions } from '@mui/material'
 import Router from "next/router"
 
 import Client from "@/utils/Client"
@@ -64,33 +59,31 @@ export default function UserModal({ user, setUser, setUsers }: UserModalParams) 
   if (user) {
     return (
       <>
-        <Dialog
+        <StyledFormDialog
           open={!!user?.id}
           onClose={handleClose}
+          onSubmit={handleSubmit}
+          onCancel={cancelForm}
+          saving={saving}
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description"
           disableRestoreFocus
+          title={user.id ? "Edit User" : "Create User"}
         >
-          <Box p={4} component="form" onSubmit={handleSubmit}>
-            <Stack spacing={2}>
-              <Stack direction="row" spacing={2}>
-                <TextField autoFocus label="First Name" name="first_name" value={user.first_name || ''} onChange={handleChange} />
-                <TextField label="Last Name" name="last_name" value={user.last_name || ''} onChange={handleChange} />
-              </Stack>
-              <Stack spacing={2} direction="row">
-                <TextField fullWidth label="Email" name="email" value={user.email || ''} onChange={handleChange} />
-              </Stack>
-              <Stack spacing={2} direction="row">
-                <FormControlLabel control={<Checkbox name="admin" checked={!!user.admin} onChange={handleCheck} />} label="Admin" />
-                <FormControlLabel control={<Checkbox name="gamemaster" checked={!!user.gamemaster} onChange={handleCheck} />} label="GM" />
-              </Stack>
-              <Stack alignItems="flex-end" spacing={2} direction="row">
-                <Button variant="outlined" disabled={saving} onClick={cancelForm}>Cancel</Button>
-                <Button variant="contained" type="submit" disabled={saving}>Save Changes</Button>
-              </Stack>
+          <Stack spacing={2}>
+            <Stack direction="row" spacing={2}>
+              <StyledTextField autoFocus label="First Name" name="first_name" value={user.first_name || ''} onChange={handleChange} />
+              <StyledTextField label="Last Name" name="last_name" value={user.last_name || ''} onChange={handleChange} />
             </Stack>
-          </Box>
-        </Dialog>
+            <Stack spacing={2} direction="row">
+              <StyledTextField fullWidth label="Email" name="email" value={user.email || ''} onChange={handleChange} />
+            </Stack>
+            <Stack spacing={2} direction="row">
+              <FormControlLabel control={<Checkbox name="admin" checked={!!user.admin} onChange={handleCheck} />} label="Admin" />
+              <FormControlLabel control={<Checkbox name="gamemaster" checked={!!user.gamemaster} onChange={handleCheck} />} label="GM" />
+            </Stack>
+          </Stack>
+        </StyledFormDialog>
       </>
     )
   } else {
