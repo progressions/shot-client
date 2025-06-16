@@ -18,6 +18,7 @@ import Weapons from "@/components/weapons/Weapons"
 import UploadImage from "@/components/characters/edit/UploadImage"
 import ImageDisplay from "@/components/characters/ImageDisplay"
 import NotionLink from "@/components/notion/NotionLink"
+import AssignUser from "@/components/characters/edit/AssignUser"
 
 import { useEffect } from "react"
 
@@ -121,6 +122,9 @@ export default function EditCharacter({ character:initialCharacter }: EditCharac
 
   return (
     <>
+      { character?.user?.email && <Typography variant="h5" component="h1" gutterBottom>
+        {[character?.user?.first_name, character?.user?.last_name].filter(Boolean).join(" ") || character?.user?.email}
+      </Typography> }
       <Box component="form" onSubmit={handleSubmit}>
         <Stack spacing={2}>
           <Stack direction="row" spacing={1} justifyContent="space-between">
@@ -132,13 +136,7 @@ export default function EditCharacter({ character:initialCharacter }: EditCharac
                 </Grid>
                 <Grid item xs={1}>
                   <GamemasterOnly user={user} character={character}>
-                    <Tooltip title="Set Owner" arrow>
-                      <ButtonGroup variant="contained">
-                        <Button>
-                          <PersonAddAlt1Icon />
-                        </Button>
-                      </ButtonGroup>
-                    </Tooltip>
+                    <AssignUser />
                   </GamemasterOnly>
                 </Grid>
                 <Grid item xs={4}>
