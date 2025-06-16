@@ -60,7 +60,7 @@ class Api {
     }
   }
 
-  fightEvents(fight?: Fight | ID | undefined): string {
+  fightEvents(fight: Fight | ID): string {
     return `${this.fights(fight)}/fight_events`
   }
 
