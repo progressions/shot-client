@@ -9,6 +9,7 @@ import type { Character, ActionValues } from "@/types/types"
 import type { ChaseMookResult, ChaseState } from "@/reducers/chaseState"
 import VS from "@/services/VehicleService"
 import AS from "@/services/ActionService"
+import FES from "@/services/FightEventService"
 
 interface SmackdownsParams {
   state: ChaseState
@@ -20,7 +21,7 @@ export default function Smackdowns({ state, handleClose }: SmackdownsParams) {
   const { toastError, toastSuccess } = useToast()
   const { fight, dispatch } = useFight()
 
-  const { attacker, chasePoints, conditionPoints, target, mookResults } = state
+  const { attacker, chasePoints, conditionPoints, target, mookResults, method } = state
 
   const damageMessage = (st: ChaseMookResult) => {
     const originalHandling = VS.rawActionValue(target, "Handling")
@@ -37,6 +38,7 @@ export default function Smackdowns({ state, handleClose }: SmackdownsParams) {
     try {
       await client.updateVehicle(target, fight)
       await client.updateVehicle(attacker, fight)
+      await FES.chaseAttack(client, fight, attacker, target, chasePoints, conditionPoints, method)
       dispatch({ type: FightActions.EDIT })
       toastSuccess(`${target.name} took ${chasePoints} Chase Points and ${conditionPoints} Condition Points.`)
     } catch(error) {

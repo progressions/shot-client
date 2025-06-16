@@ -48,6 +48,10 @@ const FightEventService = {
 
   chaseAttack: async function(client: Client, fight: Fight, attacker: Vehicle, target: Vehicle, chasePoints: number, conditionPoints: number, method: string): Promise<FightEvent> {
     return client.createFightEvent(fight, {event_type: "chase_attack", description: `${attacker.name} used ${method} on ${target.name} doing ${chasePoints} Chase Points and ${conditionPoints} Condition Points`, details: { attacker: { id: attacker.id, name: attacker.name }, target: { id: target.id, name: target.name }, chasePoints, conditionPoints, method}})
+  },
+
+  chaseMooks: async function(client: Client, fight: Fight, attacker: Vehicle, target: Vehicle, count: number, method: string): Promise<FightEvent> {
+    return client.createFightEvent(fight, {event_type: "chase_mooks", description: `${attacker.name} used ${method} on ${target.name} and killed ${count} ${count == 1 ? "mook" : "mooks"}`, details: { attacker: { id: attacker.id, name: attacker.name }, target: { id: target.id, name: target.name }, count}})
   }
 }
 

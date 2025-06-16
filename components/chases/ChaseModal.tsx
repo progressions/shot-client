@@ -91,6 +91,7 @@ export default function ChaseModal({ open, setOpen, anchorEl, setAnchorEl }: Cha
     try {
       await client.updateVehicle(target, fight)
       await client.updateVehicle(attacker, fight)
+      await FES.chaseMooks(client, fight, attacker, target, count, method)
 
       dispatchFight({ type: FightActions.EDIT })
       toastSuccess(`${attacker.name} killed ${count} ${count == 1 ? "mook" : "mooks"}.`)
