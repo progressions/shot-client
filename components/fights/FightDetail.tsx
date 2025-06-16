@@ -6,20 +6,17 @@ import VisibilityIcon from '@mui/icons-material/Visibility'
 import GamemasterOnly from "@/components/GamemasterOnly"
 
 import { useToast } from "@/contexts/ToastContext"
-import { useFight } from "@/contexts/FightContext"
 import { useClient } from "@/contexts/ClientContext"
 import type { Fight, Toast } from "@/types/types"
-import { defaultFight } from "@/types/types"
 import type { FightsStateType, FightsActionType } from "@/reducers/fightsState"
 import { FightsActions } from "@/reducers/fightsState"
 
 interface FightParams {
   fight: Fight
-  state: FightsStateType
   dispatch: React.Dispatch<FightsActionType>
 }
 
-export default function FightDetail({ fight, state, dispatch }: FightParams) {
+export default function FightDetail({ fight, dispatch }: FightParams) {
   const { user, client } = useClient()
   const { toastSuccess, toastError } = useToast()
 
@@ -59,7 +56,7 @@ export default function FightDetail({ fight, state, dispatch }: FightParams) {
     alignItems: 'center',
     justifyContent: 'space-between',
     mb: 2,
-    backgroundColor: colors.blueGrey["800"],
+    background: 'linear-gradient(to bottom, ' + colors.blueGrey["800"] + ', ' + colors.blueGrey["600"] + ')',
     borderRadius: 1,
   }}>
     <CardHeader
@@ -94,7 +91,7 @@ export default function FightDetail({ fight, state, dispatch }: FightParams) {
           </Typography>
         }
         { fight.actors && !!fight.actors.length &&
-          <Box sx={{mt: 2, p: 2, backgroundColor: colors.blueGrey["900"], borderRadius: 1}}>
+          <Box sx={{mt: 2, p: 2, backgroundColor: colors.blueGrey["800"], borderRadius: 1}}>
             <Typography variant="body1" color="text.primary">
               { fight.actors.join(', ') }
             </Typography>
