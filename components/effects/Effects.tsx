@@ -6,6 +6,7 @@ import { useToast } from "@/contexts/ToastContext"
 import { useClient } from "@/contexts/ClientContext"
 import { useFight } from "@/contexts/FightContext"
 import type { FightContextType } from "@/contexts/FightContext"
+import GamemasterOnly from "@/components/GamemasterOnly"
 
 import type { Effect, Severity } from "@/types/types"
 import { FightActions } from "@/reducers/fightState"
@@ -20,7 +21,7 @@ export default function Effects({ effects, severity }: EffectsProps) {
   const [anchorEl, setAnchorEl] = useState<Element | null>(null)
 
   const { fight, dispatch } = useFight()
-  const { client } = useClient()
+  const { user, client } = useClient()
   const { toastError, toastSuccess } = useToast()
 
   const closePopover = () => {
@@ -62,7 +63,9 @@ export default function Effects({ effects, severity }: EffectsProps) {
               <Box mt={-1} pb={1}>
                 <Typography>{effect.description}</Typography>
                 <Typography variant="caption">Until sequence {effect.end_sequence}, shot {effect.end_shot}</Typography>
-                <IconButton onClick={async () => await deleteEffect(effect)}><DeleteIcon sx={{color: toolbarColor}} /></IconButton>
+                <GamemasterOnly user={user}>
+                  <IconButton onClick={async () => await deleteEffect(effect)}><DeleteIcon sx={{color: toolbarColor}} /></IconButton>
+                </GamemasterOnly>
               </Box>
             </Box>))
           }

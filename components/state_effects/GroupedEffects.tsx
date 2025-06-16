@@ -1,6 +1,3 @@
-import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
-import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined'
-
 import { Tooltip, IconButton, Stack } from "@mui/material"
 import { useMemo } from "react"
 
@@ -31,7 +28,7 @@ export default function GroupedEffects({ character }: GroupedEffectsProps) {
         {
           severities.map((severity) => {
             if (effects[severity]) {
-              return <Effects key={severity} effects={effects[severity]} severity={severity as Severity} />
+              return <Effects key={severity} character={character} effects={effects[severity]} severity={severity as Severity} />
             }
           })
         }
