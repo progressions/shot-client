@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import { Switch, FormControlLabel, Stack, Paper, Container, Table, TableContainer, TableBody, TableHead, TableRow, TableCell, Typography } from '@mui/material'
+import { Box, Switch, FormControlLabel, Stack, Paper, Container, Table, TableContainer, TableBody, TableHead, TableRow, TableCell, Typography } from '@mui/material'
 import { getServerClient } from "@/utils/getServerClient"
 
 import { ButtonBar } from "@/components/StyledFields"
@@ -124,29 +124,19 @@ export default function Home({ currentCampaign, fights:initialFights, meta }: Ho
               </ButtonBar>
             </GamemasterOnly>
             { !!fights?.length &&
-              <TableContainer component={Paper}>
-                <Table size="small">
-                  <TableHead>
-                    <TableRow sx={{"& th": { color: "text.secondary" }}}>
-                      <TableCell>Fight</TableCell>
-                      <TableCell>Description</TableCell>
-                      <TableCell></TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody sx={{"& tr": { "& td": { color: "text.primary" }}}}>
-                    {
-                      fights.map((fight: Fight) => (
-                        <FightDetail
-                          fight={fight}
-                          key={fight.id}
-                          state={state}
-                          dispatch={dispatch}
-                        />)
-                      )
-                    }
-                  </TableBody>
-                </Table>
-              </TableContainer> }
+              <Box>
+                {
+                  fights.map((fight: Fight) => (
+                    <FightDetail
+                      fight={fight}
+                      key={fight.id}
+                      state={state}
+                      dispatch={dispatch}
+                    />)
+                  )
+                }
+              </Box>
+            }
             { !fights?.length && <Typography pt={5}>There are no available fights. Some fights might be hidden by the gamemaster.</Typography> }
           </Container>
         </Layout>

@@ -444,6 +444,8 @@ export interface Fight {
   shot_order: ShotType[]
   character_effects: CharacterEffects
   vehicle_effects: CharacterEffects
+  created_at?: string
+  actors?: Character[]
 }
 
 export interface User {
