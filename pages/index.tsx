@@ -130,7 +130,6 @@ export default function Home({ currentCampaign, fights:initialFights, meta }: Ho
                     <FightDetail
                       fight={fight}
                       key={fight.id}
-                      state={state}
                       dispatch={dispatch}
                     />)
                   )
