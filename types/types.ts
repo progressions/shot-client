@@ -434,10 +434,11 @@ interface CharacterEffects {
 
 export interface FightEvent {
   id?: string
-  fight_id: string
+  fight_id?: string
   event_type: string
   description: string
-  created_at: string
+  details?: any
+  created_at?: string
 }
 
 export interface Fight {
