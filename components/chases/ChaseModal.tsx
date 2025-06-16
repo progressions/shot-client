@@ -74,7 +74,7 @@ export default function ChaseModal({ open, setOpen, anchorEl, setAnchorEl }: Cha
     try {
       await client.updateVehicle(target, fight)
       await client.updateVehicle(attacker, fight)
-      await FES.chaseAttack(client, fight, attacker, target, chasePoints, conditionPoints, method)
+      await FES.chaseAttack(client, fight, attacker, target, chasePoints || 0, conditionPoints || 0, method)
 
       dispatchFight({ type: FightActions.EDIT })
       toastSuccess(`${target.name} took ${chasePoints} Chase Points and ${conditionPoints} Condition Points.`)
