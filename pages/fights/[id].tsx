@@ -72,6 +72,24 @@ export default function Fight({ fight:initialFight }: FightParams) {
     }
   }, [notFound, fight, edited, user, client, dispatch])
 
+  useEffect(() => {
+    if (!user || !fight?.id || notFound) return
+
+    const interval = setInterval(async () => {
+      try {
+        const data = await client.getFight(fight)
+        if (data.updated_at > fight.updated_at) {
+          dispatch({ type: FightActions.FIGHT, payload: data })
+          dispatch({ type: FightActions.SUCCESS })
+        }
+      } catch (error) {
+        console.error("Error polling fight:", error)
+      }
+    }, 5000)
+
+    return () => clearInterval(interval)
+  }, [user, fight, notFound, client, dispatch])
+
   if (!fight && !notFound) {
     return <>Loading...</>
   }

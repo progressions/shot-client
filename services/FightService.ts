@@ -28,7 +28,7 @@ const FightService = {
           }
         })
         return acc
-      }, [])
+      }, []) || []
   },
 
   startOfSequence: function(fight: Fight): boolean {
