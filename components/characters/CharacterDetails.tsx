@@ -120,6 +120,7 @@ export default function CharacterDetails({ character, editingCharacter, setEditi
   const takeDodgeAction = async (character: Character) => {
     try {
       await client.actCharacter(character, fight, 1)
+      await FES.dodge(client, fight, character, 1)
       toastSuccess(`${character.name} dodged for 1 shot.`)
       await addDodgeEffect(character)
       dispatch({ type: FightActions.EDIT })

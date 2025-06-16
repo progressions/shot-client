@@ -10,6 +10,7 @@ import { CharacterTypes } from "@/types/types"
 import { FightActions } from '@/reducers/fightState'
 import { StyledFormDialog, StyledTextField } from "@/components/StyledFields"
 import CS from "@/services/CharacterService"
+import FES from "@/services/FightEventService"
 
 interface ActionModalParams {
   open: boolean,
@@ -38,6 +39,7 @@ export default function ActionModal({open, setOpen, character }: ActionModalPara
     if (shots > 0) {
       try {
         await client.actCharacter(character, fight as Fight, shots)
+        await FES.spendShots(client, fight as Fight, character, shots)
 
         setOpen(false)
         toastSuccess(`${character.name} spent ${shots} shots.`)

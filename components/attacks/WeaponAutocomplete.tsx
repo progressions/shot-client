@@ -32,7 +32,7 @@ export default function WeaponAutocomplete({ character, weapon, setWeapon, disab
     } else {
       setWeapons([])
     }
-  }, [setWeapon, character, client])
+  }, [character, client])
 
   function handleSelect(event: React.ChangeEvent<HTMLInputElement>, newValue: Weapon) {
     setWeapon(newValue || defaultWeapon)

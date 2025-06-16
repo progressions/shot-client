@@ -3,6 +3,7 @@ import { StyledTextField } from "@/components/StyledFields"
 import type { AttackState } from "@/reducers/attackState"
 import type { Character } from "@/types/types"
 import CS from "@/services/CharacterService"
+import FES from "@/services/FightEventService"
 import TargetMook from "@/components/attacks/TargetMook"
 import DirectionsRunIcon from '@mui/icons-material/DirectionsRun'
 import { useState } from "react"
@@ -40,6 +41,7 @@ export default function Target({ state, setTarget, handleChange, dispatch }: Tar
   const takeDodgeAction = async (character: Character) => {
     try {
       await client.actCharacter(character, fight, 1)
+      await FES.dodge(client, fight, character, 1)
       toastSuccess(`${character.name} dodged for 1 shot.`)
       dispatch({ type: AttackActions.UPDATE, payload: { defense: defense + 3 } })
       dispatchFight({ type: FightActions.EDIT })
