@@ -10,6 +10,7 @@ import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import CS from '@/services/CharacterService'
 
 import GamemasterOnly from "@/components/GamemasterOnly"
+import PlayerOnly from "@/components/PlayerOnly"
 import type { User, AuthSession, Character, Toast, Person, Vehicle } from "@/types/types"
 import { useState } from "react"
 import { useSession } from 'next-auth/react'
@@ -72,15 +73,20 @@ export default function NameDisplay({ character, editCharacter, deleteCharacter,
           }
           <Stack direction="row" spacing={1} alignItems="baseline" sx={{width: '100%'}}>
             <Typography variant="h4" sx={{fontWeight: 'bold', overflow: "hidden", textOverflow: "ellipsis", width: "100%"}}>
-              <Link color="inherit" href={link} target="_blank">
-                { character.name }
-              </Link>
-              &nbsp;
-              { notionLink &&
-                <Link color="inherit" href={notionLink} target="_blank">
-                  <LaunchIcon fontSize="small" />
+              <GamemasterOnly user={user} character={character}>
+                <Link color="inherit" href={link} target="_blank">
+                  { character.name }
                 </Link>
-              }
+                &nbsp;
+                { notionLink &&
+                  <Link color="inherit" href={notionLink} target="_blank">
+                    <LaunchIcon fontSize="small" />
+                  </Link>
+                }
+              </GamemasterOnly>
+              <PlayerOnly user={user} character={character}>
+                { character.name }
+              </PlayerOnly>
               <Location shot={shot} character={character} />
             </Typography>
             <GamemasterOnly user={user} character={character}>

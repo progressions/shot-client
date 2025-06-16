@@ -67,16 +67,18 @@ export default function FightToolbar({ showHidden, setShowHidden }: FightToolbar
       <ButtonBar>
         <Stack direction="row" spacing={2} alignItems='center'>
           <DiceRoller />
-          <ButtonGroup>
-            <CreateVehicle />
-            <CreateCharacter />
-          </ButtonGroup>
-          <ButtonGroup>
-            <SelectCharacter addCharacter={addCharacter} />
-          </ButtonGroup>
-          <ButtonGroup>
-            <SelectParty />
-          </ButtonGroup>
+          <GamemasterOnly user={user}>
+            <ButtonGroup>
+              <CreateVehicle />
+              <CreateCharacter />
+            </ButtonGroup>
+            <ButtonGroup>
+              <SelectCharacter addCharacter={addCharacter} />
+            </ButtonGroup>
+            <ButtonGroup>
+              <SelectParty />
+            </ButtonGroup>
+          </GamemasterOnly>
           <AttackButton />
           <GamemasterOnly user={user}>
             <FormControlLabel label="Show Hidden" control={<Switch checked={showHidden} />} onChange={show} />
