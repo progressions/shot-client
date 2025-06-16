@@ -12,6 +12,7 @@ import type {
   Vehicle,
   Effect,
   Fight,
+  FightEvent,
   Character,
   User,
   Person,
@@ -57,6 +58,10 @@ class Api {
     } else {
       return `${this.api()}/fights`
     }
+  }
+
+  fightEvents(fight?: Fight | ID | undefined): string {
+    return `${this.fights(fight)}/fight_events`
   }
 
   charactersAndVehicles(fight?: Fight | ID | undefined): string {

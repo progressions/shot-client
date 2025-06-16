@@ -25,6 +25,7 @@ import type {
   Character,
   ID,
   Fight,
+  FightEvent,
   Party,
   User,
   VehicleArchetype
@@ -126,6 +127,10 @@ class Client {
 
   async deleteFight(fight: Fight):Promise<void> {
     return await this.delete(this.api.fights(fight))
+  }
+
+  async createFightEvent(fight: Fight | ID, fightEvent: FightEvent):Promise<FightEvent> {
+    return await this.post(this.api.fightEvents(fight), {"fight_event": fightEvent})
   }
 
   async getCharactersInFight(fight: Fight | ID, params = {}):Promise<Person[]> {
