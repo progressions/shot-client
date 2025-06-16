@@ -2,7 +2,7 @@ import { useFight } from "@/contexts/FightContext"
 import { CancelButton, StyledDialog } from "@/components/StyledFields"
 import { colors, Box, Button, DialogContent, Stack, Typography, List, ListItem, ListItemText, ListItemIcon } from "@mui/material"
 import { useEffect, useState } from "react"
-import type { Vehicle, Character, Fight, ShotType } from "@/types/types"
+import type { FightEvent, Vehicle, Character, Fight, ShotType } from "@/types/types"
 import MenuBookIcon from '@mui/icons-material/MenuBook'
 import FES from "@/services/FightEventService"
 import { useClient } from "@/contexts/ClientContext"
@@ -13,13 +13,13 @@ export default function EventsLog() {
 
   const [processing, setProcessing] = useState(false)
   const [open, setOpen] = useState(false)
-  const [events, setEvents] = useState([])
+  const [events, setEvents] = useState<FightEvent[]>([])
 
   useEffect(() => {
     async function fetchEvents() {
       if (fight) {
         const events = await FES.getFightEvents(client, fight)
-        setEvents(events)
+        setEvents(events || [])
       }
     }
     fetchEvents()
