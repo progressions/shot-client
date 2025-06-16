@@ -78,7 +78,7 @@ export default function Fight({ fight:initialFight }: FightParams) {
     const interval = setInterval(async () => {
       try {
         const data = await client.getFight(fight)
-        if (data.updated_at > fight.updated_at) {
+        if (data.updated_at && fight.updated_at && data.updated_at > fight.updated_at) {
           dispatch({ type: FightActions.FIGHT, payload: data })
           dispatch({ type: FightActions.SUCCESS })
         }

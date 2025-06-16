@@ -18,8 +18,10 @@ const FightService = {
   },
 
   playerCharacters: function(fight: Fight): Character[] {
-    return fight?
-      .shot_order?
+    if (!fight?.shot_order) return []
+
+    return fight
+      .shot_order
       .reduce((acc: any[], shot: ShotType) => {
         shot[1].forEach((combatant) => {
           if (SS.isPC(combatant)) {
