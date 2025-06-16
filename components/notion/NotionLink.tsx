@@ -71,18 +71,24 @@ export default function NotionLink() {
     <>
       <Stack direction="row" spacing={1} alignItems="center">
         <ButtonGroup variant="contained">
-          <Button onClick={handleLink}>
-            <LibraryAddIcon />
-          </Button>
-          <Button onClick={handleSync} disabled={saving}>
-            <SystemUpdateAltIcon />
-          </Button>
+          <Tooltip title="Link to Notion Page" arrow sx={{color: "White"}}>
+            <Button onClick={handleLink}>
+              <LibraryAddIcon />
+            </Button>
+          </Tooltip>
+          <Tooltip title="Sync from Notion" arrow>
+            <Button onClick={handleSync} disabled={saving}>
+              <SystemUpdateAltIcon />
+            </Button>
+          </Tooltip>
         </ButtonGroup>
-        { notionLink && <>
-          <Link color="inherit" href={notionLink} target="_blank">
-            <LaunchIcon fontSize="large" />
-          </Link>
-        </> }
+        { notionLink &&
+          <Tooltip title="Open Notion Page" arrow>
+            <Link color="inherit" href={notionLink} target="_blank">
+              <LaunchIcon fontSize="large" />
+            </Link>
+          </Tooltip>
+         }
       </Stack>
       <StyledDialog
         open={open}
