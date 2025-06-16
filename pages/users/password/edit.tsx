@@ -5,6 +5,7 @@ import type { NextApiRequest, NextApiResponse } from "next"
 import Navbar from "@/components/navbar/Navbar"
 
 import { TextField, Button, Stack, Link, Container, Typography, Box } from "@mui/material"
+import { StyledTextField, SaveCancelButtons } from "@/components/StyledFields"
 
 import { useRouter } from 'next/router'
 import Client from '@/utils/Client'
@@ -79,8 +80,8 @@ export default function ResetPasswordView({ reset_password_token }: ResetPasswor
           { !success && <>
           <Typography>Enter a new password.</Typography>
           <Box component="form" onSubmit={handleSubmit} mt={3} width={300}>
-            <Stack spacing={1}>
-              <TextField
+            <Stack spacing={2}>
+              <StyledTextField
                 name="password"
                 type="password"
                 label="Password"
@@ -89,7 +90,7 @@ export default function ResetPasswordView({ reset_password_token }: ResetPasswor
                 disabled={saving}
                 required
               />
-              <TextField
+              <StyledTextField
                 name="password_confirmation"
                 type="password"
                 label="Password"
@@ -101,15 +102,14 @@ export default function ResetPasswordView({ reset_password_token }: ResetPasswor
                 helperText={error && "Does not match"}
               />
               <Stack direction="row" spacing={2}>
-                <Button variant="outlined" color="secondary" disabled={saving} onClick={cancelForm}>Cancel</Button>
-                <Button variant="contained" color="primary" type="submit" disabled={saving}>Save Changes</Button>
+                <SaveCancelButtons saving={saving} onCancel={cancelForm} onSubmit={handleSubmit} />
               </Stack>
             </Stack>
           </Box>
         </> }
-        { success && <>
-        <Typography>Your password has been reset. <Link href="/auth/signin">Click here</Link> to sign in.</Typography>
-        </> }
+        { success &&
+          <Typography>Your password has been reset. <Link href="/auth/signin">Click here</Link> to sign in.</Typography>
+        }
         </Container>
       </main>
     </>
