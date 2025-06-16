@@ -343,6 +343,7 @@ export interface Vehicle {
   weapons: Weapon[]
   skills: SkillValues
   user?: User
+  user_id?: string
   created_at?: string
   updated_at?: string
   new?: boolean
@@ -374,6 +375,7 @@ export interface Person {
   sites: Site[]
   weapons: Weapon[]
   user?: User
+  user_id?: string
   created_at?: string
   updated_at?: string
   new?: boolean
