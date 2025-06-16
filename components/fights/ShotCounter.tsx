@@ -42,7 +42,7 @@ export default function ShotCounter() {
           </TableHead>
           <TableBody>
             {
-              fight.shot_order.map(([shot, chars]: ShotType) =>
+              fight.shot_order && fight.shot_order.map(([shot, chars]: ShotType) =>
                 <Shot key={shot}
                   shot={shot}
                   characters={chars}
