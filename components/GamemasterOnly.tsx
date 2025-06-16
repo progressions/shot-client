@@ -11,10 +11,7 @@ interface GamemasterOnlyProps {
 export default function GamemasterOnly({ user, children, character, override }: React.PropsWithChildren<GamemasterOnlyProps>) {
   const { campaign } = useCampaign()
 
-  if (character && ["PC", "Ally"].includes(character.action_values['Type'] as string)) {
-    // if the character is a PC or Ally, show the content
-    return (<>{ children }</>)
-  } else if (campaign?.id && campaign.gamemaster?.id === user?.id && user?.gamemaster) {
+  if (campaign?.id && campaign.gamemaster?.id === user?.id && user?.gamemaster) {
     // if the current user is the gamemaster of the current campaign
     return (<>{ children }</>)
   } else if (!campaign?.id && user?.gamemaster) {

@@ -11,7 +11,7 @@ interface PlayerOnlyProps {
 export default function PlayerOnly({ user, children, character, override }: React.PropsWithChildren<PlayerOnlyProps>) {
   const { campaign } = useCampaign()
 
-  if (character && ["PC", "Ally"].includes(character.action_values['Type'] as string)) {
+  if (campaign.gamemaster?.id !== user?.id && character && ["PC", "Ally"].includes(character.action_values['Type'] as string)) {
     // if the character is a PC or Ally, show the content
     return (<>{ children }</>)
   } else if (campaign?.id && campaign.gamemaster?.id !== user?.id && !user?.gamemaster) {
