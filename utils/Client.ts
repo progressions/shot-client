@@ -129,6 +129,11 @@ class Client {
     return await this.delete(this.api.fights(fight))
   }
 
+  async getFightEvents(fight: Fight | ID, params = {}):Promise<FightEvent[]> {
+    const query = Object.entries(params).map(([key, value]) => `${key}=${value || ""}`).join("&")
+    return await this.get<FightEvent[]>(`${this.api.fightEvents(fight)}?${query}`)
+  }
+
   async createFightEvent(fight: Fight | ID, fightEvent: FightEvent):Promise<FightEvent> {
     return await this.post(this.api.fightEvents(fight), {"fight_event": fightEvent})
   }
