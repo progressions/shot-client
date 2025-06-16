@@ -2,6 +2,10 @@ import type { Character, Vehicle, Fight, FightEvent } from "@/types/types"
 import Client from "@/utils/Client"
 
 const FightEventService = {
+  getFightEvents: async function(client: Client, fight: Fight): Promise<FightEvent[]> {
+    return client.getFightEvents(fight)
+  },
+
   createFight: async function(client: Client, fight: Fight): Promise<FightEvent> {
     return client.createFightEvent(fight, {event_type: "fight_created", description: `Fight ${fight.name} created`, details: { fight: { id: fight.id, name: fight.name }}})
   },
@@ -27,11 +31,11 @@ const FightEventService = {
   },
 
   attack: async function(client: Client, fight: Fight, attacker: Character, target: Character, wounds: number): Promise<FightEvent> {
-    return client.createFightEvent(fight, {event_type: "attack", description: `${attacker.name} attacks ${target.name} doing ${wounds} Wounds`, details: { attacker: { id: attacker.id, name: attacker.name }, target: { id: target.id, name: target.name }, wounds}})
+    return client.createFightEvent(fight, {event_type: "attack", description: `${attacker.name} attacked ${target.name} doing ${wounds} Wounds`, details: { attacker: { id: attacker.id, name: attacker.name }, target: { id: target.id, name: target.name }, wounds}})
   },
 
   spendShots: async function(client: Client, fight: Fight, character: Character, shots: number): Promise<FightEvent> {
-    return client.createFightEvent(fight, {event_type: "shots_spent", description: `${character.name} spends ${shots} shots`, details: { character: { id: character.id, name: character.name }, shots}})
+    return client.createFightEvent(fight, {event_type: "shots_spent", description: `${character.name} spent ${shots} shots`, details: { character: { id: character.id, name: character.name }, shots}})
   },
 
   dodge: async function(client: Client, fight: Fight, character: Character, shots: number): Promise<FightEvent> {
