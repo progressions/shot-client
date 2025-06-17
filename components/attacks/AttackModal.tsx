@@ -2,6 +2,7 @@ import { GiDeathSkull, GiShotgun, GiPistolGun } from "react-icons/gi"
 import HeartBrokenIcon from "@mui/icons-material/HeartBroken"
 import PersonOffIcon from "@mui/icons-material/PersonOff"
 import TaxiAlertIcon from "@mui/icons-material/TaxiAlert"
+import BoltIcon from '@mui/icons-material/Bolt'
 import { ButtonGroup, FormControlLabel, Switch, Tooltip, DialogContent, Button, IconButton, Typography, Box, Stack } from "@mui/material"
 import { useFight } from "@/contexts/FightContext"
 import { useClient } from "@/contexts/ClientContext"
@@ -121,13 +122,18 @@ export default function AttackModal({ open, setOpen, anchorEl, setAnchorEl }: At
   }
 
   async function applyWounds() {
-    if (!wounds) return
-
     try {
-      await client.updateCharacter(target, fight)
-      await FES.attack(client, fight, attacker, target, wounds)
+      await Promise.all([
+        client.actCharacter(attacker, fight as Fight, shots),
+        client.updateCharacter(target, fight),
+        FES.attack(client, fight, attacker, target, wounds, shots)
+      ])
       dispatchFight({ type: FightActions.EDIT })
-      toastSuccess(`${target.name} took ${wounds} wounds.`)
+      if (!!wounds) {
+        toastSuccess(`${target.name} took ${wounds} wounds. ${attacker.name} spent ${shots} ${shots == 1 ? "Shot" : "Shots"}.`)
+      } else {
+        toastSuccess(`${attacker.name} spent ${shots} ${shots == 1 ? "Shot" : "Shots"}.`)
+      }
     } catch(error) {
       console.error(error)
       toastError()
@@ -136,13 +142,17 @@ export default function AttackModal({ open, setOpen, anchorEl, setAnchorEl }: At
   }
 
   async function killMooks() {
-    if (!count) return
-
     try {
-      await client.updateCharacter(target, fight)
-      await FES.killMooks(client, fight, attacker, target, count)
+      await Promise.all([
+        client.updateCharacter(target, fight),
+        FES.killMooks(client, fight, attacker, target, count, shots)
+      ])
       dispatchFight({ type: FightActions.EDIT })
-      toastSuccess(`${attacker.name} killed ${count} ${target.name} ${count == 1 ? "mook" : "mooks"}.`)
+      if (!!count) {
+        toastSuccess(`${attacker.name} killed ${count} ${target.name} ${count == 1 ? "mook" : "mooks"} and spent ${shots} ${shots == 1 ? "Shot" : "Shots"}.`)
+      } else {
+        toastSuccess(`${attacker.name} spent ${shots} ${shots == 1 ? "Shot" : "Shots"}.`)
+      }
     } catch(error) {
       console.error(error)
       toastError()
@@ -205,6 +215,9 @@ export default function AttackModal({ open, setOpen, anchorEl, setAnchorEl }: At
               handleAttack={handleAttack}
             />
             { edited && <ResultsDisplay state={state} handleClose={handleClose} /> }
+            { edited && !!target?.id && !CS.isMook(target) && !wounds && <>
+              <Button sx={{width: 200}} endIcon={<BoltIcon />} variant="contained" color="error" onClick={applyWounds}>Apply</Button>
+            </> }
             { edited && !!target?.id && !CS.isMook(target) && !!wounds && <>
               <Button sx={{width: 200}} endIcon={<HeartBrokenIcon />} variant="contained" color="error" onClick={applyWounds}>Apply Wounds</Button>
             </> }
