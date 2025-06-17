@@ -9,14 +9,14 @@ import { useToast } from "@/contexts/ToastContext"
 import { StyledDialog, StyledTextField } from "@/components/StyledFields"
 import { useEffect, useReducer, useState } from "react"
 import type { Weapon, Character } from "@/types/types"
-import { defaultWeapon, defaultCharacter } from "@/types/types"
+import { defaultWeapon, defaultCharacter, CharacterTypes } from "@/types/types"
 import AS from "@/services/ActionService"
 import CS from "@/services/CharacterService"
 import CES from "@/services/CharacterEffectService"
-import { AttackActions, initialAttackState, attackReducer } from "@/reducers/attackState"
-import { FightActions } from "@/reducers/fightState"
 import FS from "@/services/FightService"
 import FES from "@/services/FightEventService"
+import { AttackActions, initialAttackState, attackReducer } from "@/reducers/attackState"
+import { FightActions } from "@/reducers/fightState"
 
 import Attacker from "@/components/attacks/Attacker"
 import Target from "@/components/attacks/Target"
@@ -36,6 +36,7 @@ export default function AttackModal({ open, setOpen, anchorEl, setAnchorEl }: At
   const { client } = useClient()
   const { toastSuccess, toastError } = useToast()
 
+  const [shots, setShots] = useState<number>(3)
   const [state, dispatch] = useReducer(attackReducer, initialAttackState)
   const { wounds, attacker, target, swerve, count,
     typedSwerve, edited } = state
@@ -49,6 +50,12 @@ export default function AttackModal({ open, setOpen, anchorEl, setAnchorEl }: At
       setAttacker(firstUp)
     }
   }, [fight, open])
+
+  useEffect(() => {
+    if (CS.isType(attacker, [CharacterTypes.Boss, CharacterTypes.UberBoss])) {
+      setShots(2)
+    }
+  }, [attacker])
 
   function handleClose() {
     setOpen(false)
@@ -160,12 +167,17 @@ export default function AttackModal({ open, setOpen, anchorEl, setAnchorEl }: At
       >
         <DialogContent>
           <Stack spacing={2}>
-            <CharactersAutocomplete
-              label="Attacker"
-              character={attacker}
-              setCharacter={setAttacker}
-              disabled={edited}
-            />
+            <Stack direction="row" spacing={2}>
+              <Box sx={{ width: 700 }}>
+                <CharactersAutocomplete
+                  label="Attacker"
+                  character={attacker}
+                  setCharacter={setAttacker}
+                  disabled={edited}
+                />
+              </Box>
+              <StyledTextField autoFocus type="number" label="Shots" required name="shots" value={shots || ''} onChange={handleChange} />
+            </Stack>
             <Attacker
               state={state}
               setAttacker={setAttacker}
