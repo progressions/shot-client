@@ -9,7 +9,7 @@ import { useClient } from "@/contexts/ClientContext"
 import { useToast } from "@/contexts/ToastContext"
 import { StyledDialog, StyledTextField } from "@/components/StyledFields"
 import { useEffect, useReducer, useState } from "react"
-import type { Weapon, Character } from "@/types/types"
+import type { Weapon, Character, Fight } from "@/types/types"
 import { defaultWeapon, defaultCharacter, CharacterTypes } from "@/types/types"
 import AS from "@/services/ActionService"
 import CS from "@/services/CharacterService"
@@ -126,7 +126,7 @@ export default function AttackModal({ open, setOpen, anchorEl, setAnchorEl }: At
       await Promise.all([
         client.actCharacter(attacker, fight as Fight, shots),
         client.updateCharacter(target, fight),
-        FES.attack(client, fight, attacker, target, wounds, shots)
+        FES.attack(client, fight, attacker, target, wounds || 0, shots || 0)
       ])
       dispatchFight({ type: FightActions.EDIT })
       if (!!wounds) {

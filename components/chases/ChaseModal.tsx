@@ -11,7 +11,7 @@ import { useToast } from "@/contexts/ToastContext"
 import VS from "@/services/VehicleService"
 import AS from "@/services/ActionService"
 import { useEffect, useReducer } from "react"
-import type { Vehicle } from "@/types/types"
+import type { Fight, Vehicle } from "@/types/types"
 import { defaultVehicle, CharacterTypes } from "@/types/types"
 import SwerveButton from "@/components/attacks/SwerveButton"
 import ResultsDisplay from "@/components/chases/ResultsDisplay"
@@ -85,7 +85,7 @@ export default function ChaseModal({ open, setOpen, anchorEl, setAnchorEl }: Cha
       await Promise.all([
         client.updateVehicle(target, fight),
         client.updateVehicle(attacker, fight),
-        FES.chaseAttack(client, fight, attacker, target, chasePoints || 0, conditionPoints || 0, method)
+        FES.chaseAttack(client, fight, attacker, target, chasePoints || 0, conditionPoints || 0, method, shots)
       ])
 
       dispatchFight({ type: FightActions.EDIT })
@@ -105,7 +105,7 @@ export default function ChaseModal({ open, setOpen, anchorEl, setAnchorEl }: Cha
     try {
       await client.updateVehicle(target, fight)
       await client.updateVehicle(attacker, fight)
-      await FES.chaseMooks(client, fight, attacker, target, count, method)
+      await FES.chaseMooks(client, fight, attacker, target, count, method, shots)
 
       dispatchFight({ type: FightActions.EDIT })
       if (!!count) {
