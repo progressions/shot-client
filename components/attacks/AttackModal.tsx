@@ -39,7 +39,7 @@ export default function AttackModal({ open, setOpen, anchorEl, setAnchorEl }: At
 
   const [state, dispatch] = useReducer(attackReducer, initialAttackState)
   const { wounds, attacker, target, swerve, count,
-    typedSwerve, edited, shots } = state
+    typedSwerve, shots, edited } = state
 
   useEffect(() => {
     dispatch({ type: AttackActions.RESET })
@@ -215,10 +215,10 @@ export default function AttackModal({ open, setOpen, anchorEl, setAnchorEl }: At
               handleAttack={handleAttack}
             />
             { edited && <ResultsDisplay state={state} handleClose={handleClose} /> }
-            { edited && !!target?.id && !CS.isMook(target) && !wounds && <>
+            { edited && !wounds && <>
               <Button sx={{width: 200}} endIcon={<BoltIcon />} variant="contained" color="error" onClick={applyWounds}>Apply</Button>
             </> }
-            { edited && !!target?.id && !CS.isMook(target) && !!wounds && <>
+            { edited && !!target?.id && !!wounds && !!count && <>
               <Button sx={{width: 200}} endIcon={<HeartBrokenIcon />} variant="contained" color="error" onClick={applyWounds}>Apply Wounds</Button>
             </> }
             { edited && !!target?.id && CS.isMook(target) && wounds && <>
