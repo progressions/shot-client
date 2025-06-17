@@ -49,6 +49,7 @@ export interface AttackState {
   boxcars: boolean
   wayAwfulFailure: boolean
   mookResults: MookResult[]
+  shots: number
 }
 
 export const initialAttackState: AttackState = {
@@ -67,6 +68,7 @@ export const initialAttackState: AttackState = {
   damage: defaultWeapon.damage,
   toughness: 0,
   count: 1,
+  shots: 3,
 
   // calculated values
   actionResult: 0,
@@ -82,7 +84,6 @@ export const initialAttackState: AttackState = {
   wayAwfulFailure: false,
   mookResults: []
 }
-
 
 export function attackReducer(state: AttackState, action: { type: AttackActions, payload?: Partial<AttackState> }): AttackState {
   switch (action.type) {

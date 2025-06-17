@@ -36,10 +36,9 @@ export default function AttackModal({ open, setOpen, anchorEl, setAnchorEl }: At
   const { client } = useClient()
   const { toastSuccess, toastError } = useToast()
 
-  const [shots, setShots] = useState<number>(3)
   const [state, dispatch] = useReducer(attackReducer, initialAttackState)
   const { wounds, attacker, target, swerve, count,
-    typedSwerve, edited } = state
+    typedSwerve, edited, shots } = state
 
   useEffect(() => {
     dispatch({ type: AttackActions.RESET })
@@ -53,7 +52,9 @@ export default function AttackModal({ open, setOpen, anchorEl, setAnchorEl }: At
 
   useEffect(() => {
     if (CS.isType(attacker, [CharacterTypes.Boss, CharacterTypes.UberBoss])) {
-      setShots(2)
+      dispatch({ type: AttackActions.UPDATE, payload: { shots: 2 } })
+    } else {
+      dispatch({ type: AttackActions.UPDATE, payload: { shots: 3 } })
     }
   }, [attacker])
 
