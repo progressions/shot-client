@@ -215,7 +215,7 @@ export default function AttackModal({ open, setOpen, anchorEl, setAnchorEl }: At
               handleAttack={handleAttack}
             />
             { edited && <ResultsDisplay state={state} handleClose={handleClose} /> }
-            { edited && !wounds && <>
+            { edited && !wounds && !CS.isMook(target) && <>
               <Button sx={{width: 200}} endIcon={<BoltIcon />} variant="contained" color="error" onClick={applyWounds}>Apply</Button>
             </> }
             { edited && !!target?.id && !!wounds && !!count && <>
