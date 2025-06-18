@@ -33,7 +33,7 @@ interface CharacterModalParams {
 
 export default function CharacterModal({ open, setOpen, character:activeCharacter, reload }: CharacterModalParams) {
   const { fight, dispatch:dispatchFight } = useFight()
-  const { client } = useClient()
+  const { user, client } = useClient()
   const { toastSuccess, toastError } = useToast()
 
   const [saving, setSaving] = useState(false);
@@ -46,6 +46,12 @@ export default function CharacterModal({ open, setOpen, character:activeCharacte
       setCharacter(activeCharacter)
     }
   }, [activeCharacter])
+
+  useEffect(() => {
+    if (user?.id && !character.user_id) {
+      setCharacter((prevState: Person) => ({ ...prevState, user_id: user?.id}))
+    }
+  }, [user, character, newCharacter])
 
   function handleClose() {
     cancelForm()

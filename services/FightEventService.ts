@@ -1,6 +1,10 @@
 import type { Character, Vehicle, Fight, FightEvent } from "@/types/types"
 import Client from "@/utils/Client"
 
+function shotsText(shots: number): string {
+  return `${shots} ${shots == 1 ? "Shot" : "Shots"}`
+}
+
 const FightEventService = {
   getFightEvents: async function(client: Client, fight: Fight): Promise<FightEvent[]> {
     return client.getFightEvents(fight)
@@ -30,28 +34,28 @@ const FightEventService = {
     return client.createFightEvent(fight, {event_type: "fight_started", description: `Fight ${fight.name} started`, details: { fight: { id: fight.id, name: fight.name }}})
   },
 
-  attack: async function(client: Client, fight: Fight, attacker: Character, target: Character, wounds: number): Promise<FightEvent> {
-    return client.createFightEvent(fight, {event_type: "attack", description: `${attacker.name} attacked ${target.name} doing ${wounds} ${wounds == 1 ? "Wound" : "Wounds"}`, details: { attacker: { id: attacker.id, name: attacker.name }, target: { id: target.id, name: target.name }, wounds}})
+  attack: async function(client: Client, fight: Fight, attacker: Character, target: Character, wounds: number, shots: number): Promise<FightEvent> {
+    return client.createFightEvent(fight, {event_type: "attack", description: `${attacker.name} attacked ${target.name}, doing ${wounds} ${wounds == 1 ? "Wound" : "Wounds"} and spending ${shots} ${shots == 1 ? "Shot" : "Shots"}`, details: { attacker: { id: attacker.id, name: attacker.name }, target: { id: target.id, name: target.name }, wounds, shots}})
   },
 
-  killMooks: async function(client: Client, fight: Fight, attacker: Vehicle, target: Vehicle, count: number): Promise<FightEvent> {
-    return client.createFightEvent(fight, {event_type: "kill_mooks", description: `${attacker.name} attacked ${target.name} and killed ${count} ${count == 1 ? "mook" : "mooks"}`, details: { attacker: { id: attacker.id, name: attacker.name }, target: { id: target.id, name: target.name }, count}})
+  killMooks: async function(client: Client, fight: Fight, attacker: Vehicle, target: Vehicle, count: number, shots: number): Promise<FightEvent> {
+    return client.createFightEvent(fight, {event_type: "kill_mooks", description: `${attacker.name} attacked ${target.name}, eliminating ${count} ${count == 1 ? "mook" : "mooks"} and spending ${shots} ${shots == 1 ? "Shot" : "Shots"}`, details: { attacker: { id: attacker.id, name: attacker.name }, target: { id: target.id, name: target.name }, count, shots}})
   },
 
   spendShots: async function(client: Client, fight: Fight, character: Character, shots: number): Promise<FightEvent> {
-    return client.createFightEvent(fight, {event_type: "shots_spent", description: `${character.name} spent ${shots} ${shots == 1 ? "shot" : "shots"}`, details: { character: { id: character.id, name: character.name }, shots}})
+    return client.createFightEvent(fight, {event_type: "Shots_spent", description: `${character.name} spent ${shots} ${shots == 1 ? "Shot" : "Shots"}`, details: { character: { id: character.id, name: character.name }, shots}})
   },
 
   dodge: async function(client: Client, fight: Fight, character: Character, shots: number): Promise<FightEvent> {
-    return client.createFightEvent(fight, {event_type: "dodged", description: `${character.name} dodged for ${shots} ${shots == 1 ? "shot" : "shots"}`, details: { character: { id: character.id, name: character.name }, shots}})
+    return client.createFightEvent(fight, {event_type: "dodged", description: `${character.name} dodged for ${shots} ${shots == 1 ? "Shot" : "Shots"}`, details: { character: { id: character.id, name: character.name }, shots}})
   },
 
-  chaseAttack: async function(client: Client, fight: Fight, attacker: Vehicle, target: Vehicle, chasePoints: number, conditionPoints: number, method: string): Promise<FightEvent> {
-    return client.createFightEvent(fight, {event_type: "chase_attack", description: `${attacker.name} used ${method} on ${target.name} doing ${chasePoints} Chase Points and ${conditionPoints} Condition Points`, details: { attacker: { id: attacker.id, name: attacker.name }, target: { id: target.id, name: target.name }, chasePoints, conditionPoints, method}})
+  chaseAttack: async function(client: Client, fight: Fight, attacker: Vehicle, target: Vehicle, chasePoints: number, conditionPoints: number, method: string, shots: number): Promise<FightEvent> {
+    return client.createFightEvent(fight, {event_type: "chase_attack", description: `${attacker.name} used ${method} on ${target.name}, doing ${chasePoints} Chase Points and ${conditionPoints} Condition Points, spending ${shotsText(shots)}`, details: { attacker: { id: attacker.id, name: attacker.name }, target: { id: target.id, name: target.name }, chasePoints, conditionPoints, method}})
   },
 
-  chaseMooks: async function(client: Client, fight: Fight, attacker: Vehicle, target: Vehicle, count: number, method: string): Promise<FightEvent> {
-    return client.createFightEvent(fight, {event_type: "chase_mooks", description: `${attacker.name} used ${method} on ${target.name} and killed ${count} ${count == 1 ? "mook" : "mooks"}`, details: { attacker: { id: attacker.id, name: attacker.name }, target: { id: target.id, name: target.name }, count}})
+  chaseMooks: async function(client: Client, fight: Fight, attacker: Vehicle, target: Vehicle, count: number, method: string, shots: number): Promise<FightEvent> {
+    return client.createFightEvent(fight, {event_type: "chase_mooks", description: `${attacker.name} used ${method} on ${target.name}, eliminating ${count} ${count == 1 ? "mook" : "mooks"}, spending ${shotsText(shots)}`, details: { attacker: { id: attacker.id, name: attacker.name }, target: { id: target.id, name: target.name }, count}})
   }
 }
 

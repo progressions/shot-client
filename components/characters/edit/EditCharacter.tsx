@@ -18,12 +18,14 @@ import Weapons from "@/components/weapons/Weapons"
 import UploadImage from "@/components/characters/edit/UploadImage"
 import ImageDisplay from "@/components/characters/ImageDisplay"
 import NotionLink from "@/components/notion/NotionLink"
+import AssignUser from "@/components/characters/edit/AssignUser"
 
 import { useEffect } from "react"
 
-import { Grid, ButtonGroup, Link, colors, Typography, Box, Stack, TextField, FormControlLabel, Switch, Button, InputAdornment } from "@mui/material"
+import { Tooltip, Grid, ButtonGroup, Link, colors, Typography, Box, Stack, TextField, FormControlLabel, Switch, Button, InputAdornment } from "@mui/material"
 import FavoriteIcon from '@mui/icons-material/Favorite'
 import PeopleIcon from '@mui/icons-material/People'
+import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1'
 
 import PlayerTypeOnly from "@/components/PlayerTypeOnly"
 import DeathMarks from "@/components/characters/DeathMarks"
@@ -36,13 +38,14 @@ import type { WeaponsStateType } from "@/reducers/weaponsState"
 import { initialWeaponsState as initialWeaponsState } from "@/reducers/weaponsState"
 import { CharacterActions } from "@/reducers/characterState"
 import CS from "@/services/CharacterService"
+import GamemasterOnly from "@/components/GamemasterOnly"
 
 interface EditCharacterProps {
   character: Character
 }
 
 export default function EditCharacter({ character:initialCharacter }: EditCharacterProps) {
-  const { client } = useClient()
+  const { user, client } = useClient()
   const { toastError, toastSuccess } = useToast()
   const { state:characterState, dispatch:dispatchCharacter, updateCharacter } = useCharacter()
 
@@ -119,14 +122,22 @@ export default function EditCharacter({ character:initialCharacter }: EditCharac
 
   return (
     <>
+      { character?.user?.email && <Typography variant="h5" component="h1" gutterBottom>
+        {[character?.user?.first_name, character?.user?.last_name].filter(Boolean).join(" ") || character?.user?.email}
+      </Typography> }
       <Box component="form" onSubmit={handleSubmit}>
         <Stack spacing={2}>
           <Stack direction="row" spacing={1} justifyContent="space-between">
             <Stack spacing={2}>
               <Grid container spacing={2} alignItems="flex-end">
-                <Grid item xs={8}>
+                <Grid item xs={7}>
                   <FormControlLabel label="Task" name="task" control={<Switch checked={character.task} />} onChange={handleCheck} />
                   <FormControlLabel label="Active" name="active" control={<Switch checked={character.active} />} onChange={handleCheck} />
+                </Grid>
+                <Grid item xs={1}>
+                  <GamemasterOnly user={user} character={character}>
+                    <AssignUser />
+                  </GamemasterOnly>
                 </Grid>
                 <Grid item xs={4}>
                   <NotionLink />

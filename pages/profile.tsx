@@ -6,6 +6,7 @@ import Client from '@/utils/Client'
 import { useState } from 'react'
 import Router from "next/router"
 import { getServerClient } from "@/utils/getServerClient"
+import { SaveCancelButtons, StyledTextField } from "@/components/StyledFields"
 
 import type { AuthSession, User, ServerSideProps } from "@/types/types"
 
@@ -77,13 +78,12 @@ export default function Profile({ jwt, user:initialUser }: ProfileProps) {
               <Stack spacing={2} sx={{width: 500}}>
                 <Avatar alt="N" src={user.avatar_url} sx={{ width: 100, height: 100 }} />
                 <Stack spacing={2} direction="row">
-                  <TextField fullWidth name="first_name" label="First name" value={user.first_name} variant="outlined" onChange={handleChange} />
-                  <TextField fullWidth name="last_name" label="Last name" value={user.last_name} variant="outlined" onChange={handleChange} />
+                  <StyledTextField fullWidth name="first_name" label="First name" value={user.first_name} variant="outlined" onChange={handleChange} />
+                  <StyledTextField fullWidth name="last_name" label="Last name" value={user.last_name} variant="outlined" onChange={handleChange} />
                 </Stack>
-                <TextField name="email" label="Email" value={user.email} onChange={handleChange} variant="outlined" />
+                <StyledTextField name="email" label="Email" value={user.email} onChange={handleChange} variant="outlined" />
                 <Stack alignItems="flex-end" spacing={2} direction="row">
-                  <Button variant="outlined" disabled={saving} onClick={cancelForm}>Cancel</Button>
-                  <Button variant="contained" type="submit" disabled={saving}>Save Changes</Button>
+                  <SaveCancelButtons disabled={saving} onCancel={cancelForm} />
                 </Stack>
               </Stack>
             </Box>

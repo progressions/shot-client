@@ -1,7 +1,8 @@
-import { StyledDialog } from "@/components/StyledFields"
+import { StyledDialog, StyledTextField } from "@/components/StyledFields"
 import HeartBrokenIcon from "@mui/icons-material/HeartBroken"
 import PersonOffIcon from "@mui/icons-material/PersonOff"
-import { Button, DialogContent, Stack } from "@mui/material"
+import BoltIcon from '@mui/icons-material/Bolt'
+import { Button, DialogContent, Stack, Box } from "@mui/material"
 import { ChaseActions, initialChaseState, chaseReducer } from "@/reducers/chaseState"
 import { FightActions } from "@/reducers/fightState"
 import { useFight } from "@/contexts/FightContext"
@@ -10,8 +11,8 @@ import { useToast } from "@/contexts/ToastContext"
 import VS from "@/services/VehicleService"
 import AS from "@/services/ActionService"
 import { useEffect, useReducer } from "react"
-import type { Vehicle } from "@/types/types"
-import { defaultVehicle } from "@/types/types"
+import type { Fight, Vehicle } from "@/types/types"
+import { defaultVehicle, CharacterTypes } from "@/types/types"
 import SwerveButton from "@/components/attacks/SwerveButton"
 import ResultsDisplay from "@/components/chases/ResultsDisplay"
 import VehiclesAutocomplete from "@/components/chases/VehiclesAutocomplete"
@@ -34,7 +35,7 @@ export default function ChaseModal({ open, setOpen, anchorEl, setAnchorEl }: Cha
 
   const [state, dispatch] = useReducer(chaseReducer, initialChaseState)
   const { success, mookResults, count, smackdown, chasePoints, position,
-    conditionPoints, method, typedSwerve, target, attacker, edited } = state
+    conditionPoints, method, typedSwerve, target, attacker, shots, edited } = state
 
   useEffect(() => {
     dispatch({ type: ChaseActions.RESET })
@@ -45,6 +46,14 @@ export default function ChaseModal({ open, setOpen, anchorEl, setAnchorEl }: Cha
       setAttacker(firstUp)
     }
   }, [fight, open])
+
+  useEffect(() => {
+    if (VS.isType(attacker, [CharacterTypes.Boss, CharacterTypes.UberBoss])) {
+      dispatch({ type: ChaseActions.UPDATE, payload: { shots: 2 } })
+    } else {
+      dispatch({ type: ChaseActions.UPDATE, payload: { shots: 3 } })
+    }
+  }, [attacker])
 
   function handleClose() {
     setOpen(false)
@@ -69,15 +78,22 @@ export default function ChaseModal({ open, setOpen, anchorEl, setAnchorEl }: Cha
   }
 
   async function applyChasePoints() {
-    if (!smackdown) return
-
     try {
-      await client.updateVehicle(target, fight)
-      await client.updateVehicle(attacker, fight)
-      await FES.chaseAttack(client, fight, attacker, target, chasePoints || 0, conditionPoints || 0, method)
+      if (attacker.driver?.id) {
+        await client.actCharacter(attacker.driver, fight as Fight, shots)
+      }
+      await Promise.all([
+        client.updateVehicle(target, fight),
+        client.updateVehicle(attacker, fight),
+        FES.chaseAttack(client, fight, attacker, target, chasePoints || 0, conditionPoints || 0, method, shots)
+      ])
 
       dispatchFight({ type: FightActions.EDIT })
-      toastSuccess(`${target.name} took ${chasePoints} Chase Points and ${conditionPoints} Condition Points.`)
+      if (!!chasePoints || !!conditionPoints) {
+        toastSuccess(`${target.name} took ${chasePoints} Chase Points and ${conditionPoints} Condition Points. ${attacker.name} spent ${shots} ${shots == 1 ? "Shot" : "Shots"}.`)
+      } else {
+        toastSuccess(`${attacker.name} spent ${shots} ${shots == 1 ? "Shot" : "Shots"}.`)
+      }
     } catch(error) {
       console.error(error)
       toastError()
@@ -86,15 +102,17 @@ export default function ChaseModal({ open, setOpen, anchorEl, setAnchorEl }: Cha
   }
 
   async function killMooks() {
-    if (!count) return
-
     try {
       await client.updateVehicle(target, fight)
       await client.updateVehicle(attacker, fight)
-      await FES.chaseMooks(client, fight, attacker, target, count, method)
+      await FES.chaseMooks(client, fight, attacker, target, count, method, shots)
 
       dispatchFight({ type: FightActions.EDIT })
-      toastSuccess(`${attacker.name} killed ${count} ${count == 1 ? "mook" : "mooks"}.`)
+      if (!!count) {
+        toastSuccess(`${attacker.name} killed ${count} ${target.name} ${count == 1 ? "mook" : "mooks"} and spent ${shots} ${shots == 1 ? "Shot" : "Shots"}.`)
+      } else {
+        toastSuccess(`${attacker.name} spent ${shots} ${shots == 1 ? "Shot" : "Shots"}.`)
+      }
     } catch(error) {
       console.error(error)
       toastError()
@@ -142,12 +160,17 @@ export default function ChaseModal({ open, setOpen, anchorEl, setAnchorEl }: Cha
       >
         <DialogContent>
           <Stack spacing={2}>
-            <VehiclesAutocomplete
-              label="Attacker"
-              vehicle={attacker}
-              setVehicle={setAttacker}
-              disabled={edited}
-            />
+            <Stack direction="row" spacing={2}>
+              <Box sx={{ width: 700 }}>
+                <VehiclesAutocomplete
+                  label="Attacker"
+                  vehicle={attacker}
+                  setVehicle={setAttacker}
+                  disabled={edited}
+                />
+              </Box>
+              <StyledTextField autoFocus type="number" label="Shots" required name="shots" value={shots || ''} onChange={handleChange} />
+            </Stack>
             <Attacker
               state={state}
               setAttacker={setAttacker}
@@ -182,6 +205,9 @@ export default function ChaseModal({ open, setOpen, anchorEl, setAnchorEl }: Cha
                 Apply Results
               </Button>
             </>}
+            { edited && !success && <>
+              <Button sx={{width: 200}} endIcon={<BoltIcon />} variant="contained" color="error" onClick={applyChasePoints}>Apply</Button>
+            </> }
             { edited && !!target?.id && VS.isMook(target) && success && <>
               <Button sx={{width: 200}} endIcon={<PersonOffIcon />} variant="contained" color="error" onClick={killMooks}>Kill Mooks</Button>
             </> }

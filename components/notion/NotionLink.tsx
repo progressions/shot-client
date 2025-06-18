@@ -64,14 +64,14 @@ export default function NotionLink() {
     return page?.properties?.Name?.title?.[0]?.plain_text || ""
   }
 
-  const helperText = (pages.length) ? "": "There are no available pages."
+  const helperText = (pages?.length) ? "": "There are no available pages."
   const notionLink = CS.notionLink(character)
 
   return (
     <>
       <Stack direction="row" spacing={1} alignItems="center">
         <ButtonGroup variant="contained">
-          <Tooltip title="Link to Notion Page" arrow sx={{color: "White"}}>
+          <Tooltip title="Link to Notion Page" arrow>
             <Button onClick={handleLink}>
               <LibraryAddIcon />
             </Button>
@@ -99,7 +99,7 @@ export default function NotionLink() {
         <DialogContent>
           <Stack spacing={2}>
             <StyledAutocomplete
-              value={pages.find((page: any) => page.id === pageId) || null}
+              value={(pages || []).find((page: any) => page.id === pageId) || null}
               disabled={loading}
               options={pages || []}
               sx={{ width: 250 }}

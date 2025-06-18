@@ -117,7 +117,7 @@ export function StyledFormDialog(props: React.PropsWithChildren<AnyProps>) {
         </Stack>
       </DialogContent>
       <DialogActions>
-        <SaveCancelButtons disabled={props.saving} onCancel={props.onCancel} />
+        <SaveCancelButtons disabled={props.disabled || props.saving} onCancel={props.onCancel} />
       </DialogActions>
     </StyledDialog>
   )

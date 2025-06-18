@@ -63,6 +63,7 @@ export interface ChaseState {
   wayAwfulFailure: boolean
   mookResults: ChaseMookResult[]
   mookRolls: number[]
+  shots: number
 }
 
 export const initialChaseState: ChaseState = {
@@ -83,6 +84,7 @@ export const initialChaseState: ChaseState = {
   crunch: 0,
   count: 1,
   position: "far",
+  shots: 3,
 
   // calculated values
   actionResult: 0,

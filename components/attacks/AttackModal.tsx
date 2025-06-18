@@ -2,21 +2,22 @@ import { GiDeathSkull, GiShotgun, GiPistolGun } from "react-icons/gi"
 import HeartBrokenIcon from "@mui/icons-material/HeartBroken"
 import PersonOffIcon from "@mui/icons-material/PersonOff"
 import TaxiAlertIcon from "@mui/icons-material/TaxiAlert"
+import BoltIcon from '@mui/icons-material/Bolt'
 import { ButtonGroup, FormControlLabel, Switch, Tooltip, DialogContent, Button, IconButton, Typography, Box, Stack } from "@mui/material"
 import { useFight } from "@/contexts/FightContext"
 import { useClient } from "@/contexts/ClientContext"
 import { useToast } from "@/contexts/ToastContext"
 import { StyledDialog, StyledTextField } from "@/components/StyledFields"
 import { useEffect, useReducer, useState } from "react"
-import type { Weapon, Character } from "@/types/types"
-import { defaultWeapon, defaultCharacter } from "@/types/types"
+import type { Weapon, Character, Fight } from "@/types/types"
+import { defaultWeapon, defaultCharacter, CharacterTypes } from "@/types/types"
 import AS from "@/services/ActionService"
 import CS from "@/services/CharacterService"
 import CES from "@/services/CharacterEffectService"
-import { AttackActions, initialAttackState, attackReducer } from "@/reducers/attackState"
-import { FightActions } from "@/reducers/fightState"
 import FS from "@/services/FightService"
 import FES from "@/services/FightEventService"
+import { AttackActions, initialAttackState, attackReducer } from "@/reducers/attackState"
+import { FightActions } from "@/reducers/fightState"
 
 import Attacker from "@/components/attacks/Attacker"
 import Target from "@/components/attacks/Target"
@@ -38,7 +39,7 @@ export default function AttackModal({ open, setOpen, anchorEl, setAnchorEl }: At
 
   const [state, dispatch] = useReducer(attackReducer, initialAttackState)
   const { wounds, attacker, target, swerve, count,
-    typedSwerve, edited } = state
+    typedSwerve, shots, edited } = state
 
   useEffect(() => {
     dispatch({ type: AttackActions.RESET })
@@ -49,6 +50,14 @@ export default function AttackModal({ open, setOpen, anchorEl, setAnchorEl }: At
       setAttacker(firstUp)
     }
   }, [fight, open])
+
+  useEffect(() => {
+    if (CS.isType(attacker, [CharacterTypes.Boss, CharacterTypes.UberBoss])) {
+      dispatch({ type: AttackActions.UPDATE, payload: { shots: 2 } })
+    } else {
+      dispatch({ type: AttackActions.UPDATE, payload: { shots: 3 } })
+    }
+  }, [attacker])
 
   function handleClose() {
     setOpen(false)
@@ -113,13 +122,18 @@ export default function AttackModal({ open, setOpen, anchorEl, setAnchorEl }: At
   }
 
   async function applyWounds() {
-    if (!wounds) return
-
     try {
-      await client.updateCharacter(target, fight)
-      await FES.attack(client, fight, attacker, target, wounds)
+      await Promise.all([
+        client.actCharacter(attacker, fight as Fight, shots),
+        client.updateCharacter(target, fight),
+        FES.attack(client, fight, attacker, target, wounds || 0, shots || 0)
+      ])
       dispatchFight({ type: FightActions.EDIT })
-      toastSuccess(`${target.name} took ${wounds} wounds.`)
+      if (!!wounds) {
+        toastSuccess(`${target.name} took ${wounds} wounds. ${attacker.name} spent ${shots} ${shots == 1 ? "Shot" : "Shots"}.`)
+      } else {
+        toastSuccess(`${attacker.name} spent ${shots} ${shots == 1 ? "Shot" : "Shots"}.`)
+      }
     } catch(error) {
       console.error(error)
       toastError()
@@ -128,13 +142,17 @@ export default function AttackModal({ open, setOpen, anchorEl, setAnchorEl }: At
   }
 
   async function killMooks() {
-    if (!count) return
-
     try {
-      await client.updateCharacter(target, fight)
-      await FES.killMooks(client, fight, attacker, target, count)
+      await Promise.all([
+        client.updateCharacter(target, fight),
+        FES.killMooks(client, fight, attacker, target, count, shots)
+      ])
       dispatchFight({ type: FightActions.EDIT })
-      toastSuccess(`${attacker.name} killed ${count} ${target.name} ${count == 1 ? "mook" : "mooks"}.`)
+      if (!!count) {
+        toastSuccess(`${attacker.name} killed ${count} ${target.name} ${count == 1 ? "mook" : "mooks"} and spent ${shots} ${shots == 1 ? "Shot" : "Shots"}.`)
+      } else {
+        toastSuccess(`${attacker.name} spent ${shots} ${shots == 1 ? "Shot" : "Shots"}.`)
+      }
     } catch(error) {
       console.error(error)
       toastError()
@@ -160,12 +178,17 @@ export default function AttackModal({ open, setOpen, anchorEl, setAnchorEl }: At
       >
         <DialogContent>
           <Stack spacing={2}>
-            <CharactersAutocomplete
-              label="Attacker"
-              character={attacker}
-              setCharacter={setAttacker}
-              disabled={edited}
-            />
+            <Stack direction="row" spacing={2}>
+              <Box sx={{ width: 700 }}>
+                <CharactersAutocomplete
+                  label="Attacker"
+                  character={attacker}
+                  setCharacter={setAttacker}
+                  disabled={edited}
+                />
+              </Box>
+              <StyledTextField autoFocus type="number" label="Shots" required name="shots" value={shots || ''} onChange={handleChange} />
+            </Stack>
             <Attacker
               state={state}
               setAttacker={setAttacker}
@@ -192,7 +215,10 @@ export default function AttackModal({ open, setOpen, anchorEl, setAnchorEl }: At
               handleAttack={handleAttack}
             />
             { edited && <ResultsDisplay state={state} handleClose={handleClose} /> }
-            { edited && !!target?.id && !CS.isMook(target) && !!wounds && <>
+            { edited && !wounds && <>
+              <Button sx={{width: 200}} endIcon={<BoltIcon />} variant="contained" color="error" onClick={applyWounds}>Apply</Button>
+            </> }
+            { edited && !!target?.id && !!wounds && !!count && <>
               <Button sx={{width: 200}} endIcon={<HeartBrokenIcon />} variant="contained" color="error" onClick={applyWounds}>Apply Wounds</Button>
             </> }
             { edited && !!target?.id && CS.isMook(target) && wounds && <>
