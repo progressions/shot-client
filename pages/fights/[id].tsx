@@ -11,6 +11,7 @@ import Client from '@/utils/Client'
 
 import { getServerClient } from "@/utils/getServerClient"
 import { useFight } from "@/contexts/FightContext"
+import { useToast } from "@/contexts/ToastContext"
 
 import type { ParamsType, AuthSession, ShotType, Vehicle, Person, Character, Fight, ID } from "@/types/types"
 import { ServerSideProps } from "@/types/types"
@@ -47,7 +48,43 @@ export async function getServerSideProps({ req, res, params }: ServerSideProps) 
 export default function Fight({ fight:initialFight }: FightParams) {
   const { client, user } = useClient()
   const { fight, state, dispatch } = useFight()
+  const { toastError, toastSuccess } = useToast()
   const { notFound, loading, edited } = state
+
+  console.log("about to instantiate consumer")
+  const consumer = client.consumer()
+  console.log("consumer instantiated:", consumer)
+
+  useEffect(() => {
+    if (!fight?.id) {
+      console.log("Skipping subscription: fight.id is null")
+      return
+    }
+    console.log("Subscribing to FightChannel for fight:", fight.id, "type:", typeof fight.id)
+    const consumer = client.consumer() // Use singleton consumer from Client
+    const subscription = consumer.subscriptions.create(
+      { channel: "FightChannel", fight_id: fight.id },
+      {
+        connected: () => console.log("Connected to FightChannel"),
+        disconnected: () => console.log("Disconnected from FightChannel"),
+        received: (data: any) => {
+          console.log("Received data:", data)
+          dispatch({ type: FightActions.EDIT })
+        },
+      }
+    )
+
+    // Debug WebSocket messages (temporary)
+    consumer.connection.webSocket.addEventListener("message", (event: any) => {
+      console.log("Raw WebSocket message:", event.data)
+    })
+
+    return () => {
+      console.log("Unsubscribing from FightChannel for fight_id:", fight.id)
+      subscription.unsubscribe()
+      // Avoid closing consumer.connection to allow reuse
+    }
+  }, [fight?.id, dispatch, client]) // Add client as dependency
 
   useEffect(() => {
     dispatch({ type: FightActions.FIGHT, payload: initialFight })
@@ -73,6 +110,7 @@ export default function Fight({ fight:initialFight }: FightParams) {
   }, [notFound, fight, edited, user, client, dispatch])
 
   useEffect(() => {
+    return
     if (!user || !fight?.id || notFound) return
 
     const interval = setInterval(async () => {

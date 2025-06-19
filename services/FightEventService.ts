@@ -30,8 +30,8 @@ const FightEventService = {
     return client.createFightEvent(fight, {event_type: "vehicle_removed", description: `Vehicle ${vehicle.name} removed`})
   },
 
-  startFight: async function(client: Client, fight: Fight): Promise<FightEvent> {
-    return client.createFightEvent(fight, {event_type: "fight_started", description: `Fight ${fight.name} started`, details: { fight: { id: fight.id, name: fight.name }}})
+  startSequence: async function(client: Client, fight: Fight, sequence: number): Promise<FightEvent> {
+    return client.createFightEvent(fight, {event_type: "fight_started", description: `Sequence ${sequence} started`, details: { fight: { id: fight.id, name: fight.name }}})
   },
 
   attack: async function(client: Client, fight: Fight, attacker: Character, target: Character, wounds: number, shots: number): Promise<FightEvent> {

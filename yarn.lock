@@ -1051,6 +1051,11 @@
   resolved "https://registry.npmjs.org/@popperjs/core/-/core-2.11.8.tgz"
   integrity sha512-P1st0aksCrn9sGZhp8GMYwBnQsbvAWsZAX44oXNNvLHGqAOcoVxmjZiohstwQ7SqKnbR47akdNi+uleWD8+g6A==
 
+"@rails/actioncable@^8.0.200":
+  version "8.0.200"
+  resolved "https://registry.npmjs.org/@rails/actioncable/-/actioncable-8.0.200.tgz"
+  integrity sha512-EDqWyxck22BHmv1e+mD8Kl6GmtNkhEPdRfGFT7kvsv1yoXd9iYrqHDVAaR8bKmU/syC5eEZ2I5aWWxtB73ukMw==
+
 "@rtsao/scc@^1.1.0":
   version "1.1.0"
   resolved "https://registry.npmjs.org/@rtsao/scc/-/scc-1.1.0.tgz"
@@ -1190,6 +1195,11 @@
   version "15.7.15"
   resolved "https://registry.npmjs.org/@types/prop-types/-/prop-types-15.7.15.tgz"
   integrity sha512-F6bEyamV9jKGAFBEmlQnesRPGOQqS2+Uwi0Em15xenOxHaf2hv6L8YCVn3rPdPJOiJfPiCnLIRyvwVaqMY3MIw==
+
+"@types/rails__actioncable@^6.1.11":
+  version "6.1.11"
+  resolved "https://registry.npmjs.org/@types/rails__actioncable/-/rails__actioncable-6.1.11.tgz"
+  integrity sha512-L6A3Rg6sGsv2cqalOgdOmyFvL1Pw69Mg0WuG6NtY9chzabhtkiSFY5fczo72mqRGezrMvl0Jy80v+N719CW+Tg==
 
 "@types/react-color@^3.0.6":
   version "3.0.6"

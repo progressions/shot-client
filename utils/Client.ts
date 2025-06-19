@@ -30,6 +30,7 @@ import type {
   User,
   VehicleArchetype
 } from "@/types/types"
+import { createConsumer } from "@rails/actioncable"
 
 interface ClientParams {
   jwt?: string
@@ -38,12 +39,25 @@ interface ClientParams {
 class Client {
   jwt?: string
   api: Api
+  consumerInstance?: any
 
   constructor(params: ClientParams = {}) {
     if (params.jwt) {
       this.jwt = params.jwt
     }
     this.api = new Api()
+  }
+
+  consumer() {
+    console.log("this.jwt", this.jwt)
+    console.log("this.consumerInstance", this.consumerInstance)
+
+    if (this.jwt && this.consumerInstance) {
+      return this.consumerInstance
+    }
+    const websocketUrl = this.api.cable(this.jwt)
+    this.consumerInstance = createConsumer(websocketUrl)
+    return this.consumerInstance
   }
 
   async getNotionCharacters(params = {}) {
@@ -115,6 +129,10 @@ class Client {
 
   async getFight(fight: Fight | ID):Promise<Fight> {
     return this.get(this.api.fights(fight))
+  }
+
+  async touchFight(fight: Fight | ID):Promise<Fight> {
+    return this.patch(`${this.api.fights(fight)}/touch`)
   }
 
   async updateFight(fight: Fight):Promise<Fight> {

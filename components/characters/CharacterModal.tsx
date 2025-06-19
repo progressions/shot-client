@@ -104,6 +104,7 @@ export default function CharacterModal({ open, setOpen, character:activeCharacte
         toastSuccess(`${character.name} updated.`)
       }
       if (fight?.id) {
+        await client.touchFight(fight)
         dispatchFight({ type: FightActions.EDIT })
       } else if (reload) {
         await reload()

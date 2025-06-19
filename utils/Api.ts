@@ -24,6 +24,10 @@ class Api {
 
   api():string { return `${this.base()}/api/v1` }
 
+  cable(jwt?: string):string {
+    return `${process.env.NEXT_PUBLIC_WEBSOCKET_URL}/cable?token=${jwt || ""}`
+  }
+
   locations(location?: Location | ID): string {
     if (location?.id) {
       return `${this.api()}/locations/${location.id}`

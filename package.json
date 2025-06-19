@@ -14,6 +14,7 @@
     "@fontsource/roboto": "^4.5.8",
     "@mui/icons-material": "^5.14.0",
     "@mui/material": "^5.14.0",
+    "@rails/actioncable": "^8.0.200",
     "@types/node": "20.4.4",
     "@types/react": "18.2.15",
     "@types/react-dom": "18.0.9",
@@ -33,6 +34,7 @@
   "devDependencies": {
     "@types/cookie": "^0.5.1",
     "@types/jest": "^29.5.3",
+    "@types/rails__actioncable": "^6.1.11",
     "@types/react-color": "^3.0.6",
     "jest": "^29.6.1",
     "ts-jest": "^29.1.1"

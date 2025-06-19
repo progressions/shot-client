@@ -1,6 +1,5 @@
 import Layout from '@/components/Layout'
 import Head from 'next/head'
-import URL from "node:url"
 import type { NextApiRequest, NextApiResponse } from "next"
 
 import Router from 'next/router'

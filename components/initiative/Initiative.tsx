@@ -48,6 +48,7 @@ export default function Initiative() {
     await Promise.all(eligibleCharacters.map(([character, initiative]: InitPenalty) => {
       return updateInitiative(character as Character, parseInt(initiative))
     }))
+    await client.touchFight(fight)
 
     toastSuccess("Initiative updated.")
     dispatch({ type: FightActions.EDIT })
