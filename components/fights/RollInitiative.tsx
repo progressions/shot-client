@@ -46,10 +46,10 @@ export default function RollInitiative() {
     if (startOfSequence) {
       await addSequence()
       await FES.startSequence(client, fight, fight.sequence + 1)
-      console.log("Starting fight, adding sequence")
     }
 
     await Promise.all(nonzeroShots.map(rollForShot))
+    await client.touchFight(fight)
 
     dispatchFight({ type: FightActions.EDIT })
     toastSuccess("Initiative updated")
