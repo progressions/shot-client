@@ -6,7 +6,7 @@ import { useWebSocket } from "@/contexts/WebSocketContext"
 interface FightViewersProps {
 }
 
-const FightViewers: React.FC<FightViewersProps> = ({ viewers }) => {
+const FightViewers: React.FC<FightViewersProps> = () => {
   const { viewingUsers } = useWebSocket()
 
   const getInitials = (name: string): string => {
