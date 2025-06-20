@@ -5,7 +5,8 @@ import type { NextApiRequest, NextApiResponse } from "next"
 import Router from 'next/router'
 import { useEffect, useState } from "react"
 
-import { Link, TextField, Button, Box, Stack, TableContainer, Table, TableRow, TableHead, TableBody, TableCell, Container, Typography } from "@mui/material"
+import { colors, Paper, Link, TextField, Button, Box, Stack, TableContainer, Table, TableRow, TableHead, TableBody, TableCell, Container, Typography } from "@mui/material"
+import { StyledTextField } from "@/components/StyledFields"
 
 import CreateInvitation from "@/components/invitations/CreateInvitation"
 import Client from '@/utils/Client'
@@ -13,7 +14,7 @@ import { GetServerSideProps } from 'next'
 import Navbar from "@/components/navbar/Navbar"
 import * as cookie from 'cookie'
 import { signIn, signOut } from 'next-auth/react'
-import { useClient } from "@/contexts/ClientContext"
+import { useClient } from "@/contexts"
 import { getServerClient } from "@/utils/getServerClient"
 
 import { ParamsType, ErrorMessages, AuthSession, ServerSideProps, Invitation, User, Campaign } from "@/types/types"
@@ -94,19 +95,19 @@ export default function RedeemInvitation({ invitation }: RedeemInvitationProps) 
       </Head>
       <main>
         <Navbar />
-        <Container maxWidth="md">
-          <Typography variant="h2" gutterBottom>Welcome</Typography>
+        <Container maxWidth="md" component={Paper} sx={{backgroundColor: colors.blueGrey[300], color: "black", marginTop: 2, py: 2}}>
+          <Typography variant="h4" gutterBottom>Welcome</Typography>
           { success &&
             <Box my={2}>
-              <Typography variant="h5">{invitation.email}</Typography>
+              <Typography variant="h5" gutterBottom>{invitation.email}</Typography>
               <Typography>
                 You have joined the campaign.
               </Typography>
                 { !currentUser?.id &&
-                <Typography>
+                <Typography gutterBottom>
                   Check your email for a link to confirm your account and sign in.
                 </Typography> }
-              <Typography variant="h3" gutterBottom>{invitation.campaign?.name}</Typography>
+              <Typography variant="h4" gutterBottom>{invitation.campaign?.name}</Typography>
             </Box> }
           { !success && invitation.pending_user?.id &&
             <Box my={2}>
@@ -130,9 +131,9 @@ export default function RedeemInvitation({ invitation }: RedeemInvitationProps) 
                 <TextField name="email" label="Email" required error={!!errors["email"]} helperText={errors["email"]} value={user?.email || ""} onChange={handleChange} InputProps={{
                   readOnly: !!invitation.email,
                 }} />
-                <TextField name="first_name" label="First name" value={user?.first_name || ""} onChange={handleChange} />
-                <TextField name="last_name" label="Last name" value={user?.last_name || ""} onChange={handleChange} />
-                <TextField required name="password" type="password" label="Password" value={user?.password || ""} onChange={handleChange} />
+                <StyledTextField name="first_name" label="First name" value={user?.first_name || ""} onChange={handleChange} />
+                <StyledTextField name="last_name" label="Last name" value={user?.last_name || ""} onChange={handleChange} />
+                <StyledTextField required name="password" type="password" label="Password" value={user?.password || ""} onChange={handleChange} />
                 <Stack spacing={2} direction="row">
                   <Button variant="contained" type="submit" disabled={saving}>Accept</Button>
                 </Stack>

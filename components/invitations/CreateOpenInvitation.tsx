@@ -1,8 +1,8 @@
-import { Stack, Box, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, TextField, Typography, Button } from "@mui/material"
+import { colors, Paper, Stack, Box, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, TextField, Typography, Button } from "@mui/material"
 
+import { StyledTextField, SaveCancelButtons } from "@/components/StyledFields"
 import { useState } from "react"
-import { useToast } from "@/contexts/ToastContext"
-import { useClient } from "@/contexts/ClientContext"
+import { useToast, useClient } from "@/contexts"
 import Router from 'next/router'
 
 import type { Campaign, Invitation } from "@/types/types"
@@ -61,13 +61,12 @@ export default function CreateOpenInvitation({ campaign }: CreateOpenInvitationP
           <DialogTitle>Create Invitation</DialogTitle>
           <DialogContent>
             <Stack direction="column" mt={1}>
-              <TextField required error={!!error} helperText={error && `Email ${error}`} label="Maximum Number of Invitations" name="maximum_count" value={invitation?.maximum_count || ""} onChange={handleChange} />
+              <StyledTextField required error={!!error} helperText={error && `Email ${error}`} label="Maximum Number of Invitations" name="maximum_count" value={invitation?.maximum_count || ""} onChange={handleChange} />
             </Stack>
           </DialogContent>
           <DialogActions>
             <Stack spacing={2} direction="row">
-              <Button variant="outlined" disabled={saving} onClick={cancelForm}>Cancel</Button>
-              <Button variant="contained" type="submit" disabled={saving}>Save Changes</Button>
+              <SaveCancelButtons saving={saving} cancelForm={cancelForm} />
             </Stack>
           </DialogActions>
         </Box>

@@ -1,9 +1,9 @@
-import { Stack, Box, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, TextField, Typography, Button } from "@mui/material"
+import { colors, Paper, Container, Stack, Box, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, TextField, Typography, Button } from "@mui/material"
 
 import { useState } from "react"
-import { useToast } from "@/contexts/ToastContext"
-import { useClient } from "@/contexts/ClientContext"
+import { useToast, useClient } from "@/contexts"
 import Router from 'next/router'
+import { StyledFormDialog, StyledDialog, StyledTextField, SaveCancelButtons } from "@/components/StyledFields"
 
 import type { Campaign, Invitation } from "@/types/types"
 
@@ -54,25 +54,21 @@ export default function CreateInvitation({ campaign:initialCampaign }: CreateInv
   return (
     <>
       <Button variant="contained" onClick={handleOpen}>Invite User</Button>
-      <Dialog
+      <StyledFormDialog
         open={open}
         onClose={cancelForm}
+        onSubmit={handleSubmit}
       >
-        <Box component="form" onSubmit={handleSubmit} pb={1} sx={{width: 400}}>
+        <Box component="form" onSubmit={handleSubmit} pb={1}>
           <DialogTitle>Create Invitation</DialogTitle>
           <DialogContent>
+
             <Stack direction="column" mt={1}>
-              <TextField required error={!!error} helperText={error && `Email ${error}`} label="Email" name="email" value={invitation?.email || ""} onChange={handleChange} />
+              <StyledTextField required error={!!error} helperText={error && `Email ${error}`} label="Email" name="email" value={invitation?.email || ""} onChange={handleChange} />
             </Stack>
           </DialogContent>
-          <DialogActions>
-            <Stack spacing={2} direction="row">
-              <Button variant="outlined" disabled={saving} onClick={cancelForm}>Cancel</Button>
-              <Button variant="contained" type="submit" disabled={saving}>Save Changes</Button>
-            </Stack>
-          </DialogActions>
         </Box>
-      </Dialog>
+      </StyledFormDialog>
     </>
   )
 }
