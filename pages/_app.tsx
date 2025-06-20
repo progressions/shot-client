@@ -6,6 +6,7 @@ import { CampaignProvider } from "@/contexts/CampaignContext"
 import { ClientProvider } from "@/contexts/ClientContext"
 import { ToastProvider } from "@/contexts/ToastContext"
 import { LocalStorageProvider } from "@/contexts/LocalStorageContext"
+import { WebSocketProvider } from "@/contexts/WebSocketContext"
 import PopupToast from "@/components/PopupToast"
 
 import { GlobalStyles, createTheme, colors, ThemeProvider } from "@mui/material"
@@ -46,10 +47,12 @@ export default function App({ Component, pageProps: { session, ...pageProps } }:
             <ClientProvider>
               <CampaignProvider>
                 <FightProvider>
-                  <ToastProvider>
-                    <Component {...pageProps} />
-                    <PopupToast />
-                  </ToastProvider>
+                  <WebSocketProvider>
+                    <ToastProvider>
+                      <Component {...pageProps} />
+                      <PopupToast />
+                    </ToastProvider>
+                  </WebSocketProvider>
                 </FightProvider>
               </CampaignProvider>
             </ClientProvider>
