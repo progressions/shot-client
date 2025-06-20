@@ -127,12 +127,14 @@ export default function RedeemInvitation({ invitation }: RedeemInvitationProps) 
               <Typography>You&rsquo;ve been invited to </Typography>
               <Typography variant="h3" gutterBottom>{invitation.campaign?.name}</Typography>
               <Typography>To accept, enter your details to create an account.</Typography>
-              <Stack direction="column" spacing={2} mt={4}>
-                <TextField name="email" label="Email" required error={!!errors["email"]} helperText={errors["email"]} value={user?.email || ""} onChange={handleChange} InputProps={{
+              <Stack direction="column" spacing={2} mt={4} sx={{width: 500}}>
+                <StyledTextField name="email" label="Email" required error={!!errors["email"]} helperText={errors["email"]} value={user?.email || ""} onChange={handleChange} InputProps={{
                   readOnly: !!invitation.email,
                 }} />
-                <StyledTextField name="first_name" label="First name" value={user?.first_name || ""} onChange={handleChange} />
-                <StyledTextField name="last_name" label="Last name" value={user?.last_name || ""} onChange={handleChange} />
+                <Stack spacing={2} direction="row">
+                  <StyledTextField sx={{width: "50%"}} name="first_name" label="First name" value={user?.first_name || ""} onChange={handleChange} />
+                  <StyledTextField sx={{width: "50%"}} name="last_name" label="Last name" value={user?.last_name || ""} onChange={handleChange} />
+                </Stack>
                 <StyledTextField required name="password" type="password" label="Password" value={user?.password || ""} onChange={handleChange} />
                 <Stack spacing={2} direction="row">
                   <Button variant="contained" type="submit" disabled={saving}>Accept</Button>
