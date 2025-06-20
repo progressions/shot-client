@@ -7,17 +7,13 @@ import Router from "next/router"
 
 import Layout from "@/components/Layout"
 import ShotCounter from "@/components/fights/ShotCounter"
-import Client from "@/utils/Client"
 
 import { getServerClient } from "@/utils/getServerClient"
-import { useFight } from "@/contexts/FightContext"
-import { useWebSocket } from "@/contexts/WebSocketContext" // Import the new hook
-import { useToast } from "@/contexts/ToastContext"
+import { useFight, useWebSocket, useToast, useClient } from "@/contexts"
 
 import type { Viewer, ParamsType, AuthSession, ShotType, Vehicle, Person, Character, Fight, ID } from "@/types/types"
 import { ServerSideProps } from "@/types/types"
 import { FightActions } from "@/reducers/fightState"
-import { useClient } from "@/contexts/ClientContext"
 import Loading from "@/components/fights/Loading"
 
 interface FightParams {
