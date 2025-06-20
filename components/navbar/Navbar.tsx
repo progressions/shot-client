@@ -26,7 +26,7 @@ export default function Navbar() {
   }
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box sx={{ flexGrow: 1, minWidth: 1000 }}>
       <AppBar position="static" sx={{backgroundColor: "primary.main"}}>
         <Toolbar>
           <PopupMenu campaign={campaign} user={user} />

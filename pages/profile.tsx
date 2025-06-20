@@ -7,6 +7,7 @@ import { useState } from 'react'
 import Router from "next/router"
 import { getServerClient } from "@/utils/getServerClient"
 import { SaveCancelButtons, StyledTextField } from "@/components/StyledFields"
+import ImageManager from "@/components/images/ImageManager"
 
 import type { AuthSession, User, ServerSideProps } from "@/types/types"
 
@@ -39,12 +40,13 @@ export default function Profile({ jwt, user:initialUser }: ProfileProps) {
   const client = new Client({ jwt })
   const [user, setUser] = useState<User>(initialUser)
   const [saving, setSaving] = useState<boolean>(false)
+  const [open, setOpen] = useState<boolean>(false)
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
     setUser((prevState: User) => ({ ...prevState, [event.target.name]: event.target.value }))
   }
 
-  const handleSubmit = async (event: React.ChangeEvent<HTMLInputElement>): Promise<void> => {
+  const updateUser = async (event: React.ChangeEvent<HTMLInputElement>): Promise<void> => {
     setSaving(true)
     event.preventDefault()
 
@@ -62,6 +64,10 @@ export default function Profile({ jwt, user:initialUser }: ProfileProps) {
     setSaving(false)
   }
 
+  async function deleteImage(user: User) {
+    await client.deleteUserImage(user as User)
+  }
+
   return (
     <>
       <Head>
@@ -74,9 +80,13 @@ export default function Profile({ jwt, user:initialUser }: ProfileProps) {
         <Layout>
           <Container maxWidth="md">
             <Typography variant="h1">Profile</Typography>
-            <Box component="form" onSubmit={handleSubmit}>
+            <Box component="form" onSubmit={updateUser}>
               <Stack spacing={2} sx={{width: 500}}>
-                <Avatar alt="N" src={user.avatar_url} sx={{ width: 100, height: 100 }} />
+                { !open &&
+                <Button sx={{width: 100}} onClick={() => setOpen(!open)}>
+                  <Avatar alt="N" src={user.avatar_url} sx={{ width: 100, height: 100 }} />
+                </Button> }
+                { open && user?.id && <ImageManager name="user" entity={user} updateEntity={updateUser} deleteImage={deleteImage} apiEndpoint="users" /> }
                 <Stack spacing={2} direction="row">
                   <StyledTextField fullWidth name="first_name" label="First name" value={user.first_name} variant="outlined" onChange={handleChange} />
                   <StyledTextField fullWidth name="last_name" label="Last name" value={user.last_name} variant="outlined" onChange={handleChange} />

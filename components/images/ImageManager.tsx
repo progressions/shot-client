@@ -6,7 +6,6 @@ import Api from "@/utils/Api"
 import { useUploadForm } from "@/utils/useUploadForm"
 import DeleteIcon from "@mui/icons-material/Delete"
 import AddAPhotoIcon from "@mui/icons-material/AddAPhoto"
-import ImageManager from "@/components/images/ImageManager"
 
 import type { Character, Party, Site, Vehicle, Weapon } from '@/types/types'
 

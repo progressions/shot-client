@@ -395,6 +395,10 @@ class Client {
     return this.delete(this.api.adminUsers(user))
   }
 
+  async deleteUserImage(user: User):Promise<void> {
+    return this.delete(`${this.api.users(user)}/image`)
+  }
+
   async getUser(user: User | ID):Promise<User> {
     return this.get(this.api.adminUsers(user))
   }

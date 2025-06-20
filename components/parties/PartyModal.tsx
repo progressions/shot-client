@@ -12,7 +12,6 @@ import Faction from "@/components/characters/edit/Faction"
 import CharacterFilters from "@/components/characters/CharacterFilters"
 import SelectCharacter from "@/components/characters/SelectCharacter"
 import ImageManager from "@/components/images/ImageManager"
-import Api from "@/utils/Api"
 
 interface PartyModalProps {
   state: PartiesStateType
@@ -25,7 +24,6 @@ export default function PartyModal({ state, dispatch, open, setOpen }: PartyModa
   const { toastSuccess, toastError } = useToast()
   const { user, client } = useClient()
   const { loading, party } = state
-  const api = new Api()
 
   async function updateParty(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
     event.preventDefault()
