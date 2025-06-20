@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next"
 import Head from 'next/head'
-import { Avatar, Box, Button, Stack, Container, Typography, TextField } from '@mui/material'
+import { colors, Paper, Avatar, Box, Button, Stack, Container, Typography, TextField } from '@mui/material'
 import Layout from '@/components/Layout'
 import Client from '@/utils/Client'
 import { useState } from 'react'
@@ -41,8 +41,10 @@ export default function Profile({ jwt, user:initialUser }: ProfileProps) {
   const [user, setUser] = useState<User>(initialUser)
   const [saving, setSaving] = useState<boolean>(false)
   const [open, setOpen] = useState<boolean>(false)
+  const [edited, setEdited] = useState<boolean>(false)
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
+    setEdited(true)
     setUser((prevState: User) => ({ ...prevState, [event.target.name]: event.target.value }))
   }
 
@@ -57,6 +59,7 @@ export default function Profile({ jwt, user:initialUser }: ProfileProps) {
     try {
       await client.updateUser(user)
       setSaving(false)
+      setEdited(false)
       Router.reload()
     } catch(error) {
       console.error(error)
@@ -66,6 +69,7 @@ export default function Profile({ jwt, user:initialUser }: ProfileProps) {
   const cancelForm = (): void => {
     setUser(initialUser)
     setSaving(false)
+    setEdited(false)
   }
 
   async function deleteImage(user: User) {
@@ -82,7 +86,7 @@ export default function Profile({ jwt, user:initialUser }: ProfileProps) {
       </Head>
       <main>
         <Layout>
-          <Container maxWidth="md">
+          <Container maxWidth="md" component={Paper} sx={{backgroundColor: colors.blueGrey[300], color: "black", marginTop: 2, py: 2}}>
             <Typography variant="h1">Profile</Typography>
             <Box component="form" onSubmit={handleUpdate}>
               <Stack spacing={2} sx={{width: 500}}>
@@ -97,7 +101,7 @@ export default function Profile({ jwt, user:initialUser }: ProfileProps) {
                 </Stack>
                 <StyledTextField name="email" label="Email" value={user.email} onChange={handleChange} variant="outlined" />
                 <Stack alignItems="flex-end" spacing={2} direction="row">
-                  <SaveCancelButtons disabled={saving} onCancel={cancelForm} />
+                  <SaveCancelButtons disabled={saving || !edited} onCancel={cancelForm} />
                 </Stack>
               </Stack>
             </Box>
