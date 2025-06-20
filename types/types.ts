@@ -469,6 +469,7 @@ export interface User {
   last_name?: string
   gamemaster?: boolean
   admin?: boolean
+  image_url?: string | null
   avatar_url?: string
 }
 
@@ -507,6 +508,8 @@ export interface ServerSideProps {
 
 export interface Viewer {
   id: string
+  first_name?: string
+  last_name?: string
   name: string
   avatar_url?: string
 }

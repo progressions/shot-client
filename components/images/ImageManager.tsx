@@ -7,14 +7,14 @@ import { useUploadForm } from "@/utils/useUploadForm"
 import DeleteIcon from "@mui/icons-material/Delete"
 import AddAPhotoIcon from "@mui/icons-material/AddAPhoto"
 
-import type { Character, Party, Site, Vehicle, Weapon } from '@/types/types'
+import type { User, Character, Party, Site, Vehicle, Weapon } from '@/types/types'
 
-type Entity = Weapon | Site | Party | Vehicle | Character
+type Entity = Weapon | Site | Party | Vehicle | Character | User
 
 interface ImageManagerProps {
   name: string
   entity: Entity
-  updateEntity: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => Promise<void>
+  updateEntity: ((event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => Promise<void>) | ((event?: any) => Promise<void>)
   deleteImage: (entity: any) => Promise<void>
   apiEndpoint: string
 }

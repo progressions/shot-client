@@ -46,9 +46,13 @@ export default function Profile({ jwt, user:initialUser }: ProfileProps) {
     setUser((prevState: User) => ({ ...prevState, [event.target.name]: event.target.value }))
   }
 
-  const updateUser = async (event: React.ChangeEvent<HTMLInputElement>): Promise<void> => {
-    setSaving(true)
+  const handleUpdate = async (event: React.ChangeEvent<HTMLInputElement>): Promise<void> => {
     event.preventDefault()
+    await updateUser()
+  }
+
+  const updateUser = async (): Promise<void> => {
+    setSaving(true)
 
     try {
       await client.updateUser(user)
@@ -80,7 +84,7 @@ export default function Profile({ jwt, user:initialUser }: ProfileProps) {
         <Layout>
           <Container maxWidth="md">
             <Typography variant="h1">Profile</Typography>
-            <Box component="form" onSubmit={updateUser}>
+            <Box component="form" onSubmit={handleUpdate}>
               <Stack spacing={2} sx={{width: 500}}>
                 { !open &&
                 <Button sx={{width: 100}} onClick={() => setOpen(!open)}>
