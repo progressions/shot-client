@@ -4,7 +4,7 @@ import type { NextApiRequest, NextApiResponse } from "next"
 
 import Navbar from "@/components/navbar/Navbar"
 
-import { TextField, Button, Stack, Link, Container, Typography, Box } from "@mui/material"
+import { colors, Paper, TextField, Button, Stack, Link, Container, Typography, Box } from "@mui/material"
 import { StyledTextField, SaveCancelButtons } from "@/components/StyledFields"
 
 import { useRouter } from 'next/router'
@@ -75,11 +75,11 @@ export default function ResetPasswordView({ reset_password_token }: ResetPasswor
       </Head>
       <main>
         <Navbar />
-        <Container maxWidth="md">
-          <Typography variant="h2" gutterBottom>Welcome</Typography>
+        <Container maxWidth="md" component={Paper} sx={{backgroundColor: colors.blueGrey[300], color: "black", marginTop: 2, py: 2}}>
+          <Box margin="auto" component="form" onSubmit={handleSubmit} mt={3} width={300}>
+          <Typography variant="h4" gutterBottom>Welcome</Typography>
           { !success && <>
-          <Typography>Enter a new password.</Typography>
-          <Box component="form" onSubmit={handleSubmit} mt={3} width={300}>
+          <Typography gutterBottom>Enter a new password.</Typography>
             <Stack spacing={2}>
               <StyledTextField
                 name="password"
@@ -105,11 +105,11 @@ export default function ResetPasswordView({ reset_password_token }: ResetPasswor
                 <SaveCancelButtons saving={saving} onCancel={cancelForm} onSubmit={handleSubmit} />
               </Stack>
             </Stack>
-          </Box>
         </> }
         { success &&
           <Typography>Your password has been reset. <Link href="/auth/signin">Click here</Link> to sign in.</Typography>
         }
+          </Box>
         </Container>
       </main>
     </>

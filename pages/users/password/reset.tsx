@@ -2,12 +2,12 @@ import Layout from '@/components/Layout'
 import Head from 'next/head'
 import Navbar from "@/components/navbar/Navbar"
 
-import { TextField, Button, Stack, Link, Container, Typography, Box } from "@mui/material"
+import { colors, Paper, TextField, Button, Stack, Link, Container, Typography, Box } from "@mui/material"
 
+import { StyledTextField, SaveButton } from "@/components/StyledFields"
 import { useRouter } from 'next/router'
 import { User } from "@/types/types"
-import { useClient } from "@/contexts/ClientContext"
-import { useToast } from "@/contexts/ToastContext"
+import { useClient, useToast } from "@/contexts"
 import { useReducer } from "react"
 import { resetReducer, initialState } from "@/components/passwords/resetReducer"
 
@@ -45,19 +45,20 @@ export default function SendResetPasswordView() {
       </Head>
       <main>
         <Navbar />
-        <Container maxWidth="md">
-          <Typography variant="h2" gutterBottom>Reset Password</Typography>
+        <Container maxWidth="md" component={Paper} sx={{backgroundColor: colors.blueGrey[300], color: "black", marginTop: 2, py: 2}}>
+          <Box margin="auto" sx={{width: 300}} p={4} component="form" onSubmit={handleSubmit}>
+          <Typography variant="h4" gutterBottom>Reset Password</Typography>
           {!success && <>
-            <Typography>Enter your email to send a link to reset your password.</Typography>
-            <Box component="form" onSubmit={handleSubmit} mt={3} width={300}>
+            <Typography gutterBottom>Enter your email to send a link to reset your password.</Typography>
               <Stack spacing={1}>
-                <TextField required error={error} name="email" label="Email" value={email} onChange={handleChange} />
-                <Button disabled={loading} variant="contained" type="submit">Sign In</Button>
+                <StyledTextField required error={error} name="email" label="Email" value={email} onChange={handleChange} />
+                <SaveButton disabled={loading} variant="contained" type="submit">Send Email</SaveButton>
               </Stack>
-          </Box> </> }
+          </> }
           { success && <>
             <Typography>A link has been sent to your email address to reset your password.</Typography>
           </> }
+        </Box>
         </Container>
       </main>
     </>
