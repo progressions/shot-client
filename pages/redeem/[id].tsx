@@ -124,7 +124,7 @@ export default function RedeemInvitation({ invitation }: RedeemInvitationProps) 
             </Box> }
           { !success && !invitation.pending_user?.id && session.status !== "authenticated" &&
             <Box component="form" onSubmit={handleSubmit}>
-              <Typography>You&rsquo;ve been invited to </Typography>
+              <Typography>You&rsquo;ve been invited to the campaign</Typography>
               <Typography variant="h3" gutterBottom>{invitation.campaign?.name}</Typography>
               <Typography>To accept, enter your details to create an account.</Typography>
               <Stack direction="column" spacing={2} mt={4} sx={{width: 500}}>
