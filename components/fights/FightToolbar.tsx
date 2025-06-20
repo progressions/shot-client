@@ -24,7 +24,7 @@ interface FightToolbarProps {
   setShowHidden: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-export default function FightToolbar({ showHidden, setShowHidden }: FightToolbarProps) {
+export default function FightToolbar({ showHidden, setShowHidden, viewingUsers }: FightToolbarProps) {
   const { fight, dispatch } = useFight()
   const { saveLocally, getLocally } = useLocalStorage()
   const { user, client } = useClient()
@@ -87,7 +87,7 @@ export default function FightToolbar({ showHidden, setShowHidden }: FightToolbar
           </Stack>
         </Grid>
         <Grid item xs sx={{ display: "flex", justifyContent: "flex-end" }}>
-          <FightViewers viewers={[]} />
+          <FightViewers viewers={viewingUsers || []} />
         </Grid>
       </Grid>
     </ButtonBar>

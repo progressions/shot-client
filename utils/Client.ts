@@ -49,9 +49,6 @@ class Client {
   }
 
   consumer() {
-    console.log("this.jwt", this.jwt)
-    console.log("this.consumerInstance", this.consumerInstance)
-
     if (this.jwt && this.consumerInstance) {
       return this.consumerInstance
     }

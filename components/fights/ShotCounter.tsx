@@ -15,17 +15,17 @@ import type { Person, Vehicle, ShotType, Character, Fight } from "@/types/types"
 
 import { useMemo, useState } from "react"
 
-export default function ShotCounter() {
+export default function ShotCounter({ viewingUsers }) {
   const [editingCharacter, setEditingCharacter] = useState<Person | Vehicle>(defaultCharacter)
   const [showHidden, setShowHidden] = useState<boolean>(false)
   const { fight } = useFight()
 
   const toolbar = useMemo(() => {
     if (fight?.id) {
-      return <FightToolbar showHidden={showHidden} setShowHidden={setShowHidden} />
+      return <FightToolbar showHidden={showHidden} setShowHidden={setShowHidden} viewingUsers={viewingUsers} />
     }
     return <></>
-  }, [fight?.id, showHidden])
+  }, [fight?.id, showHidden, viewingUsers])
 
   return (
     <>

@@ -13,7 +13,7 @@ import { getServerClient } from "@/utils/getServerClient"
 import { useFight } from "@/contexts/FightContext"
 import { useToast } from "@/contexts/ToastContext"
 
-import type { ParamsType, AuthSession, ShotType, Vehicle, Person, Character, Fight, ID } from "@/types/types"
+import type { Viewer, ParamsType, AuthSession, ShotType, Vehicle, Person, Character, Fight, ID } from "@/types/types"
 import { ServerSideProps } from "@/types/types"
 import { FightActions, initialFightState, fightReducer } from "@/reducers/fightState"
 import { useClient } from "@/contexts/ClientContext"
@@ -50,10 +50,9 @@ export default function Fight({ fight:initialFight }: FightParams) {
   const { fight, state, dispatch } = useFight()
   const { toastError, toastSuccess } = useToast()
   const { notFound, loading, edited } = state
+  const [viewingUsers, setViewingUsers] = useState<Viewer[]>([])
 
-  console.log("about to instantiate consumer")
   const consumer = client.consumer()
-  console.log("consumer instantiated:", consumer)
 
   useEffect(() => {
     if (!fight?.id) {
@@ -67,17 +66,17 @@ export default function Fight({ fight:initialFight }: FightParams) {
       {
         connected: () => console.log("Connected to FightChannel"),
         disconnected: () => console.log("Disconnected from FightChannel"),
-        received: (data: any) => {
+        received: (data: FightChannelMessage) => {
           console.log("Received data:", data)
-          dispatch({ type: FightActions.EDIT })
+          if (data.fight === "updated") {
+            dispatch({ type: FightActions.EDIT })
+          } else if (data.users) {
+            console.log("Setting viewing users:", data.users)
+            setViewingUsers(data.users)
+          }
         },
       }
     )
-
-    // Debug WebSocket messages (temporary)
-    consumer.connection.webSocket.addEventListener("message", (event: any) => {
-      console.log("Raw WebSocket message:", event.data)
-    })
 
     return () => {
       console.log("Unsubscribing from FightChannel for fight_id:", fight.id)
@@ -143,11 +142,11 @@ export default function Fight({ fight:initialFight }: FightParams) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Layout>
-        <Container>
+        <Container sx={{minWidth: 1000}}>
           { notFound && <>
             <Typography sx={{mt: 5}} variant="h3">Fight not found.</Typography>
           </> }
-          { !notFound && !loading && <ShotCounter /> }
+          { !notFound && !loading && <ShotCounter viewingUsers={viewingUsers} /> }
           { !notFound && loading && <Loading /> }
         </Container>
       </Layout>
