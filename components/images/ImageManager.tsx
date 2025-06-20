@@ -1,13 +1,12 @@
 import { Box, Button, IconButton, LinearProgress, Stack, Typography } from "@mui/material"
 import { styled } from "@mui/material/styles"
 import { useState, useRef } from "react"
-import { useClient } from "@/contexts/ClientContext"
-import { useToast } from "@/contexts/ToastContext"
+import { useClient, useToast, useCharacter } from "@/contexts"
 import Api from "@/utils/Api"
-import { useCharacter } from "@/contexts/CharacterContext"
 import { useUploadForm } from "@/utils/useUploadForm"
 import DeleteIcon from "@mui/icons-material/Delete"
 import AddAPhotoIcon from "@mui/icons-material/AddAPhoto"
+import ImageManager from "@/components/images/ImageManager"
 
 import type { Character, Party, Site, Vehicle, Weapon } from '@/types/types'
 
