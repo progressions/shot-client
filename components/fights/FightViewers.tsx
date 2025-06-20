@@ -1,5 +1,5 @@
 import React from "react"
-import { AvatarGroup, Avatar, Typography } from "@mui/material"
+import { Tooltip, AvatarGroup, Avatar, Typography } from "@mui/material"
 import type { Viewer } from "@/types/types"
 import { useWebSocket } from "@/contexts/WebSocketContext"
 
@@ -21,13 +21,15 @@ const FightViewers: React.FC<FightViewersProps> = () => {
   return (
     <AvatarGroup max={4} sx={{ justifyContent: "flex-start" }}>
       {viewingUsers.map((viewer) => (
-        <Avatar
-          key={viewer.id}
-          alt={viewer.name || "Anonymous"}
-          src={viewer.avatar_url}
-        >
-          {getInitials(viewer.name)}
-        </Avatar>
+        <Tooltip title={viewer.name} key={`avatar_${viewer.id}`} placement="top">
+          <Avatar
+            key={viewer.id}
+            alt={viewer.name || "Anonymous"}
+            src={viewer.avatar_url}
+          >
+              {getInitials(viewer.name)}
+          </Avatar>
+        </Tooltip>
       ))}
     </AvatarGroup>
   )
