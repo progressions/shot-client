@@ -2,8 +2,7 @@ import { useEffect, useMemo, createContext, useContext, useState } from "react"
 
 import type { Campaign } from "@/types/types"
 import { defaultCampaign } from "@/types/types"
-import { useClient } from "@/contexts/ClientContext"
-import { useLocalStorage } from "@/contexts/LocalStorageContext"
+import { useClient, useLocalStorage } from "@/contexts"
 
 export interface CampaignContextType {
   campaign: Campaign | null
@@ -43,6 +42,7 @@ export function CampaignProvider({ children }: CampaignProviderProps) {
 
   const getCurrentCampaign = async ():Promise<Campaign | null> => {
     const data = getLocally(`currentCampaign-${user?.id}`)
+    console.log("getCurrentCampaign data", data)
     if (data) {
       setCampaign(data as Campaign)
       return data as Campaign
