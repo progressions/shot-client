@@ -1,16 +1,14 @@
-import { colors, Box, Paper, ButtonGroup, Switch, FormControlLabel, Stack } from '@mui/material'
-
+import { colors, AvatarGroup, Avatar, Grid, Tooltip, Box, Paper, Button, ButtonGroup, Switch, FormControlLabel, Stack } from '@mui/material'
 import { ButtonBar } from "@/components/StyledFields"
 import CreateCharacter from '@/components/characters/CreateCharacter'
 import SelectCharacter from '@/components/characters/SelectCharacter'
 import CreateVehicle from '@/components/vehicles/CreateVehicle'
-import DiceRoller from '@/components/dice/DiceRoller'
 import GamemasterOnly from "@/components/GamemasterOnly"
 import SelectParty from "@/components/parties/SelectParty"
 import AttackButton from "@/components/attacks/AttackButton"
-
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
+import VisibilityIcon from '@mui/icons-material/Visibility'
 import type { Fight, Vehicle, Character } from "@/types/types"
-
 import { useFight } from "@/contexts/FightContext"
 import { useClient } from "@/contexts/ClientContext"
 import { useLocalStorage } from "@/contexts/LocalStorageContext"
@@ -18,15 +16,15 @@ import { useToast } from "@/contexts/ToastContext"
 import { FightActions } from "@/reducers/fightState"
 import CS from "@/services/CharacterService"
 import FES from "@/services/FightEventService"
-
 import { useEffect } from "react"
+import FightViewers from "@/components/fights/FightViewers"
 
-interface FightToolbarParams {
-  showHidden: boolean,
-  setShowHidden: React.Dispatch<React.SetStateAction<boolean>>
+interface FightToolbarProps {
+  showHidden: boolean
+  setShowHidden: React.DispatchReact.SetStateAction<boolean>
 }
 
-export default function FightToolbar({ showHidden, setShowHidden }: FightToolbarParams) {
+export default function FightToolbar({ showHidden, setShowHidden }: FightToolbarProps) {
   const { fight, dispatch } = useFight()
   const { saveLocally, getLocally } = useLocalStorage()
   const { user, client } = useClient()
@@ -37,7 +35,7 @@ export default function FightToolbar({ showHidden, setShowHidden }: FightToolbar
     setShowHidden(!!showHiddenShots)
   }, [getLocally, setShowHidden])
 
-  const addCharacter = async (character: Character):Promise<void> => {
+  const addCharacter = async (character: Character): Promise<void> => {
     try {
       if (CS.isCharacter(character)) {
         await client.addCharacter(fight, character as Character)
@@ -46,45 +44,52 @@ export default function FightToolbar({ showHidden, setShowHidden }: FightToolbar
         await client.addVehicle(fight, character as Vehicle)
         await FES.addVehicle(client, fight, character as Vehicle)
       }
-
       toastSuccess(`${character.name} added.`)
-    } catch(error) {
+    } catch (error) {
       console.error(error)
       toastError()
     }
     dispatch({ type: FightActions.EDIT })
   }
 
-  const show = (event: React.SyntheticEvent<Element, Event>, checked: boolean) => {
-    saveLocally("showHiddenShots", checked)
-    setShowHidden(checked)
+  const show = () => {
+    setShowHidden((prev) => !prev)
+    saveLocally("showHiddenShots", showHidden)
   }
+
   if (!fight?.id) {
     return <></>
   }
+
   return (
-    <>
-      <ButtonBar>
-        <Stack direction="row" spacing={2} alignItems='center'>
-          <DiceRoller />
-          <GamemasterOnly user={user}>
-            <ButtonGroup>
-              <CreateVehicle />
-              <CreateCharacter />
-            </ButtonGroup>
-            <ButtonGroup>
-              <SelectCharacter addCharacter={addCharacter} />
-            </ButtonGroup>
-            <ButtonGroup>
-              <SelectParty />
-            </ButtonGroup>
-          </GamemasterOnly>
-          <AttackButton />
-          <GamemasterOnly user={user}>
-            <FormControlLabel label="Show Hidden" control={<Switch checked={showHidden} />} onChange={show} />
-          </GamemasterOnly>
-        </Stack>
-      </ButtonBar>
-    </>
+    <ButtonBar>
+      <Grid container alignItems="center">
+        <Grid item>
+          <Stack direction="row" spacing={2} alignItems="center">
+            <GamemasterOnly user={user}>
+              <Tooltip title={showHidden ? "Hide Hidden" : "Show Hidden"}>
+                <Button variant="contained" color="primary" onClick={show}>
+                  {showHidden ? <VisibilityIcon /> : <VisibilityOffIcon />}
+                </Button>
+              </Tooltip>
+              <ButtonGroup>
+                <CreateVehicle />
+                <CreateCharacter />
+              </ButtonGroup>
+              <ButtonGroup>
+                <SelectCharacter addCharacter={addCharacter} />
+              </ButtonGroup>
+              <ButtonGroup>
+                <SelectParty />
+              </ButtonGroup>
+            </GamemasterOnly>
+            <AttackButton />
+          </Stack>
+        </Grid>
+        <Grid item xs sx={{ display: "flex", justifyContent: "flex-end" }}>
+          <FightViewers viewers={[]} />
+        </Grid>
+      </Grid>
+    </ButtonBar>
   )
 }

@@ -505,6 +505,17 @@ export interface ServerSideProps {
   query?: QueryType
 }
 
+export interface Viewer {
+  id: string
+  name: string
+  avatar_url?: string
+}
+
+export interface FightChannelMessage {
+  fight?: "updated" | Fight
+  users?: Viewer[]
+}
+
 export const defaultFaction:Faction = {
   id: "",
   name: "",
