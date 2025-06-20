@@ -93,7 +93,7 @@ export default function Fight({ fight: initialFight }: FightParams) {
               Fight not found.
             </Typography>
           )}
-          {!notFound && !loading && <ShotCounter viewingUsers={viewingUsers} />}
+          {!notFound && !loading && <ShotCounter />}
           {!notFound && loading && <Loading />}
         </Container>
       </Layout>
