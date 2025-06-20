@@ -21,7 +21,7 @@ import FightViewers from "@/components/fights/FightViewers"
 
 interface FightToolbarProps {
   showHidden: boolean
-  setShowHidden: React.DispatchReact.SetStateAction<boolean>
+  setShowHidden: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 export default function FightToolbar({ showHidden, setShowHidden }: FightToolbarProps) {
