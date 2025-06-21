@@ -3,11 +3,13 @@ import Head from 'next/head'
 import { colors, Paper, Avatar, Box, Button, Stack, Container, Typography, TextField } from '@mui/material'
 import Layout from '@/components/Layout'
 import Client from '@/utils/Client'
-import { useState } from 'react'
+import { useEffect, useState, useReducer } from 'react'
 import Router from "next/router"
 import { getServerClient } from "@/utils/getServerClient"
 import { SaveCancelButtons, StyledTextField } from "@/components/StyledFields"
 import ImageManager from "@/components/images/ImageManager"
+import { userReducer, UserActions, initialUserState } from "@/reducers/userState"
+import { useClient, useToast } from "@/contexts"
 
 import type { AuthSession, User, ServerSideProps } from "@/types/types"
 
@@ -37,15 +39,41 @@ export async function getServerSideProps({ req, res, params }: ServerSideProps) 
 }
 
 export default function Profile({ jwt, user:initialUser }: ProfileProps) {
-  const client = new Client({ jwt })
-  const [user, setUser] = useState<User>(initialUser)
-  const [saving, setSaving] = useState<boolean>(false)
+  const { client } = useClient()
+  const { toastSuccess, toastError } = useToast()
+
+  const [state, dispatch] = useReducer(userReducer, initialUserState)
+  const { user, edited, saving } = state
+  const { first_name, last_name, email } = user || {}
+
   const [open, setOpen] = useState<boolean>(false)
-  const [edited, setEdited] = useState<boolean>(false)
+
+  async function getUser(user: User) {
+    if (!user?.id) {
+      console.warn("No user ID found, cannot fetch user data.")
+      return
+    }
+    try {
+      const userData = await client.getUser({ id: user?.id })
+      dispatch({ type: UserActions.USER, payload: userData })
+    } catch(error) {
+      console.error(error)
+      toastError("Failed to load user data.")
+    }
+  }
+
+  useEffect(() => {
+    dispatch({ type: UserActions.USER, payload: initialUser })
+  }, [initialUser])
+
+  useEffect(() => {
+    if (user?.id && saving) {
+      getUser(user).catch(toastError)
+    }
+  }, [user, saving])
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
-    setEdited(true)
-    setUser((prevState: User) => ({ ...prevState, [event.target.name]: event.target.value }))
+    dispatch({ type: UserActions.UPDATE, name: event.target.name, value: event.target.value })
   }
 
   const handleUpdate = async (event: React.ChangeEvent<HTMLInputElement>): Promise<void> => {
@@ -54,22 +82,19 @@ export default function Profile({ jwt, user:initialUser }: ProfileProps) {
   }
 
   const updateUser = async (): Promise<void> => {
-    setSaving(true)
+    dispatch({ type: UserActions.SUBMIT })
 
     try {
       await client.updateUser(user)
-      setSaving(false)
-      setEdited(false)
-      Router.reload()
+      setOpen(false)
+      toastSuccess("Profile updated successfully.")
     } catch(error) {
       console.error(error)
     }
   }
 
   const cancelForm = (): void => {
-    setUser(initialUser)
-    setSaving(false)
-    setEdited(false)
+    dispatch({ type: UserActions.RESET })
   }
 
   async function deleteImage(user: User) {
@@ -87,7 +112,6 @@ export default function Profile({ jwt, user:initialUser }: ProfileProps) {
       <main>
         <Layout>
           <Container maxWidth="md" component={Paper} sx={{backgroundColor: colors.blueGrey[300], color: "black", marginTop: 2, py: 2}}>
-            <Typography variant="h1">Profile</Typography>
             <Box component="form" onSubmit={handleUpdate}>
               <Stack spacing={2} sx={{width: 500}}>
                 { !open &&
@@ -96,10 +120,10 @@ export default function Profile({ jwt, user:initialUser }: ProfileProps) {
                 </Button> }
                 { open && user?.id && <ImageManager name="user" entity={user} updateEntity={updateUser} deleteImage={deleteImage} apiEndpoint="users" /> }
                 <Stack spacing={2} direction="row">
-                  <StyledTextField fullWidth name="first_name" label="First name" value={user.first_name} variant="outlined" onChange={handleChange} />
-                  <StyledTextField fullWidth name="last_name" label="Last name" value={user.last_name} variant="outlined" onChange={handleChange} />
+                  <StyledTextField fullWidth name="first_name" label="First name" value={first_name || ""} variant="outlined" onChange={handleChange} />
+                  <StyledTextField fullWidth name="last_name" label="Last name" value={last_name || ""} variant="outlined" onChange={handleChange} />
                 </Stack>
-                <StyledTextField name="email" label="Email" value={user.email} onChange={handleChange} variant="outlined" />
+                <StyledTextField name="email" label="Email" value={email} variant="outlined" onChange={handleChange} />
                 <Stack alignItems="flex-end" spacing={2} direction="row">
                   <SaveCancelButtons disabled={saving || !edited} onCancel={cancelForm} />
                 </Stack>
