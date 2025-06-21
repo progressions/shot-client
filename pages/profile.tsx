@@ -48,29 +48,9 @@ export default function Profile({ jwt, user:initialUser }: ProfileProps) {
 
   const [open, setOpen] = useState<boolean>(false)
 
-  async function getUser(user: User) {
-    if (!user?.id) {
-      console.warn("No user ID found, cannot fetch user data.")
-      return
-    }
-    try {
-      const userData = await client.getUser({ id: user?.id })
-      dispatch({ type: UserActions.USER, payload: userData })
-    } catch(error) {
-      console.error(error)
-      toastError("Failed to load user data.")
-    }
-  }
-
   useEffect(() => {
     dispatch({ type: UserActions.USER, payload: initialUser })
   }, [initialUser])
-
-  useEffect(() => {
-    if (user?.id && saving) {
-      getUser(user).catch(toastError)
-    }
-  }, [user, saving])
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
     dispatch({ type: UserActions.UPDATE, name: event.target.name, value: event.target.value })
@@ -85,7 +65,10 @@ export default function Profile({ jwt, user:initialUser }: ProfileProps) {
     dispatch({ type: UserActions.SUBMIT })
 
     try {
-      await client.updateUser(user)
+      const userData = await client.updateUser(user)
+      console.log("userData", userData)
+      dispatch({ type: UserActions.USER, payload: userData })
+
       setOpen(false)
       toastSuccess("Profile updated successfully.")
     } catch(error) {
