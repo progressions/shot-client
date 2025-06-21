@@ -1,8 +1,21 @@
-import type { ShotType, Vehicle, Fight, Character, CharacterEffect } from "@/types/types"
+import type { ShotType, User, Vehicle, Fight, Character, CharacterEffect } from "@/types/types"
 import CS from "@/services/CharacterService"
 import SS from "@/services/SharedService"
 
 const FightService = {
+  users: function(fight: Fight): User[] {
+    if (!fight?.id || !fight?.shot_order || !fight?.gamemaster?.id) { return [] }
+
+    return fight.shot_order.reduce((acc, [shot, chars]: ShotType) => {
+      chars.forEach((char: Character) => {
+        if (CS.isPC(char) && char?.user && !acc.some(u => u?.id === char?.user?.id)) {
+          acc.push(char.user)
+        }
+      })
+      return acc
+    }, [fight.gamemaster] as User[])
+  },
+
   firstUp: function(fight: Fight): Character | Vehicle | undefined {
     return fight.shot_order?.[0]?.[1]?.[0]
   },

@@ -130,14 +130,15 @@ export default function EditCharacter({ character:initialCharacter }: EditCharac
           <Stack direction="row" spacing={1} justifyContent="space-between">
             <Stack spacing={2}>
               <Grid container spacing={2} alignItems="flex-end">
-                <Grid item xs={7}>
+                <Grid item xs={6}>
                   <FormControlLabel label="Task" name="task" control={<Switch checked={character.task} />} onChange={handleCheck} />
                   <FormControlLabel label="Active" name="active" control={<Switch checked={character.active} />} onChange={handleCheck} />
                 </Grid>
-                <Grid item xs={1}>
+                <Grid item xs={2}>
+                  { CS.isPC(character) &&
                   <GamemasterOnly user={user} character={character}>
                     <AssignUser />
-                  </GamemasterOnly>
+                  </GamemasterOnly> }
                 </Grid>
                 <Grid item xs={4}>
                   <NotionLink />

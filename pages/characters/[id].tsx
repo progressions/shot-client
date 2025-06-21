@@ -50,7 +50,7 @@ export default function CharacterView({ character }: CharacterViewProps) {
       <main>
         <Layout>
           <Container maxWidth="md" component={Paper} sx={{backgroundColor: colors.blueGrey[300], color: "black", marginTop: 2, py: 2}}>
-            <Typography variant="h2" gutterBottom>Edit Character</Typography>
+            <Typography variant="h4" gutterBottom>Edit Character</Typography>
             <CharacterProvider character={character}>
               <EditCharacter character={character} />
             </CharacterProvider>

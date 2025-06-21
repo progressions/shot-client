@@ -75,7 +75,7 @@ export default function FightName() {
       <Box onMouseEnter={showButtons} onMouseLeave={hideButtons}>
         <Stack mb={1}>
           <Stack direction="row" spacing={2} alignItems="baseline" sx={{marginTop: 2}}>
-            <Typography variant="h2" gutterBottom sx={{width: "100%"}}>
+            <Typography variant="h4" gutterBottom sx={{width: "100%"}}>
               {fight.name}
             </Typography>
             <Box visibility={open ? "visible" : "hidden"}>

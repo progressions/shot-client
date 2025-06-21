@@ -16,7 +16,7 @@ import type { User } from "@/types/types"
 import { useCampaign, CampaignContextType, useClient } from "@/contexts"
 
 export default function Navbar() {
-  const { session, user, client } = useClient()
+  const { session, user, client, currentUserState, dispatchCurrentUser } = useClient()
   const { campaign, getCurrentCampaign, setCurrentCampaign } = useCampaign()
   const [currentUser, setCurrentUser] = useState<User>(user || defaultUser)
 
@@ -32,7 +32,7 @@ export default function Navbar() {
     } else {
       setCurrentUser(defaultUser)
     }
-  }, [user?.id])
+  }, [user, currentUserState])
 
   const handleClick = async () => {
     const newCurrent = await setCurrentCampaign(defaultCampaign)

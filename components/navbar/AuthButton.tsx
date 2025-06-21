@@ -1,5 +1,6 @@
 import { Stack, Link, Typography, Button, Tooltip, IconButton, Avatar } from "@mui/material"
 import { signIn, signOut } from 'next-auth/react'
+import UserAvatar from "@/components/UserAvatar"
 
 import type { User } from "@/types/types"
 
@@ -14,11 +15,7 @@ const AuthButton = ({ status, user }: AuthButtonParams) => {
       <>
         <Typography variant="h6" component="div" sx={{ flexGrow: 1, textAlign: 'right' }}>
           <Button color="inherit" onClick={() => signOut({ redirect: false })}>Logout</Button>
-          <Tooltip title="Open profile">
-            <IconButton href='/profile'>
-              <Avatar alt={user.first_name} src={user.image_url || ""} />
-            </IconButton>
-          </Tooltip>
+          <UserAvatar user={user} href="/profile" tooltip="Open profile" />
         </Typography>
       </>
     )

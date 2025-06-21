@@ -44,6 +44,8 @@ export default function WeaponsDisplay({ weapons, first }: WeaponsDisplayProps) 
 
   if (!weapons.length) return <></>
 
+  const weaponsList = weapons.map((weapon: Weapon) => weapon.name).join(', ').substring(0, 400)
+
   return (
     <>
       { first &&
@@ -52,7 +54,7 @@ export default function WeaponsDisplay({ weapons, first }: WeaponsDisplayProps) 
             <GiPistolGun />
           </IconButton>
           <Typography gutterBottom>
-            {weapons.map((weapon: Weapon) => weapon.name).join(', ')}
+            { weaponsList }{ weaponsList.length > 399 ? '...' : ''}
           </Typography>
         </Stack>
       }

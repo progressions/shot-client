@@ -5,7 +5,7 @@ import { useClient } from "@/contexts/ClientContext"
 import { useToast } from "@/contexts/ToastContext"
 import { StyledAutocomplete, StyledSelect, StyledDialog, StyledTextField, SaveButton, CancelButton } from "@/components/StyledFields"
 import { useState, useEffect } from "react"
-import type { Character, InputParamsType } from '@/types/types'
+import type { User, Character, InputParamsType } from '@/types/types'
 import { CharacterActions } from "@/reducers/characterState"
 import CS from "@/services/CharacterService"
 import GamemasterOnly from "@/components/GamemasterOnly"
@@ -15,26 +15,21 @@ export default function AssignUser() {
   const { user, client } = useClient()
   const [open, setOpen] = useState(false)
   const [loading, setLoading] = useState(true)
-  const [users, setUsers] = useState([])
+  const [users, setUsers] = useState<User[]>([])
   const [userId, setUserId] = useState(character?.user_id || "")
   const [saving, setSaving] = useState(false)
 
   useEffect(() => {
     if (open) {
       const data = client.getUsers().then(data => {
-        setUsers(data as any)
+        const usersList = [{email: "None", id: ""}, ...data]
+        setUsers(usersList as User[])
         setLoading(false)
 
         return data
       })
     }
   }, [open, client, character?.name])
-
-  function filterData(data: any[]) {
-    return data.filter((item: any) => {
-      return item.properties.Name?.title?.[0]?.plain_text
-    })
-  }
 
   async function handleSync(): Promise<void> {
     setSaving(true)
@@ -67,16 +62,18 @@ export default function AssignUser() {
 
   const helperText = (users?.length) ? "": "There are no available users."
 
+  if (!CS.isPC(character)) {
+    return <></>
+  }
+
   return (
     <>
       <GamemasterOnly user={user}>
-        <Stack direction="row" spacing={1} alignItems="center">
-          <Tooltip title="Assign User" arrow>
-            <Button variant="contained" onClick={handleLink} disabled={saving}>
-              <PersonAddAlt1Icon />
-            </Button>
-          </Tooltip>
-        </Stack>
+        <Tooltip title="Assign User" arrow>
+          <Button variant="contained" onClick={handleLink} disabled={saving}>
+            <PersonAddAlt1Icon />
+          </Button>
+        </Tooltip>
         <StyledDialog
           open={open}
           onClose={handleClose}

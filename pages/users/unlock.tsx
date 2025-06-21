@@ -4,7 +4,7 @@ import type { NextApiRequest, NextApiResponse } from "next"
 
 import Navbar from "@/components/navbar/Navbar"
 
-import { Stack, Link, Container, Typography, Box } from "@mui/material"
+import { colors, Paper, Stack, Link, Container, Typography, Box } from "@mui/material"
 
 import { useRouter } from 'next/router'
 import { getServerClient } from "@/utils/getServerClient"
@@ -53,24 +53,24 @@ export default function UnlockUser({ success, errors, not_found }: UnlockUserPro
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <Navbar />
-        <Container maxWidth="md">
-          <Typography variant="h2" gutterBottom>Welcome</Typography>
+        <Layout>
+          <Container maxWidth="md" component={Paper} sx={{backgroundColor: colors.blueGrey[300], color: "black", marginTop: 2, py: 2}}>
+          <Typography variant="h4" gutterBottom>Welcome</Typography>
           { not_found && <>
-            <Typography>That account could not be found.</Typography>
+            <Typography gutterBottom>That account could not be found.</Typography>
           </> }
           { success && <>
             <Stack spacing={2}>
-              <Typography>
+              <Typography gutterBottom>
                 You have unlocked your account.
               </Typography>
-              <Typography>
+              <Typography gutterBottom>
                 <Link href="/auth/signin">Click here</Link> to sign in.
               </Typography>
             </Stack>
           </> }
         </Container>
-      </main>
+      </Layout>
     </>
   )
 }

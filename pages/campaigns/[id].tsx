@@ -93,7 +93,7 @@ export default function CampaignView({ campaign:initialCampaign }: CampaignViewP
       <main>
         <Layout>
           <Container maxWidth="md">
-            <Typography variant="h2" gutterBottom>{campaign.name}</Typography>
+            <Typography variant="h4" gutterBottom>{campaign.name}</Typography>
             <Typography>{campaign.description}</Typography>
             <Typography>Gamemaster: {campaign?.gamemaster?.first_name} {campaign?.gamemaster?.last_name}</Typography>
             <ButtonBar>

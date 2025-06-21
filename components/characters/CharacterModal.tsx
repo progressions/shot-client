@@ -47,12 +47,6 @@ export default function CharacterModal({ open, setOpen, character:activeCharacte
     }
   }, [activeCharacter])
 
-  useEffect(() => {
-    if (user?.id && !character.user_id) {
-      setCharacter((prevState: Person) => ({ ...prevState, user_id: user?.id}))
-    }
-  }, [user, character, newCharacter])
-
   function handleClose() {
     cancelForm()
   }

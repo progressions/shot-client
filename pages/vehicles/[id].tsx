@@ -50,7 +50,7 @@ export default function VehicleView({ vehicle }: VehicleViewProps) {
       <main>
         <Layout>
           <Container maxWidth="md" component={Paper} sx={{backgroundColor: colors.blueGrey[300], color: "black", marginTop: 2, py: 2}}>
-            <Typography variant="h2" gutterBottom>Edit Vehicle</Typography>
+            <Typography variant="h4" gutterBottom>Edit Vehicle</Typography>
             <VehicleProvider vehicle={vehicle}>
               <EditVehicle vehicle={vehicle} />
             </VehicleProvider>

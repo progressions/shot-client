@@ -1,35 +1,31 @@
 import React from "react"
 import { Tooltip, AvatarGroup, Avatar, Typography } from "@mui/material"
-import type { Viewer } from "@/types/types"
-import { useWebSocket } from "@/contexts/WebSocketContext"
+import type { User, Viewer } from "@/types/types"
+import { useWebSocket, useFight } from "@/contexts"
+import UserAvatar from "@/components/UserAvatar"
+import FS from "@/services/FightService"
 
 interface FightViewersProps {
 }
 
 const FightViewers: React.FC<FightViewersProps> = () => {
   const { viewingUsers } = useWebSocket()
+  const { fight } = useFight()
 
-  const getInitials = (name: string): string => {
-    if (!name) return "?"
-    const names = name.trim().split(/\s+/)
-    return names
-      .slice(0, 2)
-      .map((n) => n[0]?.toUpperCase() || "")
-      .join("")
+  const users = FS.users(fight)
+
+  const userOnline = (u: User | Viewer): boolean => {
+    return viewingUsers.some((viewer) => viewer.id === u?.id)
   }
 
+  const allUsers = Array.from(new Set([...users, ...viewingUsers].map(u => u.id)))
+    .map(id => viewingUsers.find(v => v.id === id) || users.find(u => u.id === id))
+    .filter((u): u is User | Viewer => !!u)
+
   return (
-    <AvatarGroup max={4} sx={{ justifyContent: "flex-start" }}>
-      {viewingUsers.map((viewer) => (
-        <Tooltip title={viewer.name} key={`avatar_${viewer.id}`} placement="top">
-          <Avatar
-            key={viewer.id}
-            alt={viewer.name || "Anonymous"}
-            src={viewer.image_url || ""}
-          >
-              {getInitials(viewer.name)}
-          </Avatar>
-        </Tooltip>
+    <AvatarGroup max={8} sx={{ justifyContent: "flex-start" }}>
+      {allUsers.map((viewer) => (
+        <UserAvatar user={viewer} online={userOnline(viewer)} key={`user_${viewer.id}`} />
       ))}
     </AvatarGroup>
   )

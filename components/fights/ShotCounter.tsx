@@ -8,6 +8,7 @@ import CharacterModal from '@/components/characters/CharacterModal'
 import VehicleModal from '@/components/vehicles/VehicleModal'
 import Sequence from "@/components/fights/Sequence"
 import CS from "@/services/CharacterService"
+import FS from "@/services/FightService"
 
 import { defaultCharacter, ServerSideProps } from "@/types/types"
 

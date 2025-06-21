@@ -5,8 +5,7 @@ import VisibilityIcon from '@mui/icons-material/Visibility'
 
 import GamemasterOnly from "@/components/GamemasterOnly"
 
-import { useToast } from "@/contexts/ToastContext"
-import { useClient } from "@/contexts/ClientContext"
+import { useToast, useClient } from "@/contexts"
 import type { Fight, Toast } from "@/types/types"
 import type { FightsStateType, FightsActionType } from "@/reducers/fightsState"
 import { FightsActions } from "@/reducers/fightsState"
@@ -45,7 +44,7 @@ export default function FightDetail({ fight, dispatch }: FightParams) {
     }
   }
 
-  const createdAt = new Date(fight.created_at as string).toLocaleString('en-US', {
+  const updatedAt = new Date(fight.updated_at as string).toLocaleString('en-US', {
     year: 'numeric',
     month: 'long',
     day: 'numeric',
@@ -65,7 +64,7 @@ export default function FightDetail({ fight, dispatch }: FightParams) {
          {fight.name}
         </Link>
       }
-      subheader={`${createdAt} - Sequence ${fight.sequence}`}
+      subheader={`Last played ${updatedAt} - Sequence ${fight.sequence}`}
       titleTypographyProps={{variant: "h3"}}
       subheaderTypographyProps={{variant: "subtitle1"}}
       sx={{mb: -2}}

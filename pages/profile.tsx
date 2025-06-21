@@ -39,7 +39,7 @@ export async function getServerSideProps({ req, res, params }: ServerSideProps) 
 }
 
 export default function Profile({ jwt, user:initialUser }: ProfileProps) {
-  const { client } = useClient()
+  const { client, dispatchCurrentUser } = useClient()
   const { toastSuccess, toastError } = useToast()
 
   const [state, dispatch] = useReducer(userReducer, initialUserState)
@@ -66,8 +66,8 @@ export default function Profile({ jwt, user:initialUser }: ProfileProps) {
 
     try {
       const userData = await client.updateUser(user)
-      console.log("userData", userData)
       dispatch({ type: UserActions.USER, payload: userData })
+      dispatchCurrentUser({ type: UserActions.USER, payload: userData })
 
       setOpen(false)
       toastSuccess("Profile updated successfully.")
@@ -99,7 +99,7 @@ export default function Profile({ jwt, user:initialUser }: ProfileProps) {
               <Stack spacing={2} sx={{width: 500}}>
                 { !open &&
                 <Button sx={{width: 100}} onClick={() => setOpen(!open)}>
-                  <Avatar alt="N" src={user.image_url || ""} sx={{ width: 100, height: 100 }} />
+                  <Avatar alt="N" src={user?.image_url || ""} sx={{ width: 100, height: 100 }} />
                 </Button> }
                 { open && user?.id && <ImageManager name="user" entity={user} updateEntity={updateUser} deleteImage={deleteImage} apiEndpoint="users" /> }
                 <Stack spacing={2} direction="row">

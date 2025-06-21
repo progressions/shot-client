@@ -8,6 +8,7 @@ import ImageDisplay from "@/components/characters/ImageDisplay"
 import Location from "@/components/locations/Location"
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import CS from '@/services/CharacterService'
+import UserAvatar from "@/components/UserAvatar"
 
 import GamemasterOnly from "@/components/GamemasterOnly"
 import PlayerOnly from "@/components/PlayerOnly"
@@ -72,16 +73,6 @@ export default function NameDisplay({ character, editCharacter, deleteCharacter,
             </Tooltip>
           }
           <Stack direction="row" spacing={1} alignItems="baseline" sx={{width: '100%'}}>
-            { character.user?.id && !character.user?.gamemaster && <>
-              <Tooltip title={`${character.user.first_name || ''} ${character.user.last_name || ''}`} key={`avatar_${user.id}`} placement="top">
-                <Avatar src={character.user.image_url || ""} sx={{width: 30, height: 30}}>
-                  { character.user.first_name && character.user.last_name
-                    ? `${character.user.first_name[0]}${character.user.last_name[0]}`
-                    : character.user.first_name || character.user.last_name || '?'
-                  }
-                </Avatar>
-              </Tooltip>
-            </> }
             <Typography variant="h4" sx={{fontWeight: 'bold', overflow: "hidden", textOverflow: "ellipsis", width: "100%"}}>
               <GamemasterOnly user={user} character={character}
                 except={character.name}

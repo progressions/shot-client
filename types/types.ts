@@ -448,6 +448,7 @@ export interface Fight {
   active: boolean
   name?: string
   description?: string
+  gamemaster?: User
   sequence: number
   effects: Effect[]
   characters?: Character[]

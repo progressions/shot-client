@@ -24,6 +24,8 @@ export default function SchticksDisplay({ schticks, first }: SchticksDisplayProp
 
   if (!schticks.length) return <></>
 
+  const schticksList = schticks.map((schtick: Schtick) => schtick.name).join(', ').substring(0, 400)
+
   return (
     <>
       { first &&
@@ -32,7 +34,7 @@ export default function SchticksDisplay({ schticks, first }: SchticksDisplayProp
             <LightbulbIcon />
           </IconButton>
           <Typography gutterBottom>
-            {schticks.map((schtick: Schtick) => schtick.name).join(', ')}
+            { schticksList }{ schticksList.length > 399 ? '...' : ''}
           </Typography>
         </Stack>
       }
