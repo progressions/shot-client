@@ -4,6 +4,7 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
 import VisibilityIcon from '@mui/icons-material/Visibility'
 
 import GamemasterOnly from "@/components/GamemasterOnly"
+import CharacterAvatars from "@/components/fights/CharacterAvatars"
 
 import { useToast, useClient } from "@/contexts"
 import type { Fight, Toast } from "@/types/types"
@@ -92,11 +93,14 @@ export default function FightDetail({ fight, dispatch }: FightParams) {
         { fight.actors && !!fight.actors.length &&
           <Box sx={{mt: 2, p: 2, backgroundColor: colors.blueGrey["800"], borderRadius: 1}}>
             <Typography variant="body1" color="text.primary">
-              { fight.actors.join(', ') }
+              { fight.actors.map((actor) => actor.name).join(', ') }
             </Typography>
           </Box>
         }
       </CardContent>
+      <CardActions>
+        <CharacterAvatars characters={fight.actors} />
+      </CardActions>
     </Card>
   </>)
 }
