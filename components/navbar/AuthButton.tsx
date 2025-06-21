@@ -16,7 +16,7 @@ const AuthButton = ({ status, user }: AuthButtonParams) => {
           <Button color="inherit" onClick={() => signOut({ redirect: false })}>Logout</Button>
           <Tooltip title="Open profile">
             <IconButton href='/profile'>
-              <Avatar alt={user.first_name} src={user.avatar_url} />
+              <Avatar alt={user.first_name} src={user.image_url} />
             </IconButton>
           </Tooltip>
         </Typography>

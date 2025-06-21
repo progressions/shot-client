@@ -470,7 +470,6 @@ export interface User {
   gamemaster?: boolean
   admin?: boolean
   image_url?: string | null
-  avatar_url?: string
 }
 
 export interface Invitation {
@@ -511,7 +510,7 @@ export interface Viewer {
   first_name?: string
   last_name?: string
   name: string
-  avatar_url?: string
+  image_url?: string | null
 }
 
 export interface FightChannelMessage {

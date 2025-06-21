@@ -71,6 +71,7 @@ export default function ImageManager({ name, entity, updateEntity, apiEndpoint, 
       toastError("Error uploading image.")
     }
   }
+  console.log("entity", entity)
 
   return (
     <>

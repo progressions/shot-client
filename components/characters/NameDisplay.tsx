@@ -74,7 +74,7 @@ export default function NameDisplay({ character, editCharacter, deleteCharacter,
           <Stack direction="row" spacing={1} alignItems="baseline" sx={{width: '100%'}}>
             { character.user?.id && !character.user?.gamemaster && <>
               <Tooltip title={`${character.user.first_name || ''} ${character.user.last_name || ''}`} key={`avatar_${user.id}`} placement="top">
-                <Avatar src={character.user.avatar_url} sx={{width: 30, height: 30}}>
+                <Avatar src={character.user.image_url} sx={{width: 30, height: 30}}>
                   { character.user.first_name && character.user.last_name
                     ? `${character.user.first_name[0]}${character.user.last_name[0]}`
                     : character.user.first_name || character.user.last_name || '?'
