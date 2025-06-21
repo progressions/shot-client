@@ -1,8 +1,6 @@
 import { StyledAutocomplete, StyledSelect, StyledTextField, SaveButton, CancelButton } from "@/components/StyledFields"
 import { FormControlLabel, Switch, createFilterOptions, MenuItem, Box, Stack, Typography } from "@mui/material"
-import { useClient } from "@/contexts/ClientContext"
-import { useToast } from "@/contexts/ToastContext"
-import { useCharacter } from "@/contexts/CharacterContext"
+import { useClient, useToast, useCharacter } from "@/contexts"
 
 import GamemasterOnly from "@/components/GamemasterOnly"
 import type { Vehicle, FilterParamsType, OptionType, InputParamsType, Character, Party } from "@/types/types"
@@ -14,7 +12,6 @@ import Faction from "@/components/characters/edit/Faction"
 import CharacterFilters from "@/components/characters/CharacterFilters"
 import SelectCharacter from "@/components/characters/SelectCharacter"
 import ImageManager from "@/components/images/ImageManager"
-import Api from "@/utils/Api"
 
 interface PartyModalProps {
   state: PartiesStateType
@@ -27,7 +24,6 @@ export default function PartyModal({ state, dispatch, open, setOpen }: PartyModa
   const { toastSuccess, toastError } = useToast()
   const { user, client } = useClient()
   const { loading, party } = state
-  const api = new Api()
 
   async function updateParty(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
     event.preventDefault()

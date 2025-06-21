@@ -218,6 +218,14 @@ class Api {
     }
   }
 
+  users(user?: User | ID): string {
+    if (user?.id) {
+      return `${this.api()}/users/${user.id}`
+    } else {
+      return `${this.api()}/users`
+    }
+  }
+
   unlockUser(): string {
     return `${this.base()}/users/unlock`
   }

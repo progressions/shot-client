@@ -1,10 +1,10 @@
 import { Button, IconButton, Box, TextField, MenuItem, Stack, Typography } from "@mui/material"
-import { useCampaign, CampaignContextType } from "@/contexts/CampaignContext"
 import PlayCircleIcon from '@mui/icons-material/PlayCircle'
 import StopCircleIcon from '@mui/icons-material/StopCircle'
-import { useToast } from "@/contexts/ToastContext"
+import { useCampaign, CampaignContextType, useToast } from "@/contexts"
 import CampaignSelector from "@/components/campaigns/CampaignSelector"
 import Router from 'next/router'
+import { useEffect } from "react"
 
 import { Campaign } from "@/types/types"
 
@@ -13,7 +13,7 @@ interface CampaignNameProps {
 }
 
 export default function CurrentCampaign() {
-  const {campaign, getCurrentCampaign, setCurrentCampaign}:CampaignContextType = useCampaign()
+  const {campaign, setCurrentCampaign}:CampaignContextType = useCampaign()
   const { toastSuccess } = useToast()
 
   const startCampaign = async (camp: Campaign | null) => {

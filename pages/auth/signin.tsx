@@ -1,8 +1,9 @@
 import Head from 'next/head'
-import { Typography, Link, Alert, Box, Stack, TextField, Button } from '@mui/material'
+import { colors, Container, Paper, Typography, Link, Alert, Box, Stack, TextField, Button } from '@mui/material'
 import { useReducer, useEffect } from 'react'
 import { signIn, signOut } from 'next-auth/react'
 import Router from 'next/router'
+import { StyledTextField, SaveButton } from '@/components/StyledFields'
 
 import Layout from '@/components/Layout'
 import type { ServerSideProps } from "@/types/types"
@@ -67,15 +68,18 @@ export default function SignInPage({ referer }: SignInPageProps) {
       </Head>
       <main>
         <Layout unauthenticated>
-          <Box margin="auto" sx={{width: 300}} p={4} component="form" onSubmit={handleSubmit}>
-            <Stack spacing={1}>
-              { error && (<Alert severity={'error'}>You have entered an invalid email or password.</Alert>) }
-              <TextField autoFocus required error={error} id="email" label="Email Address" name="email" value={email} onChange={handleChange} />
-              <TextField required id="password" error={error} label="Password" name="password" value={password} onChange={handleChange} type="password" />
-              <Typography><Link href="/users/password/reset">Forgot your password?</Link></Typography>
-              <Button disabled={loading} variant="contained" type="submit">Sign In</Button>
-            </Stack>
-          </Box>
+          <Container maxWidth="md" component={Paper} sx={{backgroundColor: colors.blueGrey[300], color: "black", marginTop: 2, py: 2}}>
+            <Box margin="auto" sx={{width: 300}} p={4} component="form" onSubmit={handleSubmit}>
+              <Typography variant="h4" gutterBottom>Sign In</Typography>
+              <Stack spacing={1}>
+                { error && (<Alert severity={'error'}>You have entered an invalid email or password.</Alert>) }
+                <StyledTextField autoFocus required error={error} id="email" label="Email Address" name="email" value={email} onChange={handleChange} />
+                <StyledTextField required id="password" error={error} label="Password" name="password" value={password} onChange={handleChange} type="password" />
+                <Typography><Link href="/users/password/reset">Forgot your password?</Link></Typography>
+                <SaveButton disabled={loading} variant="contained" type="submit">Sign In</SaveButton>
+              </Stack>
+            </Box>
+          </Container>
         </Layout>
       </main>
     </>

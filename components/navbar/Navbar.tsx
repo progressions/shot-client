@@ -8,15 +8,31 @@ import CurrentCampaign from "@/components/campaigns/CurrentCampaign"
 import PopupMenu from "@/components/navbar/PopupMenu"
 import DiceRoller from '@/components/dice/DiceRoller'
 
-import { defaultCampaign } from "@/types/types"
+import { useState, useEffect } from "react"
 
-import { useCampaign, CampaignContextType } from "@/contexts/CampaignContext"
-import { useClient } from "@/contexts/ClientContext"
+import { defaultCampaign, defaultUser } from "@/types/types"
+import type { User } from "@/types/types"
+
+import { useCampaign, CampaignContextType, useClient } from "@/contexts"
 
 export default function Navbar() {
   const { session, user, client } = useClient()
+  const { campaign, getCurrentCampaign, setCurrentCampaign } = useCampaign()
+  const [currentUser, setCurrentUser] = useState<User>(user || defaultUser)
 
-  const {campaign, getCurrentCampaign, setCurrentCampaign}:CampaignContextType = useCampaign()
+  useEffect(() => {
+    if (!user?.id) return
+
+    if (user?.id) {
+      client.getUser(user).then((data) => {
+        setCurrentUser(data)
+      }).catch((error) => {
+        console.error("Error fetching user data:", error)
+      })
+    } else {
+      setCurrentUser(defaultUser)
+    }
+  }, [user?.id])
 
   const handleClick = async () => {
     const newCurrent = await setCurrentCampaign(defaultCampaign)
@@ -26,7 +42,7 @@ export default function Navbar() {
   }
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box sx={{ flexGrow: 1, minWidth: 1000 }}>
       <AppBar position="static" sx={{backgroundColor: "primary.main"}}>
         <Toolbar>
           <PopupMenu campaign={campaign} user={user} />
@@ -34,7 +50,7 @@ export default function Navbar() {
             <Image src="/ChiWar.svg" alt="ChiWar" width="120" height="40" style={{marginTop: 5, marginRight: 10}} />
           </Link>
           <DiceRoller />
-          <AuthButton status={session?.status} user={user || {}} />
+          <AuthButton status={session?.status} user={currentUser || {}} />
         </Toolbar>
         { user &&
         <Box sx={{ backgroundColor: "primary.dark" }} p={1}>

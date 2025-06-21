@@ -49,9 +49,6 @@ class Client {
   }
 
   consumer() {
-    console.log("this.jwt", this.jwt)
-    console.log("this.consumerInstance", this.consumerInstance)
-
     if (this.jwt && this.consumerInstance) {
       return this.consumerInstance
     }
@@ -396,6 +393,10 @@ class Client {
 
   async deleteUser(user: User):Promise<void> {
     return this.delete(this.api.adminUsers(user))
+  }
+
+  async deleteUserImage(user: User):Promise<void> {
+    return this.delete(`${this.api.users(user)}/image`)
   }
 
   async getUser(user: User | ID):Promise<User> {

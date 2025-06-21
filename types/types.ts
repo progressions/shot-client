@@ -469,7 +469,7 @@ export interface User {
   last_name?: string
   gamemaster?: boolean
   admin?: boolean
-  avatar_url?: string
+  image_url?: string | null
 }
 
 export interface Invitation {
@@ -503,6 +503,19 @@ export interface ServerSideProps {
   res: NextApiResponse
   params?: ParamsType
   query?: QueryType
+}
+
+export interface Viewer {
+  id: string
+  first_name?: string
+  last_name?: string
+  name: string
+  image_url?: string | null
+}
+
+export interface FightChannelMessage {
+  fight?: "updated" | Fight
+  users?: Viewer[]
 }
 
 export const defaultFaction:Faction = {
