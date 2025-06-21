@@ -17,8 +17,6 @@ export default function SendResetPasswordView() {
   const [state, dispatch] = useReducer(resetReducer, initialState)
   const { success, error, loading, email } = state
 
-  console.log("initialUser", initialUser)
-
   async function handleSubmit(event: React.ChangeEvent<HTMLInputElement>) {
     event.preventDefault()
     dispatch({ type: "submit" })

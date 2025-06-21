@@ -14,7 +14,7 @@ interface ActionNoPayload {
 }
 
 interface UpdateAction {
-  type: Extract<UserActions, UserActions.UPDATE | UserActions.ACTION_VALUE | UserActions.DESCRIPTION | UserActions.SKILLS>
+  type: Extract<UserActions, UserActions.UPDATE>
   name: string
   value: string | boolean | number
 }
