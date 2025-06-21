@@ -25,7 +25,7 @@ const FightViewers: React.FC<FightViewersProps> = () => {
           <Avatar
             key={viewer.id}
             alt={viewer.name || "Anonymous"}
-            src={viewer.image_url}
+            src={viewer.image_url || ""}
           >
               {getInitials(viewer.name)}
           </Avatar>

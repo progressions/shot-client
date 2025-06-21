@@ -99,7 +99,7 @@ export default function Profile({ jwt, user:initialUser }: ProfileProps) {
               <Stack spacing={2} sx={{width: 500}}>
                 { !open &&
                 <Button sx={{width: 100}} onClick={() => setOpen(!open)}>
-                  <Avatar alt="N" src={user.image_url} sx={{ width: 100, height: 100 }} />
+                  <Avatar alt="N" src={user.image_url || ""} sx={{ width: 100, height: 100 }} />
                 </Button> }
                 { open && user?.id && <ImageManager name="user" entity={user} updateEntity={updateUser} deleteImage={deleteImage} apiEndpoint="users" /> }
                 <Stack spacing={2} direction="row">
