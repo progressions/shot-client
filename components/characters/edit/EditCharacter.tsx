@@ -1,6 +1,4 @@
-import { useClient } from "@/contexts/ClientContext"
-import { useToast } from "@/contexts/ToastContext"
-import { useCharacter } from "@/contexts/CharacterContext"
+import { useClient, useToast, useCharacter } from "@/contexts"
 
 import ColorPicker from "@/components/characters/edit/ColorPicker"
 import EditActionValues from "@/components/characters/edit/EditActionValues"
@@ -120,9 +118,12 @@ export default function EditCharacter({ character:initialCharacter }: EditCharac
   const weaponsState:WeaponsStateType = { ...initialWeaponsState, weapons: weapons }
   const notionLink = CS.notionLink(character)
 
+  console.log("EditCharacter character.user", character.user?.first_name)
+
   return (
     <>
-      { character?.user?.email && <Typography variant="h5" component="h1" gutterBottom>
+      { (edited || saving) && <Typography>Saving...</Typography> }
+      { !(edited || saving) && character?.user?.email && <Typography variant="h5" component="h1" gutterBottom>
         {[character?.user?.first_name, character?.user?.last_name].filter(Boolean).join(" ") || character?.user?.email}
       </Typography> }
       <Box component="form" onSubmit={handleSubmit}>
