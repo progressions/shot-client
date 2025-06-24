@@ -17,6 +17,7 @@ import UploadImage from "@/components/characters/edit/UploadImage"
 import ImageDisplay from "@/components/characters/ImageDisplay"
 import NotionLink from "@/components/notion/NotionLink"
 import AssignUser from "@/components/characters/edit/AssignUser"
+import UserAvatar from "@/components/UserAvatar"
 
 import { useEffect } from "react"
 
@@ -117,15 +118,19 @@ export default function EditCharacter({ character:initialCharacter }: EditCharac
   const schticksState:SchticksStateType = { ...initialSchticksState, schticks: schticks }
   const weaponsState:WeaponsStateType = { ...initialWeaponsState, weapons: weapons }
   const notionLink = CS.notionLink(character)
-
-  console.log("EditCharacter character.user", character.user?.first_name)
+  const userDisplay = (<>
+    <Stack direction="row" spacing={1}>
+      <UserAvatar user={character?.user} />
+      <Typography variant="h5" sx={{pt: 0.4}}>
+        {[character?.user?.first_name, character?.user?.last_name].filter(Boolean).join(" ") || character?.user?.email}
+      </Typography>
+    </Stack>
+  </>)
 
   return (
     <>
       { (edited || saving) && <Typography>Saving...</Typography> }
-      { !(edited || saving) && character?.user?.email && <Typography variant="h5" component="h1" gutterBottom>
-        {[character?.user?.first_name, character?.user?.last_name].filter(Boolean).join(" ") || character?.user?.email}
-      </Typography> }
+      { !(edited || saving) && character?.user?.email && userDisplay }
       <Box component="form" onSubmit={handleSubmit}>
         <Stack spacing={2}>
           <Stack direction="row" spacing={1} justifyContent="space-between">
