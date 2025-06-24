@@ -40,7 +40,6 @@ export async function getServerSideProps<GetServerSideProps>({ req, res, query }
 
     return {
       props: {
-        // ...fightsResponse,
         currentCampaign: currentCampaign,
         page: page ? parseInt(page as string, 10) : null,
       }

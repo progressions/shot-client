@@ -32,11 +32,9 @@ export async function getServerSideProps({ req, res, query }: ServerSideProps) {
       }
     }
 
-    const charactersResponse = await client.getCharactersAndVehicles({ page })
-
-    if (charactersResponse) {
-      return {
-        props: charactersResponse
+    return {
+      props: {
+        page: page ? parseInt(page as string, 10) : 1,
       }
     }
   } catch(error: unknown | AxiosError) {
@@ -52,12 +50,14 @@ export async function getServerSideProps({ req, res, query }: ServerSideProps) {
   }
 
     return {
-      props: {}
+      props: {
+        page: null
+      }
     }
   }
 }
 
-export default function CharactersIndex({ characters, meta, factions, archetypes }:CharactersResponse) {
+export default function CharactersIndex({ page }:CharactersResponse) {
   return (
     <>
       <Head>
@@ -68,8 +68,8 @@ export default function CharactersIndex({ characters, meta, factions, archetypes
       </Head>
       <main>
         <Layout>
-          <Container maxWidth="lg">
-            <Characters characters={characters} meta={meta} factions={factions} archetypes={archetypes} />
+          <Container maxWidth="lg" sx={{minWidth: 1000}}>
+            <Characters page={page} />
           </Container>
         </Layout>
       </main>
