@@ -43,7 +43,7 @@ interface PayloadAction {
 interface UpdateAction {
   type: Extract<FightActions, FightActions.UPDATE | FightActions.UPDATE_FIGHT>
   name: string
-  value: string | boolean
+  value: string | boolean | number
 }
 
 export type FightActionType = ActionNoPayload | UpdateAction | PayloadAction

@@ -17,7 +17,6 @@ interface CharactersProps {
 
 export async function getServerSideProps({ req, res, query }: ServerSideProps) {
   const { client } = await getServerClient(req, res)
-  const { page } = query as QueryType
 
   try {
     const currentCampaign = await client.getCurrentCampaign()
@@ -26,16 +25,14 @@ export async function getServerSideProps({ req, res, query }: ServerSideProps) {
       return {
         redirect: {
           permanent: false,
-          destination: "/"
+          destination: "/campaigns"
         },
         props: {}
       }
     }
 
     return {
-      props: {
-        page: page ? parseInt(page as string, 10) : 1,
-      }
+      props: {}
     }
   } catch(error: unknown | AxiosError) {
     if (axios.isAxiosError(error)) {
@@ -50,9 +47,7 @@ export async function getServerSideProps({ req, res, query }: ServerSideProps) {
   }
 
     return {
-      props: {
-        page: null
-      }
+      props: {}
     }
   }
 }

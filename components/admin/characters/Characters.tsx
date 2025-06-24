@@ -20,7 +20,7 @@ interface CharactersProps {
 }
 
 export default function Characters({}: CharactersProps) {
-  const { client, session, user } = useClient()
+  const { client, user } = useClient()
   const { toastError, toastSuccess } = useToast()
   const [state, dispatch] = useReducer(charactersReducer, initialCharactersState)
   const { meta, loading, edited, faction, archetype, characters, character_type, factions, search, showHidden, page } = state

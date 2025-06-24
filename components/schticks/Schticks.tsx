@@ -1,22 +1,44 @@
-import { Grid, Button, Box, Stack, Typography } from "@mui/material"
+import { Pagination, Button, Box, Stack, Typography } from "@mui/material"
 import SchtickCard from "@/components/schticks/SchtickCard"
-import { useClient } from "@/contexts/ClientContext"
+import { useCharacter, useClient, useToast } from "@/contexts"
 import { Subhead } from "@/components/StyledFields"
 import { rowMap } from "@/utils/rowMap"
+import { useRouter } from 'next/router'
 
-import { useState, useMemo } from "react"
+import { ButtonBar } from "@/components/StyledFields"
+import CreateSchtickButton from "@/components/schticks/CreateSchtickButton"
+import FilterSchticks from "@/components/schticks/FilterSchticks"
+import { useReducer, useEffect, useState, useMemo } from "react"
 import type { SchticksStateType, SchticksActionType } from "@/reducers/schticksState"
-import { SchticksActions } from "@/reducers/schticksState"
+import { initialSchticksState, schticksReducer, SchticksActions } from "@/reducers/schticksState"
 import { Schtick } from "@/types/types"
 
 interface SchticksProps {
-  state: SchticksStateType
-  dispatch?: React.Dispatch<SchticksActionType>
 }
 
-export default function Schticks({ state, dispatch }: SchticksProps) {
+export default function Schticks({}: SchticksProps) {
+  const { character } = useCharacter()
+  const [state, dispatch] = useReducer(schticksReducer, initialSchticksState)
   const { user, client } = useClient()
-  const { loading, schticks, meta } = state
+  const { toastError, toastSuccess } = useToast()
+  const { loading, edited, category, path, name, schticks, meta, page } = state
+  const router = useRouter()
+
+  useEffect(() => {
+    const reload = async () => {
+      try {
+        const data = await client.getSchticks({ page, category, path, name, character_id: character?.id as string, per_page: 100 })
+        dispatch({ type: SchticksActions.SCHTICKS, payload: data })
+      } catch (error) {
+        console.error("Error fetching schticks:", error)
+        toastError()
+      }
+    }
+
+    if (user && edited) {
+      reload()
+    }
+  }, [user, edited])
 
   const rowsOfData = useMemo(() => (
     rowMap<Schtick>(schticks, 2)
@@ -35,13 +57,28 @@ export default function Schticks({ state, dispatch }: SchticksProps) {
     return output
   }, [state, dispatch, rowsOfData])
 
+  const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
+    dispatch({ type: SchticksActions.UPDATE, name: "page", value: value})
+    router.push(
+      { pathname: router.pathname, query: { page: value } },
+      undefined,
+      { shallow: true }
+    )
+  }
+
   if (!schticks) return (<></>)
 
   return (
     <>
-      <Stack spacing={1}>
+      <ButtonBar sx={{height: 80}}>
+        <FilterSchticks state={state} dispatch={dispatch} />
+        <CreateSchtickButton state={state} dispatch={dispatch} />
+      </ButtonBar>
+      <Pagination count={meta.total_pages} page={page} onChange={handlePageChange} variant="outlined" color="primary" shape="rounded" size="large" />
+      <Stack sx={{my: 2}} spacing={1}>
         { outputRows }
       </Stack>
+      <Pagination count={meta.total_pages} page={page} onChange={handlePageChange} variant="outlined" color="primary" shape="rounded" size="large" />
     </>
   )
 }

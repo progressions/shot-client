@@ -22,6 +22,7 @@ export default function FilterSchticks({ state, dispatch }: FilterSchticksProps)
   const { page, loading, category, path, name } = state
 
   useEffect(() => {
+    return
     async function getSchticks() {
       try {
         const data = await client.getSchticks({ page, category, path, name, character_id: character?.id as string, per_page: 100 })

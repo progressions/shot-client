@@ -190,7 +190,7 @@ export default function EditCharacter({ character:initialCharacter }: EditCharac
           </PlayerTypeOnly>
           <Sites character={character} />
           <Description character={character} onChange={handleDescriptionChange} />
-          <Schticks state={schticksState} />
+          <Schticks />
           <SchtickSelector />
         </Stack>
       </Box>
