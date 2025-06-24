@@ -58,10 +58,9 @@ export async function getServerSideProps({ req, res, query }: ServerSideProps) {
 }
 
 interface CharactersIndexProps {
-  page?: number | null
 }
 
-export default function CharactersIndex({ page }: CharactersIndexProps) {
+export default function CharactersIndex({}: CharactersIndexProps) {
   return (
     <>
       <Head>
@@ -73,7 +72,7 @@ export default function CharactersIndex({ page }: CharactersIndexProps) {
       <main>
         <Layout>
           <Container maxWidth="lg" sx={{minWidth: 1000}}>
-            <Characters page={page} />
+            <Characters />
           </Container>
         </Layout>
       </main>

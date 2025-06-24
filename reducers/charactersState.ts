@@ -119,12 +119,21 @@ export function charactersReducer(state: CharactersStateType, action: Characters
         return {
           ...state,
           edited: true,
+          page: 1,
           [action.name]: faction
+        }
+      }
+      if (action.name === "page" ) {
+        return {
+          ...state,
+          edited: true,
+          page: action.value,
         }
       }
       return {
         ...state,
         edited: true,
+        page: 1,
         [action.name]: action.value
       }
     case CharactersActions.UPDATE_CHARACTER:
@@ -151,6 +160,7 @@ export function charactersReducer(state: CharactersStateType, action: Characters
         factions: factions,
         archetypes: archetypes,
         meta: meta,
+        page: meta.current_page || 1,
         edited: false,
       }
     case CharactersActions.RESET_CHARACTER:

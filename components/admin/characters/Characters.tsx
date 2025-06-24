@@ -17,22 +17,26 @@ import CharacterDisplay from "@/components/admin/characters/CharacterDisplay"
 import { CharactersActions, initialCharactersState, charactersReducer } from "@/reducers/charactersState"
 
 interface CharactersProps {
-  page?: number | null
 }
 
-export default function Characters({ page: initialPage }: CharactersProps) {
+export default function Characters({}: CharactersProps) {
   const { client, session, user } = useClient()
   const { toastError, toastSuccess } = useToast()
   const [state, dispatch] = useReducer(charactersReducer, initialCharactersState)
-  const { meta, loading, edited, faction, archetype, characters, character_type, factions, search, showHidden } = state
-  const { current_page, total_pages } = meta
-  const [page, setPage] = useState<number>(initialPage || 1)
+  const { meta, loading, edited, faction, archetype, characters, character_type, factions, search, showHidden, page } = state
   const router = useRouter()
 
   useEffect(() => {
     const reload = async () => {
       try {
-        const data = await client.getCharactersAndVehicles({ faction_id: faction.id, archetype, search, character_type, show_all: showHidden, page: page })
+        const data = await client.getCharactersAndVehicles({
+          faction_id: faction.id,
+          archetype,
+          search,
+          character_type,
+          show_all: showHidden,
+          page: page
+        })
         dispatch({ type: CharactersActions.CHARACTERS, payload: data })
       } catch(error) {
         toastError()
@@ -41,7 +45,15 @@ export default function Characters({ page: initialPage }: CharactersProps) {
     if (user && edited) {
       reload()
     }
-  }, [edited, user, faction, archetype, client, dispatch, toastError, search, character_type, showHidden, state?.page])
+  }, [edited, user, faction, archetype, client, dispatch, toastError, search, character_type, showHidden, page])
+
+  useEffect(() => {
+    router.push(
+      { pathname: router.pathname, query: { page: page } },
+      undefined,
+      { shallow: true }
+    )
+  }, [edited])
 
   function editCharacter(character: Character): void {
     dispatch({ type: CharactersActions.CHARACTER, payload: character })
@@ -73,7 +85,6 @@ export default function Characters({ page: initialPage }: CharactersProps) {
   }
 
   const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
-    setPage(value)
     dispatch({ type: CharactersActions.UPDATE, name: "page", value: value})
     router.push(
       { pathname: router.pathname, query: { page: value } },
@@ -86,7 +97,7 @@ export default function Characters({ page: initialPage }: CharactersProps) {
 
   return (
     <>
-      <Container maxWidth="md" sx={{paddingTop: 2, minWidth: 1000}}>
+      <Container maxWidth="lg" sx={{paddingTop: 2, minWidth: 1000}}>
       <CharactersToolbar
         state={state}
         dispatch={dispatch}
