@@ -25,7 +25,7 @@ export default function FilterSchticks({ state, dispatch }: FilterSchticksProps)
     return
     async function getSchticks() {
       try {
-        const data = await client.getSchticks({ page, category, path, name, character_id: character?.id as string, per_page: 100 })
+        const data = await client.getSchticks({ page, category, path, name, character_id: character?.id as string })
         dispatch({ type: SchticksActions.SCHTICKS, payload: data })
       } catch(error) {
         toastError()
