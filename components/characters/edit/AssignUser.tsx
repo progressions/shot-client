@@ -61,8 +61,6 @@ export default function AssignUser() {
     return <></>
   }
 
-  console.log("AssignUser character.user", character.user.first_name)
-
   return (
     <>
       <Tooltip title="Assign User" arrow>
