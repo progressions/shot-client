@@ -13,16 +13,19 @@ import { useLocalStorage } from "@/contexts/LocalStorageContext"
 import { useClient } from "@/contexts/ClientContext"
 import GamemasterOnly from "@/components/GamemasterOnly"
 import { FightsActions, initialFightsState, fightsReducer } from "@/reducers/fightsState"
+import { useRouter } from "next/router"
 
-import type { FightsResponse, Campaign, Fight, ServerSideProps } from "@/types/types"
+import type { QueryType, FightsResponse, Campaign, Fight, ServerSideProps } from "@/types/types"
 import axios, { AxiosError } from 'axios'
 
 interface HomeProps extends FightsResponse {
   currentCampaign: Campaign | null
+  page: number
 }
 
-export async function getServerSideProps<GetServerSideProps>({ req, res }: ServerSideProps) {
+export async function getServerSideProps<GetServerSideProps>({ req, res, query }: ServerSideProps) {
   const { client } = await getServerClient(req, res)
+  const { page } = query as QueryType
 
   try {
     const currentCampaign = await client.getCurrentCampaign()
@@ -39,7 +42,8 @@ export async function getServerSideProps<GetServerSideProps>({ req, res }: Serve
     return {
       props: {
         ...fightsResponse,
-        currentCampaign: currentCampaign
+        currentCampaign: currentCampaign,
+        page: page ? parseInt(page as string, 10) : null,
       }
     }
   } catch(error: unknown | AxiosError) {
@@ -59,27 +63,28 @@ export async function getServerSideProps<GetServerSideProps>({ req, res }: Serve
         fights: [],
         meta: {},
         currentCampaign: null,
+        page: null,
       }
     }
   }
 }
 
-export default function Home({ currentCampaign, fights:initialFights, meta:initialMeta }: HomeProps) {
+export default function Home({ currentCampaign, fights:initialFights, meta:initialMeta, page:initialPage }: HomeProps) {
   const [state, dispatch] = useReducer(fightsReducer, initialFightsState)
   const { client, user } = useClient()
   const { toastSuccess, toastError } = useToast()
   const { saveLocally, getLocally } = useLocalStorage()
   const { loading, edited, fights, showHidden, meta } = state
-  const [page, setPage] = useState(initialMeta?.current_page || meta?.current_page || 1)
-  const [reloading, setReloading] = useState(true)
+  const [page, setPage] = useState(initialPage || meta?.current_page || 1)
+  const router = useRouter()
 
   useEffect(() => {
     const reload = async () => {
       try {
         const fightsResponse = await client.getFights({ show_all: showHidden, page: page } )
         dispatch({ type: FightsActions.FIGHTS, payload: fightsResponse })
-        setReloading(false)
       } catch(error) {
+        console.error("Error fetching fights:", error)
         toastError()
       }
     }
@@ -106,8 +111,12 @@ export default function Home({ currentCampaign, fights:initialFights, meta:initi
 
   const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value)
-    setReloading(true)
     dispatch({ type: FightsActions.UPDATE, name: "page", value: value})
+    router.push(
+      { pathname: router.pathname, query: { page: value } },
+      undefined,
+      { shallow: true }
+    )
   }
 
   return (
