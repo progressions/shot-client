@@ -100,6 +100,7 @@ export default function Home({ currentCampaign, fights:initialFights, meta:initi
 
   const show = (event: React.SyntheticEvent<Element, Event>, checked: boolean) => {
     saveLocally("showHiddenFights", checked)
+    setPage(1)
     dispatch({ type: FightsActions.UPDATE, name: "showHidden", value: !!checked })
   }
 
