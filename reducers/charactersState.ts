@@ -127,7 +127,7 @@ export function charactersReducer(state: CharactersStateType, action: Characters
         return {
           ...state,
           edited: true,
-          page: action.value,
+          page: action.value as number,
         }
       }
       return {
