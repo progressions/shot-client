@@ -41,7 +41,7 @@ interface PayloadAction {
 interface UpdateAction {
   type: Extract<PartiesActions, PartiesActions.UPDATE | PartiesActions.EDIT>
   name?: string
-  value?: string | boolean
+  value?: string | boolean | number
 }
 
 export type PartiesActionType = ActionNoPayload | UpdateAction | PayloadAction
