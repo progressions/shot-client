@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import { Pagination, Box, Switch, FormControlLabel, Stack, Paper, Container, Table, TableContainer, TableBody, TableHead, TableRow, TableCell, Typography } from '@mui/material'
+import { colors, Pagination, Box, Switch, FormControlLabel, Stack, Paper, Container, Table, TableContainer, TableBody, TableHead, TableRow, TableCell, Typography } from '@mui/material'
 import { getServerClient } from "@/utils/getServerClient"
 
 import { ButtonBar } from "@/components/StyledFields"
@@ -120,8 +120,8 @@ export default function Home({ currentCampaign, fights:initialFights, meta:initi
       </Head>
       <main>
         <Layout>
-          <Container maxWidth="md">
-            <Typography variant="h1" gutterBottom>Fights</Typography>
+          <Container maxWidth="md" sx={{mt: 2, py: 2}}>
+            <Typography variant="h3" gutterBottom>Fights</Typography>
             <GamemasterOnly user={user}>
               <ButtonBar>
                 <Stack direction="row" spacing={2}>
