@@ -1,14 +1,13 @@
 import { FaCarSide } from "react-icons/fa"
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
 
-import { useToast } from "@/contexts/ToastContext"
-import { useFight } from "@/contexts/FightContext"
-import { useClient } from "@/contexts/ClientContext"
+import { useToast, useFight, useClient } from "@/contexts"
 
 import { IconButton, Typography, Stack, Box } from "@mui/material"
 import { Vehicle } from "@/types/types"
 import VS from "@/services/VehicleService"
 import { FightActions } from '@/reducers/fightState'
+import GamemasterOnly from "@/components/GamemasterOnly"
 
 interface PositionDisplayProps {
   character: Vehicle
@@ -16,7 +15,7 @@ interface PositionDisplayProps {
 
 export default function PositionDisplay({ character }: PositionDisplayProps) {
   const { fight, dispatch } = useFight()
-  const { client } = useClient()
+  const { client, user } = useClient()
   const { toastError, toastSuccess } = useToast()
 
   const spacing = VS.isNear(character) ? 1 : 10
@@ -44,9 +43,11 @@ export default function PositionDisplay({ character }: PositionDisplayProps) {
           <Box color={firstColor}>
             <FaCarSide size={25} />
           </Box>
-          <IconButton size="small" color="inherit" onClick={changePosition}>
-            <ArrowForwardIcon />
-          </IconButton>
+          <GamemasterOnly user={user} character={character} except={<ArrowForwardIcon />}>
+            <IconButton size="small" color="inherit" onClick={changePosition}>
+              <ArrowForwardIcon />
+            </IconButton>
+          </GamemasterOnly>
           <Box color={secondColor}>
             <FaCarSide size={25} />
           </Box>

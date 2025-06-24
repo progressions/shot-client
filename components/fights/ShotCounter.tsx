@@ -21,17 +21,10 @@ export default function ShotCounter() {
   const [showHidden, setShowHidden] = useState<boolean>(false)
   const { fight } = useFight()
 
-  const toolbar = useMemo(() => {
-    if (fight?.id) {
-      return <FightToolbar showHidden={showHidden} setShowHidden={setShowHidden} />
-    }
-    return <></>
-  }, [fight?.id, showHidden])
-
   return (
     <>
       <FightName />
-      { toolbar }
+      <FightToolbar showHidden={showHidden} setShowHidden={setShowHidden} />
       <TableContainer component={Paper}>
         <Table>
           <TableHead>

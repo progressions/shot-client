@@ -1,41 +1,39 @@
-import { useFight } from "@/contexts/FightContext";
-import { CancelButton, StyledDialog } from "@/components/StyledFields";
-import { colors, Box, Button, DialogContent, Stack, Typography, List, ListItem, ListItemText, ListItemIcon } from "@mui/material";
-import { useMemo, useState } from "react";
-import type { Vehicle, Character, Fight, ShotType } from "@/types/types";
+import { useFight } from "@/contexts/FightContext"
+import { CancelButton, StyledDialog } from "@/components/StyledFields"
+import { colors, Box, Button, DialogContent, Stack, Typography, List, ListItem, ListItemText, ListItemIcon } from "@mui/material"
+import { useMemo, useState } from "react"
+import type { Vehicle, Character, Fight, ShotType } from "@/types/types"
 import AddLocationIcon from '@mui/icons-material/AddLocation'
 
 export default function Locations() {
-  const { fight } = useFight();
-  const [processing, setProcessing] = useState(false);
-  const [open, setOpen] = useState(false);
+  const { fight } = useFight()
+  const [processing, setProcessing] = useState(false)
+  const [open, setOpen] = useState(false)
 
   function handleClick() {
-    setProcessing(true);
-    setOpen(true);
+    setProcessing(true)
+    setOpen(true)
   }
 
   function handleClose() {
-    setOpen(false);
-    setProcessing(false);
+    setOpen(false)
+    setProcessing(false)
   }
 
   const useExtractLocations = (): Record<string, string[]> => {
-    return useMemo(() => {
-      return fight.shot_order.reduce((acc: Record<string, string[]>, shot: ShotType) => {
-        shot[1].forEach((character: Character | Vehicle) => {
-          const location = character.location;
-          if (location) {
-            acc[location] = acc[location] || [];
-            acc[location].push(character.name);
-          }
-        });
-        return acc;
-      }, {});
-    }, []);
-  };
+    return fight.shot_order.reduce((acc: Record<string, string[]>, shot: ShotType) => {
+      shot[1].forEach((character: Character | Vehicle) => {
+        const location = character.location
+        if (location) {
+          acc[location] = acc[location] || []
+          acc[location].push(character.name)
+        }
+      })
+      return acc
+    }, {})
+  }
 
-  const locations = useExtractLocations();
+  const locations = useExtractLocations()
 
   return (
     <>
@@ -94,5 +92,5 @@ export default function Locations() {
         </DialogContent>
       </StyledDialog>
     </>
-  );
+  )
 }

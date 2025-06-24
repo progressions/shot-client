@@ -32,6 +32,7 @@ export default function Location({ shot, character }: LocationProps) {
       } else {
         await client.setVehicleLocation(character as Vehicle, { name: name })
       }
+      await client.touchFight(fight)
       dispatch({ type: FightActions.EDIT })
     } catch(error) {
       console.error(error)

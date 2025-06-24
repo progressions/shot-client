@@ -43,7 +43,7 @@ const UserAvatar = ({ user, tooltip, href, online }: UserAvatarProps) => {
     return <></>
   }
 
-  const initials = `${user.first_name?.[0]?.toString()?.toUpperCase()}${user.last_name?.[0]?.toString()?.toUpperCase()}`
+  const initials = [user.first_name?.[0]?.toUpperCase(), user.last_name?.[0]?.toUpperCase()].filter(Boolean).join("")
   const defaultTooltip = [user.first_name, user.last_name].filter(Boolean).join(" ") || "User"
 
   const baseAvatar = (
