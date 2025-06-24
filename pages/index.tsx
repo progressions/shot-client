@@ -1,12 +1,12 @@
 import Head from 'next/head'
-import { Box, Switch, FormControlLabel, Stack, Paper, Container, Table, TableContainer, TableBody, TableHead, TableRow, TableCell, Typography } from '@mui/material'
+import { Pagination, Box, Switch, FormControlLabel, Stack, Paper, Container, Table, TableContainer, TableBody, TableHead, TableRow, TableCell, Typography } from '@mui/material'
 import { getServerClient } from "@/utils/getServerClient"
 
 import { ButtonBar } from "@/components/StyledFields"
 import AddFight from '@/components/fights/AddFight'
 import FightDetail from '@/components/fights/FightDetail'
 import Layout from '@/components/Layout'
-import { useReducer, useEffect } from 'react'
+import { useState, useReducer, useEffect } from 'react'
 
 import { useToast } from "@/contexts/ToastContext"
 import { useLocalStorage } from "@/contexts/LocalStorageContext"
@@ -64,18 +64,21 @@ export async function getServerSideProps<GetServerSideProps>({ req, res }: Serve
   }
 }
 
-export default function Home({ currentCampaign, fights:initialFights, meta }: HomeProps) {
+export default function Home({ currentCampaign, fights:initialFights, meta:initialMeta }: HomeProps) {
   const [state, dispatch] = useReducer(fightsReducer, initialFightsState)
   const { client, user } = useClient()
   const { toastSuccess, toastError } = useToast()
   const { saveLocally, getLocally } = useLocalStorage()
-  const { loading, edited, fights, showHidden } = state
+  const { loading, edited, fights, showHidden, meta } = state
+  const [page, setPage] = useState(initialMeta?.current_page || meta?.current_page || 1)
+  const [reloading, setReloading] = useState(true)
 
   useEffect(() => {
     const reload = async () => {
       try {
-        const fightsResponse = await client.getFights({ show_all: showHidden } )
+        const fightsResponse = await client.getFights({ show_all: showHidden, page: page } )
         dispatch({ type: FightsActions.FIGHTS, payload: fightsResponse })
+        setReloading(false)
       } catch(error) {
         toastError()
       }
@@ -88,7 +91,7 @@ export default function Home({ currentCampaign, fights:initialFights, meta }: Ho
     if (!currentCampaign) {
       dispatch({ type: FightsActions.SUCCESS })
     }
-  }, [edited, user, dispatch, client, showHidden, toastError, currentCampaign])
+  }, [edited, user, showHidden, currentCampaign, page])
 
   useEffect(() => {
     const showHiddenFights = getLocally("showHiddenFights") || false
@@ -100,9 +103,12 @@ export default function Home({ currentCampaign, fights:initialFights, meta }: Ho
     dispatch({ type: FightsActions.UPDATE, name: "showHidden", value: !!checked })
   }
 
-  if (loading) {
-    return <div>Loading...</div>
+  const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
+    setPage(value)
+    setReloading(true)
+    dispatch({ type: FightsActions.UPDATE, name: "page", value: value})
   }
+
   return (
     <>
       <Head>
@@ -123,8 +129,10 @@ export default function Home({ currentCampaign, fights:initialFights, meta }: Ho
                 </Stack>
               </ButtonBar>
             </GamemasterOnly>
-            { !!fights?.length &&
+            { loading && <Typography gutterBottom pt={5}>Loading fights...</Typography> }
+            { !loading && !!fights?.length &&
               <Box>
+                <Pagination sx={{mb: 1}} count={meta.total_pages} page={page} onChange={handlePageChange} variant="outlined" color="primary" shape="rounded" size="large" />
                 {
                   fights.map((fight: Fight) => (
                     <FightDetail
@@ -134,9 +142,10 @@ export default function Home({ currentCampaign, fights:initialFights, meta }: Ho
                     />)
                   )
                 }
+                <Pagination sx={{mt: 1}} count={meta.total_pages} page={page} onChange={handlePageChange} variant="outlined" color="primary" shape="rounded" size="large" />
               </Box>
             }
-            { !fights?.length && <Typography pt={5}>There are no available fights. Some fights might be hidden by the gamemaster.</Typography> }
+            { !loading && !fights?.length && <Typography pt={5}>There are no available fights. Some fights might be hidden by the gamemaster.</Typography> }
           </Container>
         </Layout>
       </main>

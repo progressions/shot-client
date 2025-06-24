@@ -14,8 +14,8 @@ const CharacterAvatars: React.FC<CharacterAvatarsProps> = ({ characters }) => {
 
   return (
     <AvatarGroup max={20} sx={{ justifyContent: "flex-start" }}>
-      {(characters || []).map((character) => (
-        <CharacterAvatar character={character} key={`character_${character.id}`} />
+      {(characters || []).map((character, index) => (
+        <CharacterAvatar character={character} key={`character_${character.id}_${index}`} />
       ))}
     </AvatarGroup>
   )
