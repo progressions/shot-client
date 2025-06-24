@@ -1,4 +1,4 @@
-import { Pagination, Box, Button, FormControlLabel, Link, Paper, Stack, Switch, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material"
+import { Container, Pagination, Box, Button, FormControlLabel, Link, Paper, Stack, Switch, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material"
 
 import { useEffect, useReducer, useState } from "react"
 import { useRouter } from 'next/router'
@@ -86,7 +86,7 @@ export default function Characters({ page: initialPage }: CharactersProps) {
 
   return (
     <>
-      <Typography variant="h4" gutterBottom>Characters</Typography>
+      <Container maxWidth="md" sx={{paddingTop: 2, minWidth: 1000}}>
       <CharactersToolbar
         state={state}
         dispatch={dispatch}
@@ -118,6 +118,7 @@ export default function Characters({ page: initialPage }: CharactersProps) {
         </TableContainer>
         <Pagination sx={{mt: 1}} count={meta.total_pages} page={page} onChange={handlePageChange} variant="outlined" color="primary" shape="rounded" size="large" />
       </>) }
+    </Container>
     </>
   )
 }
