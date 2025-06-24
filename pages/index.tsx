@@ -120,7 +120,7 @@ export default function Home({ currentCampaign, fights:initialFights, meta:initi
       </Head>
       <main>
         <Layout>
-          <Container maxWidth="md" sx={{mt: 2, py: 2}}>
+          <Container maxWidth="md" sx={{mt: 2, py: 2, minWidth: 1000}}>
             <Typography variant="h3" gutterBottom>Fights</Typography>
             <GamemasterOnly user={user}>
               <ButtonBar>
