@@ -1,14 +1,14 @@
-import Layout from '@/components/Layout'
-import Head from 'next/head'
+import Layout from "@/components/Layout"
+import Head from "next/head"
 
 import { Skeleton, Box, Paper, IconButton, Button, Stack, Link, Container, Typography, TableContainer, Table, TableHead, TableBody, TableRow, TableCell } from "@mui/material"
-import { useClient } from '@/contexts/ClientContext'
-import { useReducer, useEffect } from 'react'
-import { useToast } from '@/contexts/ToastContext'
-import { partiesReducer, initialPartiesState, PartiesActions } from '@/reducers/partiesState'
-import Parties from '@/components/parties/Parties'
+import { useClient, useToast } from "@/contexts"
+import { useState, useReducer, useEffect } from "react"
+import { partiesReducer, initialPartiesState, PartiesActions } from "@/reducers/partiesState"
+import Parties from "@/components/parties/Parties"
 import { ButtonBar } from "@/components/StyledFields"
 import FilterParties from "@/components/parties/FilterParties"
+import { useRouter } from "next/router"
 
 export default function Home() {
   const { user, client } = useClient()
@@ -17,10 +17,13 @@ export default function Home() {
   const { secret, edited, faction, loading, search } = state
   const { toastSuccess, toastError } = useToast()
 
+  const router = useRouter()
+  const { page } = router.query
+
   useEffect(() => {
     async function getParties() {
       try {
-        const data = await client.getParties({ search, faction_id: faction.id, secret })
+        const data = await client.getParties({ search, faction_id: faction.id, secret, page })
         dispatch({ type: PartiesActions.PARTIES, payload: data })
       } catch(error) {
         toastError()
@@ -30,7 +33,7 @@ export default function Home() {
     if (user?.id && edited) {
       getParties().catch(toastError)
     }
-  }, [edited, dispatch, user?.id, toastError, client, search, faction?.id, secret])
+  }, [edited, dispatch, user?.id, toastError, client, search, faction?.id, secret, page])
 
   return (
     <>
@@ -39,8 +42,8 @@ export default function Home() {
       </Head>
       <main>
         <Layout>
-          <Container maxWidth="md" sx={{paddingTop: 2}}>
-            <ButtonBar sx={{height: 80}}>
+          <Container maxWidth="md" sx={{paddingTop: 2, minWidth: 1000}}>
+            <ButtonBar>
               <FilterParties state={state} dispatch={dispatch} />
             </ButtonBar>
             <Parties state={state} dispatch={dispatch} />
