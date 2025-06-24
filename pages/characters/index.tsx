@@ -2,6 +2,7 @@ import Head from "next/head"
 import Layout from "@/components/Layout"
 import { getServerClient } from "@/utils/getServerClient"
 import axios from "axios"
+import { useRouter } from "next/router"
 
 import { Link, Paper, Switch, FormControlLabel, Stack, Avatar, Box, TableContainer, Table, TableHead, TableBody, TableRow, TableCell, Container, Typography } from "@mui/material"
 
@@ -16,8 +17,7 @@ interface CharactersProps {
 
 export async function getServerSideProps({ req, res, query }: ServerSideProps) {
   const { client } = await getServerClient(req, res)
-
-  const page = query?.page
+  const { page } = query as QueryType
 
   try {
     const currentCampaign = await client.getCurrentCampaign()

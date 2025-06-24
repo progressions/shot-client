@@ -37,11 +37,10 @@ export async function getServerSideProps<GetServerSideProps>({ req, res, query }
         }
       }
     }
-    const fightsResponse = await client.getFights()
 
     return {
       props: {
-        ...fightsResponse,
+        // ...fightsResponse,
         currentCampaign: currentCampaign,
         page: page ? parseInt(page as string, 10) : null,
       }
@@ -69,13 +68,13 @@ export async function getServerSideProps<GetServerSideProps>({ req, res, query }
   }
 }
 
-export default function Home({ currentCampaign, fights:initialFights, meta:initialMeta, page:initialPage }: HomeProps) {
+export default function Home({ currentCampaign, page:initialPage }: HomeProps) {
   const [state, dispatch] = useReducer(fightsReducer, initialFightsState)
   const { client, user } = useClient()
   const { toastSuccess, toastError } = useToast()
   const { saveLocally, getLocally } = useLocalStorage()
   const { loading, edited, fights, showHidden, meta } = state
-  const [page, setPage] = useState(initialPage || meta?.current_page || 1)
+  const [page, setPage] = useState(initialPage || 1)
   const router = useRouter()
 
   useEffect(() => {
@@ -101,7 +100,7 @@ export default function Home({ currentCampaign, fights:initialFights, meta:initi
   useEffect(() => {
     const showHiddenFights = getLocally("showHiddenFights") || false
     dispatch({ type: FightsActions.UPDATE, name: "showHidden", value: !!showHiddenFights })
-  }, [getLocally, dispatch])
+  }, [])
 
   const show = (event: React.SyntheticEvent<Element, Event>, checked: boolean) => {
     saveLocally("showHiddenFights", checked)
