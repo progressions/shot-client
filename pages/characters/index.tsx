@@ -6,7 +6,7 @@ import { useRouter } from "next/router"
 
 import { Link, Paper, Switch, FormControlLabel, Stack, Avatar, Box, TableContainer, Table, TableHead, TableBody, TableRow, TableCell, Container, Typography } from "@mui/material"
 
-import type { PaginationMeta, AuthSession, Person, Vehicle, Character, CharacterFilter, ServerSideProps, Toast, CharactersResponse } from "@/types/types"
+import type { QueryType, PaginationMeta, AuthSession, Person, Vehicle, Character, CharacterFilter, ServerSideProps, Toast, CharactersResponse } from "@/types/types"
 import Characters from "@/components/admin/characters/Characters"
 import { AxiosError } from "axios"
 
@@ -57,7 +57,11 @@ export async function getServerSideProps({ req, res, query }: ServerSideProps) {
   }
 }
 
-export default function CharactersIndex({ page }:CharactersResponse) {
+interface CharactersIndexProps {
+  page?: number | null
+}
+
+export default function CharactersIndex({ page }: CharactersIndexProps) {
   return (
     <>
       <Head>

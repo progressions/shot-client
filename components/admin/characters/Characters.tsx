@@ -3,8 +3,7 @@ import { Pagination, Box, Button, FormControlLabel, Link, Paper, Stack, Switch, 
 import { useEffect, useReducer, useState } from "react"
 import { useRouter } from 'next/router'
 
-import { useClient } from "@/contexts/ClientContext"
-import { useToast } from "@/contexts/ToastContext"
+import { useClient, useToast } from "@/contexts"
 import { Character, CharacterFilter, CharactersResponse, defaultCharacter, PaginationMeta } from "@/types/types"
 import ActionValues from "@/components/characters/ActionValues"
 import AvatarBadge from "@/components/characters/AvatarBadge"
@@ -18,10 +17,10 @@ import CharacterDisplay from "@/components/admin/characters/CharacterDisplay"
 import { CharactersActions, initialCharactersState, charactersReducer } from "@/reducers/charactersState"
 
 interface CharactersProps {
-  page?: number
+  page?: number | null
 }
 
-export default function Characters({ page: initialPage }) {
+export default function Characters({ page: initialPage }: CharactersProps) {
   const { client, session, user } = useClient()
   const { toastError, toastSuccess } = useToast()
   const [state, dispatch] = useReducer(charactersReducer, initialCharactersState)

@@ -49,7 +49,7 @@ interface PayloadAction {
 interface UpdateAction {
   type: Extract<CharactersActions, CharactersActions.UPDATE | CharactersActions.UPDATE_CHARACTER>
   name: string
-  value: string | boolean
+  value: string | boolean | number
 }
 
 export type CharactersActionType = ActionNoPayload | UpdateAction | PayloadAction
