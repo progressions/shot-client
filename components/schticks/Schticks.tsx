@@ -1,4 +1,4 @@
-import { Button, Box, Stack, Typography } from "@mui/material"
+import { Grid, Button, Box, Stack, Typography } from "@mui/material"
 import SchtickCard from "@/components/schticks/SchtickCard"
 import { useClient } from "@/contexts/ClientContext"
 import { Subhead } from "@/components/StyledFields"
@@ -16,9 +16,7 @@ interface SchticksProps {
 
 export default function Schticks({ state, dispatch }: SchticksProps) {
   const { user, client } = useClient()
-
-  const schticks:Schtick[] = useMemo(() => (state?.schticks || []), [state?.schticks])
-  const meta = state?.meta || {}
+  const { loading, schticks, meta } = state
 
   const rowsOfData = useMemo(() => (
     rowMap<Schtick>(schticks, 2)
@@ -37,27 +35,12 @@ export default function Schticks({ state, dispatch }: SchticksProps) {
     return output
   }, [state, dispatch, rowsOfData])
 
-  function loadPrevious() {
-    if (!dispatch) return
-
-    dispatch({ type: SchticksActions.PREVIOUS })
-  }
-
-  function loadNext() {
-    if (!dispatch) return
-
-    dispatch({ type: SchticksActions.NEXT })
-  }
-
   if (!schticks) return (<></>)
 
   return (
     <>
-      <Subhead>Schticks</Subhead>
       <Stack spacing={1}>
-        { meta?.prev_page && <Box width="100%"><Button sx={{width: "100%"}} onClick={loadPrevious} variant="contained" color="primary">Previous</Button></Box> }
         { outputRows }
-        { meta?.next_page && <Box width="100%"><Button sx={{width: "100%"}} onClick={loadNext} variant="contained" color="primary">Next</Button></Box> }
       </Stack>
     </>
   )

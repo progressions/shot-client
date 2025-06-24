@@ -119,6 +119,7 @@ export function charactersReducer(state: CharactersStateType, action: Characters
         return {
           ...state,
           edited: true,
+          loading: true,
           page: 1,
           [action.name]: faction
         }
@@ -127,12 +128,14 @@ export function charactersReducer(state: CharactersStateType, action: Characters
         return {
           ...state,
           edited: true,
+          loading: true,
           page: action.value as number,
         }
       }
       return {
         ...state,
         edited: true,
+        loading: true,
         page: 1,
         [action.name]: action.value
       }

@@ -92,9 +92,22 @@ export function partiesReducer(state: PartiesStateType, action: PartiesActionTyp
           [action.name as string]: faction
         }
       }
+      if (action.name === "page") {
       return {
         ...state,
         edited: true,
+        page: action.value as number,
+        party: {
+          ...state.party,
+          [action.name as string]: action.value
+        }
+      }
+      }
+      return {
+        ...state,
+        edited: true,
+        loading: true,
+        page: 1,
         party: {
           ...state.party,
           [action.name as string]: action.value
@@ -104,6 +117,7 @@ export function partiesReducer(state: PartiesStateType, action: PartiesActionTyp
       return {
         ...state,
         edited: true,
+        loading: true,
         party: (action.payload || initialPartiesState.party) as Party,
       }
     case PartiesActions.PARTIES:

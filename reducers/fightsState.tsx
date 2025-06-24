@@ -110,10 +110,19 @@ export function fightsReducer(state: FightsStateType, action: FightsActionType):
         edited: false
       }
     case FightsActions.UPDATE:
+      if (action.name === "page" ) {
+        return {
+          ...state,
+          edited: true,
+          loading: true,
+          page: action.value as number,
+        }
+      }
       return {
         ...state,
         edited: true,
         loading: true,
+        page: 1,
         [action.name]: action.value
       }
     case FightsActions.UPDATE_FIGHT:

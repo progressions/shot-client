@@ -48,8 +48,7 @@ export async function getServerSideProps<GetServerSideProps>({ req, res }: Serve
 
 export default function SchticksIndex(data: SchticksResponse) {
   const [state, dispatch] = useReducer(schticksReducer, initialSchticksState)
-  const schticks = state?.schticks || []
-  const { loading } = state
+  const { loading, schticks } = state
 
   useEffect(() => {
     dispatch({ type: SchticksActions.SCHTICKS, payload: data })
@@ -65,8 +64,7 @@ export default function SchticksIndex(data: SchticksResponse) {
       </Head>
       <main>
         <Layout>
-          <Container maxWidth="md">
-            <Typography variant="h1" gutterBottom>Schticks</Typography>
+          <Container maxWidth="md" sx={{paddingTop: 2, minWidth: 1000}}>
             { !loading && <>
               <ButtonBar sx={{height: 80}}>
                 <FilterSchticks state={state} dispatch={dispatch} />
