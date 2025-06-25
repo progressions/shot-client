@@ -18,7 +18,7 @@ interface PartyModalProps {
   dispatch: React.Dispatch<PartiesActionType>
   open: boolean
   setOpen: React.Dispatch<React.SetStateAction<boolean>>
-  newParty: boolean
+  newParty?: boolean
 }
 
 export default function PartyModal({ state, dispatch, open, setOpen, newParty }: PartyModalProps) {
