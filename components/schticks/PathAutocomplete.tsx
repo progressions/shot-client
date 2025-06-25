@@ -32,7 +32,7 @@ export default function PathAutocomplete({ state, dispatch }: PathAutocompletePr
       onChange={selectPath}
       openOnFocus
       getOptionLabel={getOptionLabel}
-      renderInput={(params: InputParamsType) => <StyledSelect autoFocus helperText={helperText} {...params} label="Path" />}
+      renderInput={(params: InputParamsType) => <StyledSelect helperText={helperText} {...params} label="Path" />}
     />
   )
 }

@@ -33,7 +33,7 @@ export default function CategoryAutocomplete({ state, dispatch }: CategoryAutoco
         onChange={selectCategory}
         openOnFocus
         getOptionLabel={getOptionLabel}
-        renderInput={(params: InputParamsType) => <StyledSelect autoFocus helperText={helperText} {...params} label="Category" />}
+        renderInput={(params: InputParamsType) => <StyledSelect helperText={helperText} {...params} label="Category" />}
       />
     </>
   )
