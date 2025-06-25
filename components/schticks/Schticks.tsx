@@ -43,6 +43,14 @@ export default function Schticks({}: SchticksProps) {
     }
   }, [user, edited])
 
+  useEffect(() => {
+    router.push(
+      { pathname: router.pathname, query: { page: page } },
+      undefined,
+      { shallow: true }
+    )
+  }, [edited])
+
   const rowsOfData = rowMap<Schtick>(schticks, 2)
 
   const outputRows = rowsOfData.map((row: Schtick[], index: number) => (
