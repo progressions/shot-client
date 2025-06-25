@@ -137,6 +137,7 @@ const AttackReducerService = {
       actionValueName: CS.mainAttack(attacker) || "",
       actionValue: adjustedMainAttack,
       count: mookCount,
+      damage: CS.damage(attacker) || defaultWeapon.damage,
     })
   },
 
@@ -156,7 +157,7 @@ const AttackReducerService = {
     return this.process({
       ...state,
       weapon: weapon,
-      damage: weapon?.damage || 7,
+      damage: weapon?.id ? weapon.damage : state.damage
     })
   },
 
