@@ -13,14 +13,14 @@ import { useRouter } from 'next/router'
 export default function Home() {
   const { user, client } = useClient()
   const [state, dispatch] = useReducer(partiesReducer, initialPartiesState)
-  const { parties, page, secret, edited, faction, loading, search } = state
+  const { party, parties, page, secret, edited, faction, loading, search } = state
   const { toastSuccess, toastError } = useToast()
   const router = useRouter()
 
   useEffect(() => {
     async function getParties() {
       try {
-        const data = await client.getParties({ search, faction_id: faction.id, secret, page })
+        const data = await client.getParties({ search: search || party.name, faction_id: faction.id, secret, page })
         dispatch({ type: PartiesActions.PARTIES, payload: data })
       } catch(error) {
         toastError()
@@ -30,7 +30,7 @@ export default function Home() {
     if (user?.id && edited) {
       getParties().catch(toastError)
     }
-  }, [edited, dispatch, user?.id, toastError, client, search, faction?.id, secret, page])
+  }, [edited, dispatch, user?.id, toastError, client, search, faction?.id, secret, page, party])
 
   useEffect(() => {
     router.push(
