@@ -6,10 +6,13 @@ import { useToast } from "@/contexts/ToastContext"
 import { useCharacter } from "@/contexts/CharacterContext"
 import FilterSchticks from "@/components/schticks/FilterSchticks"
 import { SchticksActions, initialSchticksState, schticksReducer } from "@/reducers/schticksState"
+import type { SchticksStateType, SchticksActionType } from "@/reducers/schticksState"
 import { SaveCancelButtons, StyledTextField } from "@/components/StyledFields"
 import { CharacterActions } from "@/reducers/characterState"
 
 interface SchtickSelectorProps {
+  allSchticksState: SchticksStateType
+  dispatchAllSchticks: React.Dispatch<SchticksActionType>
 }
 
 export default function SchtickSelector({ allSchticksState, dispatchAllSchticks }: SchtickSelectorProps) {
