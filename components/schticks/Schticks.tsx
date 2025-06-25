@@ -8,6 +8,7 @@ import { useRouter } from 'next/router'
 import { ButtonBar } from "@/components/StyledFields"
 import CreateSchtickButton from "@/components/schticks/CreateSchtickButton"
 import FilterSchticks from "@/components/schticks/FilterSchticks"
+import SchtickSelector from "@/components/schticks/SchtickSelector"
 import { useReducer, useEffect, useState, useMemo } from "react"
 import type { SchticksStateType, SchticksActionType } from "@/reducers/schticksState"
 import { initialSchticksState, schticksReducer, SchticksActions } from "@/reducers/schticksState"
@@ -108,6 +109,7 @@ export default function Schticks({}: SchticksProps) {
         { !loading && outputRows }
       </Stack>
       <Pagination count={meta.total_pages} page={page} onChange={handlePageChange} variant="outlined" color="primary" shape="rounded" size="large" />
+      { character?.id && <SchtickSelector allSchticksState={state} dispatchAllSchticks={dispatch} /> }
     </>
   )
 }

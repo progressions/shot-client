@@ -191,7 +191,6 @@ export default function EditCharacter({ character:initialCharacter }: EditCharac
           <Sites character={character} />
           <Description character={character} onChange={handleDescriptionChange} />
           <Schticks />
-          <SchtickSelector />
         </Stack>
       </Box>
     </>
