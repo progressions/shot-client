@@ -54,7 +54,6 @@ export default function PartyModal({ state, dispatch, open, setOpen, party:initi
   }
 
   function cancelForm() {
-    console.log("cancelForm")
     dispatch({ type: PartiesActions.UPDATE, name: "search", value: "" })
     setParty(defaultParty)
     setOpen(false)

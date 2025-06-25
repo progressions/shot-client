@@ -52,7 +52,6 @@ export default function Site({ site, state, dispatch }: SiteProps) {
   }
 
   function editFunction(event: React.MouseEvent<HTMLButtonElement>) {
-    dispatch({ type: SitesActions.SITE, payload: site })
     setOpen(true)
   }
 
@@ -111,7 +110,7 @@ export default function Site({ site, state, dispatch }: SiteProps) {
       >
         <DialogContent>
           <Stack direction="column" spacing={2}>
-            <SiteModal state={state} open={open} setOpen={setOpen} dispatch={dispatch} />
+            <SiteModal site={site} state={state} open={open} setOpen={setOpen} dispatch={dispatch} />
           </Stack>
         </DialogContent>
       </StyledDialog>

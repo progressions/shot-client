@@ -12,7 +12,6 @@ export default function SiteAutocomplete({ state, dispatch }: SiteAutocompletePr
   const { loading, site, sites } = state
 
   const selectSite = (event: React.SyntheticEvent, value: Site | null) => {
-    console.log("updating site to", value)
     dispatch({ type: SitesActions.SITE, payload: value })
   }
 
