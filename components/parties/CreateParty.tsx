@@ -3,6 +3,7 @@ import { StyledDialog, ButtonBar } from "@/components/StyledFields"
 import PartyModal from "@/components/parties/PartyModal"
 import { useState } from "react"
 import type { PartiesStateType, PartiesActionType } from "@/reducers/partiesState"
+import { PartiesActions } from "@/reducers/partiesState"
 
 interface CreatePartyProps {
   state: PartiesStateType
@@ -11,6 +12,12 @@ interface CreatePartyProps {
 
 export default function CreateParty({ state, dispatch }: CreatePartyProps) {
   const [open, setOpen] = useState(false)
+
+  const handleClose = () => {
+    console.log("Closing party modal")
+    dispatch({ type: PartiesActions.UPDATE, name: "search", value: "" })
+    setOpen(false)
+  }
 
   return (
     <>
@@ -25,12 +32,12 @@ export default function CreateParty({ state, dispatch }: CreatePartyProps) {
       </Typography>
       <StyledDialog
         open={open}
-        onClose={() => setOpen(false)}
+        onClose={handleClose}
         title="Party"
       >
         <DialogContent>
           <Stack direction="column" spacing={2}>
-            <PartyModal state={state} open={open} setOpen={setOpen} dispatch={dispatch} />
+            <PartyModal newParty={true} state={state} open={open} setOpen={setOpen} dispatch={dispatch} />
           </Stack>
         </DialogContent>
       </StyledDialog>

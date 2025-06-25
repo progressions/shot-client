@@ -8,6 +8,7 @@ import ImageDisplay from "@/components/images/ImageDisplay"
 
 import type { PartiesStateType, PartiesActionType } from "@/reducers/partiesState"
 import type { Character, Vehicle, Party as PartyType } from "@/types/types"
+import { defaultParty } from "@/types/types"
 import { PartiesActions } from "@/reducers/partiesState"
 
 import PartyModal from "@/components/parties/PartyModal"
@@ -60,6 +61,12 @@ export default function Party({ party, state, dispatch }: PartyProps) {
     setOpen(true)
   }
 
+  const handleClose = () => {
+    console.log("Party Closing party modal")
+    dispatch({ type: PartiesActions.PARTY, payload: defaultParty })
+    setOpen(false)
+  }
+
   const deleteButton = (<>
     <IconButton key="delete" onClick={deleteFunction}>
       <ClearIcon />
@@ -98,7 +105,7 @@ export default function Party({ party, state, dispatch }: PartyProps) {
       </PartyCardBase>
       <StyledDialog
         open={open}
-        onClose={() => setOpen(false)}
+        onClose={handleClose}
         title="Party"
       >
         <DialogContent>

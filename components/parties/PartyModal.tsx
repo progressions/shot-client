@@ -18,13 +18,20 @@ interface PartyModalProps {
   dispatch: React.Dispatch<PartiesActionType>
   open: boolean
   setOpen: React.Dispatch<React.SetStateAction<boolean>>
+  newParty: boolean
 }
 
-export default function PartyModal({ state, dispatch, open, setOpen }: PartyModalProps) {
+export default function PartyModal({ state, dispatch, open, setOpen, newParty }: PartyModalProps) {
   const { toastSuccess, toastError } = useToast()
   const { user, client } = useClient()
   const { loading, party:initialParty } = state
   const [party, setParty] = useState<Party>(initialParty || defaultParty)
+
+  useEffect(() => {
+    if (newParty) {
+      setParty(defaultParty)
+    }
+  }, [])
 
   async function updateParty(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
     event.preventDefault()
@@ -33,6 +40,7 @@ export default function PartyModal({ state, dispatch, open, setOpen }: PartyModa
       const data = party?.id ?
         await client.updateParty(party as Party) :
         await client.createParty(party as Party)
+      dispatch({ type: PartiesActions.UPDATE, name: "search", value: "" })
       dispatch({ type: PartiesActions.EDIT })
       setOpen(false)
       toastSuccess(`${party.name} ${party?.id ? "updated" : "added"}.`)
@@ -46,6 +54,8 @@ export default function PartyModal({ state, dispatch, open, setOpen }: PartyModa
   }
 
   function cancelForm() {
+    console.log("cancelForm")
+    dispatch({ type: PartiesActions.UPDATE, name: "search", value: "" })
     setParty(defaultParty)
     setOpen(false)
   }
