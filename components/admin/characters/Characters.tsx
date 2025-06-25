@@ -105,8 +105,8 @@ export default function Characters({}: CharactersProps) {
       />
       { edited && <Typography gutterBottom pt={5}>Loading characters...</Typography> }
       { !edited && (<>
-        <Pagination sx={{mb: 1}} count={meta.total_pages} page={page} onChange={handlePageChange} variant="outlined" color="primary" shape="rounded" size="large" />
-        <TableContainer component={Paper}>
+        <Pagination count={meta.total_pages} page={page} onChange={handlePageChange} variant="outlined" color="primary" shape="rounded" size="large" />
+        <TableContainer sx={{my: 1}} component={Paper}>
           <Table size="small">
             <TableHead>
               <TableRow>
@@ -127,7 +127,7 @@ export default function Characters({}: CharactersProps) {
             </TableBody>
           </Table>
         </TableContainer>
-        <Pagination sx={{mt: 1}} count={meta.total_pages} page={page} onChange={handlePageChange} variant="outlined" color="primary" shape="rounded" size="large" />
+        <Pagination count={meta.total_pages} page={page} onChange={handlePageChange} variant="outlined" color="primary" shape="rounded" size="large" />
       </>) }
     </Container>
     </>

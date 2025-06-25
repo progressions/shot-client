@@ -42,7 +42,7 @@ interface PayloadAction {
 interface UpdateAction {
   type: Extract<SitesActions, SitesActions.UPDATE | SitesActions.EDIT>
   name?: string
-  value?: string | boolean
+  value?: string | boolean | number
 }
 
 export type SitesActionType = ActionNoPayload | UpdateAction | PayloadAction
@@ -61,6 +61,7 @@ export const initialSitesState: SitesStateType = {
   sites: [],
   search: "",
   saving: false,
+  page: 1
 }
 
 export function sitesReducer(state: SitesStateType, action: SitesActionType): SitesStateType {
@@ -84,13 +85,27 @@ export function sitesReducer(state: SitesStateType, action: SitesActionType): Si
         return {
           ...state,
           edited: true,
+          page: 1,
+          site: defaultSite,
           [action.name as string]: faction
+        }
+      }
+      if (action.name === "page") {
+        console.log("updating page to", action.value)
+        return {
+          ...state,
+          edited: true,
+          page: action.value as number,
+          site: {
+            ...state.site,
+          }
         }
       }
 
       return {
         ...state,
         edited: true,
+        page: 1,
         site: {
           ...state.site,
           [action.name as string]: action.value
@@ -100,6 +115,7 @@ export function sitesReducer(state: SitesStateType, action: SitesActionType): Si
       return {
         ...state,
         edited: true,
+        page: 1,
         site: (action.payload || initialSitesState.site) as Site,
       }
     case SitesActions.SITES:
@@ -108,6 +124,7 @@ export function sitesReducer(state: SitesStateType, action: SitesActionType): Si
         ...state,
         loading: false,
         edited: false,
+        page: meta?.current_page || 1,
         sites,
         factions,
         meta,
