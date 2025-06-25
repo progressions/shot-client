@@ -5,7 +5,7 @@ import { useClient, useToast, useCharacter } from "@/contexts"
 import GamemasterOnly from "@/components/GamemasterOnly"
 import type { Vehicle, FilterParamsType, OptionType, InputParamsType, Character, Party } from "@/types/types"
 import { defaultFaction, defaultParty } from "@/types/types"
-import { useEffect, useReducer } from "react"
+import { useState, useEffect, useReducer } from "react"
 import type { PartiesStateType, PartiesActionType } from "@/reducers/partiesState"
 import { PartiesActions } from "@/reducers/partiesState"
 import Faction from "@/components/characters/edit/Faction"
@@ -23,11 +23,11 @@ interface PartyModalProps {
 export default function PartyModal({ state, dispatch, open, setOpen }: PartyModalProps) {
   const { toastSuccess, toastError } = useToast()
   const { user, client } = useClient()
-  const { loading, party } = state
+  const { loading, party:initialParty } = state
+  const [party, setParty] = useState<Party>(initialParty || defaultParty)
 
   async function updateParty(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
     event.preventDefault()
-    dispatch({ type: PartiesActions.SAVING })
 
     try {
       const data = party?.id ?
@@ -39,7 +39,6 @@ export default function PartyModal({ state, dispatch, open, setOpen }: PartyModa
     } catch(error) {
       toastError()
     }
-    dispatch({ type: PartiesActions.RESET })
   }
 
   async function deleteImage(party: Party) {
@@ -47,16 +46,22 @@ export default function PartyModal({ state, dispatch, open, setOpen }: PartyModa
   }
 
   function cancelForm() {
-    dispatch({ type: PartiesActions.RESET })
+    setParty(defaultParty)
     setOpen(false)
   }
 
   const handleCheck = (event: React.SyntheticEvent<Element, Event>, checked: boolean) => {
-    dispatch({ type: PartiesActions.UPDATE, name: "secret", value: checked })
+    setParty({
+      ...party,
+      secret: checked
+    })
   }
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
-    dispatch({ type: PartiesActions.UPDATE, name: event.target.name, value: event.target.value })
+    setParty({
+      ...party,
+      [event.target.name]: event.target.value
+    })
   }
 
   const addCharacter = async (character: Character):Promise<void> => {

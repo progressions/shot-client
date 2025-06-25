@@ -13,13 +13,10 @@ interface PartiesProps {
 
 export default function Parties({ state, dispatch }: PartiesProps) {
   const router = useRouter()
-  const { page:initialPage } = router.query
-  const [page, setPage] = useState(initialPage ? parseInt(initialPage as string, 10) : 1)
 
-  const { parties, meta } = state
+  const { page, parties, meta } = state
 
   const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
-    setPage(value)
     dispatch({ type: PartiesActions.UPDATE, name: "page", value: value})
     router.push(
       { pathname: router.pathname, query: { page: value } },

@@ -8,17 +8,14 @@ import { partiesReducer, initialPartiesState, PartiesActions } from "@/reducers/
 import Parties from "@/components/parties/Parties"
 import { ButtonBar } from "@/components/StyledFields"
 import FilterParties from "@/components/parties/FilterParties"
-import { useRouter } from "next/router"
+import { useRouter } from 'next/router'
 
 export default function Home() {
   const { user, client } = useClient()
   const [state, dispatch] = useReducer(partiesReducer, initialPartiesState)
-  const parties = state?.parties || []
-  const { secret, edited, faction, loading, search } = state
+  const { parties, page, secret, edited, faction, loading, search } = state
   const { toastSuccess, toastError } = useToast()
-
   const router = useRouter()
-  const { page } = router.query
 
   useEffect(() => {
     async function getParties() {
@@ -34,6 +31,14 @@ export default function Home() {
       getParties().catch(toastError)
     }
   }, [edited, dispatch, user?.id, toastError, client, search, faction?.id, secret, page])
+
+  useEffect(() => {
+    router.push(
+      { pathname: router.pathname, query: { page: page } },
+      undefined,
+      { shallow: true }
+    )
+  }, [edited])
 
   return (
     <>

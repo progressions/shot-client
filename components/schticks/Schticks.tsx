@@ -24,12 +24,9 @@ export default function Schticks({}: SchticksProps) {
   const { loading, edited, category, path, name, schticks, meta, page } = state
   const router = useRouter()
 
-  console.log("Schticks edited", edited)
-
   useEffect(() => {
     const reload = async () => {
       try {
-        console.log("reloading")
         const data = await client.getSchticks({ page, category, path, name, character_id: character?.id as string })
         dispatch({ type: SchticksActions.SCHTICKS, payload: data })
       } catch (error) {
