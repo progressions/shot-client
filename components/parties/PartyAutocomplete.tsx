@@ -12,10 +12,6 @@ interface PartyAutocompleteProps {
 export default function PartyAutocomplete({ state, dispatch }: PartyAutocompleteProps) {
   const { loading, party, parties, search } = state
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch({ type: PartiesActions.UPDATE, name: event.target.name, value: event.target.value })
-  }
-
   const selectParty = (event: React.SyntheticEvent, value: Party | null) => {
     dispatch({ type: PartiesActions.PARTY, payload: value })
   }

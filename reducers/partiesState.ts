@@ -120,6 +120,7 @@ export function partiesReducer(state: PartiesStateType, action: PartiesActionTyp
         ...state,
         edited: true,
         loading: true,
+        page: 1,
         party: (action.payload || initialPartiesState.party) as Party,
       }
     case PartiesActions.PARTIES:
