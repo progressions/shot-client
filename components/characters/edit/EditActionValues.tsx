@@ -1,6 +1,7 @@
 import { Box, Stack, TextField, MenuItem } from "@mui/material"
 import PlayerTypeOnly from "@/components/PlayerTypeOnly"
 import { Subhead, StyledSelect, StyledTextField } from "@/components/StyledFields"
+import CS from "@/services/CharacterService"
 
 import type { Character } from "@/types/types"
 
@@ -10,6 +11,9 @@ interface EditActionValuesProps {
 }
 
 export default function EditActionValues({ character, onChange }: EditActionValuesProps) {
+  console.log(character)
+  console.log(CS.secondaryAttack(character))
+
   return (
     <>
       <Stack spacing={2}>
@@ -38,7 +42,7 @@ export default function EditActionValues({ character, onChange }: EditActionValu
         <Stack direction="row" spacing={2}>
           <StyledTextField label={character.action_values["MainAttack"]} type="number" sx={{width: 100}} name={character.action_values["MainAttack"] as string} value={character.action_values[character.action_values["MainAttack"] as string] || ''} onChange={onChange} />
           <PlayerTypeOnly character={character} except="Mook">
-            <StyledTextField label={character.action_values["SecondaryAttack"]} type="number" sx={{width: 100}} name={(character.action_values["SecondaryAttack"] || "") as string} value={character.action_values[character.action_values["SecondaryAttack"] as string] || ''} onChange={onChange} />
+            <StyledTextField label={CS.secondaryAttack(character) || ""} type="number" sx={{width: 100}} name={(character.action_values["SecondaryAttack"] || "") as string} value={CS.secondaryAttackValue(character) || ""} onChange={onChange} />
           </PlayerTypeOnly>
           <StyledTextField label="Defense" type="number" sx={{width: 100}} name="Defense" value={character.action_values?.['Defense'] || ''} onChange={onChange} />
           <PlayerTypeOnly character={character} except="Mook">
