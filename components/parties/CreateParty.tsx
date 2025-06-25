@@ -14,7 +14,6 @@ export default function CreateParty({ state, dispatch }: CreatePartyProps) {
   const [open, setOpen] = useState(false)
 
   const handleClose = () => {
-    console.log("Closing party modal")
     dispatch({ type: PartiesActions.UPDATE, name: "search", value: "" })
     setOpen(false)
   }
@@ -37,7 +36,7 @@ export default function CreateParty({ state, dispatch }: CreatePartyProps) {
       >
         <DialogContent>
           <Stack direction="column" spacing={2}>
-            <PartyModal newParty={true} state={state} open={open} setOpen={setOpen} dispatch={dispatch} />
+            <PartyModal state={state} open={open} setOpen={setOpen} dispatch={dispatch} />
           </Stack>
         </DialogContent>
       </StyledDialog>

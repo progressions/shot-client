@@ -27,7 +27,6 @@ interface PartyProps {
 export default function Party({ party, state, dispatch }: PartyProps) {
   const { client } = useClient()
   const { toastSuccess, toastError } = useToast()
-  const { party:editingParty } = state
   const [open, setOpen] = useState<boolean>(false)
 
   async function deleteFunction() {
@@ -57,12 +56,11 @@ export default function Party({ party, state, dispatch }: PartyProps) {
   }
 
   function editFunction(event: React.MouseEvent<HTMLButtonElement>) {
-    dispatch({ type: PartiesActions.PARTY, payload: party })
+    // dispatch({ type: PartiesActions.PARTY, payload: party })
     setOpen(true)
   }
 
   const handleClose = () => {
-    console.log("Party Closing party modal")
     dispatch({ type: PartiesActions.PARTY, payload: defaultParty })
     setOpen(false)
   }
@@ -110,7 +108,7 @@ export default function Party({ party, state, dispatch }: PartyProps) {
       >
         <DialogContent>
           <Stack direction="column" spacing={2}>
-            <PartyModal state={state} open={open} setOpen={setOpen} dispatch={dispatch} />
+            <PartyModal party={party} state={state} open={open} setOpen={setOpen} dispatch={dispatch} />
           </Stack>
         </DialogContent>
       </StyledDialog>

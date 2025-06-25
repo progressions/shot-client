@@ -18,17 +18,17 @@ interface PartyModalProps {
   dispatch: React.Dispatch<PartiesActionType>
   open: boolean
   setOpen: React.Dispatch<React.SetStateAction<boolean>>
-  newParty?: boolean
+  party?: Party | undefined
 }
 
-export default function PartyModal({ state, dispatch, open, setOpen, newParty }: PartyModalProps) {
+export default function PartyModal({ state, dispatch, open, setOpen, party:initialParty }: PartyModalProps) {
   const { toastSuccess, toastError } = useToast()
   const { user, client } = useClient()
-  const { loading, party:initialParty } = state
+  const { loading } = state
   const [party, setParty] = useState<Party>(initialParty || defaultParty)
 
   useEffect(() => {
-    if (newParty) {
+    if (!party.id) {
       setParty(defaultParty)
     }
   }, [])
