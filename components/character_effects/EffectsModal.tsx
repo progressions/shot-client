@@ -43,11 +43,13 @@ export default function EffectsModal({ character }: EffectsModalProps) {
       { label: "Attack", value: "MainAttack" },
       { label: "Defense", value: "Defense" },
       { label: "Toughness", value: "Toughness" },
+      { label: "Damage", value: "Damage" },
     ]
     const vehicleActionValues = [
       { label: "Acceleration", value: "Acceleration" },
       { label: "Handling", value: "Handling" },
       { label: "Frame", value: "Frame" },
+      { label: "Crunch", value: "Crunch" },
     ]
 
     if (character.category === "character") {
