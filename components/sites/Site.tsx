@@ -79,29 +79,17 @@ export default function Site({ site, state, dispatch }: SiteProps) {
   return (
     <>
       <SiteCardBase
+        site={site}
         title={site.name}
         subheader={subheader}
         action={deleteButton}
         avatar={avatar}
       >
-        <CardMedia image={site.image_url || ""} sx={{padding: 2}}>
-          <Stack direction="row" spacing={2}>
-            <Box sx={{ backgroundColor: 'rgba(0,0,0,0.5)', padding: 2, borderRadius: 0.5}}>
-              <Typography>{site.description}</Typography>
-              { !!site?.characters?.length &&
-              <>
-                <Typography variant="h6" mt={2} gutterBottom>Attuned</Typography>
-                  {
-                    site.characters.map((character, index) => {
-                      const key = generateKey(character, index)
-                      return (<Member key={key} character={character} removeCharacter={removeCharacter} />)
-                    })
-                  }
-                </>
-                }
-            </Box>
-          </Stack>
-        </CardMedia>
+        { site.image_url &&
+          <CardMedia image={site.image_url || ""} sx={{padding: 2}}>
+          </CardMedia>
+        }
+        <Typography>{site.description}</Typography>
       </SiteCardBase>
       <StyledDialog
         open={open}
