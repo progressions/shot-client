@@ -8,6 +8,7 @@ import ImageDisplay from "@/components/images/ImageDisplay"
 
 import type { PartiesStateType, PartiesActionType } from "@/reducers/partiesState"
 import type { Character, Vehicle, Party as PartyType } from "@/types/types"
+import { defaultParty } from "@/types/types"
 import { PartiesActions } from "@/reducers/partiesState"
 
 import PartyModal from "@/components/parties/PartyModal"
@@ -26,7 +27,6 @@ interface PartyProps {
 export default function Party({ party, state, dispatch }: PartyProps) {
   const { client } = useClient()
   const { toastSuccess, toastError } = useToast()
-  const { party:editingParty } = state
   const [open, setOpen] = useState<boolean>(false)
 
   async function deleteFunction() {
@@ -56,8 +56,13 @@ export default function Party({ party, state, dispatch }: PartyProps) {
   }
 
   function editFunction(event: React.MouseEvent<HTMLButtonElement>) {
-    dispatch({ type: PartiesActions.PARTY, payload: party })
+    // dispatch({ type: PartiesActions.PARTY, payload: party })
     setOpen(true)
+  }
+
+  const handleClose = () => {
+    dispatch({ type: PartiesActions.PARTY, payload: defaultParty })
+    setOpen(false)
   }
 
   const deleteButton = (<>
@@ -76,12 +81,12 @@ export default function Party({ party, state, dispatch }: PartyProps) {
   subheader += PS.rosterSummary(party)
 
   const avatar = party.image_url ? <ImageDisplay entity={party} /> : null
-
   const mediaUrl = party.image_url ? `${party.image_url}?w-300,h-300` : ""
 
   return (
     <>
       <PartyCardBase
+        party={party}
         title={party.name}
         subheader={subheader}
         action={deleteButton}
@@ -98,12 +103,12 @@ export default function Party({ party, state, dispatch }: PartyProps) {
       </PartyCardBase>
       <StyledDialog
         open={open}
-        onClose={() => setOpen(false)}
+        onClose={handleClose}
         title="Party"
       >
         <DialogContent>
           <Stack direction="column" spacing={2}>
-            <PartyModal state={state} open={open} setOpen={setOpen} dispatch={dispatch} />
+            <PartyModal party={party} state={state} open={open} setOpen={setOpen} dispatch={dispatch} />
           </Stack>
         </DialogContent>
       </StyledDialog>

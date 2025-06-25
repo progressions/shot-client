@@ -1,28 +1,31 @@
 import Head from 'next/head'
-import { Box, Switch, FormControlLabel, Stack, Paper, Container, Table, TableContainer, TableBody, TableHead, TableRow, TableCell, Typography } from '@mui/material'
+import { colors, Pagination, Box, Switch, FormControlLabel, Stack, Paper, Container, Table, TableContainer, TableBody, TableHead, TableRow, TableCell, Typography } from '@mui/material'
 import { getServerClient } from "@/utils/getServerClient"
 
 import { ButtonBar } from "@/components/StyledFields"
 import AddFight from '@/components/fights/AddFight'
 import FightDetail from '@/components/fights/FightDetail'
 import Layout from '@/components/Layout'
-import { useReducer, useEffect } from 'react'
+import { useState, useReducer, useEffect } from 'react'
 
 import { useToast } from "@/contexts/ToastContext"
 import { useLocalStorage } from "@/contexts/LocalStorageContext"
 import { useClient } from "@/contexts/ClientContext"
 import GamemasterOnly from "@/components/GamemasterOnly"
 import { FightsActions, initialFightsState, fightsReducer } from "@/reducers/fightsState"
+import { useRouter } from "next/router"
 
-import type { FightsResponse, Campaign, Fight, ServerSideProps } from "@/types/types"
+import type { QueryType, FightsResponse, Campaign, Fight, ServerSideProps } from "@/types/types"
 import axios, { AxiosError } from 'axios'
 
 interface HomeProps extends FightsResponse {
   currentCampaign: Campaign | null
+  page: number
 }
 
-export async function getServerSideProps<GetServerSideProps>({ req, res }: ServerSideProps) {
+export async function getServerSideProps<GetServerSideProps>({ req, res, query }: ServerSideProps) {
   const { client } = await getServerClient(req, res)
+  const { page } = query as QueryType
 
   try {
     const currentCampaign = await client.getCurrentCampaign()
@@ -34,12 +37,11 @@ export async function getServerSideProps<GetServerSideProps>({ req, res }: Serve
         }
       }
     }
-    const fightsResponse = await client.getFights()
 
     return {
       props: {
-        ...fightsResponse,
-        currentCampaign: currentCampaign
+        currentCampaign: currentCampaign,
+        page: page ? parseInt(page as string, 10) : null,
       }
     }
   } catch(error: unknown | AxiosError) {
@@ -59,24 +61,28 @@ export async function getServerSideProps<GetServerSideProps>({ req, res }: Serve
         fights: [],
         meta: {},
         currentCampaign: null,
+        page: null,
       }
     }
   }
 }
 
-export default function Home({ currentCampaign, fights:initialFights, meta }: HomeProps) {
+export default function Home({ currentCampaign, page:initialPage }: HomeProps) {
   const [state, dispatch] = useReducer(fightsReducer, initialFightsState)
   const { client, user } = useClient()
   const { toastSuccess, toastError } = useToast()
   const { saveLocally, getLocally } = useLocalStorage()
-  const { loading, edited, fights, showHidden } = state
+  const { loading, edited, fights, showHidden, meta } = state
+  const [page, setPage] = useState(initialPage || 1)
+  const router = useRouter()
 
   useEffect(() => {
     const reload = async () => {
       try {
-        const fightsResponse = await client.getFights({ show_all: showHidden } )
+        const fightsResponse = await client.getFights({ show_all: showHidden, page: page } )
         dispatch({ type: FightsActions.FIGHTS, payload: fightsResponse })
       } catch(error) {
+        console.error("Error fetching fights:", error)
         toastError()
       }
     }
@@ -88,21 +94,29 @@ export default function Home({ currentCampaign, fights:initialFights, meta }: Ho
     if (!currentCampaign) {
       dispatch({ type: FightsActions.SUCCESS })
     }
-  }, [edited, user, dispatch, client, showHidden, toastError, currentCampaign])
+  }, [edited, user, showHidden, currentCampaign, page])
 
   useEffect(() => {
     const showHiddenFights = getLocally("showHiddenFights") || false
     dispatch({ type: FightsActions.UPDATE, name: "showHidden", value: !!showHiddenFights })
-  }, [getLocally, dispatch])
+  }, [])
 
   const show = (event: React.SyntheticEvent<Element, Event>, checked: boolean) => {
     saveLocally("showHiddenFights", checked)
+    setPage(1)
     dispatch({ type: FightsActions.UPDATE, name: "showHidden", value: !!checked })
   }
 
-  if (loading) {
-    return <div>Loading...</div>
+  const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
+    setPage(value)
+    dispatch({ type: FightsActions.UPDATE, name: "page", value: value})
+    router.push(
+      { pathname: router.pathname, query: { page: value } },
+      undefined,
+      { shallow: true }
+    )
   }
+
   return (
     <>
       <Head>
@@ -113,8 +127,8 @@ export default function Home({ currentCampaign, fights:initialFights, meta }: Ho
       </Head>
       <main>
         <Layout>
-          <Container maxWidth="md">
-            <Typography variant="h1" gutterBottom>Fights</Typography>
+          <Container maxWidth="md" sx={{mt: 2, py: 2, minWidth: 1000}}>
+            <Typography variant="h3" gutterBottom>Fights</Typography>
             <GamemasterOnly user={user}>
               <ButtonBar>
                 <Stack direction="row" spacing={2}>
@@ -123,8 +137,10 @@ export default function Home({ currentCampaign, fights:initialFights, meta }: Ho
                 </Stack>
               </ButtonBar>
             </GamemasterOnly>
-            { !!fights?.length &&
+            { loading && <Typography gutterBottom pt={5}>Loading fights...</Typography> }
+            { !loading && !!fights?.length &&
               <Box>
+                <Pagination sx={{mb: 1}} count={meta.total_pages} page={page} onChange={handlePageChange} variant="outlined" color="primary" shape="rounded" size="large" />
                 {
                   fights.map((fight: Fight) => (
                     <FightDetail
@@ -134,9 +150,10 @@ export default function Home({ currentCampaign, fights:initialFights, meta }: Ho
                     />)
                   )
                 }
+                <Pagination sx={{mt: 1}} count={meta.total_pages} page={page} onChange={handlePageChange} variant="outlined" color="primary" shape="rounded" size="large" />
               </Box>
             }
-            { !fights?.length && <Typography pt={5}>There are no available fights. Some fights might be hidden by the gamemaster.</Typography> }
+            { !loading && !fights?.length && <Typography pt={5}>There are no available fights. Some fights might be hidden by the gamemaster.</Typography> }
           </Container>
         </Layout>
       </main>

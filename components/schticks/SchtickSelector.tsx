@@ -6,16 +6,38 @@ import { useToast } from "@/contexts/ToastContext"
 import { useCharacter } from "@/contexts/CharacterContext"
 import FilterSchticks from "@/components/schticks/FilterSchticks"
 import { SchticksActions, initialSchticksState, schticksReducer } from "@/reducers/schticksState"
+import type { SchticksStateType, SchticksActionType } from "@/reducers/schticksState"
 import { SaveCancelButtons, StyledTextField } from "@/components/StyledFields"
 import { CharacterActions } from "@/reducers/characterState"
 
-export default function SchtickSelector() {
+interface SchtickSelectorProps {
+  allSchticksState: SchticksStateType
+  dispatchAllSchticks: React.Dispatch<SchticksActionType>
+}
+
+export default function SchtickSelector({ allSchticksState, dispatchAllSchticks }: SchtickSelectorProps) {
   const [state, dispatch] = useReducer(schticksReducer, initialSchticksState)
   const { character, dispatch:dispatchCharacter } = useCharacter()
   const { user, client } = useClient()
   const { toastSuccess, toastError } = useToast()
   const [open, setOpen] = useState(false)
-  const { saving, schtick, schticks } = state
+  const { saving, loading, edited, category, path, name, schtick, schticks, meta, page } = state
+
+  useEffect(() => {
+    const reload = async () => {
+      try {
+        const data = await client.getSchticks({ page, category, path, name, character_id: character?.id as string })
+        dispatch({ type: SchticksActions.SCHTICKS, payload: data })
+      } catch (error) {
+        console.error("Error fetching schticks:", error)
+        toastError()
+      }
+    }
+
+    if (user && edited) {
+      reload()
+    }
+  }, [user, edited])
 
   function toggleOpen() {
     setOpen(prev => (!prev))
@@ -36,6 +58,7 @@ export default function SchtickSelector() {
 
     dispatch({ type: SchticksActions.SUCCESS })
     dispatch({ type: SchticksActions.RESET })
+    dispatchAllSchticks({ type: SchticksActions.EDIT })
   }
 
   function cancelForm() {

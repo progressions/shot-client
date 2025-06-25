@@ -24,35 +24,11 @@ export default function SchtickModal({ open, setOpen, state, dispatch, schtick:i
   const { saving, category, path } = state
   const [schtick, setSchtick] = useState<Schtick>(initialSchtick || defaultSchtick)
 
-  useEffect(() => {
-    if (!dispatch) return
-
-    setSchtick(initialSchtick || defaultSchtick)
-      // dispatch({ type: SchticksActions.SCHTICK, payload: initialSchtick as Schtick })
-  }, [dispatch, initialSchtick])
-
-  useEffect(() => {
-    if (!dispatch) return
-
-    dispatch({ type: SchticksActions.UPDATE, name: "category", value: category })
-    dispatch({ type: SchticksActions.UPDATE, name: "path", value: path })
-  }, [dispatch, category, path])
-
-  async function reloadSchticks() {
-    try {
-      const data = await client.getSchticks()
-      dispatch({ type: SchticksActions.SCHTICKS, payload: data })
-    } catch(error) {
-      console.error(error)
-      toastError()
-    }
-  }
-
   async function handleSubmit(event: React.ChangeEvent<HTMLInputElement>) {
     event.preventDefault()
     try {
       (schtick?.id) ? await client.updateSchtick(schtick) : await client.createSchtick(schtick)
-      await reloadSchticks()
+      dispatch({ type: SchticksActions.EDIT })
       toastSuccess("Schtick updated.")
     } catch(error) {
       console.error(error)
@@ -62,16 +38,10 @@ export default function SchtickModal({ open, setOpen, state, dispatch, schtick:i
   }
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
-    if (!dispatch) return
-
-    // dispatch({ type: SchticksActions.UPDATE, name: event.target.name, value: event.target.value })
     setSchtick(oldSchtick => ({ ...schtick, [event.target.name]: event.target.value }))
   }
 
   function cancelForm() {
-    if (!dispatch) return
-
-      // dispatch({ type: SchticksActions.RESET })
     setSchtick(defaultSchtick)
     setOpen(false)
   }

@@ -16,26 +16,6 @@ interface FilterSchticksProps {
 }
 
 export default function FilterSchticks({ state, dispatch }: FilterSchticksProps) {
-  const { character } = useCharacter()
-  const { user, client } = useClient()
-  const { toastSuccess, toastError } = useToast()
-  const { page, loading, category, path, name } = state
-
-  useEffect(() => {
-    async function getSchticks() {
-      try {
-        const data = await client.getSchticks({ page, category, path, name, character_id: character?.id as string, per_page: 100 })
-        dispatch({ type: SchticksActions.SCHTICKS, payload: data })
-      } catch(error) {
-        toastError()
-      }
-    }
-
-    if (user?.id) {
-      getSchticks()
-    }
-  }, [character?.id, dispatch, user?.id, category, path, toastError, client, page, name])
-
   return (
     <>
       <CategoryAutocomplete state={state} dispatch={dispatch} />

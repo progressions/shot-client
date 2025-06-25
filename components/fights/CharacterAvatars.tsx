@@ -13,9 +13,9 @@ const CharacterAvatars: React.FC<CharacterAvatarsProps> = ({ characters }) => {
   const { fight } = useFight()
 
   return (
-    <AvatarGroup max={20} sx={{ justifyContent: "flex-start" }}>
-      {(characters || []).map((character) => (
-        <CharacterAvatar character={character} key={`character_${character.id}`} />
+    <AvatarGroup max={20} sx={{mx: 2}}>
+      {(characters || []).map((character, index) => (
+        <CharacterAvatar href={`/characters/${character.id}`} character={character} key={`character_${character.id}_${index}`} />
       ))}
     </AvatarGroup>
   )

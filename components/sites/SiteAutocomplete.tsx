@@ -9,11 +9,7 @@ interface SiteAutocompleteProps {
 }
 
 export default function SiteAutocomplete({ state, dispatch }: SiteAutocompleteProps) {
-  const { loading, site, sites, search } = state
-
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch({ type: SitesActions.UPDATE, name: event.target.name, value: event.target.value })
-  }
+  const { loading, site, sites } = state
 
   const selectSite = (event: React.SyntheticEvent, value: Site | null) => {
     dispatch({ type: SitesActions.SITE, payload: value })

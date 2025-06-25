@@ -43,7 +43,7 @@ interface PayloadAction {
 interface UpdateAction {
   type: Extract<FightActions, FightActions.UPDATE | FightActions.UPDATE_FIGHT>
   name: string
-  value: string | boolean
+  value: string | boolean | number
 }
 
 export type FightActionType = ActionNoPayload | UpdateAction | PayloadAction
@@ -106,9 +106,17 @@ export function fightReducer(state: FightStateType, action: FightActionType): Fi
         edited: false
       }
     case FightActions.UPDATE:
+      if (action.name === "page" ) {
+        return {
+          ...state,
+          edited: true,
+          page: action.value as number,
+        }
+      }
       return {
         ...state,
         edited: true,
+        page: 1,
         [action.name]: action.value
       }
     case FightActions.UPDATE_FIGHT:

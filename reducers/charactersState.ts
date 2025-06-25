@@ -49,7 +49,7 @@ interface PayloadAction {
 interface UpdateAction {
   type: Extract<CharactersActions, CharactersActions.UPDATE | CharactersActions.UPDATE_CHARACTER>
   name: string
-  value: string | boolean
+  value: string | boolean | number
 }
 
 export type CharactersActionType = ActionNoPayload | UpdateAction | PayloadAction
@@ -119,12 +119,24 @@ export function charactersReducer(state: CharactersStateType, action: Characters
         return {
           ...state,
           edited: true,
+          loading: true,
+          page: 1,
           [action.name]: faction
+        }
+      }
+      if (action.name === "page" ) {
+        return {
+          ...state,
+          edited: true,
+          loading: true,
+          page: action.value as number,
         }
       }
       return {
         ...state,
         edited: true,
+        loading: true,
+        page: 1,
         [action.name]: action.value
       }
     case CharactersActions.UPDATE_CHARACTER:
@@ -151,6 +163,7 @@ export function charactersReducer(state: CharactersStateType, action: Characters
         factions: factions,
         archetypes: archetypes,
         meta: meta,
+        page: meta.current_page || 1,
         edited: false,
       }
     case CharactersActions.RESET_CHARACTER:

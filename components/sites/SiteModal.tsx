@@ -7,7 +7,7 @@ import { useCharacter } from "@/contexts/CharacterContext"
 import GamemasterOnly from "@/components/GamemasterOnly"
 import type { Vehicle, FilterParamsType, OptionType, InputParamsType, Character, Site } from "@/types/types"
 import { defaultFaction, defaultSite } from "@/types/types"
-import { useEffect, useReducer } from "react"
+import { useState, useEffect, useReducer } from "react"
 import type { SitesStateType, SitesActionType } from "@/reducers/sitesState"
 import { SitesActions } from "@/reducers/sitesState"
 import Faction from "@/components/characters/edit/Faction"
@@ -21,13 +21,14 @@ interface SiteModalProps {
   dispatch: React.Dispatch<SitesActionType>
   open: boolean
   setOpen: React.Dispatch<React.SetStateAction<boolean>>
+  site?: Site
 }
 
-export default function SiteModal({ state, dispatch, open, setOpen }: SiteModalProps) {
+export default function SiteModal({ state, dispatch, open, setOpen, site:initialSite }: SiteModalProps) {
   const { toastSuccess, toastError } = useToast()
   const { client, user } = useClient()
-  const { loading, site } = state
-  const api = new Api()
+  const { loading } = state
+  const [site, setSite] = useState<Site>(initialSite || defaultSite)
 
   async function updateSite(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
     event.preventDefault()
@@ -52,12 +53,16 @@ export default function SiteModal({ state, dispatch, open, setOpen }: SiteModalP
   }
 
   function cancelForm() {
+    setSite(defaultSite)
     dispatch({ type: SitesActions.RESET })
     setOpen(false)
   }
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
-    dispatch({ type: SitesActions.UPDATE, name: event.target.name, value: event.target.value })
+    setSite({
+      ...site,
+      [event.target.name]: event.target.value
+    })
   }
 
   const handleCheck = (event: React.SyntheticEvent<Element, Event>, checked: boolean) => {

@@ -24,7 +24,7 @@ import SchticksDisplay from "@/components/characters/SchticksDisplay"
 import WeaponsDisplay from "@/components/characters/WeaponsDisplay"
 import DrivingDetails from "@/components/characters/DrivingDetails"
 
-import GroupedEffects from "@/components/state_effects/GroupedEffects"
+import GroupedEffects from "@/components/character_effects/GroupedEffects"
 import GamemasterOnly from '@/components/GamemasterOnly'
 import { useFight } from "@/contexts/FightContext"
 import { useToast } from "@/contexts/ToastContext"

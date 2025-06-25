@@ -460,6 +460,11 @@ class Client {
     return this.delete(this.api.schticks(schtick))
   }
 
+  async getCharacterSchticks(character: Character | ID, params = {}):Promise<SchticksResponse> {
+    const query = Object.entries(params).map(([key, value]) => `${key}=${value || ""}`).join("&")
+    return this.get(`${this.api.characterSchticks(character)}?${query}`)
+  }
+
   async addSchtick(character: Character | ID, schtick: Schtick):Promise<Character> {
     return this.post(this.api.characterSchticks(character), {
       "schtick": schtick

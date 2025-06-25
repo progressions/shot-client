@@ -2,8 +2,7 @@ import { useEffect, useReducer, createContext, useContext } from "react"
 
 import { defaultCharacter } from "@/types/types"
 import type { Character } from "@/types/types"
-import { useClient } from "@/contexts/ClientContext"
-import { useToast } from "@/contexts/ToastContext"
+import { useClient, useToast } from "@/contexts"
 
 import { CharacterActions, CharacterStateAction, CharacterStateType, initialCharacterState, characterReducer } from "@/reducers/characterState"
 
@@ -32,10 +31,10 @@ interface CharacterProviderProps {
   children: React.ReactNode
 }
 
-export function CharacterProvider({ character, children }: CharacterProviderProps) {
+export function CharacterProvider({ character:initialCharacter, children }: CharacterProviderProps) {
   const { client } = useClient()
-  const [state, dispatch] = useReducer(characterReducer, {...initialCharacterState, character: character})
-  const { edited, saving } = state
+  const [state, dispatch] = useReducer(characterReducer, {...initialCharacterState, character: initialCharacter})
+  const { character, edited, saving } = state
   const { toastError, toastSuccess } = useToast()
 
   useEffect(() => {
@@ -44,7 +43,7 @@ export function CharacterProvider({ character, children }: CharacterProviderProp
         dispatch({ type: CharacterActions.SUBMIT })
 
         try {
-          const data = await client.updateCharacter(state.character)
+          const data = await client.updateCharacter(character)
           dispatch({ type: CharacterActions.CHARACTER, payload: data })
           toastSuccess("Character updated.")
         } catch(error) {
@@ -59,13 +58,13 @@ export function CharacterProvider({ character, children }: CharacterProviderProp
 
       return () => clearTimeout(timer)
     }
-  }, [edited, state.character, dispatch, toastSuccess, toastError, client])
+  }, [edited, character, dispatch, toastSuccess, toastError, client])
 
   async function updateCharacter():Promise<void> {
     dispatch({ type: CharacterActions.SUBMIT })
 
     try {
-      const data = await client.updateCharacter(state.character)
+      const data = await client.updateCharacter(character)
       dispatch({ type: CharacterActions.CHARACTER, payload: data })
       toastSuccess("Character updated.")
     } catch(error) {
@@ -78,7 +77,7 @@ export function CharacterProvider({ character, children }: CharacterProviderProp
     dispatch({ type: CharacterActions.SUBMIT })
 
     try {
-      const data = await client.getCharacter(state.character)
+      const data = await client.getCharacter(character)
       dispatch({ type: CharacterActions.CHARACTER, payload: data })
       toastSuccess("Character updated.")
     } catch(error) {
@@ -91,7 +90,7 @@ export function CharacterProvider({ character, children }: CharacterProviderProp
     dispatch({ type: CharacterActions.SUBMIT })
 
     try {
-      const data = await client.syncCharacter(state.character)
+      const data = await client.syncCharacter(character)
       dispatch({ type: CharacterActions.CHARACTER, payload: data })
       toastSuccess("Character updated.")
     } catch(error) {

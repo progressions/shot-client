@@ -40,11 +40,9 @@ export function WebSocketProvider({ children }: WebSocketProviderProps) {
         connected: () => console.log("Connected to FightChannel"),
         disconnected: () => console.log("Disconnected from FightChannel"),
         received: (data: FightChannelMessage) => {
-          console.log("Received data:", data)
           if (data.fight === "updated") {
             dispatch({ type: FightActions.EDIT })
           } else if (data.users) {
-            console.log("Setting viewing users:", data.users)
             setViewingUsers(data.users)
           }
         },

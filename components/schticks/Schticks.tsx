@@ -1,64 +1,115 @@
-import { Button, Box, Stack, Typography } from "@mui/material"
+import { Grid, Skeleton, Pagination, Button, Box, Stack, Typography } from "@mui/material"
 import SchtickCard from "@/components/schticks/SchtickCard"
-import { useClient } from "@/contexts/ClientContext"
+import { useCharacter, useClient, useToast } from "@/contexts"
 import { Subhead } from "@/components/StyledFields"
 import { rowMap } from "@/utils/rowMap"
+import { useRouter } from 'next/router'
 
-import { useState, useMemo } from "react"
+import { ButtonBar } from "@/components/StyledFields"
+import CreateSchtickButton from "@/components/schticks/CreateSchtickButton"
+import FilterSchticks from "@/components/schticks/FilterSchticks"
+import SchtickSelector from "@/components/schticks/SchtickSelector"
+import { useReducer, useEffect, useState, useMemo } from "react"
 import type { SchticksStateType, SchticksActionType } from "@/reducers/schticksState"
-import { SchticksActions } from "@/reducers/schticksState"
+import { initialSchticksState, schticksReducer, SchticksActions } from "@/reducers/schticksState"
 import { Schtick } from "@/types/types"
 
 interface SchticksProps {
-  state: SchticksStateType
-  dispatch?: React.Dispatch<SchticksActionType>
 }
 
-export default function Schticks({ state, dispatch }: SchticksProps) {
+export default function Schticks({}: SchticksProps) {
+  const { character } = useCharacter()
+  const [state, dispatch] = useReducer(schticksReducer, initialSchticksState)
   const { user, client } = useClient()
+  const { toastError, toastSuccess } = useToast()
+  const { loading, edited, category, path, name, schticks, meta, page } = state
+  const router = useRouter()
 
-  const schticks:Schtick[] = useMemo(() => (state?.schticks || []), [state?.schticks])
-  const meta = state?.meta || {}
+  useEffect(() => {
+    const reload = async () => {
+      try {
+        if (character?.id) {
+          const data = await client.getCharacterSchticks(character, { page, category, path, name, character_id: character?.id as string })
+          dispatch({ type: SchticksActions.SCHTICKS, payload: data })
+        } else {
+          const data = await client.getSchticks({ page, category, path, name, character_id: character?.id as string })
+          dispatch({ type: SchticksActions.SCHTICKS, payload: data })
+        }
+      } catch (error) {
+        console.error("Error fetching schticks:", error)
+        toastError()
+      }
+    }
 
-  const rowsOfData = useMemo(() => (
-    rowMap<Schtick>(schticks, 2)
-  ), [schticks])
+    if (user && edited) {
+      reload()
+    }
+  }, [user, edited])
 
-  const outputRows = useMemo(() => {
-    const output = (
-      rowsOfData.map((row: Schtick[], index: number) => (
-        <Stack spacing={1} direction="row" key={`row_${index}`}>
-          { row.map((schtick: Schtick) => (
-            <SchtickCard key={`schtick_${schtick?.id}`} schtick={schtick} state={state} dispatch={dispatch as React.Dispatch<SchticksActionType>} />
-          )) }
-        </Stack>
-      ))
+  useEffect(() => {
+    if (character?.id) return
+
+    router.push(
+      { pathname: router.pathname, query: { page: page } },
+      undefined,
+      { shallow: true }
     )
-    return output
-  }, [state, dispatch, rowsOfData])
+  }, [edited])
 
-  function loadPrevious() {
-    if (!dispatch) return
+  const rowsOfData = rowMap<Schtick>(schticks, 2)
 
-    dispatch({ type: SchticksActions.PREVIOUS })
+  const outputRows = rowsOfData.map((row: Schtick[], index: number) => (
+    <Stack spacing={1} direction="row" key={`row_${index}`}>
+      { row.map((schtick: Schtick) => (
+        <SchtickCard key={`schtick_${schtick?.id}`} schtick={schtick} state={state} dispatch={dispatch as React.Dispatch<SchticksActionType>} />
+      )) }
+    </Stack>)
+  )
+
+  const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
+    dispatch({ type: SchticksActions.UPDATE, name: "page", value: value})
+
+    if (character?.id) return
+
+    router.push(
+      { pathname: router.pathname, query: { page: value } },
+      undefined,
+      { shallow: true }
+    )
   }
 
-  function loadNext() {
-    if (!dispatch) return
-
-    dispatch({ type: SchticksActions.NEXT })
-  }
-
-  if (!schticks) return (<></>)
+  if (!schticks.length) return (<></>)
 
   return (
     <>
-      <Subhead>Schticks</Subhead>
-      <Stack spacing={1}>
-        { meta?.prev_page && <Box width="100%"><Button sx={{width: "100%"}} onClick={loadPrevious} variant="contained" color="primary">Previous</Button></Box> }
-        { outputRows }
-        { meta?.next_page && <Box width="100%"><Button sx={{width: "100%"}} onClick={loadNext} variant="contained" color="primary">Next</Button></Box> }
+      <ButtonBar sx={{height: 80}}>
+        <FilterSchticks state={state} dispatch={dispatch} />
+        <CreateSchtickButton state={state} dispatch={dispatch} />
+      </ButtonBar>
+      <Pagination count={meta.total_pages} page={page} onChange={handlePageChange} variant="outlined" color="primary" shape="rounded" size="large" />
+      <Stack sx={{my: 2}} spacing={1}>
+        { loading && <>
+          <Stack direction="row" spacing={1}>
+            <Skeleton variant="rectangular" width="50%" height={220} sx={{borderRadius: 1}} />
+            <Skeleton variant="rectangular" width="50%" height={220} sx={{borderRadius: 1}} />
+          </Stack>
+          <Stack direction="row" spacing={1}>
+            <Skeleton variant="rectangular" width="50%" height={220} sx={{borderRadius: 1}} />
+            <Skeleton variant="rectangular" width="50%" height={220} sx={{borderRadius: 1}} />
+          </Stack>
+          <Stack direction="row" spacing={1}>
+            <Skeleton variant="rectangular" width="50%" height={220} sx={{borderRadius: 1}} />
+            <Skeleton variant="rectangular" width="50%" height={220} sx={{borderRadius: 1}} />
+          </Stack>
+          <Stack direction="row" spacing={1}>
+            <Skeleton variant="rectangular" width="50%" height={220} sx={{borderRadius: 1}} />
+            <Skeleton variant="rectangular" width="50%" height={220} sx={{borderRadius: 1}} />
+          </Stack>
+        </> }
+        { !loading && outputRows }
       </Stack>
+      <Pagination count={meta.total_pages} page={page} onChange={handlePageChange} variant="outlined" color="primary" shape="rounded" size="large" />
+      { character?.id && <SchtickSelector allSchticksState={state} dispatchAllSchticks={dispatch} /> }
     </>
   )
 }

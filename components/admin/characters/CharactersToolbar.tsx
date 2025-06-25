@@ -28,7 +28,7 @@ export default function CharactersToolbar({ state, dispatch, textSearch }: Chara
         <CharacterFilters state={state} dispatch={dispatch} textSearch={textSearch} />
         <CreateCharacter />
         <CreateVehicle />
-        <FormControlLabel label="All" control={<Switch checked={showHidden} />} onChange={show} />
+        <FormControlLabel label="Show Hidden" control={<Switch checked={showHidden} />} onChange={show} />
       </Stack>
     </ButtonBar>
   )

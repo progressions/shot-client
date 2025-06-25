@@ -1,13 +1,16 @@
 import { colors, Card, CardHeader, CardContent, CardActions, Typography } from "@mui/material"
+import type { Party } from "@/types/types"
+import CharacterAvatars from "@/components/fights/CharacterAvatars"
 
 interface PartyCardBaseProps {
+  party: Party
   title: string
   subheader: string
   avatar?: React.ReactNode
   action: React.ReactNode
 }
 
-export default function PartyCardBase({ title, subheader, avatar, action, children }: React.PropsWithChildren<PartyCardBaseProps>) {
+export default function PartyCardBase({ party, title, subheader, avatar, action, children }: React.PropsWithChildren<PartyCardBaseProps>) {
   return (
     <Card sx={{backgroundColor: colors.blueGrey["500"], minHeight: 200}}>
       <CardHeader
@@ -22,6 +25,7 @@ export default function PartyCardBase({ title, subheader, avatar, action, childr
         { children }
       </CardContent>
       <CardActions>
+        <CharacterAvatars characters={party.characters} />
       </CardActions>
     </Card>
   )

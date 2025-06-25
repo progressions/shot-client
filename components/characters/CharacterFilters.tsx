@@ -5,6 +5,8 @@ import { CharactersStateType, CharactersActionType, CharactersActions } from "@/
 import { StyledAutocomplete, StyledTextField, StyledSelect } from "@/components/StyledFields"
 import { CharacterTypes, defaultFaction } from "@/types/types"
 
+import { useRouter } from 'next/router'
+
 interface CharacterFiltersProps {
   state: CharactersStateType,
   dispatch: React.Dispatch<CharactersActionType>
@@ -12,7 +14,9 @@ interface CharacterFiltersProps {
 }
 
 export default function CharacterFilters({ state, dispatch, textSearch = false }: CharacterFiltersProps) {
-  const { loading, character, characters, character_type, faction, factions, archetype, archetypes, search } = state
+  const router = useRouter()
+
+  const { loading, meta, character, characters, character_type, faction, factions, archetype, archetypes, search } = state
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     dispatch({ type: CharactersActions.UPDATE, name: event.target.name, value: event.target.value })
