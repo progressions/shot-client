@@ -27,8 +27,13 @@ export default function Schticks({}: SchticksProps) {
   useEffect(() => {
     const reload = async () => {
       try {
-        const data = await client.getSchticks({ page, category, path, name, character_id: character?.id as string })
-        dispatch({ type: SchticksActions.SCHTICKS, payload: data })
+        if (character?.id) {
+          const data = await client.getCharacterSchticks(character, { page, category, path, name, character_id: character?.id as string })
+          dispatch({ type: SchticksActions.SCHTICKS, payload: data })
+        } else {
+          const data = await client.getSchticks({ page, category, path, name, character_id: character?.id as string })
+          dispatch({ type: SchticksActions.SCHTICKS, payload: data })
+        }
       } catch (error) {
         console.error("Error fetching schticks:", error)
         toastError()
@@ -72,7 +77,7 @@ export default function Schticks({}: SchticksProps) {
     )
   }
 
-  if (!schticks) return (<></>)
+  if (!schticks.length) return (<></>)
 
   return (
     <>
