@@ -112,9 +112,7 @@ export default function SchtickCard({ schtick, state, dispatch }: SchtickCardPro
   }, [character, schtick, deleteFunction, deletion])
 
   if (!schtick) return <></>
-  // Include an icon for the schtick's category
-  //
-  // Maybe a specific color for each "path"
+
   const avatar = <Avatar sx={{bgcolor: schtick.color || 'secondary', color: "white"}} variant="rounded">{schtick.category[0]}</Avatar>
 
   return (

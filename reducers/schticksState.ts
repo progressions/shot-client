@@ -67,12 +67,21 @@ export const initialSchticksState: SchticksStateType = {
 
 export function schticksReducer(state: SchticksStateType, action: SchticksActionType) {
   switch(action.type) {
+    case SchticksActions.EDIT:
+      console.log("Setting edited to true")
+      return {
+        ...state,
+        edited: true,
+        loading: true
+      }
     case SchticksActions.SAVING:
+      console.log("SchticksActions.SAVING")
       return {
         ...state,
         saving: true
       }
     case SchticksActions.SUCCESS:
+      console.log("SchticksActions.SUCCESS")
       return {
         ...state,
         loading: false,
@@ -80,6 +89,7 @@ export function schticksReducer(state: SchticksStateType, action: SchticksAction
         edited: false
       }
     case SchticksActions.CATEGORY:
+      console.log("SchticksActions.CATEGORY", action.payload)
       return {
         ...state,
         edited: true,
@@ -90,6 +100,7 @@ export function schticksReducer(state: SchticksStateType, action: SchticksAction
         schtick: initialSchticksState.schtick
       }
     case SchticksActions.PATH:
+      console.log("SchticksActions.PATH", action.payload)
       return {
         ...state,
         page: 1,
@@ -98,6 +109,7 @@ export function schticksReducer(state: SchticksStateType, action: SchticksAction
         path: (action.payload || initialSchticksState.path) as SchtickPath,
       }
     case SchticksActions.NAME:
+      console.log("SchticksActions.NAME", action.payload)
       return {
         ...state,
         page: 1,
@@ -106,6 +118,7 @@ export function schticksReducer(state: SchticksStateType, action: SchticksAction
         name: (action.payload || initialSchticksState.name) as string,
       }
     case SchticksActions.UPDATE:
+      console.log("SchticksActions.UPDATE", action.name, action.value)
       if (action.name === "page") {
         return {
           ...state,
@@ -121,13 +134,15 @@ export function schticksReducer(state: SchticksStateType, action: SchticksAction
         [action.name]: action.value,
       }
     case SchticksActions.SCHTICK:
+      console.log("SchticksActions.SCHTICK", action.payload)
       return {
         ...state,
-        edited: false,
+        // edited: false,
         loading: false,
         schtick: (action.payload || initialSchticksState.schtick) as Schtick,
       }
     case SchticksActions.SCHTICKS:
+      console.log("SchticksActions.SCHTICKS")
       const { schticks, meta, paths, categories } = action.payload as SchticksResponse
       return {
         ...state,
@@ -140,12 +155,17 @@ export function schticksReducer(state: SchticksStateType, action: SchticksAction
         categories: categories
       }
     case SchticksActions.RESET:
+      console.log("SchticksActions.RESET")
       return {
         ...state,
         page: 1,
+        loading: false,
+        edited: false,
+        saving: false,
         schtick: initialSchticksState.schtick
       }
     default:
+      console.log("Unhandled action type:", action.type)
       return state
   }
 }

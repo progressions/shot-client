@@ -1,4 +1,4 @@
-import { Pagination, Button, Box, Stack, Typography } from "@mui/material"
+import { Grid, Skeleton, Pagination, Button, Box, Stack, Typography } from "@mui/material"
 import SchtickCard from "@/components/schticks/SchtickCard"
 import { useCharacter, useClient, useToast } from "@/contexts"
 import { Subhead } from "@/components/StyledFields"
@@ -24,9 +24,12 @@ export default function Schticks({}: SchticksProps) {
   const { loading, edited, category, path, name, schticks, meta, page } = state
   const router = useRouter()
 
+  console.log("Schticks edited", edited)
+
   useEffect(() => {
     const reload = async () => {
       try {
+        console.log("reloading")
         const data = await client.getSchticks({ page, category, path, name, character_id: character?.id as string })
         dispatch({ type: SchticksActions.SCHTICKS, payload: data })
       } catch (error) {
@@ -40,22 +43,15 @@ export default function Schticks({}: SchticksProps) {
     }
   }, [user, edited])
 
-  const rowsOfData = useMemo(() => (
-    rowMap<Schtick>(schticks, 2)
-  ), [schticks])
+  const rowsOfData = rowMap<Schtick>(schticks, 2)
 
-  const outputRows = useMemo(() => {
-    const output = (
-      rowsOfData.map((row: Schtick[], index: number) => (
-        <Stack spacing={1} direction="row" key={`row_${index}`}>
-          { row.map((schtick: Schtick) => (
-            <SchtickCard key={`schtick_${schtick?.id}`} schtick={schtick} state={state} dispatch={dispatch as React.Dispatch<SchticksActionType>} />
-          )) }
-        </Stack>
-      ))
-    )
-    return output
-  }, [state, dispatch, rowsOfData])
+  const outputRows = rowsOfData.map((row: Schtick[], index: number) => (
+    <Stack spacing={1} direction="row" key={`row_${index}`}>
+      { row.map((schtick: Schtick) => (
+        <SchtickCard key={`schtick_${schtick?.id}`} schtick={schtick} state={state} dispatch={dispatch as React.Dispatch<SchticksActionType>} />
+      )) }
+    </Stack>)
+  )
 
   const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
     dispatch({ type: SchticksActions.UPDATE, name: "page", value: value})
@@ -76,7 +72,25 @@ export default function Schticks({}: SchticksProps) {
       </ButtonBar>
       <Pagination count={meta.total_pages} page={page} onChange={handlePageChange} variant="outlined" color="primary" shape="rounded" size="large" />
       <Stack sx={{my: 2}} spacing={1}>
-        { outputRows }
+        { loading && <>
+          <Stack direction="row" spacing={1}>
+            <Skeleton variant="rectangular" width="50%" height={220} sx={{borderRadius: 1}} />
+            <Skeleton variant="rectangular" width="50%" height={220} sx={{borderRadius: 1}} />
+          </Stack>
+          <Stack direction="row" spacing={1}>
+            <Skeleton variant="rectangular" width="50%" height={220} sx={{borderRadius: 1}} />
+            <Skeleton variant="rectangular" width="50%" height={220} sx={{borderRadius: 1}} />
+          </Stack>
+          <Stack direction="row" spacing={1}>
+            <Skeleton variant="rectangular" width="50%" height={220} sx={{borderRadius: 1}} />
+            <Skeleton variant="rectangular" width="50%" height={220} sx={{borderRadius: 1}} />
+          </Stack>
+          <Stack direction="row" spacing={1}>
+            <Skeleton variant="rectangular" width="50%" height={220} sx={{borderRadius: 1}} />
+            <Skeleton variant="rectangular" width="50%" height={220} sx={{borderRadius: 1}} />
+          </Stack>
+        </> }
+        { !loading && outputRows }
       </Stack>
       <Pagination count={meta.total_pages} page={page} onChange={handlePageChange} variant="outlined" color="primary" shape="rounded" size="large" />
     </>

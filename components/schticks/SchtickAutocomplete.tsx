@@ -15,23 +15,28 @@ interface SchtickAutocompleteProps {
 }
 
 export default function SchtickAutocomplete({ state, dispatch }: SchtickAutocompleteProps) {
-  const { loading, schtick, schticks } = state
-  const [search, setSearch] = useState<string>("")
+  const { edited, loading, schtick, schticks } = state
+  const [name, setName] = useState<string>(state.name || "")
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      dispatch({ type: SchticksActions.NAME, payload: search })
+      if (name.length > 3) {
+        dispatch({ type: SchticksActions.NAME, payload: name })
+      }
     }, 1000)
 
     return () => clearTimeout(timer)
-  }, [search, dispatch])
+  }, [name])
 
   function handleSelect(event: React.ChangeEvent<HTMLInputElement>, newValue: Schtick) {
     dispatch({ type: SchticksActions.SCHTICK, payload: newValue })
   }
 
   function handleInputChange(event: React.ChangeEvent<HTMLInputElement>, newValue: string) {
-    setSearch(newValue)
+    if (newValue.length === 0) {
+      dispatch({ type: SchticksActions.NAME, payload: "" })
+    }
+    setName(newValue)
   }
 
   function getOptionLabel(option: Schtick) {
