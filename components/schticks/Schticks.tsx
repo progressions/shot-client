@@ -41,6 +41,8 @@ export default function Schticks({}: SchticksProps) {
   }, [user, edited])
 
   useEffect(() => {
+    if (character?.id) return
+
     router.push(
       { pathname: router.pathname, query: { page: page } },
       undefined,
@@ -60,6 +62,9 @@ export default function Schticks({}: SchticksProps) {
 
   const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
     dispatch({ type: SchticksActions.UPDATE, name: "page", value: value})
+
+    if (character?.id) return
+
     router.push(
       { pathname: router.pathname, query: { page: value } },
       undefined,

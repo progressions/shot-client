@@ -81,12 +81,12 @@ export default function Party({ party, state, dispatch }: PartyProps) {
   subheader += PS.rosterSummary(party)
 
   const avatar = party.image_url ? <ImageDisplay entity={party} /> : null
-
   const mediaUrl = party.image_url ? `${party.image_url}?w-300,h-300` : ""
 
   return (
     <>
       <PartyCardBase
+        party={party}
         title={party.name}
         subheader={subheader}
         action={deleteButton}

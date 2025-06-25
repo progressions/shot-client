@@ -25,7 +25,7 @@ const CharacterAvatar = ({ character, tooltip, href }: CharacterAvatarProps) => 
   if (href) {
     return (
       <Tooltip title={tooltip || defaultTooltip}>
-        <IconButton href='/profile'>
+        <IconButton href={href} sx={{padding: 0}}>
           {baseAvatar}
         </IconButton>
       </Tooltip>

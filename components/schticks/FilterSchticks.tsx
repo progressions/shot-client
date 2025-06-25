@@ -16,7 +16,6 @@ interface FilterSchticksProps {
 }
 
 export default function FilterSchticks({ state, dispatch }: FilterSchticksProps) {
-  console.log("FilterSchticks edited", state.edited)
   return (
     <>
       <CategoryAutocomplete state={state} dispatch={dispatch} />
