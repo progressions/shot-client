@@ -1,8 +1,8 @@
 import { Tooltip, IconButton, Stack } from "@mui/material"
 import { useMemo } from "react"
 
-import EffectsModal from "@/components/state_effects/EffectsModal"
-import Effects from "@/components/state_effects/Effects"
+import EffectsModal from "@/components/character_effects/EffectsModal"
+import Effects from "@/components/character_effects/Effects"
 import { useFight } from "@/contexts/FightContext"
 import { useToast } from "@/contexts/ToastContext"
 import { useClient } from "@/contexts/ClientContext"

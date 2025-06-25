@@ -18,7 +18,7 @@ import { useState } from "react"
 import { useToast } from "@/contexts/ToastContext"
 import { useClient } from "@/contexts/ClientContext"
 import { useFight } from "@/contexts/FightContext"
-import GroupedEffects from "@/components/state_effects/GroupedEffects"
+import GroupedEffects from "@/components/character_effects/GroupedEffects"
 import DriverDetails from "@/components/vehicles/DriverDetails"
 import FES from "@/services/FightEventService"
 
