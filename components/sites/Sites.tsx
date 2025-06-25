@@ -1,4 +1,4 @@
-import { Pagination, Stack } from "@mui/material"
+import { Skeleton, Typography, Pagination, Stack } from "@mui/material"
 import type { Site as SiteType } from "@/types/types"
 import { sitesReducer, initialSitesState, SitesActions } from '@/reducers/sitesState'
 import Site from "@/components/sites/Site"
@@ -17,7 +17,7 @@ export default function Sites({}: SitesProps) {
   const { client, user } = useClient()
   const { toastError, toastSuccess } = useToast()
   const [state, dispatch] = useReducer(sitesReducer, initialSitesState)
-  const { edited, page, meta, sites, faction, secret, search, site } = state
+  const { edited, loading, page, meta, sites, faction, secret, search, site } = state
 
   useEffect(() => {
     const reload = async () => {
@@ -60,8 +60,14 @@ export default function Sites({}: SitesProps) {
       </ButtonBar>
       <Pagination count={meta.total_pages} page={page} onChange={handlePageChange} variant="outlined" color="primary" shape="rounded" size="large" />
       <Stack spacing={2} sx={{ my: 1, width: "100%" }}>
+        { loading && <>
+          <Skeleton variant="rectangular" width="100%" height={220} sx={{borderRadius: 1}} />
+          <Skeleton variant="rectangular" width="100%" height={220} sx={{borderRadius: 1}} />
+          <Skeleton variant="rectangular" width="100%" height={220} sx={{borderRadius: 1}} />
+          <Skeleton variant="rectangular" width="100%" height={220} sx={{borderRadius: 1}} />
+        </> }
         {
-          sites.map(site => (
+          !loading && sites.map(site => (
             <Site key={site.id} site={site} state={state} dispatch={dispatch} />
           ))
         }

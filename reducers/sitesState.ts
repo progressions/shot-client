@@ -70,7 +70,8 @@ export function sitesReducer(state: SitesStateType, action: SitesActionType): Si
       return {
         ...state,
         [action.name as string]: action.value,
-        edited: true
+        edited: true,
+        loading: true
       }
     case SitesActions.SUCCESS:
       return {
@@ -85,16 +86,17 @@ export function sitesReducer(state: SitesStateType, action: SitesActionType): Si
         return {
           ...state,
           edited: true,
+          loading: true,
           page: 1,
           site: defaultSite,
           [action.name as string]: faction
         }
       }
       if (action.name === "page") {
-        console.log("updating page to", action.value)
         return {
           ...state,
           edited: true,
+          loading: true,
           page: action.value as number,
           site: {
             ...state.site,
@@ -105,6 +107,7 @@ export function sitesReducer(state: SitesStateType, action: SitesActionType): Si
       return {
         ...state,
         edited: true,
+        loading: true,
         page: 1,
         site: {
           ...state.site,
