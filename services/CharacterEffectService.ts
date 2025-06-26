@@ -18,16 +18,10 @@ const CharacterEffectService = {
   },
 
   adjustedActionValue: function(character: Character, name: string, fight: Fight, ignoreImpairments: boolean = false): [number, number] {
-    console.log("character.name", character.name)
-    console.log("name", name)
     const effects = FS.characterEffects(fight, character)
-    console.log("effects", effects)
     const matchingEffects = this.effectsForCharacter(character, effects, name)
-    console.log("matchingEffects", matchingEffects)
     const value1 = CS.rawActionValue(character, name)
-    console.log("value1", value1)
     const value2 = value1 - (ignoreImpairments ? 0 : CS.impairments(character))
-    console.log("value2", value2)
 
     return this.actionValueAdjustedByEffects(character, matchingEffects, value1, value2)
   },
