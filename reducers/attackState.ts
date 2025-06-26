@@ -50,6 +50,7 @@ export interface AttackState {
   wayAwfulFailure: boolean
   mookResults: MookResult[]
   shots: number
+  dodged: boolean
 }
 
 export const initialAttackState: AttackState = {
@@ -69,6 +70,7 @@ export const initialAttackState: AttackState = {
   toughness: 0,
   count: 1,
   shots: 3,
+  dodged: false,
 
   // calculated values
   actionResult: 0,

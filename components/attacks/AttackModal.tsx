@@ -39,7 +39,7 @@ export default function AttackModal({ open, setOpen, anchorEl, setAnchorEl }: At
 
   const [state, dispatch] = useReducer(attackReducer, initialAttackState)
   const { wounds, attacker, target, swerve, count,
-    typedSwerve, shots, edited } = state
+    typedSwerve, shots, edited, dodged } = state
 
   useEffect(() => {
     dispatch({ type: AttackActions.RESET })
@@ -128,7 +128,9 @@ export default function AttackModal({ open, setOpen, anchorEl, setAnchorEl }: At
         client.updateCharacter(target, fight),
         FES.attack(client, fight, attacker, target, wounds || 0, shots || 0)
       ])
-      dispatchFight({ type: FightActions.EDIT })
+      if (dodged) {
+        await FES.dodge(client, fight, target, 1)
+      }
       if (!!wounds) {
         toastSuccess(`${target.name} took ${wounds} wounds. ${attacker.name} spent ${shots} ${shots == 1 ? "Shot" : "Shots"}.`)
       } else {
