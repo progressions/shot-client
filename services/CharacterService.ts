@@ -106,6 +106,9 @@ const CharacterService = {
   },
 
   secondaryAttack: function(character: Character): string {
+    if (this.otherActionValue(character, "SecondaryAttack") === "null") {
+      return ""
+    }
     return this.otherActionValue(character, "SecondaryAttack")
   },
 
