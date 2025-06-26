@@ -29,7 +29,7 @@ export default function Attacker({ state, setAttacker, handleChange, setWeapon, 
     />
   )
 
-  const [changed, adjustedDamage] = CES.adjustedActionValue(attacker, "Damage", fight, true)
+  const [changed, adjustedDamage] = CES.adjustedActionValue(attacker, "Damage", fight, false)
 
   return(<>
     <Stack direction="row" spacing={2} alignItems="top">

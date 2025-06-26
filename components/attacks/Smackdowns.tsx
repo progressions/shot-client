@@ -9,6 +9,8 @@ import type { Character, ActionValues } from "@/types/types"
 import type { MookResult, AttackState } from "@/reducers/attackState"
 import CS from "@/services/CharacterService"
 import AS from "@/services/ActionService"
+import CES from "@/services/CharacterEffectService"
+import { colorForValue } from "@/components/characters/ActionValueDisplay"
 
 interface SmackdownsParams {
   state: AttackState
@@ -22,12 +24,14 @@ export default function Smackdowns({ state, handleClose }: SmackdownsParams) {
 
   const { wounds, target, mookResults } = state
 
+  const [changed, adjustedToughness] = CES.adjustedActionValue(target, "Toughness", fight, false)
+  const toughness = state.toughness ? state.toughness : adjustedToughness
+  const color = (toughness < CS.toughness(target)) ? "red" : (toughness > CS.toughness(target)) ? "green" : "inherit"
+
   const damageMessage = (st: MookResult) => {
-    const originalToughness = CS.rawActionValue(target, "Toughness")
-    const toughness = CS.toughness(target)
     const smackdown = st.smackdown
     const wounds = st.wounds
-    const toughnessDisplay = (state.toughness < originalToughness) ? (<><strong style={{color: "red"}}>{toughness}</strong> ({target.action_values["Toughness"]})</>) : toughness
+    const toughnessDisplay = (<><strong style={{color: color}}>{toughness}</strong> ({CS.toughness(target)})</>)
     const toughnessMessage = (state.toughness) ? (<> - Toughness {toughnessDisplay} = <strong style={{color: "red"}}>{wounds || 0} Wounds</strong></>) : ""
 
     return (<>{st.actionResult}: Smackdown of {st.smackdown} {toughnessMessage}</>)
