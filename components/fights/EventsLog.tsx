@@ -17,12 +17,14 @@ export default function EventsLog() {
 
   useEffect(() => {
     async function fetchEvents() {
-      if (fight) {
-        const events = await FES.getFightEvents(client, fight)
-        setEvents(events || [])
-      }
+      const events = await FES.getFightEvents(client, fight)
+      setEvents(events || [])
     }
-    fetchEvents()
+    if (fight?.id) {
+      fetchEvents().catch(error => {
+        console.error("Error fetching fight events:", error)
+      })
+    }
   }, [fight])
 
   function handleClick() {

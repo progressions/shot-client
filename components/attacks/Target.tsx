@@ -24,8 +24,7 @@ interface TargetProps {
 }
 
 export default function Target({ state, setTarget, handleChange, dispatch }: TargetProps) {
-  const { attacker, target, defense, toughness, edited } = state
-  const [dodged, setDodged] = useState(false)
+  const { dodged, attacker, target, defense, toughness, edited } = state
   const { client } = useClient()
   const { fight, dispatch:dispatchFight } = useFight()
   const { toastSuccess, toastError } = useToast()
@@ -41,14 +40,12 @@ export default function Target({ state, setTarget, handleChange, dispatch }: Tar
   const takeDodgeAction = async (character: Character) => {
     try {
       await client.actCharacter(character, fight, 1)
-      await FES.dodge(client, fight, character, 1)
       toastSuccess(`${character.name} dodged for 1 shot.`)
       dispatch({ type: AttackActions.UPDATE, payload: { defense: defense + 3 } })
-      dispatchFight({ type: FightActions.EDIT })
     } catch(error) {
       toastError()
     }
-    setDodged(true)
+    dispatch({ type: AttackActions.UPDATE, payload: { dodged: true } })
   }
 
   return(<>

@@ -44,7 +44,7 @@ export default function Schticks({}: SchticksProps) {
     if (user && edited) {
       reload()
     }
-  }, [user, edited])
+  }, [user, edited, page, category, path, name, character?.id])
 
   useEffect(() => {
     if (character?.id) return
@@ -54,7 +54,7 @@ export default function Schticks({}: SchticksProps) {
       undefined,
       { shallow: true }
     )
-  }, [edited])
+  }, [edited, page])
 
   const rowsOfData = rowMap<Schtick>(schticks, 2)
 
