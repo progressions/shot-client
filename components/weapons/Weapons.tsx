@@ -1,4 +1,4 @@
-import { Skeleton, Pagination, Button, Box, Stack } from "@mui/material"
+import { Typography, Skeleton, Pagination, Button, Box, Stack } from "@mui/material"
 import { Subhead } from "@/components/StyledFields"
 import type { QueryType, Weapon as WeaponType } from "@/types/types"
 import Weapon from "@/components/weapons/Weapon"
@@ -40,11 +40,8 @@ export default function Weapons({}: WeaponsProps) {
 
   useEffect(() => {
     if (edited) return
-
-    if (character?.id && page > meta.total_pages) {
-      // dispatch({ type: WeaponsActions.PAGE, name: "page", value: 1})
-      return
-    }
+    if (!page) return
+    if (character?.id) return
 
     if (page > meta.total_pages) {
       router.push(
@@ -115,7 +112,12 @@ export default function Weapons({}: WeaponsProps) {
   return (
     <>
       <Subhead>Weapons</Subhead>
-    { !loading && <>
+      { weapons?.length === 0 && !loading && (
+        <Typography variant="body1">
+          No weapons.
+        </Typography>
+      )}
+    { !loading && !!weapons?.length && <>
       <ButtonBar sx={{height: 80}}>
         <FilterWeapons state={state} dispatch={dispatch} />
       </ButtonBar>

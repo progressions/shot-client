@@ -34,6 +34,7 @@ export default function Sites({}: SitesProps) {
   useEffect(() => {
     if (edited) return
     if (!page) return
+    if (character?.id) return
 
     if (page > meta.total_pages) {
       router.push(

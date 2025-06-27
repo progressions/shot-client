@@ -39,11 +39,8 @@ export default function Schticks({}: SchticksProps) {
 
   useEffect(() => {
     if (edited) return
-
-    if (character?.id && page > meta.total_pages) {
-      // dispatch({ type: SchticksActions.PAGE, name: "page", value: 1})
-      return
-    }
+    if (!page) return
+    if (character?.id) return
 
     if (page > meta.total_pages) {
       router.push(
@@ -108,7 +105,12 @@ export default function Schticks({}: SchticksProps) {
         <FilterSchticks state={state} dispatch={dispatch} />
         <CreateSchtickButton state={state} dispatch={dispatch} />
       </ButtonBar>
-      <Pagination count={meta.total_pages} page={page} onChange={handlePageChange} variant="outlined" color="primary" shape="rounded" size="large" />
+      { schticks?.length === 0 && !loading && (
+        <Typography variant="body1">
+          No schticks.
+        </Typography>
+      )}
+      { !!schticks?.length && <Pagination count={meta.total_pages} page={page} onChange={handlePageChange} variant="outlined" color="primary" shape="rounded" size="large" /> }
       <Stack sx={{my: 2}} spacing={1}>
         { loading && <>
           <Stack direction="row" spacing={1}>
@@ -130,7 +132,7 @@ export default function Schticks({}: SchticksProps) {
         </> }
         { !loading && outputRows }
       </Stack>
-      <Pagination count={meta.total_pages} page={page} onChange={handlePageChange} variant="outlined" color="primary" shape="rounded" size="large" />
+      { !!schticks?.length && <Pagination count={meta.total_pages} page={page} onChange={handlePageChange} variant="outlined" color="primary" shape="rounded" size="large" /> }
       { character?.id && <SchtickSelector allSchticksState={state} dispatchAllSchticks={dispatch} /> }
     </>
   )
