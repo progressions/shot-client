@@ -9,10 +9,12 @@ import FormatBoldIcon from '@mui/icons-material/FormatBold'
 import FormatItalicIcon from '@mui/icons-material/FormatItalic'
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted'
 import styles from './Editor.module.scss'
+import { useState } from "react"
 
 interface EditorProps {
   value: string
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void
+  onBlur?: (event: React.FocusEvent<HTMLInputElement>) => void
   name?: string
 }
 
@@ -109,13 +111,34 @@ const extensions = [
   }),
 ]
 
-const Editor = ({ value, onChange, name = 'description' }: EditorProps) => {
+const Editor = ({ value, onBlur, onChange, name = 'description' }: EditorProps) => {
+  const [content, setContent] = useState<string>(value)
+
+  const onChangeContent = (event: React.ChangeEvent<HTMLInputElement>): void => {
+    const { value } = event.target
+    setContent(value)
+  }
+
+  const saveOnBlur = (event: React.FocusEvent<HTMLInputElement>) => {
+    console.log('Editor onBlur event:', event)
+    onChange({
+      target: {
+        name,
+        value: content,
+      },
+    } as React.ChangeEvent<HTMLInputElement>)
+    if (onBlur) {
+      onBlur(event)
+    }
+  }
+
   return (
     <div className={styles.editorContainer}>
       <EditorProvider
         slotBefore={<MenuBar />}
         extensions={extensions}
         content={value}
+        onBlur={saveOnBlur}
         onUpdate={({ editor }) => {
           console.log('Editor updated, HTML:', editor.getHTML())
           const syntheticEvent = {
@@ -124,7 +147,7 @@ const Editor = ({ value, onChange, name = 'description' }: EditorProps) => {
               value: editor.getHTML(),
             },
           } as React.ChangeEvent<HTMLInputElement>
-          onChange(syntheticEvent)
+          onChangeContent(syntheticEvent)
         }}
       />
     </div>

@@ -86,6 +86,18 @@ const SharedService = {
     return this.type(character) === type
   },
 
+  actionValues: function(character: Character | Vehicle): Record<string, number> {
+    const actionValues: Record<string, number> = {}
+
+    for (const key in character.action_values) {
+      if (character.action_values.hasOwnProperty(key)) {
+        actionValues[key] = this.actionValue(character, key)
+      }
+    }
+
+    return actionValues
+  },
+
   // Adjusted for Impairment
   // Attacks, Defense and skill checks
   actionValue: function(character: Character | Vehicle, key: string): number {

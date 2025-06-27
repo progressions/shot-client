@@ -203,6 +203,10 @@ const CharacterService = {
 
   description: function(character: Character, key: keyof DescriptionValues): string {
     return character.description[key] as string || ""
+  },
+
+  appearance: function(character: Character): string {
+    return this.actionValue(character, "Appearance")
   }
 
 }

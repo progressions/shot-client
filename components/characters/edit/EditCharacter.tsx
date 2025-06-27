@@ -120,7 +120,7 @@ export default function EditCharacter({ character:initialCharacter }: EditCharac
   const userDisplay = (<>
     <Stack direction="row" spacing={1}>
       <UserAvatar user={character?.user} />
-      <Typography variant="h5" sx={{pt: 0.4}}>
+      <Typography variant="h6" sx={{pt: 0.4}}>
         {[character?.user?.first_name, character?.user?.last_name].filter(Boolean).join(" ") || character?.user?.email}
       </Typography>
     </Stack>
@@ -129,11 +129,22 @@ export default function EditCharacter({ character:initialCharacter }: EditCharac
   return (
     <>
       { (edited || saving) && <Typography>Saving...</Typography> }
-      { !(edited || saving) && character?.user?.email && userDisplay }
       <Box component="form" onSubmit={handleSubmit}>
         <Stack spacing={2}>
           <Stack direction="row" spacing={1} justifyContent="space-between">
             <Stack spacing={2}>
+              <Stack direction="row" spacing={1} width={600} alignItems="center">
+                <StyledTextField
+                  name="name"
+                  label="Name"
+                  required
+                  fullWidth
+                  onChange={handleChange}
+                  value={character.name}
+                  inputProps={{ sx: { fontSize: 28, fontWeight: "bold" } }}
+                />
+              </Stack>
+              { !(edited || saving) && character?.user?.email && userDisplay }
               <Grid container spacing={2} alignItems="flex-end">
                 <Grid item xs={6}>
                   <FormControlLabel label="Task" name="task" control={<Switch checked={character.task} />} onChange={handleCheck} />
@@ -149,9 +160,6 @@ export default function EditCharacter({ character:initialCharacter }: EditCharac
                   <NotionLink />
                 </Grid>
               </Grid>
-              <Stack direction="row" spacing={1} width={600} alignItems="center">
-                <StyledTextField name="name" label="Name" required autoFocus fullWidth onChange={handleChange} value={character.name} />
-              </Stack>
               <Stack direction="row" spacing={1}>
                 <Faction faction={character.faction} onChange={handleFactionChange} />
                 <CharacterType value={action_values.Type as string} onChange={handleAVChange} />

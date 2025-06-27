@@ -5,6 +5,7 @@ import type { Character } from "@/types/types"
 import { DescriptionKeys as D } from "@/types/types"
 import CS from "@/services/CharacterService"
 import Editor from "@/utils/Editor"
+import { useState } from "react"
 
 interface DescriptionProps {
   character: Character
