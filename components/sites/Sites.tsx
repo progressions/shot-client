@@ -2,7 +2,7 @@ import { Skeleton, Typography, Pagination, Stack } from "@mui/material"
 import type { QueryType, Site as SiteType } from "@/types/types"
 import { sitesReducer, initialSitesState, SitesActions } from '@/reducers/sitesState'
 import Site from "@/components/sites/Site"
-import { ButtonBar } from "@/components/StyledFields"
+import { Subhead, ButtonBar } from "@/components/StyledFields"
 import FilterSites from "@/components/sites/FilterSites"
 
 import { useClient, useToast, useCharacter } from "@/contexts"
@@ -76,24 +76,33 @@ export default function Sites({}: SitesProps) {
 
   return (
     <>
-      <ButtonBar sx={{height: 80}}>
-        <FilterSites state={state} dispatch={dispatch} />
-      </ButtonBar>
-      <Pagination count={meta.total_pages} page={page} onChange={handlePageChange} variant="outlined" color="primary" shape="rounded" size="large" />
-      <Stack spacing={2} sx={{ my: 1, width: "100%" }}>
-        { loading && <>
-          <Skeleton variant="rectangular" width="100%" height={220} sx={{borderRadius: 1}} />
-          <Skeleton variant="rectangular" width="100%" height={220} sx={{borderRadius: 1}} />
-          <Skeleton variant="rectangular" width="100%" height={220} sx={{borderRadius: 1}} />
-          <Skeleton variant="rectangular" width="100%" height={220} sx={{borderRadius: 1}} />
-        </> }
-        {
-          !loading && sites.map(site => (
-            <Site key={site.id} site={site} state={state} dispatch={dispatch} />
-          ))
-        }
-      </Stack>
-      <Pagination count={meta.total_pages} page={page} onChange={handlePageChange} variant="outlined" color="primary" shape="rounded" size="large" />
+      <Subhead>Sites</Subhead>
+      { sites?.length === 0 && !loading && (
+        <Typography variant="body1">
+          No sites.
+        </Typography>
+      )}
+      { !loading && !!sites.length && <>
+        <ButtonBar sx={{height: 80}}>
+          <FilterSites state={state} dispatch={dispatch} />
+        </ButtonBar>
+        <Pagination count={meta.total_pages} page={page} onChange={handlePageChange} variant="outlined" color="primary" shape="rounded" size="large" />
+        <Stack spacing={2} sx={{ my: 1, width: "100%" }}>
+          {
+            !loading && sites.map(site => (
+              <Site key={site.id} site={site} state={state} dispatch={dispatch} />
+            ))
+          }
+        </Stack>
+        <Pagination count={meta.total_pages} page={page} onChange={handlePageChange} variant="outlined" color="primary" shape="rounded" size="large" />
+      </> }
+
+      { loading && <>
+        <Skeleton variant="rectangular" width="100%" height={220} sx={{borderRadius: 1}} />
+        <Skeleton variant="rectangular" width="100%" height={220} sx={{borderRadius: 1}} />
+        <Skeleton variant="rectangular" width="100%" height={220} sx={{borderRadius: 1}} />
+        <Skeleton variant="rectangular" width="100%" height={220} sx={{borderRadius: 1}} />
+      </> }
     </>
   )
 }

@@ -1,5 +1,5 @@
 import { Typography, Skeleton, Pagination, Button, Box, Stack } from "@mui/material"
-import { Subhead } from "@/components/StyledFields"
+import { ButtonBar, Subhead } from "@/components/StyledFields"
 import type { QueryType, Weapon as WeaponType } from "@/types/types"
 import Weapon from "@/components/weapons/Weapon"
 import { useClient, useToast, useCharacter } from "@/contexts"
@@ -8,7 +8,6 @@ import AddWeapon from "@/components/weapons/AddWeapon"
 import { useRouter } from 'next/router'
 import { useReducer, useEffect } from "react"
 
-import { ButtonBar } from "@/components/StyledFields"
 import FilterWeapons from "@/components/weapons/FilterWeapons"
 import { WeaponsActions, initialWeaponsState, weaponsReducer } from "@/reducers/weaponsState"
 import type { WeaponsStateType, WeaponsActionType } from "@/reducers/weaponsState"

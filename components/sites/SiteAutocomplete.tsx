@@ -31,7 +31,7 @@ export default function SiteAutocomplete({ state, dispatch }: SiteAutocompletePr
           value={site}
           onChange={selectSite}
           getOptionLabel={getOptionLabel}
-          renderInput={(params: InputParamsType) => <StyledTextField autoFocus {...params} label="Site" />}
+          renderInput={(params: InputParamsType) => <StyledTextField {...params} label="Site" />}
         />
       </Stack>
     </>
