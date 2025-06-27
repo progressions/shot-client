@@ -14,7 +14,7 @@ import Faction from "@/components/characters/edit/Faction"
 import CharacterFilters from "@/components/characters/CharacterFilters"
 import SelectCharacter from "@/components/characters/SelectCharacter"
 import ImageManager from "@/components/images/ImageManager"
-import Api from "@/utils/Api"
+import Editor from "@/utils/Editor"
 
 interface SiteModalProps {
   state: SitesStateType
@@ -89,7 +89,7 @@ export default function SiteModal({ state, dispatch, open, setOpen, site:initial
         <Stack spacing={1}>
           <Stack direction="row" spacing={1} alignItems="center">
             <StyledTextField
-              sx={{width: 300}}
+              sx={{width: 600}}
               required
               autoFocus
               value={site?.name || ""}
@@ -99,20 +99,8 @@ export default function SiteModal({ state, dispatch, open, setOpen, site:initial
               disabled={loading}
             />
           </Stack>
-          <Stack direction="row" spacing={1} alignItems="center">
-            <StyledTextField
-              sx={{width: 300}}
-              fullWidth
-              multiline
-              rows={3}
-              value={site?.description || ""}
-              name="description"
-              label="Description"
-              onChange={handleChange}
-              disabled={loading}
-            />
-          </Stack>
-          <Faction faction={site.faction || defaultFaction} onChange={handleChange} />
+          <Editor name="description" value={site?.description || ""} onChange={handleChange} />
+          <Faction faction={site.faction || defaultFaction} onChange={handleChange} width={600} />
           { site?.id && <SelectCharacter addCharacter={addCharacter} /> }
           <Stack direction="row" spacing={1} alignItems="center">
             <CancelButton disabled={loading} onClick={cancelForm} />

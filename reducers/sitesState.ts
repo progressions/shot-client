@@ -5,6 +5,7 @@ export enum SitesActions {
   OPEN = "open",
   SITES = "sites",
   SITE = "site",
+  PAGE = "page",
   RESET = "reset",
   SUCCESS = "success",
   UPDATE = "update",
@@ -25,7 +26,7 @@ export interface SitesStateType {
   factions: Faction[]
   saving: boolean
   search: string
-  page?: number
+  page: number
 }
 
 export type PayloadType = Site | SitesResponse | string | Element | null | boolean
@@ -40,7 +41,7 @@ interface PayloadAction {
 }
 
 interface UpdateAction {
-  type: Extract<SitesActions, SitesActions.UPDATE | SitesActions.EDIT>
+  type: Extract<SitesActions, SitesActions.UPDATE | SitesActions.EDIT | SitesActions.PAGE>
   name?: string
   value?: string | boolean | number
 }
@@ -80,6 +81,13 @@ export function sitesReducer(state: SitesStateType, action: SitesActionType): Si
         saving: false,
         edited: false
       }
+    case SitesActions.PAGE:
+      return {
+        ...state,
+        edited: true,
+        loading: true,
+        page: action.value as number,
+      }
     case SitesActions.UPDATE:
       if (action.name === "faction") {
         const faction = state.factions.find(faction => faction.id === action.value) || defaultFaction
@@ -92,23 +100,11 @@ export function sitesReducer(state: SitesStateType, action: SitesActionType): Si
           [action.name as string]: faction
         }
       }
-      if (action.name === "page") {
-        return {
-          ...state,
-          edited: true,
-          loading: true,
-          page: action.value as number,
-          site: {
-            ...state.site,
-          }
-        }
-      }
 
       return {
         ...state,
         edited: true,
         loading: true,
-        page: 1,
         site: {
           ...state.site,
           [action.name as string]: action.value

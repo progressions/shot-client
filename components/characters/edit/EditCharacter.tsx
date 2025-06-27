@@ -19,7 +19,7 @@ import NotionLink from "@/components/notion/NotionLink"
 import AssignUser from "@/components/characters/edit/AssignUser"
 import UserAvatar from "@/components/UserAvatar"
 
-import { useEffect } from "react"
+import { useReducer, useEffect } from "react"
 
 import { Tooltip, Grid, ButtonGroup, Link, colors, Typography, Box, Stack, TextField, FormControlLabel, Switch, Button, InputAdornment } from "@mui/material"
 import FavoriteIcon from '@mui/icons-material/Favorite'
@@ -32,9 +32,9 @@ import { Subhead, StyledTextField } from "@/components/StyledFields"
 
 import type { Character } from "@/types/types"
 import type { SchticksStateType } from "@/reducers/schticksState"
-import { initialSchticksState as initialSchticksState } from "@/reducers/schticksState"
+import { initialSchticksState, schticksReducer } from "@/reducers/schticksState"
 import type { WeaponsStateType } from "@/reducers/weaponsState"
-import { initialWeaponsState as initialWeaponsState } from "@/reducers/weaponsState"
+import { initialWeaponsState, weaponsReducer } from "@/reducers/weaponsState"
 import { CharacterActions } from "@/reducers/characterState"
 import CS from "@/services/CharacterService"
 import GamemasterOnly from "@/components/GamemasterOnly"
@@ -115,9 +115,8 @@ export default function EditCharacter({ character:initialCharacter }: EditCharac
     )
   }
 
-  const schticksState:SchticksStateType = { ...initialSchticksState, schticks: schticks }
-  const weaponsState:WeaponsStateType = { ...initialWeaponsState, weapons: weapons }
   const notionLink = CS.notionLink(character)
+
   const userDisplay = (<>
     <Stack direction="row" spacing={1}>
       <UserAvatar user={character?.user} />
@@ -184,7 +183,7 @@ export default function EditCharacter({ character:initialCharacter }: EditCharac
             <FortuneSelect character={character} onChange={handleAVChange as React.ChangeEventHandler} readOnly={false} />
           </PlayerTypeOnly>
           <Skills character={character} onChange={handleSkillsChange} />
-          <Weapons state={weaponsState} />
+          <Weapons />
           <PlayerTypeOnly character={character} only="PC">
             <Advancements character={character} />
           </PlayerTypeOnly>

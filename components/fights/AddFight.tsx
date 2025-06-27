@@ -5,6 +5,7 @@ import KeyboardDoubleArrowDownIcon from "@mui/icons-material/KeyboardDoubleArrow
 import KeyboardDoubleArrowUpIcon from "@mui/icons-material/KeyboardDoubleArrowUp"
 import Client from "@/utils/Client"
 import FES from "@/services/FightEventService"
+import Editor from "@/utils/Editor"
 
 import { useToast } from "@/contexts/ToastContext"
 import { useFight } from "@/contexts/FightContext"
@@ -21,7 +22,7 @@ interface AddFightProps {
 }
 
 export default function AddFight({ state:fightsState, dispatch:dispatchFights }: AddFightProps) {
-  const { jwt, client } = useClient()
+  const { client } = useClient()
   const { toastSuccess, toastError } = useToast()
 
   const { state, dispatch } = useFight()
@@ -65,7 +66,7 @@ export default function AddFight({ state:fightsState, dispatch:dispatchFights }:
             <Stack spacing={2}>
               <Stack spacing={1}>
                 <StyledTextField label="Fight" autoFocus required name="name" value={fight.name} onChange={handleChange} />
-                <StyledTextField multiline label="Description" name="description" value={fight.description} onChange={handleChange} />
+                <Editor name="description" value={fight.description || ""} onChange={handleChange} />
               </Stack>
               <Stack spacing={2} direction="row">
                 <SaveCancelButtons disabled={saving} onCancel={cancelForm} />

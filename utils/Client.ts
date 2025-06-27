@@ -481,6 +481,11 @@ class Client {
     return this.delete(this.api.characterSchticks(character, schtick))
   }
 
+  async getCharacterWeapons(character: Character | ID, params = {}):Promise<WeaponsResponse> {
+    const query = Object.entries(params).map(([key, value]) => `${key}=${value || ""}`).join("&")
+    return this.get(`${this.api.characterWeapons(character)}?${query}`)
+  }
+
   async getWeapons(params={}):Promise<WeaponsResponse> {
     const query = Object.entries(params).map(([key, value]) => `${key}=${value || ""}`).join("&")
     return this.get(`${this.api.weapons()}?${query}`)

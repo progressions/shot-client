@@ -3,9 +3,10 @@ import { useClient } from "@/contexts/ClientContext"
 import { useToast } from "@/contexts/ToastContext"
 import Member from "@/components/sites/Member"
 import SiteCardBase from "@/components/sites/SiteCardBase"
-import ClearIcon from '@mui/icons-material/Clear'
-import EditIcon from '@mui/icons-material/Edit'
+import ClearIcon from "@mui/icons-material/Clear"
+import EditIcon from "@mui/icons-material/Edit"
 import { StyledDialog } from "@/components/StyledFields"
+import RichTextRenderer from "@/utils/RichTextRenderer"
 
 import type { SitesStateType, SitesActionType } from "@/reducers/sitesState"
 import type { Character, Vehicle, Site as SiteType } from "@/types/types"
@@ -89,12 +90,13 @@ export default function Site({ site, state, dispatch }: SiteProps) {
           <CardMedia image={site.image_url || ""} sx={{padding: 2}}>
           </CardMedia>
         }
-        <Typography>{site.description}</Typography>
+        <RichTextRenderer html={site.description} />
       </SiteCardBase>
       <StyledDialog
         open={open}
         onClose={() => setOpen(false)}
         title="Site"
+        width={850}
       >
         <DialogContent>
           <Stack direction="column" spacing={2}>

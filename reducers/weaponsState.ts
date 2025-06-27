@@ -8,6 +8,7 @@ export enum WeaponsActions {
   SUCCESS = "success",
   PREVIOUS = "previous",
   NEXT = "next",
+  PAGE = "page",
   CATEGORY = "cateory",
   JUNCTURE = "juncture",
   WEAPON = "weapon",
@@ -43,9 +44,9 @@ interface PayloadAction {
 }
 
 interface UpdateAction {
-  type: Extract<WeaponsActions, WeaponsActions.UPDATE>
+  type: Extract<WeaponsActions, WeaponsActions.UPDATE | WeaponsActions.PAGE>
   name: string
-  value: string
+  value: string | number
 }
 
 export type WeaponsActionType = ActionNoPayload | UpdateAction | PayloadAction
@@ -101,13 +102,16 @@ export function weaponsReducer(state: WeaponsStateType, action: WeaponsActionTyp
       return {
         ...state,
         edited: true,
+        page: initialWeaponsState.page,
         juncture: (action.payload || initialWeaponsState.juncture) as Juncture,
+        category: initialWeaponsState.category,
         weapon: initialWeaponsState.weapon
       }
     case WeaponsActions.CATEGORY:
       return {
         ...state,
         edited: true,
+        page: initialWeaponsState.page,
         category: (action.payload || initialWeaponsState.category) as WeaponCategory,
         weapon: initialWeaponsState.weapon
       }
@@ -115,7 +119,14 @@ export function weaponsReducer(state: WeaponsStateType, action: WeaponsActionTyp
       return {
         ...state,
         edited: true,
+        page: initialWeaponsState.page,
         name: (action.payload || initialWeaponsState.name) as string,
+      }
+    case WeaponsActions.PAGE:
+      return {
+        ...state,
+        edited: true,
+        page: action.value as number
       }
     case WeaponsActions.UPDATE:
       return {
@@ -130,6 +141,7 @@ export function weaponsReducer(state: WeaponsStateType, action: WeaponsActionTyp
       return {
         ...state,
         edited: true,
+        page: initialWeaponsState.page,
         weapon: (action.payload || initialWeaponsState.weapon) as Weapon,
       }
     case WeaponsActions.WEAPONS:

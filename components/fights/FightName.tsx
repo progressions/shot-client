@@ -1,6 +1,8 @@
 import { Box, Button, ButtonGroup, Stack, Tooltip, Typography } from "@mui/material"
 import EditIcon from '@mui/icons-material/Edit'
 import { useState } from "react"
+import RichTextRenderer from '@/utils/RichTextRenderer'
+import Editor from "@/utils/Editor"
 
 import type { Fight } from "@/types/types"
 
@@ -64,7 +66,7 @@ export default function FightName() {
     return (
       <Stack spacing={2} alignItems="baseline" sx={{marginTop: 2, marginBottom: 2}}>
         <StyledTextField name="name" autoFocus value={tempFight.name} fullWidth onChange={handleChange} />
-        <StyledTextField multiline label="Description" fullWidth name="description" value={tempFight.description || ""} onChange={handleChange} />
+        <Editor name="description" value={tempFight.description || ""} onChange={handleChange} />
         <SaveCancelButtons onCancel={cancelForm} onSave={handleSubmit} />
       </Stack>
     )
@@ -89,9 +91,7 @@ export default function FightName() {
             </Box>
           </Stack>
           { fight.description &&
-            <Typography sx={{whiteSpace: "pre-line"}}>
-              {fight.description}
-            </Typography>
+            <RichTextRenderer html={fight.description} />
           }
         </Stack>
       </Box>

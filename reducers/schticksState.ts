@@ -8,6 +8,7 @@ export enum SchticksActions {
   SUCCESS = "success",
   PREVIOUS = "previous",
   NEXT = "next",
+  PAGE = "page",
   CATEGORY = "cateory",
   PATH = "path",
   NAME = "name",
@@ -28,7 +29,7 @@ export interface PayloadAction {
 }
 
 export interface UpdateAction {
-  type: Extract<SchticksActions, SchticksActions.UPDATE>
+  type: Extract<SchticksActions, SchticksActions.UPDATE | SchticksActions.PAGE>
   name: string
   value: string | boolean | number
 }
@@ -113,19 +114,19 @@ export function schticksReducer(state: SchticksStateType, action: SchticksAction
         loading: true,
         name: (action.payload || initialSchticksState.name) as string,
       }
-    case SchticksActions.UPDATE:
-      if (action.name === "page") {
-        return {
-          ...state,
-          edited: true,
-          loading: true,
-          page: action.value as number
-        }
-      }
+    case SchticksActions.PAGE:
       return {
         ...state,
         edited: true,
         loading: true,
+        page: action.value as number
+      }
+    case SchticksActions.UPDATE:
+      return {
+        ...state,
+        edited: true,
+        loading: true,
+        page: initialSchticksState.page,
         [action.name]: action.value,
       }
     case SchticksActions.SCHTICK:

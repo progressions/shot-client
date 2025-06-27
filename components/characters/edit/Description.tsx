@@ -4,6 +4,7 @@ import PlayerTypeOnly from "@/components/PlayerTypeOnly"
 import type { Character } from "@/types/types"
 import { DescriptionKeys as D } from "@/types/types"
 import CS from "@/services/CharacterService"
+import Editor from "@/utils/Editor"
 
 interface DescriptionProps {
   character: Character
@@ -27,9 +28,11 @@ export default function Description({ character, onChange }: DescriptionProps) {
         <StyledTextField name={D.HairColor} label="Hair Color" value={CS.description(character, D.HairColor)} onChange={onChange} />
         <StyledTextField name={D.EyeColor} label="Eye Color" value={CS.description(character, D.EyeColor)} onChange={onChange} />
       </Stack>
-        <StyledTextField fullWidth name={D.StyleOfDress} label="Style of Dress" value={CS.description(character, D.StyleOfDress)} onChange={onChange} />
-      <StyledTextField name={D.Appearance} label="Appearance" value={CS.description(character, D.Appearance)} onChange={onChange} multiline rows={4} />
-      <StyledTextField name={D.Background} label="Background" value={CS.description(character, D.Background)} onChange={onChange} multiline rows={4} />
+      <StyledTextField fullWidth name={D.StyleOfDress} label="Style of Dress" value={CS.description(character, D.StyleOfDress)} onChange={onChange} />
+      <Typography variant="h6">Appearance</Typography>
+      <Editor name={D.Appearance} value={CS.description(character, D.Appearance)} onChange={onChange} />
+      <Typography variant="h6">Background</Typography>
+      <Editor name={D.Background} value={CS.description(character, D.Background)} onChange={onChange} />
     </>
   )
 }

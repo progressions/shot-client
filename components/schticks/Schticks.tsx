@@ -12,49 +12,85 @@ import SchtickSelector from "@/components/schticks/SchtickSelector"
 import { useReducer, useEffect, useState, useMemo } from "react"
 import type { SchticksStateType, SchticksActionType } from "@/reducers/schticksState"
 import { initialSchticksState, schticksReducer, SchticksActions } from "@/reducers/schticksState"
-import { Schtick } from "@/types/types"
+import { QueryType, Schtick } from "@/types/types"
 
 interface SchticksProps {
 }
 
 export default function Schticks({}: SchticksProps) {
   const { character } = useCharacter()
-  const [state, dispatch] = useReducer(schticksReducer, initialSchticksState)
   const { user, client } = useClient()
   const { toastError, toastSuccess } = useToast()
+  const [state, dispatch] = useReducer(schticksReducer, initialSchticksState)
   const { loading, edited, category, path, name, schticks, meta, page } = state
   const router = useRouter()
 
-  useEffect(() => {
-    const reload = async () => {
-      try {
-        if (character?.id) {
-          const data = await client.getCharacterSchticks(character, { page, category, path, name, character_id: character?.id as string })
-          dispatch({ type: SchticksActions.SCHTICKS, payload: data })
-        } else {
-          const data = await client.getSchticks({ page, category, path, name, character_id: character?.id as string })
-          dispatch({ type: SchticksActions.SCHTICKS, payload: data })
-        }
-      } catch (error) {
-        console.error("Error fetching schticks:", error)
-        toastError()
-      }
-    }
-
-    if (user && edited) {
-      reload()
-    }
-  }, [user, edited, page, category, path, name, character?.id])
+  const { query } = router
+  const { page:initialPage } = query as QueryType
+  const initialPageNum = initialPage ? parseInt(initialPage as string, 10) : 1
 
   useEffect(() => {
     if (character?.id) return
 
+    if (page !== initialPageNum) {
+      dispatch({ type: SchticksActions.PAGE, name: "page", value: initialPageNum })
+    }
+  }, [character, page, initialPageNum])
+
+  useEffect(() => {
+    if (edited) return
+
+    if (character?.id && page > meta.total_pages) {
+      // dispatch({ type: SchticksActions.PAGE, name: "page", value: 1})
+      return
+    }
+
+    if (page > meta.total_pages) {
+      router.push(
+        { pathname: router.pathname, query: { page: 1 } },
+        undefined,
+        { shallow: true }
+      )
+    }
+  }, [edited, page, meta])
+
+  useEffect(() => {
+    async function reload() {
+      try {
+        console.log("Fetching Schticks page ", page)
+        if (character?.id) {
+          const data = await client.getCharacterSchticks(character, { page, category, path, name, character_id: character?.id as string })
+          dispatch({ type: SchticksActions.SCHTICKS, payload: data })
+        } else {
+          const data = await client.getSchticks({ page, category, path, name })
+          dispatch({ type: SchticksActions.SCHTICKS, payload: data })
+        }
+      } catch(error) {
+        console.log("Error fetching schticks:", error)
+        toastError()
+      }
+    }
+
+    if (user?.id && edited && !character?.id && page === initialPageNum) {
+      reload().catch(toastError)
+    }
+    if (user?.id && edited && character?.id) {
+      reload().catch(toastError)
+    }
+  }, [user, edited, initialPage, page, category, path, name, character])
+
+  const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
+    if (character?.id) {
+      dispatch({ type: SchticksActions.PAGE, name: "page", value: value})
+      return
+    }
+
     router.push(
-      { pathname: router.pathname, query: { page: page } },
+      { pathname: router.pathname, query: { page: value } },
       undefined,
       { shallow: true }
     )
-  }, [edited, page])
+  }
 
   const rowsOfData = rowMap<Schtick>(schticks, 2)
 
@@ -65,20 +101,6 @@ export default function Schticks({}: SchticksProps) {
       )) }
     </Stack>)
   )
-
-  const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
-    dispatch({ type: SchticksActions.UPDATE, name: "page", value: value})
-
-    if (character?.id) return
-
-    router.push(
-      { pathname: router.pathname, query: { page: value } },
-      undefined,
-      { shallow: true }
-    )
-  }
-
-  if (!schticks.length) return (<></>)
 
   return (
     <>

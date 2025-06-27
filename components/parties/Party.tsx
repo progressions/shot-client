@@ -5,6 +5,7 @@ import ClearIcon from '@mui/icons-material/Clear'
 import EditIcon from '@mui/icons-material/Edit'
 import { StyledDialog } from "@/components/StyledFields"
 import ImageDisplay from "@/components/images/ImageDisplay"
+import RichTextRenderer from "@/utils/RichTextRenderer"
 
 import type { PartiesStateType, PartiesActionType } from "@/reducers/partiesState"
 import type { Character, Vehicle, Party as PartyType } from "@/types/types"
@@ -93,9 +94,8 @@ export default function Party({ party, state, dispatch }: PartyProps) {
         avatar={avatar}
       >
       { party.image_url && <CardMedia image={mediaUrl} title={party.name} sx={{padding: 2, height: 300}}/> }
-
-        <Stack spacing={2}>
-          <Typography>{party.description}</Typography>
+        <Stack spacing={2} mt={2}>
+          <RichTextRenderer html={party.description} />
           <Box>
             <Members party={party} removeCharacter={removeCharacter} />
           </Box>
@@ -105,6 +105,7 @@ export default function Party({ party, state, dispatch }: PartyProps) {
         open={open}
         onClose={handleClose}
         title="Party"
+        width={850}
       >
         <DialogContent>
           <Stack direction="column" spacing={2}>

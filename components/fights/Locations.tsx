@@ -21,6 +21,9 @@ export default function Locations() {
   }
 
   const useExtractLocations = (): Record<string, string[]> => {
+    if (!fight?.shot_order) {
+      return {}
+    }
     return fight.shot_order.reduce((acc: Record<string, string[]>, shot: ShotType) => {
       shot[1].forEach((character: Character | Vehicle) => {
         const location = character.location

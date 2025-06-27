@@ -88,6 +88,7 @@ export function StyledDialog(props: React.PropsWithChildren<AnyProps>) {
       open={props.open}
       onClose={props.onClose}
       disableRestoreFocus
+      maxWidth="lg"
     >
       <DialogTitle sx={{backgroundColor: colors.blueGrey[300], color: "black"}}>
         {props.title}

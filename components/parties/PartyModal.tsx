@@ -12,6 +12,7 @@ import Faction from "@/components/characters/edit/Faction"
 import CharacterFilters from "@/components/characters/CharacterFilters"
 import SelectCharacter from "@/components/characters/SelectCharacter"
 import ImageManager from "@/components/images/ImageManager"
+import Editor from "@/utils/Editor"
 
 interface PartyModalProps {
   state: PartiesStateType
@@ -95,7 +96,7 @@ export default function PartyModal({ state, dispatch, open, setOpen, party:initi
         <Stack spacing={1}>
           <Stack direction="row" spacing={1} alignItems="center">
             <StyledTextField
-              sx={{width: 400}}
+              sx={{width: 600}}
               required
               autoFocus
               value={party?.name || ""}
@@ -105,19 +106,8 @@ export default function PartyModal({ state, dispatch, open, setOpen, party:initi
               disabled={loading}
             />
           </Stack>
-          <Stack direction="row" spacing={1} alignItems="center">
-            <StyledTextField
-              fullWidth
-              multiline
-              rows={3}
-              value={party?.description || ""}
-              name="description"
-              label="Description"
-              onChange={handleChange}
-              disabled={loading}
-            />
-          </Stack>
-          <Faction faction={party.faction || defaultFaction} onChange={handleChange} />
+          <Editor name="description" value={party?.description || ""} onChange={handleChange} />
+          <Faction faction={party.faction || defaultFaction} onChange={handleChange} width={600} />
           { party?.id && <SelectCharacter addCharacter={addCharacter} /> }
           <Stack direction="row" spacing={1} alignItems="center">
             <CancelButton disabled={loading} onClick={cancelForm} />

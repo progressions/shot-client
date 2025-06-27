@@ -1,49 +1,69 @@
 import { Skeleton, Typography, Pagination, Stack } from "@mui/material"
-import type { Site as SiteType } from "@/types/types"
+import type { QueryType, Site as SiteType } from "@/types/types"
 import { sitesReducer, initialSitesState, SitesActions } from '@/reducers/sitesState'
 import Site from "@/components/sites/Site"
 import { ButtonBar } from "@/components/StyledFields"
 import FilterSites from "@/components/sites/FilterSites"
 
-import { useClient, useToast } from "@/contexts"
+import { useClient, useToast, useCharacter } from "@/contexts"
 import { useEffect, useReducer, useState } from "react"
 import { useRouter } from 'next/router'
+import type { SitesStateType, SitesActionType } from "@/reducers/sitesState"
 
 interface SitesProps {
 }
 
 export default function Sites({}: SitesProps) {
-  const router = useRouter()
-  const { client, user } = useClient()
-  const { toastError, toastSuccess } = useToast()
+  const { character } = useCharacter()
+  const { user, client } = useClient()
   const [state, dispatch] = useReducer(sitesReducer, initialSitesState)
   const { edited, loading, page, meta, sites, faction, secret, search, site } = state
+  const { toastSuccess, toastError } = useToast()
+
+  const router = useRouter()
+  const { query } = router
+  const { page:initialPage } = query as QueryType
+  const initialPageNum = initialPage ? parseInt(initialPage as string, 10) : 1
 
   useEffect(() => {
-    const reload = async () => {
+    if (page !== initialPageNum) {
+      dispatch({ type: SitesActions.PAGE, name: "page", value: initialPageNum })
+    }
+  }, [page, initialPageNum])
+
+  useEffect(() => {
+    if (edited) return
+    if (!page) return
+
+    if (page > meta.total_pages) {
+      router.push(
+        { pathname: router.pathname, query: { page: 1 } },
+        undefined,
+        { shallow: true }
+      )
+    }
+  }, [edited, page, meta])
+
+  useEffect(() => {
+    async function reload() {
       try {
+        console.log("Fetching Sites page ", page)
         const data = await client.getSites({ search: site?.name, faction_id: faction.id, secret, page })
         dispatch({ type: SitesActions.SITES, payload: data })
-      } catch (error) {
+      } catch(error) {
         toastError()
       }
     }
 
-    if (user && edited) {
-      reload()
+    if (user?.id && edited && page === initialPageNum) {
+      reload().catch(toastError)
     }
-  }, [edited, user, page, faction, secret, search, site])
-
-  useEffect(() => {
-    router.push(
-      { pathname: router.pathname, query: { page: page } },
-      undefined,
-      { shallow: true }
-    )
-  }, [edited])
+    if (user?.id && edited && character?.id) {
+      reload().catch(toastError)
+    }
+  }, [user, initialPage, page, edited, faction, secret])
 
   const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
-    dispatch({ type: SitesActions.UPDATE, name: "page", value: value})
     router.push(
       { pathname: router.pathname, query: { page: value } },
       undefined,

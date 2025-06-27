@@ -39,9 +39,11 @@ function factionReducer(state: FactionStateType, action: FactionActionType) {
 interface FactionProps {
   faction: Faction
   onChange: (event: React.ChangeEvent<HTMLInputElement>, newValue: string) => void
+  width?: number
+  sx?: React.CSSProperties
 }
 
-export default function Faction({ faction, onChange }: FactionProps) {
+export default function Faction({ faction, onChange, width, sx }: FactionProps) {
   const { user, client } = useClient()
   const [state, dispatch] = useReducer(factionReducer, initialState)
   const { loading, anchorEl, value, factions } = state
@@ -71,7 +73,7 @@ export default function Faction({ faction, onChange }: FactionProps) {
           disabled={loading}
           freeSolo
           options={factions}
-          sx={{ width: 300 }}
+          sx={sx || { width: width || 300 }}
           value={faction || ""}
           onChange={changeFaction}
           onOpen={getFactions}

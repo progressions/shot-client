@@ -5,6 +5,7 @@ import { useToast } from "@/contexts/ToastContext"
 import { useCharacter } from "@/contexts/CharacterContext"
 import FilterWeapons from "@/components/weapons/FilterWeapons"
 import { WeaponsActions, initialWeaponsState, weaponsReducer } from "@/reducers/weaponsState"
+import { CharacterActions } from "@/reducers/characterState"
 
 import type { Character, Weapon } from "@/types/types"
 import { defaultWeapon } from "@/types/types"
@@ -39,10 +40,12 @@ export default function AddWeapon() {
     dispatchWeapons({ type: WeaponsActions.SAVING })
 
     try {
-      await client.addWeapon(character, weapon)
+      const data = await client.addWeapon(character, weapon)
+      dispatchCharacter({ type: CharacterActions.EDIT })
       await reloadCharacter()
       handleClose()
     } catch(error) {
+      console.error("Error adding weapon:", error)
       toastError()
     }
   }
