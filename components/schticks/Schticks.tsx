@@ -18,7 +18,9 @@ interface SchticksProps {
 }
 
 export default function Schticks({}: SchticksProps) {
-  const { character } = useCharacter()
+  const { character, state:characterState } = useCharacter()
+  const { edited:characterEdited } = characterState
+
   const { user, client } = useClient()
   const { toastError, toastSuccess } = useToast()
   const [state, dispatch] = useReducer(schticksReducer, initialSchticksState)
@@ -72,6 +74,9 @@ export default function Schticks({}: SchticksProps) {
       reload().catch(toastError)
     }
     if (user?.id && edited && character?.id) {
+      reload().catch(toastError)
+    }
+    if (user?.id && character?.id && characterEdited) {
       reload().catch(toastError)
     }
   }, [user, edited, initialPage, page, category, path, name, character])
