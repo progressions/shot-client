@@ -205,10 +205,6 @@ const CharacterService = {
     return character.description[key] as string || ""
   },
 
-  appearance: function(character: Character): string {
-    return this.actionValue(character, "Appearance")
-  }
-
 }
 
 class ServiceChain {

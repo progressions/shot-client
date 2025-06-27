@@ -2,19 +2,20 @@ import dynamic from 'next/dynamic'
 import { Color } from '@tiptap/extension-color'
 import ListItem from '@tiptap/extension-list-item'
 import TextStyle from '@tiptap/extension-text-style'
-import { EditorProvider, useCurrentEditor } from '@tiptap/react'
+import { Editor as TiptapEditor, EditorProvider, useCurrentEditor } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import { Button, ButtonGroup } from '@mui/material'
 import FormatBoldIcon from '@mui/icons-material/FormatBold'
 import FormatItalicIcon from '@mui/icons-material/FormatItalic'
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted'
 import styles from './Editor.module.scss'
-import { useState } from "react"
+import { useState } from 'react'
+import { FocusEvent } from 'react'
+import { Transaction } from '@tiptap/pm/state'
 
 interface EditorProps {
   value: string
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void
-  onBlur?: (event: React.FocusEvent<HTMLInputElement>) => void
   name?: string
 }
 
@@ -98,20 +99,20 @@ const MenuBar = () => {
 
 const extensions = [
   Color.configure({ types: [TextStyle.name, ListItem.name] }),
-  TextStyle, // Removed invalid types configuration
+  TextStyle,
   StarterKit.configure({
     bulletList: {
       keepMarks: true,
-      keepAttributes: true, // Try true to address TODO
+      keepAttributes: true,
     },
     orderedList: {
       keepMarks: true,
-      keepAttributes: true, // Try true
+      keepAttributes: true,
     },
   }),
 ]
 
-const Editor = ({ value, onBlur, onChange, name = 'description' }: EditorProps) => {
+const Editor = ({ value, onChange, name = 'description' }: EditorProps) => {
   const [content, setContent] = useState<string>(value)
 
   const onChangeContent = (event: React.ChangeEvent<HTMLInputElement>): void => {
@@ -119,17 +120,14 @@ const Editor = ({ value, onBlur, onChange, name = 'description' }: EditorProps) 
     setContent(value)
   }
 
-  const saveOnBlur = (event: React.FocusEvent<HTMLInputElement>) => {
+  const saveOnBlur = ({ editor, event, transaction }: { editor: TiptapEditor; event: any; transaction: Transaction }) => {
     console.log('Editor onBlur event:', event)
     onChange({
       target: {
         name,
-        value: content,
+        value: editor.getHTML(),
       },
     } as React.ChangeEvent<HTMLInputElement>)
-    if (onBlur) {
-      onBlur(event)
-    }
   }
 
   return (
@@ -147,7 +145,7 @@ const Editor = ({ value, onBlur, onChange, name = 'description' }: EditorProps) 
               value: editor.getHTML(),
             },
           } as React.ChangeEvent<HTMLInputElement>
-          onChangeContent(syntheticEvent)
+          onChange(syntheticEvent)
         }}
       />
     </div>
