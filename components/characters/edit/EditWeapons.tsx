@@ -85,7 +85,7 @@ export default function EditWeapons({}: EditWeaponsProps) {
 
   return (
     <>
-      <Subhead>{weapons?.length} Weapons</Subhead>
+      <Subhead>Weapons</Subhead>
       { weapons?.length === 0 && !loading && (
         <Typography variant="body1">
           No weapons.
