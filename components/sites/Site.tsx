@@ -76,6 +76,7 @@ export default function Site({ site, state, dispatch }: SiteProps) {
   }
 
   const avatar = site.image_url ? <ImageDisplay entity={site} /> : null
+  const image_url = site.image_url ? `${site.image_url}?tr=w-600,h-300,c-maintain_ratio` : null
 
   return (
     <>
@@ -87,8 +88,7 @@ export default function Site({ site, state, dispatch }: SiteProps) {
         avatar={avatar}
       >
         { site.image_url &&
-          <CardMedia image={site.image_url || ""} sx={{padding: 2}}>
-          </CardMedia>
+          <CardMedia image={image_url || ""} sx={{height: 500, mb: 2}} />
         }
         <RichTextRenderer html={site.description} />
       </SiteCardBase>

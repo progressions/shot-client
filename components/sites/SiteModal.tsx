@@ -3,6 +3,7 @@ import { FormControlLabel, Switch, createFilterOptions, MenuItem, Box, Stack, Ty
 import { useClient } from "@/contexts/ClientContext"
 import { useToast } from "@/contexts/ToastContext"
 import { useCharacter } from "@/contexts/CharacterContext"
+import CharacterAvatar from "@/components/characters/CharacterAvatar"
 
 import GamemasterOnly from "@/components/GamemasterOnly"
 import type { Vehicle, FilterParamsType, OptionType, InputParamsType, Character, Site } from "@/types/types"
@@ -35,6 +36,10 @@ export default function SiteModal({ state, dispatch, open, setOpen, site:initial
     dispatch({ type: SitesActions.SAVING })
 
     try {
+      await addNewCharacters().catch((error) => {
+        console.error("Error adding new characters:", error)
+        toastError("Failed to add new characters.")
+      })
       const data = site?.id ?
         await client.updateSite(site as Site) :
         await client.createSite(site as Site)
@@ -46,6 +51,18 @@ export default function SiteModal({ state, dispatch, open, setOpen, site:initial
       toastError()
     }
     dispatch({ type: SitesActions.RESET })
+  }
+
+  async function addNewCharacters() {
+    if (!site?.characters || !initialSite?.characters) return
+
+    const newCharacters = site?.characters?.filter(
+      (character) => !initialSite?.characters?.some((c) => c.id === character.id)
+    )
+
+    for (const character of newCharacters) {
+      await client.addCharacterToSite(site as Site, character as Character)
+    }
   }
 
   async function deleteImage(site: Site) {
@@ -71,13 +88,15 @@ export default function SiteModal({ state, dispatch, open, setOpen, site:initial
 
   const addCharacter = async (character: Character):Promise<void> => {
     try {
-      await client.addCharacterToSite(site, character as Character)
+      setSite((prevSite) => ({
+        ...prevSite,
+        characters: [...(prevSite.characters || []), { id: character.id, name: character.name, image_url: character.image_url } as Character]
+      }))
 
       toastSuccess(`${character.name} added.`)
     } catch(error) {
       toastError()
     }
-    dispatch({ type: SitesActions.EDIT })
   }
 
   return (
@@ -86,7 +105,7 @@ export default function SiteModal({ state, dispatch, open, setOpen, site:initial
         <FormControlLabel label="Hidden" name="secret" control={<Switch checked={site.secret} />} onChange={handleCheck} />
       </GamemasterOnly>
       <Stack spacing={2} direction="row">
-        <Stack spacing={1}>
+        <Stack spacing={1} sx={{width: 600, maxWidth: 600}}>
           <Stack direction="row" spacing={1} alignItems="center">
             <StyledTextField
               sx={{width: 600}}
@@ -102,6 +121,22 @@ export default function SiteModal({ state, dispatch, open, setOpen, site:initial
           <Editor name="description" value={site?.description || ""} onChange={handleChange} />
           <Faction faction={site.faction || defaultFaction} onChange={handleChange} width={600} />
           { site?.id && <SelectCharacter addCharacter={addCharacter} /> }
+          { !!site?.characters?.length && (
+            <>
+              <Box sx={{py: 2, mb: 2}}>
+                <Stack direction="column" spacing={1}>
+              {site.characters.map((character, index) => (
+                <Stack direction="row" spacing={1} key={character.id} alignItems="center">
+                  <CharacterAvatar key={character.id} character={character} />
+                  <Typography>
+                    {character.name}
+                  </Typography>
+                </Stack>
+              ))}
+            </Stack>
+            </Box>
+            </>
+          )}
           <Stack direction="row" spacing={1} alignItems="center">
             <CancelButton disabled={loading} onClick={cancelForm} />
             <SaveButton disabled={loading} onClick={updateSite}>{ site?.id ? "Save" : "Add" }</SaveButton>
@@ -112,4 +147,3 @@ export default function SiteModal({ state, dispatch, open, setOpen, site:initial
     </>
   )
 }
-

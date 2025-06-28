@@ -16,7 +16,7 @@ export default function Home() {
       </Head>
       <main>
         <Layout>
-          <Container maxWidth="lg" sx={{my: 2}}>
+          <Container maxWidth="md" sx={{my: 2}}>
             <Sites />
           </Container>
         </Layout>
