@@ -3,6 +3,7 @@ import { defaultCharacter } from "@/types/types"
 
 export enum CharacterActions {
   EDIT = "edit",
+  RELOAD = "reload",
   UPDATE = "update",
   ACTION_VALUE = "action_value",
   DESCRIPTION = "description",
@@ -13,7 +14,7 @@ export enum CharacterActions {
 }
 
 interface ActionNoPayload {
-  type: Extract<CharacterActions, CharacterActions.EDIT | CharacterActions.SUBMIT | CharacterActions.RESET>
+  type: Extract<CharacterActions, CharacterActions.EDIT | CharacterActions.SUBMIT | CharacterActions.RESET | CharacterActions.RELOAD>
 }
 
 interface UpdateAction {
@@ -28,16 +29,20 @@ interface PayloadAction {
 }
 
 export interface CharacterStateType {
+  loading: boolean
   edited: boolean
   saving: boolean
+  reload: boolean
   character: Character
 }
 
 export type CharacterStateAction = ActionNoPayload | UpdateAction | PayloadAction
 
 export const initialCharacterState:CharacterStateType = {
+  loading: false,
   edited: false,
   saving: false,
+  reload: false,
   character: defaultCharacter
 }
 
@@ -106,6 +111,13 @@ export function characterReducer(state: CharacterStateType, action: CharacterSta
         saving: false,
         edited: true,
         character: action.payload as Character
+      }
+    case CharacterActions.RELOAD:
+      return {
+        ...state,
+        reload: true,
+        edited: false,
+        saving: false
       }
     case CharacterActions.RESET:
       return {

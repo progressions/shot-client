@@ -5,11 +5,12 @@ interface SchtickCardBase {
   subheader: string
   avatar: React.ReactNode
   action: React.ReactNode
+  sx: React.CSSProperties
 }
 
-export default function SchtickCardBase({ title, subheader, avatar, action, children }: React.PropsWithChildren<SchtickCardBase>) {
+export default function SchtickCardBase({ sx, title, subheader, avatar, action, children }: React.PropsWithChildren<SchtickCardBase>) {
   return (
-    <Card sx={{backgroundColor: colors.blueGrey["A700"], width: "50%", minHeight: 200}}>
+    <Card sx={{backgroundColor: colors.blueGrey["A700"], width: "50%", minHeight: 200, ...sx}}>
       <CardHeader
         title={title}
         subheader={subheader}

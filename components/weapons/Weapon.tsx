@@ -11,6 +11,7 @@ import type { WeaponsStateType, WeaponsActionType } from "@/reducers/weaponsStat
 import { WeaponsActions } from "@/reducers/weaponsState"
 import WeaponModal from "@/components/weapons/WeaponModal"
 import { useState } from "react"
+import { CharacterActions } from "@/reducers/characterState"
 
 interface WeaponProps {
   weapon: WeaponType
@@ -21,14 +22,18 @@ interface WeaponProps {
 export default function Weapon({ weapon, state, dispatch }: WeaponProps) {
   const { client } = useClient()
   const { toastError } = useToast()
-  const { character, reloadCharacter } = useCharacter()
+  const { character, dispatch:dispatchCharacter } = useCharacter()
   const [open, setOpen] = useState<boolean>(false)
+  const [deleted, setDeleted] = useState<boolean>(false)
 
   async function removeWeapon() {
     try {
       await client.removeWeapon(character, weapon)
-      await reloadCharacter()
+      dispatchCharacter({ type: CharacterActions.RELOAD })
+      dispatchCharacter({ type: CharacterActions.EDIT })
+      setDeleted(true)
     } catch(error) {
+      console.error(error)
       toastError()
     }
   }
@@ -62,6 +67,42 @@ export default function Weapon({ weapon, state, dispatch }: WeaponProps) {
   const editButton = !character?.id ? (<IconButton key="edit" onClick={editWeapon}>
     <EditIcon />
   </IconButton>) : null
+
+  if (deleted) {
+    return (
+      <WeaponCardBase
+        title={`${weapon.name} ${stats}`}
+        subheader={`${weapon.juncture} ${weapon.category}`}
+        sx={{ opacity: 0.5, textDecoration: "line-through" }}
+      >
+        { weapon.image_url &&
+        <Box
+          component="img"
+          sx={{
+            maxHeight: { xs: 233, md: 167 },
+            maxWidth: { xs: 350, md: 250 },
+          }}
+          alt={weapon.name}
+          src={weapon.image_url}
+        /> }
+        <Typography sx={{marginBottom: 3}} variant="body2" gutterBottom>
+          {weapon.description}
+        </Typography>
+        { weapon.mook_bonus > 0 &&
+          <Typography variant="subtitle2">
+            <GiDeathSkull />
+            { weapon.mook_bonus > 1 && <GiDeathSkull /> }
+            &nbsp;
+            +{weapon.mook_bonus} Attack vs Mooks
+          </Typography> }
+        { weapon.kachunk &&
+          <Typography variant="subtitle2">
+            <GiShotgun />
+            Damage Value is 14 if you spend a shot to go “KA-CHUNK!”
+          </Typography> }
+      </WeaponCardBase>
+    )
+  }
 
   return (
     <>

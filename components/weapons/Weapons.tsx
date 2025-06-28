@@ -17,7 +17,7 @@ interface WeaponsProps {
 
 export default function Weapons({}: WeaponsProps) {
   const { character, state:characterState } = useCharacter()
-  const { edited:characterEdited } = characterState
+  const { reload:characterReload } = characterState
 
   const { user, client } = useClient()
   const [state, dispatch] = useReducer(weaponsReducer, initialWeaponsState)
@@ -51,7 +51,6 @@ export default function Weapons({}: WeaponsProps) {
     }
   }, [edited, page, meta])
 
-  useEffect(() => {
     async function reload() {
       try {
         console.log("Fetching Weapons page ", page)
@@ -67,16 +66,26 @@ export default function Weapons({}: WeaponsProps) {
       }
     }
 
+  useEffect(() => {
+    console.log("defining reload")
+    console.log("characterReload", characterReload)
+
     if (user?.id && edited && !character?.id && page === initialPageNum) {
       reload().catch(toastError)
+      return
     }
     if (user?.id && edited && character?.id) {
       reload().catch(toastError)
+      return
     }
-    if (user?.id && character?.id && characterEdited) {
+    if (user?.id && character?.id && characterReload) {
+      console.log("reloading weapons after character reload")
       reload().catch(toastError)
+      return
     }
-  }, [user, edited, characterEdited, character, user, juncture, category, initialPage, page, name])
+  }, [user, edited, character, user, juncture, category, initialPage, page, name])
+
+  console.log("reloadCharacter", characterReload)
 
   const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
     if (character?.id) {

@@ -145,7 +145,7 @@ const Editor = ({ value, onChange, name = 'description' }: EditorProps) => {
               value: editor.getHTML(),
             },
           } as React.ChangeEvent<HTMLInputElement>
-          onChange(syntheticEvent)
+          onChangeContent(syntheticEvent)
         }}
       />
     </div>

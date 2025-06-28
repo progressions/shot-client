@@ -19,7 +19,7 @@ interface SchticksProps {
 
 export default function Schticks({}: SchticksProps) {
   const { character, state:characterState } = useCharacter()
-  const { edited:characterEdited } = characterState
+  const { reload:characterReload } = characterState
 
   const { user, client } = useClient()
   const { toastError, toastSuccess } = useToast()
@@ -76,10 +76,10 @@ export default function Schticks({}: SchticksProps) {
     if (user?.id && edited && character?.id) {
       reload().catch(toastError)
     }
-    if (user?.id && character?.id && characterEdited) {
+    if (user?.id && character?.id && characterReload) {
       reload().catch(toastError)
     }
-  }, [user, edited, initialPage, page, category, path, name, character])
+  }, [user, edited, initialPage, page, category, path, name, character, characterReload])
 
   const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
     if (character?.id) {

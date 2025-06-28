@@ -38,15 +38,7 @@ export default function SchtickCard({ schtick, state, dispatch }: SchtickCardPro
   const { user, client } = useClient()
   const { state:characterState, dispatch:dispatchCharacter } = useCharacter()
   const { character } = characterState
-
-  async function reloadCharacter(char: Character) {
-    try {
-      const data = await client.getCharacter(char)
-      dispatchCharacter({ type: CharacterActions.CHARACTER, payload: data })
-    } catch(error) {
-      toastError()
-    }
-  }
+  const [deleted, setDeleted] = useState<boolean>(false)
 
   async function reloadSchticks() {
     try {
@@ -62,7 +54,9 @@ export default function SchtickCard({ schtick, state, dispatch }: SchtickCardPro
   async function removeSchtick() {
     try {
       await client.removeSchtick(character, schtick)
-      await reloadCharacter(character)
+      dispatchCharacter({ type: CharacterActions.RELOAD })
+      dispatchCharacter({ type: CharacterActions.EDIT })
+      setDeleted(true)
       toastSuccess("Schtick removed.")
     } catch(error) {
       toastError()
@@ -114,6 +108,25 @@ export default function SchtickCard({ schtick, state, dispatch }: SchtickCardPro
   if (!schtick) return <></>
 
   const avatar = <Avatar sx={{bgcolor: schtick.color || 'secondary', color: "white"}} variant="rounded">{schtick.category[0]}</Avatar>
+
+  if (deleted) {
+    return (
+      <SchtickCardBase
+        title={schtick.name}
+        subheader={schtick.path}
+        avatar={avatar}
+        sx={{ opacity: 0.5, textDecoration: "line-through" }}
+      >
+        <Typography variant="body2" gutterBottom>
+          {schtick.description}
+        </Typography>
+        { schtick.prerequisite.name &&
+          <Typography variant="subtitle2">
+            Requires: {schtick.prerequisite.name}
+          </Typography> }
+      </SchtickCardBase>
+    )
+  }
 
   return (
     <>
