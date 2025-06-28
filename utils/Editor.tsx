@@ -126,6 +126,7 @@ const Editor = ({ value, onChange, name = 'description' }: EditorProps) => {
   const focusedIndexRef = useRef<number>(-1)
   const editorRef = useRef<TiptapEditor | null>(null)
   const popupRef = useRef<any>(null)
+  const isCleaningUp = useRef<boolean>(false)
 
   const updateFocus = (container: HTMLElement, newIndex: number, items: MentionItem[]) => {
     console.log('Updating focus to index:', newIndex)
@@ -147,13 +148,50 @@ const Editor = ({ value, onChange, name = 'description' }: EditorProps) => {
 
   // Cleanup Tippy instance
   const cleanupTippy = () => {
-    console.log('Cleaning up Tippy elements')
+    if (isCleaningUp.current) {
+      console.log('Skipping cleanup, already in progress')
+      return
+    }
+    isCleaningUp.current = true
+    console.log('Cleaning up Tippy elements, popupRef.current:', popupRef.current, 'isVisible:', popupRef.current?.[0]?.state?.isVisible)
     if (popupRef.current && popupRef.current[0]) {
       popupRef.current[0].hide()
-      popupRef.current[0].destroy()
-      popupRef.current = null
+      const popper = popupRef.current[0].popper
+      if (popper) {
+        popper.innerHTML = '' // Clear popper content
+        if (popper.parentNode) {
+          popper.parentNode.removeChild(popper)
+        }
+      }
+      // Delay destroy to ensure hide completes
+      setTimeout(() => {
+        if (popupRef.current && popupRef.current[0]) {
+          popupRef.current[0].destroy()
+          popupRef.current = null
+        }
+      }, 50)
+      // Remove all Tippy-related elements
+      document.querySelectorAll('[data-tippy-root], .tippy-box').forEach((el) => {
+        if (el.parentNode) {
+          el.parentNode.removeChild(el)
+        }
+      })
     }
+    setIsSuggestionActive(false)
+    suggestionContainerRef.current = null
+    suggestionPropsRef.current = null
+    focusedIndexRef.current = -1
+    isCleaningUp.current = false
+    console.log('Popper in DOM after cleanup:', document.querySelector('div[id^="tippy-"]'))
   }
+
+  // Cleanup popup on unmount
+  useEffect(() => {
+    return () => {
+      console.log('Component unmount')
+      cleanupTippy()
+    }
+  }, [])
 
   // Ensure focus is maintained on the popup
   useEffect(() => {
@@ -182,8 +220,6 @@ const Editor = ({ value, onChange, name = 'description' }: EditorProps) => {
         console.log('Hiding popup on Escape')
         suggestionPropsRef.current?.props.editor.commands.focus()
         cleanupTippy()
-        focusedIndexRef.current = -1
-        setIsSuggestionActive(false)
         return
       }
 
@@ -206,7 +242,6 @@ const Editor = ({ value, onChange, name = 'description' }: EditorProps) => {
         suggestionPropsRef.current?.props.editor.commands.focus()
         console.log('Hiding popup on Enter')
         cleanupTippy()
-        setIsSuggestionActive(false)
         return
       }
     }
@@ -228,56 +263,58 @@ const Editor = ({ value, onChange, name = 'description' }: EditorProps) => {
       return {
         onStart: (props) => {
           console.log('Suggestion onStart:', props)
-          setIsSuggestionActive(true)
-          suggestionPropsRef.current = { props, command: props.command }
-          editorRef.current = props.editor
-          const container = document.createElement('div')
-          container.className = styles.mentionSuggestions
-          container.setAttribute('tabindex', '0')
-          container.setAttribute('role', 'listbox')
-          suggestionContainerRef.current = container
-          props.editor.view.dom.setAttribute('contenteditable', 'false')
+          if (!isSuggestionActive) {
+            setIsSuggestionActive(true)
+            suggestionPropsRef.current = { props, command: props.command }
+            editorRef.current = props.editor
+            const container = document.createElement('div')
+            container.className = styles.mentionSuggestions
+            container.setAttribute('tabindex', '0')
+            container.setAttribute('role', 'listbox')
+            suggestionContainerRef.current = container
+            props.editor.view.dom.setAttribute('contenteditable', 'false')
 
-          popupRef.current = tippy(document.body, {
-            getReferenceClientRect: props.clientRect as () => DOMRect,
-            appendTo: () => document.body,
-            content: container,
-            showOnCreate: true,
-            interactive: true,
-            trigger: 'manual',
-            placement: 'bottom-start',
-            onShow: () => {
-              console.log('Popup shown')
-              if (props.items.length > 0) {
-                updateFocus(container, 0, props.items)
-              }
-            },
-            onHide: () => {
-              console.log('Popup hidden')
-              cleanupTippy()
-            },
-          })
-
-          props.items.forEach((item: MentionItem, index: number) => {
-            const button = document.createElement('button')
-            button.className = styles.mentionItem
-            button.textContent = item.label
-            button.setAttribute('type', 'button')
-            button.setAttribute('aria-label', `Select ${item.label}`)
-            button.setAttribute('role', 'option')
-            button.addEventListener('click', () => {
-              console.log('Button clicked:', item)
-              props.command({ id: item.id, label: item.label })
-              props.editor.commands.focus()
-              console.log('Hiding popup on click')
-              cleanupTippy()
-              setIsSuggestionActive(false)
+            popupRef.current = tippy(document.body, {
+              getReferenceClientRect: props.clientRect as () => DOMRect,
+              appendTo: () => document.body,
+              content: container,
+              showOnCreate: true,
+              interactive: true,
+              trigger: 'manual',
+              placement: 'bottom-start',
+              duration: [300, 0], // Show animation 300ms, no hide animation
+              onShow: () => {
+                console.log('Popup shown')
+                if (props.items.length > 0) {
+                  updateFocus(container, 0, props.items)
+                }
+              },
+              onHide: () => {
+                console.log('Popup hidden')
+                cleanupTippy()
+              },
             })
-            container.appendChild(button)
-          })
 
-          if (props.items.length > 0) {
-            updateFocus(container, 0, props.items)
+            props.items.forEach((item: MentionItem, index: number) => {
+              const button = document.createElement('button')
+              button.className = styles.mentionItem
+              button.textContent = item.label
+              button.setAttribute('type', 'button')
+              button.setAttribute('aria-label', `Select ${item.label}`)
+              button.setAttribute('role', 'option')
+              button.addEventListener('click', () => {
+                console.log('Button clicked:', item)
+                props.command({ id: item.id, label: item.label })
+                props.editor.commands.focus()
+                console.log('Hiding popup on click')
+                cleanupTippy()
+              })
+              container.appendChild(button)
+            })
+
+            if (props.items.length > 0) {
+              updateFocus(container, 0, props.items)
+            }
           }
         },
         onUpdate: (props) => {
@@ -305,7 +342,6 @@ const Editor = ({ value, onChange, name = 'description' }: EditorProps) => {
               props.editor.commands.focus()
               console.log('Hiding popup on click')
               cleanupTippy()
-              setIsSuggestionActive(false)
             })
             container.appendChild(button)
           })
@@ -325,8 +361,6 @@ const Editor = ({ value, onChange, name = 'description' }: EditorProps) => {
             props.event.stopPropagation()
             console.log('Hiding popup on Escape')
             cleanupTippy()
-            focusedIndexRef.current = -1
-            setIsSuggestionActive(false)
             props.editor.commands.focus()
             return true
           }
@@ -358,7 +392,6 @@ const Editor = ({ value, onChange, name = 'description' }: EditorProps) => {
               props.editor.commands.focus()
               console.log('Hiding popup on Enter')
               cleanupTippy()
-              setIsSuggestionActive(false)
             }
             return true
           }
@@ -368,10 +401,6 @@ const Editor = ({ value, onChange, name = 'description' }: EditorProps) => {
         onExit: (props) => {
           console.log('Suggestion onExit')
           cleanupTippy()
-          focusedIndexRef.current = -1
-          setIsSuggestionActive(false)
-          suggestionContainerRef.current = null
-          suggestionPropsRef.current = null
           if (editorRef.current) {
             editorRef.current.view.dom.setAttribute('contenteditable', 'true')
             editorRef.current.commands.focus()
