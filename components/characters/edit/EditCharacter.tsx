@@ -12,7 +12,7 @@ import Skills from "@/components/characters/edit/Skills"
 import Advancements from "@/components/advancements/Advancements"
 import Sites from "@/components/characters/edit/sites/Sites"
 import ImageManager from "@/components/images/ImageManager"
-import Weapons from "@/components/weapons/Weapons"
+import EditWeapons from "@/components/characters/edit/EditWeapons"
 import UploadImage from "@/components/characters/edit/UploadImage"
 import ImageDisplay from "@/components/characters/ImageDisplay"
 import NotionLink from "@/components/notion/NotionLink"
@@ -43,13 +43,15 @@ interface EditCharacterProps {
   character: Character
 }
 
-export default function EditCharacter({ character:initialCharacter }: EditCharacterProps) {
+export default function EditCharacter({ }: EditCharacterProps) {
   const { user, client } = useClient()
   const { toastError, toastSuccess } = useToast()
   const { state:characterState, dispatch:dispatchCharacter, updateCharacter } = useCharacter()
 
   const { edited, saving, character } = characterState
   const { weapons, schticks, skills, description, action_values } = character
+
+  console.log("EditCharacter edited", edited)
 
   async function handleSubmit(event: React.ChangeEvent<HTMLInputElement>): Promise<void> {
     event.preventDefault()
@@ -132,7 +134,7 @@ export default function EditCharacter({ character:initialCharacter }: EditCharac
 
   return (
     <>
-      { (edited || saving) && <Typography>Saving...</Typography> }
+      { saving && <Typography gutterBottom>Saving...</Typography> }
       <Box component="form" onSubmit={handleSubmit}>
         <Stack spacing={2}>
           <Stack direction="row" spacing={1} justifyContent="space-between">
@@ -191,7 +193,7 @@ export default function EditCharacter({ character:initialCharacter }: EditCharac
             <FortuneSelect character={character} onChange={handleAVChange as React.ChangeEventHandler} readOnly={false} />
           </PlayerTypeOnly>
           <Skills character={character} onChange={handleSkillsChange} />
-          <Weapons />
+          <EditWeapons />
           <PlayerTypeOnly character={character} only="PC">
             <Advancements character={character} />
           </PlayerTypeOnly>

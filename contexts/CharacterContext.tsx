@@ -34,7 +34,7 @@ interface CharacterProviderProps {
 export function CharacterProvider({ character:initialCharacter, children }: CharacterProviderProps) {
   const { client } = useClient()
   const [state, dispatch] = useReducer(characterReducer, {...initialCharacterState, character: initialCharacter})
-  const { character, edited, saving } = state
+  const { reload, character, edited, saving } = state
   const { toastError, toastSuccess } = useToast()
 
   useEffect(() => {

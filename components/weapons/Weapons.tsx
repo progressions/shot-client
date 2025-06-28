@@ -16,9 +16,6 @@ interface WeaponsProps {
 }
 
 export default function Weapons({}: WeaponsProps) {
-  const { character, state:characterState } = useCharacter()
-  const { reload:characterReload } = characterState
-
   const { user, client } = useClient()
   const [state, dispatch] = useReducer(weaponsReducer, initialWeaponsState)
   const { weapons, edited, meta, page, loading, juncture, category, name } = state
@@ -30,8 +27,6 @@ export default function Weapons({}: WeaponsProps) {
   const initialPageNum = initialPage ? parseInt(initialPage as string, 10) : 1
 
   useEffect(() => {
-    if (character?.id) return
-
     if (page !== initialPageNum) {
       dispatch({ type: WeaponsActions.PAGE, name: "page", value: initialPageNum })
     }
@@ -40,7 +35,6 @@ export default function Weapons({}: WeaponsProps) {
   useEffect(() => {
     if (edited) return
     if (!page) return
-    if (character?.id) return
 
     if (page > meta.total_pages) {
       router.push(
@@ -51,48 +45,26 @@ export default function Weapons({}: WeaponsProps) {
     }
   }, [edited, page, meta])
 
+  useEffect(() => {
+    console.log("Weapons useEffect")
+
     async function reload() {
       try {
         console.log("Fetching Weapons page ", page)
-        if (character?.id) {
-          const data = await client.getCharacterWeapons(character, { page, juncture, category, name })
-          dispatch({ type: WeaponsActions.WEAPONS, payload: data })
-        } else {
-          const data = await client.getWeapons({ page, juncture, category, name, character_id: character?.id as string })
-          dispatch({ type: WeaponsActions.WEAPONS, payload: data })
-        }
+        const data = await client.getWeapons({ page, juncture, category, name })
+        dispatch({ type: WeaponsActions.WEAPONS, payload: data })
       } catch(error) {
         toastError()
       }
     }
 
-  useEffect(() => {
-    console.log("defining reload")
-    console.log("characterReload", characterReload)
-
-    if (user?.id && edited && !character?.id && page === initialPageNum) {
+    if (user?.id && edited && page === initialPageNum) {
       reload().catch(toastError)
       return
     }
-    if (user?.id && edited && character?.id) {
-      reload().catch(toastError)
-      return
-    }
-    if (user?.id && character?.id && characterReload) {
-      console.log("reloading weapons after character reload")
-      reload().catch(toastError)
-      return
-    }
-  }, [user, edited, character, user, juncture, category, initialPage, page, name])
-
-  console.log("reloadCharacter", characterReload)
+  }, [user, edited, user, juncture, category, initialPage, page, name])
 
   const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
-    if (character?.id) {
-      dispatch({ type: WeaponsActions.PAGE, name: "page", value: value})
-      return
-    }
-
     router.push(
       { pathname: router.pathname, query: { page: value } },
       undefined,
