@@ -5,7 +5,7 @@ interface SchtickCardBase {
   subheader: string
   avatar: React.ReactNode
   action: React.ReactNode
-  sx: React.CSSProperties
+  sx?: React.CSSProperties
 }
 
 export default function SchtickCardBase({ sx, title, subheader, avatar, action, children }: React.PropsWithChildren<SchtickCardBase>) {

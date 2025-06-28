@@ -66,11 +66,11 @@ export default function EditSchticks({}: EditSchticksProps) {
     dispatch({ type: SchticksActions.PAGE, name: "page", value })
   }
 
-  const rowsOfData = rowMap<Schtick>(schticks, 2)
+  const rowsOfData = rowMap<SchtickType>(schticks, 2)
 
-  const outputRows = rowsOfData.map((row: Schtick[], index: number) => (
+  const outputRows = rowsOfData.map((row: SchtickType[], index: number) => (
     <Stack spacing={1} direction="row" key={`row_${index}`}>
-      { row.map((schtick: Schtick) => (
+      { row.map((schtick: SchtickType) => (
         <Schtick key={`schtick_${schtick?.id}`} schtick={schtick} state={state} dispatch={dispatch as React.Dispatch<SchticksActionType>} />
       )) }
     </Stack>)

@@ -115,6 +115,7 @@ export default function SchtickCard({ schtick, state, dispatch }: SchtickCardPro
         subheader={schtick.path}
         avatar={avatar}
         sx={{ opacity: 0.5, textDecoration: "line-through" }}
+        action={[]}
       >
         <Typography variant="body2" gutterBottom>
           {schtick.description}

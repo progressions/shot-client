@@ -5,7 +5,7 @@ interface WeaponCardBaseProps {
   subheader: string
   avatar?: React.ReactNode
   action: React.ReactNode
-  sx: React.CSSProperties
+  sx?: React.CSSProperties
 }
 
 export default function WeaponCardBase({ sx, title, subheader, avatar, action, children }: React.PropsWithChildren<WeaponCardBaseProps>) {

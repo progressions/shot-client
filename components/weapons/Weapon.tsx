@@ -16,7 +16,7 @@ import { CharacterActions } from "@/reducers/characterState"
 interface WeaponProps {
   weapon: WeaponType
   state: WeaponsStateType
-  dispatch?: React.Dispatch<WeaponsActionType>
+  dispatch: React.Dispatch<WeaponsActionType>
 }
 
 export default function Weapon({ weapon, state, dispatch }: WeaponProps) {
@@ -73,6 +73,7 @@ export default function Weapon({ weapon, state, dispatch }: WeaponProps) {
         title={`${weapon.name} ${stats}`}
         subheader={`${weapon.juncture} ${weapon.category}`}
         sx={{ opacity: 0.5, textDecoration: "line-through" }}
+        action={[]}
       >
         { weapon.image_url &&
         <Box

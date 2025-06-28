@@ -5,6 +5,7 @@ import { useToast } from "@/contexts/ToastContext"
 import { useCharacter } from "@/contexts/CharacterContext"
 import FilterWeapons from "@/components/weapons/FilterWeapons"
 import { WeaponsActions, initialWeaponsState, weaponsReducer } from "@/reducers/weaponsState"
+import type { WeaponsStateType, WeaponsActionType } from "@/reducers/weaponsState"
 import { CharacterActions } from "@/reducers/characterState"
 
 import type { Character, Weapon } from "@/types/types"
@@ -14,7 +15,7 @@ import { useState, useEffect, useReducer } from "react"
 
 interface AddWeaponProps {
   state: WeaponsStateType
-  dispatch?: React.Dispatch<WeaponsActionType>
+  dispatch: React.Dispatch<WeaponsActionType>
 }
 
 export default function AddWeapon({ state, dispatch }: AddWeaponProps) {

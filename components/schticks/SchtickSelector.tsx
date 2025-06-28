@@ -11,8 +11,8 @@ import { SaveCancelButtons, StyledTextField } from "@/components/StyledFields"
 import { CharacterActions } from "@/reducers/characterState"
 
 interface SchtickSelectorProps {
-  allSchticksState?: SchticksStateType
-  dispatchAllSchticks?: React.Dispatch<SchticksActionType>
+  allSchticksState: SchticksStateType
+  dispatchAllSchticks: React.Dispatch<SchticksActionType>
 }
 
 export default function SchtickSelector({ allSchticksState, dispatchAllSchticks }: SchtickSelectorProps) {
