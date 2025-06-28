@@ -1,5 +1,5 @@
 import { Grid, Skeleton, Pagination, Button, Box, Stack, Typography } from "@mui/material"
-import SchtickCard from "@/components/schticks/SchtickCard"
+import Schtick from "@/components/schticks/Schtick"
 import { useCharacter, useClient, useToast } from "@/contexts"
 import { Subhead } from "@/components/StyledFields"
 import { rowMap } from "@/utils/rowMap"
@@ -12,7 +12,7 @@ import SchtickSelector from "@/components/schticks/SchtickSelector"
 import { useReducer, useEffect, useState, useMemo } from "react"
 import type { SchticksStateType, SchticksActionType } from "@/reducers/schticksState"
 import { initialSchticksState, schticksReducer, SchticksActions } from "@/reducers/schticksState"
-import { QueryType, Schtick } from "@/types/types"
+import { QueryType, Schtick as SchtickType } from "@/types/types"
 
 interface SchticksProps {
 }
@@ -99,7 +99,7 @@ export default function Schticks({}: SchticksProps) {
   const outputRows = rowsOfData.map((row: Schtick[], index: number) => (
     <Stack spacing={1} direction="row" key={`row_${index}`}>
       { row.map((schtick: Schtick) => (
-        <SchtickCard key={`schtick_${schtick?.id}`} schtick={schtick} state={state} dispatch={dispatch as React.Dispatch<SchticksActionType>} />
+        <Schtick key={`schtick_${schtick?.id}`} schtick={schtick} state={state} dispatch={dispatch as React.Dispatch<SchticksActionType>} />
       )) }
     </Stack>)
   )
@@ -138,7 +138,6 @@ export default function Schticks({}: SchticksProps) {
         { !loading && outputRows }
       </Stack>
       { !!schticks?.length && <Pagination count={meta.total_pages} page={page} onChange={handlePageChange} variant="outlined" color="primary" shape="rounded" size="large" /> }
-      { character?.id && <SchtickSelector allSchticksState={state} dispatchAllSchticks={dispatch} /> }
     </>
   )
 }

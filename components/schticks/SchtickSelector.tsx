@@ -11,8 +11,8 @@ import { SaveCancelButtons, StyledTextField } from "@/components/StyledFields"
 import { CharacterActions } from "@/reducers/characterState"
 
 interface SchtickSelectorProps {
-  allSchticksState: SchticksStateType
-  dispatchAllSchticks: React.Dispatch<SchticksActionType>
+  allSchticksState?: SchticksStateType
+  dispatchAllSchticks?: React.Dispatch<SchticksActionType>
 }
 
 export default function SchtickSelector({ allSchticksState, dispatchAllSchticks }: SchtickSelectorProps) {
@@ -23,17 +23,22 @@ export default function SchtickSelector({ allSchticksState, dispatchAllSchticks 
   const [open, setOpen] = useState(false)
   const { saving, loading, edited, category, path, name, schtick, schticks, meta, page } = state
 
-  useEffect(() => {
-    const reload = async () => {
-      try {
-        const data = await client.getSchticks({ page, category, path, name, character_id: character?.id as string })
-        dispatch({ type: SchticksActions.SCHTICKS, payload: data })
-      } catch (error) {
-        console.error("Error fetching schticks:", error)
-        toastError()
-      }
+  const reload = async () => {
+    try {
+      const data = await client.getSchticks({ page, category, path, name, character_id: character?.id as string })
+      console.log("SchtickSelector data", data)
+      dispatch({ type: SchticksActions.SCHTICKS, payload: data })
+    } catch (error) {
+      console.error("Error fetching schticks:", error)
+      toastError()
     }
+  }
 
+  useEffect(() => {
+    if (user) {
+      reload().catch(console.error)
+      return
+    }
     if (user && edited) {
       reload()
     }

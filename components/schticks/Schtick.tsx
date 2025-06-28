@@ -54,8 +54,7 @@ export default function SchtickCard({ schtick, state, dispatch }: SchtickCardPro
   async function removeSchtick() {
     try {
       await client.removeSchtick(character, schtick)
-      dispatchCharacter({ type: CharacterActions.RELOAD })
-      dispatchCharacter({ type: CharacterActions.EDIT })
+      dispatch({ type: SchticksActions.EDIT })
       setDeleted(true)
       toastSuccess("Schtick removed.")
     } catch(error) {

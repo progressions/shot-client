@@ -6,7 +6,7 @@ import CharacterType from "@/components/characters/edit/CharacterType"
 import FortuneSelect from "@/components/characters/edit/FortuneSelect"
 import Description from "@/components/characters/edit/Description"
 import Faction from "@/components/characters/edit/Faction"
-import Schticks from "@/components/schticks/Schticks"
+import EditSchticks from "@/components/characters/edit/EditSchticks"
 import SchtickSelector from "@/components/schticks/SchtickSelector"
 import Skills from "@/components/characters/edit/Skills"
 import Advancements from "@/components/advancements/Advancements"
@@ -199,7 +199,7 @@ export default function EditCharacter({ }: EditCharacterProps) {
           </PlayerTypeOnly>
           <Sites character={character} />
           <Description character={character} onChange={handleDescriptionChange} />
-          <Schticks />
+          <EditSchticks />
         </Stack>
       </Box>
     </>
