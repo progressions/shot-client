@@ -26,6 +26,7 @@ interface EditorProps {
 
 interface MentionItem {
   id: string
+  class: string
   label: string
 }
 
@@ -428,6 +429,22 @@ const Editor = ({ value, onChange, name = 'description' }: EditorProps) => {
         class: 'mention',
       },
       suggestion,
+      renderHTML({ node }) {
+        const { id, label } = node.attrs;
+        // Construct the URL (customize this based on your needs)
+        const url = `/characters/${id}`; // Example: link to a profile page using the mention's ID
+        return [
+          'a',
+          {
+            href: url,
+            class: 'mention',
+            target: '_blank', // Optional: open in new tab
+            rel: 'noopener noreferrer', // Optional: security attributes
+            'data-mention-id': id, // Optional: store ID as data attribute
+          },
+          `@${label}`, // Display the label with @ prefix
+        ];
+      },
     }),
   ]
 

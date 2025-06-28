@@ -1,18 +1,14 @@
-// utils/RichTextRenderer.tsx
 import { Box, styled } from '@mui/material';
 import DOMPurify from 'dompurify';
 
 interface RichTextRendererProps {
-  html: string | undefined | null
+  html: string | undefined | null;
 }
 
 const StyledRichText = styled(Box)(({ theme }) => ({
-  fontFamily: 'Roboto, sans-serif', // Fixed: Single string with fallback
+  fontFamily: 'Roboto, sans-serif',
   fontSize: theme.typography.body1.fontSize,
   lineHeight: theme.typography.body1.lineHeight,
-  // color: 'var(--black)',
-  // background: 'var(--blue-grey-200)',
-  // padding: '8px',
   borderRadius: '4px',
   '& p': {
     margin: '0 0 1rem',
@@ -40,7 +36,7 @@ const StyledRichText = styled(Box)(({ theme }) => ({
     borderRadius: '4px',
     padding: '0.2em 0.4em',
     fontSize: '0.85rem',
-    fontFamily: 'Roboto, sans-serif', // Fixed: Single string
+    fontFamily: 'Roboto, sans-serif',
   },
   '& pre': {
     backgroundColor: 'var(--black)',
@@ -48,7 +44,7 @@ const StyledRichText = styled(Box)(({ theme }) => ({
     padding: '1rem',
     borderRadius: '4px',
     overflowX: 'auto',
-    fontFamily: 'Roboto, sans-serif', // Fixed: Single string
+    fontFamily: 'Roboto, sans-serif',
     margin: '1.5rem 0',
   },
   '& hr': {
@@ -56,9 +52,26 @@ const StyledRichText = styled(Box)(({ theme }) => ({
     borderTop: `1px solid var(--gray-2)`,
     margin: '2rem 0',
   },
+  '& a': {
+    color: '#1d4ed8', // Blue for links
+    textDecoration: 'underline',
+    cursor: 'pointer',
+    '&:hover': {
+      color: '#1e40af', // Darker blue on hover
+    },
+    '&.mention': {
+      fontWeight: theme.typography.fontWeightMedium, // Bolder for mentions
+      color: '#2563eb', // Distinct blue for mentions
+      '&:hover': {
+        color: '#1e40af',
+      },
+    },
+  },
 }));
 
 export default function RichTextRenderer({ html }: RichTextRendererProps) {
-  const sanitizedHtml = DOMPurify.sanitize(html || "");
+  const sanitizedHtml = DOMPurify.sanitize(html || '', {
+    ADD_ATTR: ['target', 'rel', 'data-mention-id'], // Allow mention link attributes
+  });
   return <StyledRichText dangerouslySetInnerHTML={{ __html: sanitizedHtml }} />;
 }
