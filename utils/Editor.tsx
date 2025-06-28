@@ -10,7 +10,7 @@ import FormatBoldIcon from "@mui/icons-material/FormatBold"
 import FormatItalicIcon from "@mui/icons-material/FormatItalic"
 import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted"
 import styles from "./Editor.module.scss"
-import { useState } from "react"
+import { useState, useRef, useEffect } from "react"
 import { Transaction } from "@tiptap/pm/state"
 import tippy from "tippy.js"
 import "tippy.js/dist/tippy.css"
@@ -107,11 +107,9 @@ const MenuBar = () => {
   )
 }
 
-// Update fetchSuggestions to accept client
 const fetchSuggestions = async (query: string, client: any): Promise<MentionItem[]> => {
   try {
     const data = await client.getSuggestions({ query })
-    // Ensure data is in the correct format
     return Array.isArray(data) ? data : []
   } catch (error) {
     console.error('Error fetching suggestions:', error)
@@ -122,6 +120,86 @@ const fetchSuggestions = async (query: string, client: any): Promise<MentionItem
 const Editor = ({ value, onChange, name = 'description' }: EditorProps) => {
   const { client } = useClient()
   const [content, setContent] = useState<string>(value)
+  const [isSuggestionActive, setIsSuggestionActive] = useState<boolean>(false)
+  const suggestionContainerRef = useRef<HTMLElement | null>(null)
+  const suggestionPropsRef = useRef<{ props: any; command: (item: MentionItem) => void } | null>(null)
+  const focusedIndexRef = useRef<number>(-1)
+  const editorRef = useRef<TiptapEditor | null>(null)
+
+  const updateFocus = (container: HTMLElement, newIndex: number, items: MentionItem[]) => {
+    console.log('Updating focus to index:', newIndex)
+    focusedIndexRef.current = newIndex
+    const buttons = container.querySelectorAll(`button.${styles.mentionItem}`)
+    buttons.forEach((button, index) => {
+      if (index === focusedIndexRef.current) {
+        button.classList.add(styles.focused)
+        button.scrollIntoView({ block: 'nearest' })
+        setTimeout(() => {
+          button.focus()
+          console.log('Focused button:', button.textContent, 'Document active element:', document.activeElement?.textContent)
+        }, 0)
+      } else {
+        button.classList.remove(styles.focused)
+      }
+    })
+  }
+
+  // Ensure focus is maintained on the popup
+  useEffect(() => {
+    if (isSuggestionActive && suggestionContainerRef.current) {
+      const buttons = suggestionContainerRef.current.querySelectorAll(`button.${styles.mentionItem}`)
+      if (buttons.length > 0 && focusedIndexRef.current >= 0) {
+        buttons[focusedIndexRef.current].focus()
+        console.log('useEffect: Focused button:', buttons[focusedIndexRef.current].textContent, 'activeElement:', document.activeElement?.textContent)
+      }
+    }
+  }, [isSuggestionActive])
+
+  // Fallback keydown listener for the container
+  useEffect(() => {
+    const container = suggestionContainerRef.current
+    if (!container || !isSuggestionActive) return
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      console.log('Container keydown:', e.key, 'focusedIndex:', focusedIndexRef.current, 'activeElement:', document.activeElement?.textContent)
+      if (!suggestionPropsRef.current) return
+      const { props, command } = suggestionPropsRef.current
+      e.preventDefault()
+      e.stopPropagation()
+
+      if (e.key === 'Escape') {
+        suggestionPropsRef.current?.props.editor.commands.focus()
+        popup?.[0]?.hide()
+        focusedIndexRef.current = -1
+        setIsSuggestionActive(false)
+        return
+      }
+
+      if (e.key === 'ArrowDown') {
+        const newIndex = focusedIndexRef.current < props.items.length - 1 ? focusedIndexRef.current + 1 : 0
+        updateFocus(container, newIndex, props.items)
+        return
+      }
+
+      if (e.key === 'ArrowUp') {
+        const newIndex = focusedIndexRef.current > 0 ? focusedIndexRef.current - 1 : props.items.length - 1
+        updateFocus(container, newIndex, props.items)
+        return
+      }
+
+      if (e.key === 'Enter' && focusedIndexRef.current >= 0 && focusedIndexRef.current < props.items.length) {
+        const item = props.items[focusedIndexRef.current]
+        console.log('Container selecting item:', item)
+        command({ id: item.id, label: item.label })
+        suggestionPropsRef.current?.props.editor.commands.focus()
+        setIsSuggestionActive(false)
+        return
+      }
+    }
+
+    container.addEventListener('keydown', handleKeyDown)
+    return () => container.removeEventListener('keydown', handleKeyDown)
+  }, [isSuggestionActive])
 
   const suggestion: SuggestionOptions['suggestion'] = {
     char: '@',
@@ -135,8 +213,15 @@ const Editor = ({ value, onChange, name = 'description' }: EditorProps) => {
       return {
         onStart: (props) => {
           console.log('Suggestion onStart:', props)
+          setIsSuggestionActive(true)
+          suggestionPropsRef.current = { props, command: props.command }
+          editorRef.current = props.editor
           const container = document.createElement('div')
           container.className = styles.mentionSuggestions
+          container.setAttribute('tabindex', '0')
+          container.setAttribute('role', 'listbox')
+          suggestionContainerRef.current = container
+          props.editor.view.dom.setAttribute('contenteditable', 'false')
 
           popup = tippy(document.body, {
             getReferenceClientRect: props.clientRect as () => DOMRect,
@@ -146,46 +231,126 @@ const Editor = ({ value, onChange, name = 'description' }: EditorProps) => {
             interactive: true,
             trigger: 'manual',
             placement: 'bottom-start',
+            onShow: () => {
+              console.log('Popup shown')
+              if (props.items.length > 0) {
+                updateFocus(container, 0, props.items)
+              }
+            },
           })
 
-          props.items.forEach((item: MentionItem) => {
+          props.items.forEach((item: MentionItem, index: number) => {
             const button = document.createElement('button')
             button.className = styles.mentionItem
             button.textContent = item.label
+            button.setAttribute('type', 'button')
+            button.setAttribute('aria-label', `Select ${item.label}`)
+            button.setAttribute('role', 'option')
             button.addEventListener('click', () => {
+              console.log('Button clicked:', item)
               props.command({ id: item.id, label: item.label })
+              props.editor.commands.focus()
+              setIsSuggestionActive(false)
             })
             container.appendChild(button)
           })
+
+          if (props.items.length > 0) {
+            updateFocus(container, 0, props.items)
+          }
         },
         onUpdate: (props) => {
           console.log('Suggestion onUpdate:', props)
           if (!popup || !popup[0]) return
+          suggestionPropsRef.current = { props, command: props.command }
+          editorRef.current = props.editor
           const container = popup[0].popper.querySelector(`.${styles.mentionSuggestions}`)
           if (!container) return
           container.innerHTML = ''
-          props.items.forEach((item: MentionItem) => {
+          focusedIndexRef.current = -1
+          suggestionContainerRef.current = container
+          props.editor.view.dom.setAttribute('contenteditable', 'false')
+
+          props.items.forEach((item: MentionItem, index: number) => {
             const button = document.createElement('button')
             button.className = styles.mentionItem
             button.textContent = item.label
+            button.setAttribute('type', 'button')
+            button.setAttribute('aria-label', `Select ${item.label}`)
+            button.setAttribute('role', 'option')
             button.addEventListener('click', () => {
+              console.log('Button clicked:', item)
               props.command({ id: item.id, label: item.label })
+              props.editor.commands.focus()
+              setIsSuggestionActive(false)
             })
             container.appendChild(button)
           })
+
+          if (props.items.length > 0) {
+            updateFocus(container, 0, props.items)
+          }
         },
         onKeyDown: (props) => {
+          console.log('Suggestion onKeyDown:', props.event.key, 'focusedIndex:', focusedIndexRef.current, 'activeElement:', document.activeElement?.textContent)
+          if (!popup || !popup[0]) return false
+          const container = popup[0].popper.querySelector(`.${styles.mentionSuggestions}`)
+          if (!container) return false
+
           if (props.event.key === 'Escape') {
-            if (popup && popup[0]) {
-              popup[0].hide()
+            props.event.preventDefault()
+            props.event.stopPropagation()
+            popup[0].hide()
+            focusedIndexRef.current = -1
+            setIsSuggestionActive(false)
+            props.editor.commands.focus()
+            return true
+          }
+
+          if (props.event.key === 'ArrowDown') {
+            props.event.preventDefault()
+            props.event.stopPropagation()
+            const newIndex = focusedIndexRef.current < props.items.length - 1 ? focusedIndexRef.current + 1 : 0
+            updateFocus(container, newIndex, props.items)
+            return true
+          }
+
+          if (props.event.key === 'ArrowUp') {
+            props.event.preventDefault()
+            props.event.stopPropagation()
+            const newIndex = focusedIndexRef.current > 0 ? focusedIndexRef.current - 1 : props.items.length - 1
+            updateFocus(container, newIndex, props.items)
+            return true
+          }
+
+          if (props.event.key === 'Enter') {
+            console.log('Enter pressed, focusedIndex:', focusedIndexRef.current, 'items:', props.items)
+            props.event.preventDefault()
+            props.event.stopPropagation()
+            if (focusedIndexRef.current >= 0 && focusedIndexRef.current < props.items.length) {
+              const item = props.items[focusedIndexRef.current]
+              console.log('Selecting item:', item)
+              props.command({ id: item.id, label: item.label })
+              props.editor.commands.focus()
+              setIsSuggestionActive(false)
             }
             return true
           }
+
           return false
         },
-        onExit: () => {
+        onExit: (props) => {
+          console.log('Suggestion onExit')
           if (popup && popup[0]) {
             popup[0].destroy()
+          }
+          focusedIndexRef.current = -1
+          setIsSuggestionActive(false)
+          suggestionContainerRef.current = null
+          suggestionPropsRef.current = null
+          if (editorRef.current) {
+            editorRef.current.view.dom.setAttribute('contenteditable', 'true')
+            editorRef.current.commands.focus()
           }
         },
       }
@@ -245,6 +410,24 @@ const Editor = ({ value, onChange, name = 'description' }: EditorProps) => {
             },
           } as React.ChangeEvent<HTMLInputElement>
           onChangeContent(syntheticEvent)
+        }}
+        editorProps={{
+          handleKeyDown: (view, event) => {
+            console.log('Editor handleKeyDown:', event.key, 'isSuggestionActive:', isSuggestionActive, 'activeElement:', document.activeElement?.className)
+            if (isSuggestionActive) {
+              event.preventDefault()
+              event.stopPropagation()
+              if (suggestionContainerRef.current) {
+                const buttons = suggestionContainerRef.current.querySelectorAll(`button.${styles.mentionItem}`)
+                if (buttons.length > 0 && focusedIndexRef.current >= 0) {
+                  buttons[focusedIndexRef.current].focus()
+                  console.log('Editor redirected focus to button:', buttons[focusedIndexRef.current]?.textContent)
+                }
+              }
+              return true
+            }
+            return false
+          },
         }}
       />
     </div>
