@@ -11,10 +11,9 @@ import FormatItalicIcon from "@mui/icons-material/FormatItalic"
 import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted"
 import styles from "./Editor.module.scss"
 import { useState, useRef, useEffect } from "react"
-import { Transaction } from "@tiptap/pm/state"
+import { Transaction, Plugin, PluginKey } from "@tiptap/pm/state"
 import tippy from "tippy.js"
 import "tippy.js/dist/tippy.css"
-import { PluginKey } from "@tiptap/pm/state"
 import { SuggestionOptions } from "@tiptap/suggestion"
 import { useClient } from "@/contexts"
 
@@ -118,6 +117,45 @@ const fetchSuggestions = async (query: string, client: any): Promise<MentionItem
   }
 }
 
+const preprocessContent = (html: string): string => {
+  // Remove nested <p> tags inside <li>
+  let processed = html.replace(/<li><p>(.*?)<\/p><\/li>/g, '<li>$1</li>')
+  // Transform <a class="mention"> to <span data-type="mention"> with label without @
+  processed = processed.replace(
+    /<a href="([^"]+)" class="mention"[^>]*data-mention-id="([^"]+)"[^>]*>(@[^<]+)<\/a>/g,
+    (match, href, id, label) => {
+      const cleanLabel = label.replace(/^@/, '')
+      return `<span data-type="mention" data-id="${id}" data-label="${cleanLabel}" data-href="${href}">@${cleanLabel}</span>`
+    }
+  )
+  console.log('Preprocessed HTML:', processed)
+  return processed
+}
+
+const DebugParsePlugin = new Plugin({
+  key: new PluginKey('debugParse'),
+  props: {
+    handleDOMEvents: {
+      paste(view, event) {
+        console.log('Paste event:', event.clipboardData?.getData('text/html'))
+        return false
+      },
+    },
+    transformPastedHTML(html) {
+      console.log('Transforming pasted HTML:', html)
+      const transformed = html.replace(
+        /<a href="([^"]+)" class="mention"[^>]*data-mention-id="([^"]+)"[^>]*>(@[^<]+)<\/a>/g,
+        (match, href, id, label) => {
+          const cleanLabel = label.replace(/^@/, '')
+          return `<span data-type="mention" data-id="${id}" data-label="${cleanLabel}" data-href="${href}">@${cleanLabel}</span>`
+        }
+      )
+      console.log('Transformed pasted HTML:', transformed)
+      return transformed
+    },
+  },
+})
+
 const Editor = ({ value, onChange, name = 'description' }: EditorProps) => {
   const { client } = useClient()
   const [content, setContent] = useState<string>(value)
@@ -128,6 +166,8 @@ const Editor = ({ value, onChange, name = 'description' }: EditorProps) => {
   const editorRef = useRef<TiptapEditor | null>(null)
   const popupRef = useRef<any>(null)
   const isCleaningUp = useRef<boolean>(false)
+
+  const processedValue = preprocessContent(value)
 
   const updateFocus = (container: HTMLElement, newIndex: number, items: MentionItem[]) => {
     console.log('Updating focus to index:', newIndex)
@@ -188,11 +228,12 @@ const Editor = ({ value, onChange, name = 'description' }: EditorProps) => {
 
   // Cleanup popup on unmount
   useEffect(() => {
+    console.log('Editor mounted with value:', value)
     return () => {
-      console.log('Component unmount')
+      console.log('Editor unmounting, editorRef.current:', editorRef.current, 'value:', value)
       cleanupTippy()
     }
-  }, [])
+  }, [value])
 
   // Ensure focus is maintained on the popup
   useEffect(() => {
@@ -283,7 +324,7 @@ const Editor = ({ value, onChange, name = 'description' }: EditorProps) => {
               interactive: true,
               trigger: 'manual',
               placement: 'bottom-start',
-              duration: [300, 0], // Show animation 300ms, no hide animation
+              duration: [300, 0],
               onShow: () => {
                 console.log('Popup shown')
                 if (props.items.length > 0) {
@@ -412,6 +453,109 @@ const Editor = ({ value, onChange, name = 'description' }: EditorProps) => {
   }
 
   const extensions = [
+    Mention.configure({
+      HTMLAttributes: {
+        class: 'mention',
+      },
+      suggestion,
+      renderHTML({ node }) {
+        const { id, label } = node.attrs;
+        if (!id || !label) {
+          console.warn('renderHTML: Missing id or label:', node);
+          return ['span', { class: 'mention' }, `@${label || 'unknown'}`];
+        }
+        const url = `/characters/${id}`;
+        return [
+          'a',
+          {
+            href: url,
+            class: 'mention',
+            target: '_blank',
+            rel: 'noopener noreferrer',
+            'data-mention-id': id,
+          },
+          `@${label}`,
+        ];
+      },
+      parseHTML() {
+        return [
+          {
+            tag: 'span[data-type="mention"]',
+            priority: 1000,
+            getAttrs: (element) => {
+              if (typeof element === 'string') {
+                console.warn('parseHTML: Received string:', element);
+                return null;
+              }
+              console.log('parseHTML: Attempting to parse:', element.outerHTML);
+              const id = element.getAttribute('data-id');
+              const href = element.getAttribute('data-href');
+              const label = element.getAttribute('data-label') || element.textContent?.replace(/^@/, '') || '';
+              console.log('parseHTML: Processing mention:', {
+                id,
+                label,
+                href,
+                textContent: element.textContent,
+                outerHTML: element.outerHTML,
+              });
+              if (!id || !label) {
+                console.warn('parseHTML: Invalid attributes:', { id, label, href });
+                return null;
+              }
+              return {
+                id,
+                label: label.replace(/^@/, ''), // Ensure @ is stripped
+                href: href || `/characters/${id}`,
+              };
+            },
+          },
+        ];
+      },
+      addAttributes() {
+        return {
+          id: {
+            default: null,
+            parseHTML: (element) => element.getAttribute('data-id'),
+            renderHTML: (attributes) => ({
+              'data-mention-id': attributes.id,
+            }),
+          },
+          label: {
+            default: null,
+            parseHTML: (element) => {
+              const label = element.getAttribute('data-label') || element.textContent?.replace(/^@/, '') || '';
+              return label.replace(/^@/, ''); // Ensure @ is stripped
+            },
+            renderHTML: () => null,
+          },
+          href: {
+            default: null,
+            parseHTML: (element) => element.getAttribute('data-href'),
+            renderHTML: (attributes) => ({
+              href: attributes.href || `/characters/${attributes.id}`,
+            }),
+          },
+        };
+      },
+      addNodeView() {
+        return () => ({
+          dom: document.createElement('a'),
+          update: (node) => {
+            if (node.type.name !== 'mention') return false;
+            const { id, label } = node.attrs;
+            if (!id || !label) return false;
+            this.dom.setAttribute('href', `/characters/${id}`);
+            this.dom.setAttribute('class', 'mention');
+            this.dom.setAttribute('target', '_blank');
+            this.dom.setAttribute('rel', 'noopener noreferrer');
+            this.dom.setAttribute('data-mention-id', id);
+            this.dom.textContent = `@${label}`; // Prepend @ only once
+            return true;
+          },
+        });
+      },
+    }),
+    DebugParsePlugin,
     Color.configure({ types: [TextStyle.name, ListItem.name] }),
     TextStyle,
     StarterKit.configure({
@@ -423,27 +567,12 @@ const Editor = ({ value, onChange, name = 'description' }: EditorProps) => {
         keepMarks: true,
         keepAttributes: true,
       },
-    }),
-    Mention.configure({
-      HTMLAttributes: {
-        class: 'mention',
+      link: false,
+      paragraph: {
+        content: 'inline*',
       },
-      suggestion,
-      renderHTML({ node }) {
-        const { id, label } = node.attrs;
-        // Construct the URL (customize this based on your needs)
-        const url = `/characters/${id}`; // Example: link to a profile page using the mention's ID
-        return [
-          'a',
-          {
-            href: url,
-            class: 'mention',
-            target: '_blank', // Optional: open in new tab
-            rel: 'noopener noreferrer', // Optional: security attributes
-            'data-mention-id': id, // Optional: store ID as data attribute
-          },
-          `@${label}`, // Display the label with @ prefix
-        ];
+      listItem: {
+        content: '(paragraph | mention)*',
       },
     }),
   ]
@@ -469,18 +598,28 @@ const Editor = ({ value, onChange, name = 'description' }: EditorProps) => {
         immediatelyRender={false}
         slotBefore={<MenuBar />}
         extensions={extensions}
-        content={value}
+        content={processedValue}
+        onCreate={({ editor }) => {
+          editorRef.current = editor;
+          console.log('Editor created with value:', processedValue);
+          console.log('Editor schema (mention node):', editor.schema.nodes.mention || 'Mention node not found');
+          console.log('Initial editor JSON:', JSON.stringify(editor.getJSON(), null, 2));
+          console.log('Initial editor HTML:', editor.getHTML());
+          if (!editor.schema.nodes.mention) {
+            console.error('Error: Mention node is missing from schema');
+          }
+        }}
         onBlur={saveOnBlur}
         onUpdate={({ editor }) => {
-          console.log('Editor updated, HTML:', editor.getHTML())
-          console.log('Editor state:', editor.getJSON())
+          const html = editor.getHTML();
+          console.log('Editor updated, HTML:', html);
           const syntheticEvent = {
             target: {
               name,
-              value: editor.getHTML(),
+              value: html,
             },
-          } as React.ChangeEvent<HTMLInputElement>
-          onChangeContent(syntheticEvent)
+          } as React.ChangeEvent<HTMLInputElement>;
+          onChangeContent(syntheticEvent);
         }}
         editorProps={{
           handleKeyDown: (view, event) => {
