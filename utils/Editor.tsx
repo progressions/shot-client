@@ -125,6 +125,7 @@ const Editor = ({ value, onChange, name = 'description' }: EditorProps) => {
   const suggestionPropsRef = useRef<{ props: any; command: (item: MentionItem) => void } | null>(null)
   const focusedIndexRef = useRef<number>(-1)
   const editorRef = useRef<TiptapEditor | null>(null)
+  const popupRef = useRef<any>(null)
 
   const updateFocus = (container: HTMLElement, newIndex: number, items: MentionItem[]) => {
     console.log('Updating focus to index:', newIndex)
@@ -168,8 +169,10 @@ const Editor = ({ value, onChange, name = 'description' }: EditorProps) => {
       e.stopPropagation()
 
       if (e.key === 'Escape') {
+        console.log('Hiding popup on Escape')
         suggestionPropsRef.current?.props.editor.commands.focus()
-        popup?.[0]?.hide()
+        popupRef.current?.[0]?.hide()
+        popupRef.current?.[0]?.destroy()
         focusedIndexRef.current = -1
         setIsSuggestionActive(false)
         return
@@ -192,7 +195,13 @@ const Editor = ({ value, onChange, name = 'description' }: EditorProps) => {
         console.log('Container selecting item:', item)
         command({ id: item.id, label: item.label })
         suggestionPropsRef.current?.props.editor.commands.focus()
+        console.log('Hiding popup on Enter')
+        popupRef.current?.[0]?.hide()
+        popupRef.current?.[0]?.destroy()
         setIsSuggestionActive(false)
+        if (container.parentNode) {
+          container.parentNode.removeChild(container)
+        }
         return
       }
     }
@@ -208,8 +217,6 @@ const Editor = ({ value, onChange, name = 'description' }: EditorProps) => {
       return await fetchSuggestions(query, client)
     },
     render: () => {
-      let popup: any
-
       return {
         onStart: (props) => {
           console.log('Suggestion onStart:', props)
@@ -223,7 +230,7 @@ const Editor = ({ value, onChange, name = 'description' }: EditorProps) => {
           suggestionContainerRef.current = container
           props.editor.view.dom.setAttribute('contenteditable', 'false')
 
-          popup = tippy(document.body, {
+          popupRef.current = tippy(document.body, {
             getReferenceClientRect: props.clientRect as () => DOMRect,
             appendTo: () => document.body,
             content: container,
@@ -237,6 +244,9 @@ const Editor = ({ value, onChange, name = 'description' }: EditorProps) => {
                 updateFocus(container, 0, props.items)
               }
             },
+            onHide: () => {
+              console.log('Popup hidden')
+            },
           })
 
           props.items.forEach((item: MentionItem, index: number) => {
@@ -244,13 +254,19 @@ const Editor = ({ value, onChange, name = 'description' }: EditorProps) => {
             button.className = styles.mentionItem
             button.textContent = item.label
             button.setAttribute('type', 'button')
-            button.setAttribute('aria-label', `Select ${item.label}`)
+            button.setAttribute('aria-label', `� Select ${item.label}`)
             button.setAttribute('role', 'option')
             button.addEventListener('click', () => {
               console.log('Button clicked:', item)
               props.command({ id: item.id, label: item.label })
               props.editor.commands.focus()
+              console.log('Hiding popup on click')
+              popupRef.current?.[0]?.hide()
+              popupRef.current?.[0]?.destroy()
               setIsSuggestionActive(false)
+              if (container.parentNode) {
+                container.parentNode.removeChild(container)
+              }
             })
             container.appendChild(button)
           })
@@ -261,10 +277,10 @@ const Editor = ({ value, onChange, name = 'description' }: EditorProps) => {
         },
         onUpdate: (props) => {
           console.log('Suggestion onUpdate:', props)
-          if (!popup || !popup[0]) return
+          if (!popupRef.current || !popupRef.current[0]) return
           suggestionPropsRef.current = { props, command: props.command }
           editorRef.current = props.editor
-          const container = popup[0].popper.querySelector(`.${styles.mentionSuggestions}`)
+          const container = popupRef.current[0].popper.querySelector(`.${styles.mentionSuggestions}`)
           if (!container) return
           container.innerHTML = ''
           focusedIndexRef.current = -1
@@ -282,7 +298,13 @@ const Editor = ({ value, onChange, name = 'description' }: EditorProps) => {
               console.log('Button clicked:', item)
               props.command({ id: item.id, label: item.label })
               props.editor.commands.focus()
+              console.log('Hiding popup on click')
+              popupRef.current?.[0]?.hide()
+              popupRef.current?.[0]?.destroy()
               setIsSuggestionActive(false)
+              if (container.parentNode) {
+                container.parentNode.removeChild(container)
+              }
             })
             container.appendChild(button)
           })
@@ -293,17 +315,22 @@ const Editor = ({ value, onChange, name = 'description' }: EditorProps) => {
         },
         onKeyDown: (props) => {
           console.log('Suggestion onKeyDown:', props.event.key, 'focusedIndex:', focusedIndexRef.current, 'activeElement:', document.activeElement?.textContent)
-          if (!popup || !popup[0]) return false
-          const container = popup[0].popper.querySelector(`.${styles.mentionSuggestions}`)
+          if (!popupRef.current || !popupRef.current[0]) return false
+          const container = popupRef.current[0].popper.querySelector(`.${styles.mentionSuggestions}`)
           if (!container) return false
 
           if (props.event.key === 'Escape') {
             props.event.preventDefault()
             props.event.stopPropagation()
-            popup[0].hide()
+            console.log('Hiding popup on Escape')
+            popupRef.current[0].hide()
+            popupRef.current[0].destroy()
             focusedIndexRef.current = -1
             setIsSuggestionActive(false)
             props.editor.commands.focus()
+            if (container.parentNode) {
+              container.parentNode.removeChild(container)
+            }
             return true
           }
 
@@ -332,7 +359,13 @@ const Editor = ({ value, onChange, name = 'description' }: EditorProps) => {
               console.log('Selecting item:', item)
               props.command({ id: item.id, label: item.label })
               props.editor.commands.focus()
+              console.log('Hiding popup on Enter')
+              popupRef.current[0].hide()
+              popupRef.current[0].destroy()
               setIsSuggestionActive(false)
+              if (container.parentNode) {
+                container.parentNode.removeChild(container)
+              }
             }
             return true
           }
@@ -341,8 +374,13 @@ const Editor = ({ value, onChange, name = 'description' }: EditorProps) => {
         },
         onExit: (props) => {
           console.log('Suggestion onExit')
-          if (popup && popup[0]) {
-            popup[0].destroy()
+          if (popupRef.current && popupRef.current[0]) {
+            console.log('Destroying popup in onExit')
+            popupRef.current[0].hide()
+            popupRef.current[0].destroy()
+            if (suggestionContainerRef.current && suggestionContainerRef.current.parentNode) {
+              suggestionContainerRef.current.parentNode.removeChild(suggestionContainerRef.current)
+            }
           }
           focusedIndexRef.current = -1
           setIsSuggestionActive(false)
