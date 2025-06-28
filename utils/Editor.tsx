@@ -145,16 +145,14 @@ const Editor = ({ value, onChange, name = 'description' }: EditorProps) => {
     })
   }
 
-  // Cleanup Tippy elements
+  // Cleanup Tippy instance
   const cleanupTippy = () => {
     console.log('Cleaning up Tippy elements')
-    const tippyElements = document.querySelectorAll('[data-tippy-root], [data-popper-arrow], .tippy-box, .tippy-arrow')
-    tippyElements.forEach(element => {
-      if (element.parentNode) {
-        element.parentNode.removeChild(element)
-        console.log('Removed Tippy element:', element.className || element.getAttribute('data-popper-arrow'))
-      }
-    })
+    if (popupRef.current && popupRef.current[0]) {
+      popupRef.current[0].hide()
+      popupRef.current[0].destroy()
+      popupRef.current = null
+    }
   }
 
   // Ensure focus is maintained on the popup
@@ -183,9 +181,7 @@ const Editor = ({ value, onChange, name = 'description' }: EditorProps) => {
       if (e.key === 'Escape') {
         console.log('Hiding popup on Escape')
         suggestionPropsRef.current?.props.editor.commands.focus()
-        popupRef.current?.[0]?.hide()
-        popupRef.current?.[0]?.destroy()
-        setTimeout(cleanupTippy, 0)
+        cleanupTippy()
         focusedIndexRef.current = -1
         setIsSuggestionActive(false)
         return
@@ -209,9 +205,7 @@ const Editor = ({ value, onChange, name = 'description' }: EditorProps) => {
         command({ id: item.id, label: item.label })
         suggestionPropsRef.current?.props.editor.commands.focus()
         console.log('Hiding popup on Enter')
-        popupRef.current?.[0]?.hide()
-        popupRef.current?.[0]?.destroy()
-        setTimeout(cleanupTippy, 0)
+        cleanupTippy()
         setIsSuggestionActive(false)
         return
       }
@@ -220,7 +214,7 @@ const Editor = ({ value, onChange, name = 'description' }: EditorProps) => {
     container.addEventListener('keydown', handleKeyDown)
     return () => {
       container.removeEventListener('keydown', handleKeyDown)
-      setTimeout(cleanupTippy, 0)
+      cleanupTippy()
     }
   }, [isSuggestionActive])
 
@@ -260,7 +254,7 @@ const Editor = ({ value, onChange, name = 'description' }: EditorProps) => {
             },
             onHide: () => {
               console.log('Popup hidden')
-              setTimeout(cleanupTippy, 0)
+              cleanupTippy()
             },
           })
 
@@ -276,9 +270,7 @@ const Editor = ({ value, onChange, name = 'description' }: EditorProps) => {
               props.command({ id: item.id, label: item.label })
               props.editor.commands.focus()
               console.log('Hiding popup on click')
-              popupRef.current?.[0]?.hide()
-              popupRef.current?.[0]?.destroy()
-              setTimeout(cleanupTippy, 0)
+              cleanupTippy()
               setIsSuggestionActive(false)
             })
             container.appendChild(button)
@@ -312,9 +304,7 @@ const Editor = ({ value, onChange, name = 'description' }: EditorProps) => {
               props.command({ id: item.id, label: item.label })
               props.editor.commands.focus()
               console.log('Hiding popup on click')
-              popupRef.current?.[0]?.hide()
-              popupRef.current?.[0]?.destroy()
-              setTimeout(cleanupTippy, 0)
+              cleanupTippy()
               setIsSuggestionActive(false)
             })
             container.appendChild(button)
@@ -334,9 +324,7 @@ const Editor = ({ value, onChange, name = 'description' }: EditorProps) => {
             props.event.preventDefault()
             props.event.stopPropagation()
             console.log('Hiding popup on Escape')
-            popupRef.current[0].hide()
-            popupRef.current[0].destroy()
-            setTimeout(cleanupTippy, 0)
+            cleanupTippy()
             focusedIndexRef.current = -1
             setIsSuggestionActive(false)
             props.editor.commands.focus()
@@ -369,9 +357,7 @@ const Editor = ({ value, onChange, name = 'description' }: EditorProps) => {
               props.command({ id: item.id, label: item.label })
               props.editor.commands.focus()
               console.log('Hiding popup on Enter')
-              popupRef.current[0].hide()
-              popupRef.current[0].destroy()
-              setTimeout(cleanupTippy, 0)
+              cleanupTippy()
               setIsSuggestionActive(false)
             }
             return true
@@ -381,12 +367,7 @@ const Editor = ({ value, onChange, name = 'description' }: EditorProps) => {
         },
         onExit: (props) => {
           console.log('Suggestion onExit')
-          if (popupRef.current && popupRef.current[0]) {
-            console.log('Destroying popup in onExit')
-            popupRef.current[0].hide()
-            popupRef.current[0].destroy()
-            setTimeout(cleanupTippy, 0)
-          }
+          cleanupTippy()
           focusedIndexRef.current = -1
           setIsSuggestionActive(false)
           suggestionContainerRef.current = null
