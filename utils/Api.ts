@@ -28,6 +28,10 @@ class Api {
     return `${process.env.NEXT_PUBLIC_WEBSOCKET_URL}/cable?token=${jwt || ""}`
   }
 
+  suggestions(): string {
+    return `${this.api()}/suggestions`
+  }
+
   locations(location?: Location | ID): string {
     if (location?.id) {
       return `${this.api()}/locations/${location.id}`

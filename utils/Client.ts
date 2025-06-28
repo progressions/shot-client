@@ -57,6 +57,11 @@ class Client {
     return this.consumerInstance
   }
 
+  async getSuggestions(params = {}):Promise<any> {
+    const query = Object.entries(params).map(([key, value]) => `${key}=${value || ""}`).join("&")
+    return this.get(`${this.api.suggestions()}?${query}`)
+  }
+
   async getNotionCharacters(params = {}) {
     const query = Object.entries(params).map(([key, value]) => `${key}=${value || ""}`).join("&")
     return this.get(`${this.api.notionCharacters()}?${query}`)
