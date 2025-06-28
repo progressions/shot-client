@@ -449,6 +449,7 @@ const Editor = ({ value, onChange, name = 'description' }: EditorProps) => {
   return (
     <div className={styles.editorContainer}>
       <EditorProvider
+        immediatelyRender={false}
         slotBefore={<MenuBar />}
         extensions={extensions}
         content={value}
