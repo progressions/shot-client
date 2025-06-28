@@ -4,6 +4,7 @@ import ListItem from '@tiptap/extension-list-item'
 import TextStyle from '@tiptap/extension-text-style'
 import { Editor as TiptapEditor, EditorProvider, useCurrentEditor } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
+import Mention from '@tiptap/extension-mention'
 import { Button, ButtonGroup } from '@mui/material'
 import FormatBoldIcon from '@mui/icons-material/FormatBold'
 import FormatItalicIcon from '@mui/icons-material/FormatItalic'
@@ -12,6 +13,10 @@ import styles from './Editor.module.scss'
 import { useState } from 'react'
 import { FocusEvent } from 'react'
 import { Transaction } from '@tiptap/pm/state'
+import tippy from 'tippy.js'
+import 'tippy.js/dist/tippy.css'
+import { PluginKey } from '@tiptap/pm/state'
+import { SuggestionOptions } from '@tiptap/suggestion'
 
 interface EditorProps {
   value: string
@@ -97,6 +102,93 @@ const MenuBar = () => {
   )
 }
 
+interface MentionItem {
+  id: string
+  label: string
+}
+
+// Mock user data (replace with API call to Rails backend)
+const fetchSuggestions = async (query: string): Promise<MentionItem[]> => {
+  const users = [
+    { id: '1', label: 'Alice Smith' },
+    { id: '2', label: 'Bob Johnson' },
+    { id: '3', label: 'Charlie Brown' },
+  ]
+  return users.filter((user) =>
+    user.label.toLowerCase().includes(query.toLowerCase())
+  )
+}
+
+const suggestion: SuggestionOptions['suggestion'] = {
+  char: '@',
+  pluginKey: new PluginKey('mention'),
+  items: async ({ query }) => {
+    return await fetchSuggestions(query)
+  },
+  render: () => {
+    let popup: any
+
+    return {
+      onStart: (props) => {
+        console.log('Suggestion onStart:', props)
+        const container = document.createElement('div')
+        container.className = styles.mentionSuggestions
+
+        popup = tippy(document.body, {
+          getReferenceClientRect: props.clientRect as () => DOMRect,
+          appendTo: () => document.body,
+          content: container,
+          showOnCreate: true,
+          interactive: true,
+          trigger: 'manual',
+          placement: 'bottom-start',
+        })
+
+        // Populate initial items
+        props.items.forEach((item: MentionItem) => {
+          const button = document.createElement('button')
+          button.className = styles.mentionItem
+          button.textContent = item.label
+          button.addEventListener('click', () => {
+            props.command({ id: item.id, label: item.label })
+          })
+          container.appendChild(button)
+        })
+      },
+      onUpdate: (props) => {
+        console.log('Suggestion onUpdate:', props)
+        if (!popup || !popup[0]) return
+        const container = popup[0].popper.querySelector(`.${styles.mentionSuggestions}`)
+        if (!container) return
+        container.innerHTML = ''
+        props.items.forEach((item: MentionItem) => {
+          const button = document.createElement('button')
+          button.className = styles.mentionItem
+          button.textContent = item.label
+          button.addEventListener('click', () => {
+            props.command({ id: item.id, label: item.label })
+          })
+          container.appendChild(button)
+        })
+      },
+      onKeyDown: (props) => {
+        if (props.event.key === 'Escape') {
+          if (popup && popup[0]) {
+            popup[0].hide()
+          }
+          return true
+        }
+        return false
+      },
+      onExit: () => {
+        if (popup && popup[0]) {
+          popup[0].destroy()
+        }
+      },
+    }
+  },
+}
+
 const extensions = [
   Color.configure({ types: [TextStyle.name, ListItem.name] }),
   TextStyle,
@@ -109,6 +201,12 @@ const extensions = [
       keepMarks: true,
       keepAttributes: true,
     },
+  }),
+  Mention.configure({
+    HTMLAttributes: {
+      class: 'mention',
+    },
+    suggestion,
   }),
 ]
 
@@ -139,6 +237,7 @@ const Editor = ({ value, onChange, name = 'description' }: EditorProps) => {
         onBlur={saveOnBlur}
         onUpdate={({ editor }) => {
           console.log('Editor updated, HTML:', editor.getHTML())
+          console.log('Editor state:', editor.getJSON())
           const syntheticEvent = {
             target: {
               name,
