@@ -12,7 +12,12 @@ import { defaultWeapon } from "@/types/types"
 
 import { useState, useEffect, useReducer } from "react"
 
-export default function AddWeapon() {
+interface AddWeaponProps {
+  state: WeaponsStateType
+  dispatch?: React.Dispatch<WeaponsActionType>
+}
+
+export default function AddWeapon({ state, dispatch }: AddWeaponProps) {
   const { character, dispatch:dispatchCharacter, reloadCharacter } = useCharacter()
   const { toastSuccess, toastError } = useToast()
   const { user, client } = useClient()
@@ -42,6 +47,7 @@ export default function AddWeapon() {
     try {
       const data = await client.addWeapon(character, weapon)
       dispatchCharacter({ type: CharacterActions.EDIT })
+      dispatch({ type: WeaponsActions.EDIT })
       await reloadCharacter()
       handleClose()
     } catch(error) {

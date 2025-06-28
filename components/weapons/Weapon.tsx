@@ -29,8 +29,7 @@ export default function Weapon({ weapon, state, dispatch }: WeaponProps) {
   async function removeWeapon() {
     try {
       await client.removeWeapon(character, weapon)
-      dispatchCharacter({ type: CharacterActions.RELOAD })
-      // dispatchCharacter({ type: CharacterActions.EDIT })
+      dispatch({ type: WeaponsActions.EDIT })
       setDeleted(true)
     } catch(error) {
       console.error(error)

@@ -6,6 +6,7 @@ import { CharacterActions } from "@/reducers/characterState"
 import { rowMap } from "@/utils/rowMap"
 import Weapon from "@/components/weapons/Weapon"
 import type { Weapon as WeaponType } from "@/types/types"
+import AddWeapon from "@/components/weapons/AddWeapon"
 
 import { WeaponsActions, initialWeaponsState, weaponsReducer } from "@/reducers/weaponsState"
 import type { WeaponsStateType, WeaponsActionType } from "@/reducers/weaponsState"
@@ -107,6 +108,7 @@ export default function EditWeapons({}: EditWeaponsProps) {
         <Skeleton animation="wave" height={50} />
         <Skeleton animation="wave" height={50} />
       </>}
+    { <AddWeapon state={state} dispatch={dispatch} /> }
     </>
   )
 }
