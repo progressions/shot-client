@@ -37,10 +37,6 @@ export default function SchtickSelector({ allSchticksState, dispatchAllSchticks 
   useEffect(() => {
     if (user) {
       reload().catch(console.error)
-      return
-    }
-    if (user && edited) {
-      reload()
     }
   }, [user, edited])
 
