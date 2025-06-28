@@ -46,8 +46,6 @@ export default function Weapons({}: WeaponsProps) {
   }, [edited, page, meta])
 
   useEffect(() => {
-    console.log("Weapons useEffect")
-
     async function reload() {
       try {
         console.log("Fetching Weapons page ", page)
@@ -115,7 +113,6 @@ export default function Weapons({}: WeaponsProps) {
       <Skeleton animation="wave" height={50} />
       <Skeleton animation="wave" height={50} />
     </>}
-    { character?.id && <AddWeapon /> }
     </>
   )
 }

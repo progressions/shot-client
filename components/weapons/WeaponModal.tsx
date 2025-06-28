@@ -203,14 +203,6 @@ export default function WeaponModal({ state, dispatch, open, setOpen, weapon:ini
                 disabled={loading}
               />
             </Stack>
-            <StyledTextField
-              sx={{width: 400}}
-              value={weapon?.image_url}
-              name="image_url"
-              label="Image"
-              onChange={handleChange}
-              disabled={loading}
-            />
             <Stack direction="row" spacing={1} alignItems="center">
               <StyledTextField
                 sx={{width: 100}}
