@@ -67,6 +67,8 @@ const Editor = ({ name, value, onChange }) => {
     })
   }
 
+  const processedValue = preprocessContent(value)
+
   return (
     <div className={styles.editorContainer}>
       <EditorProvider
@@ -74,7 +76,7 @@ const Editor = ({ name, value, onChange }) => {
         immediatelyRender={false}
         extensions={extensions}
         slotBefore={<MenuBar />}
-        content={value}
+        content={processedValue}
         onBlur={saveOnBlur}
           onUpdate={({ editor }) => {
             const html = editor.getHTML()
