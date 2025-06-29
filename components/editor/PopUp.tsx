@@ -10,10 +10,10 @@ interface PopUpProps {
   mentionId: string
   mentionClass: string
   user: User
-  client: typeof Client
+  client: Client
 }
 
-export default function PopUp({ user, client, mentionId, mentionClass }: { mentionId: string; mentionClass: string }) {
+export default function PopUp({ user, client, mentionId, mentionClass }: PopUpProps) {
   const [character, setCharacter] = useState<Character>(defaultCharacter)
 
   useEffect(() => {
