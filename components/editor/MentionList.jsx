@@ -43,6 +43,10 @@ const MentionList = forwardRef((props, ref) => {
     },
   }));
 
+  if (!props.items || !props.items.length) {
+    return <div>WUT</div>
+  }
+
   return (
     <div className="dropdown-menu">
       {props.items.length ? (

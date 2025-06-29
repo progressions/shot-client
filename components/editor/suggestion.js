@@ -4,36 +4,12 @@ import tippy from 'tippy.js'
 import MentionList from './MentionList.jsx'
 
 export default (user, client) => ({
-  items: ({ query }) => {
-    return [
-      { id: "1", label: 'Lea Thompson', class: "Character" },
-      { id: "2", label: 'Cyndi Lauper', class: "Character" },
-      { id: "3", label:  'Tom Cruise', class: "Character" },
-      { id: "3", label:  'Madonna', class: "Character" },
-      { id: "3", label:  'Jerry Hall', class: "Character" },
-      { id: "3", label:  'Joan Collins', class: "Character" },
-      { id: "3", label:  'Winona Ryder', class: "Character" },
-      { id: "3", label:  'Christina Applegate', class: "Character" },
-      { id: "3", label:  'Alyssa Milano', class: "Character" },
-      { id: "3", label:  'Molly Ringwald', class: "Character" },
-      { id: "3", label:  'Ally Sheedy', class: "Character" },
-      { id: "3", label:  'Debbie Harry', class: "Character" },
-      { id: "3", label:  'Olivia Newton-John', class: "Character" },
-      { id: "3", label:  'Elton John', class: "Character" },
-      { id: "3", label:  'Michael J. Fox', class: "Character" },
-      { id: "3", label:  'Axl Rose', class: "Character" },
-      { id: "3", label:  'Emilio Estevez', class: "Character" },
-      { id: "3", label:  'Ralph Macchio', class: "Character" },
-      { id: "3", label:  'Rob Lowe', class: "Character" },
-      { id: "3", label:  'Jennifer Grey', class: "Character" },
-      { id: "3", label:  'Mickey Rourke', class: "Character" },
-      { id: "3", label:  'John Cusack', class: "Character" },
-      { id: "3", label:  'Matthew Broderick', class: "Character" },
-      { id: "3", label:  'Justine Bateman', class: "Character" },
-      { id: "3", label:  'Lisa Bonet', class: "Character" },
-    ]
-      .filter(item => item.label.toLowerCase().startsWith(query.toLowerCase()))
-      .slice(0, 5)
+  items: async ({ query }) => {
+    if (user?.id) {
+      const data = await client.getSuggestions({ query })
+      console.log("suggestion data", data)
+      return data
+    }
   },
 
   render: () => {

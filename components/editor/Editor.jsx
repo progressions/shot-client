@@ -1,20 +1,22 @@
+import dynamic from "next/dynamic"
 import Document from '@tiptap/extension-document'
 import Mention from '@tiptap/extension-mention'
 import Paragraph from '@tiptap/extension-paragraph'
 import Text from '@tiptap/extension-text'
-import { EditorContent, useEditor } from '@tiptap/react'
-import React from 'react'
+// import { EditorContent, useEditor } from '@tiptap/react'
+import { Editor as TiptapEditor, EditorProvider, useCurrentEditor } from "@tiptap/react"
+import { useState } from "react"
 import { useClient } from "@/contexts"
 
 import suggestion from './suggestion.js'
 
-export default ({ name, value, onChange }) => {
+const Editor = ({ name, value, onChange }) => {
   const { user, client } = useClient()
+  const [content, setContent] = useState(value || '')
 
   if (!user?.id) return <></>
 
-  const editor = useEditor({
-    extensions: [
+  const extensions = [
       Document,
       Paragraph,
       Text,
@@ -44,13 +46,44 @@ export default ({ name, value, onChange }) => {
           ]
         },
       }),
-    ],
-    content: value
-  })
+    ]
 
-  if (!editor) {
-    return null
+  const onChangeContent = (event) => {
+    const { value } = event.target
+    setContent(value)
   }
 
-  return <EditorContent editor={editor} />
+  const saveOnBlur = ({ editor, event, transaction }) => {
+    console.log('Editor onBlur event:', event)
+    onChange({
+      target: {
+        name,
+        value: editor.getHTML(),
+      },
+    })
+  }
+
+  return (
+    <EditorProvider
+      immediatelyRender={false}
+      extensions={extensions}
+      content={value}
+      onBlur={saveOnBlur}
+        onUpdate={({ editor }) => {
+          const html = editor.getHTML()
+          console.log('Editor updated, HTML:', html)
+          const syntheticEvent = {
+            target: {
+              name,
+              value: html,
+            },
+          }
+          onChangeContent(syntheticEvent)
+        }}
+      />
+      )
+
+  // return <EditorContent editor={editor} />
 }
+
+export default dynamic(() => Promise.resolve(Editor), { ssr: false })
