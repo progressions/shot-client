@@ -19,7 +19,7 @@ export default function Description({ character, onChange }: DescriptionProps) {
     <>
       <Subhead>Description</Subhead>
       <PlayerTypeOnly character={character} only="PC">
-        <StyledTextField name={D.MelodramaticHook} label="Melodramatic Hook" value={CS.description(character, D.MelodramaticHook)} onChange={onChange} multiline rows={4} />
+        <Editor name={D.MelodramaticHook} value={CS.description(character, D.MelodramaticHook)} onChange={onChange} />
       </PlayerTypeOnly>
       <StyledTextField name={D.Nicknames} label="Nicknames" value={CS.description(character, D.Nicknames)} onChange={onChange} />
       <Stack direction="row" spacing={1}>
