@@ -161,7 +161,7 @@ export default function ChaseModal({ open, setOpen, anchorEl, setAnchorEl }: Cha
         <DialogContent>
           <Stack spacing={2}>
             <Stack direction="row" spacing={2}>
-              <Box sx={{ width: 700 }}>
+              <Box sx={{ width: 700, height: 70 }}>
                 <VehiclesAutocomplete
                   label="Attacker"
                   vehicle={attacker}
@@ -177,12 +177,14 @@ export default function ChaseModal({ open, setOpen, anchorEl, setAnchorEl }: Cha
               handleChange={handleChange}
               handleCheck={handleCheck}
             />
-            <VehiclesAutocomplete
-              label="Target"
-              vehicle={target}
-              setVehicle={setTarget}
-              disabled={edited}
-            />
+            <Box sx={{ width: "100%", height: 70 }}>
+              <VehiclesAutocomplete
+                label="Target"
+                vehicle={target}
+                setVehicle={setTarget}
+                disabled={edited}
+              />
+            </Box>
             <Target
               state={state}
               setTarget={setTarget}

@@ -181,7 +181,7 @@ export default function AttackModal({ open, setOpen, anchorEl, setAnchorEl }: At
         <DialogContent>
           <Stack spacing={2}>
             <Stack direction="row" spacing={2}>
-              <Box sx={{ width: 700 }}>
+              <Box sx={{ width: "100%", height: 70 }}>
                 <CharactersAutocomplete
                   label="Attacker"
                   character={attacker}
@@ -199,12 +199,14 @@ export default function AttackModal({ open, setOpen, anchorEl, setAnchorEl }: At
               handleChange={handleChange}
               handleCheck={handleCheck}
             />
-            <CharactersAutocomplete
-              disabled={edited}
-              label="Target"
-              character={target}
-              setCharacter={setTarget}
-            />
+            <Box sx={{ width: "100%", height: 70 }}>
+              <CharactersAutocomplete
+                disabled={edited}
+                label="Target"
+                character={target}
+                setCharacter={setTarget}
+              />
+            </Box>
             <Target
               state={state}
               setTarget={setTarget}
