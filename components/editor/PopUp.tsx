@@ -38,7 +38,9 @@ export default function PopUp({
     };
 
     if (user?.id && mentionId) {
-      fetchCharacter();
+      fetchCharacter().catch((error) => {
+        console.error("Failed to fetch character:", error);
+      })
     }
   }, [user, mentionId, client]);
 

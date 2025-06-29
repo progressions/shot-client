@@ -4,6 +4,7 @@ import type { Fight, Character } from "@/types/types"
 import { useWebSocket, useFight } from "@/contexts"
 import CharacterAvatar from "@/components/characters/CharacterAvatar"
 import FS from "@/services/FightService"
+import CS from "@/services/CharacterService"
 
 interface CharacterAvatarsProps {
   characters?: Character[]
@@ -14,9 +15,13 @@ const CharacterAvatars: React.FC<CharacterAvatarsProps> = ({ characters }) => {
 
   return (
     <AvatarGroup max={20} sx={{mx: 2}}>
-      {(characters || []).map((character, index) => (
-        <CharacterAvatar href={`/characters/${character.id}`} character={character} key={`character_${character.id}_${index}`} />
-      ))}
+      {(characters || [])
+        .filter(character => CS.isCharacter(character))
+        .map((character, index) => (
+          <CharacterAvatar href={`/characters/${character.id}`} character={character} key={`character_${character.id}_${index}`} />
+          )
+        )
+      }
     </AvatarGroup>
   )
 }
