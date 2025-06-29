@@ -1,5 +1,9 @@
 import { useCurrentEditor } from "@tiptap/react"
 import styles from "@/components/editor/Editor.module.scss"
+import { Button, ButtonGroup } from "@mui/material"
+import FormatBoldIcon from "@mui/icons-material/FormatBold"
+import FormatItalicIcon from "@mui/icons-material/FormatItalic"
+import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted"
 
 const MenuBar = () => {
   const { editor } = useCurrentEditor()

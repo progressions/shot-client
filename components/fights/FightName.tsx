@@ -65,8 +65,10 @@ export default function FightName() {
   if (editing) {
     return (
       <Stack spacing={2} alignItems="baseline" sx={{marginTop: 2, marginBottom: 2}}>
-        <StyledTextField name="name" autoFocus value={tempFight.name} fullWidth onChange={handleChange} />
-        <Editor key="editor" name="description" value={tempFight.description || ""} onChange={handleChange} />
+        <StyledTextField sx={{width: "100%"}} name="name" autoFocus value={tempFight.name} onChange={handleChange} />
+        <Box sx={{height: 300, width: "100%"}}>
+          <Editor key="editor" name="description" value={tempFight.description || ""} onChange={handleChange} />
+        </Box>
         <SaveCancelButtons onCancel={cancelForm} onSave={handleSubmit} />
       </Stack>
     )
