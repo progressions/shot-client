@@ -127,7 +127,7 @@ const SharedService = {
   },
 
   factionName: function(character: Character | Vehicle): string {
-    return this.faction(character)?.name
+    return this.faction(character)?.name || ""
   },
 
   impairments: function(character: Character | Vehicle): number {
