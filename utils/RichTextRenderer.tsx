@@ -17,7 +17,7 @@ export default function RichTextRenderer({ html }: RichTextRendererProps) {
     ADD_ATTR: ['target', 'rel', 'data-mention-id', 'data-mention-class-name'],
   });
 
-  usePopup({ containerRef, html: sanitizedHtml, user, client });
+  usePopup({ containerRef, user, client });
 
   const addMouseOverAttributes = (htmlString: string) => {
     const parser = new DOMParser();

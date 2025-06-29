@@ -7,12 +7,17 @@ import Client from '@/utils/Client';
 
 interface PopupProps {
   containerRef: React.RefObject<HTMLElement>;
-  html: string | undefined | null;
   user: User | null;
   client: Client;
 }
 
-export function usePopup({ containerRef, html, user, client }: PopupProps) {
+interface TriggerPopupParams {
+  mentionId: string;
+  mentionClass: string;
+  target: HTMLElement;
+}
+
+export function usePopup({ containerRef, user, client }: PopupProps) {
   const tippyInstancesRef = useRef<Instance[]>([]);
 
   const closeAllTippyInstances = () => {
@@ -20,16 +25,14 @@ export function usePopup({ containerRef, html, user, client }: PopupProps) {
     tippyInstancesRef.current = [];
   };
 
-  const handleMouseOver = (mentionId: string, mentionClass: string, event: MouseEvent) => {
-    const target = event.target as HTMLElement;
-
+  const triggerPopup = ({ mentionId, mentionClass, target }: TriggerPopupParams) => {
     closeAllTippyInstances();
 
     const container = document.createElement('div');
     const root = ReactDOM.createRoot(container);
     root.render(<PopUp user={user} client={client} mentionId={mentionId} mentionClass={mentionClass} />);
 
-    const tippyInstance = tippy(target as Element, {
+    const tippyInstance = tippy(target, {
       content: container,
       showOnCreate: true,
       interactive: true,
@@ -60,7 +63,9 @@ export function usePopup({ containerRef, html, user, client }: PopupProps) {
     links.forEach((link) => {
       const mentionId = link.getAttribute('data-mention-id') || '';
       const mentionClass = link.getAttribute('data-mention-class-name') || '';
-      const handler = (event: MouseEvent) => handleMouseOver(mentionId, mentionClass, event);
+      const handler = (event: MouseEvent) => {
+        triggerPopup({ mentionId, mentionClass, target: event.target as HTMLElement });
+      };
       (link as HTMLElement).addEventListener('mouseover', handler);
       handlers.push({ link: link as HTMLElement, handler });
     });
@@ -70,7 +75,7 @@ export function usePopup({ containerRef, html, user, client }: PopupProps) {
       handlers.forEach(({ link, handler }) => link.removeEventListener('mouseover', handler));
       closeAllTippyInstances();
     };
-  }, [html, user, client]);
+  }, [user, client]);
 
-  return { closeAllTippyInstances };
+  return { triggerPopup, closeAllTippyInstances };
 }
