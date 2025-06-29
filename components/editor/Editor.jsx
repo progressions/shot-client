@@ -11,6 +11,8 @@ import suggestion from './suggestion.js'
 export default ({ name, value, onChange }) => {
   const { user, client } = useClient()
 
+  if (!user?.id) return <></>
+
   const editor = useEditor({
     extensions: [
       Document,
@@ -20,7 +22,7 @@ export default ({ name, value, onChange }) => {
         HTMLAttributes: {
           class: 'mention',
         },
-        suggestion,
+        suggestion: suggestion(user, client),
       }),
     ],
     content: value

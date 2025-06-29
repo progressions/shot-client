@@ -3,37 +3,16 @@ import tippy from 'tippy.js'
 
 import MentionList from './MentionList.jsx'
 
-export default {
-  items: ({ query }) => {
-    return [
-      'Lea Thompson',
-      'Cyndi Lauper',
-      'Tom Cruise',
-      'Madonna',
-      'Jerry Hall',
-      'Joan Collins',
-      'Winona Ryder',
-      'Christina Applegate',
-      'Alyssa Milano',
-      'Molly Ringwald',
-      'Ally Sheedy',
-      'Debbie Harry',
-      'Olivia Newton-John',
-      'Elton John',
-      'Michael J. Fox',
-      'Axl Rose',
-      'Emilio Estevez',
-      'Ralph Macchio',
-      'Rob Lowe',
-      'Jennifer Grey',
-      'Mickey Rourke',
-      'John Cusack',
-      'Matthew Broderick',
-      'Justine Bateman',
-      'Lisa Bonet',
-    ]
-      .filter(item => item.toLowerCase().startsWith(query.toLowerCase()))
-      .slice(0, 5)
+export default (user, client) => ({
+  items: async ({ query }) => {
+    try {
+      // Example API call using the client
+      const response = await client.getSuggestions({ query })
+      return response.data; // Adjust based on your API response structure
+    } catch (error) {
+      console.error('Error fetching suggestions:', error);
+      return [];
+    }
   },
 
   render: () => {
@@ -80,7 +59,6 @@ export default {
         console.log("suggestion keydown props", props)
         if (props.event.key === 'Escape') {
           popup[0].hide()
-
           return true
         }
 
@@ -93,4 +71,4 @@ export default {
       },
     }
   },
-}
+})
