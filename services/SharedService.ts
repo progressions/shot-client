@@ -126,6 +126,10 @@ const SharedService = {
     return character.faction
   },
 
+  factionName: function(character: Character | Vehicle): string {
+    return this.faction(character)?.name
+  },
+
   impairments: function(character: Character | Vehicle): number {
     return character.impairments || 0
   },
