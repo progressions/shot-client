@@ -3,7 +3,7 @@ import DOMPurify from 'dompurify';
 import { StyledRichText } from '@/components/StyledFields';
 import { useClient } from '@/contexts';
 import { useRef } from 'react';
-import { usePopup } from '@/components/characters/usePopup';
+import { usePopup } from '@/components/popups/usePopup';
 
 interface RichTextRendererProps {
   html: string | undefined | null;

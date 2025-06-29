@@ -5,7 +5,7 @@ import ClearIcon from '@mui/icons-material/Clear'
 import EditIcon from '@mui/icons-material/Edit'
 import { StyledDialog } from "@/components/StyledFields"
 import ImageDisplay from "@/components/images/ImageDisplay"
-import RichTextRenderer from "@/utils/RichTextRenderer"
+import RichTextRenderer from "@/components/editor/RichTextRenderer"
 
 import type { PartiesStateType, PartiesActionType } from "@/reducers/partiesState"
 import type { Character, Vehicle, Party as PartyType } from "@/types/types"

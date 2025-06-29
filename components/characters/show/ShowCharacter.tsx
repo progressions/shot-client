@@ -1,7 +1,7 @@
 import { colors, Grid, Box, Paper, Typography, Stack } from "@mui/material"
 import type { Character } from "@/types/types"
 import { DescriptionKeys as D } from "@/types/types"
-import RichTextRenderer from "@/utils/RichTextRenderer"
+import RichTextRenderer from "@/components/editor/RichTextRenderer"
 import CS from "@/services/CharacterService"
 import { Subhead } from "@/components/StyledFields"
 

@@ -7,7 +7,7 @@ import HourglassTopIcon from '@mui/icons-material/HourglassTop'
 
 import GamemasterOnly from '@/components/GamemasterOnly'
 import CharacterAvatars from '@/components/fights/CharacterAvatars'
-import RichTextRenderer from '@/utils/RichTextRenderer'
+import RichTextRenderer from '@/components/editor/RichTextRenderer'
 
 import { useToast, useClient } from '@/contexts'
 import type { Fight, Toast } from '@/types/types'

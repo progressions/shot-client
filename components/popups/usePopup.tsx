@@ -1,7 +1,7 @@
 import { useRef, useEffect } from 'react';
 import tippy, { Instance } from 'tippy.js';
 import ReactDOM from 'react-dom/client';
-import PopUp from '@/components/editor/PopUp';
+import PopUp from '@/components/popups/PopUp';
 import type { User } from '@/types/types';
 import Client from '@/utils/Client';
 

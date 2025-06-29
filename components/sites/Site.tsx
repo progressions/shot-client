@@ -6,7 +6,7 @@ import SiteCardBase from "@/components/sites/SiteCardBase"
 import ClearIcon from "@mui/icons-material/Clear"
 import EditIcon from "@mui/icons-material/Edit"
 import { StyledDialog } from "@/components/StyledFields"
-import RichTextRenderer from "@/utils/RichTextRenderer"
+import RichTextRenderer from "@/components/editor/RichTextRenderer"
 
 import type { SitesStateType, SitesActionType } from "@/reducers/sitesState"
 import type { Character, Vehicle, Site as SiteType } from "@/types/types"
