@@ -28,7 +28,6 @@ const MentionList = forwardRef((props, ref) => {
 
   useImperativeHandle(ref, () => ({
     onKeyDown: ({ event }) => {
-      console.log('onKeyDown', event.key);
       if (event.key === 'ArrowUp') {
         upHandler();
         return true;

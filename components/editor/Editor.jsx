@@ -33,9 +33,6 @@ const Editor = ({ name, value, onChange }) => {
 
   const extensions = [
       StarterKit,
-      Document,
-      Paragraph,
-      Text,
       Mention.configure({
         HTMLAttributes: {
           class: 'mention',
