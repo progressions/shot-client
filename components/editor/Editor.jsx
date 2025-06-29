@@ -20,16 +20,17 @@ const Editor = ({ name, value, onChange }) => {
   if (!user?.id) return <></>
 
   const preprocessContent = (html) => {
-    let processed = html.replace(/<li><p>(.*?)<\/p><\/li>/g, '<li>$1</li>')
+    let processed = html.replace(/<li><p>(.*?)<\/p><\/li>/g, '<li>$1</li>');
     processed = processed.replace(
-      /<a href="([^"]+)" class="mention"[^>]*data-mention-id="([^"]+)"[^>]*>(@[^<]+)<\/a>/g,
-      (match, href, id, label) => {
-        const cleanLabel = label.replace(/^@/, '')
-        return `<span data-type="mention" data-id="${id}" data-label="${cleanLabel}" data-href="${href}">@${cleanLabel}</span>`
+      /<a href="([^"]+)" class="mention"[^>]*data-mention-id="([^"]+)"[^>]*data-mention-class="([^"]*)"[^>]*>(@[^<]+)<\/a>/g,
+      (match, href, id, className, label) => {
+        const cleanLabel = label.replace(/^@/, '');
+        return `<span data-type="mention" data-id="${id}" data-label="${cleanLabel}" data-href="${href}" data-mention-classNamme="${className}">@${cleanLabel}</span>`;
       }
-    )
-    return processed
-  }
+    );
+    console.log('Preprocessed HTML:', processed); // Debug
+    return processed;
+  };
 
   const extensions = [
       StarterKit,
