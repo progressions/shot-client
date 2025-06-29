@@ -1,3 +1,4 @@
+
 import dynamic from "next/dynamic"
 import { Color } from "@tiptap/extension-color"
 import ListItem from "@tiptap/extension-list-item"
@@ -15,8 +16,132 @@ import { Transaction, Plugin, PluginKey } from "@tiptap/pm/state"
 import tippy from "tippy.js"
 import "tippy.js/dist/tippy.css"
 import { useClient } from "@/contexts"
-import MenuBar from "@/components/editor/MenuBar"
-import { fetchSuggestions, preprocessContent, DebugParsePlugin } from "@/components/editor/utils"
+
+const MenuBar = () => {
+  const { editor } = useCurrentEditor()
+
+  if (!editor) {
+    console.log('MenuBar: No editor instance')
+    return null
+  }
+
+  return (
+    <div className={styles.controlGroup}>
+      <ButtonGroup className={styles.buttonGroup} variant="outlined" size="small">
+        <Button
+          onClick={() => editor.chain().focus().toggleBold().run()}
+          disabled={!editor.can().chain().focus().toggleBold().run()}
+          className={editor.isActive('bold') ? styles.isActive : ''}
+        >
+          <FormatBoldIcon />
+        </Button>
+        <Button
+          onClick={() => editor.chain().focus().toggleItalic().run()}
+          disabled={!editor.can().chain().focus().toggleItalic().run()}
+          className={editor.isActive('italic') ? styles.isActive : ''}
+        >
+          <FormatItalicIcon />
+        </Button>
+        <Button
+          onClick={() => editor.chain().focus().setParagraph().run()}
+          className={editor.isActive('paragraph') ? styles.isActive : ''}
+        >
+          P
+        </Button>
+        <Button
+          onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
+          className={editor.isActive('heading', { level: 1 }) ? styles.isActive : ''}
+        >
+          H1
+        </Button>
+        <Button
+          onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
+          className={editor.isActive('heading', { level: 2 }) ? styles.isActive : ''}
+        >
+          H2
+        </Button>
+        <Button
+          onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
+          className={editor.isActive('heading', { level: 3 }) ? styles.isActive : ''}
+        >
+          H3
+        </Button>
+        <Button
+          onClick={() => editor.chain().focus().toggleHeading({ level: 4 }).run()}
+          className={editor.isActive('heading', { level: 4 }) ? styles.isActive : ''}
+        >
+          H4
+        </Button>
+        <Button
+          onClick={() => editor.chain().focus().toggleHeading({ level: 5 }).run()}
+          className={editor.isActive('heading', { level: 5 }) ? styles.isActive : ''}
+        >
+          H5
+        </Button>
+        <Button
+          onClick={() => editor.chain().focus().toggleHeading({ level: 6 }).run()}
+          className={editor.isActive('heading', { level: 6 }) ? styles.isActive : ''}
+        >
+          H6
+        </Button>
+        <Button
+          onClick={() => editor.chain().focus().toggleBulletList().run()}
+          className={editor.isActive('bulletList') ? styles.isActive : ''}
+        >
+          <FormatListBulletedIcon />
+        </Button>
+      </ButtonGroup>
+    </div>
+  )
+}
+
+const fetchSuggestions = async (query, user, client) => {
+  if (!user?.id) return []
+  try {
+    const data = await client.getSuggestions({ query })
+    return Array.isArray(data) ? data : []
+  } catch (error) {
+    console.error('Error fetching suggestions:', error)
+    return []
+  }
+}
+
+const preprocessContent = (html) => {
+  let processed = html.replace(/<li><p>(.*?)<\/p><\/li>/g, '<li>$1</li>')
+  processed = processed.replace(
+    /<a href="([^"]+)" class="mention"[^>]*data-mention-id="([^"]+)"[^>]*>(@[^<]+)<\/a>/g,
+    (match, href, id, label) => {
+      const cleanLabel = label.replace(/^@/, '')
+      return `<span data-type="mention" data-id="${id}" data-label="${cleanLabel}" data-href="${href}">@${cleanLabel}</span>`
+    }
+  )
+  console.log('Preprocessed HTML:', processed)
+  return processed
+}
+
+const DebugParsePlugin = new Plugin({
+  key: new PluginKey('debugParse'),
+  props: {
+    handleDOMEvents: {
+      paste(view, event) {
+        console.log('Paste event:', event.clipboardData?.getData('text/html'))
+        return false
+      },
+    },
+    transformPastedHTML(html) {
+      console.log('Transforming pasted HTML:', html)
+      const transformed = html.replace(
+        /<a href="([^"]+)" class="mention"[^>]*data-mention-id="([^"]+)"[^>]*>(@[^<]+)<\/a>/g,
+        (match, href, id, label) => {
+          const cleanLabel = label.replace(/^@/, '')
+          return `<span data-type="mention" data-id="${id}" data-label="${cleanLabel}" data-href="${href}">@${cleanLabel}</span>`
+        }
+      )
+      console.log('Transformed pasted HTML:', transformed)
+      return transformed
+    },
+  },
+})
 
 const Editor = ({ value, onChange, name = 'description' }) => {
   const { user, client } = useClient()
@@ -157,7 +282,7 @@ const Editor = ({ value, onChange, name = 'description' }) => {
     char: '@',
     pluginKey: new PluginKey('mention'),
     items: async ({ query }) => {
-      return await fetchSuggestions(query, client)
+      return await fetchSuggestions(query, user, client)
     },
     render: () => {
       return {
@@ -449,8 +574,6 @@ const Editor = ({ value, onChange, name = 'description' }) => {
       },
     })
   }
-
-  if (!user?.id) return <></>
 
   return (
     <div className={styles.editorContainer}>

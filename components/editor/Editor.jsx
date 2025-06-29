@@ -3,10 +3,11 @@ import Document from '@tiptap/extension-document'
 import Mention from '@tiptap/extension-mention'
 import Paragraph from '@tiptap/extension-paragraph'
 import Text from '@tiptap/extension-text'
-// import { EditorContent, useEditor } from '@tiptap/react'
 import { Editor as TiptapEditor, EditorProvider, useCurrentEditor } from "@tiptap/react"
 import { useState } from "react"
 import { useClient } from "@/contexts"
+import { preprocessContent } from "@/components/editor/utils"
+import MenuBar from "@/components/editor/MenuBar"
 
 import suggestion from './suggestion.js'
 
@@ -67,6 +68,7 @@ const Editor = ({ name, value, onChange }) => {
     <EditorProvider
       immediatelyRender={false}
       extensions={extensions}
+      slotBefore={<MenuBar />}
       content={value}
       onBlur={saveOnBlur}
         onUpdate={({ editor }) => {
