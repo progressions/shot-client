@@ -2,7 +2,7 @@ import { Box, Button, ButtonGroup, Stack, Tooltip, Typography } from "@mui/mater
 import EditIcon from '@mui/icons-material/Edit'
 import { useState } from "react"
 import RichTextRenderer from '@/utils/RichTextRenderer'
-import Editor from "@/utils/Editor"
+import Editor from "@/components/editor/Editor"
 
 import type { Fight } from "@/types/types"
 

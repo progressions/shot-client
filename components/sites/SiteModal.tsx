@@ -15,7 +15,7 @@ import Faction from "@/components/characters/edit/Faction"
 import CharacterFilters from "@/components/characters/CharacterFilters"
 import SelectCharacter from "@/components/characters/SelectCharacter"
 import ImageManager from "@/components/images/ImageManager"
-import Editor from "@/utils/Editor"
+import Editor from "@/components/editor/Editor"
 
 interface SiteModalProps {
   state: SitesStateType
