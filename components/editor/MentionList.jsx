@@ -6,7 +6,7 @@ const MentionList = forwardRef((props, ref) => {
   const selectItem = (index) => {
     const item = props.items[index];
     if (item) {
-      props.command({ id: item });
+      props.command(item)
     }
   };
 
@@ -52,7 +52,7 @@ const MentionList = forwardRef((props, ref) => {
             key={index}
             onClick={() => selectItem(index)}
           >
-            {item}
+            {item.label}
           </button>
         ))
       ) : (

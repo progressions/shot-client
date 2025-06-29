@@ -23,6 +23,26 @@ export default ({ name, value, onChange }) => {
           class: 'mention',
         },
         suggestion: suggestion(user, client),
+        renderHTML({ node }) {
+          console.log('renderHTML', node)
+          const { id, label } = node.attrs
+          if (!id || !label) {
+            console.warn('renderHTML: Missing id or label:', node)
+            return ['span', { class: 'mention' }, `@${label || 'unknown'}`]
+          }
+          const url = `/characters/${id}`
+          return [
+            'a',
+            {
+              href: url,
+              class: 'mention',
+              target: '_blank',
+              rel: 'noopener noreferrer',
+              'data-mention-id': id,
+            },
+            `@${label}`,
+          ]
+        },
       }),
     ],
     content: value
