@@ -1,11 +1,11 @@
-import { Box } from '@mui/material'
-import DOMPurify from 'dompurify'
-import { StyledRichText } from "@/components/StyledFields"
-import tippy from 'tippy.js'
-// import 'tippy.js/dist/tippy.css'
-import ReactDOM from 'react-dom/client'
-import PopUp from "@/components/editor/PopUp"
-import { useClient } from "@/contexts"
+import { Box } from '@mui/material';
+import DOMPurify from 'dompurify';
+import { StyledRichText } from '@/components/StyledFields';
+import tippy from 'tippy.js';
+import ReactDOM from 'react-dom/client';
+import PopUp from '@/components/editor/PopUp';
+import { useClient } from '@/contexts';
+import { useRef, useEffect } from 'react';
 
 interface RichTextRendererProps {
   html: string | undefined | null;
@@ -13,29 +13,27 @@ interface RichTextRendererProps {
 
 export default function RichTextRenderer({ html }: RichTextRendererProps) {
   const { user, client } = useClient();
+  const containerRef = useRef<HTMLDivElement>(null);
 
-  // Define the global handleMouseOver function
-  window.handleMouseOver = (mentionId, mentionClass, event) => {
-    console.log(`Mouse over mention with ID: ${mentionId}, class: ${mentionClass}`);
+  const handleMouseOver = (mentionId: string, mentionClass: string, event: MouseEvent) => {
+    const target = event.target as HTMLElement;
 
-    // Destroy all existing Tippy instances across the document
+    // Destroy all existing Tippy instances
     const allTippies = document.querySelectorAll('[data-tippy-root]');
     allTippies.forEach((tippyEl) => {
       const instance = (tippyEl as HTMLElement)._tippy;
       if (instance) {
         instance.destroy();
       }
-    })
+    });
 
-    // Create a container div for the React component
+    // Create a container for the React component
     const container = document.createElement('div');
-
-    // Render the PopUp component into the container
     const root = ReactDOM.createRoot(container);
     root.render(<PopUp user={user} client={client} mentionId={mentionId} mentionClass={mentionClass} />);
 
-    // Create a new Tippy instance for the hovered link
-    tippy(event.target, {
+    // Create a new Tippy instance
+    const tippyInstance = tippy(target, {
       content: container,
       showOnCreate: true,
       interactive: true,
@@ -43,7 +41,6 @@ export default function RichTextRenderer({ html }: RichTextRendererProps) {
       placement: 'bottom-start',
       appendTo: () => document.body,
       onHide(instance) {
-        // Cleanup: Unmount the React component when the tooltip is hidden
         root.unmount();
         container.remove();
         return true;
@@ -51,23 +48,43 @@ export default function RichTextRenderer({ html }: RichTextRendererProps) {
     });
   };
 
-  const addMouseOverToMentions = (htmlString) => {
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const links = container.querySelectorAll('a[data-mention-id]');
+    links.forEach((link) => {
+      const mentionId = link.getAttribute('data-mention-id') || '';
+      const mentionClass = link.getAttribute('data-mention-class-name') || '';
+      const handler = (event: MouseEvent) => handleMouseOver(mentionId, mentionClass, event);
+      link.addEventListener('mouseover', handler);
+
+      // Cleanup event listener on unmount
+      return () => link.removeEventListener('mouseover', handler);
+    });
+  }, [html]);
+
+  const addMouseOverAttributes = (htmlString: string) => {
     const parser = new DOMParser();
     const doc = parser.parseFromString(htmlString, 'text/html');
     const links = doc.querySelectorAll('a[data-mention-id]');
 
     links.forEach((link) => {
-      const mentionId = link.getAttribute('data-mention-id');
-      const mentionClass = link.getAttribute('data-mention-class-name') || '';
-      link.setAttribute('onmouseover', `window.handleMouseOver('${mentionId}', '${mentionClass}', event)`);
+      // Attributes are already present; no need to add onmouseover
+      link.setAttribute('data-processed', 'true');
     });
 
     return doc.body.innerHTML;
   };
 
   const sanitizedHtml = DOMPurify.sanitize(html || '', {
-    ADD_ATTR: ['onmouseover', 'target', 'rel', 'data-mention-id', 'data-mention-class-name'],
+    ADD_ATTR: ['target', 'rel', 'data-mention-id', 'data-mention-class-name'],
   });
 
-  return <StyledRichText dangerouslySetInnerHTML={{ __html: addMouseOverToMentions(sanitizedHtml) }} />;
+  return (
+    <StyledRichText
+      ref={containerRef}
+      dangerouslySetInnerHTML={{ __html: addMouseOverAttributes(sanitizedHtml) }}
+    />
+  );
 }
