@@ -7,6 +7,5 @@ export const preprocessContent = (html) => {
       return `<span data-type="mention" data-id="${id}" data-label="${cleanLabel}" data-href="${href}">@${cleanLabel}</span>`
     }
   )
-  console.log('Preprocessed HTML:', processed)
   return processed
 }

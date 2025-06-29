@@ -4,12 +4,11 @@ import styles from "@/components/editor/Editor.module.scss"
 const MentionList = forwardRef((props, ref) => {
   const [selectedIndex, setSelectedIndex] = useState(0);
 
-  console.log("selectedIndex", selectedIndex);
-
   const selectItem = (index) => {
     const item = props.items[index];
     if (item) {
-      props.command(item)
+      console.log("item", item)
+      props.command({ id: item.id, thing: "wut", label: item.label })
     }
   };
 

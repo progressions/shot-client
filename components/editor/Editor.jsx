@@ -7,7 +7,7 @@ import StarterKit from "@tiptap/starter-kit"
 import { Editor as TiptapEditor, EditorProvider, useCurrentEditor } from "@tiptap/react"
 import { useState } from "react"
 import { useClient } from "@/contexts"
-import { preprocessContent } from "@/components/editor/utils"
+// import { preprocessContent } from "@/components/editor/utils"
 import MenuBar from "@/components/editor/MenuBar"
 import styles from "@/components/editor/Editor.module.scss"
 
@@ -18,6 +18,18 @@ const Editor = ({ name, value, onChange }) => {
   const [content, setContent] = useState(value || '')
 
   if (!user?.id) return <></>
+
+  const preprocessContent = (html) => {
+    let processed = html.replace(/<li><p>(.*?)<\/p><\/li>/g, '<li>$1</li>')
+    processed = processed.replace(
+      /<a href="([^"]+)" class="mention"[^>]*data-mention-id="([^"]+)"[^>]*>(@[^<]+)<\/a>/g,
+      (match, href, id, label) => {
+        const cleanLabel = label.replace(/^@/, '')
+        return `<span data-type="mention" data-id="${id}" data-label="${cleanLabel}" data-href="${href}">@${cleanLabel}</span>`
+      }
+    )
+    return processed
+  }
 
   const extensions = [
       StarterKit,
@@ -30,8 +42,8 @@ const Editor = ({ name, value, onChange }) => {
         },
         suggestion: suggestion(user, client),
         renderHTML({ node }) {
-          console.log('renderHTML', node)
-          const { id, label } = node.attrs
+          console.log('renderHTML', node.attrs)
+          const { id, label, class:className } = node.attrs
           if (!id || !label) {
             console.warn('renderHTML: Missing id or label:', node)
             return ['span', { class: 'mention' }, `@${label || 'unknown'}`]
@@ -45,6 +57,7 @@ const Editor = ({ name, value, onChange }) => {
               target: '_blank',
               rel: 'noopener noreferrer',
               'data-mention-id': id,
+              'data-mention-class': className || '',
             },
             `@${label}`,
           ]

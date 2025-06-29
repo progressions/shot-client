@@ -23,8 +23,6 @@ export default (user, client) => ({
           editor: props.editor,
         })
 
-        console.log("suggestion props", props)
-
         if (!props.clientRect) {
           return
         }
