@@ -9,7 +9,7 @@ import { Button, ButtonGroup } from "@mui/material"
 import FormatBoldIcon from "@mui/icons-material/FormatBold"
 import FormatItalicIcon from "@mui/icons-material/FormatItalic"
 import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted"
-import styles from "@/components/editor/Editor.module.scss"
+import styles from "./Editor.module.scss"
 import { useState, useRef, useEffect } from "react"
 import { Transaction, Plugin, PluginKey } from "@tiptap/pm/state"
 import tippy from "tippy.js"
@@ -94,8 +94,7 @@ const MenuBar = () => {
   )
 }
 
-const fetchSuggestions = async (query, user, client) => {
-  if (!user?.id) return []
+const fetchSuggestions = async (query, client) => {
   try {
     const data = await client.getSuggestions({ query })
     return Array.isArray(data) ? data : []
@@ -281,7 +280,7 @@ const Editor = ({ value, onChange, name = 'description' }) => {
     char: '@',
     pluginKey: new PluginKey('mention'),
     items: async ({ query }) => {
-      return await fetchSuggestions(query, user, client)
+      return await fetchSuggestions(query, client)
     },
     render: () => {
       return {
@@ -573,6 +572,8 @@ const Editor = ({ value, onChange, name = 'description' }) => {
       },
     })
   }
+
+  if (!user?.id) return <></>
 
   return (
     <div className={styles.editorContainer}>
