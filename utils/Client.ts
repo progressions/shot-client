@@ -558,6 +558,10 @@ class Client {
   }
 
   async get<T>(url:string, params = {}):Promise<T> {
+    if (!this.jwt) {
+      console.log("No JWT provided, cannot make GET request", url)
+      return Promise.reject(new Error("No JWT provided"))
+    }
     return await axios({
       url: url,
       method: "GET",

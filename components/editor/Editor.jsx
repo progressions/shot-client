@@ -9,25 +9,12 @@ import { Button, ButtonGroup } from "@mui/material"
 import FormatBoldIcon from "@mui/icons-material/FormatBold"
 import FormatItalicIcon from "@mui/icons-material/FormatItalic"
 import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted"
-import styles from "./Editor.module.scss"
+import styles from "@/components/editor/Editor.module.scss"
 import { useState, useRef, useEffect } from "react"
 import { Transaction, Plugin, PluginKey } from "@tiptap/pm/state"
 import tippy from "tippy.js"
 import "tippy.js/dist/tippy.css"
-import { SuggestionOptions } from "@tiptap/suggestion"
 import { useClient } from "@/contexts"
-
-interface EditorProps {
-  value: string
-  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void
-  name?: string
-}
-
-interface MentionItem {
-  id: string
-  class: string
-  label: string
-}
 
 const MenuBar = () => {
   const { editor } = useCurrentEditor()
@@ -107,7 +94,8 @@ const MenuBar = () => {
   )
 }
 
-const fetchSuggestions = async (query: string, client: any): Promise<MentionItem[]> => {
+const fetchSuggestions = async (query, user, client) => {
+  if (!user?.id) return []
   try {
     const data = await client.getSuggestions({ query })
     return Array.isArray(data) ? data : []
@@ -117,10 +105,8 @@ const fetchSuggestions = async (query: string, client: any): Promise<MentionItem
   }
 }
 
-const preprocessContent = (html: string): string => {
-  // Remove nested <p> tags inside <li>
+const preprocessContent = (html) => {
   let processed = html.replace(/<li><p>(.*?)<\/p><\/li>/g, '<li>$1</li>')
-  // Transform <a class="mention"> to <span data-type="mention"> with label without @
   processed = processed.replace(
     /<a href="([^"]+)" class="mention"[^>]*data-mention-id="([^"]+)"[^>]*>(@[^<]+)<\/a>/g,
     (match, href, id, label) => {
@@ -156,22 +142,22 @@ const DebugParsePlugin = new Plugin({
   },
 })
 
-const Editor = ({ value, onChange, name = 'description' }: EditorProps) => {
+const Editor = ({ value, onChange, name = 'description' }) => {
   const { user, client } = useClient()
-  const [content, setContent] = useState<string>(value)
-  const [isSuggestionActive, setIsSuggestionActive] = useState<boolean>(false)
-  const suggestionContainerRef = useRef<HTMLElement | null>(null)
-  const suggestionPropsRef = useRef<{ props: any; command: (item: MentionItem) => void } | null>(null)
-  const focusedIndexRef = useRef<number>(-1)
-  const editorRef = useRef<TiptapEditor | null>(null)
-  const popupRef = useRef<any>(null)
-  const isCleaningUp = useRef<boolean>(false)
+  const [content, setContent] = useState(value)
+  const [isSuggestionActive, setIsSuggestionActive] = useState(false)
+  const suggestionContainerRef = useRef(null)
+  const suggestionPropsRef = useRef(null)
+  const focusedIndexRef = useRef(-1)
+  const editorRef = useRef(null)
+  const popupRef = useRef(null)
+  const isCleaningUp = useRef(false)
 
   console.log({ user, client })
 
   const processedValue = preprocessContent(value)
 
-  const updateFocus = (container: HTMLElement, newIndex: number, items: MentionItem[]) => {
+  const updateFocus = (container, newIndex, items) => {
     console.log('Updating focus to index:', newIndex)
     focusedIndexRef.current = newIndex
     const buttons = container.querySelectorAll(`button.${styles.mentionItem}`)
@@ -189,7 +175,6 @@ const Editor = ({ value, onChange, name = 'description' }: EditorProps) => {
     })
   }
 
-  // Cleanup Tippy instance
   const cleanupTippy = () => {
     if (isCleaningUp.current) {
       console.log('Skipping cleanup, already in progress')
@@ -201,19 +186,17 @@ const Editor = ({ value, onChange, name = 'description' }: EditorProps) => {
       popupRef.current[0].hide()
       const popper = popupRef.current[0].popper
       if (popper) {
-        popper.innerHTML = '' // Clear popper content
+        popper.innerHTML = ''
         if (popper.parentNode) {
           popper.parentNode.removeChild(popper)
         }
       }
-      // Delay destroy to ensure hide completes
       setTimeout(() => {
         if (popupRef.current && popupRef.current[0]) {
           popupRef.current[0].destroy()
           popupRef.current = null
         }
       }, 50)
-      // Remove all Tippy-related elements
       document.querySelectorAll('[data-tippy-root], .tippy-box').forEach((el) => {
         if (el.parentNode) {
           el.parentNode.removeChild(el)
@@ -228,7 +211,6 @@ const Editor = ({ value, onChange, name = 'description' }: EditorProps) => {
     console.log('Popper in DOM after cleanup:', document.querySelector('div[id^="tippy-"]'))
   }
 
-  // Cleanup popup on unmount
   useEffect(() => {
     console.log('Editor mounted with value:', value)
     return () => {
@@ -237,7 +219,6 @@ const Editor = ({ value, onChange, name = 'description' }: EditorProps) => {
     }
   }, [value])
 
-  // Ensure focus is maintained on the popup
   useEffect(() => {
     if (isSuggestionActive && suggestionContainerRef.current) {
       const buttons = suggestionContainerRef.current.querySelectorAll(`button.${styles.mentionItem}`)
@@ -248,12 +229,11 @@ const Editor = ({ value, onChange, name = 'description' }: EditorProps) => {
     }
   }, [isSuggestionActive])
 
-  // Fallback keydown listener for the container
   useEffect(() => {
     const container = suggestionContainerRef.current
     if (!container || !isSuggestionActive) return
 
-    const handleKeyDown = (e: KeyboardEvent) => {
+    const handleKeyDown = (e) => {
       console.log('Container keydown:', e.key, 'focusedIndex:', focusedIndexRef.current, 'activeElement:', document.activeElement?.textContent)
       if (!suggestionPropsRef.current) return
       const { props, command } = suggestionPropsRef.current
@@ -297,11 +277,11 @@ const Editor = ({ value, onChange, name = 'description' }: EditorProps) => {
     }
   }, [isSuggestionActive])
 
-  const suggestion: SuggestionOptions['suggestion'] = {
+  const suggestion = {
     char: '@',
     pluginKey: new PluginKey('mention'),
     items: async ({ query }) => {
-      return await fetchSuggestions(query, client)
+      return await fetchSuggestions(query, user, client)
     },
     render: () => {
       return {
@@ -319,7 +299,7 @@ const Editor = ({ value, onChange, name = 'description' }: EditorProps) => {
             props.editor.view.dom.setAttribute('contenteditable', 'false')
 
             popupRef.current = tippy(document.body, {
-              getReferenceClientRect: props.clientRect as () => DOMRect,
+              getReferenceClientRect: props.clientRect,
               appendTo: () => document.body,
               content: container,
               showOnCreate: true,
@@ -339,7 +319,7 @@ const Editor = ({ value, onChange, name = 'description' }: EditorProps) => {
               },
             })
 
-            props.items.forEach((item: MentionItem, index: number) => {
+            props.items.forEach((item, index) => {
               const button = document.createElement('button')
               button.className = styles.mentionItem
               button.textContent = item.label
@@ -373,7 +353,7 @@ const Editor = ({ value, onChange, name = 'description' }: EditorProps) => {
           suggestionContainerRef.current = container
           props.editor.view.dom.setAttribute('contenteditable', 'false')
 
-          props.items.forEach((item: MentionItem, index: number) => {
+          props.items.forEach((item, index) => {
             const button = document.createElement('button')
             button.className = styles.mentionItem
             button.textContent = item.label
@@ -461,12 +441,12 @@ const Editor = ({ value, onChange, name = 'description' }: EditorProps) => {
       },
       suggestion,
       renderHTML({ node }) {
-        const { id, label } = node.attrs;
+        const { id, label } = node.attrs
         if (!id || !label) {
-          console.warn('renderHTML: Missing id or label:', node);
-          return ['span', { class: 'mention' }, `@${label || 'unknown'}`];
+          console.warn('renderHTML: Missing id or label:', node)
+          return ['span', { class: 'mention' }, `@${label || 'unknown'}`]
         }
-        const url = `/characters/${id}`;
+        const url = `/characters/${id}`
         return [
           'a',
           {
@@ -477,7 +457,7 @@ const Editor = ({ value, onChange, name = 'description' }: EditorProps) => {
             'data-mention-id': id,
           },
           `@${label}`,
-        ];
+        ]
       },
       parseHTML() {
         return [
@@ -486,32 +466,32 @@ const Editor = ({ value, onChange, name = 'description' }: EditorProps) => {
             priority: 1000,
             getAttrs: (element) => {
               if (typeof element === 'string') {
-                console.warn('parseHTML: Received string:', element);
-                return null;
+                console.warn('parseHTML: Received string:', element)
+                return null
               }
-              console.log('parseHTML: Attempting to parse:', element.outerHTML);
-              const id = element.getAttribute('data-id');
-              const href = element.getAttribute('data-href');
-              const label = element.getAttribute('data-label') || element.textContent?.replace(/^@/, '') || '';
+              console.log('parseHTML: Attempting to parse:', element.outerHTML)
+              const id = element.getAttribute('data-id')
+              const href = element.getAttribute('data-href')
+              const label = element.getAttribute('data-label') || element.textContent?.replace(/^@/, '') || ''
               console.log('parseHTML: Processing mention:', {
                 id,
                 label,
                 href,
                 textContent: element.textContent,
                 outerHTML: element.outerHTML,
-              });
+              })
               if (!id || !label) {
-                console.warn('parseHTML: Invalid attributes:', { id, label, href });
-                return null;
+                console.warn('parseHTML: Invalid attributes:', { id, label, href })
+                return null
               }
               return {
                 id,
-                label: label.replace(/^@/, ''), // Ensure @ is stripped
+                label: label.replace(/^@/, ''),
                 href: href || `/characters/${id}`,
-              };
+              }
             },
           },
-        ];
+        ]
       },
       addAttributes() {
         return {
@@ -525,8 +505,8 @@ const Editor = ({ value, onChange, name = 'description' }: EditorProps) => {
           label: {
             default: null,
             parseHTML: (element) => {
-              const label = element.getAttribute('data-label') || element.textContent?.replace(/^@/, '') || '';
-              return label.replace(/^@/, ''); // Ensure @ is stripped
+              const label = element.getAttribute('data-label') || element.textContent?.replace(/^@/, '') || ''
+              return label.replace(/^@/, '')
             },
             renderHTML: () => null,
           },
@@ -537,24 +517,24 @@ const Editor = ({ value, onChange, name = 'description' }: EditorProps) => {
               href: attributes.href || `/characters/${attributes.id}`,
             }),
           },
-        };
+        }
       },
       addNodeView() {
         return () => ({
           dom: document.createElement('a'),
           update: (node) => {
-            if (node.type.name !== 'mention') return false;
-            const { id, label } = node.attrs;
-            if (!id || !label) return false;
-            this.dom.setAttribute('href', `/characters/${id}`);
-            this.dom.setAttribute('class', 'mention');
-            this.dom.setAttribute('target', '_blank');
-            this.dom.setAttribute('rel', 'noopener noreferrer');
-            this.dom.setAttribute('data-mention-id', id);
-            this.dom.textContent = `@${label}`; // Prepend @ only once
-            return true;
+            if (node.type.name !== 'mention') return false
+            const { id, label } = node.attrs
+            if (!id || !label) return false
+            this.dom.setAttribute('href', `/characters/${id}`)
+            this.dom.setAttribute('class', 'mention')
+            this.dom.setAttribute('target', '_blank')
+            this.dom.setAttribute('rel', 'noopener noreferrer')
+            this.dom.setAttribute('data-mention-id', id)
+            this.dom.textContent = `@${label}`
+            return true
           },
-        });
+        })
       },
     }),
     DebugParsePlugin,
@@ -579,19 +559,19 @@ const Editor = ({ value, onChange, name = 'description' }: EditorProps) => {
     }),
   ]
 
-  const onChangeContent = (event: React.ChangeEvent<HTMLInputElement>): void => {
+  const onChangeContent = (event) => {
     const { value } = event.target
     setContent(value)
   }
 
-  const saveOnBlur = ({ editor, event, transaction }: { editor: TiptapEditor; event: any; transaction: Transaction }) => {
+  const saveOnBlur = ({ editor, event, transaction }) => {
     console.log('Editor onBlur event:', event)
     onChange({
       target: {
         name,
         value: editor.getHTML(),
       },
-    } as React.ChangeEvent<HTMLInputElement>)
+    })
   }
 
   return (
@@ -602,26 +582,26 @@ const Editor = ({ value, onChange, name = 'description' }: EditorProps) => {
         extensions={extensions}
         content={processedValue}
         onCreate={({ editor }) => {
-          editorRef.current = editor;
-          console.log('Editor created with value:', processedValue);
-          console.log('Editor schema (mention node):', editor.schema.nodes.mention || 'Mention node not found');
-          console.log('Initial editor JSON:', JSON.stringify(editor.getJSON(), null, 2));
-          console.log('Initial editor HTML:', editor.getHTML());
+          editorRef.current = editor
+          console.log('Editor created with value:', processedValue)
+          console.log('Editor schema (mention node):', editor.schema.nodes.mention || 'Mention node not found')
+          console.log('Initial editor JSON:', JSON.stringify(editor.getJSON(), null, 2))
+          console.log('Initial editor HTML:', editor.getHTML())
           if (!editor.schema.nodes.mention) {
-            console.error('Error: Mention node is missing from schema');
+            console.error('Error: Mention node is missing from schema')
           }
         }}
         onBlur={saveOnBlur}
         onUpdate={({ editor }) => {
-          const html = editor.getHTML();
-          console.log('Editor updated, HTML:', html);
+          const html = editor.getHTML()
+          console.log('Editor updated, HTML:', html)
           const syntheticEvent = {
             target: {
               name,
               value: html,
             },
-          } as React.ChangeEvent<HTMLInputElement>;
-          onChangeContent(syntheticEvent);
+          }
+          onChangeContent(syntheticEvent)
         }}
         editorProps={{
           handleKeyDown: (view, event) => {
