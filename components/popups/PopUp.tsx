@@ -1,51 +1,51 @@
-import { Box, Typography, Stack } from "@mui/material";
-import styles from "@/components/editor/Editor.module.scss";
-import type { Character, User } from "@/types/types";
-import { defaultCharacter } from "@/types/types";
-import Client from "@/utils/Client";
-import { useState, useEffect } from "react";
-import CharacterAvatar from "@/components/characters/CharacterAvatar";
-import CS from "@/services/CharacterService";
+import { Box, Typography, Stack } from "@mui/material"
+import styles from "@/components/editor/Editor.module.scss"
+import type { Character, User } from "@/types/types"
+import { defaultCharacter } from "@/types/types"
+import Client from "@/utils/Client"
+import { useState, useEffect } from "react"
+import CharacterAvatar from "@/components/characters/CharacterAvatar"
+import CS from "@/services/CharacterService"
 
-interface PopUpProps {
-  mentionId: string;
-  mentionClass: string;
-  user: User | null; // Allow user to be nullable
-  client: Client;
+interface PopupProps {
+  mentionId: string
+  mentionClass: string
+  user: User | null // Allow user to be nullable
+  client: Client
 }
 
-export default function PopUp({
+export default function Popup({
   user,
   client,
   mentionId,
   mentionClass,
-}: PopUpProps) {
-  const [character, setCharacter] = useState<Character>(defaultCharacter);
+}: PopupProps) {
+  const [character, setCharacter] = useState<Character>(defaultCharacter)
 
   useEffect(() => {
     const fetchCharacter = async () => {
       try {
-        const fetchedCharacter = await client.getCharacter({ id: mentionId });
-        console.log("Fetched character:", fetchedCharacter);
+        const fetchedCharacter = await client.getCharacter({ id: mentionId })
+        console.log("Fetched character:", fetchedCharacter)
         if (fetchedCharacter) {
-          setCharacter(fetchedCharacter);
+          setCharacter(fetchedCharacter)
         } else {
-          console.error(`Character with ID ${mentionId} not found`);
+          console.error(`Character with ID ${mentionId} not found`)
         }
       } catch (error) {
-        console.error("Error fetching character:", error);
+        console.error("Error fetching character:", error)
       }
-    };
+    }
 
     if (user?.id && mentionId) {
       fetchCharacter().catch((error) => {
-        console.error("Failed to fetch character:", error);
+        console.error("Failed to fetch character:", error)
       })
     }
-  }, [user, mentionId, client]);
+  }, [user, mentionId, client])
 
   if (!user?.id) {
-    return null; // Use null instead of <></> for consistency
+    return null // Use null instead of <></> for consistency
   }
 
   const subhead = [
@@ -54,12 +54,12 @@ export default function PopUp({
     CS.factionName(character),
   ]
     .filter(Boolean)
-    .join(" - ");
+    .join(" - ")
 
-  console.log(CS.actionValues(character));
+  console.log(CS.actionValues(character))
 
   return (
-    <Box className={styles.mentionPopUp}>
+    <Box className={styles.mentionPopup}>
       <Stack direction="row" alignItems="center" spacing={2} mb={1}>
         <CharacterAvatar character={character} />
         <Typography>{character.name}</Typography>
@@ -107,5 +107,5 @@ export default function PopUp({
         </Typography>
       </Box>
     </Box>
-  );
+  )
 }

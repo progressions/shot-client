@@ -1,7 +1,7 @@
 import { styled, Badge, Avatar, IconButton, Tooltip } from "@mui/material"
 import { useRef, useEffect } from "react"
 import { useClient } from "@/contexts"
-import { usePopup } from "@/components/popups/usePopup"
+import { usePopup } from "@/components/popups"
 import type { Character } from "@/types/types"
 
 interface CharacterAvatarProps {

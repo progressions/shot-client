@@ -1,7 +1,7 @@
 import { useRef, useEffect } from 'react';
 import tippy, { Instance } from 'tippy.js';
 import ReactDOM from 'react-dom/client';
-import PopUp from '@/components/popups/PopUp';
+import Popup from '@/components/popups/Popup';
 import type { User } from '@/types/types';
 import Client from '@/utils/Client';
 
@@ -30,7 +30,7 @@ export function usePopup({ containerRef, user, client }: PopupProps) {
 
     const container = document.createElement('div');
     const root = ReactDOM.createRoot(container);
-    root.render(<PopUp user={user} client={client} mentionId={mentionId} mentionClass={mentionClass} />);
+    root.render(<Popup user={user} client={client} mentionId={mentionId} mentionClass={mentionClass} />);
 
     const tippyInstance = tippy(target, {
       content: container,
