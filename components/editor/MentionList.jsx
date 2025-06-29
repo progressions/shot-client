@@ -1,64 +1,52 @@
-import React, {
-  useEffect, useImperativeHandle,
-  useState,
-} from 'react'
+import React, { useEffect, useImperativeHandle, useState, forwardRef } from 'react';
 
-export default props => {
-  const [selectedIndex, setSelectedIndex] = useState(0)
+const MentionList = forwardRef((props, ref) => {
+  const [selectedIndex, setSelectedIndex] = useState(0);
 
-  const selectItem = index => {
-    const item = props.items[index]
-
+  const selectItem = (index) => {
+    const item = props.items[index];
     if (item) {
-      props.command({ id: item })
+      props.command({ id: item });
     }
-  }
+  };
 
   const upHandler = () => {
-    setSelectedIndex((selectedIndex + props.items.length - 1) % props.items.length)
-  }
+    setSelectedIndex((selectedIndex + props.items.length - 1) % props.items.length);
+  };
 
   const downHandler = () => {
-    setSelectedIndex((selectedIndex + 1) % props.items.length)
-  }
+    setSelectedIndex((selectedIndex + 1) % props.items.length);
+  };
 
   const enterHandler = () => {
-    selectItem(selectedIndex)
-  }
+    selectItem(selectedIndex);
+  };
 
-  useEffect(() => setSelectedIndex(0), [props.items])
+  useEffect(() => setSelectedIndex(0), [props.items]);
 
-  useImperativeHandle(props.ref, () => ({
+  useImperativeHandle(ref, () => ({
     onKeyDown: ({ event }) => {
-      console.log("onKeyDown", event.key)
+      console.log('onKeyDown', event.key);
       if (event.key === 'ArrowUp') {
-        console.log('up')
-        upHandler()
-        return true
+        upHandler();
+        return true;
       }
-
       if (event.key === 'ArrowDown') {
-        console.log('down')
-        downHandler()
-        return true
+        downHandler();
+        return true;
       }
-
       if (event.key === 'Enter') {
-        console.log('enter')
-        enterHandler()
-        return true
+        enterHandler();
+        return true;
       }
-
-      return false
+      return false;
     },
-  }))
-
-  console.log("MentionList props", props)
+  }));
 
   return (
     <div className="dropdown-menu">
-      {props.items.length
-        ? props.items.map((item, index) => (
+      {props.items.length ? (
+        props.items.map((item, index) => (
           <button
             className={index === selectedIndex ? 'is-selected' : ''}
             key={index}
@@ -67,8 +55,11 @@ export default props => {
             {item}
           </button>
         ))
-        : <div className="item">No result</div>
-      }
+      ) : (
+        <div className="item">No result</div>
+      )}
     </div>
-  )
-}
+  );
+});
+
+export default MentionList;
