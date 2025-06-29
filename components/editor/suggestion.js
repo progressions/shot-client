@@ -47,6 +47,8 @@ export default {
           editor: props.editor,
         })
 
+        console.log("suggestion props", props)
+
         if (!props.clientRect) {
           return
         }
@@ -75,6 +77,7 @@ export default {
       },
 
       onKeyDown(props) {
+        console.log("suggestion keydown props", props)
         if (props.event.key === 'Escape') {
           popup[0].hide()
 

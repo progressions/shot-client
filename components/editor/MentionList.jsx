@@ -53,6 +53,8 @@ export default props => {
     },
   }))
 
+  console.log("MentionList props", props)
+
   return (
     <div className="dropdown-menu">
       {props.items.length
