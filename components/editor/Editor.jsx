@@ -76,7 +76,7 @@ const Editor = ({ name, value, onChange }) => {
         immediatelyRender={false}
         extensions={extensions}
         slotBefore={<MenuBar />}
-        content={processedValue}
+        content={processedValue || ""}
         onBlur={saveOnBlur}
           onUpdate={({ editor }) => {
             const html = editor.getHTML()

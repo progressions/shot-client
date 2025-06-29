@@ -1,7 +1,10 @@
 import React, { useEffect, useImperativeHandle, useState, forwardRef } from 'react';
+import styles from "@/components/editor/Editor.module.scss"
 
 const MentionList = forwardRef((props, ref) => {
   const [selectedIndex, setSelectedIndex] = useState(0);
+
+  console.log("selectedIndex", selectedIndex);
 
   const selectItem = (index) => {
     const item = props.items[index];
@@ -48,19 +51,20 @@ const MentionList = forwardRef((props, ref) => {
   }
 
   return (
-    <div className="dropdown-menu">
+    <div className={styles.mentionSuggestions}>
       {props.items.length ? (
         props.items.map((item, index) => (
           <button
-            className={index === selectedIndex ? 'is-selected' : ''}
+            className={`${styles.mentionItem} ${index === selectedIndex ? styles.selectedMentionItem : ''}`}
             key={index}
             onClick={() => selectItem(index)}
+            onMouseEnter={() => setSelectedIndex(index)}
           >
             {item.label}
           </button>
         ))
       ) : (
-        <div className="item">No result</div>
+        <div className={styles.mentionItem}>No result</div>
       )}
     </div>
   );
