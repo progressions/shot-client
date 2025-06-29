@@ -18,11 +18,14 @@ export default function RichTextRenderer({ html }: RichTextRendererProps) {
   window.handleMouseOver = (mentionId, mentionClass, event) => {
     console.log(`Mouse over mention with ID: ${mentionId}, class: ${mentionClass}`);
 
-    // Destroy any existing Tippy instances to prevent duplicates
-    const existingTippy = (event.target as HTMLElement)._tippy;
-    if (existingTippy) {
-      existingTippy.destroy();
-    }
+    // Destroy all existing Tippy instances across the document
+    const allTippies = document.querySelectorAll('[data-tippy-root]');
+    allTippies.forEach((tippyEl) => {
+      const instance = (tippyEl as HTMLElement)._tippy;
+      if (instance) {
+        instance.destroy();
+      }
+    })
 
     // Create a container div for the React component
     const container = document.createElement('div');
