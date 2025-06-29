@@ -157,7 +157,7 @@ const DebugParsePlugin = new Plugin({
 })
 
 const Editor = ({ value, onChange, name = 'description' }: EditorProps) => {
-  const { client } = useClient()
+  const { user, client } = useClient()
   const [content, setContent] = useState<string>(value)
   const [isSuggestionActive, setIsSuggestionActive] = useState<boolean>(false)
   const suggestionContainerRef = useRef<HTMLElement | null>(null)
@@ -166,6 +166,8 @@ const Editor = ({ value, onChange, name = 'description' }: EditorProps) => {
   const editorRef = useRef<TiptapEditor | null>(null)
   const popupRef = useRef<any>(null)
   const isCleaningUp = useRef<boolean>(false)
+
+  console.log({ user, client })
 
   const processedValue = preprocessContent(value)
 

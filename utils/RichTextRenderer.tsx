@@ -53,17 +53,20 @@ const StyledRichText = styled(Box)(({ theme }) => ({
     margin: '2rem 0',
   },
   '& a': {
-    color: '#1d4ed8', // Blue for links
+    color: '#1d4ed8',
     textDecoration: 'underline',
     cursor: 'pointer',
     '&:hover': {
       color: '#1e40af', // Darker blue on hover
     },
     '&.mention': {
-      fontWeight: theme.typography.fontWeightMedium, // Bolder for mentions
-      color: '#2563eb', // Distinct blue for mentions
+      fontWeight: theme.typography.fontWeightBold,
+      color: "white",
+      padding: '0.1em 0.2em',
       '&:hover': {
-        color: '#1e40af',
+        borderRadius: '4px',
+        backgroundColor: '#1e40af', // Darker blue background on hover
+        color: "white",
       },
     },
   },
