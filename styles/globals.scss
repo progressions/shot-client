@@ -22,6 +22,13 @@
 }
 
 .tiptap {
+  background: var(--blue-grey-200);
+  font-family: "Roboto", sans-serif;
+  font-size: 1rem;
+  height: 200px;
+  color: var(--black);
+  padding: 1rem;
+
   > :first-child {
     margin-top: 0;
   }

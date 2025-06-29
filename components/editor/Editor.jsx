@@ -4,10 +4,13 @@ import Paragraph from '@tiptap/extension-paragraph'
 import Text from '@tiptap/extension-text'
 import { EditorContent, useEditor } from '@tiptap/react'
 import React from 'react'
+import { useClient } from "@/contexts"
 
 import suggestion from './suggestion.js'
 
-export default ({ value }) => {
+export default ({ name, value, onChange }) => {
+  const { user, client } = useClient()
+
   const editor = useEditor({
     extensions: [
       Document,
