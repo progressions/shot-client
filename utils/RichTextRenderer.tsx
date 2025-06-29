@@ -9,13 +9,14 @@ const StyledRichText = styled(Box)(({ theme }) => ({
   fontFamily: 'Roboto, sans-serif',
   fontSize: theme.typography.body1.fontSize,
   lineHeight: theme.typography.body1.lineHeight,
+  marginTop: '0.5rem',
   borderRadius: '4px',
   '& p': {
-    margin: '0 0 1rem',
+    margin: '0 0 0.5rem',
   },
   '& ul, & ol': {
     paddingLeft: '1.5rem',
-    margin: '1rem 0',
+    margin: '0.5rem 0',
   },
   '& h1, & h2, & h3, & h4, & h5, & h6': {
     margin: '1.5rem 0 1rem',
@@ -30,13 +31,6 @@ const StyledRichText = styled(Box)(({ theme }) => ({
     paddingLeft: '1rem',
     margin: '1.5rem 0',
     color: 'var(--black)',
-  },
-  '& code': {
-    backgroundColor: 'var(--purple-light)',
-    borderRadius: '4px',
-    padding: '0.2em 0.4em',
-    fontSize: '0.85rem',
-    fontFamily: 'Roboto, sans-serif',
   },
   '& pre': {
     backgroundColor: 'var(--black)',
