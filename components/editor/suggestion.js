@@ -11,7 +11,22 @@ export default (user, client) => ({
       return data
     }
   },
-
+  command: ({ editor, range, props }) => {
+    console.log('Inserting mention with props:', props);
+    editor
+      .chain()
+      .focus()
+      .insertContentAt(range, {
+        type: 'mention',
+        attrs: {
+          id: props.id,
+          label: props.label,
+          className: props.className,
+          mentionSuggestionChar: '@',
+        },
+      })
+      .run();
+  },
   render: () => {
     let component
     let popup

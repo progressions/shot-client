@@ -20,7 +20,7 @@ export default function RichTextRenderer({ html }: RichTextRendererProps) {
 
     links.forEach((link) => {
       const mentionId = link.getAttribute('data-mention-id');
-      const mentionClass = link.getAttribute('data-mention-class') || '';
+      const mentionClass = link.getAttribute('data-mention-class-name') || '';
       link.setAttribute('onmouseover', `window.handleMouseOver('${mentionId}', '${mentionClass}')`);
     });
 
@@ -29,7 +29,7 @@ export default function RichTextRenderer({ html }: RichTextRendererProps) {
   };
 
   const sanitizedHtml = DOMPurify.sanitize(html || '', {
-    ADD_ATTR: ['onmouseover', 'target', 'rel', 'data-mention-id', 'data-mention-class'],
+    ADD_ATTR: ['onmouseover', 'target', 'rel', 'data-mention-id', 'data-mention-class-name'],
   });
 
   return <StyledRichText dangerouslySetInnerHTML={{ __html: addMouseOverToMentions(sanitizedHtml) }} />;

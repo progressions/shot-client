@@ -22,46 +22,82 @@ const Editor = ({ name, value, onChange }) => {
   const preprocessContent = (html) => {
     let processed = html.replace(/<li><p>(.*?)<\/p><\/li>/g, '<li>$1</li>');
     processed = processed.replace(
-      /<a href="([^"]+)" class="mention"[^>]*data-mention-id="([^"]+)"[^>]*data-mention-class="([^"]*)"[^>]*>(@[^<]+)<\/a>/g,
+      /<a href="([^"]+)" class="mention"[^>]*data-mention-id="([^"]+)"[^>]*data-mention-class-name="([^"]*)"[^>]*>(@[^<]+)<\/a>/g,
       (match, href, id, className, label) => {
         const cleanLabel = label.replace(/^@/, '');
-        return `<span data-type="mention" data-id="${id}" data-label="${cleanLabel}" data-href="${href}" data-mention-classNamme="${className}">@${cleanLabel}</span>`;
+        return `<span data-type="mention" data-id="${id}" data-label="${cleanLabel}" data-href="${href}" data-mention-class-name="${className}">@${cleanLabel}</span>`;
       }
     );
     console.log('Preprocessed HTML:', processed); // Debug
     return processed;
   };
 
+  const CustomMention = Mention.extend({
+    addAttributes() {
+      console.log('CustomMention addAttributes called');
+      return {
+        id: {
+          default: null,
+          parseHTML: element => element.getAttribute('data-id'),
+          renderHTML: attributes => ({
+            'data-id': attributes.id || null,
+          }),
+        },
+        label: {
+          default: null,
+          parseHTML: element => element.getAttribute('data-label'),
+          renderHTML: attributes => ({
+            'data-label': attributes.label || null,
+          }),
+        },
+        className: {
+          default: null,
+          parseHTML: element => element.getAttribute('data-mention-class-name'),
+          renderHTML: attributes => ({
+            'data-mention-class-name': attributes.className || null,
+          }),
+        },
+        mentionSuggestionChar: {
+          default: '@',
+          parseHTML: element => element.getAttribute('data-mention-suggestion-char'),
+          renderHTML: attributes => ({
+            'data-mention-suggestion-char': attributes.mentionSuggestionChar || '@',
+          }),
+        },
+      };
+    },
+  });
+
   const extensions = [
-      StarterKit,
-      Mention.configure({
-        HTMLAttributes: {
-          class: 'mention',
-        },
-        suggestion: suggestion(user, client),
-        renderHTML({ node }) {
-          console.log('renderHTML', node.attrs)
-          const { id, label, class:className } = node.attrs
-          if (!id || !label) {
-            console.warn('renderHTML: Missing id or label:', node)
-            return ['span', { class: 'mention' }, `@${label || 'unknown'}`]
-          }
-          const url = `/characters/${id}`
-          return [
-            'a',
-            {
-              href: url,
-              class: 'mention',
-              target: '_blank',
-              rel: 'noopener noreferrer',
-              'data-mention-id': id,
-              'data-mention-class': className || '',
-            },
-            `@${label}`,
-          ]
-        },
-      }),
-    ]
+    StarterKit.configure({
+      mention: false,
+    }),
+    CustomMention.configure({
+      HTMLAttributes: { class: 'mention' },
+      suggestion: suggestion(user, client),
+      renderHTML({ node }) {
+        console.log('renderHTML', node.attrs);
+        const { id, label, className } = node.attrs;
+        if (!id || !label) {
+          console.warn('renderHTML: Missing id or label:', node);
+          return ['span', { class: 'mention' }, `@${label || 'unknown'}`];
+        }
+        const url = `/characters/${id}`;
+        return [
+          'a',
+          {
+            href: url,
+            class: 'mention',
+            target: '_blank',
+            rel: 'noopener noreferrer',
+            'data-mention-id': id,
+            'data-mention-class-name': className || '',
+          },
+          `@${label}`,
+        ];
+      },
+    }),
+  ];
 
   const onChangeContent = (event) => {
     const { value } = event.target

@@ -7,8 +7,8 @@ const MentionList = forwardRef((props, ref) => {
   const selectItem = (index) => {
     const item = props.items[index];
     if (item) {
-      console.log("item", item)
-      props.command({ id: item.id, thing: "wut", label: item.label })
+      props.command(item)
+      // props.command({ id: item.id, label: item.label, className: item.className })
     }
   };
 
