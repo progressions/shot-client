@@ -4,7 +4,7 @@ import PlayerTypeOnly from "@/components/PlayerTypeOnly"
 import type { Character } from "@/types/types"
 import { DescriptionKeys as D } from "@/types/types"
 import CS from "@/services/CharacterService"
-import Editor from "@/components/editor/Editor
+import Editor from "@/components/editor/Editor"
 import { useState } from "react"
 
 interface DescriptionProps {
