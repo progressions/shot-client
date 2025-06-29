@@ -92,8 +92,6 @@ const Editor = ({ name, value, onChange }) => {
         />
       </div>
       )
-
-  // return <EditorContent editor={editor} />
 }
 
 export default dynamic(() => Promise.resolve(Editor), { ssr: false })
