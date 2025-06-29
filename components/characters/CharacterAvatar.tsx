@@ -56,7 +56,7 @@ const CharacterAvatar = ({ character, tooltip, href }: CharacterAvatarProps) => 
 
   if (href) {
     return (
-      <IconButton href={href} sx={{ padding: 0 }}>
+      <IconButton target="_blank" href={href} sx={{ padding: 0 }}>
         {baseAvatar}
       </IconButton>
     )

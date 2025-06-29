@@ -18,7 +18,7 @@ const CharacterAvatars: React.FC<CharacterAvatarsProps> = ({ characters }) => {
       {(characters || [])
         // .filter(character => CS.isCharacter(character))
         .map((character, index) => (
-          <CharacterAvatar href={`/characters/${character.id}`} character={character} key={`character_${character.id}_${index}`} />
+          <CharacterAvatar href={CS.isVehicle(character) ? `/vehicles/${character.id}` : `/characters/${character.id}`} character={character} key={`character_${character.id}_${index}`} />
           )
         )
       }
