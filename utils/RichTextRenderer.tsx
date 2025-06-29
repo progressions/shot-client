@@ -2,7 +2,7 @@ import { Box } from '@mui/material'
 import DOMPurify from 'dompurify'
 import { StyledRichText } from "@/components/StyledFields"
 import tippy from 'tippy.js'
-import 'tippy.js/dist/tippy.css'
+// import 'tippy.js/dist/tippy.css'
 import ReactDOM from 'react-dom/client'
 import PopUp from "@/components/editor/PopUp"
 import { useClient } from "@/contexts"
