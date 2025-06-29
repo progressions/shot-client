@@ -7,12 +7,10 @@ export default (user, client) => ({
   items: async ({ query }) => {
     if (user?.id) {
       const data = await client.getSuggestions({ query })
-      console.log("suggestion data", data)
       return data
     }
   },
   command: ({ editor, range, props }) => {
-    console.log('Inserting mention with props:', props);
     editor
       .chain()
       .focus()

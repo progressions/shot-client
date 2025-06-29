@@ -1,4 +1,4 @@
-import { Avatar, CardMedia, DialogContent, Stack, IconButton, Box, Typography } from "@mui/material"
+import { CardMedia, DialogContent, Stack, IconButton, Box, Typography } from "@mui/material"
 import { useClient } from "@/contexts/ClientContext"
 import { useToast } from "@/contexts/ToastContext"
 import ClearIcon from '@mui/icons-material/Clear'

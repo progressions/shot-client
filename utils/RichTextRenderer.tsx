@@ -1,16 +1,51 @@
-import { Box } from '@mui/material';
-import DOMPurify from 'dompurify';
-import { StyledRichText } from "@/components/StyledFields";
+import { Box } from '@mui/material'
+import DOMPurify from 'dompurify'
+import { StyledRichText } from "@/components/StyledFields"
+import tippy from 'tippy.js'
+import 'tippy.js/dist/tippy.css'
+import ReactDOM from 'react-dom/client'
+import PopUp from "@/components/editor/PopUp"
+import { useClient } from "@/contexts"
 
 interface RichTextRendererProps {
   html: string | undefined | null;
 }
 
 export default function RichTextRenderer({ html }: RichTextRendererProps) {
+  const { user, client } = useClient();
+
   // Define the global handleMouseOver function
-  window.handleMouseOver = (mentionId, mentionClass) => {
+  window.handleMouseOver = (mentionId, mentionClass, event) => {
     console.log(`Mouse over mention with ID: ${mentionId}, class: ${mentionClass}`);
-    // Add more functionality here, like showing a tooltip or fetching data
+
+    // Destroy any existing Tippy instances to prevent duplicates
+    const existingTippy = (event.target as HTMLElement)._tippy;
+    if (existingTippy) {
+      existingTippy.destroy();
+    }
+
+    // Create a container div for the React component
+    const container = document.createElement('div');
+
+    // Render the PopUp component into the container
+    const root = ReactDOM.createRoot(container);
+    root.render(<PopUp user={user} client={client} mentionId={mentionId} mentionClass={mentionClass} />);
+
+    // Create a new Tippy instance for the hovered link
+    tippy(event.target, {
+      content: container,
+      showOnCreate: true,
+      interactive: true,
+      trigger: 'manual',
+      placement: 'bottom-start',
+      appendTo: () => document.body,
+      onHide(instance) {
+        // Cleanup: Unmount the React component when the tooltip is hidden
+        root.unmount();
+        container.remove();
+        return true;
+      },
+    });
   };
 
   const addMouseOverToMentions = (htmlString) => {
@@ -21,10 +56,9 @@ export default function RichTextRenderer({ html }: RichTextRendererProps) {
     links.forEach((link) => {
       const mentionId = link.getAttribute('data-mention-id');
       const mentionClass = link.getAttribute('data-mention-class-name') || '';
-      link.setAttribute('onmouseover', `window.handleMouseOver('${mentionId}', '${mentionClass}')`);
+      link.setAttribute('onmouseover', `window.handleMouseOver('${mentionId}', '${mentionClass}', event)`);
     });
 
-    // Serialize back to string, preserving original structure
     return doc.body.innerHTML;
   };
 
