@@ -1,7 +1,7 @@
 import { Box } from '@mui/material';
 import DOMPurify from 'dompurify';
 import { StyledRichText } from '@/components/StyledFields';
-import tippy from 'tippy.js';
+import tippy, { Instance } from 'tippy.js';
 import ReactDOM from 'react-dom/client';
 import PopUp from '@/components/editor/PopUp';
 import { useClient } from '@/contexts';
@@ -14,18 +14,14 @@ interface RichTextRendererProps {
 export default function RichTextRenderer({ html }: RichTextRendererProps) {
   const { user, client } = useClient();
   const containerRef = useRef<HTMLDivElement>(null);
+  const tippyInstancesRef = useRef<Instance[]>([]);
 
   const handleMouseOver = (mentionId: string, mentionClass: string, event: MouseEvent) => {
     const target = event.target as HTMLElement;
 
     // Destroy all existing Tippy instances
-    const allTippies = document.querySelectorAll('[data-tippy-root]');
-    allTippies.forEach((tippyEl) => {
-      const instance = (tippyEl as HTMLElement)._tippy;
-      if (instance) {
-        instance.destroy();
-      }
-    });
+    tippyInstancesRef.current.forEach((instance) => instance.destroy());
+    tippyInstancesRef.current = [];
 
     // Create a container for the React component
     const container = document.createElement('div');
@@ -33,19 +29,21 @@ export default function RichTextRenderer({ html }: RichTextRendererProps) {
     root.render(<PopUp user={user} client={client} mentionId={mentionId} mentionClass={mentionClass} />);
 
     // Create a new Tippy instance
-    const tippyInstance = tippy(target, {
+    const tippyInstance = tippy(target as Element, {
       content: container,
       showOnCreate: true,
       interactive: true,
       trigger: 'manual',
       placement: 'bottom-start',
       appendTo: () => document.body,
-      onHide(instance) {
+      onHide() {
         root.unmount();
         container.remove();
-        return true;
       },
     });
+
+    // Store the new instance
+    tippyInstancesRef.current.push(tippyInstance);
   };
 
   useEffect(() => {
@@ -53,15 +51,22 @@ export default function RichTextRenderer({ html }: RichTextRendererProps) {
     if (!container) return;
 
     const links = container.querySelectorAll('a[data-mention-id]');
+    const handlers: Array<{ link: HTMLElement; handler: (event: MouseEvent) => void }> = [];
+
     links.forEach((link) => {
       const mentionId = link.getAttribute('data-mention-id') || '';
       const mentionClass = link.getAttribute('data-mention-class-name') || '';
       const handler = (event: MouseEvent) => handleMouseOver(mentionId, mentionClass, event);
-      link.addEventListener('mouseover', handler);
-
-      // Cleanup event listener on unmount
-      return () => link.removeEventListener('mouseover', handler);
+      (link as HTMLElement).addEventListener('mouseover', handler);
+      handlers.push({ link: link as HTMLElement, handler });
     });
+
+    // Cleanup event listeners and Tippy instances on unmount
+    return () => {
+      handlers.forEach(({ link, handler }) => link.removeEventListener('mouseover', handler));
+      tippyInstancesRef.current.forEach((instance) => instance.destroy());
+      tippyInstancesRef.current = [];
+    };
   }, [html]);
 
   const addMouseOverAttributes = (htmlString: string) => {
@@ -70,7 +75,6 @@ export default function RichTextRenderer({ html }: RichTextRendererProps) {
     const links = doc.querySelectorAll('a[data-mention-id]');
 
     links.forEach((link) => {
-      // Attributes are already present; no need to add onmouseover
       link.setAttribute('data-processed', 'true');
     });
 
