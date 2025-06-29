@@ -45,6 +45,10 @@ const VehicleService = {
     return this.rawActionValue(vehicle, "Acceleration")
   },
 
+  acceleration: function(vehicle: Vehicle): number {
+    return this.speed(vehicle)
+  },
+
   // defense and attack in a chase both use the driver's Driving skill
   defense: function(vehicle: Vehicle): number {
     return this.mainAttackValue(vehicle)

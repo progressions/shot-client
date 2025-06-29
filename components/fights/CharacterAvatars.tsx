@@ -16,7 +16,7 @@ const CharacterAvatars: React.FC<CharacterAvatarsProps> = ({ characters }) => {
   return (
     <AvatarGroup max={20} sx={{mx: 2}}>
       {(characters || [])
-        .filter(character => CS.isCharacter(character))
+        // .filter(character => CS.isCharacter(character))
         .map((character, index) => (
           <CharacterAvatar href={`/characters/${character.id}`} character={character} key={`character_${character.id}_${index}`} />
           )

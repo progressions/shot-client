@@ -3,6 +3,7 @@ import { useRef, useEffect } from "react"
 import { useClient } from "@/contexts"
 import { usePopup } from "@/components/popups"
 import type { Character } from "@/types/types"
+import CS from "@/services/CharacterService"
 
 interface CharacterAvatarProps {
   character?: Character
@@ -22,7 +23,7 @@ const CharacterAvatar = ({ character, tooltip, href }: CharacterAvatarProps) => 
     const handleMouseOver = () => {
       triggerPopup({
         mentionId: character?.id || "",
-        mentionClass: "Character",
+        mentionClass: CS.isVehicle(character) ? "Vehicle" : "Character",
         target: avatar,
       })
     }
@@ -47,7 +48,7 @@ const CharacterAvatar = ({ character, tooltip, href }: CharacterAvatarProps) => 
       src={character.image_url || ""}
       ref={avatarRef}
       data-mention-id={character.id}
-      data-mention-class-name="Character"
+      data-mention-class-name={ CS.isVehicle(character) ? "Vehicle" : "Character" }
     >
       {initials}
     </Avatar>
