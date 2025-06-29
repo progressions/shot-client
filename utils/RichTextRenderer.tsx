@@ -16,19 +16,20 @@ export default function RichTextRenderer({ html }: RichTextRendererProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const tippyInstancesRef = useRef<Instance[]>([]);
 
+  const closeAllTippyInstances = () => {
+    tippyInstancesRef.current.forEach((instance) => instance.destroy());
+    tippyInstancesRef.current = [];
+  };
+
   const handleMouseOver = (mentionId: string, mentionClass: string, event: MouseEvent) => {
     const target = event.target as HTMLElement;
 
-    // Destroy all existing Tippy instances
-    tippyInstancesRef.current.forEach((instance) => instance.destroy());
-    tippyInstancesRef.current = [];
+    closeAllTippyInstances();
 
-    // Create a container for the React component
     const container = document.createElement('div');
     const root = ReactDOM.createRoot(container);
     root.render(<PopUp user={user} client={client} mentionId={mentionId} mentionClass={mentionClass} />);
 
-    // Create a new Tippy instance
     const tippyInstance = tippy(target as Element, {
       content: container,
       showOnCreate: true,
@@ -42,13 +43,17 @@ export default function RichTextRenderer({ html }: RichTextRendererProps) {
       },
     });
 
-    // Store the new instance
     tippyInstancesRef.current.push(tippyInstance);
   };
 
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
+
+    const handleMouseLeave = () => {
+      closeAllTippyInstances();
+    };
+    container.addEventListener('mouseleave', handleMouseLeave);
 
     const links = container.querySelectorAll('a[data-mention-id]');
     const handlers: Array<{ link: HTMLElement; handler: (event: MouseEvent) => void }> = [];
@@ -61,11 +66,10 @@ export default function RichTextRenderer({ html }: RichTextRendererProps) {
       handlers.push({ link: link as HTMLElement, handler });
     });
 
-    // Cleanup event listeners and Tippy instances on unmount
     return () => {
+      container.removeEventListener('mouseleave', handleMouseLeave);
       handlers.forEach(({ link, handler }) => link.removeEventListener('mouseover', handler));
-      tippyInstancesRef.current.forEach((instance) => instance.destroy());
-      tippyInstancesRef.current = [];
+      closeAllTippyInstances();
     };
   }, [html]);
 
