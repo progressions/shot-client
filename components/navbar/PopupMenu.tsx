@@ -62,16 +62,16 @@ export default function MenuPopupState({ campaign, user }: MenuPopupStateProps) 
                 </Link>
               </MenuItem>
             }
-            { user?.gamemaster && campaign?.id &&
+            { campaign?.id &&
               <MenuItem onClick={popupState.close}>
-                <Link underline="none" color="inherit" href='/admin/weapons'>
+                <Link underline="none" color="inherit" href='/weapons'>
                   Weapons
                 </Link>
               </MenuItem>
             }
-            { user?.gamemaster && campaign?.id &&
+            { campaign?.id &&
               <MenuItem onClick={popupState.close}>
-                <Link underline="none" color="inherit" href='/admin/schticks'>
+                <Link underline="none" color="inherit" href='/schticks'>
                   Schticks
                 </Link>
               </MenuItem>

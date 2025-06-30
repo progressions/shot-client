@@ -8,6 +8,7 @@ import { useEffect, useReducer } from "react"
 import type { SchticksStateType, SchticksActionType } from "@/reducers/schticksState"
 import { initialSchticksState, schticksReducer, SchticksActions } from "@/reducers/schticksState"
 import Schticks from "@/components/schticks/Schticks"
+import { QueryType } from "@/types/types"
 
 interface SchticksIndexProps {
 }
@@ -70,7 +71,7 @@ export default function SchticksIndex({}: SchticksIndexProps) {
       <main>
         <Layout>
           <Container maxWidth="md" sx={{paddingTop: 2, minWidth: 1000}}>
-            <Schticks state={state} dispatch={dispatch} />
+            <Schticks state={state} dispatch={dispatch} pagination={true} />
           </Container>
         </Layout>
       </main>

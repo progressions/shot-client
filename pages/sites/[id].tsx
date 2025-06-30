@@ -19,11 +19,13 @@ export default function Home() {
   const router = useRouter()
   const { id } = router.query
 
+  const fetchPayload = { id }
+
   useEffect(() => {
     async function getSites() {
       try {
         console.log("Fetching Sites page ", page)
-        const data = await client.getSites({ id: id })
+        const data = await client.getSites(fetchPayload)
         dispatch({ type: SitesActions.SITES, payload: data })
       } catch(error) {
         toastError()
@@ -33,40 +35,36 @@ export default function Home() {
     if (user?.id && edited && id) {
       getSites().catch(toastError)
     }
-  }, [edited, dispatch, user?.id, toastError, client, id])
+  }, [edited, user?.id, fetchPayload])
 
   const site = sites?.[0] || defaultSite
 
   if (!site?.id && !loading) {
-    return (
-      <>
-        <Head>
-          <title>Site Not Found</title>
-        </Head>
-        <main>
-          <Layout>
-            <Container maxWidth="md" sx={{paddingTop: 2, minWidth: 1000}}>
-              <Typography variant="h4" component="h1" gutterBottom>
-                Site Not Found
-              </Typography>
-            </Container>
-          </Layout>
-        </main>
-      </>
-    )
-  }
-  return (
-    <>
+    return (<>
       <Head>
-        <title>{site?.name} - Sites</title>
+        <title>Site Not Found</title>
       </Head>
       <main>
         <Layout>
           <Container maxWidth="md" sx={{paddingTop: 2, minWidth: 1000}}>
-            <Sites state={state} dispatch={dispatch} pagination={false} />
+            <Typography variant="h4" component="h1" gutterBottom>
+              Site Not Found
+            </Typography>
           </Container>
         </Layout>
       </main>
-    </>
-  )
+    </>)
+  }
+  return (<>
+    <Head>
+      <title>{site?.name} - Sites</title>
+    </Head>
+    <main>
+      <Layout>
+        <Container maxWidth="md" sx={{paddingTop: 2, minWidth: 1000}}>
+          <Sites state={state} dispatch={dispatch} pagination={false} />
+        </Container>
+      </Layout>
+    </main>
+  </>)
 }

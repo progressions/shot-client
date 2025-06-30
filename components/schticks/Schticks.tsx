@@ -17,9 +17,10 @@ import { QueryType, Schtick as SchtickType } from "@/types/types"
 interface SchticksProps {
   state: SchticksStateType,
   dispatch: React.Dispatch<SchticksActionType>
+  pagination: boolean
 }
 
-export default function Schticks({ state, dispatch }: SchticksProps) {
+export default function Schticks({ state, dispatch, pagination }: SchticksProps) {
   const router = useRouter()
   const { user, client } = useClient()
   const { toastError, toastSuccess } = useToast()
@@ -54,7 +55,7 @@ export default function Schticks({ state, dispatch }: SchticksProps) {
           No schticks.
         </Typography>
       )}
-      { !!schticks?.length && <Pagination count={meta.total_pages} page={page} onChange={handlePageChange} variant="outlined" color="primary" shape="rounded" size="large" /> }
+      { !!schticks?.length && pagination && <Pagination count={meta.total_pages} page={page} onChange={handlePageChange} variant="outlined" color="primary" shape="rounded" size="large" /> }
       <Stack sx={{my: 2}} spacing={1}>
         { loading && <>
           <Stack direction="row" spacing={1}>
@@ -76,7 +77,7 @@ export default function Schticks({ state, dispatch }: SchticksProps) {
         </> }
         { !loading && outputRows }
       </Stack>
-      { !!schticks?.length && <Pagination count={meta.total_pages} page={page} onChange={handlePageChange} variant="outlined" color="primary" shape="rounded" size="large" /> }
+      { !!schticks?.length && pagination && <Pagination count={meta.total_pages} page={page} onChange={handlePageChange} variant="outlined" color="primary" shape="rounded" size="large" /> }
     </>
   )
 }
