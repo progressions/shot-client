@@ -14,6 +14,8 @@ import type { Fight, Toast } from '@/types/types'
 import type { FightsStateType, FightsActionType } from '@/reducers/fightsState'
 import { FightsActions } from '@/reducers/fightsState'
 import { useEffect, useState } from 'react'
+import ReactDOMServer from "react-dom/server"
+import CS from "@/services/CharacterService"
 
 interface FightParams {
   fight: Fight
@@ -85,6 +87,16 @@ export default function FightDetail({ fight, dispatch }: FightParams) {
     </GamemasterOnly>
   )
 
+  const actors = user?.id ? (<>
+    { fight.actors?.map((actor, index) => (
+      <Link key={actor.id} href={CS.isVehicle(actor) ? `/vehicles/${actor.id}` : `/characters/${actor.id}`} className="mention" target="_blank" data-mention-id={actor.id} data-mention-class-name={ CS.isVehicle(actor) ? 'Vehicle' : 'Character' }>
+        {actor.name}
+      </Link>
+    )) }
+  </>) : null
+
+  const actorsHtml = ReactDOMServer.renderToStaticMarkup(actors)
+
   return (
     <Card
       sx={{
@@ -114,7 +126,7 @@ export default function FightDetail({ fight, dispatch }: FightParams) {
         {fight.actors && !!fight.actors.length && (
           <Box sx={{ mt: 2, p: 2, backgroundColor: colors.blueGrey['800'], borderRadius: 1 }}>
             <Typography variant="body1" color="text.primary">
-              {fight.actors.map((actor) => actor.name).join(', ')}
+              <RichTextRenderer key={actorsHtml} html={actorsHtml} />
             </Typography>
           </Box>
         )}
