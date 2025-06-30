@@ -6,7 +6,7 @@ import type { Character, Vehicle, Site, Party } from "@/types/types"
 import CS from "@/services/CharacterService"
 
 interface CharacterAvatarProps {
-  character: Character | Vehicle | Site | Party
+  character: Character
   href?: string
 }
 
