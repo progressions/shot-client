@@ -74,6 +74,7 @@ const Editor = ({ name, value, onChange }) => {
       Vehicle: `/vehicles/${id}`,
       Site: `/sites/${id}`,
       Party: `/parties/${id}`,
+      Faction: `/factions/${id}`,
     }
     return urlMap[className] || ""
   }

@@ -1,45 +1,45 @@
 import { Box, Typography, Stack } from "@mui/material"
 import styles from "@/components/editor/Editor.module.scss"
-import type { Site, User } from "@/types/types"
-import { defaultSite } from "@/types/types"
+import type { Faction, User } from "@/types/types"
+import { defaultFaction } from "@/types/types"
 import Client from "@/utils/Client"
 import { useState, useEffect } from "react"
 import { RichTextRenderer } from "@/components/editor"
-import SiteAvatar from "@/components/avatars/SiteAvatar"
+import FactionAvatar from "@/components/avatars/FactionAvatar"
 
-interface SitePopupProps {
+interface FactionPopupProps {
   mentionId: string
   mentionClass: string
   user: User | null // Allow user to be nullable
   client: Client
 }
 
-export default function SitePopup({
+export default function FactionPopup({
   user,
   client,
   mentionId,
   mentionClass,
-}: SitePopupProps) {
-  const [site, setSite] = useState<Site>(defaultSite)
+}: FactionPopupProps) {
+  const [faction, setFaction] = useState<Faction>(defaultFaction)
 
   useEffect(() => {
-    const fetchSite = async () => {
+    const fetchFaction = async () => {
       try {
-        const fetchedSite = await client.getSite({ id: mentionId })
-        console.log("Fetched site:", fetchedSite)
-        if (fetchedSite) {
-          setSite(fetchedSite)
+        const fetchedFaction = await client.getFaction({ id: mentionId })
+        console.log("Fetched faction:", fetchedFaction)
+        if (fetchedFaction) {
+          setFaction(fetchedFaction)
         } else {
-          console.error(`Site with ID ${mentionId} not found`)
+          console.error(`Faction with ID ${mentionId} not found`)
         }
       } catch (error) {
-        console.error("Error fetching site:", error)
+        console.error("Error fetching faction:", error)
       }
     }
 
     if (user?.id && mentionId) {
-      fetchSite().catch((error) => {
-        console.error("Failed to fetch site:", error)
+      fetchFaction().catch((error) => {
+        console.error("Failed to fetch faction:", error)
       })
     }
   }, [user, mentionId, client])
@@ -49,7 +49,6 @@ export default function SitePopup({
   }
 
   const subhead = [
-    site.faction?.name,
   ]
     .filter(Boolean)
     .join(" - ")
@@ -57,15 +56,15 @@ export default function SitePopup({
   return (
     <Box className={styles.mentionPopup}>
       <Stack direction="row" alignItems="center" spacing={2} mb={1}>
-        <SiteAvatar site={site} />
-        <Typography>{site.name}</Typography>
+        <FactionAvatar faction={faction} />
+        <Typography>{faction.name}</Typography>
       </Stack>
       <Typography variant="caption" sx={{ textTransform: "uppercase" }}>
         {subhead}
       </Typography>
       <Box mt={1}>
         <Typography variant="body2">
-          <RichTextRenderer key={site.description} html={site.description} />
+          <RichTextRenderer key={faction.description} html={faction.description} />
         </Typography>
       </Box>
     </Box>

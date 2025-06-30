@@ -436,6 +436,10 @@ class Client {
     return this.get(this.api.adminUsers())
   }
 
+  async getFaction(faction: Faction | ID):Promise<Faction> {
+    return this.get(this.api.factions(faction))
+  }
+
   async getFactions():Promise<Faction[]> {
     return this.get(this.api.factions())
   }

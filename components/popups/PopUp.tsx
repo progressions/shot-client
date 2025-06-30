@@ -5,7 +5,7 @@ import { defaultCharacter } from "@/types/types"
 import Client from "@/utils/Client"
 import { useState, useEffect } from "react"
 import CS from "@/services/CharacterService"
-import { PartyPopup, SitePopup, CharacterPopup, VehiclePopup } from "@/components/popups"
+import { FactionPopup, PartyPopup, SitePopup, CharacterPopup, VehiclePopup } from "@/components/popups"
 
 interface PopupProps {
   mentionId: string
@@ -52,6 +52,15 @@ export default function Popup({
     case "Party":
       return (
         <PartyPopup
+          user={user}
+          client={client}
+          mentionId={mentionId}
+          mentionClass={mentionClass}
+        />
+      );
+    case "Faction":
+      return (
+        <FactionPopup
           user={user}
           client={client}
           mentionId={mentionId}
