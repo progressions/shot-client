@@ -38,7 +38,7 @@ export default function Home({ page:initialPage }: HomeProps) {
   // will not be. This avoids a false positive on the first load,
   // where it thinks we should load page 1 even though we're looking for page 3.
   const queryNum = query.page ? parseInt(query.page as string, 10) : null
-  const initialPageNum = queryNum || initialPage
+  const initialPageNum = queryNum || initialPage || 1
 
   const fetchPayload = { search: search || party.name, faction_id: faction.id, secret, page }
 

@@ -46,10 +46,6 @@ export default function Schticks({ state, dispatch, pagination }: SchticksProps)
 
   return (
     <>
-      <ButtonBar sx={{height: 80}}>
-        <FilterSchticks state={state} dispatch={dispatch} />
-        <CreateSchtickButton state={state} dispatch={dispatch} />
-      </ButtonBar>
       { schticks?.length === 0 && !loading && (
         <Typography variant="body1">
           No schticks.
