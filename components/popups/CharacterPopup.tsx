@@ -1,12 +1,13 @@
 import { Box, Typography, Stack } from "@mui/material"
 import styles from "@/components/editor/Editor.module.scss"
 import type { Character, User } from "@/types/types"
-import { defaultCharacter } from "@/types/types"
+import { DescriptionKeys as D, defaultCharacter } from "@/types/types"
 import Client from "@/utils/Client"
 import { useState, useEffect } from "react"
 import CharacterAvatar from "@/components/avatars/CharacterAvatar"
 import CS from "@/services/CharacterService"
 import GamemasterOnly from "@/components/GamemasterOnly"
+import { RichTextRenderer } from "@/components/editor"
 
 interface CharacterPopupProps {
   mentionId: string
@@ -49,6 +50,8 @@ export default function CharacterPopup({
     return null // Use null instead of <></> for consistency
   }
 
+  const description = CS.isPC(character) ? CS.melodramaticHook(character) : CS.description(character)
+
   const subhead = [
     CS.type(character),
     CS.archetype(character),
@@ -75,6 +78,11 @@ export default function CharacterPopup({
       <Typography variant="caption" sx={{ textTransform: "uppercase" }}>
         {subhead}
       </Typography>
+      <Box mt={1}>
+        <Typography variant="body2">
+          { <RichTextRenderer html={description} /> }
+        </Typography>
+      </Box>
       <GamemasterOnly user={user}>
         <Box mt={1}>
           <Typography variant="body2">

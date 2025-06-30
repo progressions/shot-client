@@ -19,21 +19,22 @@ export default function Description({ character, onChange }: DescriptionProps) {
     <>
       <Subhead>Description</Subhead>
       <PlayerTypeOnly character={character} only="PC">
-        <Editor name={D.MelodramaticHook} value={CS.description(character, D.MelodramaticHook)} onChange={onChange} />
+        <Typography variant="h6">Melodramatic Hook</Typography>
+        <Editor name={D.MelodramaticHook} value={CS.descriptionValue(character, D.MelodramaticHook)} onChange={onChange} />
       </PlayerTypeOnly>
-      <StyledTextField name={D.Nicknames} label="Nicknames" value={CS.description(character, D.Nicknames)} onChange={onChange} />
+      <StyledTextField name={D.Nicknames} label="Nicknames" value={CS.descriptionValue(character, D.Nicknames)} onChange={onChange} />
       <Stack direction="row" spacing={1}>
-        <StyledTextField name={D.Age} label="Age" value={CS.description(character, D.Age)} onChange={onChange} />
-        <StyledTextField name={D.Height} label="Height" value={CS.description(character, D.Height)} onChange={onChange} />
-        <StyledTextField name={D.Weight} label="Weight" value={CS.description(character, D.Weight)} onChange={onChange} />
-        <StyledTextField name={D.HairColor} label="Hair Color" value={CS.description(character, D.HairColor)} onChange={onChange} />
-        <StyledTextField name={D.EyeColor} label="Eye Color" value={CS.description(character, D.EyeColor)} onChange={onChange} />
+        <StyledTextField name={D.Age} label="Age" value={CS.descriptionValue(character, D.Age)} onChange={onChange} />
+        <StyledTextField name={D.Height} label="Height" value={CS.descriptionValue(character, D.Height)} onChange={onChange} />
+        <StyledTextField name={D.Weight} label="Weight" value={CS.descriptionValue(character, D.Weight)} onChange={onChange} />
+        <StyledTextField name={D.HairColor} label="Hair Color" value={CS.descriptionValue(character, D.HairColor)} onChange={onChange} />
+        <StyledTextField name={D.EyeColor} label="Eye Color" value={CS.descriptionValue(character, D.EyeColor)} onChange={onChange} />
       </Stack>
-      <StyledTextField fullWidth name={D.StyleOfDress} label="Style of Dress" value={CS.description(character, D.StyleOfDress)} onChange={onChange} />
-      <Typography variant="h6">Appearance</Typography>
-      <Editor name={D.Appearance} value={CS.description(character, D.Appearance)} onChange={onChange} />
+      <StyledTextField fullWidth name={D.StyleOfDress} label="Style of Dress" value={CS.descriptionValue(character, D.StyleOfDress)} onChange={onChange} />
+      <Typography variant="h6">Description</Typography>
+      <Editor name={D.Appearance} value={CS.descriptionValue(character, D.Appearance)} onChange={onChange} />
       <Typography variant="h6">Background</Typography>
-      <Editor name={D.Background} value={CS.description(character, D.Background)} onChange={onChange} />
+      <Editor name={D.Background} value={CS.descriptionValue(character, D.Background)} onChange={onChange} />
     </>
   )
 }

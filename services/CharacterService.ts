@@ -201,9 +201,21 @@ const CharacterService = {
     return []
   },
 
-  description: function(character: Character, key: keyof DescriptionValues): string {
+  descriptionValue: function(character: Character, key: keyof DescriptionValues): string {
     return character.description[key] as string || ""
   },
+
+  description: function(character: Character): string {
+    return this.descriptionValue(character, DescriptionKeys.Appearance)
+  },
+
+  melodramaticHook: function(character: Character): string {
+    return this.descriptionValue(character, DescriptionKeys.MelodramaticHook)
+  },
+
+  background: function(character: Character): string {
+    return this.descriptionValue(character, DescriptionKeys.Background)
+  }
 
 }
 
