@@ -90,9 +90,6 @@ export default function Home({ page:initialPage }: HomeProps) {
       <main>
         <Layout>
           <Container maxWidth="md" sx={{paddingTop: 2, minWidth: 1000}}>
-            <ButtonBar>
-              <FilterWeapons state={state} dispatch={dispatch} />
-            </ButtonBar>
             <Weapons state={state} dispatch={dispatch} pagination={true} />
           </Container>
         </Layout>
@@ -100,5 +97,3 @@ export default function Home({ page:initialPage }: HomeProps) {
     </>
   )
 }
-
-
