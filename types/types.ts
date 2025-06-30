@@ -64,6 +64,10 @@ export interface Faction {
   id?: string
   name: string
   description?: string
+  characters: Character[]
+  vehicles: Vehicle[]
+  active: boolean
+  image_url: string | null
 }
 
 export interface PartiesResponse {
@@ -522,7 +526,11 @@ export interface FightChannelMessage {
 export const defaultFaction:Faction = {
   id: "",
   name: "",
-  description: ""
+  description: "",
+  characters: [],
+  vehicles: [],
+  active: true,
+  image_url: null,
 }
 
 export const defaultCharacter:Person = {

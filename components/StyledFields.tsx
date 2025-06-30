@@ -20,6 +20,67 @@ const PaperComponent=({ children }: React.PropsWithChildren) => (
   </Paper>
 )
 
+export const StyledRichText = styled(Box)(({ theme }) => ({
+  fontFamily: 'Roboto, sans-serif',
+  fontSize: theme.typography.body1.fontSize,
+  lineHeight: theme.typography.body1.lineHeight,
+  marginTop: '0.5rem',
+  borderRadius: '4px',
+  '& p': {
+    margin: '0 0 0.5rem',
+  },
+  '& ul, & ol': {
+    paddingLeft: '1.5rem',
+    margin: '0.5rem 0',
+  },
+  '& h1, & h2, & h3, & h4, & h5, & h6': {
+    margin: '1.5rem 0 1rem',
+    fontWeight: theme.typography.fontWeightBold,
+    color: 'var(--black)',
+  },
+  '& h1': { fontSize: '1.4rem' },
+  '& h2': { fontSize: '1.2rem' },
+  '& h3': { fontSize: '1.1rem' },
+  '& blockquote': {
+    borderLeft: `3px solid var(--grey-800)`,
+    paddingLeft: '1rem',
+    margin: '1.5rem 0',
+    color: 'var(--black)',
+  },
+  '& pre': {
+    backgroundColor: 'var(--black)',
+    color: 'var(--white)',
+    padding: '1rem',
+    borderRadius: '4px',
+    overflowX: 'auto',
+    fontFamily: 'Roboto, sans-serif',
+    margin: '1.5rem 0',
+  },
+  '& hr': {
+    border: 'none',
+    borderTop: `1px solid var(--gray-2)`,
+    margin: '2rem 0',
+  },
+  '& a': {
+    color: '#1d4ed8',
+    textDecoration: 'underline',
+    cursor: 'pointer',
+    '&:hover': {
+      color: '#1e40af', // Darker blue on hover
+    },
+    '&.mention': {
+      fontWeight: theme.typography.fontWeightBold,
+      color: "white",
+      padding: '0.1em 0.2em',
+      '&:hover': {
+        borderRadius: '4px',
+        backgroundColor: '#1e40af', // Darker blue background on hover
+        color: "white",
+      },
+    },
+  },
+}));
+
 export const StyledTextField = styled(TextField)({
   '& label': {
     color: colors.grey[800],

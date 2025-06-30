@@ -1,23 +1,9 @@
-import dynamic from 'next/dynamic'
-import { Color } from '@tiptap/extension-color'
-import ListItem from '@tiptap/extension-list-item'
-import TextStyle from '@tiptap/extension-text-style'
-import { Editor as TiptapEditor, EditorProvider, useCurrentEditor } from '@tiptap/react'
-import StarterKit from '@tiptap/starter-kit'
-import { Button, ButtonGroup } from '@mui/material'
-import FormatBoldIcon from '@mui/icons-material/FormatBold'
-import FormatItalicIcon from '@mui/icons-material/FormatItalic'
-import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted'
-import styles from './Editor.module.scss'
-import { useState } from 'react'
-import { FocusEvent } from 'react'
-import { Transaction } from '@tiptap/pm/state'
-
-interface EditorProps {
-  value: string
-  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void
-  name?: string
-}
+import { useCurrentEditor } from "@tiptap/react"
+import styles from "@/components/editor/Editor.module.scss"
+import { Button, ButtonGroup } from "@mui/material"
+import FormatBoldIcon from "@mui/icons-material/FormatBold"
+import FormatItalicIcon from "@mui/icons-material/FormatItalic"
+import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted"
 
 const MenuBar = () => {
   const { editor } = useCurrentEditor()
@@ -97,59 +83,4 @@ const MenuBar = () => {
   )
 }
 
-const extensions = [
-  Color.configure({ types: [TextStyle.name, ListItem.name] }),
-  TextStyle,
-  StarterKit.configure({
-    bulletList: {
-      keepMarks: true,
-      keepAttributes: true,
-    },
-    orderedList: {
-      keepMarks: true,
-      keepAttributes: true,
-    },
-  }),
-]
-
-const Editor = ({ value, onChange, name = 'description' }: EditorProps) => {
-  const [content, setContent] = useState<string>(value)
-
-  const onChangeContent = (event: React.ChangeEvent<HTMLInputElement>): void => {
-    const { value } = event.target
-    setContent(value)
-  }
-
-  const saveOnBlur = ({ editor, event, transaction }: { editor: TiptapEditor; event: any; transaction: Transaction }) => {
-    console.log('Editor onBlur event:', event)
-    onChange({
-      target: {
-        name,
-        value: editor.getHTML(),
-      },
-    } as React.ChangeEvent<HTMLInputElement>)
-  }
-
-  return (
-    <div className={styles.editorContainer}>
-      <EditorProvider
-        slotBefore={<MenuBar />}
-        extensions={extensions}
-        content={value}
-        onBlur={saveOnBlur}
-        onUpdate={({ editor }) => {
-          console.log('Editor updated, HTML:', editor.getHTML())
-          const syntheticEvent = {
-            target: {
-              name,
-              value: editor.getHTML(),
-            },
-          } as React.ChangeEvent<HTMLInputElement>
-          onChangeContent(syntheticEvent)
-        }}
-      />
-    </div>
-  )
-}
-
-export default dynamic(() => Promise.resolve(Editor), { ssr: false })
+export default MenuBar

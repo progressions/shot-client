@@ -1,7 +1,7 @@
 import { colors, Grid, Box, Paper, Typography, Stack } from "@mui/material"
 import type { Character } from "@/types/types"
 import { DescriptionKeys as D } from "@/types/types"
-import RichTextRenderer from "@/utils/RichTextRenderer"
+import RichTextRenderer from "@/components/editor/RichTextRenderer"
 import CS from "@/services/CharacterService"
 import { Subhead } from "@/components/StyledFields"
 
@@ -23,8 +23,8 @@ export default function ShowCharacter({ character }: ShowCharacterProps) {
       <Stack spacing={2}>
         <Typography variant="h2">{CS.name(character)}</Typography>
         <Typography>{ archetypeAndFaction }</Typography>
-        <Subhead>Appearance</Subhead>
-        <RichTextRenderer html={CS.description(character, D.Appearance)} />
+        <Subhead>Description</Subhead>
+        <RichTextRenderer key={CS.description(character)} html={CS.description(character)} />
         <Grid container spacing={2}>
           <Grid item xs={12} sm={6}>
             <Paper sx={{backgroundColor: colors.blueGrey[100], p: 2}}>

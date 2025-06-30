@@ -1,11 +1,11 @@
-import { Avatar, CardMedia, DialogContent, Stack, IconButton, Box, Typography } from "@mui/material"
+import { CardMedia, DialogContent, Stack, IconButton, Box, Typography } from "@mui/material"
 import { useClient } from "@/contexts/ClientContext"
 import { useToast } from "@/contexts/ToastContext"
 import ClearIcon from '@mui/icons-material/Clear'
 import EditIcon from '@mui/icons-material/Edit'
 import { StyledDialog } from "@/components/StyledFields"
 import ImageDisplay from "@/components/images/ImageDisplay"
-import RichTextRenderer from "@/utils/RichTextRenderer"
+import RichTextRenderer from "@/components/editor/RichTextRenderer"
 
 import type { PartiesStateType, PartiesActionType } from "@/reducers/partiesState"
 import type { Character, Vehicle, Party as PartyType } from "@/types/types"
@@ -95,7 +95,7 @@ export default function Party({ party, state, dispatch }: PartyProps) {
       >
       { party.image_url && <CardMedia image={mediaUrl} title={party.name} sx={{padding: 2, height: 300}}/> }
         <Stack spacing={2} mt={2}>
-          <RichTextRenderer html={party.description} />
+          <RichTextRenderer key={party.description} html={party.description} />
           <Box>
             <Members party={party} removeCharacter={removeCharacter} />
           </Box>

@@ -1,8 +1,8 @@
 import { Box, Button, ButtonGroup, Stack, Tooltip, Typography } from "@mui/material"
 import EditIcon from '@mui/icons-material/Edit'
 import { useState } from "react"
-import RichTextRenderer from '@/utils/RichTextRenderer'
-import Editor from "@/utils/Editor"
+import RichTextRenderer from '@/components/editor/RichTextRenderer'
+import Editor from "@/components/editor/Editor"
 
 import type { Fight } from "@/types/types"
 
@@ -65,8 +65,10 @@ export default function FightName() {
   if (editing) {
     return (
       <Stack spacing={2} alignItems="baseline" sx={{marginTop: 2, marginBottom: 2}}>
-        <StyledTextField name="name" autoFocus value={tempFight.name} fullWidth onChange={handleChange} />
-        <Editor name="description" value={tempFight.description || ""} onChange={handleChange} />
+        <StyledTextField sx={{width: "100%"}} name="name" autoFocus value={tempFight.name} onChange={handleChange} />
+        <Box sx={{height: 300, width: "100%"}}>
+          <Editor key="editor" name="description" value={tempFight.description || ""} onChange={handleChange} />
+        </Box>
         <SaveCancelButtons onCancel={cancelForm} onSave={handleSubmit} />
       </Stack>
     )
@@ -90,9 +92,7 @@ export default function FightName() {
               </ButtonGroup>
             </Box>
           </Stack>
-          { fight.description &&
-            <RichTextRenderer html={fight.description} />
-          }
+          <RichTextRenderer key={fight.description} html={fight.description} />
         </Stack>
       </Box>
     </>

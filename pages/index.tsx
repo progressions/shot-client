@@ -77,6 +77,20 @@ export default function Home({ currentCampaign, page:initialPage }: HomeProps) {
   const router = useRouter()
 
   useEffect(() => {
+    const loadSuggestions = async () => {
+      const data = await client.getSuggestions()
+      console.log("data", data)
+    }
+
+    if (user && currentCampaign) {
+      loadSuggestions().catch((error) => {
+        console.error("Error loading suggestions:", error)
+        toastError()
+      })
+    }
+  }, [])
+
+  useEffect(() => {
     const reload = async () => {
       try {
         const fightsResponse = await client.getFights({ show_all: showHidden, page: page } )

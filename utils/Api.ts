@@ -11,6 +11,7 @@ import type {
   Campaign,
   Vehicle,
   Effect,
+  Faction,
   Fight,
   FightEvent,
   Character,
@@ -26,6 +27,10 @@ class Api {
 
   cable(jwt?: string):string {
     return `${process.env.NEXT_PUBLIC_WEBSOCKET_URL}/cable?token=${jwt || ""}`
+  }
+
+  suggestions(): string {
+    return `${this.api()}/suggestions`
   }
 
   locations(location?: Location | ID): string {
@@ -246,8 +251,12 @@ class Api {
     return `${this.base()}/users`
   }
 
-  factions(): string {
-    return `${this.api()}/factions`
+  factions(faction?: Faction | ID): string {
+    if (faction?.id) {
+      return `${this.api()}/factions/${faction.id}`
+    } else {
+      return `${this.api()}/factions`
+    }
   }
 
   notionCharacters(): string {

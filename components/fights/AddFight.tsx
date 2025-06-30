@@ -5,7 +5,7 @@ import KeyboardDoubleArrowDownIcon from "@mui/icons-material/KeyboardDoubleArrow
 import KeyboardDoubleArrowUpIcon from "@mui/icons-material/KeyboardDoubleArrowUp"
 import Client from "@/utils/Client"
 import FES from "@/services/FightEventService"
-import Editor from "@/utils/Editor"
+import { Editor } from "@/components/editor"
 
 import { useToast } from "@/contexts/ToastContext"
 import { useFight } from "@/contexts/FightContext"

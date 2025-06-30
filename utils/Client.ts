@@ -57,6 +57,11 @@ class Client {
     return this.consumerInstance
   }
 
+  async getSuggestions(params = {}):Promise<any> {
+    const query = Object.entries(params).map(([key, value]) => `${key}=${value || ""}`).join("&")
+    return this.get(`${this.api.suggestions()}?${query}`)
+  }
+
   async getNotionCharacters(params = {}) {
     const query = Object.entries(params).map(([key, value]) => `${key}=${value || ""}`).join("&")
     return this.get(`${this.api.notionCharacters()}?${query}`)
@@ -97,6 +102,10 @@ class Client {
   async getParties(params = {}):Promise<PartiesResponse> {
     const query = Object.entries(params).map(([key, value]) => `${key}=${value || ""}`).join("&")
     return this.get<PartiesResponse>(`${this.api.parties()}?${query}`)
+  }
+
+  async getParty(party: Party | ID):Promise<Party> {
+    return this.get(this.api.parties(party))
   }
 
   async deleteParty(party: Party | ID):Promise<void> {
@@ -427,6 +436,10 @@ class Client {
     return this.get(this.api.adminUsers())
   }
 
+  async getFaction(faction: Faction | ID):Promise<Faction> {
+    return this.get(this.api.factions(faction))
+  }
+
   async getFactions():Promise<Faction[]> {
     return this.get(this.api.factions())
   }
@@ -553,6 +566,10 @@ class Client {
   }
 
   async get<T>(url:string, params = {}):Promise<T> {
+    if (!this.jwt) {
+      console.log("No JWT provided, cannot make GET request", url)
+      return Promise.reject(new Error("No JWT provided"))
+    }
     return await axios({
       url: url,
       method: "GET",

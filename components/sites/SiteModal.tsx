@@ -3,7 +3,7 @@ import { FormControlLabel, Switch, createFilterOptions, MenuItem, Box, Stack, Ty
 import { useClient } from "@/contexts/ClientContext"
 import { useToast } from "@/contexts/ToastContext"
 import { useCharacter } from "@/contexts/CharacterContext"
-import CharacterAvatar from "@/components/characters/CharacterAvatar"
+import CharacterAvatar from "@/components/avatars/CharacterAvatar"
 
 import GamemasterOnly from "@/components/GamemasterOnly"
 import type { Vehicle, FilterParamsType, OptionType, InputParamsType, Character, Site } from "@/types/types"
@@ -15,7 +15,7 @@ import Faction from "@/components/characters/edit/Faction"
 import CharacterFilters from "@/components/characters/CharacterFilters"
 import SelectCharacter from "@/components/characters/SelectCharacter"
 import ImageManager from "@/components/images/ImageManager"
-import Editor from "@/utils/Editor"
+import Editor from "@/components/editor/Editor"
 
 interface SiteModalProps {
   state: SitesStateType

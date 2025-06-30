@@ -7,7 +7,7 @@ import HourglassTopIcon from '@mui/icons-material/HourglassTop'
 
 import GamemasterOnly from '@/components/GamemasterOnly'
 import CharacterAvatars from '@/components/fights/CharacterAvatars'
-import RichTextRenderer from '@/utils/RichTextRenderer'
+import RichTextRenderer from '@/components/editor/RichTextRenderer'
 
 import { useToast, useClient } from '@/contexts'
 import type { Fight, Toast } from '@/types/types'
@@ -109,7 +109,7 @@ export default function FightDetail({ fight, dispatch }: FightParams) {
       />
       <CardContent>
         {fight.description && (
-          <RichTextRenderer html={fight.description} />
+          <RichTextRenderer key={fight.description} html={fight.description} />
         )}
         {fight.actors && !!fight.actors.length && (
           <Box sx={{ mt: 2, p: 2, backgroundColor: colors.blueGrey['800'], borderRadius: 1 }}>
