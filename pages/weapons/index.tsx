@@ -29,7 +29,7 @@ export default function Home({ page:initialPage }: HomeProps) {
   const { user, client } = useClient()
   const { toastSuccess, toastError } = useToast()
   const [state, dispatch] = useReducer(weaponsReducer, initialWeaponsState)
-  const { weapons, edited, meta, page, loading, juncture, category, name } = state
+  const { meta, weapon, weapons, page, juncture, category, name, edited, loading } = state
   const router = useRouter()
   const { query } = router
 
@@ -38,7 +38,7 @@ export default function Home({ page:initialPage }: HomeProps) {
   // will not be. This avoids a false positive on the first load,
   // where it thinks we should load page 1 even though we're looking for page 3.
   const queryNum = query.page ? parseInt(query.page as string, 10) : null
-  const initialPageNum = queryNum || initialPage
+  const initialPageNum = queryNum || initialPage || 1
 
   const fetchPayload = { page, juncture, category, name }
 
@@ -90,6 +90,9 @@ export default function Home({ page:initialPage }: HomeProps) {
       <main>
         <Layout>
           <Container maxWidth="md" sx={{paddingTop: 2, minWidth: 1000}}>
+            <ButtonBar>
+              <FilterWeapons state={state} dispatch={dispatch} />
+            </ButtonBar>
             <Weapons state={state} dispatch={dispatch} pagination={true} />
           </Container>
         </Layout>

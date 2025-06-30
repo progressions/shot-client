@@ -56,9 +56,6 @@ export default function Weapons({ state, dispatch, pagination }: WeaponsProps) {
         </Typography>
       )}
     { !loading && !!weapons?.length && <>
-      <ButtonBar sx={{height: 80}}>
-        <FilterWeapons state={state} dispatch={dispatch} />
-      </ButtonBar>
       <Stack spacing={1}>
         { pagination && <Pagination count={meta.total_pages} page={page} onChange={handlePageChange} variant="outlined" color="primary" shape="rounded" size="large" /> }
         { outputRows }
