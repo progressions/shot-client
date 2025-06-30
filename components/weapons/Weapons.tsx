@@ -28,7 +28,7 @@ export default function Weapons({}: WeaponsProps) {
 
   useEffect(() => {
     if (page !== initialPageNum) {
-      dispatch({ type: WeaponsActions.PAGE, name: "page", value: initialPageNum })
+      dispatch({ type: WeaponsActions.PAGE, payload: initialPageNum })
     }
   }, [page, initialPageNum])
 

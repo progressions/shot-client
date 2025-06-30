@@ -30,7 +30,7 @@ export default function Schticks({}: SchticksProps) {
 
   useEffect(() => {
     if (page !== initialPageNum) {
-      dispatch({ type: SchticksActions.PAGE, name: "page", value: initialPageNum })
+      dispatch({ type: SchticksActions.PAGE, payload: initialPageNum })
     }
   }, [page, initialPageNum])
 

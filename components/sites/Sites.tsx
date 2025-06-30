@@ -19,7 +19,7 @@ export default function Sites({ state, dispatch, pagination }: SitesProps) {
 
   const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
     console.log("handlePageChange", value)
-    dispatch({ type: SitesActions.PAGE, name: "page", value: value})
+    dispatch({ type: SitesActions.PAGE, payload: value})
 
     router.push(
       { pathname: router.pathname, query: { page: value } },

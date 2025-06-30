@@ -39,12 +39,12 @@ interface ActionNoPayload {
 }
 
 interface PayloadAction {
-  type: Extract<WeaponsActions, WeaponsActions.JUNCTURE | WeaponsActions.CATEGORY | WeaponsActions.WEAPON | WeaponsActions.WEAPONS | WeaponsActions.NAME>
+  type: Extract<WeaponsActions, WeaponsActions.JUNCTURE | WeaponsActions.CATEGORY | WeaponsActions.WEAPON | WeaponsActions.WEAPONS | WeaponsActions.NAME | WeaponsActions.PAGE>
   payload: PayloadType
 }
 
 interface UpdateAction {
-  type: Extract<WeaponsActions, WeaponsActions.UPDATE | WeaponsActions.PAGE>
+  type: Extract<WeaponsActions, WeaponsActions.UPDATE>
   name: string
   value: string | number
 }
@@ -126,7 +126,7 @@ export function weaponsReducer(state: WeaponsStateType, action: WeaponsActionTyp
       return {
         ...state,
         edited: true,
-        page: action.value as number
+        page: action.payload as number
       }
     case WeaponsActions.UPDATE:
       return {

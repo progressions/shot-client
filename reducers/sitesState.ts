@@ -36,12 +36,12 @@ interface ActionNoPayload {
 }
 
 interface PayloadAction {
-  type: Extract<SitesActions, SitesActions.SITE | SitesActions.SITES | SitesActions.OPEN>
+  type: Extract<SitesActions, SitesActions.SITE | SitesActions.SITES | SitesActions.OPEN | SitesActions.PAGE>
   payload: PayloadType
 }
 
 interface UpdateAction {
-  type: Extract<SitesActions, SitesActions.UPDATE | SitesActions.EDIT | SitesActions.PAGE>
+  type: Extract<SitesActions, SitesActions.UPDATE | SitesActions.EDIT>
   name?: string
   value?: string | boolean | number
 }
@@ -86,7 +86,7 @@ export function sitesReducer(state: SitesStateType, action: SitesActionType): Si
         ...state,
         edited: true,
         loading: true,
-        page: action.value as number,
+        page: action.payload as number,
       }
     case SitesActions.UPDATE:
       if (action.name === "faction") {

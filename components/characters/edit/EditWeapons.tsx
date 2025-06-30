@@ -63,7 +63,7 @@ export default function EditWeapons({}: EditWeaponsProps) {
   }, [user, edited])
 
   const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
-    dispatch({ type: WeaponsActions.PAGE, name: "page", value })
+    dispatch({ type: WeaponsActions.PAGE, payload: value })
   }
 
   const rowsOfData = rowMap<WeaponType>(weapons, 2)
