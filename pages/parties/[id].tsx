@@ -35,35 +35,25 @@ export default function Home() {
     }
   }, [edited, dispatch, user?.id, toastError, client, id])
 
-  useEffect(() => {
-    if (!router.isReady || !id) return
-
-    router.push(
-      { pathname: router.pathname, query: { id, page } },
-      undefined,
-      { shallow: true }
-    )
-  }, [edited, id])
-
   const party = parties?.[0] || defaultParty
 
-  if (!party?.id) {
-  return (
-    <>
-      <Head>
-        <title>Party Not Found</title>
-      </Head>
-      <main>
-        <Layout>
-          <Container maxWidth="md" sx={{paddingTop: 2, minWidth: 1000}}>
-            <Typography variant="h4" component="h1" gutterBottom>
-              Party Not Found
-            </Typography>
-          </Container>
-        </Layout>
-      </main>
-    </>
-  )
+  if (!party?.id && !loading) {
+    return (
+      <>
+        <Head>
+          <title>Party Not Found</title>
+        </Head>
+        <main>
+          <Layout>
+            <Container maxWidth="md" sx={{paddingTop: 2, minWidth: 1000}}>
+              <Typography variant="h4" component="h1" gutterBottom>
+                Party Not Found
+              </Typography>
+            </Container>
+          </Layout>
+        </main>
+      </>
+    )
   }
   return (
     <>
@@ -73,10 +63,7 @@ export default function Home() {
       <main>
         <Layout>
           <Container maxWidth="md" sx={{paddingTop: 2, minWidth: 1000}}>
-            <ButtonBar>
-              <FilterParties state={state} dispatch={dispatch} />
-            </ButtonBar>
-            <Parties state={state} dispatch={dispatch} />
+            <Parties state={state} dispatch={dispatch} pagination={false} />
           </Container>
         </Layout>
       </main>

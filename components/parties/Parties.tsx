@@ -9,9 +9,10 @@ import { useState } from "react"
 interface PartiesProps {
   state: PartiesStateType,
   dispatch: React.Dispatch<PartiesActionType>
+  pagination: boolean
 }
 
-export default function Parties({ state, dispatch }: PartiesProps) {
+export default function Parties({ state, dispatch, pagination }: PartiesProps) {
   const router = useRouter()
 
   const { page, parties, meta } = state
@@ -27,7 +28,7 @@ export default function Parties({ state, dispatch }: PartiesProps) {
 
   return (
     <>
-      <Pagination count={meta.total_pages} page={page} onChange={handlePageChange} variant="outlined" color="primary" shape="rounded" size="large" />
+      { pagination && <Pagination count={meta.total_pages} page={page} onChange={handlePageChange} variant="outlined" color="primary" shape="rounded" size="large" /> }
       <Stack spacing={2} sx={{ my: 2, width: "100%" }}>
         {
           parties.map(party => (
@@ -35,7 +36,7 @@ export default function Parties({ state, dispatch }: PartiesProps) {
           ))
         }
       </Stack>
-      <Pagination count={meta.total_pages} page={page} onChange={handlePageChange} variant="outlined" color="primary" shape="rounded" size="large" />
+      { pagination && <Pagination count={meta.total_pages} page={page} onChange={handlePageChange} variant="outlined" color="primary" shape="rounded" size="large" /> }
     </>
   )
 }
