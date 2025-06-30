@@ -68,6 +68,14 @@ const Editor = ({ name, value, onChange }) => {
     },
   });
 
+  function getUrl(className, id) {
+    const urlMap = {
+      Character: `/characters/${id}`,
+      Vehicle: `/vehicles/${id}`
+    }
+    return urlMap[className] || `/characters/${id}`
+  }
+
   const extensions = [
     StarterKit.configure({
       mention: false,
@@ -82,7 +90,8 @@ const Editor = ({ name, value, onChange }) => {
           console.warn('renderHTML: Missing id or label:', node);
           return ['span', { class: 'mention' }, `@${label || 'unknown'}`];
         }
-        const url = `/characters/${id}`;
+        // const url = `/characters/${id}`;
+        const url = getUrl(className, id);
         return [
           'a',
           {
