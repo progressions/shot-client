@@ -4,6 +4,7 @@ import type {
   Location,
   Shot,
   Faction,
+  SuggestionsResponse,
   PartiesResponse,
   WeaponsResponse,
   SchticksResponse,
@@ -57,7 +58,7 @@ class Client {
     return this.consumerInstance
   }
 
-  async getSuggestions(params = {}):Promise<any> {
+  async getSuggestions(params = {}):Promise<SuggestionsResponse> {
     const query = Object.entries(params).map(([key, value]) => `${key}=${value || ""}`).join("&")
     return this.get(`${this.api.suggestions()}?${query}`)
   }

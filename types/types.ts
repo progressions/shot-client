@@ -70,6 +70,17 @@ export interface Faction {
   image_url: string | null
 }
 
+export interface SuggestionsResponse {
+  Character: Character[]
+  Vehicle: Vehicle[]
+  Party: Party[]
+  Faction: Faction[]
+  Site: Site[]
+  Schtick: Schtick[]
+  Weapon: Weapon[]
+  meta: PaginationMeta
+}
+
 export interface PartiesResponse {
   parties: Party[]
   factions: Faction[]
