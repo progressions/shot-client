@@ -51,7 +51,7 @@ export default function Home() {
             <ButtonBar>
               <FilterParties state={state} dispatch={dispatch} />
             </ButtonBar>
-            <Parties state={state} dispatch={dispatch} />
+            <Parties state={state} dispatch={dispatch} pagination={true} />
           </Container>
         </Layout>
       </main>

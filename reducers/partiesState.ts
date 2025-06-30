@@ -5,6 +5,7 @@ export enum PartiesActions {
   OPEN = "open",
   PARTIES = "parties",
   PARTY = "party",
+  PAGE = "page",
   RESET = "reset",
   SUCCESS = "success",
   UPDATE = "update",
@@ -34,7 +35,7 @@ interface ActionNoPayload {
 }
 
 interface PayloadAction {
-  type: Extract<PartiesActions, PartiesActions.PARTY | PartiesActions.PARTIES | PartiesActions.OPEN>
+  type: Extract<PartiesActions, PartiesActions.PARTY | PartiesActions.PARTIES | PartiesActions.OPEN | PartiesActions.PAGE>
   payload: PayloadType
 }
 
@@ -84,6 +85,13 @@ export function partiesReducer(state: PartiesStateType, action: PartiesActionTyp
         saving: false,
         edited: false
       }
+    case PartiesActions.PAGE:
+      return {
+        ...state,
+        edited: true,
+        loading: true,
+        page: action.payload as number,
+      }
     case PartiesActions.UPDATE:
       if (action.name === "faction") {
         const faction = state.factions.find(faction => faction.id === action.value) || defaultFaction
@@ -92,17 +100,6 @@ export function partiesReducer(state: PartiesStateType, action: PartiesActionTyp
           edited: true,
           page: initialPartiesState.page,
           [action.name as string]: faction
-        }
-      }
-      if (action.name === "page") {
-        return {
-          ...state,
-          edited: true,
-          page: action.value as number,
-          party: {
-            ...state.party,
-            [action.name as string]: action.value
-          }
         }
       }
       return {
