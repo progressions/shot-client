@@ -24,6 +24,14 @@ export default function SchtickModal({ open, setOpen, state, dispatch, schtick:i
   const { saving, category, path } = state
   const [schtick, setSchtick] = useState<Schtick>(initialSchtick || defaultSchtick)
 
+  useEffect(() => {
+    if (initialSchtick?.id) {
+      setSchtick(initialSchtick)
+    } else {
+      setSchtick(defaultSchtick)
+    }
+  }, [initialSchtick])
+
   async function handleSubmit(event: React.ChangeEvent<HTMLInputElement>) {
     event.preventDefault()
     try {

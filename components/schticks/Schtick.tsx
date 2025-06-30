@@ -40,12 +40,12 @@ export default function SchtickCard({ schtick, state, dispatch }: SchtickCardPro
   const { character } = characterState
   const [deleted, setDeleted] = useState<boolean>(false)
 
+  console.log("schtick", schtick)
+
   async function reloadSchticks() {
     try {
       const data = await client.getSchticks()
-      if (dispatch) {
-        dispatch({ type: SchticksActions.SCHTICKS, payload: data })
-      }
+      dispatch({ type: SchticksActions.SCHTICKS, payload: data })
     } catch(error) {
       console.error(error)
     }

@@ -132,7 +132,7 @@ export function schticksReducer(state: SchticksStateType, action: SchticksAction
     case SchticksActions.SCHTICK:
       return {
         ...state,
-        // edited: false,
+        edited: false,
         loading: false,
         schtick: (action.payload || initialSchticksState.schtick) as Schtick,
       }
