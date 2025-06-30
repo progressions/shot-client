@@ -15,9 +15,10 @@ import type { WeaponsStateType, WeaponsActionType } from "@/reducers/weaponsStat
 interface WeaponsProps {
   state: WeaponsStateType
   dispatch: React.Dispatch<WeaponsActionType>
+  pagination: boolean
 }
 
-export default function Weapons({ state, dispatch }: WeaponsProps) {
+export default function Weapons({ state, dispatch, pagination }: WeaponsProps) {
   const router = useRouter()
   const { weapons, edited, meta, page, loading, juncture, category, name } = state
 
@@ -59,9 +60,9 @@ export default function Weapons({ state, dispatch }: WeaponsProps) {
         <FilterWeapons state={state} dispatch={dispatch} />
       </ButtonBar>
       <Stack spacing={1}>
-        <Pagination count={meta.total_pages} page={page} onChange={handlePageChange} variant="outlined" color="primary" shape="rounded" size="large" />
+        { pagination && <Pagination count={meta.total_pages} page={page} onChange={handlePageChange} variant="outlined" color="primary" shape="rounded" size="large" /> }
         { outputRows }
-        <Pagination count={meta.total_pages} page={page} onChange={handlePageChange} variant="outlined" color="primary" shape="rounded" size="large" />
+        { pagination && <Pagination count={meta.total_pages} page={page} onChange={handlePageChange} variant="outlined" color="primary" shape="rounded" size="large" /> }
       </Stack>
     </> }
     { loading && <>

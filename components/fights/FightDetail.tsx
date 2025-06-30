@@ -95,7 +95,7 @@ export default function FightDetail({ fight, dispatch }: FightParams) {
     )) }
   </>) : null
 
-  const actorsHtml = ReactDOMServer.renderToStaticMarkup(actors)
+  const actorsHtml = actors ? ReactDOMServer.renderToStaticMarkup(actors) : null
 
   return (
     <Card
