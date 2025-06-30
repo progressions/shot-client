@@ -3,7 +3,7 @@ import { FormControlLabel, Switch, createFilterOptions, MenuItem, Box, Stack, Ty
 import { useClient } from "@/contexts/ClientContext"
 import { useToast } from "@/contexts/ToastContext"
 import { useCharacter } from "@/contexts/CharacterContext"
-import CharacterAvatar from "@/components/characters/CharacterAvatar"
+import CharacterAvatar from "@/components/avatars/CharacterAvatar"
 
 import GamemasterOnly from "@/components/GamemasterOnly"
 import type { Vehicle, FilterParamsType, OptionType, InputParamsType, Character, Site } from "@/types/types"

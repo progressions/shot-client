@@ -104,6 +104,10 @@ class Client {
     return this.get<PartiesResponse>(`${this.api.parties()}?${query}`)
   }
 
+  async getParty(party: Party | ID):Promise<Party> {
+    return this.get(this.api.parties(party))
+  }
+
   async deleteParty(party: Party | ID):Promise<void> {
     return this.delete(this.api.parties(party))
   }

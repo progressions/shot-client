@@ -2,11 +2,11 @@ import { Avatar, IconButton } from "@mui/material"
 import { RefObject, useRef, useEffect } from "react"
 import { useClient } from "@/contexts"
 import { usePopup } from "@/components/popups"
-import type { Character } from "@/types/types"
+import type { Character, Vehicle, Site, Party } from "@/types/types"
 import CS from "@/services/CharacterService"
 
 interface CharacterAvatarProps {
-  character: Character
+  character: Character | Vehicle | Site | Party
   href?: string
 }
 

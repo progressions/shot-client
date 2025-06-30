@@ -4,7 +4,7 @@ import type { Character, User } from "@/types/types"
 import { defaultCharacter } from "@/types/types"
 import Client from "@/utils/Client"
 import { useState, useEffect } from "react"
-import CharacterAvatar from "@/components/characters/CharacterAvatar"
+import VehicleAvatar from "@/components/avatars/VehicleAvatar"
 import VS from "@/services/VehicleService"
 
 interface VehiclePopupProps {
@@ -60,7 +60,7 @@ export default function CharacterPopup({
   return (
     <Box className={styles.mentionPopup}>
       <Stack direction="row" alignItems="center" spacing={2} mb={1}>
-        <CharacterAvatar character={vehicle} />
+        <VehicleAvatar vehicle={vehicle} />
         <Typography>{vehicle.name}</Typography>
       </Stack>
       <Typography variant="caption" sx={{ textTransform: "uppercase" }}>

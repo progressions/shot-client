@@ -4,7 +4,7 @@ import type { Character, User } from "@/types/types"
 import { defaultCharacter } from "@/types/types"
 import Client from "@/utils/Client"
 import { useState, useEffect } from "react"
-import CharacterAvatar from "@/components/characters/CharacterAvatar"
+import CharacterAvatar from "@/components/avatars/CharacterAvatar"
 import CS from "@/services/CharacterService"
 
 interface CharacterPopupProps {

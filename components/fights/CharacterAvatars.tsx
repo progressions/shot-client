@@ -2,7 +2,7 @@ import React from "react"
 import { Tooltip, AvatarGroup, Avatar, Typography } from "@mui/material"
 import type { Fight, Character } from "@/types/types"
 import { useWebSocket, useFight } from "@/contexts"
-import CharacterAvatar from "@/components/characters/CharacterAvatar"
+import CharacterAvatar from "@/components/avatars/CharacterAvatar"
 import FS from "@/services/FightService"
 import CS from "@/services/CharacterService"
 
