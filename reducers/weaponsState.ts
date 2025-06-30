@@ -32,7 +32,7 @@ export interface WeaponsStateType {
   meta: PaginationMeta
 }
 
-export type PayloadType = WeaponCategory | Juncture | Weapon | WeaponsResponse | string
+export type PayloadType = WeaponCategory | Juncture | Weapon | WeaponsResponse | string | number
 
 interface ActionNoPayload {
   type: Extract<WeaponsActions, WeaponsActions.RESET | WeaponsActions.EDIT | WeaponsActions.SAVING | WeaponsActions.SUCCESS | WeaponsActions.PREVIOUS | WeaponsActions.NEXT>

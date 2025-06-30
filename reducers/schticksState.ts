@@ -21,7 +21,7 @@ export interface ActionNoPayload {
   type: Extract<SchticksActions, SchticksActions.RESET | SchticksActions.EDIT | SchticksActions.SAVING | SchticksActions.SUCCESS | SchticksActions.PREVIOUS | SchticksActions.NEXT>
 }
 
-export type PayloadType = SchtickCategory | SchtickPath | Schtick | SchticksResponse | string
+export type PayloadType = SchtickCategory | SchtickPath | Schtick | SchticksResponse | string | number
 
 export interface PayloadAction {
   type: Extract<SchticksActions, SchticksActions.CATEGORY | SchticksActions.PATH | SchticksActions.NAME | SchticksActions.SCHTICK | SchticksActions.SCHTICKS | SchticksActions.PAGE>

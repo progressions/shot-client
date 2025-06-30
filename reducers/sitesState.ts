@@ -29,7 +29,7 @@ export interface SitesStateType {
   page: number
 }
 
-export type PayloadType = Site | SitesResponse | string | Element | null | boolean
+export type PayloadType = Site | SitesResponse | string | Element | null | boolean | number
 
 interface ActionNoPayload {
   type: Extract<SitesActions, SitesActions.RESET | SitesActions.SUCCESS | SitesActions.SAVING>

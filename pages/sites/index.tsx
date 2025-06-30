@@ -9,7 +9,7 @@ import Sites from "@/components/sites/Sites"
 import { ButtonBar } from "@/components/StyledFields"
 import FilterSites from "@/components/sites/FilterSites"
 import { useRouter } from 'next/router'
-import { QueryType, GetServerSideProps } from "@/types/types"
+import { QueryType, ServerSideProps } from "@/types/types"
 
 export async function getServerSideProps<GetServerSideProps>({ req, res, query }: ServerSideProps) {
   const { page } = query as QueryType
@@ -38,7 +38,7 @@ export default function Home({ page:initialPage }: HomeProps) {
   // will not be. This avoids a false positive on the first load,
   // where it thinks we should load page 1 even though we're looking for page 3.
   const queryNum = query.page ? parseInt(query.page as string, 10) : null
-  const initialPageNum = queryNum || (initialPage ? parseInt(initialPage as string, 10) : 1)
+  const initialPageNum = queryNum || initialPage
 
   const fetchPayload = { search: search || site.name, faction_id: faction.id, secret, page }
 

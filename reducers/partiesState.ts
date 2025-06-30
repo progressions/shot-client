@@ -28,7 +28,7 @@ export interface PartiesStateType {
   page?: number
 }
 
-export type PayloadType = Party | PartiesResponse | string | Element | null
+export type PayloadType = Party | PartiesResponse | string | Element | number | null
 
 interface ActionNoPayload {
   type: Extract<PartiesActions, PartiesActions.RESET | PartiesActions.SUCCESS | PartiesActions.SAVING>
