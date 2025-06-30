@@ -526,7 +526,7 @@ export interface FightChannelMessage {
 export const defaultFaction:Faction = {
   id: "",
   name: "",
-  description: ""
+  description: "",
   characters: [],
   vehicles: [],
   active: true,
