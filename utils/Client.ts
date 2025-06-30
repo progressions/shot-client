@@ -552,17 +552,25 @@ class Client {
     return await this.request("POST", url, params)
   }
 
-  async request<T>(method:string, url:string, params = {}):Promise<T> {
-    return await axios({
+  async request<T>(method: string, url: string, params = {}): Promise<T> {
+    const config: any = {
       url: url,
       method: method,
-      params: params,
       headers: {
         'Content-Type': 'application/json',
         'Authorization': this.jwt
       }
-    })
-    .then(response => response.data)
+    }
+
+    // Use `data` for POST and PATCH, `params` for GET
+    if (method === "GET") {
+      config.params = params
+    } else {
+      config.data = params
+    }
+
+    return await axios(config)
+      .then(response => response.data)
   }
 
   async get<T>(url:string, params = {}):Promise<T> {

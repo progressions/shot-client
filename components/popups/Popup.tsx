@@ -5,7 +5,7 @@ import { defaultCharacter } from "@/types/types"
 import Client from "@/utils/Client"
 import { useState, useEffect } from "react"
 import CS from "@/services/CharacterService"
-import { FactionPopup, PartyPopup, SitePopup, CharacterPopup, VehiclePopup } from "@/components/popups"
+import { WeaponPopup, SchtickPopup, FactionPopup, PartyPopup, SitePopup, CharacterPopup, VehiclePopup } from "@/components/popups"
 
 interface PopupProps {
   mentionId: string
@@ -20,7 +20,7 @@ export default function Popup({
   mentionId,
   mentionClass,
 }: PopupProps) {
-  console.log({ mentionId, mentionClass });
+  console.log("Popup", { mentionId, mentionClass })
   switch (mentionClass) {
     case "Character":
       return (
@@ -30,7 +30,7 @@ export default function Popup({
           mentionId={mentionId}
           mentionClass={mentionClass}
         />
-      );
+      )
     case "Vehicle":
       return (
         <VehiclePopup
@@ -39,7 +39,7 @@ export default function Popup({
           mentionId={mentionId}
           mentionClass={mentionClass}
         />
-      );
+      )
     case "Site":
       return (
         <SitePopup
@@ -48,7 +48,7 @@ export default function Popup({
           mentionId={mentionId}
           mentionClass={mentionClass}
         />
-      );
+      )
     case "Party":
       return (
         <PartyPopup
@@ -57,7 +57,7 @@ export default function Popup({
           mentionId={mentionId}
           mentionClass={mentionClass}
         />
-      );
+      )
     case "Faction":
       return (
         <FactionPopup
@@ -66,9 +66,27 @@ export default function Popup({
           mentionId={mentionId}
           mentionClass={mentionClass}
         />
-      );
+      )
+    case "Schtick":
+      return (
+        <SchtickPopup
+          user={user}
+          client={client}
+          mentionId={mentionId}
+          mentionClass={mentionClass}
+        />
+      )
+    case "Weapon":
+      return (
+        <WeaponPopup
+          user={user}
+          client={client}
+          mentionId={mentionId}
+          mentionClass={mentionClass}
+        />
+      )
     // Add more cases for different popup types if needed
     default:
-      return null; // Or a default popup component
+      return null // Or a default popup component
   }
 }
