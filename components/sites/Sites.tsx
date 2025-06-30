@@ -11,9 +11,10 @@ import { useRouter } from 'next/router'
 import type { SitesStateType, SitesActionType } from "@/reducers/sitesState"
 
 interface SitesProps {
+  id?: string
 }
 
-export default function Sites({}: SitesProps) {
+export default function Sites({ id }: SitesProps) {
   const { character } = useCharacter()
   const { user, client } = useClient()
   const [state, dispatch] = useReducer(sitesReducer, initialSitesState)
@@ -24,6 +25,8 @@ export default function Sites({}: SitesProps) {
   const { query } = router
   const { page:initialPage } = query as QueryType
   const initialPageNum = initialPage ? parseInt(initialPage as string, 10) : 1
+
+  console.log("ID exists", id)
 
   useEffect(() => {
     if (page !== initialPageNum) {
@@ -49,7 +52,7 @@ export default function Sites({}: SitesProps) {
     async function reload() {
       try {
         console.log("Fetching Sites page ", page)
-        const data = await client.getSites({ search: site?.name, faction_id: faction.id, secret, page })
+        const data = await client.getSites({ id: id, search: site?.name, faction_id: faction.id, secret, page })
         dispatch({ type: SitesActions.SITES, payload: data })
       } catch(error) {
         toastError()
@@ -62,7 +65,7 @@ export default function Sites({}: SitesProps) {
     if (user?.id && edited && character?.id) {
       reload().catch(toastError)
     }
-  }, [user, initialPage, page, edited, faction, secret])
+  }, [user, initialPage, page, edited, faction, secret, id])
 
   const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
     router.push(
