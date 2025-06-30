@@ -18,7 +18,6 @@ export default function Parties({ state, dispatch, pagination }: PartiesProps) {
   const { page, parties, meta } = state
 
   const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
-    dispatch({ type: PartiesActions.PAGE, payload: value})
     router.push(
       { pathname: router.pathname, query: { page: value } },
       undefined,

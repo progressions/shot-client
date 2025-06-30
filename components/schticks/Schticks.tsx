@@ -23,10 +23,11 @@ export default function Schticks({}: SchticksProps) {
   const [state, dispatch] = useReducer(schticksReducer, initialSchticksState)
   const { loading, edited, category, path, name, schticks, meta, page } = state
   const router = useRouter()
-
   const { query } = router
   const { page:initialPage } = query as QueryType
   const initialPageNum = initialPage ? parseInt(initialPage as string, 10) : 1
+
+  const fetchPayload = { page, category, path, name }
 
   useEffect(() => {
     if (page !== initialPageNum) {
@@ -51,7 +52,7 @@ export default function Schticks({}: SchticksProps) {
     async function reload() {
       try {
         console.log("Fetching Schticks page ", page)
-        const data = await client.getSchticks({ page, category, path, name })
+        const data = await client.getSchticks(fetchPayload)
         dispatch({ type: SchticksActions.SCHTICKS, payload: data })
       } catch(error) {
         console.log("Error fetching schticks:", error)
@@ -62,7 +63,7 @@ export default function Schticks({}: SchticksProps) {
     if (user?.id && edited && page === initialPageNum) {
       reload().catch(toastError)
     }
-  }, [user, edited, initialPage, page, category, path, name])
+  }, [user, edited, initialPage, fetchPayload])
 
   const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
     router.push(

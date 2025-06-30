@@ -129,6 +129,7 @@ export function partiesReducer(state: PartiesStateType, action: PartiesActionTyp
         parties,
         factions,
         meta,
+        page: meta?.current_page || 1,
       }
     case PartiesActions.RESET:
       return initialPartiesState
