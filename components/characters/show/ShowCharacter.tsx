@@ -23,8 +23,8 @@ export default function ShowCharacter({ character }: ShowCharacterProps) {
       <Stack spacing={2}>
         <Typography variant="h2">{CS.name(character)}</Typography>
         <Typography>{ archetypeAndFaction }</Typography>
-        <Subhead>Appearance</Subhead>
-        <RichTextRenderer html={CS.description(character, D.Appearance)} />
+        <Subhead>Description</Subhead>
+        <RichTextRenderer key={CS.description(character, D.Appearance)} html={CS.description(character, D.Appearance)} />
         <Grid container spacing={2}>
           <Grid item xs={12} sm={6}>
             <Paper sx={{backgroundColor: colors.blueGrey[100], p: 2}}>

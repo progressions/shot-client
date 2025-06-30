@@ -92,9 +92,7 @@ export default function FightName() {
               </ButtonGroup>
             </Box>
           </Stack>
-          { fight.description &&
-            <RichTextRenderer html={fight.description} />
-          }
+          <RichTextRenderer key={fight.description} html={fight.description} />
         </Stack>
       </Box>
     </>

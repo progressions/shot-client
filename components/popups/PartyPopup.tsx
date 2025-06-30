@@ -65,7 +65,7 @@ export default function PartyPopup({
       </Typography>
       <Box mt={1}>
         <Typography variant="body2">
-          <RichTextRenderer html={party.description} />
+          <RichTextRenderer key={party.description} html={party.description} />
         </Typography>
       </Box>
     </Box>

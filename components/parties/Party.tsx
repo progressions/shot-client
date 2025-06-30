@@ -95,7 +95,7 @@ export default function Party({ party, state, dispatch }: PartyProps) {
       >
       { party.image_url && <CardMedia image={mediaUrl} title={party.name} sx={{padding: 2, height: 300}}/> }
         <Stack spacing={2} mt={2}>
-          <RichTextRenderer html={party.description} />
+          <RichTextRenderer key={party.description} html={party.description} />
           <Box>
             <Members party={party} removeCharacter={removeCharacter} />
           </Box>

@@ -90,7 +90,7 @@ export default function Site({ site, state, dispatch }: SiteProps) {
         { site.image_url &&
           <CardMedia image={image_url || ""} sx={{height: 500, mb: 2}} />
         }
-        <RichTextRenderer html={site.description} />
+        <RichTextRenderer key={site.description} html={site.description} />
       </SiteCardBase>
       <StyledDialog
         open={open}

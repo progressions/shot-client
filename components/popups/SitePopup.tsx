@@ -65,7 +65,7 @@ export default function SitePopup({
       </Typography>
       <Box mt={1}>
         <Typography variant="body2">
-          <RichTextRenderer html={site.description} />
+          <RichTextRenderer key={site.description} html={site.description} />
         </Typography>
       </Box>
     </Box>

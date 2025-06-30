@@ -109,7 +109,7 @@ export default function FightDetail({ fight, dispatch }: FightParams) {
       />
       <CardContent>
         {fight.description && (
-          <RichTextRenderer html={fight.description} />
+          <RichTextRenderer key={fight.description} html={fight.description} />
         )}
         {fight.actors && !!fight.actors.length && (
           <Box sx={{ mt: 2, p: 2, backgroundColor: colors.blueGrey['800'], borderRadius: 1 }}>
