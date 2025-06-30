@@ -71,9 +71,11 @@ const Editor = ({ name, value, onChange }) => {
   function getUrl(className, id) {
     const urlMap = {
       Character: `/characters/${id}`,
-      Vehicle: `/vehicles/${id}`
+      Vehicle: `/vehicles/${id}`,
+      Site: `/sites/${id}`,
+      Party: `/parties/${id}`,
     }
-    return urlMap[className] || `/characters/${id}`
+    return urlMap[className] || ""
   }
 
   const extensions = [
@@ -90,7 +92,6 @@ const Editor = ({ name, value, onChange }) => {
           console.warn('renderHTML: Missing id or label:', node);
           return ['span', { class: 'mention' }, `@${label || 'unknown'}`];
         }
-        // const url = `/characters/${id}`;
         const url = getUrl(className, id);
         return [
           'a',
