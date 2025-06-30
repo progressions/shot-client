@@ -48,11 +48,11 @@ export default function CharacterPopup({
     return null // Use null instead of <></> for consistency
   }
 
-  const subhead = (character?.id ? [
+  const subhead = [
     CS.type(character),
     CS.archetype(character),
     CS.factionName(character),
-  ] : [])
+  ]
     .filter(Boolean)
     .join(" - ")
 
@@ -60,52 +60,54 @@ export default function CharacterPopup({
 
   return (
     <Box className={styles.mentionPopup}>
-      <Stack direction="row" alignItems="center" spacing={2} mb={1}>
-        <CharacterAvatar character={character} />
-        <Typography>{character.name}</Typography>
-      </Stack>
-      <Typography variant="caption" sx={{ textTransform: "uppercase" }}>
-        {subhead}
-      </Typography>
-      <Box mt={1}>
-        <Typography variant="body2">
-          {CS.mainAttack(character) && CS.mainAttackValue(character) > 0 && (
-            <>
-              <strong>{CS.mainAttack(character)}</strong>{" "}
-              {CS.mainAttackValue(character)}{" "}
-            </>
-          )}
-          {CS.secondaryAttack(character) &&
-            CS.secondaryAttackValue(character) > 0 && (
+      { character?.id && (<>
+        <Stack direction="row" alignItems="center" spacing={2} mb={1}>
+          <CharacterAvatar character={character} />
+          <Typography>{character.name}</Typography>
+        </Stack>
+        <Typography variant="caption" sx={{ textTransform: "uppercase" }}>
+          {subhead}
+        </Typography>
+        <Box mt={1}>
+          <Typography variant="body2">
+            {CS.mainAttack(character) && CS.mainAttackValue(character) > 0 && (
               <>
-                <strong>{CS.secondaryAttack(character)}</strong>{" "}
-                {CS.secondaryAttackValue(character)}{" "}
+                <strong>{CS.mainAttack(character)}</strong>{" "}
+                {CS.mainAttackValue(character)}{" "}
               </>
             )}
-          {CS.defense(character) > 0 && (
-            <>
-              <strong>Defense</strong> {CS.defense(character)}{" "}
-            </>
-          )}
-        </Typography>
-        <Typography variant="body2">
-          {CS.toughness(character) > 0 && (
-            <>
-              <strong>Toughness</strong> {CS.toughness(character)}{" "}
-            </>
-          )}
-          {CS.speed(character) > 0 && (
-            <>
-              <strong>Speed</strong> {CS.speed(character)}{" "}
-            </>
-          )}
-          {CS.damage(character) > 0 && (
-            <>
-              <strong>Damage</strong> {CS.damage(character)}{" "}
-            </>
-          )}
-        </Typography>
-      </Box>
+            {CS.secondaryAttack(character) &&
+              CS.secondaryAttackValue(character) > 0 && (
+                <>
+                  <strong>{CS.secondaryAttack(character)}</strong>{" "}
+                  {CS.secondaryAttackValue(character)}{" "}
+                </>
+              )}
+            {CS.defense(character) > 0 && (
+              <>
+                <strong>Defense</strong> {CS.defense(character)}{" "}
+              </>
+            )}
+          </Typography>
+          <Typography variant="body2">
+            {CS.toughness(character) > 0 && (
+              <>
+                <strong>Toughness</strong> {CS.toughness(character)}{" "}
+              </>
+            )}
+            {CS.speed(character) > 0 && (
+              <>
+                <strong>Speed</strong> {CS.speed(character)}{" "}
+              </>
+            )}
+            {CS.damage(character) > 0 && (
+              <>
+                <strong>Damage</strong> {CS.damage(character)}{" "}
+              </>
+            )}
+          </Typography>
+        </Box>
+      </>) }
     </Box>
   )
 }
