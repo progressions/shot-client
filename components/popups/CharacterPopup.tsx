@@ -48,11 +48,11 @@ export default function CharacterPopup({
     return null // Use null instead of <></> for consistency
   }
 
-  const subhead = [
+  const subhead = (character?.id ? [
     CS.type(character),
     CS.archetype(character),
     CS.factionName(character),
-  ]
+  ] : [])
     .filter(Boolean)
     .join(" - ")
 
