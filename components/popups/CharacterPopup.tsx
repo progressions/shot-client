@@ -6,6 +6,7 @@ import Client from "@/utils/Client"
 import { useState, useEffect } from "react"
 import CharacterAvatar from "@/components/avatars/CharacterAvatar"
 import CS from "@/services/CharacterService"
+import GamemasterOnly from "@/components/GamemasterOnly"
 
 interface CharacterPopupProps {
   mentionId: string
@@ -56,18 +57,25 @@ export default function CharacterPopup({
     .filter(Boolean)
     .join(" - ")
 
-  console.log(CS.actionValues(character))
-
+  if (!character?.id) {
+    return (
+      <Box className={styles.mentionPopup}>
+        <Typography variant="body2">
+          Loading...
+        </Typography>
+      </Box>
+    )
+  }
   return (
     <Box className={styles.mentionPopup}>
-      { character?.id && (<>
-        <Stack direction="row" alignItems="center" spacing={2} mb={1}>
-          <CharacterAvatar character={character} />
-          <Typography>{character.name}</Typography>
-        </Stack>
-        <Typography variant="caption" sx={{ textTransform: "uppercase" }}>
-          {subhead}
-        </Typography>
+      <Stack direction="row" alignItems="center" spacing={2} mb={1}>
+        <CharacterAvatar character={character} />
+        <Typography>{character.name}</Typography>
+      </Stack>
+      <Typography variant="caption" sx={{ textTransform: "uppercase" }}>
+        {subhead}
+      </Typography>
+      <GamemasterOnly user={user}>
         <Box mt={1}>
           <Typography variant="body2">
             {CS.mainAttack(character) && CS.mainAttackValue(character) > 0 && (
@@ -107,7 +115,7 @@ export default function CharacterPopup({
             )}
           </Typography>
         </Box>
-      </>) }
+      </GamemasterOnly>
     </Box>
   )
 }

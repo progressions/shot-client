@@ -54,6 +54,15 @@ export default function SitePopup({
     .filter(Boolean)
     .join(" - ")
 
+  if (!site?.id) {
+    return (
+      <Box className={styles.mentionPopup}>
+        <Typography variant="body2">
+          Loading...
+        </Typography>
+      </Box>
+    )
+  }
   return (
     <Box className={styles.mentionPopup}>
       <Stack direction="row" alignItems="center" spacing={2} mb={1}>

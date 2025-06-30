@@ -53,6 +53,15 @@ export default function FactionPopup({
     .filter(Boolean)
     .join(" - ")
 
+  if (!faction?.id) {
+    return (
+      <Box className={styles.mentionPopup}>
+        <Typography variant="body2">
+          Loading...
+        </Typography>
+      </Box>
+    )
+  }
   return (
     <Box className={styles.mentionPopup}>
       <Stack direction="row" alignItems="center" spacing={2} mb={1}>
