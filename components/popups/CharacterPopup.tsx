@@ -19,7 +19,7 @@ export default function CharacterPopup({
   client,
   mentionId,
   mentionClass,
-}: PopupProps) {
+}: CharacterPopupProps) {
   const [character, setCharacter] = useState<Character>(defaultCharacter)
 
   useEffect(() => {

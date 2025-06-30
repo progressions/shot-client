@@ -1,19 +1,27 @@
-import { styled, Badge, Avatar, IconButton, Tooltip } from "@mui/material"
-import { useRef, useEffect } from "react"
+import { Avatar, IconButton } from "@mui/material"
+import { RefObject, useRef, useEffect } from "react"
 import { useClient } from "@/contexts"
 import { usePopup } from "@/components/popups"
 import type { Character } from "@/types/types"
 import CS from "@/services/CharacterService"
 
 interface CharacterAvatarProps {
-  character?: Character
-  tooltip?: string
+  character: Character
   href?: string
 }
 
-const CharacterAvatar = ({ character, tooltip, href }: CharacterAvatarProps) => {
+interface CustomAvatarProps {
+  "data-mention-id"?: string
+  "data-mention-class-name"?: string
+}
+
+const CustomAvatar = Avatar as React.ComponentType<
+  React.ComponentProps<typeof Avatar> & CustomAvatarProps
+>
+
+const CharacterAvatar = ({ character, href }: CharacterAvatarProps) => {
   const { user, client } = useClient()
-  const avatarRef = useRef<HTMLElement>(null)
+  const avatarRef: RefObject<HTMLDivElement> = useRef(null)
   const { triggerPopup } = usePopup({ containerRef: avatarRef, user, client })
 
   useEffect(() => {
@@ -33,25 +41,27 @@ const CharacterAvatar = ({ character, tooltip, href }: CharacterAvatarProps) => 
     return () => {
       avatar.removeEventListener("mouseover", handleMouseOver)
     }
-  }, [character?.id, triggerPopup])
+  }, [character, triggerPopup])
 
   if (!character?.id) {
     return <></>
   }
 
-  const initials = character.name.split(" ").map((part) => part.charAt(0).toUpperCase()).join("")
-  const defaultTooltip = character.name || "Character"
+  const initials = character.name
+    ? character.name.split(" ").map((part) => part.charAt(0).toUpperCase()).join("")
+    : ""
+  const defaultTooltip = CS.name(character) || "Unknown"
 
   const baseAvatar = (
-    <Avatar
+    <CustomAvatar
       alt={character.name}
       src={character.image_url || ""}
       ref={avatarRef}
       data-mention-id={character.id}
-      data-mention-class-name={ CS.isVehicle(character) ? "Vehicle" : "Character" }
+      data-mention-class-name={CS.isVehicle(character) ? "Vehicle" : "Character"}
     >
       {initials}
-    </Avatar>
+    </CustomAvatar>
   )
 
   if (href) {

@@ -7,7 +7,7 @@ import { useState, useEffect } from "react"
 import CharacterAvatar from "@/components/characters/CharacterAvatar"
 import VS from "@/services/VehicleService"
 
-interface CharacterPopupProps {
+interface VehiclePopupProps {
   mentionId: string
   mentionClass: string
   user: User | null // Allow user to be nullable
@@ -19,7 +19,7 @@ export default function CharacterPopup({
   client,
   mentionId,
   mentionClass,
-}: PopupProps) {
+}: VehiclePopupProps) {
   const [vehicle, setVehicle] = useState<Character>(defaultCharacter)
 
   useEffect(() => {
@@ -60,7 +60,7 @@ export default function CharacterPopup({
   return (
     <Box className={styles.mentionPopup}>
       <Stack direction="row" alignItems="center" spacing={2} mb={1}>
-        <CharacterAvatar vehicle={vehicle} />
+        <CharacterAvatar character={vehicle} />
         <Typography>{vehicle.name}</Typography>
       </Stack>
       <Typography variant="caption" sx={{ textTransform: "uppercase" }}>
