@@ -51,7 +51,7 @@ export default function Faction({ faction, onChange, width, sx }: FactionProps) 
   async function getFactions() {
     try {
       const data = await client.getFactions()
-      dispatch({ type: "replace", factions: data })
+      // dispatch({ type: "replace", factions: data })
     } catch(error) {
       console.error(error)
     }

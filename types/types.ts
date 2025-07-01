@@ -87,6 +87,11 @@ export interface PartiesResponse {
   meta: PaginationMeta
 }
 
+export interface FactionsResponse {
+  factions: Faction[]
+  meta: PaginationMeta
+}
+
 export interface SitesResponse {
   sites: Site[]
   factions: Faction[]
@@ -481,6 +486,7 @@ export interface User {
   id?: string
   email: string
   password?: string
+  name: string
   first_name?: string
   last_name?: string
   gamemaster?: boolean
@@ -659,6 +665,7 @@ export const defaultFight:Fight = {
 
 export const defaultUser:User = {
   email: '',
+  name: '',
 }
 
 export const defaultEffect:Effect = {

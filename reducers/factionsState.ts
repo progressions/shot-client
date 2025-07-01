@@ -1,10 +1,10 @@
-import { Faction, defaultFaction, defaultSite, Site, SitesResponse, PaginationMeta, defaultPaginationMeta } from "@/types/types"
+import { defaultFaction, Faction, FactionsResponse, PaginationMeta, defaultPaginationMeta } from "@/types/types"
 
-export enum SitesActions {
+export enum FactionsActions {
   EDIT = "edit",
   OPEN = "open",
-  SITES = "sites",
-  SITE = "site",
+  FACTIONS = "factions",
+  FACTION = "faction",
   PAGE = "page",
   RESET = "reset",
   SUCCESS = "success",
@@ -12,15 +12,13 @@ export enum SitesActions {
   SAVING = "saving"
 }
 
-export interface SitesStateType {
+export interface FactionsStateType {
   anchorEl: Element | null
   edited: boolean
   loading: boolean
   meta: PaginationMeta
   open: boolean
   secret: boolean
-  site: Site
-  sites: Site[]
   faction: Faction
   factions: Faction[]
   saving: boolean
@@ -28,65 +26,63 @@ export interface SitesStateType {
   page: number
 }
 
-export type PayloadType = Site | SitesResponse | string | Element | null | boolean | number
+export type PayloadType = Faction | FactionsResponse | string | Element | null | boolean | number
 
 interface ActionNoPayload {
-  type: Extract<SitesActions, SitesActions.RESET | SitesActions.SUCCESS | SitesActions.SAVING>
+  type: Extract<FactionsActions, FactionsActions.RESET | FactionsActions.SUCCESS | FactionsActions.SAVING>
 }
 
 interface PayloadAction {
-  type: Extract<SitesActions, SitesActions.SITE | SitesActions.SITES | SitesActions.OPEN | SitesActions.PAGE>
+  type: Extract<FactionsActions, FactionsActions.FACTION | FactionsActions.FACTIONS | FactionsActions.OPEN | FactionsActions.PAGE>
   payload: PayloadType
 }
 
 interface UpdateAction {
-  type: Extract<SitesActions, SitesActions.UPDATE | SitesActions.EDIT>
+  type: Extract<FactionsActions, FactionsActions.UPDATE | FactionsActions.EDIT>
   name?: string
   value?: string | boolean | number
 }
 
-export type SitesActionType = ActionNoPayload | UpdateAction | PayloadAction
+export type FactionsActionType = ActionNoPayload | UpdateAction | PayloadAction
 
-export const initialSitesState: SitesStateType = {
+export const initialFactionsState: FactionsStateType = {
   anchorEl: null,
   edited: true,
-  faction: defaultFaction,
-  factions: [],
   loading: true,
   meta: defaultPaginationMeta,
   open: false,
   secret: false,
-  site: defaultSite,
-  sites: [],
+  faction: defaultFaction,
+  factions: [],
   search: "",
   saving: false,
   page: 1
 }
 
-export function sitesReducer(state: SitesStateType, action: SitesActionType): SitesStateType {
+export function factionsReducer(state: FactionsStateType, action: FactionsActionType): FactionsStateType {
   switch(action.type) {
-    case SitesActions.EDIT:
+    case FactionsActions.EDIT:
       return {
         ...state,
         [action.name as string]: action.value,
         edited: true,
         loading: true
       }
-    case SitesActions.SUCCESS:
+    case FactionsActions.SUCCESS:
       return {
         ...state,
         loading: false,
         saving: false,
         edited: false
       }
-    case SitesActions.PAGE:
+    case FactionsActions.PAGE:
       return {
         ...state,
         edited: true,
         loading: true,
         page: action.payload as number,
       }
-    case SitesActions.UPDATE:
+    case FactionsActions.UPDATE:
       if (action.name === "faction") {
         const faction = state.factions.find(faction => faction.id === action.value) || defaultFaction
         return {
@@ -94,7 +90,7 @@ export function sitesReducer(state: SitesStateType, action: SitesActionType): Si
           edited: true,
           loading: true,
           page: 1,
-          site: defaultSite,
+          faction: defaultFaction,
           [action.name as string]: faction
         }
       }
@@ -103,32 +99,32 @@ export function sitesReducer(state: SitesStateType, action: SitesActionType): Si
         ...state,
         edited: true,
         loading: true,
-        site: {
-          ...state.site,
+        faction: {
+          ...state.faction,
           [action.name as string]: action.value
         }
       }
-    case SitesActions.SITE:
+    case FactionsActions.FACTION:
       return {
         ...state,
         edited: true,
         page: 1,
-        site: (action.payload || initialSitesState.site) as Site,
+        faction: (action.payload || initialFactionsState.faction) as Faction,
       }
-    case SitesActions.SITES:
-      const { sites, factions, meta } = action.payload as SitesResponse
+    case FactionsActions.FACTIONS:
+      const { factions, meta } = action.payload as FactionsResponse
       return {
         ...state,
         loading: false,
         edited: false,
         page: meta?.current_page || 1,
-        sites,
         factions,
         meta,
       }
-    case SitesActions.RESET:
-      return initialSitesState
+    case FactionsActions.RESET:
+      return initialFactionsState
     default:
       return state
   }
 }
+

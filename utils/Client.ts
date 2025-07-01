@@ -4,6 +4,7 @@ import type {
   Location,
   Shot,
   Faction,
+  FactionsResponse,
   SuggestionsResponse,
   PartiesResponse,
   WeaponsResponse,
@@ -437,16 +438,29 @@ class Client {
     return this.get(this.api.adminUsers())
   }
 
+  async deleteFaction(faction: Faction | ID):Promise<void> {
+    return this.delete(this.api.factions(faction))
+  }
+
   async getFaction(faction: Faction | ID):Promise<Faction> {
     return this.get(this.api.factions(faction))
   }
 
-  async getFactions():Promise<Faction[]> {
-    return this.get(this.api.factions())
+  async getFactions(params = {}):Promise<FactionsResponse> {
+    const query = Object.entries(params).map(([key, value]) => `${key}=${value || ""}`).join("&")
+    return this.get(`${this.api.factions()}?${query}`)
   }
 
   async createFaction(faction: Faction):Promise<Faction> {
     return this.post(this.api.factions(), {"faction": faction})
+  }
+
+  async updateFaction(faction: Faction):Promise<Faction> {
+    return this.patch(this.api.factions(faction), {"faction": faction})
+  }
+
+  async deleteFactionImage(faction: Faction):Promise<void> {
+    return this.delete(`${this.api.factions(faction)}/image`)
   }
 
   async getSchticks(params={}):Promise<SchticksResponse> {
