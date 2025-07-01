@@ -4,6 +4,7 @@ import { StyledRichText } from '@/components/StyledFields';
 import { useClient } from '@/contexts';
 import { useRef } from 'react';
 import { usePopup } from '@/components/popups/usePopup';
+import styles from "@/components/editor/Editor.module.scss";
 
 interface RichTextRendererProps {
   html: string | undefined | null;
@@ -33,6 +34,7 @@ export default function RichTextRenderer({ html }: RichTextRendererProps) {
 
   return (
     <StyledRichText
+      className={styles.richText}
       ref={containerRef}
       dangerouslySetInnerHTML={{ __html: addMouseOverAttributes(sanitizedHtml) }}
     />

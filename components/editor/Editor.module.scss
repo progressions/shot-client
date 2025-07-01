@@ -114,18 +114,6 @@
     h6 {
       font-size: 1rem;
     }
-
-    blockquote {
-      border-left: 3px solid var(--gray-3);
-      margin: 1.5rem 0;
-      padding-left: 1rem;
-    }
-
-    hr {
-      border: none;
-      border-top: 1px solid var(--gray-2);
-      margin: 2rem 0;
-    }
   }
 }
 
@@ -163,25 +151,6 @@
   background: #b0bec5;
 }
 
-.mention {
-  background: #e0f7fa;
-  border-radius: 3px;
-  padding: 2px 4px;
-  color: #006064;
-}
-
-a.inlineMention {
-  border-radius: 4px;
-  padding: 2px 4px;
-  color: var(--white);
-  font-weight: bold;
-
-  &:hover {
-    background: #1e40af !important;
-    color: var(--white) !important;
-  }
-}
-
 .mentionPopup {
   background: var(--black);
   border: 1px solid var(--grey-800);
@@ -204,6 +173,33 @@ a.inlineMention {
     &:hover {
       color: var(--white);
       text-decoration: underline;
+    }
+  }
+}
+
+.richText {
+  a.mention {
+    font-weight: bold;
+    background: none;
+    border-radius: 3px;
+    padding: 0.1em 0.2em;
+    color: var(--white);
+
+    &:hover {
+      background: #1e40af;
+      color: var(--white);
+    }
+  }
+
+  a.inlineMention {
+    border-radius: 4px;
+    padding: 2px 4px;
+    color: var(--white);
+    font-weight: bold;
+
+    &:hover {
+      background: #1e40af;
+      color: var(--white);
     }
   }
 }

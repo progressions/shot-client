@@ -42,42 +42,12 @@ export const StyledRichText = styled(Box)(({ theme }) => ({
   '& h1': { fontSize: '1.4rem' },
   '& h2': { fontSize: '1.2rem' },
   '& h3': { fontSize: '1.1rem' },
-  '& blockquote': {
-    borderLeft: `3px solid var(--grey-800)`,
-    paddingLeft: '1rem',
-    margin: '1.5rem 0',
-    color: 'var(--black)',
-  },
-  '& pre': {
-    backgroundColor: 'var(--black)',
-    color: 'var(--white)',
-    padding: '1rem',
-    borderRadius: '4px',
-    overflowX: 'auto',
-    fontFamily: 'Roboto, sans-serif',
-    margin: '1.5rem 0',
-  },
-  '& hr': {
-    border: 'none',
-    borderTop: `1px solid var(--gray-2)`,
-    margin: '2rem 0',
-  },
   '& a': {
     color: '#1d4ed8',
     textDecoration: 'underline',
     cursor: 'pointer',
     '&:hover': {
       color: '#1e40af', // Darker blue on hover
-    },
-    '&.mention': {
-      fontWeight: theme.typography.fontWeightBold,
-      color: "white",
-      padding: '0.1em 0.2em',
-      '&:hover': {
-        borderRadius: '4px',
-        backgroundColor: '#1e40af', // Darker blue background on hover
-        color: "white",
-      },
     },
   },
 }));

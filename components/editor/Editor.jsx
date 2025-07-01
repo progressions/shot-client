@@ -7,7 +7,6 @@ import StarterKit from "@tiptap/starter-kit"
 import { Editor as TiptapEditor, EditorProvider, useCurrentEditor } from "@tiptap/react"
 import { useState } from "react"
 import { useClient } from "@/contexts"
-// import { preprocessContent } from "@/components/editor/utils"
 import MenuBar from "@/components/editor/MenuBar"
 import styles from "@/components/editor/Editor.module.scss"
 
@@ -21,20 +20,19 @@ const Editor = ({ name, value, onChange }) => {
 
   const preprocessContent = (html) => {
     let processed = html.replace(/<li><p>(.*?)<\/p><\/li>/g, '<li>$1</li>');
+    const regex = new RegExp(`<a href="([^"]+)" class="${styles.mention}"[^>]*data-mention-id="([^"]+)"[^>]*data-mention-class-name="([^"]*)"[^>]*>(@[^<]+)</a>`, "g")
     processed = processed.replace(
-      /<a href="([^"]+)" class="mention"[^>]*data-mention-id="([^"]+)"[^>]*data-mention-class-name="([^"]*)"[^>]*>(@[^<]+)<\/a>/g,
+      regex,
       (match, href, id, className, label) => {
         const cleanLabel = label.replace(/^@/, '');
         return `<span data-type="mention" data-id="${id}" data-label="${cleanLabel}" data-href="${href}" data-mention-class-name="${className}">@${cleanLabel}</span>`;
       }
     );
-    console.log('Preprocessed HTML:', processed); // Debug
     return processed;
   };
 
   const CustomMention = Mention.extend({
     addAttributes() {
-      console.log('CustomMention addAttributes called');
       return {
         id: {
           default: null,
@@ -86,21 +84,19 @@ const Editor = ({ name, value, onChange }) => {
       mention: false,
     }),
     CustomMention.configure({
-      HTMLAttributes: { class: 'mention' },
+      HTMLAttributes: { class: styles.mention },
       suggestion: suggestion(user, client),
       renderHTML({ node }) {
-        console.log('renderHTML', node.attrs);
         const { id, label, className } = node.attrs;
         if (!id || !label) {
-          console.warn('renderHTML: Missing id or label:', node);
-          return ['span', { class: 'mention' }, `@${label || 'unknown'}`];
+          return ['span', { class: styles.mention }, `@${label || 'unknown'}`];
         }
         const url = getUrl(className, id);
         return [
           'a',
           {
             href: url,
-            class: 'mention',
+            class: styles.mention,
             target: '_blank',
             rel: 'noopener noreferrer',
             'data-mention-id': id,
@@ -118,7 +114,6 @@ const Editor = ({ name, value, onChange }) => {
   }
 
   const saveOnBlur = ({ editor, event, transaction }) => {
-    console.log('Editor onBlur event:', event)
     onChange({
       target: {
         name,
@@ -140,7 +135,6 @@ const Editor = ({ name, value, onChange }) => {
         onBlur={saveOnBlur}
           onUpdate={({ editor }) => {
             const html = editor.getHTML()
-            console.log('Editor updated, HTML:', html)
             const syntheticEvent = {
               target: {
                 name,
