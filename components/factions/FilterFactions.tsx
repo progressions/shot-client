@@ -34,21 +34,6 @@ export default function FilterFactions({ state, dispatch }: FilterFactionsProps)
   return (
     <>
       <Stack spacing={2} direction="row" alignItems="center">
-        <Box sx={{width: 155}}>
-          <StyledSelect
-            fullWidth
-            name="faction"
-            label="Faction"
-            select
-            value={faction?.id}
-            onChange={handleChange}
-          >
-            <MenuItem key="" value="">All</MenuItem>
-            {
-              factions.map((faction: Faction) => <MenuItem key={faction.id} value={faction.id}>{faction.name}</MenuItem>)
-            }
-          </StyledSelect>
-        </Box>
         <FactionAutocomplete state={state} dispatch={dispatch} />
         { !character?.id && <CreateFaction state={state} dispatch={dispatch} /> }
       </Stack>
