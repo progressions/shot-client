@@ -1,4 +1,4 @@
-import { Box, Typography, Stack } from "@mui/material"
+import { Link, Box, Typography, Stack } from "@mui/material"
 import styles from "@/components/editor/Editor.module.scss"
 import type { Character, User } from "@/types/types"
 import { DescriptionKeys as D, defaultCharacter } from "@/types/types"
@@ -8,6 +8,7 @@ import CharacterAvatar from "@/components/avatars/CharacterAvatar"
 import CS from "@/services/CharacterService"
 import GamemasterOnly from "@/components/GamemasterOnly"
 import { RichTextRenderer } from "@/components/editor"
+import ReactDOMServer from "react-dom/server"
 
 interface CharacterPopupProps {
   mentionId: string
@@ -52,10 +53,20 @@ export default function CharacterPopup({
 
   const description = CS.isPC(character) ? CS.melodramaticHook(character) : CS.description(character)
 
-  const subhead = [
-    CS.type(character),
-    CS.archetype(character),
-    CS.factionName(character),
+  const charType = CS.type(character) ? <Link data-mention-id={CS.type(character)} data-mention-class-name="Type">
+      {CS.type(character)}
+    </Link> : null
+  const charArchetype = CS.archetype(character) ? <Link data-mention-id={CS.archetype(character)} data-mention-class-name="Archetype">
+    {CS.archetype(character)}
+  </Link> : null
+  const factionName = CS.factionName(character) ? <Link href={`/factions/${character.faction_id}`} data-mention-id={character.faction_id} data-mention-class-name="Faction">
+      {CS.factionName(character)}
+    </Link> : null
+
+  const subheadHtml = [
+    charType ? ReactDOMServer.renderToStaticMarkup(charType) : null,
+    charArchetype ? ReactDOMServer.renderToStaticMarkup(charArchetype) : null,
+    factionName ? ReactDOMServer.renderToStaticMarkup(factionName) : null,
   ]
     .filter(Boolean)
     .join(" - ")
@@ -75,13 +86,11 @@ export default function CharacterPopup({
         <CharacterAvatar character={character} />
         <Typography>{character.name}</Typography>
       </Stack>
-      <Typography variant="caption" sx={{ textTransform: "uppercase" }}>
-        {subhead}
+      <Typography variant="caption" className={styles.popupSubhead} sx={{ textTransform: "uppercase" }}>
+        <RichTextRenderer html={subheadHtml} />
       </Typography>
       <Box mt={1}>
-        <Typography variant="body2">
-          { <RichTextRenderer html={description} /> }
-        </Typography>
+        { <RichTextRenderer html={description} /> }
       </Box>
       <GamemasterOnly user={user}>
         <Box mt={1}>

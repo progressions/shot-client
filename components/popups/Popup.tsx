@@ -5,7 +5,7 @@ import { defaultCharacter } from "@/types/types"
 import Client from "@/utils/Client"
 import { useState, useEffect } from "react"
 import CS from "@/services/CharacterService"
-import { WeaponPopup, SchtickPopup, FactionPopup, PartyPopup, SitePopup, CharacterPopup, VehiclePopup } from "@/components/popups"
+import { ArchetypePopup, TypePopup, WeaponPopup, SchtickPopup, FactionPopup, PartyPopup, SitePopup, CharacterPopup, VehiclePopup } from "@/components/popups"
 
 interface PopupProps {
   mentionId: string
@@ -20,7 +20,6 @@ export default function Popup({
   mentionId,
   mentionClass,
 }: PopupProps) {
-  console.log("Popup", { mentionId, mentionClass })
   switch (mentionClass) {
     case "Character":
       return (
@@ -79,6 +78,24 @@ export default function Popup({
     case "Weapon":
       return (
         <WeaponPopup
+          user={user}
+          client={client}
+          mentionId={mentionId}
+          mentionClass={mentionClass}
+        />
+      )
+    case "Type":
+      return (
+        <TypePopup
+          user={user}
+          client={client}
+          mentionId={mentionId}
+          mentionClass={mentionClass}
+        />
+      )
+    case "Archetype":
+      return (
+        <ArchetypePopup
           user={user}
           client={client}
           mentionId={mentionId}

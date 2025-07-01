@@ -49,6 +49,7 @@ export default function SitePopup({
   }
 
   const subhead = [
+    "Feng Shui Site",
     site.faction?.name,
   ]
     .filter(Boolean)

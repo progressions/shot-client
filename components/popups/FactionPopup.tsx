@@ -49,6 +49,7 @@ export default function FactionPopup({
   }
 
   const subhead = [
+    "Faction"
   ]
     .filter(Boolean)
     .join(" - ")
