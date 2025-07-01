@@ -21,15 +21,15 @@ export interface ActionNoPayload {
   type: Extract<SchticksActions, SchticksActions.RESET | SchticksActions.EDIT | SchticksActions.SAVING | SchticksActions.SUCCESS | SchticksActions.PREVIOUS | SchticksActions.NEXT>
 }
 
-export type PayloadType = SchtickCategory | SchtickPath | Schtick | SchticksResponse | string
+export type PayloadType = SchtickCategory | SchtickPath | Schtick | SchticksResponse | string | number
 
 export interface PayloadAction {
-  type: Extract<SchticksActions, SchticksActions.CATEGORY | SchticksActions.PATH | SchticksActions.NAME | SchticksActions.SCHTICK | SchticksActions.SCHTICKS>
+  type: Extract<SchticksActions, SchticksActions.CATEGORY | SchticksActions.PATH | SchticksActions.NAME | SchticksActions.SCHTICK | SchticksActions.SCHTICKS | SchticksActions.PAGE>
   payload: PayloadType
 }
 
 export interface UpdateAction {
-  type: Extract<SchticksActions, SchticksActions.UPDATE | SchticksActions.PAGE>
+  type: Extract<SchticksActions, SchticksActions.UPDATE>
   name: string
   value: string | boolean | number
 }
@@ -119,7 +119,7 @@ export function schticksReducer(state: SchticksStateType, action: SchticksAction
         ...state,
         edited: true,
         loading: true,
-        page: action.value as number
+        page: action.payload as number
       }
     case SchticksActions.UPDATE:
       return {
@@ -132,7 +132,7 @@ export function schticksReducer(state: SchticksStateType, action: SchticksAction
     case SchticksActions.SCHTICK:
       return {
         ...state,
-        // edited: false,
+        edited: false,
         loading: false,
         schtick: (action.payload || initialSchticksState.schtick) as Schtick,
       }

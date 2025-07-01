@@ -7,6 +7,7 @@ import { useToast } from "@/contexts/ToastContext"
 import { StyledTextField, StyledDialog, SaveCancelButtons } from "@/components/StyledFields"
 import { initialSchticksState, schticksReducer } from "@/reducers/schticksState"
 import { SchticksActions } from "@/reducers/schticksState"
+import { Editor } from "@/components/editor"
 
 import type { SchticksStateType, SchticksActionType } from "@/reducers/schticksState"
 
@@ -23,6 +24,14 @@ export default function SchtickModal({ open, setOpen, state, dispatch, schtick:i
   const { client } = useClient()
   const { saving, category, path } = state
   const [schtick, setSchtick] = useState<Schtick>(initialSchtick || defaultSchtick)
+
+  useEffect(() => {
+    if (initialSchtick?.id) {
+      setSchtick(initialSchtick)
+    } else {
+      setSchtick(defaultSchtick)
+    }
+  }, [initialSchtick])
 
   async function handleSubmit(event: React.ChangeEvent<HTMLInputElement>) {
     event.preventDefault()
@@ -53,11 +62,11 @@ export default function SchtickModal({ open, setOpen, state, dispatch, schtick:i
       title="Schtick"
       onSubmit={handleSubmit}
     >
-      <Stack p={4} spacing={2} sx={{width: 400}}>
+      <Stack p={4} spacing={2} sx={{width: 530}}>
         <StyledTextField name="name" label="Title" value={schtick?.name || ""} onChange={handleChange} />
         <StyledTextField name="category" label="Category" value={schtick?.category || ""} onChange={handleChange} />
         <StyledTextField name="path" label="Path" value={schtick?.path || ""} onChange={handleChange} />
-        <StyledTextField name="description" multiline rows={8} label="Description" value={schtick?.description || ""} onChange={handleChange} />
+        <Editor name="description" value={schtick?.description || ""} onChange={handleChange} />
         <SaveCancelButtons disabled={saving} onCancel={cancelForm} />
       </Stack>
     </StyledDialog>

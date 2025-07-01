@@ -15,54 +15,16 @@ import { initialSchticksState, schticksReducer, SchticksActions } from "@/reduce
 import { QueryType, Schtick as SchtickType } from "@/types/types"
 
 interface SchticksProps {
+  state: SchticksStateType,
+  dispatch: React.Dispatch<SchticksActionType>
+  pagination: boolean
 }
 
-export default function Schticks({}: SchticksProps) {
+export default function Schticks({ state, dispatch, pagination }: SchticksProps) {
+  const router = useRouter()
   const { user, client } = useClient()
   const { toastError, toastSuccess } = useToast()
-  const [state, dispatch] = useReducer(schticksReducer, initialSchticksState)
   const { loading, edited, category, path, name, schticks, meta, page } = state
-  const router = useRouter()
-
-  const { query } = router
-  const { page:initialPage } = query as QueryType
-  const initialPageNum = initialPage ? parseInt(initialPage as string, 10) : 1
-
-  useEffect(() => {
-    if (page !== initialPageNum) {
-      dispatch({ type: SchticksActions.PAGE, name: "page", value: initialPageNum })
-    }
-  }, [page, initialPageNum])
-
-  useEffect(() => {
-    if (edited) return
-    if (!page) return
-
-    if (page > meta.total_pages) {
-      router.push(
-        { pathname: router.pathname, query: { page: 1 } },
-        undefined,
-        { shallow: true }
-      )
-    }
-  }, [edited, page, meta])
-
-  useEffect(() => {
-    async function reload() {
-      try {
-        console.log("Fetching Schticks page ", page)
-        const data = await client.getSchticks({ page, category, path, name })
-        dispatch({ type: SchticksActions.SCHTICKS, payload: data })
-      } catch(error) {
-        console.log("Error fetching schticks:", error)
-        toastError()
-      }
-    }
-
-    if (user?.id && edited && page === initialPageNum) {
-      reload().catch(toastError)
-    }
-  }, [user, edited, initialPage, page, category, path, name])
 
   const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
     router.push(
@@ -84,16 +46,12 @@ export default function Schticks({}: SchticksProps) {
 
   return (
     <>
-      <ButtonBar sx={{height: 80}}>
-        <FilterSchticks state={state} dispatch={dispatch} />
-        <CreateSchtickButton state={state} dispatch={dispatch} />
-      </ButtonBar>
       { schticks?.length === 0 && !loading && (
         <Typography variant="body1">
           No schticks.
         </Typography>
       )}
-      { !!schticks?.length && <Pagination count={meta.total_pages} page={page} onChange={handlePageChange} variant="outlined" color="primary" shape="rounded" size="large" /> }
+      { !!schticks?.length && pagination && <Pagination count={meta.total_pages} page={page} onChange={handlePageChange} variant="outlined" color="primary" shape="rounded" size="large" /> }
       <Stack sx={{my: 2}} spacing={1}>
         { loading && <>
           <Stack direction="row" spacing={1}>
@@ -115,7 +73,7 @@ export default function Schticks({}: SchticksProps) {
         </> }
         { !loading && outputRows }
       </Stack>
-      { !!schticks?.length && <Pagination count={meta.total_pages} page={page} onChange={handlePageChange} variant="outlined" color="primary" shape="rounded" size="large" /> }
+      { !!schticks?.length && pagination && <Pagination count={meta.total_pages} page={page} onChange={handlePageChange} variant="outlined" color="primary" shape="rounded" size="large" /> }
     </>
   )
 }

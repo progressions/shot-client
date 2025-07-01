@@ -1,8 +1,6 @@
-import type { NextApiRequest, NextApiResponse } from "next"
-import { Stack, Box, Skeleton, Container, Typography } from "@mui/material"
+import { Container, Typography } from "@mui/material"
 import Head from "next/head"
-import { useRouter } from "next/router"
-import { useState, useEffect } from "react"
+import { useEffect } from "react"
 import Router from "next/router"
 
 import Layout from "@/components/Layout"

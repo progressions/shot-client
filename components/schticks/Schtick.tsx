@@ -14,6 +14,7 @@ import { SchticksActions } from "@/reducers/schticksState"
 import type { Character, Schtick } from "@/types/types"
 import type { SchticksStateType, SchticksActionType } from "@/reducers/schticksState"
 import { CharacterActions } from "@/reducers/characterState"
+import { RichTextRenderer } from "@/components/editor"
 
 /*
 
@@ -43,9 +44,7 @@ export default function SchtickCard({ schtick, state, dispatch }: SchtickCardPro
   async function reloadSchticks() {
     try {
       const data = await client.getSchticks()
-      if (dispatch) {
-        dispatch({ type: SchticksActions.SCHTICKS, payload: data })
-      }
+      dispatch({ type: SchticksActions.SCHTICKS, payload: data })
     } catch(error) {
       console.error(error)
     }
@@ -118,7 +117,7 @@ export default function SchtickCard({ schtick, state, dispatch }: SchtickCardPro
         action={[]}
       >
         <Typography variant="body2" gutterBottom>
-          {schtick.description}
+          <RichTextRenderer html={schtick.description} />
         </Typography>
         { schtick.prerequisite.name &&
           <Typography variant="subtitle2">
@@ -137,7 +136,7 @@ export default function SchtickCard({ schtick, state, dispatch }: SchtickCardPro
         action={[editButton, deleteButton]}
       >
         <Typography variant="body2" gutterBottom>
-          {schtick.description}
+          <RichTextRenderer html={schtick.description} />
         </Typography>
         { schtick.prerequisite.name &&
           <Typography variant="subtitle2">

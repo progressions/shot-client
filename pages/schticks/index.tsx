@@ -4,10 +4,11 @@ import Head from "next/head"
 import { Box, Container } from "@mui/material"
 import { useClient, useToast } from "@/contexts"
 import { useState, useReducer, useEffect } from "react"
-import { sitesReducer, initialSitesState, SitesActions } from "@/reducers/sitesState"
-import Sites from "@/components/sites/Sites"
+import { schticksReducer, initialSchticksState, SchticksActions } from "@/reducers/schticksState"
+import Schticks from "@/components/schticks/Schticks"
 import { ButtonBar } from "@/components/StyledFields"
-import FilterSites from "@/components/sites/FilterSites"
+import FilterSchticks from "@/components/schticks/FilterSchticks"
+import CreateSchtickButton from "@/components/schticks/CreateSchtickButton"
 import { useRouter } from 'next/router'
 import { QueryType, ServerSideProps } from "@/types/types"
 
@@ -28,8 +29,8 @@ interface HomeProps {
 export default function Home({ page:initialPage }: HomeProps) {
   const { user, client } = useClient()
   const { toastSuccess, toastError } = useToast()
-  const [state, dispatch] = useReducer(sitesReducer, initialSitesState)
-  const { meta, site, sites, page, secret, edited, faction, loading, search } = state
+  const [state, dispatch] = useReducer(schticksReducer, initialSchticksState)
+  const { loading, edited, category, path, name, schticks, meta, page } = state
   const router = useRouter()
   const { query } = router
 
@@ -40,23 +41,23 @@ export default function Home({ page:initialPage }: HomeProps) {
   const queryNum = query.page ? parseInt(query.page as string, 10) : null
   const initialPageNum = queryNum || initialPage || 1
 
-  const fetchPayload = { search: search || site.name, faction_id: faction.id, secret, page }
+  const fetchPayload = { page, category, path, name }
 
   console.log({ page, queryNum, initialPageNum })
 
   useEffect(() => {
     console.log("checking page and initialPageNum", { page, initialPageNum })
     if (page !== initialPageNum) {
-      dispatch({ type: SitesActions.PAGE, payload: initialPageNum || 1 })
+      dispatch({ type: SchticksActions.PAGE, payload: initialPageNum || 1 })
     }
   }, [edited, page, initialPageNum])
 
   useEffect(() => {
     async function reload() {
       try {
-        console.log("Fetching Sites page ", { page, initialPageNum })
-        const data = await client.getSites(fetchPayload)
-        dispatch({ type: SitesActions.SITES, payload: data })
+        console.log("Fetching Schticks page ", { page, initialPageNum })
+        const data = await client.getSchticks(fetchPayload)
+        dispatch({ type: SchticksActions.SCHTICKS, payload: data })
       } catch(error) {
         console.log("Error fetching schticks:", error)
         toastError()
@@ -85,19 +86,19 @@ export default function Home({ page:initialPage }: HomeProps) {
   return (
     <>
       <Head>
-        <title>Sites</title>
+        <title>Schticks</title>
       </Head>
       <main>
         <Layout>
           <Container maxWidth="md" sx={{paddingTop: 2, minWidth: 1000}}>
             <ButtonBar>
-              <FilterSites state={state} dispatch={dispatch} />
+              <FilterSchticks state={state} dispatch={dispatch} />
+              <CreateSchtickButton state={state} dispatch={dispatch} />
             </ButtonBar>
-            <Sites state={state} dispatch={dispatch} pagination={true} />
+            <Schticks state={state} dispatch={dispatch} pagination={true} />
           </Container>
         </Layout>
       </main>
     </>
   )
 }
-

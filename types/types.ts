@@ -70,8 +70,24 @@ export interface Faction {
   image_url: string | null
 }
 
+export interface SuggestionsResponse {
+  Character: Character[]
+  Vehicle: Vehicle[]
+  Party: Party[]
+  Faction: Faction[]
+  Site: Site[]
+  Schtick: Schtick[]
+  Weapon: Weapon[]
+  meta: PaginationMeta
+}
+
 export interface PartiesResponse {
   parties: Party[]
+  factions: Faction[]
+  meta: PaginationMeta
+}
+
+export interface FactionsResponse {
   factions: Faction[]
   meta: PaginationMeta
 }
@@ -470,6 +486,7 @@ export interface User {
   id?: string
   email: string
   password?: string
+  name: string
   first_name?: string
   last_name?: string
   gamemaster?: boolean
@@ -648,6 +665,7 @@ export const defaultFight:Fight = {
 
 export const defaultUser:User = {
   email: '',
+  name: '',
 }
 
 export const defaultEffect:Effect = {

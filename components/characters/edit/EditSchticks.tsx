@@ -63,7 +63,7 @@ export default function EditSchticks({}: EditSchticksProps) {
   }, [user, edited])
 
   const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
-    dispatch({ type: SchticksActions.PAGE, name: "page", value })
+    dispatch({ type: SchticksActions.PAGE, payload: value })
   }
 
   const rowsOfData = rowMap<SchtickType>(schticks, 2)

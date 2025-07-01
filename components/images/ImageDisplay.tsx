@@ -2,9 +2,9 @@ import { Avatar, Dialog, DialogTitle, DialogContent, IconButton, Box, Card, Card
 import ImageIcon from "@mui/icons-material/Image"
 import { useState } from "react"
 import { StyledDialog } from "@/components/StyledFields"
-import type { Character, Site, Party } from "@/types/types"
+import type { Weapon, Site, Party, Vehicle, Character, User, Faction } from "@/types/types"
 
-type Entity = Site | Party | Character
+type Entity = Weapon | Site | Party | Vehicle | Character | User | Faction
 
 interface ImageDisplayProps {
   entity: Entity
