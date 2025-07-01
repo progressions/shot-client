@@ -138,7 +138,7 @@ export default function FactionModal({ state, dispatch, open, setOpen, faction:i
             <SaveButton disabled={loading} onClick={updateFaction}>{ faction?.id ? "Save" : "Add" }</SaveButton>
           </Stack>
         </Stack>
-        { faction?.id && <ImageManager name="faction" entity={faction} updateEntity={updateFaction} deleteImage={deleteImage} apiEndpoint="allFactions" /> }
+        { faction?.id && <ImageManager name="faction" entity={faction} updateEntity={updateFaction} deleteImage={deleteImage} apiEndpoint="factions" /> }
       </Stack>
     </>
   )
