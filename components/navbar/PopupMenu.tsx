@@ -34,48 +34,43 @@ export default function MenuPopupState({ campaign, user }: MenuPopupStateProps) 
                 </Link>
               </MenuItem>
             }
-            { campaign?.id &&
+            { campaign?.id && <>
               <MenuItem onClick={popupState.close}>
                 <Link underline="none" color="inherit" href='/'>
                   Fights
                 </Link>
               </MenuItem>
-            }
-            { campaign?.id &&
               <MenuItem onClick={popupState.close}>
                 <Link underline="none" color="inherit" href='/characters'>
                   Characters
                 </Link>
               </MenuItem>
-            }
-            { campaign?.id &&
               <MenuItem onClick={popupState.close}>
                 <Link underline="none" color="inherit" href='/sites'>
-                  Feng Shui Sites
+                  Sites
                 </Link>
               </MenuItem>
-            }
-            { campaign?.id &&
+              <MenuItem onClick={popupState.close}>
+                <Link underline="none" color="inherit" href='/factions'>
+                  Factions
+                </Link>
+              </MenuItem>
               <MenuItem onClick={popupState.close}>
                 <Link underline="none" color="inherit" href='/parties'>
                   Parties
                 </Link>
               </MenuItem>
-            }
-            { campaign?.id &&
               <MenuItem onClick={popupState.close}>
                 <Link underline="none" color="inherit" href='/weapons'>
                   Weapons
                 </Link>
               </MenuItem>
-            }
-            { campaign?.id &&
               <MenuItem onClick={popupState.close}>
                 <Link underline="none" color="inherit" href='/schticks'>
                   Schticks
                 </Link>
               </MenuItem>
-            }
+            </>}
             { user?.admin &&
               <MenuItem onClick={popupState.close}>
                 <Link underline="none" color="inherit" href='/admin/users'>
