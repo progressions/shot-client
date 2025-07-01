@@ -1,5 +1,6 @@
 import { DialogActions, DialogContent, colors, Stack, Button, Dialog, DialogTitle, Divider, Box, Typography, Autocomplete, Paper, TextField } from "@mui/material"
 import { styled } from "@mui/material/styles"
+import styles from "@/components/editor/Editor.module.scss"
 
 const SelectProps = {
   MenuProps: {

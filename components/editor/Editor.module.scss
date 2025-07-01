@@ -170,6 +170,18 @@
   color: #006064;
 }
 
+a.inlineMention {
+  border-radius: 4px;
+  padding: 2px 4px;
+  color: var(--white);
+  font-weight: bold;
+
+  &:hover {
+    background: #1e40af !important;
+    color: var(--white) !important;
+  }
+}
+
 .mentionPopup {
   background: var(--black);
   border: 1px solid var(--grey-800);

@@ -16,6 +16,7 @@ import { FightsActions } from '@/reducers/fightsState'
 import { useEffect, useState } from 'react'
 import ReactDOMServer from "react-dom/server"
 import CS from "@/services/CharacterService"
+import { CharacterLink } from "@/components/links"
 
 interface FightParams {
   fight: Fight
@@ -89,9 +90,7 @@ export default function FightDetail({ fight, dispatch }: FightParams) {
 
   const actors = user?.id ? (<>
     { fight.actors?.map((actor, index) => (
-      <Link key={actor.id} href={CS.isVehicle(actor) ? `/vehicles/${actor.id}` : `/characters/${actor.id}`} className="mention" target="_blank" data-mention-id={actor.id} data-mention-class-name={ CS.isVehicle(actor) ? 'Vehicle' : 'Character' }>
-        {actor.name}
-      </Link>
+      <CharacterLink character={actor} />
     )) }
   </>) : null
 
