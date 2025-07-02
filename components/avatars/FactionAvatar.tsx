@@ -1,46 +1,17 @@
-import { Avatar, IconButton } from "@mui/material"
+import { Avatar, Link } from "@mui/material"
 import { RefObject, useRef, useEffect } from "react"
 import { useClient } from "@/contexts"
-import { usePopup } from "@/components/popups"
 import type { Faction } from "@/types/types"
 
 interface FactionAvatarProps {
   faction: Faction
   href?: string
+  disablePopup?: boolean
 }
 
-interface CustomAvatarProps {
-  "data-mention-id"?: string
-  "data-mention-class-name"?: string
-}
-
-const CustomAvatar = Avatar as React.ComponentType<
-  React.ComponentProps<typeof Avatar> & CustomAvatarProps
->
-
-const FactionAvatar = ({ faction, href }: FactionAvatarProps) => {
+const FactionAvatar = ({ faction, href, disablePopup }: FactionAvatarProps) => {
   const { user, client } = useClient()
   const avatarRef: RefObject<HTMLDivElement> = useRef(null)
-  const { triggerPopup } = usePopup({ containerRef: avatarRef, user, client })
-
-  useEffect(() => {
-    const avatar = avatarRef.current
-    if (!avatar) return
-
-    const handleMouseOver = () => {
-      triggerPopup({
-        mentionId: faction?.id || "",
-        mentionClass: "Faction",
-        target: avatar,
-      })
-    }
-
-    avatar.addEventListener("mouseover", handleMouseOver)
-
-    return () => {
-      avatar.removeEventListener("mouseover", handleMouseOver)
-    }
-  }, [faction, triggerPopup])
 
   if (!faction?.id) {
     return <></>
@@ -51,7 +22,7 @@ const FactionAvatar = ({ faction, href }: FactionAvatarProps) => {
     : ""
 
   const baseAvatar = (
-    <CustomAvatar
+    <Avatar
       alt={faction.name}
       src={faction.image_url || ""}
       ref={avatarRef}
@@ -59,14 +30,24 @@ const FactionAvatar = ({ faction, href }: FactionAvatarProps) => {
       data-mention-class-name="Faction"
     >
       {initials}
-    </CustomAvatar>
+    </Avatar>
   )
+
+  if (disablePopup) {
+    return baseAvatar
+  }
 
   if (href) {
     return (
-      <IconButton target="_blank" href={href} sx={{ padding: 0 }}>
+      <Link
+        href={href}
+        target="_blank"
+        data-mention-id={faction.id}
+        data-mention-class-name="Faction"
+        sx={{ padding: 0, ml: -1.5 }}
+      >
         {baseAvatar}
-      </IconButton>
+      </Link>
     )
   }
 

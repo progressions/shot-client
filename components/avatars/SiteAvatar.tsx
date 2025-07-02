@@ -1,46 +1,15 @@
-import { Avatar, IconButton } from "@mui/material"
+import { Avatar, Link } from "@mui/material"
 import { RefObject, useRef, useEffect } from "react"
-import { useClient } from "@/contexts"
-import { usePopup } from "@/components/popups"
 import type { Site } from "@/types/types"
 
 interface SiteAvatarProps {
   site: Site
   href?: string
+  disablePopup?: boolean
 }
 
-interface CustomAvatarProps {
-  "data-mention-id"?: string
-  "data-mention-class-name"?: string
-}
-
-const CustomAvatar = Avatar as React.ComponentType<
-  React.ComponentProps<typeof Avatar> & CustomAvatarProps
->
-
-const SiteAvatar = ({ site, href }: SiteAvatarProps) => {
-  const { user, client } = useClient()
+const SiteAvatar = ({ site, href, disablePopup }: SiteAvatarProps) => {
   const avatarRef: RefObject<HTMLDivElement> = useRef(null)
-  const { triggerPopup } = usePopup({ containerRef: avatarRef, user, client })
-
-  useEffect(() => {
-    const avatar = avatarRef.current
-    if (!avatar) return
-
-    const handleMouseOver = () => {
-      triggerPopup({
-        mentionId: site?.id || "",
-        mentionClass: "Site",
-        target: avatar,
-      })
-    }
-
-    avatar.addEventListener("mouseover", handleMouseOver)
-
-    return () => {
-      avatar.removeEventListener("mouseover", handleMouseOver)
-    }
-  }, [site, triggerPopup])
 
   if (!site?.id) {
     return <></>
@@ -51,22 +20,30 @@ const SiteAvatar = ({ site, href }: SiteAvatarProps) => {
     : ""
 
   const baseAvatar = (
-    <CustomAvatar
+    <Avatar
       alt={site.name}
       src={site.image_url || ""}
       ref={avatarRef}
-      data-mention-id={site.id}
-      data-mention-class-name="Site"
     >
       {initials}
-    </CustomAvatar>
+    </Avatar>
   )
+
+  if (disablePopup) {
+    return baseAvatar
+  }
 
   if (href) {
     return (
-      <IconButton target="_blank" href={href} sx={{ padding: 0 }}>
+      <Link
+        href={href}
+        target="_blank"
+        data-mention-id={site.id}
+        data-mention-class-name="Site"
+        sx={{ padding: 0, ml: -1.5 }}
+      >
         {baseAvatar}
-      </IconButton>
+      </Link>
     )
   }
 

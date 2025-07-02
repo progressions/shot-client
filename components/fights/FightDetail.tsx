@@ -90,7 +90,7 @@ export default function FightDetail({ fight, dispatch }: FightParams) {
 
   const actors = user?.id ? (<>
     { fight.actors?.map((actor, index) => (
-      <CharacterLink character={actor} />
+      <CharacterLink key={actor.id} character={actor} />
     )) }
   </>) : null
 

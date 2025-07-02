@@ -2,46 +2,41 @@ import { Box, Typography, Stack } from "@mui/material"
 import styles from "@/components/editor/Editor.module.scss"
 import type { Schtick, User } from "@/types/types"
 import { defaultSchtick } from "@/types/types"
-import Client from "@/utils/Client"
 import { useState, useEffect } from "react"
 import { RichTextRenderer } from "@/components/editor"
+import { useClient } from "@/contexts"
 
 interface SchtickPopupProps {
-  mentionId: string
-  mentionClass: string
-  user: User | null // Allow user to be nullable
-  client: Client
+  id: string
 }
 
 export default function SchtickPopup({
-  user,
-  client,
-  mentionId,
-  mentionClass,
+  id
 }: SchtickPopupProps) {
+  const { user, client } = useClient()
   const [schtick, setSchtick] = useState<Schtick>(defaultSchtick)
 
   useEffect(() => {
     const fetchSchtick = async () => {
       try {
-        const fetchedSchtick = await client.getSchtick({ id: mentionId })
+        const fetchedSchtick = await client.getSchtick({ id })
         console.log("Fetched schtick:", fetchedSchtick)
         if (fetchedSchtick) {
           setSchtick(fetchedSchtick)
         } else {
-          console.error(`Schtick with ID ${mentionId} not found`)
+          console.error(`Schtick with ID ${id} not found`)
         }
       } catch (error) {
         console.error("Error fetching schtick:", error)
       }
     }
 
-    if (user?.id && mentionId) {
+    if (user?.id && id) {
       fetchSchtick().catch((error) => {
         console.error("Failed to fetch schtick:", error)
       })
     }
-  }, [user, mentionId, client])
+  }, [user, id, client])
 
   if (!user?.id) {
     return null // Use null instead of <></> for consistency

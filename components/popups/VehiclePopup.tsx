@@ -1,49 +1,45 @@
 import { Box, Typography, Stack } from "@mui/material"
 import styles from "@/components/editor/Editor.module.scss"
-import type { Character, User } from "@/types/types"
-import { defaultCharacter } from "@/types/types"
+import type { Vehicle, User } from "@/types/types"
+import { defaultVehicle } from "@/types/types"
 import Client from "@/utils/Client"
 import { useState, useEffect } from "react"
 import VehicleAvatar from "@/components/avatars/VehicleAvatar"
 import VS from "@/services/VehicleService"
 import GamemasterOnly from "@/components/GamemasterOnly"
+import { useClient } from "@/contexts"
 
 interface VehiclePopupProps {
-  mentionId: string
-  mentionClass: string
-  user: User | null // Allow user to be nullable
-  client: Client
+  id: string
 }
 
 export default function CharacterPopup({
-  user,
-  client,
-  mentionId,
-  mentionClass,
+  id
 }: VehiclePopupProps) {
-  const [vehicle, setVehicle] = useState<Character>(defaultCharacter)
+  const { user, client } = useClient()
+  const [vehicle, setVehicle] = useState<Vehicle>(defaultVehicle)
 
   useEffect(() => {
     const fetchVehicle = async () => {
       try {
-        const fetchedVehicle = await client.getVehicle({ id: mentionId })
+        const fetchedVehicle = await client.getVehicle({ id })
         console.log("Fetched vehicle:", fetchedVehicle)
         if (fetchedVehicle) {
           setVehicle(fetchedVehicle)
         } else {
-          console.error(`Vehicle with ID ${mentionId} not found`)
+          console.error(`Vehicle with ID ${id} not found`)
         }
       } catch (error) {
         console.error("Error fetching vehicle:", error)
       }
     }
 
-    if (user?.id && mentionId) {
+    if (user?.id && id) {
       fetchVehicle().catch((error) => {
         console.error("Failed to fetch vehicle:", error)
       })
     }
-  }, [user, mentionId, client])
+  }, [user, id, client])
 
   if (!user?.id) {
     return null

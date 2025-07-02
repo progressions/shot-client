@@ -2,47 +2,42 @@ import { Box, Typography, Stack } from "@mui/material"
 import styles from "@/components/editor/Editor.module.scss"
 import type { Faction, User } from "@/types/types"
 import { defaultFaction } from "@/types/types"
-import Client from "@/utils/Client"
 import { useState, useEffect } from "react"
 import { RichTextRenderer } from "@/components/editor"
 import FactionAvatar from "@/components/avatars/FactionAvatar"
+import { useClient } from "@/contexts"
 
 interface FactionPopupProps {
-  mentionId: string
-  mentionClass: string
-  user: User | null // Allow user to be nullable
-  client: Client
+  id: string
 }
 
 export default function FactionPopup({
-  user,
-  client,
-  mentionId,
-  mentionClass,
+  id
 }: FactionPopupProps) {
+  const { user, client } = useClient()
   const [faction, setFaction] = useState<Faction>(defaultFaction)
 
   useEffect(() => {
     const fetchFaction = async () => {
       try {
-        const fetchedFaction = await client.getFaction({ id: mentionId })
+        const fetchedFaction = await client.getFaction({ id })
         console.log("Fetched faction:", fetchedFaction)
         if (fetchedFaction) {
           setFaction(fetchedFaction)
         } else {
-          console.error(`Faction with ID ${mentionId} not found`)
+          console.error(`Faction with ID ${id} not found`)
         }
       } catch (error) {
         console.error("Error fetching faction:", error)
       }
     }
 
-    if (user?.id && mentionId) {
+    if (user?.id && id) {
       fetchFaction().catch((error) => {
         console.error("Failed to fetch faction:", error)
       })
     }
-  }, [user, mentionId, client])
+  }, [user, id, client])
 
   if (!user?.id) {
     return null // Use null instead of <></> for consistency
@@ -66,7 +61,7 @@ export default function FactionPopup({
   return (
     <Box className={styles.mentionPopup}>
       <Stack direction="row" alignItems="center" spacing={2} mb={1}>
-        <FactionAvatar faction={faction} />
+        <FactionAvatar faction={faction} disablePopup={true} />
         <Typography>{faction.name}</Typography>
       </Stack>
       <Typography variant="caption" sx={{ textTransform: "uppercase" }}>

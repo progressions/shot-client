@@ -31,7 +31,7 @@ export default function ActionValueDisplay({ name, description, label, character
   const color = colorForValue(changed)
 
   const value = (name === "Fortune") ?
-    <Typography variant="body1" color={color} sx={{fontWeight: "normal"}}>{character.action_values["Fortune"]} / {character.action_values["Max Fortune"]}</Typography> :
+    <Typography variant="body1" color={color} sx={{fontWeight: "normal"}}>{CS.fortune(character)} / {CS.maxFortune(character)}</Typography> :
     <Typography variant="body1" color={color} sx={{fontWeight: "normal"}}>{actionValue}</Typography>
 
   if (character.action_values[name]) {

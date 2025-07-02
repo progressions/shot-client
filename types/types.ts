@@ -337,7 +337,7 @@ export enum CharacterTypes {
   UberBoss = "Uber-Boss",
 }
 
-export type CharacterType = keyof typeof CharacterTypes
+export type CharacterType = "PC" | "Ally" | "Mook" | "Featured Foe" | "Boss" | "Uber-Boss"
 
 export interface ID {
   id: string

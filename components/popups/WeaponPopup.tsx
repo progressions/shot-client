@@ -2,47 +2,42 @@ import { Box, Typography, Stack } from "@mui/material"
 import styles from "@/components/editor/Editor.module.scss"
 import type { Weapon, User } from "@/types/types"
 import { defaultWeapon } from "@/types/types"
-import Client from "@/utils/Client"
 import { useState, useEffect } from "react"
 import { RichTextRenderer } from "@/components/editor"
 import WeaponAvatar from "@/components/avatars/WeaponAvatar"
+import { useClient } from "@/contexts"
 
 interface WeaponPopupProps {
-  mentionId: string
-  mentionClass: string
-  user: User | null // Allow user to be nullable
-  client: Client
+  id: string
 }
 
 export default function WeaponPopup({
-  user,
-  client,
-  mentionId,
-  mentionClass,
+  id
 }: WeaponPopupProps) {
+  const { user, client } = useClient()
   const [weapon, setWeapon] = useState<Weapon>(defaultWeapon)
 
   useEffect(() => {
     const fetchWeapon = async () => {
       try {
-        const fetchedWeapon = await client.getWeapon({ id: mentionId })
+        const fetchedWeapon = await client.getWeapon({ id })
         console.log("Fetched weapon:", fetchedWeapon)
         if (fetchedWeapon) {
           setWeapon(fetchedWeapon)
         } else {
-          console.error(`Weapon with ID ${mentionId} not found`)
+          console.error(`Weapon with ID ${id} not found`)
         }
       } catch (error) {
         console.error("Error fetching weapon:", error)
       }
     }
 
-    if (user?.id && mentionId) {
+    if (user?.id && id) {
       fetchWeapon().catch((error) => {
         console.error("Failed to fetch weapon:", error)
       })
     }
-  }, [user, mentionId, client])
+  }, [user, id, client])
 
   if (!user?.id) {
     return null // Use null instead of <></> for consistency

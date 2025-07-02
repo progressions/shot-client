@@ -2,50 +2,45 @@ import { Link, Box, Typography, Stack } from "@mui/material"
 import styles from "@/components/editor/Editor.module.scss"
 import type { Character, User } from "@/types/types"
 import { DescriptionKeys as D, defaultCharacter } from "@/types/types"
-import Client from "@/utils/Client"
 import { useState, useEffect } from "react"
 import CharacterAvatar from "@/components/avatars/CharacterAvatar"
 import CS from "@/services/CharacterService"
 import GamemasterOnly from "@/components/GamemasterOnly"
 import { RichTextRenderer } from "@/components/editor"
 import ReactDOMServer from "react-dom/server"
+import { useClient } from "@/contexts"
 
 interface CharacterPopupProps {
-  mentionId: string
-  mentionClass: string
-  user: User | null // Allow user to be nullable
-  client: Client
+  id: string
 }
 
 export default function CharacterPopup({
-  user,
-  client,
-  mentionId,
-  mentionClass,
+  id,
 }: CharacterPopupProps) {
+  const { user, client } = useClient()
   const [character, setCharacter] = useState<Character>(defaultCharacter)
 
   useEffect(() => {
     const fetchCharacter = async () => {
       try {
-        const fetchedCharacter = await client.getCharacter({ id: mentionId })
+        const fetchedCharacter = await client.getCharacter({ id })
         console.log("Fetched character:", fetchedCharacter)
         if (fetchedCharacter) {
           setCharacter(fetchedCharacter)
         } else {
-          console.error(`Character with ID ${mentionId} not found`)
+          console.error(`Character with ID ${id} not found`)
         }
       } catch (error) {
         console.error("Error fetching character:", error)
       }
     }
 
-    if (user?.id && mentionId) {
+    if (user?.id && id) {
       fetchCharacter().catch((error) => {
         console.error("Failed to fetch character:", error)
       })
     }
-  }, [user, mentionId, client])
+  }, [user, id, client])
 
   if (!user?.id) {
     return null // Use null instead of <></> for consistency
@@ -53,10 +48,10 @@ export default function CharacterPopup({
 
   const description = CS.isPC(character) ? CS.melodramaticHook(character) : CS.description(character)
 
-  const charType = CS.type(character) ? <Link data-mention-id={CS.type(character)} data-mention-class-name="Type">
+  const charType = CS.type(character) ? <Link href="/" data-mention-id={CS.type(character)} data-mention-class-name="Type">
       {CS.type(character)}
     </Link> : null
-  const charArchetype = CS.archetype(character) ? <Link data-mention-id={CS.archetype(character)} data-mention-class-name="Archetype">
+  const charArchetype = CS.archetype(character) ? <Link href="/" data-mention-id={CS.archetype(character)} data-mention-class-name="Archetype">
     {CS.archetype(character)}
   </Link> : null
   const factionName = CS.factionName(character) ? <Link href={`/factions/${character.faction_id}`} data-mention-id={character.faction_id} data-mention-class-name="Faction">
@@ -73,17 +68,16 @@ export default function CharacterPopup({
 
   if (!character?.id) {
     return (
-      <Box className={styles.mentionPopup}>
-        <Typography variant="body2">
-          Loading...
-        </Typography>
-      </Box>
+      <Typography variant="body2">
+        Loading...
+      </Typography>
     )
   }
+
   return (
-    <Box className={styles.mentionPopup}>
+    <>
       <Stack direction="row" alignItems="center" spacing={2} mb={1}>
-        <CharacterAvatar character={character} />
+        <CharacterAvatar character={character} disablePopup={true} />
         <Typography>{character.name}</Typography>
       </Stack>
       <Typography variant="caption" className={styles.popupSubhead} sx={{ textTransform: "uppercase" }}>
@@ -133,6 +127,6 @@ export default function CharacterPopup({
           </Typography>
         </Box>
       </GamemasterOnly>
-    </Box>
+    </>
   )
 }

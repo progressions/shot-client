@@ -45,16 +45,16 @@ export default function App({ Component, pageProps: { session, ...pageProps } }:
         <SessionProvider session={session}>
           <LocalStorageProvider>
             <ClientProvider>
-              <CampaignProvider>
-                <FightProvider>
-                  <WebSocketProvider>
-                    <ToastProvider>
-                      <Component {...pageProps} />
-                      <PopupToast />
-                    </ToastProvider>
-                  </WebSocketProvider>
-                </FightProvider>
-              </CampaignProvider>
+                <CampaignProvider>
+                  <FightProvider>
+                    <WebSocketProvider>
+                      <ToastProvider>
+                          <Component {...pageProps} />
+                          <PopupToast />
+                      </ToastProvider>
+                    </WebSocketProvider>
+                  </FightProvider>
+                </CampaignProvider>
             </ClientProvider>
           </LocalStorageProvider>
         </SessionProvider>

@@ -1,47 +1,16 @@
-import { Avatar, IconButton } from "@mui/material"
+import { Link, Avatar, IconButton } from "@mui/material"
 import { RefObject, useRef, useEffect } from "react"
-import { useClient } from "@/contexts"
-import { usePopup } from "@/components/popups"
 import type { Vehicle } from "@/types/types"
 import VS from "@/services/VehicleService"
 
 interface VehicleAvatarProps {
   vehicle: Vehicle
   href?: string
+  disablePopup?: boolean
 }
 
-interface CustomAvatarProps {
-  "data-mention-id"?: string
-  "data-mention-class-name"?: string
-}
-
-const CustomAvatar = Avatar as React.ComponentType<
-  React.ComponentProps<typeof Avatar> & CustomAvatarProps
->
-
-const VehicleAvatar = ({ vehicle, href }: VehicleAvatarProps) => {
-  const { user, client } = useClient()
+const VehicleAvatar = ({ vehicle, href, disablePopup }: VehicleAvatarProps) => {
   const avatarRef: RefObject<HTMLDivElement> = useRef(null)
-  const { triggerPopup } = usePopup({ containerRef: avatarRef, user, client })
-
-  useEffect(() => {
-    const avatar = avatarRef.current
-    if (!avatar) return
-
-    const handleMouseOver = () => {
-      triggerPopup({
-        mentionId: vehicle?.id || "",
-        mentionClass: "Vehicle",
-        target: avatar,
-      })
-    }
-
-    avatar.addEventListener("mouseover", handleMouseOver)
-
-    return () => {
-      avatar.removeEventListener("mouseover", handleMouseOver)
-    }
-  }, [vehicle, triggerPopup])
 
   if (!vehicle?.id) {
     return <></>
@@ -52,27 +21,23 @@ const VehicleAvatar = ({ vehicle, href }: VehicleAvatarProps) => {
     : ""
   const defaultTooltip = VS.name(vehicle) || "Unknown"
 
-  const baseAvatar = (
-    <CustomAvatar
+  const avatar = (
+    <Avatar
       alt={vehicle.name}
       src={vehicle.image_url || ""}
       ref={avatarRef}
-      data-mention-id={vehicle.id}
-      data-mention-class-name="Vehicle"
     >
       {initials}
-    </CustomAvatar>
+    </Avatar>
   )
 
-  if (href) {
-    return (
-      <IconButton target="_blank" href={href} sx={{ padding: 0 }}>
-        {baseAvatar}
-      </IconButton>
-    )
-  }
-
-  return baseAvatar
+  return disablePopup ? (
+    avatar
+  ) : (
+    <Link href={href} data-mention-id={vehicle.id} data-mention-class-name="Vehicle" sx={{ padding: 0, ml: -1.5 }}>
+      {avatar}
+    </Link>
+  )
 }
 
 export default VehicleAvatar

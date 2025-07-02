@@ -1,27 +1,35 @@
 import React from "react"
-import { Tooltip, AvatarGroup, Avatar, Typography } from "@mui/material"
-import type { Fight, Character } from "@/types/types"
-import { useWebSocket, useFight } from "@/contexts"
+import { AvatarGroup } from "@mui/material"
+import type { Character, Vehicle } from "@/types/types"
+import { useFight } from "@/contexts"
 import CharacterAvatar from "@/components/avatars/CharacterAvatar"
-import FS from "@/services/FightService"
+import VehicleAvatar from "@/components/avatars/VehicleAvatar" // Assumed import
 import CS from "@/services/CharacterService"
 
 interface CharacterAvatarsProps {
-  characters?: Character[]
+  characters?: Character[] | Vehicle[] // Allow both Character and Vehicle
 }
 
 const CharacterAvatars: React.FC<CharacterAvatarsProps> = ({ characters }) => {
   const { fight } = useFight()
 
   return (
-    <AvatarGroup max={20} sx={{mx: 2}}>
-      {(characters || [])
-        // .filter(character => CS.isCharacter(character))
-        .map((character, index) => (
-          <CharacterAvatar href={CS.isVehicle(character) ? `/vehicles/${character.id}` : `/characters/${character.id}`} character={character} key={`character_${character.id}_${index}`} />
-          )
+    <AvatarGroup max={20} sx={{ mx: 2 }}>
+      {(characters || []).map((character, index) =>
+        CS.isVehicle(character) ? (
+          <VehicleAvatar
+            href={`/vehicles/${character.id}`}
+            key={`${character.id}-${index}`}
+            vehicle={character}
+          />
+        ) : (
+          <CharacterAvatar
+            href={`/characters/${character.id}`}
+            key={`${character.id}-${index}`}
+            character={character}
+          />
         )
-      }
+      )}
     </AvatarGroup>
   )
 }

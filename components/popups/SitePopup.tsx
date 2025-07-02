@@ -2,47 +2,42 @@ import { Box, Typography, Stack } from "@mui/material"
 import styles from "@/components/editor/Editor.module.scss"
 import type { Site, User } from "@/types/types"
 import { defaultSite } from "@/types/types"
-import Client from "@/utils/Client"
 import { useState, useEffect } from "react"
 import { RichTextRenderer } from "@/components/editor"
 import SiteAvatar from "@/components/avatars/SiteAvatar"
+import { useClient } from "@/contexts"
 
 interface SitePopupProps {
-  mentionId: string
-  mentionClass: string
-  user: User | null // Allow user to be nullable
-  client: Client
+  id: string
 }
 
 export default function SitePopup({
-  user,
-  client,
-  mentionId,
-  mentionClass,
+  id
 }: SitePopupProps) {
+  const { user, client } = useClient()
   const [site, setSite] = useState<Site>(defaultSite)
 
   useEffect(() => {
     const fetchSite = async () => {
       try {
-        const fetchedSite = await client.getSite({ id: mentionId })
+        const fetchedSite = await client.getSite({ id })
         console.log("Fetched site:", fetchedSite)
         if (fetchedSite) {
           setSite(fetchedSite)
         } else {
-          console.error(`Site with ID ${mentionId} not found`)
+          console.error(`Site with ID ${id} not found`)
         }
       } catch (error) {
         console.error("Error fetching site:", error)
       }
     }
 
-    if (user?.id && mentionId) {
+    if (user?.id && id) {
       fetchSite().catch((error) => {
         console.error("Failed to fetch site:", error)
       })
     }
-  }, [user, mentionId, client])
+  }, [user, id, client])
 
   if (!user?.id) {
     return null // Use null instead of <></> for consistency
@@ -67,7 +62,7 @@ export default function SitePopup({
   return (
     <Box className={styles.mentionPopup}>
       <Stack direction="row" alignItems="center" spacing={2} mb={1}>
-        <SiteAvatar site={site} />
+        <SiteAvatar site={site} disablePopup={true} />
         <Typography>{site.name}</Typography>
       </Stack>
       <Typography variant="caption" sx={{ textTransform: "uppercase" }}>

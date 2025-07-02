@@ -75,6 +75,8 @@ const Editor = ({ name, value, onChange }) => {
       Faction: `/factions/${id}`,
       Schtick: `/schticks/${id}`,
       Weapon: `/weapons/${id}`,
+      Type: `/`,
+      Archetype: `/`,
     }
     return urlMap[className] || ""
   }

@@ -2,47 +2,42 @@ import { Box, Typography, Stack } from "@mui/material"
 import styles from "@/components/editor/Editor.module.scss"
 import type { Party, User } from "@/types/types"
 import { defaultParty } from "@/types/types"
-import Client from "@/utils/Client"
 import { useState, useEffect } from "react"
 import { RichTextRenderer } from "@/components/editor"
 import PartyAvatar from "@/components/avatars/PartyAvatar"
+import { useClient } from "@/contexts"
 
 interface PartyPopupProps {
-  mentionId: string
-  mentionClass: string
-  user: User | null // Allow user to be nullable
-  client: Client
+  id: string
 }
 
 export default function PartyPopup({
-  user,
-  client,
-  mentionId,
-  mentionClass,
+  id
 }: PartyPopupProps) {
+  const { user, client } = useClient()
   const [party, setParty] = useState<Party>(defaultParty)
 
   useEffect(() => {
     const fetchParty = async () => {
       try {
-        const fetchedParty = await client.getParty({ id: mentionId })
+        const fetchedParty = await client.getParty({ id })
         console.log("Fetched party:", fetchedParty)
         if (fetchedParty) {
           setParty(fetchedParty)
         } else {
-          console.error(`Party with ID ${mentionId} not found`)
+          console.error(`Party with ID ${id} not found`)
         }
       } catch (error) {
         console.error("Error fetching party:", error)
       }
     }
 
-    if (user?.id && mentionId) {
+    if (user?.id && id) {
       fetchParty().catch((error) => {
         console.error("Failed to fetch party:", error)
       })
     }
-  }, [user, mentionId, client])
+  }, [user, id, client])
 
   if (!user?.id) {
     return null // Use null instead of <></> for consistency
@@ -66,7 +61,7 @@ export default function PartyPopup({
   return (
     <Box className={styles.mentionPopup}>
       <Stack direction="row" alignItems="center" spacing={2} mb={1}>
-        <PartyAvatar party={party} />
+        <PartyAvatar party={party} disablePopup={true} />
         <Typography>{party.name}</Typography>
       </Stack>
       <Typography variant="caption" sx={{ textTransform: "uppercase" }}>

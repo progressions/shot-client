@@ -3,7 +3,6 @@ import DOMPurify from 'dompurify';
 import { StyledRichText } from '@/components/StyledFields';
 import { useClient } from '@/contexts';
 import { useRef } from 'react';
-import { usePopup } from '@/components/popups/usePopup';
 import styles from "@/components/editor/Editor.module.scss";
 
 interface RichTextRendererProps {
@@ -17,8 +16,6 @@ export default function RichTextRenderer({ html }: RichTextRendererProps) {
   const sanitizedHtml = DOMPurify.sanitize(html || '', {
     ADD_ATTR: ['target', 'rel', 'data-mention-id', 'data-mention-class-name'],
   });
-
-  usePopup({ containerRef, user, client });
 
   const addMouseOverAttributes = (htmlString: string) => {
     const parser = new DOMParser();
@@ -34,9 +31,10 @@ export default function RichTextRenderer({ html }: RichTextRendererProps) {
 
   return (
     <StyledRichText
+      component="div"
       className={styles.richText}
       ref={containerRef}
-      dangerouslySetInnerHTML={{ __html: addMouseOverAttributes(sanitizedHtml) }}
+      dangerouslySetInnerHTML={{ __html: sanitizedHtml }}
     />
   );
 }

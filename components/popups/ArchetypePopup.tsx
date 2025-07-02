@@ -4,10 +4,10 @@ import { RichTextRenderer } from "@/components/editor"
 import ReactDOMServer from "react-dom/server"
 
 interface ArchetypePopupProps {
-  mentionId: string
+  id: string
 }
 
-const descriptions: Record<ArchetypePopupProps["mentionId"], JSX.Element> = {
+const descriptions: Record<ArchetypePopupProps["id"], JSX.Element> = {
   "Killer": <p>A character who is a ruthless and efficient killer, often driven by personal motives or a dark past.</p>,
   "Everyday Hero": <p>A character who embodies the spirit of the common person, often facing challenges with resilience and determination.</p>,
   "Magic Cop": <p>A character who combines the roles of law enforcement and magical abilities, often solving crimes with a supernatural twist.</p>,
@@ -30,14 +30,14 @@ const descriptions: Record<ArchetypePopupProps["mentionId"], JSX.Element> = {
   "Big Bruiser": <p>A character who relies on brute strength and physical power, often intimidating others with their sheer size and force.</p>,
 }
 
-export default function ArchetypePopup({ mentionId }: ArchetypePopupProps) {
-  const description = descriptions[mentionId] || <p>Unknown character type.</p>
+export default function ArchetypePopup({ id }: ArchetypePopupProps) {
+  const description = descriptions[id] || <p>Unknown character type.</p>
   const html = ReactDOMServer.renderToStaticMarkup(description)
 
   return (
     <Box className={styles.mentionPopup}>
       <Stack direction="row" alignItems="center" spacing={2} mb={1}>
-        <Typography>{mentionId}</Typography>
+        <Typography>{id}</Typography>
       </Stack>
       <Typography variant="caption" sx={{ textTransform: "uppercase" }}>
         Archetype
