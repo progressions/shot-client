@@ -6,13 +6,14 @@ import type { Character, InputParamsType } from "@/types/types"
 import { defaultCharacter } from "@/types/types"
 
 interface CharactersAutocompleteParams {
-  label?: string,
-  character: Character,
+  label?: string
+  character: Character
   setCharacter: (character: Character) => void
   disabled: boolean
+  excludeCharacters?: Character[]
 }
 
-export default function CharactersAutocomplete({ label, character, setCharacter, disabled }: CharactersAutocompleteParams) {
+export default function CharactersAutocomplete({ label, character, setCharacter, disabled, excludeCharacters }: CharactersAutocompleteParams) {
   const { fight} = useFight()
   const { client } = useClient()
   const [characters, setCharacters] = useState<Character[]>([])
@@ -20,7 +21,10 @@ export default function CharactersAutocomplete({ label, character, setCharacter,
 
   useEffect(() => {
     const getCharacters = async () => {
-      const data = await client.getCharactersInFight(fight)
+      let data = await client.getCharactersInFight(fight)
+      if (excludeCharacters) {
+        data = data.filter(c => !excludeCharacters.some(exclude => exclude.id === c.id))
+      }
       setCharacters(data)
       setLoading(false)
     }
@@ -28,7 +32,7 @@ export default function CharactersAutocomplete({ label, character, setCharacter,
     if (fight?.id && client) {
       getCharacters()
     }
-  }, [client, fight])
+  }, [client, fight, excludeCharacters])
 
   function handleSelect(event: React.ChangeEvent<HTMLInputElement>, newValue: Character) {
     setCharacter(newValue || defaultCharacter)

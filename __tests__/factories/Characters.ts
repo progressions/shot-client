@@ -5,6 +5,7 @@ import { derringer, ak47 } from "@/__tests__/factories/Weapons"
 export const brick: Character = {
   ...defaultCharacter,
   name: "Brick Manly",
+  id: "brick",
   action_values: {
     ...defaultCharacter.action_values,
     "Type": CharacterTypes.PC,
@@ -24,6 +25,7 @@ export const brick: Character = {
 export const carolina: Character = {
   ...defaultCharacter,
   name: "Carolina Kominsky",
+  id: "carolina",
   action_values: {
     ...defaultCharacter.action_values,
     "Type": CharacterTypes.PC,
@@ -48,6 +50,7 @@ export const carolina: Character = {
 export const shing: Character = {
   ...defaultCharacter,
   name: "Ugly Shing",
+  id: "shing",
   action_values: {
     ...defaultCharacter.action_values,
     "Type": CharacterTypes.Boss,
@@ -67,6 +70,7 @@ export const shing: Character = {
 export const huanKen: Character = {
   ...defaultCharacter,
   name: "Huan Ken",
+  id: "huanKen",
   action_values: {
     ...defaultCharacter.action_values,
     "Type": CharacterTypes.UberBoss,
@@ -82,6 +86,7 @@ export const huanKen: Character = {
 export const hitman: Character = {
   ...defaultCharacter,
   name: "Hitman",
+  id: "hitman",
   action_values: {
     ...defaultCharacter.action_values,
     "Type": CharacterTypes.FeaturedFoe,
@@ -97,6 +102,7 @@ export const hitman: Character = {
 export const zombies: Character = {
   ...defaultCharacter,
   name: "Zombies",
+  id: "zombies",
   count: 15,
   action_values: {
     ...defaultCharacter.action_values,

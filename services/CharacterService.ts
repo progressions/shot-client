@@ -27,12 +27,13 @@ const CharacterService = {
   /* Writer functions, change the state */
 
   // Take a Smackdown, reduced by Toughness
-  takeSmackdown: function(character: Character, smackdown: number): Character {
+  takeSmackdown: function(character: Character, smackdown: number, initialToughness: number | undefined = undefined): Character {
+    const toughness = initialToughness == undefined ? this.toughness(character) : initialToughness
     if (this.isType(character, "Mook")) {
       return this.killMooks(character, smackdown)
     }
 
-    const wounds = this.calculateWounds(character, smackdown)
+    const wounds = this.calculateWounds(character, smackdown, toughness)
     const originalWounds = this.wounds(character)
     const impairments = this.calculateImpairments(character, originalWounds, originalWounds + wounds)
     const updatedCharacter = this.addImpairments(character, impairments)
@@ -169,8 +170,8 @@ const CharacterService = {
     return character.action_values["Marks of Death"] as number || 0
   },
 
-  calculateWounds: function(character: Character, smackdown: number): number {
-    const toughness = this.toughness(character)
+  calculateWounds: function(character: Character, smackdown: number, adjustedToughness: number | undefined = undefined): number {
+    const toughness = adjustedToughness === undefined ? this.toughness(character) : adjustedToughness
     const wounds = Math.max(0, smackdown - toughness)
 
     return wounds

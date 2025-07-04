@@ -1,15 +1,18 @@
-import { Stack, Box, ButtonGroup, Button, Tooltip } from '@mui/material'
-import BoltIcon from '@mui/icons-material/Bolt'
-import HeartBrokenIcon from '@mui/icons-material/HeartBroken'
-import EditIcon from '@mui/icons-material/Edit'
-import DeleteIcon from '@mui/icons-material/Delete'
-import NewReleasesIcon from '@mui/icons-material/NewReleases'
-import DirectionsRunIcon from '@mui/icons-material/DirectionsRun'
-import FavoriteIcon from '@mui/icons-material/Favorite'
+import { Stack, Box, ButtonGroup, Button, Tooltip } from "@mui/material"
+import BoltIcon from "@mui/icons-material/Bolt"
+import HeartBrokenIcon from "@mui/icons-material/HeartBroken"
+import EditIcon from "@mui/icons-material/Edit"
+import DeleteIcon from "@mui/icons-material/Delete"
+import NewReleasesIcon from "@mui/icons-material/NewReleases"
+import DirectionsRunIcon from "@mui/icons-material/DirectionsRun"
+import FavoriteIcon from "@mui/icons-material/Favorite"
+import RunCircleIcon from "@mui/icons-material/RunCircle"
 
 import GamemasterOnly from "@/components/GamemasterOnly"
 import PlayerTypeOnly from "@/components/PlayerTypeOnly"
-import { useClient } from "@/contexts/ClientContext"
+import { useClient } from "@/contexts"
+import CS from "@/services/CharacterService"
+import { useState } from "react"
 
 import type { Character, CharacterType } from "@/types/types"
 
@@ -22,18 +25,26 @@ interface ActionButtonsParams {
   editCharacter?: (character: Character) => void,
   deleteCharacter?: (character: Character) => void,
   takeDodgeAction?: (character: Character) => void,
+  cheeseItAction?: (character: Character) => void
 }
 
-export default function ActionButtons({ character, healWounds, takeWounds, takeConditionPoints, takeAction, editCharacter, deleteCharacter, takeDodgeAction }: ActionButtonsParams) {
+export default function ActionButtons({ character, healWounds, cheeseItAction, takeWounds, takeConditionPoints, takeAction, editCharacter, deleteCharacter, takeDodgeAction }: ActionButtonsParams) {
   const { user } = useClient()
+  const [cheeseItOpen, setCheeseItOpen] = useState(false)
 
-  const woundLabel = character.action_values["Type"] === "Mook" as CharacterType ? "Kill Mooks" : "Take Smackdown"
+  const woundLabel = CS.isMook(character) ? "Kill Mooks" : "Take Smackdown"
   const woundIcon = <HeartBrokenIcon color='error' />
 
-  const mainAttack = character?.action_values?.[character?.action_values?.["MainAttack"] as string]
-
   return (
-    <Stack direction="row" spacing={1} sx={{height: 30}}>
+    <Stack direction="row" spacing={1} sx={{width: 260, height: 30}} justifyContent="flex-end"  onMouseEnter={() => setCheeseItOpen(true)} onMouseLeave={() => setCheeseItOpen(false)}>
+      { cheeseItOpen && <ButtonGroup variant="contained" size="small">
+        { cheeseItAction && <Tooltip title="Cheese It" arrow>
+          <Button variant="contained" sx={{color: "black", backgroundColor: "#eb8334"}} onClick={() => cheeseItAction(character)}>
+            <RunCircleIcon sx={{width: 33, height: 33}} />
+          </Button>
+        </Tooltip> }
+      </ButtonGroup> }
+      { cheeseItOpen &&
       <ButtonGroup variant="contained" size="small">
         { takeWounds &&
           <Tooltip title={woundLabel} arrow>
@@ -63,7 +74,7 @@ export default function ActionButtons({ character, healWounds, takeWounds, takeC
             </Button>
           </Tooltip> }
         </GamemasterOnly>
-      </ButtonGroup>
+      </ButtonGroup> }
       <ButtonGroup variant="outlined" size="small" className="actionButtons">
         { takeDodgeAction && <Tooltip title="Dodge" arrow>
           <Button variant="contained" color="highlight" onClick={() => takeDodgeAction(character)}>

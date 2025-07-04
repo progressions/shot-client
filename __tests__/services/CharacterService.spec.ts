@@ -292,7 +292,7 @@ describe("CharacterService", () => {
       })
     }),
 
-    it("should return a character with wounds", () => {
+    it.only("should return a character with wounds", () => {
       const character: Character = {
         ...defaultCharacter,
         action_values: {

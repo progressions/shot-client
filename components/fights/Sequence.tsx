@@ -11,7 +11,7 @@ import PlayArrowIcon from '@mui/icons-material/PlayArrow'
 import RollInitiative from "@/components/fights/RollInitiative"
 import Initiative from "@/components/initiative/Initiative"
 import Locations from "@/components/fights/Locations"
-import EventsLog from "@/components/fights/EventsLog"
+import EventsLog from "@/components/fights/events/EventsLog"
 import GamemasterOnly from "@/components/GamemasterOnly"
 import { Toast, Fight } from "@/types/types"
 import { FightActions } from "@/reducers/fightState"

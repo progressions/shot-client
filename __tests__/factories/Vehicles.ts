@@ -1,6 +1,6 @@
 import type { Vehicle, Character } from "@/types/types"
 import { defaultVehicle, defaultCharacter } from "@/types/types"
-import { carolina, shing } from "@/__tests__/factories/Characters"
+import { brick, carolina, shing } from "@/__tests__/factories/Characters"
 import VS from "@/services/VehicleService"
 
 export function pursuer(vehicle: Vehicle, position: string) {
@@ -19,6 +19,8 @@ export function evader(vehicle: Vehicle, position: string) {
 export const brickMobile: Vehicle = {
   ...defaultVehicle,
   name: "Brickmobile",
+  driver: brick,
+  // Driving: 7
   action_values: {
     "Type": "PC",
     "Acceleration": 8,

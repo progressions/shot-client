@@ -473,6 +473,8 @@ describe("AttackReducerService", () => {
     }),
 
     it("30 mooks hit", () => {
+      expect(state.attacker).toEqual(zombies)
+      expect(state.target).toEqual(brick)
       // Each attack: Swerve 8 + Action Value 8 - Defense 13 = Outcome 3
       // Outcome 3 + Damage 7 - Toughness 7 = Wounds 3
       //

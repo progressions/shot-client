@@ -129,6 +129,21 @@ export default function CharacterDetails({ character, editingCharacter, setEditi
     }
   }
 
+  const cheeseItAction = async (character: Character): Promise<void> => {
+    try {
+      // add pending action to character
+      // await client.addPendingAction(character, fight, "cheesing it")
+      await client.actCharacter(character, fight, 3)
+      await FES.event(client, fight, character, `${character.name} is cheesing it!`, { shots: 3 })
+      toastSuccess(`${character.name} is cheesing it!`)
+      await addDodgeEffect(character)
+      dispatch({ type: FightActions.EDIT })
+    } catch(error) {
+      console.error(error)
+      toastError()
+    }
+  }
+
   const hideCharacter = async (character: Character | Vehicle): Promise<void> => {
     try {
       await client.hideCharacter(fight, character)
@@ -183,6 +198,7 @@ export default function CharacterDetails({ character, editingCharacter, setEditi
                   takeWounds={takeWounds}
                   takeAction={takeAction}
                   takeDodgeAction={takeDodgeAction}
+                  cheeseItAction={cheeseItAction}
                 />
               </PlayerTypeOnly>
               <PlayerTypeOnly character={character} only="Mook">

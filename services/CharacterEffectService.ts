@@ -17,10 +17,23 @@ const CharacterEffectService = {
     })
   },
 
+  adjustedDamage: function(character: Character, fight: Fight): [number, number] {
+    return this.adjustedActionValue(character, "Damage", fight, true)
+  },
+
   adjustedActionValue: function(character: Character, name: string, fight: Fight, ignoreImpairments: boolean = false): [number, number] {
     const effects = FS.characterEffects(fight, character)
     const matchingEffects = this.effectsForCharacter(character, effects, name)
     const value1 = CS.rawActionValue(character, name)
+    const value2 = value1 - (ignoreImpairments ? 0 : CS.impairments(character))
+
+    return this.actionValueAdjustedByEffects(character, matchingEffects, value1, value2)
+  },
+
+  adjustedValue: function(character: Character, value: number, name: string, fight: Fight, ignoreImpairments: boolean = false): [number, number] {
+    const effects = FS.characterEffects(fight, character)
+    const matchingEffects = this.effectsForCharacter(character, effects, name)
+    const value1 = value
     const value2 = value1 - (ignoreImpairments ? 0 : CS.impairments(character))
 
     return this.actionValueAdjustedByEffects(character, matchingEffects, value1, value2)

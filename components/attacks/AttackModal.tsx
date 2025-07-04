@@ -38,8 +38,8 @@ export default function AttackModal({ open, setOpen, anchorEl, setAnchorEl }: At
   const { toastSuccess, toastError } = useToast()
 
   const [state, dispatch] = useReducer(attackReducer, initialAttackState)
-  const { wounds, attacker, target, swerve, count,
-    typedSwerve, shots, edited, dodged } = state
+  const { wounds, attacker, target, swerve, count, damage, dodged,
+    typedSwerve, shots, edited } = state
 
   useEffect(() => {
     dispatch({ type: AttackActions.RESET })
@@ -72,13 +72,10 @@ export default function AttackModal({ open, setOpen, anchorEl, setAnchorEl }: At
   function setWeapon(weapon: Weapon) {
     dispatch({ type: AttackActions.WEAPON, payload: { weapon } })
   }
+  console.log("TARGET attacker", attacker)
 
   function setAttacker(character: Character) {
-    if (character?.id) {
-      dispatch({ type: AttackActions.ATTACKER, payload: { attacker: character } })
-    } else {
-      dispatch({ type: AttackActions.ATTACKER, payload: { attacker: defaultCharacter } })
-    }
+    dispatch({ type: AttackActions.ATTACKER, payload: { attacker: character } })
   }
 
   function setTarget(character: Character) {
@@ -201,10 +198,12 @@ export default function AttackModal({ open, setOpen, anchorEl, setAnchorEl }: At
             />
             <Box sx={{ width: "100%", height: 70 }}>
               <CharactersAutocomplete
+                key={`target-${attacker?.id}`}
                 disabled={edited}
                 label="Target"
                 character={target}
                 setCharacter={setTarget}
+                excludeCharacters={[attacker]}
               />
             </Box>
             <Target

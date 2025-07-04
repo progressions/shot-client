@@ -114,7 +114,7 @@ export function expectAttackResults(state: AttackState, result: AttackState, val
 
     // attack values belong to the attacker
     const actionValue = values.actionValue || CS.mainAttackValue(state.attacker)
-    const damage = values.damage || state.weapon?.damage || CS.damage(state.attacker) || 7
+    const damage = values.damage || state.damage || CS.damage(state.attacker) || 7
     expect(result.actionValue).toEqual(actionValue)
     expect(result.damage).toEqual(damage)
 

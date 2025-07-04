@@ -222,7 +222,8 @@ describe("AttackReducerService", () => {
     }),
 
     it.only("sets the attacker", () => {
-      const result = ARS.setAttacker(state, carolina)
+      const result1 = ARS.setAttacker(state, carolina)
+      const result = ARS.setWeapon(result1, derringer)
       expect(result.attacker).toEqual(carolina)
       expect(result.actionValue).toEqual(14)
       expect(result.actionValueName).toEqual("Guns")

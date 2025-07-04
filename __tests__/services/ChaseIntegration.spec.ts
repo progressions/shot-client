@@ -54,10 +54,10 @@ describe("ChaseReducerService", () => {
     }),
 
     it("fails to evade", () => {
-      // Swerve -1 + Action Value 7 - Defense 7 = Outcome -1
+      // Swerve 7 + Action Value 7 - Defense 15 = Outcome -1
       expect(state.actionValue).toEqual(7)
-      expect(state.defense).toEqual(7)
-      state.swerve = roll(-1)
+      expect(state.defense).toEqual(15)
+      state.swerve = roll(7)
 
       const result = CRS.process(state)
 
@@ -70,10 +70,10 @@ describe("ChaseReducerService", () => {
     it("fails to evade as a stunt", () => {
       state.stunt = true
 
-      // Swerve 1 + Action Value 7 - Defense 7 - Stunt 2 = Outcome -1
+      // Swerve 9 + Action Value 7 - Defense 15 - Stunt 2 = Outcome -1
       expect(state.actionValue).toEqual(7)
-      expect(state.defense).toEqual(7)
-      state.swerve = roll(-1)
+      expect(state.defense).toEqual(15)
+      state.swerve = roll(9)
 
       const result = CRS.process(state)
 
@@ -84,9 +84,9 @@ describe("ChaseReducerService", () => {
     }),
 
     it("evades", () => {
-      // Swerve 12 + Action Value 15 - Defense 15 = Outcome 12
-      // Outcome 12 + Squeal 10 = Smackdown 22
-      // Smackdown 22 - Handling 6 = 16 Chase Points
+      // Swerve 12 + Action Value 7 - Defense 15 = Outcome 4
+      // Outcome 4 + Squeal 10 = Smackdown 14
+      // Smackdown 14 - Handling 6 = 8 Chase Points
       state.swerve = roll(12)
       const result = CRS.process(state)
 
@@ -95,9 +95,9 @@ describe("ChaseReducerService", () => {
 
       expectChaseResults(state, result, {
         swerve: 12,
-        outcome: 12,
-        smackdown: 22,
-        chasePoints: 16,
+        outcome: 4,
+        smackdown: 14,
+        chasePoints: 8,
         conditionPoints: 0
       })
 
@@ -108,9 +108,9 @@ describe("ChaseReducerService", () => {
     it("evades as a stunt", () => {
       state.stunt = true
 
-      // Swerve 12 + Action Value 15 - Defense 15 - Stunt 2 = Outcome 10
-      // Outcome 10 + Squeal 10 = Smackdown 20
-      // Smackdown 20 - Handling 6 = 14 Chase Points
+      // Swerve 12 + Action Value 7 - Defense 15 - Stunt 2 = Outcome 2
+      // Outcome 2 + Squeal 10 = Smackdown 12
+      // Smackdown 12 - Handling 6 = 6 Chase Points
       state.swerve = roll(12)
       const result = CRS.process(state)
 
@@ -119,9 +119,9 @@ describe("ChaseReducerService", () => {
 
       expectChaseResults(state, result, {
         swerve: 12,
-        outcome: 10,
-        smackdown: 20,
-        chasePoints: 14,
+        outcome: 2,
+        smackdown: 12,
+        chasePoints: 6,
         conditionPoints: 0
       })
 
@@ -168,9 +168,9 @@ describe("ChaseReducerService", () => {
     }),
 
     it("widens the gap", () => {
-      // Swerve 12 + Action Value 15 - Defense 15 = Outcome 12
-      // Outcome 12 + Squeal 10 = Smackdown 22
-      // Smackdown 22 - Handling 6 = 16 Chase Points
+      // Swerve 12 + Action Value 7 - Defense 15 = Outcome 4
+      // Outcome 4 + Squeal 10 = Smackdown 14
+      // Smackdown 14 - Handling 6 = 8 Chase Points
       state.method = ChaseMethod.WIDEN_THE_GAP
       state.swerve = roll(12)
 
@@ -181,9 +181,9 @@ describe("ChaseReducerService", () => {
 
       expectChaseResults(state, result, {
         swerve: 12,
-        outcome: 12,
-        smackdown: 22,
-        chasePoints: 16,
+        outcome: 4,
+        smackdown: 14,
+        chasePoints: 8,
         conditionPoints: 0,
         position: "far"
       })
@@ -192,9 +192,9 @@ describe("ChaseReducerService", () => {
     }),
 
     it("widens the gap as a stunt", () => {
-      // Swerve 12 + Action Value 15 - Defense 15 - Stunt 2 = Outcome 10
-      // Outcome 10 + Squeal 10 = Smackdown 20
-      // Smackdown 20 - Handling 6 = 14 Chase Points
+      // Swerve 12 + Action Value 7 - Defense 15 - Stunt 2 = Outcome 2
+      // Outcome 2 + Squeal 10 = Smackdown 12
+      // Smackdown 12 - Handling 6 = 6 Chase Points
       state.stunt = true
       state.swerve = roll(12)
 
@@ -205,9 +205,9 @@ describe("ChaseReducerService", () => {
 
       expectChaseResults(state, result, {
         swerve: 12,
-        outcome: 10,
-        smackdown: 20,
-        chasePoints: 14,
+        outcome: 2,
+        smackdown: 12,
+        chasePoints: 6,
         conditionPoints: 0,
         position: "far"
       })
@@ -253,9 +253,9 @@ describe("ChaseReducerService", () => {
     }),
 
     it("narrows the gap", () => {
-      // Swerve 12 + Action Value 15 - Defense 15 = Outcome 12
-      // Outcome 12 + Squeal 10 = Smackdown 22
-      // Smackdown 22 - Handling 6 = 16 Chase Points
+      // Swerve 12 + Action Value 7 - Defense 15 = Outcome 4
+      // Outcome 4 + Squeal 10 = Smackdown 14
+      // Smackdown 14 - Handling 6 = 8 Chase Points
       state.swerve = roll(12)
 
       const result = CRS.process(state)
@@ -265,9 +265,9 @@ describe("ChaseReducerService", () => {
 
       expectChaseResults(state, result, {
         swerve: 12,
-        outcome: 12,
-        smackdown: 22,
-        chasePoints: 16,
+        outcome: 4,
+        smackdown: 14,
+        chasePoints: 8,
         conditionPoints: 0,
         position: "near"
       })
@@ -276,9 +276,9 @@ describe("ChaseReducerService", () => {
     }),
 
     it("narrows the gap as a stunt", () => {
-      // Swerve 12 + Action Value 15 - Defense 15 - Stunt 2 = Outcome 10
-      // Outcome 10 + Squeal 10 = Smackdown 20
-      // Smackdown 20 - Handling 6 = 14 Chase Points
+      // Swerve 12 + Action Value 7 - Defense 15 - Stunt 2 = Outcome 2
+      // Outcome 2 + Squeal 10 = Smackdown 12
+      // Smackdown 12 - Handling 6 = 6 Chase Points
       state.stunt = true
       state.swerve = roll(12)
 
@@ -289,9 +289,9 @@ describe("ChaseReducerService", () => {
 
       expectChaseResults(state, result, {
         swerve: 12,
-        outcome: 10,
-        smackdown: 20,
-        chasePoints: 14,
+        outcome: 2,
+        smackdown: 12,
+        chasePoints: 6,
         conditionPoints: 0,
         position: "near"
       })
@@ -337,9 +337,9 @@ describe("ChaseReducerService", () => {
     }),
 
     it("rams/sideswipes the boss", () => {
-      // Swerve 12 + Action Value 15 - Defense 15 = Outcome 12
-      // Outcome 12 + Crunch 8 = Smackdown 20
-      // Smackdown 20 - Frame 10 = 10 Chase Points
+      // Swerve 12 + Action Value 7 - Defense 15 = Outcome 4
+      // Outcome 4 + Crunch 8 = Smackdown 12
+      // Smackdown 12 - Frame 10 = 2 Chase Points
       state.swerve = roll(12)
 
       const result = CRS.process(state)
@@ -349,18 +349,18 @@ describe("ChaseReducerService", () => {
 
       expectChaseResults(state, result, {
         swerve: 12,
-        outcome: 12,
-        smackdown: 20,
-        chasePoints: 10,
-        conditionPoints: 10,
+        outcome: 4,
+        smackdown: 12,
+        chasePoints: 2,
+        conditionPoints: 2,
         bump: 4
       })
     }),
 
     it("rams/sideswipes the boss as a stunt", () => {
-      // Swerve 14 + Action Value 15 - Defense 15 - Stunt 2 = Outcome 12
-      // Outcome 12 + Crunch 8 = Smackdown 20
-      // Smackdown 20 - Frame 10 = 10 Chase Points
+      // Swerve 14 + Action Value 7 - Defense 15 - Stunt 2 = Outcome 4
+      // Outcome 4 + Crunch 8 = Smackdown 12
+      // Smackdown 12 - Frame 10 = 2 Chase Points
       state.stunt = true
       state.swerve = roll(14)
 
@@ -371,10 +371,10 @@ describe("ChaseReducerService", () => {
 
       expectChaseResults(state, result, {
         swerve: 14,
-        outcome: 12,
-        smackdown: 20,
-        chasePoints: 10,
-        conditionPoints: 10,
+        outcome: 4,
+        smackdown: 12,
+        chasePoints: 2,
+        conditionPoints: 2,
         bump: 4
       })
 

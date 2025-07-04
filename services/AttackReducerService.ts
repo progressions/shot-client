@@ -31,9 +31,10 @@ const AttackReducerService = {
 
     if (!st.success) return st
 
-    const { target, smackdown, count } = st
+    const { target, smackdown, count, toughness } = st
     const dmg = this.CS.isMook(target) ? count : smackdown
-    const updatedTarget = this.CS.takeSmackdown(target, dmg as number)
+
+    const updatedTarget = this.CS.takeSmackdown(target, dmg as number, toughness)
 
     return {
       ...st,
@@ -127,17 +128,16 @@ const AttackReducerService = {
   setAttacker: function(state: AttackState, attacker: Character | Vehicle): AttackState {
     const [_adjustment, adjustedMainAttack] = this.CES.adjustedMainAttack(attacker, state.fight)
     const mookCount = this.CS.isMook(attacker) ? this.CS.mooks(attacker) : 1
-    const weapon = CS.weapons(attacker)[0] || defaultWeapon
 
-    const st = this.setWeapon(state, weapon)
+    const [_changed, adjustedDamage] = CES.adjustedActionValue(attacker, "Damage", state.fight, true)
 
     return this.process({
-      ...st,
+      ...state,
       attacker: attacker,
       actionValueName: CS.mainAttack(attacker) || "",
       actionValue: adjustedMainAttack,
       count: mookCount,
-      damage: CS.damage(attacker) || defaultWeapon.damage,
+      damage: adjustedDamage || state.damage,
     })
   },
 
@@ -154,10 +154,12 @@ const AttackReducerService = {
   },
 
   setWeapon: function(state: AttackState, weapon: Weapon): AttackState {
+    const [_weaponDamageChanged, adjustedWeaponDamage] = CES.adjustedValue(state.attacker, weapon?.damage, "Damage", state.fight, true)
+
     return this.process({
       ...state,
       weapon: weapon,
-      damage: weapon?.id ? weapon.damage : state.damage
+      damage: weapon?.id ? adjustedWeaponDamage : state.damage,
     })
   },
 

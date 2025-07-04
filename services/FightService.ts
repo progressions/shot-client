@@ -3,6 +3,12 @@ import CS from "@/services/CharacterService"
 import SS from "@/services/SharedService"
 
 const FightService = {
+  currentShot: function(fight: Fight): number {
+    if (!fight?.shot_order || fight.shot_order.length === 0) return 0
+
+    return fight.shot_order[0][0] || 0
+  },
+
   users: function(fight: Fight): User[] {
     if (!fight?.id || !fight?.shot_order || !fight?.gamemaster?.id) { return [] }
 
