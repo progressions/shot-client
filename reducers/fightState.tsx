@@ -21,8 +21,9 @@ export interface FightStateType {
   saving: boolean
   notFound: boolean
   showHidden: boolean
+  attacking: boolean
+  chasing: boolean
   error: string
-  page: number
   fight: Fight
   search: string
   open: boolean
@@ -53,8 +54,9 @@ export const initialFightState:FightStateType = {
   loading: true,
   saving: false,
   notFound: false,
+  attacking: false,
+  chasing: false,
   error: "",
-  page: 1,
   fight: defaultFight,
   search: "",
   showHidden: false,
@@ -106,17 +108,9 @@ export function fightReducer(state: FightStateType, action: FightActionType): Fi
         edited: false
       }
     case FightActions.UPDATE:
-      if (action.name === "page" ) {
-        return {
-          ...state,
-          edited: true,
-          page: action.value as number,
-        }
-      }
       return {
         ...state,
         edited: true,
-        page: 1,
         [action.name]: action.value
       }
     case FightActions.UPDATE_FIGHT:

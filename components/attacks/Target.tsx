@@ -4,6 +4,7 @@ import type { AttackState } from "@/reducers/attackState"
 import type { Character } from "@/types/types"
 import CS from "@/services/CharacterService"
 import FES from "@/services/FightEventService"
+import CES from "@/services/CharacterEffectService"
 import TargetMook from "@/components/attacks/TargetMook"
 import DirectionsRunIcon from '@mui/icons-material/DirectionsRun'
 import { useState } from "react"
@@ -24,7 +25,7 @@ interface TargetProps {
 }
 
 export default function Target({ state, setTarget, handleChange, dispatch }: TargetProps) {
-  const { dodged, attacker, target, defense, toughness, edited } = state
+  const { dodged, attacker, target, defense, toughness, edited, stunt } = state
   const { client } = useClient()
   const { fight, dispatch:dispatchFight } = useFight()
   const { toastSuccess, toastError } = useToast()
@@ -48,15 +49,25 @@ export default function Target({ state, setTarget, handleChange, dispatch }: Tar
     dispatch({ type: AttackActions.UPDATE, payload: { dodged: true } })
   }
 
+  const [toughnessChanged, adjustedToughness] = CES.adjustedActionValue(target, "Toughness", fight, true)
+  const toughnessHelperText = toughnessChanged ? `${toughnessChanged > 0 ? "+" : ""}${toughnessChanged}` : ""
+
+  const defenseHelperText = [
+    dodged ? "Dodged" : "",
+    stunt ? "Stunt" : "",
+  ].filter(Boolean).join(", ")
+
   return(<>
-    <Stack direction="row" spacing={2} alignItems="top">
-      <StyledTextField disabled={edited} name="defense" value={defense} onChange={handleChange} label="Defense" type="number" sx={{width: 110}} />
-      <StyledTextField disabled={edited} name="toughness" value={toughness} onChange={handleChange} label="Toughness" type="number" sx={{width: 110}} />
+    <Stack direction="row" spacing={2} alignItems="top" sx={{pb: 2}}>
+      <StyledTextField disabled={edited} name="defense" value={defense} onChange={handleChange} helperText={defenseHelperText} label="Defense" type="number" sx={{width: 110}} />
+      <StyledTextField disabled={edited} name="toughness" value={toughness} onChange={handleChange} helperText={toughnessHelperText} label="Toughness" type="number" sx={{width: 110}} />
       <ButtonGroup variant="outlined" size="small" className="actionButtons">
         <Tooltip title="Dodge" arrow>
-          <Button disabled={!target?.id || dodged} size="large" variant="contained" color="highlight" onClick={() => takeDodgeAction(target)}>
-            <DirectionsRunIcon sx={{color: "white"}} />
-          </Button>
+          <span>
+            <Button disabled={!target?.id || dodged} size="large" variant="contained" color="highlight" onClick={() => takeDodgeAction(target)} sx={{height: 57}}>
+              <DirectionsRunIcon sx={{color: "white"}} />
+            </Button>
+        </span>
         </Tooltip>
       </ButtonGroup>
     </Stack>

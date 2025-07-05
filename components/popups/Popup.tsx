@@ -3,7 +3,7 @@
 import { Paper, Box } from "@mui/material"
 import styles from "@/components/popups/Popups.module.scss"
 import type { CharacterType } from "@/types/types"
-import { CharacterPopup, VehiclePopup, FactionPopup, TypePopup, ArchetypePopup, WeaponPopup, SchtickPopup, PartyPopup, SitePopup } from "@/components/popups"
+import { SchticksPopup, SkillsPopup, WeaponsPopup, CharacterPopup, VehiclePopup, FactionPopup, TypePopup, ArchetypePopup, WeaponPopup, SchtickPopup, PartyPopup, SitePopup } from "@/components/popups"
 import { MouseEvent } from "react"
 
 interface PopupProps {
@@ -41,6 +41,12 @@ export default function Popup({ instanceId, position, content, isDimmed, onMouse
         return <PartyPopup id={content.id} />
       case "Site":
         return <SitePopup id={content.id} />
+      case "Weapons":
+        return <WeaponsPopup id={content.id} />
+      case "Skills":
+        return <SkillsPopup id={content.id} />
+      case "Schticks":
+        return <SchticksPopup id={content.id} />
       default:
         return null
     }

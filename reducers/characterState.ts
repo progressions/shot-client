@@ -49,14 +49,12 @@ export const initialCharacterState:CharacterStateType = {
 export function characterReducer(state: CharacterStateType, action: CharacterStateAction): CharacterStateType {
   switch(action.type) {
     case CharacterActions.EDIT:
-      console.log("CharacterActions.EDIT")
       return {
         ...state,
         edited: true,
         reload: false
       }
     case CharacterActions.UPDATE:
-      console.log("CharacterActions.UPDATE", action.name, action.value)
       return {
         ...state,
         edited: true,
@@ -67,7 +65,6 @@ export function characterReducer(state: CharacterStateType, action: CharacterSta
         } as Character
       }
     case CharacterActions.ACTION_VALUE:
-      console.log("CharacterActions.ACTION_VALUE", action.name, action.value)
       const value = action.value === "null" ? "" : action.value
       return {
         ...state,
@@ -82,7 +79,6 @@ export function characterReducer(state: CharacterStateType, action: CharacterSta
         } as Character
       }
     case CharacterActions.DESCRIPTION:
-      console.log("CharacterActions.DESCRIPTION", action.name, action.value)
       return {
         ...state,
         edited: true,
@@ -96,7 +92,6 @@ export function characterReducer(state: CharacterStateType, action: CharacterSta
         } as Character
       }
     case CharacterActions.SKILLS:
-      console.log("CharacterActions.SKILLS", action.name, action.value)
       return {
         ...state,
         edited: true,
@@ -110,7 +105,6 @@ export function characterReducer(state: CharacterStateType, action: CharacterSta
         } as Character
       }
     case CharacterActions.SUBMIT:
-      console.log("CharacterActions.SUBMIT")
       return {
         ...state,
         edited: false,
@@ -118,7 +112,6 @@ export function characterReducer(state: CharacterStateType, action: CharacterSta
         saving: true,
       }
     case CharacterActions.CHARACTER:
-      console.log("CharacterActions.CHARACTER", action.payload)
       return {
         ...state,
         saving: false,
@@ -127,7 +120,6 @@ export function characterReducer(state: CharacterStateType, action: CharacterSta
         character: action.payload as Character
       }
     case CharacterActions.RELOAD:
-      console.log("CharacterActions.RELOAD")
       return {
         ...state,
         reload: true,
@@ -135,7 +127,6 @@ export function characterReducer(state: CharacterStateType, action: CharacterSta
         saving: false
       }
     case CharacterActions.RESET:
-      console.log("CharacterActions.RESET")
       return {
         ...state,
         reload: false,

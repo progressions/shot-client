@@ -211,16 +211,16 @@ export default function CharacterDetails({ character, editingCharacter, setEditi
             </Stack>
             { first &&
               <Stack spacing={1}>
-                <SchticksDisplay schticks={character.schticks} first={first} />
+                <SchticksDisplay character={character} first={first} />
                 <SkillsDisplay character={character} first={first} />
-                <WeaponsDisplay weapons={character.weapons} first={first} />
+                <WeaponsDisplay character={character} first={first} />
               </Stack>
             }
             { !first &&
               <Stack direction="row" spacing={1} alignItems="center">
-                <SchticksDisplay schticks={character.schticks} first={first} />
+                <SchticksDisplay character={character} first={first} />
                 <SkillsDisplay character={character} first={first} />
-                <WeaponsDisplay weapons={character.weapons} first={first} />
+                <WeaponsDisplay character={character} first={first} />
               </Stack>
             }
           </GamemasterOnly>

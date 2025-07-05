@@ -59,6 +59,8 @@ const CharacterEffectService = {
   },
 
   valueChange: function(original: number, newValue: number): number {
+    return (newValue - original)
+
     if (newValue > original) return 1
     if (newValue < original) return -1
 

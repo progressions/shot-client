@@ -43,48 +43,56 @@ export function PopupProvider({ children }: PopupProviderProps) {
 
   // Handle mouseover for links
   const handleMouseover = useCallback((event: MouseEvent) => {
-    const target = event.target as HTMLElement
-    const mentionId = target.getAttribute("data-mention-id")
-    const mentionClassName = target.getAttribute("data-mention-class-name")
+    const target = (event.target as HTMLElement).closest('a[data-mention-id]');
+    if (!target) return; // Exit if no valid link is found
+
+    // Ensure target is an HTMLElement
+    if (!(target instanceof HTMLElement)) {
+      console.warn("POPUPS Target is not an HTMLElement:", target);
+      return;
+    }
+
+    const mentionId = target.getAttribute("data-mention-id");
+    const mentionClassName = target.getAttribute("data-mention-class-name");
     if (mentionId) {
-      const instanceId = generateInstanceId()
-      const parentPopup = target.closest("[data-popup-instance]")
-      const parentId = parentPopup ? parentPopup.getAttribute("data-popup-instance") : null
+      const instanceId = generateInstanceId();
+      const parentPopup = target.closest("[data-popup-instance]");
+      const parentId = parentPopup ? parentPopup.getAttribute("data-popup-instance") : null;
       if (closeTimeoutsRef.current.has(instanceId)) {
-        clearTimeout(closeTimeoutsRef.current.get(instanceId))
-        closeTimeoutsRef.current.delete(instanceId)
+        clearTimeout(closeTimeoutsRef.current.get(instanceId));
+        closeTimeoutsRef.current.delete(instanceId);
       }
-      isUndimmingRef.current.delete(instanceId)
+      isUndimmingRef.current.delete(instanceId);
       // Remove existing mouseout handler for this link
-      const oldPopup = popups.find(p => p.mentionId === mentionId)
+      const oldPopup = popups.find(p => p.mentionId === mentionId);
       if (oldPopup && mouseoutHandlersRef.current.has(oldPopup.instanceId)) {
-        const oldHandler = mouseoutHandlersRef.current.get(oldPopup.instanceId)
+        const oldHandler = mouseoutHandlersRef.current.get(oldPopup.instanceId);
         if (oldHandler && oldPopup.anchorEl) {
-          oldPopup.anchorEl.removeEventListener("mouseout", oldHandler)
-          mouseoutHandlersRef.current.delete(oldPopup.instanceId)
-          console.log("POPUPS Removed old mouseout handler for:", oldPopup.instanceId)
+          oldPopup.anchorEl.removeEventListener("mouseout", oldHandler);
+          mouseoutHandlersRef.current.delete(oldPopup.instanceId);
+          console.log("POPUPS Removed old mouseout handler for:", oldPopup.instanceId);
         }
       }
-      console.log("POPUPS Mouseover link:", { instanceId, mentionId, mentionClassName, parentId })
+      console.log("POPUPS Mouseover link:", { instanceId, mentionId, mentionClassName, parentId });
       setPopups((prev) => {
-        let newPopups = prev
+        let newPopups = prev;
         if (prev.length >= 3) {
-          const oldestId = prev[0].instanceId
+          const oldestId = prev[0].instanceId;
           if (closeTimeoutsRef.current.has(oldestId)) {
-            clearTimeout(closeTimeoutsRef.current.get(oldestId))
-            closeTimeoutsRef.current.delete(oldestId)
+            clearTimeout(closeTimeoutsRef.current.get(oldestId));
+            closeTimeoutsRef.current.delete(oldestId);
           }
           if (mouseoutHandlersRef.current.has(oldestId)) {
-            const handler = mouseoutHandlersRef.current.get(oldestId)
-            const oldestPopup = prev.find(p => p.instanceId === oldestId)
+            const handler = mouseoutHandlersRef.current.get(oldestId);
+            const oldestPopup = prev.find(p => p.instanceId === oldestId);
             if (handler && oldestPopup?.anchorEl) {
-              oldestPopup.anchorEl.removeEventListener("mouseout", handler)
-              mouseoutHandlersRef.current.delete(oldestId)
+              oldestPopup.anchorEl.removeEventListener("mouseout", handler);
+              mouseoutHandlersRef.current.delete(oldestId);
             }
           }
-          isUndimmingRef.current.delete(oldestId)
-          console.log("POPUPS Removed oldest popup:", oldestId)
-          newPopups = prev.slice(1)
+          isUndimmingRef.current.delete(oldestId);
+          console.log("POPUPS Removed oldest popup:", oldestId);
+          newPopups = prev.slice(1);
         }
         newPopups = [
           ...newPopups,
@@ -97,20 +105,20 @@ export function PopupProvider({ children }: PopupProviderProps) {
             mentionId,
             parentId
           }
-        ]
+        ];
         if (newPopups.length === 3) {
           newPopups = newPopups.map((popup, index) =>
             index === 0 ? { ...popup, isDimmed: true } : { ...popup, isDimmed: false }
-          )
+          );
         }
         if (newPopups.length < 3 && newPopups.length > 0) {
-          newPopups = newPopups.map((popup) => ({ ...popup, isDimmed: false }))
+          newPopups = newPopups.map((popup) => ({ ...popup, isDimmed: false }));
         }
-        console.log("POPUPS New popups state:", newPopups.map(p => ({ instanceId: p.instanceId, mentionId: p.content?.id, isDimmed: p.isDimmed, parentId: p.parentId })))
-        return newPopups
-      })
+        console.log("POPUPS New popups state:", newPopups.map(p => ({ instanceId: p.instanceId, mentionId: p.content?.id, isDimmed: p.isDimmed, parentId: p.parentId })));
+        return newPopups;
+      });
     }
-  }, [popups])
+  }, [popups]);
 
   // Handle mouse entering a popup
   const handlePopupMouseEnter = useCallback((instanceId: string) => {

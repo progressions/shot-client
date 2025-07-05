@@ -1,16 +1,19 @@
+import { Paper, colors, Button, DialogContent, Stack, Box } from "@mui/material"
 import { StyledDialog, StyledTextField } from "@/components/StyledFields"
 import HeartBrokenIcon from "@mui/icons-material/HeartBroken"
 import PersonOffIcon from "@mui/icons-material/PersonOff"
 import BoltIcon from '@mui/icons-material/Bolt'
-import { Button, DialogContent, Stack, Box } from "@mui/material"
+
 import { ChaseActions, initialChaseState, chaseReducer } from "@/reducers/chaseState"
 import { FightActions } from "@/reducers/fightState"
-import { useFight } from "@/contexts/FightContext"
-import { useClient } from "@/contexts/ClientContext"
-import { useToast } from "@/contexts/ToastContext"
+import { useFight, useClient, useToast } from "@/contexts"
 import VS from "@/services/VehicleService"
 import AS from "@/services/ActionService"
+import FES from "@/services/FightEventService"
+import FS from "@/services/FightService"
+
 import { useEffect, useReducer } from "react"
+
 import type { Fight, Vehicle } from "@/types/types"
 import { defaultVehicle, CharacterTypes } from "@/types/types"
 import SwerveButton from "@/components/attacks/SwerveButton"
@@ -18,17 +21,11 @@ import ResultsDisplay from "@/components/chases/ResultsDisplay"
 import VehiclesAutocomplete from "@/components/chases/VehiclesAutocomplete"
 import Attacker from "@/components/chases/Attacker"
 import Target from "@/components/chases/Target"
-import FightService from "@/services/FightService"
-import FES from "@/services/FightEventService"
 
 interface ChaseModalProps {
-  open: boolean
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>
-  anchorEl: Element | null
-  setAnchorEl: React.Dispatch<React.SetStateAction<Element | null>>
 }
 
-export default function ChaseModal({ open, setOpen, anchorEl, setAnchorEl }: ChaseModalProps) {
+export default function ChaseModal({ }: ChaseModalProps) {
   const { fight, dispatch:dispatchFight } = useFight()
   const { client } = useClient()
   const { toastSuccess, toastError } = useToast()
@@ -40,12 +37,12 @@ export default function ChaseModal({ open, setOpen, anchorEl, setAnchorEl }: Cha
   useEffect(() => {
     dispatch({ type: ChaseActions.RESET })
 
-    const firstUp = FightService.firstUp(fight)
+    const firstUp = FS.firstUp(fight)
     if (firstUp && VS.isVehicle(firstUp)) {
       dispatch({ type: ChaseActions.UPDATE, payload: { fight: fight } })
       setAttacker(firstUp)
     }
-  }, [fight, open])
+  }, [fight])
 
   useEffect(() => {
     if (VS.isType(attacker, [CharacterTypes.Boss, CharacterTypes.UberBoss])) {
@@ -56,8 +53,7 @@ export default function ChaseModal({ open, setOpen, anchorEl, setAnchorEl }: Cha
   }, [attacker])
 
   function handleClose() {
-    setOpen(false)
-    setAnchorEl(null)
+    dispatchFight({ type: FightActions.UPDATE, name: "chasing", value: false })
   }
 
   function setAttacker(vehicle: Vehicle) {
@@ -144,79 +140,72 @@ export default function ChaseModal({ open, setOpen, anchorEl, setAnchorEl }: Cha
 
   return (
     <>
-      <StyledDialog
-        open={open}
-        onClose={handleClose}
-        title="Chase"
-        width="lg"
-        sx={{
-          "& .MuiDialog-container": {
-            "& .MuiPaper-root": {
-              width: "100%",
-              maxWidth: "600px",  // Set your width here
-            },
-          },
-        }}
-      >
-        <DialogContent>
-          <Stack spacing={2}>
-            <Stack direction="row" spacing={2}>
-              <Box sx={{ width: 700, height: 70 }}>
+      <Paper sx={{ p: 2, mb: 2, backgroundColor: colors.blueGrey[300] }}>
+        <Stack spacing={2}>
+          <Stack direction="row" spacing={2} alignItems="top">
+            <Box sx={{width: "50%", mb: 2}}>
+              <Stack direction="row" spacing={2}>
+                <Box sx={{ width: 700, height: 70, pb: 2 }}>
+                  <VehiclesAutocomplete
+                    label="Attacker"
+                    vehicle={attacker}
+                    setVehicle={setAttacker}
+                    disabled={edited}
+                  />
+                </Box>
+                <StyledTextField type="number" label="Shots" required name="shots" value={shots || ''} onChange={handleChange} />
+              </Stack>
+              <Attacker
+                state={state}
+                setAttacker={setAttacker}
+                handleChange={handleChange}
+                handleCheck={handleCheck}
+              />
+            </Box>
+            <Box sx={{width: "48%", mb: 2}}>
+              <Box sx={{ width: "100%", height: 70, pb: 2 }}>
                 <VehiclesAutocomplete
-                  label="Attacker"
-                  vehicle={attacker}
-                  setVehicle={setAttacker}
+                  label="Target"
+                  vehicle={target}
+                  setVehicle={setTarget}
                   disabled={edited}
                 />
               </Box>
-              <StyledTextField autoFocus type="number" label="Shots" required name="shots" value={shots || ''} onChange={handleChange} />
-            </Stack>
-            <Attacker
-              state={state}
-              setAttacker={setAttacker}
-              handleChange={handleChange}
-              handleCheck={handleCheck}
-            />
-            <Box sx={{ width: "100%", height: 70 }}>
-              <VehiclesAutocomplete
-                label="Target"
-                vehicle={target}
-                setVehicle={setTarget}
-                disabled={edited}
+              <Target
+                state={state}
+                setTarget={setTarget}
+                handleChange={handleChange}
               />
             </Box>
-            <Target
-              state={state}
-              setTarget={setTarget}
-              handleChange={handleChange}
-            />
+          </Stack>
+          <Box sx={{ alignSelf: "center", mb: 2 }}>
             <SwerveButton
               state={state}
               handleSwerve={handleSwerve}
               handleAttack={handleAttack}
             />
-            { edited && <ResultsDisplay state={state} handleClose={handleClose} /> }
-            { success && edited && !!target?.id && !VS.isMook(target) && !VS.isMook(attacker) && !!chasePoints && <>
-              <Button
-                sx={{width: 200}}
-                endIcon={<HeartBrokenIcon />}
-                variant="contained"
-                color="error"
-                onClick={applyChasePoints}
-              >
-                Apply Results
-              </Button>
-            </>}
-            { edited && !success && <>
-              <Button sx={{width: 200}} endIcon={<BoltIcon />} variant="contained" color="error" onClick={applyChasePoints}>Apply</Button>
-            </> }
-            { edited && !!target?.id && VS.isMook(target) && success && <>
-              <Button sx={{width: 200}} endIcon={<PersonOffIcon />} variant="contained" color="error" onClick={killMooks}>Kill Mooks</Button>
-            </> }
-            { edited && <Button onClick={resetAttack} variant="contained" color="primary">Reset</Button> }
-          </Stack>
-        </DialogContent>
-      </StyledDialog>
+          </Box>
+          { edited && <ResultsDisplay state={state} handleClose={handleClose} /> }
+          { success && edited && !!target?.id && !VS.isMook(target) && !VS.isMook(attacker) && !!chasePoints && <>
+            <Button
+              sx={{width: 200}}
+              endIcon={<HeartBrokenIcon />}
+              variant="contained"
+              color="error"
+              onClick={applyChasePoints}
+            >
+              Apply Results
+            </Button>
+          </>}
+          { edited && !success && <>
+            <Button sx={{width: 200}} endIcon={<BoltIcon />} variant="contained" color="error" onClick={applyChasePoints}>Apply</Button>
+          </> }
+          { edited && !!target?.id && VS.isMook(target) && success && <>
+            <Button sx={{width: 200}} endIcon={<PersonOffIcon />} variant="contained" color="error" onClick={killMooks}>Kill Mooks</Button>
+          </> }
+          { edited && <Button onClick={resetAttack} variant="contained" color="primary">Reset</Button> }
+        </Stack>
+      </Paper>
     </>
   )
 }

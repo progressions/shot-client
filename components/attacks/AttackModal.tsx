@@ -3,7 +3,7 @@ import HeartBrokenIcon from "@mui/icons-material/HeartBroken"
 import PersonOffIcon from "@mui/icons-material/PersonOff"
 import TaxiAlertIcon from "@mui/icons-material/TaxiAlert"
 import BoltIcon from '@mui/icons-material/Bolt'
-import { ButtonGroup, FormControlLabel, Switch, Tooltip, DialogContent, Button, IconButton, Typography, Box, Stack } from "@mui/material"
+import { colors, Paper, ButtonGroup, FormControlLabel, Switch, Tooltip, DialogContent, Button, IconButton, Typography, Box, Stack } from "@mui/material"
 import { useFight } from "@/contexts/FightContext"
 import { useClient } from "@/contexts/ClientContext"
 import { useToast } from "@/contexts/ToastContext"
@@ -26,13 +26,9 @@ import ResultsDisplay from "@/components/attacks/ResultsDisplay"
 import CharactersAutocomplete from "@/components/attacks/CharactersAutocomplete"
 
 interface AttackModalProps {
-  open: boolean
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>
-  anchorEl: Element | null
-  setAnchorEl: React.Dispatch<React.SetStateAction<Element | null>>
 }
 
-export default function AttackModal({ open, setOpen, anchorEl, setAnchorEl }: AttackModalProps) {
+export default function AttackModal({ }: AttackModalProps) {
   const { fight, dispatch:dispatchFight } = useFight()
   const { client } = useClient()
   const { toastSuccess, toastError } = useToast()
@@ -49,7 +45,7 @@ export default function AttackModal({ open, setOpen, anchorEl, setAnchorEl }: At
       dispatch({ type: AttackActions.UPDATE, payload: { fight: fight } })
       setAttacker(firstUp)
     }
-  }, [fight, open])
+  }, [fight])
 
   useEffect(() => {
     if (CS.isType(attacker, [CharacterTypes.Boss, CharacterTypes.UberBoss])) {
@@ -60,8 +56,7 @@ export default function AttackModal({ open, setOpen, anchorEl, setAnchorEl }: At
   }, [attacker])
 
   function handleClose() {
-    setOpen(false)
-    setAnchorEl(null)
+    dispatchFight({ type: FightActions.UPDATE, name: "attacking", value: false })
   }
 
   function rollSwerve() {
@@ -72,7 +67,6 @@ export default function AttackModal({ open, setOpen, anchorEl, setAnchorEl }: At
   function setWeapon(weapon: Weapon) {
     dispatch({ type: AttackActions.WEAPON, payload: { weapon } })
   }
-  console.log("TARGET attacker", attacker)
 
   function setAttacker(character: Character) {
     dispatch({ type: AttackActions.ATTACKER, payload: { attacker: character } })
@@ -161,62 +155,56 @@ export default function AttackModal({ open, setOpen, anchorEl, setAnchorEl }: At
 
   return (
     <>
-      <StyledDialog
-        open={open}
-        onClose={handleClose}
-        title="Attack"
-        width="lg"
-        sx={{
-          "& .MuiDialog-container": {
-            "& .MuiPaper-root": {
-              width: "100%",
-              maxWidth: "600px",  // Set your width here
-            },
-          },
-        }}
-      >
-        <DialogContent>
+      <Paper sx={{ p: 2, mb: 2, backgroundColor: colors.blueGrey[300] }}>
           <Stack spacing={2}>
-            <Stack direction="row" spacing={2}>
-              <Box sx={{ width: "100%", height: 70 }}>
-                <CharactersAutocomplete
-                  label="Attacker"
-                  character={attacker}
-                  setCharacter={setAttacker}
-                  disabled={edited}
+            <Stack direction="row" spacing={2} alignItems="top">
+              <Box sx={{width: "50%", mb: 2}}>
+                <Stack direction="row" spacing={2}>
+                  <Box sx={{ width: "100%", height: 70, pb: 2 }}>
+                    <CharactersAutocomplete
+                      label="Attacker"
+                      character={attacker}
+                      setCharacter={setAttacker}
+                      disabled={edited}
+                    />
+                  </Box>
+                  <StyledTextField type="number" label="Shots" required name="shots" value={shots || ''} onChange={handleChange} />
+                </Stack>
+                <Attacker
+                  state={state}
+                  setAttacker={setAttacker}
+                  setWeapon={setWeapon}
+                  setAttack={setAttack}
+                  handleChange={handleChange}
+                  handleCheck={handleCheck}
                 />
               </Box>
-              <StyledTextField autoFocus type="number" label="Shots" required name="shots" value={shots || ''} onChange={handleChange} />
+              <Box sx={{ width: "50%", mb: 2 }}>
+                <Box sx={{ width: "100%", height: 70, pb: 2 }}>
+                  <CharactersAutocomplete
+                    key={`target-${attacker?.id}`}
+                    disabled={edited}
+                    label="Target"
+                    character={target}
+                    setCharacter={setTarget}
+                    excludeCharacters={[attacker]}
+                  />
+                </Box>
+                <Target
+                  state={state}
+                  setTarget={setTarget}
+                  handleChange={handleChange}
+                  dispatch={dispatch}
+                />
+              </Box>
             </Stack>
-            <Attacker
-              state={state}
-              setAttacker={setAttacker}
-              setWeapon={setWeapon}
-              setAttack={setAttack}
-              handleChange={handleChange}
-              handleCheck={handleCheck}
-            />
-            <Box sx={{ width: "100%", height: 70 }}>
-              <CharactersAutocomplete
-                key={`target-${attacker?.id}`}
-                disabled={edited}
-                label="Target"
-                character={target}
-                setCharacter={setTarget}
-                excludeCharacters={[attacker]}
+            <Box sx={{ alignSelf: "center", mb: 2 }}>
+              <SwerveButton
+                state={state}
+                handleSwerve={handleSwerve}
+                handleAttack={handleAttack}
               />
             </Box>
-            <Target
-              state={state}
-              setTarget={setTarget}
-              handleChange={handleChange}
-              dispatch={dispatch}
-            />
-            <SwerveButton
-              state={state}
-              handleSwerve={handleSwerve}
-              handleAttack={handleAttack}
-            />
             { edited && <ResultsDisplay state={state} handleClose={handleClose} /> }
             { edited && !wounds && !CS.isMook(target) && <>
               <Button sx={{width: 200}} endIcon={<BoltIcon />} variant="contained" color="error" onClick={applyWounds}>Apply</Button>
@@ -229,8 +217,7 @@ export default function AttackModal({ open, setOpen, anchorEl, setAnchorEl }: At
             </> }
             { edited && <Button onClick={resetAttack} variant="contained" color="primary">Reset</Button> }
           </Stack>
-        </DialogContent>
-      </StyledDialog>
+        </Paper>
     </>
   )
 }

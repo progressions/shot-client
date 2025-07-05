@@ -4,21 +4,20 @@ import { ButtonGroup, Button } from "@mui/material"
 import { useState } from "react"
 import AttackModal from "@/components/attacks/AttackModal"
 import ChaseModal from "@/components/chases/ChaseModal"
+import { useFight } from "@/contexts"
+import { FightActions } from "@/reducers/fightState"
 
 export default function AttackButton() {
-  const [attackOpen, setAttackOpen] = useState<boolean>(false)
-  const [attackAnchorEl, setAttackAnchorEl] = useState<Element | null>(null)
-  const [chaseOpen, setChaseOpen] = useState<boolean>(false)
-  const [chaseAnchorEl, setChaseAnchorEl] = useState<Element | null>(null)
+  const { state, dispatch } = useFight()
 
-  function openAttack(event: React.SyntheticEvent<Element, Event>) {
-    setAttackAnchorEl(event.currentTarget)
-    setAttackOpen(true)
+  function toggleAttack(event: React.SyntheticEvent<Element, Event>) {
+    dispatch({ type: FightActions.UPDATE, name: "attacking", value: !state.attacking })
+    dispatch({ type: FightActions.UPDATE, name: "chasing", value: false })
   }
 
   function openChase(event: React.SyntheticEvent<Element, Event>) {
-    setChaseAnchorEl(event.currentTarget)
-    setChaseOpen(true)
+    dispatch({ type: FightActions.UPDATE, name: "chasing", value: !state.chasing })
+    dispatch({ type: FightActions.UPDATE, name: "attacking", value: false })
   }
 
   return (
@@ -28,7 +27,7 @@ export default function AttackButton() {
           variant="contained"
           color="error"
           startIcon={<GiPistolGun />}
-          onClick={openAttack}
+          onClick={toggleAttack}
         />
         <Button
           variant="contained"
@@ -37,8 +36,6 @@ export default function AttackButton() {
           onClick={openChase}
         />
       </ButtonGroup>
-      <AttackModal open={attackOpen} setOpen={setAttackOpen} anchorEl={attackAnchorEl} setAnchorEl={setAttackAnchorEl} />
-      <ChaseModal open={chaseOpen} setOpen={setChaseOpen} anchorEl={chaseAnchorEl} setAnchorEl={setChaseAnchorEl} />
     </>
   )
 }

@@ -29,7 +29,11 @@ export default function Attacker({ state, setAttacker, handleChange, setWeapon, 
     />
   )
 
-  const [changed, adjustedDamage] = CES.adjustedActionValue(attacker, "Damage", fight, true)
+  const [damageChanged, adjustedDamage] = CES.adjustedActionValue(attacker, "Damage", fight, true)
+  const damageHelperText = damageChanged ? `${damageChanged > 0 ? "+" : ""}${damageChanged}` : ""
+
+  const [actionValueChanged, adjustedActionValue] = CES.adjustedActionValue(attacker, actionValueName || CS.mainAttack(attacker), fight, false)
+  const actionValueHelperText = actionValueChanged ? `${actionValueChanged > 0 ? "+" : ""}${actionValueChanged}` : ""
 
   return(<>
     <Stack direction="row" spacing={2} alignItems="top">
@@ -37,10 +41,11 @@ export default function Attacker({ state, setAttacker, handleChange, setWeapon, 
         name="actionValue"
         value={actionValue}
         onChange={handleChange}
-        label="Action Value"
+        label={actionValueName || "Action Value"}
         type="number"
         sx={{width: 110}}
         disabled={edited}
+        helperText={actionValueHelperText}
       />
       <Stack direction="row" spacing={2} alignItems="top">
         { CS.attackValues(attacker).map((valueName: string) => (
@@ -50,14 +55,15 @@ export default function Attacker({ state, setAttacker, handleChange, setWeapon, 
             disabled={edited || !attacker.id}
             onClick={() => setAttack(valueName)}
             disableElevation={actionValueName === valueName}
+            sx={{height: 56}}
           >
             { attacker.id ? valueName : "Attack" } { CES.adjustedActionValue(attacker, valueName, fight, false)[1] }{ CS.impairments(attacker) ? "*" : "" }
           </Button>
         ))}
       </Stack>
     </Stack>
-    <Stack direction="row" spacing={2} alignItems="top" sx={{height: 80}}>
-      <StyledTextField disabled={edited} name="damage" value={damage} onChange={handleChange} label="Damage" type="number" sx={{width: 80}} />
+    <Stack direction="row" spacing={2} alignItems="top" sx={{height: 80, mt: 2}}>
+      <StyledTextField disabled={edited} name="damage" value={damage} helperText={damageHelperText} onChange={handleChange} label="Damage" type="number" sx={{width: 80}} />
       <WeaponAutocomplete disabled={edited} character={attacker} weapon={weapon} setWeapon={setWeapon} />
       <FormControlLabel disabled={edited} label="Stunt" name="stunt" control={<Switch checked={stunt} />} onChange={handleCheck} />
     </Stack>

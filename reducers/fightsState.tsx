@@ -12,8 +12,6 @@ export enum FightsActions {
   FIGHTS = "fights",
   UPDATE = "update",
   UPDATE_FIGHT = "update_fight",
-  OPEN = "open",
-  CLOSE = "close"
 }
 
 export interface FightsStateType {
@@ -26,18 +24,16 @@ export interface FightsStateType {
   fight: Fight
   search: string
   meta: PaginationMeta
-  open: boolean
-  anchorEl: Element | null
 }
 
 export type PayloadType = Fight | FightsResponse | string | Element | null
 
 interface ActionNoPayload {
-  type: Extract<FightsActions, FightsActions.RESET | FightsActions.EDIT | FightsActions.SAVING | FightsActions.SUCCESS | FightsActions.PREVIOUS | FightsActions.NEXT | FightsActions.RESET_FIGHT | FightsActions.CLOSE>
+  type: Extract<FightsActions, FightsActions.RESET | FightsActions.EDIT | FightsActions.SAVING | FightsActions.SUCCESS | FightsActions.PREVIOUS | FightsActions.NEXT | FightsActions.RESET_FIGHT>
 }
 
 interface PayloadAction {
-  type: Extract<FightsActions, FightsActions.FIGHT | FightsActions.FIGHTS | FightsActions.OPEN>
+  type: Extract<FightsActions, FightsActions.FIGHT | FightsActions.FIGHTS>
   payload: PayloadType
 }
 
@@ -59,8 +55,6 @@ export const initialFightsState:FightsStateType = {
   search: "",
   meta: defaultPaginationMeta,
   showHidden: false,
-  open: false,
-  anchorEl: null
 }
 
 export function fightsReducer(state: FightsStateType, action: FightsActionType): FightsStateType {
@@ -81,20 +75,6 @@ export function fightsReducer(state: FightsStateType, action: FightsActionType):
         ...state,
         edited: true,
         page: state.meta["next_page"] as number
-      }
-    case FightsActions.OPEN:
-      return {
-        ...state,
-        edited: true,
-        open: true,
-        anchorEl: action.payload as Element
-      }
-    case FightsActions.CLOSE:
-      return {
-        ...state,
-        edited: true,
-        open: false,
-        anchorEl: null
       }
     case FightsActions.SAVING:
       return {
