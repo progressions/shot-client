@@ -15,7 +15,7 @@ import GamemasterOnly from "@/components/GamemasterOnly"
 import PlayerTypeOnly from "@/components/PlayerTypeOnly"
 import { useClient } from "@/contexts"
 import CS from "@/services/CharacterService"
-import { useState } from "react"
+import { useRef, useState } from "react"
 
 import type { Character, CharacterType } from "@/types/types"
 
@@ -34,14 +34,14 @@ interface ActionButtonsParams {
 export default function ActionButtons({ character, healWounds, cheeseItAction, takeWounds, takeConditionPoints, takeAction, editCharacter, deleteCharacter, takeDodgeAction }: ActionButtonsParams) {
   const { user } = useClient()
   const [open, setOpen] = useState(false)
-  const [containerRef, setContainerRef] = useState<HTMLDivElement | null>(null)
+  const containerRef = useRef<HTMLDivElement>(null)
 
   const woundLabel = CS.isMook(character) ? "Kill Mooks" : "Take Smackdown"
   const woundIcon = <HeartBrokenIcon color='error' />
 
   return (
     <>
-    <Stack direction="row" justifyContent="flex-end" sx={{height: 30, width: 350}} onMouseEnter={() => setOpen(true)} onMouseLeave={() => setOpen(false)} ref={setContainerRef}>
+    <Stack direction="row" justifyContent="flex-end" sx={{height: 30, width: 350}} onMouseEnter={() => setOpen(true)} onMouseLeave={() => setOpen(false)} ref={containerRef}>
       <Slide direction="left" in={open} mountOnEnter unmountOnExit onMouseEnter={() => setOpen(true)} onMouseLeave={() => setOpen(open)} container={containerRef?.current}>
         <Stack direction="row" spacing={1} sx={{width: 260, height: 30}} justifyContent="flex-end" ref={containerRef}>
         <ButtonGroup variant="contained" size="small">
