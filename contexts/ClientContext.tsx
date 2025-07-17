@@ -36,11 +36,7 @@ export function ClientProvider({ children }: ClientProviderProps) {
   useEffect(() => {
     if (!user?.id) return
 
-    client.getUser(user).then((data) => {
-      dispatch({ type: UserActions.USER, payload: data })
-    }).catch((error) => {
-      console.error("Error fetching user data:", error)
-    })
+    dispatch({ type: UserActions.USER, payload: user })
   }, [user, client])
 
   return (

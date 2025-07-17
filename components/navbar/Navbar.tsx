@@ -21,24 +21,18 @@ export default function Navbar() {
   const [currentUser, setCurrentUser] = useState<User>(user || defaultUser)
 
   useEffect(() => {
-    if (!user?.id) return
-
     if (user?.id) {
-      client.getUser(user).then((data) => {
-        setCurrentUser(data)
-      }).catch((error) => {
-        console.error("Error fetching user data:", error)
-      })
+      setCurrentUser(user)
     } else {
       setCurrentUser(defaultUser)
     }
   }, [user, currentUserState])
 
   const handleClick = async () => {
-    const newCurrent = await setCurrentCampaign(defaultCampaign)
+    await setCurrentCampaign(defaultCampaign)
   }
   const handleClear = async () => {
-    const newCurrent = await setCurrentCampaign(null)
+    await setCurrentCampaign(null)
   }
 
   return (
