@@ -62,34 +62,36 @@ export default function FightToolbar({ showHidden, setShowHidden }: FightToolbar
   }
 
   return (
-    <ButtonBar>
-      <Grid container alignItems="center">
-        <Grid item>
-          <Stack direction="row" spacing={2} alignItems="center">
-            <GamemasterOnly user={user}>
-              <Tooltip title={showHidden ? "Hide Hidden" : "Show Hidden"}>
-                <Button variant="contained" color="primary" onClick={show}>
-                  {showHidden ? <VisibilityIcon /> : <VisibilityOffIcon />}
-                </Button>
-              </Tooltip>
-              <ButtonGroup>
-                <CreateVehicle />
-                <CreateCharacter />
-              </ButtonGroup>
-              <ButtonGroup>
-                <SelectCharacter addCharacter={addCharacter} />
-              </ButtonGroup>
-              <ButtonGroup>
-                <SelectParty />
-              </ButtonGroup>
-            </GamemasterOnly>
-            <AttackButton />
-          </Stack>
+    <Box sx={{width: "100%"}}>
+      <ButtonBar>
+        <Grid container alignItems="center">
+          <Grid item>
+            <Stack direction="row" spacing={2} alignItems="center">
+              <GamemasterOnly user={user}>
+                <Tooltip title={showHidden ? "Hide Hidden" : "Show Hidden"}>
+                  <Button variant="contained" color="primary" onClick={show}>
+                    {showHidden ? <VisibilityIcon /> : <VisibilityOffIcon />}
+                  </Button>
+                </Tooltip>
+                <ButtonGroup>
+                  <CreateVehicle />
+                  <CreateCharacter />
+                </ButtonGroup>
+                <ButtonGroup>
+                  <SelectCharacter addCharacter={addCharacter} />
+                </ButtonGroup>
+                <ButtonGroup>
+                  <SelectParty />
+                </ButtonGroup>
+              </GamemasterOnly>
+              <AttackButton />
+            </Stack>
+          </Grid>
+          <Grid item xs sx={{ display: "flex", justifyContent: "flex-end" }}>
+            <FightViewers />
+          </Grid>
         </Grid>
-        <Grid item xs sx={{ display: "flex", justifyContent: "flex-end" }}>
-          <FightViewers />
-        </Grid>
-      </Grid>
-    </ButtonBar>
+      </ButtonBar>
+    </Box>
   )
 }

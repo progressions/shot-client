@@ -66,6 +66,7 @@ export default function Profile({ jwt, user:initialUser }: ProfileProps) {
 
     try {
       const userData = await client.updateUser(user)
+      console.log("Profile updated:", userData)
       dispatch({ type: UserActions.USER, payload: userData })
       dispatchCurrentUser({ type: UserActions.USER, payload: userData })
 

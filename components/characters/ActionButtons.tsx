@@ -41,9 +41,9 @@ export default function ActionButtons({ character, healWounds, cheeseItAction, t
 
   return (
     <>
-    <Stack direction="row" justifyContent="flex-end" sx={{height: 30, width: 350}} onMouseEnter={() => setOpen(true)} onMouseLeave={() => setOpen(false)} ref={containerRef}>
+    <Stack direction="row" justifyContent="flex-end" sx={{height: 30}} onMouseEnter={() => setOpen(true)} onMouseLeave={() => setOpen(false)} ref={containerRef}>
       <Slide direction="left" in={open} mountOnEnter unmountOnExit onMouseEnter={() => setOpen(true)} onMouseLeave={() => setOpen(open)} container={containerRef?.current}>
-        <Stack direction="row" spacing={1} sx={{width: 260, height: 30}} justifyContent="flex-end" ref={containerRef}>
+        <Stack direction="row" spacing={1} sx={{height: 30}} justifyContent="flex-end" ref={containerRef}>
         <ButtonGroup variant="contained" size="small">
           { cheeseItAction && <Tooltip title="Cheese It" arrow>
             <Button variant="contained" sx={{color: "black", backgroundColor: "#eb8334"}} onClick={() => cheeseItAction(character)}>

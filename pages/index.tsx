@@ -141,7 +141,7 @@ export default function Home({ currentCampaign, page:initialPage }: HomeProps) {
       </Head>
       <main>
         <Layout>
-          <Container maxWidth="md" sx={{mt: 2, py: 2, minWidth: 1000}}>
+          <Container maxWidth="md" sx={{mt: 2, py: 2, minWidth: 700}}>
             <Typography variant="h3" gutterBottom>Fights</Typography>
             <GamemasterOnly user={user}>
               <ButtonBar>

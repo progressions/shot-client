@@ -13,7 +13,7 @@ interface ActionValuesParams {
 export default function ActionValues({ character }: ActionValuesParams) {
   return (
     <>
-      <Box>
+      <Box sx={{width: 450}}>
         <PlayerTypeOnly character={character} only="Mook">
           <Stack direction="row" spacing={1} alignItems="center">
             <ActionValueDisplay name={CS.mainAttack(character)} description={CS.mainAttack(character)} label={CS.mainAttack(character)} character={character} />

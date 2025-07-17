@@ -85,7 +85,7 @@ export default function Fight({ fight: initialFight }: FightParams) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Layout>
-        <Container sx={{ minWidth: 1000 }}>
+        <Container sx={{ width: "100%" }}>
           {notFound && (
             <Typography sx={{ mt: 5 }} variant="h3">
               Fight not found.

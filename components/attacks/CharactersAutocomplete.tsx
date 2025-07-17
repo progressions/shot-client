@@ -1,9 +1,9 @@
+import { Typography } from "@mui/material"
 import { StyledAutocomplete, StyledSelect } from "@/components/StyledFields"
-import { useFight } from "@/contexts/FightContext"
-import { useClient } from "@/contexts/ClientContext"
+import { useFight } from "@/contexts"
 import { useState, useEffect } from "react"
-import type { Character, InputParamsType } from "@/types/types"
-import { defaultCharacter } from "@/types/types"
+import { defaultCharacter, Character, type InputParamsType } from "@/types/types"
+import FS from "@/services/FightService"
 
 interface CharactersAutocompleteParams {
   label?: string
@@ -14,25 +14,15 @@ interface CharactersAutocompleteParams {
 }
 
 export default function CharactersAutocomplete({ label, character, setCharacter, disabled, excludeCharacters }: CharactersAutocompleteParams) {
-  const { fight} = useFight()
-  const { client } = useClient()
+  const { fight } = useFight()
   const [characters, setCharacters] = useState<Character[]>([])
-  const [loading, setLoading] = useState<boolean>(false)
+  const [loading, setLoading] = useState<boolean>(true)
 
   useEffect(() => {
-    const getCharacters = async () => {
-      let data = await client.getCharactersInFight(fight)
-      if (excludeCharacters) {
-        data = data.filter(c => !excludeCharacters.some(exclude => exclude.id === c.id))
-      }
-      setCharacters(data)
-      setLoading(false)
-    }
-
-    if (fight?.id && client) {
-      getCharacters()
-    }
-  }, [client, fight, excludeCharacters])
+    const data = FS.charactersInFight(fight).filter(c => !excludeCharacters?.some(exclude => exclude.id === c.id))
+    setCharacters(data)
+    setLoading(false)
+  }, [fight, excludeCharacters])
 
   function handleSelect(event: React.ChangeEvent<HTMLInputElement>, newValue: Character) {
     setCharacter(newValue || defaultCharacter)
@@ -48,6 +38,9 @@ export default function CharactersAutocomplete({ label, character, setCharacter,
 
   const helperText = (characters.length) ? "": "There are no available targets."
 
+  if (loading) {
+    return <Typography variant="body2" color="textSecondary">Loading characters...</Typography>
+  }
   return (
     <StyledAutocomplete
       freeSolo

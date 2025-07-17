@@ -52,6 +52,36 @@ const FightService = {
       }, []) || []
   },
 
+  charactersInFight: function(fight: Fight): Character[] {
+    if (!fight?.shot_order) return []
+
+    return fight
+      .shot_order
+      .reduce((acc: any[], shot: ShotType) => {
+        shot[1].forEach((combatant) => {
+          if (SS.isCharacter(combatant)) {
+            acc.push(combatant as Character)
+          }
+        })
+        return acc
+      }, []) || []
+  },
+
+  vehiclesInFight: function(fight: Fight): Character[] {
+    if (!fight?.shot_order) return []
+
+    return fight
+      .shot_order
+      .reduce((acc: any[], shot: ShotType) => {
+        shot[1].forEach((combatant) => {
+          if (SS.isVehicle(combatant)) {
+            acc.push(combatant as Vehicle)
+          }
+        })
+        return acc
+      }, []) || []
+  },
+
   startOfSequence: function(fight: Fight): boolean {
     return (fight?.shot_order?.[0]?.[0] || 0) === 0
   },

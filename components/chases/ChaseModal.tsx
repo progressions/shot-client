@@ -169,6 +169,7 @@ export default function ChaseModal({ }: ChaseModalProps) {
                   vehicle={target}
                   setVehicle={setTarget}
                   disabled={edited}
+                  excludeVehicles={[attacker]}
                 />
               </Box>
               <Target

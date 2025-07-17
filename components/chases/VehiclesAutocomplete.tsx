@@ -1,34 +1,30 @@
 import { StyledAutocomplete, StyledSelect } from "@/components/StyledFields"
-import { useFight } from "@/contexts/FightContext"
-import { useClient } from "@/contexts/ClientContext"
+import { useFight } from "@/contexts"
 import { useState, useEffect } from "react"
 import type { Vehicle, InputParamsType } from "@/types/types"
 import { defaultVehicle } from "@/types/types"
+import FS from "@/services/FightService"
 
 interface VehiclesAutocompleteParams {
   label?: string,
-  vehicle: Vehicle,
+  vehicle: Vehicle
   setVehicle: (vehicle: Vehicle) => void
   disabled: boolean
+  excludeVehicles?: Vehicle[]
 }
 
-export default function VehiclesAutocomplete({ label, vehicle, setVehicle, disabled }: VehiclesAutocompleteParams) {
+export default function VehiclesAutocomplete({ label, vehicle, setVehicle, disabled, excludeVehicles }: VehiclesAutocompleteParams) {
   const { fight} = useFight()
-  const { client } = useClient()
   const [vehicles, setVehicles] = useState<Vehicle[]>([])
-  const [loading, setLoading] = useState<boolean>(false)
+  const [loading, setLoading] = useState<boolean>(true)
+
+  console.log("excludeVehicles", excludeVehicles)
 
   useEffect(() => {
-    const getVehicles = async () => {
-      const data = await client.getVehiclesInFight(fight)
-      setVehicles(data)
-      setLoading(false)
-    }
-
-    if (fight?.id && client) {
-      getVehicles()
-    }
-  }, [client, fight])
+    const data = FS.vehiclesInFight(fight).filter(c => !excludeVehicles?.some(exclude => exclude.id === c.id))
+    setVehicles(data)
+    setLoading(false)
+  }, [fight, excludeVehicles])
 
   function handleSelect(event: React.ChangeEvent<HTMLInputElement>, newValue: Vehicle) {
     setVehicle(newValue || defaultVehicle)

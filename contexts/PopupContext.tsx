@@ -70,10 +70,10 @@ export function PopupProvider({ children }: PopupProviderProps) {
         if (oldHandler && oldPopup.anchorEl) {
           oldPopup.anchorEl.removeEventListener("mouseout", oldHandler);
           mouseoutHandlersRef.current.delete(oldPopup.instanceId);
-          console.log("POPUPS Removed old mouseout handler for:", oldPopup.instanceId);
+          // console.log("POPUPS Removed old mouseout handler for:", oldPopup.instanceId);
         }
       }
-      console.log("POPUPS Mouseover link:", { instanceId, mentionId, mentionClassName, parentId });
+      // console.log("POPUPS Mouseover link:", { instanceId, mentionId, mentionClassName, parentId });
       setPopups((prev) => {
         let newPopups = prev;
         if (prev.length >= 3) {
@@ -91,7 +91,7 @@ export function PopupProvider({ children }: PopupProviderProps) {
             }
           }
           isUndimmingRef.current.delete(oldestId);
-          console.log("POPUPS Removed oldest popup:", oldestId);
+          // console.log("POPUPS Removed oldest popup:", oldestId);
           newPopups = prev.slice(1);
         }
         newPopups = [
@@ -114,7 +114,7 @@ export function PopupProvider({ children }: PopupProviderProps) {
         if (newPopups.length < 3 && newPopups.length > 0) {
           newPopups = newPopups.map((popup) => ({ ...popup, isDimmed: false }));
         }
-        console.log("POPUPS New popups state:", newPopups.map(p => ({ instanceId: p.instanceId, mentionId: p.content?.id, isDimmed: p.isDimmed, parentId: p.parentId })));
+        // console.log("POPUPS New popups state:", newPopups.map(p => ({ instanceId: p.instanceId, mentionId: p.content?.id, isDimmed: p.isDimmed, parentId: p.parentId })));
         return newPopups;
       });
     }
@@ -126,14 +126,14 @@ export function PopupProvider({ children }: PopupProviderProps) {
       clearTimeout(closeTimeoutsRef.current.get(instanceId))
       closeTimeoutsRef.current.delete(instanceId)
     }
-    console.log("POPUPS Mouse entered popup:", instanceId)
+    // console.log("POPUPS Mouse entered popup:", instanceId)
   }, [])
 
   // Handle mouse leaving a popup or link
   const handleMouseLeave = useCallback((instanceId: string, event: MouseEvent, isFromLink: boolean) => {
     const popup = popups.find((p) => p.instanceId === instanceId)
     if (!popup) {
-      console.log("POPUPS No popup found for:", instanceId)
+      // console.log("POPUPS No popup found for:", instanceId)
       return
     }
     const relatedTarget = event.relatedTarget
@@ -155,27 +155,27 @@ export function PopupProvider({ children }: PopupProviderProps) {
         clearTimeout(closeTimeoutsRef.current.get(instanceId))
         closeTimeoutsRef.current.delete(instanceId)
       }
-      console.log("POPUPS Closing popup:", instanceId, "Reason: Mouse not over link, popup, or children")
+      // console.log("POPUPS Closing popup:", instanceId, "Reason: Mouse not over link, popup, or children")
       setPopups((prev) => {
         const newPopups = prev.filter((p) => p.instanceId !== instanceId)
         if (newPopups.length < 3 && newPopups.length > 0 && !isUndimmingRef.current.get("global")) {
           isUndimmingRef.current.set("global", true)
-          console.log("POPUPS Un-dimming popups:", newPopups.map(p => p.instanceId))
+          // console.log("POPUPS Un-dimming popups:", newPopups.map(p => p.instanceId))
           setTimeout(() => isUndimmingRef.current.delete("global"), 0)
           return newPopups.map((p) => ({ ...p, isDimmed: false }))
         } else if (isUndimmingRef.current.get("global")) {
-          console.log("POPUPS Skipping un-dimming, already processed")
+          // console.log("POPUPS Skipping un-dimming, already processed")
         }
         return newPopups
       })
     } else {
-      console.log("POPUPS Keeping popup open:", { instanceId, isOverLink, isOverPopup, hasChildren })
+      // console.log("POPUPS Keeping popup open:", { instanceId, isOverLink, isOverPopup, hasChildren })
     }
   }, [popups])
 
   // Handle document click to close all popups
   const handleDocumentClick = useCallback(() => {
-    console.log("POPUPS Document clicked, closing all popups")
+    // console.log("POPUPS Document clicked, closing all popups")
     closeTimeoutsRef.current.forEach((timeout) => clearTimeout(timeout))
     closeTimeoutsRef.current.clear()
     isUndimmingRef.current.clear()
@@ -204,14 +204,14 @@ export function PopupProvider({ children }: PopupProviderProps) {
             if (oldHandler) {
               // @ts-ignore
               link.removeEventListener("mouseout", oldHandler)
-              console.log("POPUPS Removed old mouseout handler for:", popup.instanceId)
+              // console.log("POPUPS Removed old mouseout handler for:", popup.instanceId)
             }
           }
           // @ts-ignore
           link.addEventListener("mouseout", handler)
           link.setAttribute("data-mouseout-handler", handler.toString())
           mouseoutHandlersRef.current.set(popup.instanceId, handler)
-          console.log("POPUPS Attached mouseout handler for:", popup.instanceId)
+          // console.log("POPUPS Attached mouseout handler for:", popup.instanceId)
         }
       }
     })
@@ -227,7 +227,7 @@ export function PopupProvider({ children }: PopupProviderProps) {
             link.removeEventListener("mouseout", handler)
             mouseoutHandlersRef.current.delete(popup.instanceId)
             link.removeAttribute("data-mouseout-handler")
-            console.log("POPUPS Cleaned up mouseout handler for:", popup.instanceId)
+            // console.log("POPUPS Cleaned up mouseout handler for:", popup.instanceId)
           }
         }
       })
@@ -245,7 +245,7 @@ export function PopupProvider({ children }: PopupProviderProps) {
         link.addEventListener("mouseover", handleMouseover)
         link.setAttribute("data-listener-attached", "true")
       })
-      console.log("POPUPS Found links:", links.length)
+      // console.log("POPUPS Found links:", links.length)
     }
 
     attachListeners()
@@ -262,7 +262,7 @@ export function PopupProvider({ children }: PopupProviderProps) {
     // @ts-ignore
     if (!links || links.length === 0) {
       retryTimeout = setTimeout(() => {
-        console.log("POPUPS Retrying link detection...")
+        // console.log("POPUPS Retrying link detection...")
         attachListeners()
       }, 1000)
     }
