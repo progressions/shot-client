@@ -1,10 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Box, Stack, TextField, Button, Dialog } from '@mui/material'
-import Client from "@/utils/Client"
 
-import { useFight } from "@/contexts/FightContext"
-import { useToast } from "@/contexts/ToastContext"
-import { useClient } from "@/contexts/ClientContext"
+import { useFight, useToast, useClient } from "@/contexts"
 import type { Character, Fight, Toast } from "@/types/types"
 import { CharacterTypes } from "@/types/types"
 import { FightActions } from '@/reducers/fightState'
@@ -35,6 +32,7 @@ export default function ActionModal({open, setOpen, character }: ActionModalPara
     setShots(parseInt(event.target.value))
   }
   const submitAction = async (event: React.ChangeEvent<HTMLInputElement>): Promise<void> => {
+    setSaving(true)
     event.preventDefault()
     if (shots > 0) {
       try {
@@ -48,10 +46,12 @@ export default function ActionModal({open, setOpen, character }: ActionModalPara
         toastError()
       }
     }
+    setSaving(false)
   }
   const cancelForm = () => {
     setShots(3)
     setOpen(false)
+    setSaving(false)
   }
 
   return (
@@ -67,7 +67,16 @@ export default function ActionModal({open, setOpen, character }: ActionModalPara
       title="Spend Shots"
       width="xs"
     >
-      <StyledTextField autoFocus type="number" label="Shots" required name="shots" value={shots || ''} onChange={handleChange} />
+      <StyledTextField
+        autoFocus
+        type="number"
+        label="Shots"
+        required
+        name="shots"
+        disabled={saving}
+        value={shots || ''}
+        onChange={handleChange}
+      />
     </StyledFormDialog>
   )
 }

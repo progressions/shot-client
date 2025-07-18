@@ -1,10 +1,7 @@
 import { useState } from 'react'
 import { DialogContent, Box, Stack, TextField, Button, Dialog } from '@mui/material'
-import Client from "@/utils/Client"
 
-import { useFight } from "@/contexts/FightContext"
-import { useToast } from "@/contexts/ToastContext"
-import { useClient } from "@/contexts/ClientContext"
+import { useFight, useToast, useClient } from "@/contexts"
 import type { Person, Character, Fight, Toast, ActionValues } from "@/types/types"
 import { FightActions } from '@/reducers/fightState'
 import { StyledTextField, StyledFormDialog, SaveCancelButtons } from '@/components/StyledFields'
@@ -19,6 +16,7 @@ interface HealModalParams {
 export default function HealModal({open, setOpen, character }: HealModalParams) {
   const { fight, dispatch:dispatchFight } = useFight()
   const [healing, setHealing] = useState<number>(0)
+  const [saving, setSaving] = useState<boolean>(false)
   const { toastSuccess, toastError } = useToast()
   const { client } = useClient()
 
@@ -26,6 +24,7 @@ export default function HealModal({open, setOpen, character }: HealModalParams) 
     setHealing(parseInt(event.target.value))
   }
   const submitWounds = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSaving(true)
     event.preventDefault()
 
     const updatedCharacter = CS.healWounds(character, healing)
@@ -39,10 +38,12 @@ export default function HealModal({open, setOpen, character }: HealModalParams) 
     } catch(error) {
       toastError()
     }
+    setSaving(false)
   }
   const cancelForm = () => {
     setHealing(0)
     setOpen(false)
+    setSaving(false)
   }
 
   return (
@@ -52,9 +53,19 @@ export default function HealModal({open, setOpen, character }: HealModalParams) 
       onSubmit={submitWounds}
       title="Heal Wounds"
       onCancel={cancelForm}
+      saving={saving}
       width="xs"
     >
-      <StyledTextField autoFocus type="number" label="Heal Wounds" required name="healing" value={healing || ""} onChange={handleChange} />
+      <StyledTextField
+        autoFocus
+        type="number"
+        label="Heal Wounds"
+        required
+        name="healing"
+        disabled={saving}
+        value={healing || ''}
+        onChange={handleChange}
+      />
     </StyledFormDialog>
   )
 }
