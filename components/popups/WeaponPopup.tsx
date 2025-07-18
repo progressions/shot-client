@@ -1,19 +1,15 @@
 import { Box, Typography, Stack } from "@mui/material"
 import styles from "@/components/editor/Editor.module.scss"
-import type { Weapon, User } from "@/types/types"
+import type { PopupProps, Weapon, User } from "@/types/types"
 import { defaultWeapon } from "@/types/types"
 import { useState, useEffect } from "react"
 import { RichTextRenderer } from "@/components/editor"
 import WeaponAvatar from "@/components/avatars/WeaponAvatar"
 import { useClient } from "@/contexts"
 
-interface WeaponPopupProps {
-  id: string
-}
-
 export default function WeaponPopup({
-  id
-}: WeaponPopupProps) {
+  id, data
+}: PopupProps) {
   const { user, client } = useClient()
   const [weapon, setWeapon] = useState<Weapon>(defaultWeapon)
 

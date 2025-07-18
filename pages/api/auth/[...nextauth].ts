@@ -1,6 +1,5 @@
 import NextAuth, { NextAuthOptions, Session, User } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
-import { getToken } from 'next-auth/jwt';
 import Api from '@/utils/Api';
 import type { AuthUser, AuthSession } from '@/types/types';
 
@@ -54,9 +53,11 @@ export const authOptions: NextAuthOptions = {
         session.user = { ...token.user }; // Deep copy to avoid reference issues
       }
       if (token.authorization) {
+        // @ts-ignore
         session.authorization = token.authorization;
       }
       if (token.id) {
+        // @ts-ignore
         session.id = token.id;
       }
       console.log('session callback', { session, token });

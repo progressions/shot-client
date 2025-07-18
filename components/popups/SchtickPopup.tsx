@@ -1,18 +1,14 @@
 import { Box, Typography, Stack } from "@mui/material"
 import styles from "@/components/editor/Editor.module.scss"
-import type { Schtick, User } from "@/types/types"
+import type { PopupProps, Schtick, User } from "@/types/types"
 import { defaultSchtick } from "@/types/types"
 import { useState, useEffect } from "react"
 import { RichTextRenderer } from "@/components/editor"
 import { useClient } from "@/contexts"
 
-interface SchtickPopupProps {
-  id: string
-}
-
 export default function SchtickPopup({
-  id
-}: SchtickPopupProps) {
+  id, data
+}: PopupProps) {
   const { user, client } = useClient()
   const [schtick, setSchtick] = useState<Schtick>(defaultSchtick)
 

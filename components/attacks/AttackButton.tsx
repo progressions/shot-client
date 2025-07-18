@@ -11,13 +11,11 @@ export default function AttackButton() {
   const { state, dispatch } = useFight()
 
   function toggleAttack(event: React.SyntheticEvent<Element, Event>) {
-    dispatch({ type: FightActions.UPDATE, name: "attacking", value: !state.attacking })
-    dispatch({ type: FightActions.UPDATE, name: "chasing", value: false })
+    dispatch({ type: FightActions.ATTACK, payload: !state.attacking })
   }
 
   function openChase(event: React.SyntheticEvent<Element, Event>) {
-    dispatch({ type: FightActions.UPDATE, name: "chasing", value: !state.chasing })
-    dispatch({ type: FightActions.UPDATE, name: "attacking", value: false })
+    dispatch({ type: FightActions.CHASE, payload: !state.chasing })
   }
 
   return (

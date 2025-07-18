@@ -1,19 +1,15 @@
 import { Box, Typography, Stack } from "@mui/material"
 import styles from "@/components/editor/Editor.module.scss"
-import type { Party, User } from "@/types/types"
+import type { PopupProps, Party, User } from "@/types/types"
 import { defaultParty } from "@/types/types"
 import { useState, useEffect } from "react"
 import { RichTextRenderer } from "@/components/editor"
 import PartyAvatar from "@/components/avatars/PartyAvatar"
 import { useClient } from "@/contexts"
 
-interface PartyPopupProps {
-  id: string
-}
-
 export default function PartyPopup({
-  id
-}: PartyPopupProps) {
+  id, data
+}: PopupProps) {
   const { user, client } = useClient()
   const [party, setParty] = useState<Party>(defaultParty)
 

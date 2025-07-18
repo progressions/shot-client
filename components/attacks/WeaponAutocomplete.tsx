@@ -19,16 +19,14 @@ export default function WeaponAutocomplete({ character, weapon, setWeapon, disab
   const [weapons, setWeapons] = useState<Weapon[]>([])
 
   useEffect(() => {
-    const getCharacter = async () => {
-      const data = await client.getCharacter(character)
-
-      const uniqueWeapons = data?.weapons.filter((weapon, index, self) => self.findIndex(w => w.id === weapon.id) === index)
+    const getWeapons = async () => {
+      const uniqueWeapons = character?.weapons.filter((weapon, index, self) => self.findIndex(w => w.id === weapon.id) === index)
       setWeapons(uniqueWeapons || [])
       setWeapon(uniqueWeapons[0] || defaultWeapon)
     }
 
     if (character?.id) {
-      getCharacter()
+      getWeapons()
     } else {
       setWeapons([])
     }

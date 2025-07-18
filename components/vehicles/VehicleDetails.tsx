@@ -21,6 +21,7 @@ import { useFight } from "@/contexts/FightContext"
 import GroupedEffects from "@/components/character_effects/GroupedEffects"
 import DriverDetails from "@/components/vehicles/DriverDetails"
 import FES from "@/services/FightEventService"
+import ActionButtonsWrapper from "@/components/vehicles/ActionButtonsWrapper"
 
 import type { Character, Person, Vehicle, Fight, Toast, ID } from "@/types/types"
 import { defaultVehicle } from "@/types/types"
@@ -121,18 +122,11 @@ export default function VehicleDetails({ character, editingCharacter, setEditing
           <GamemasterOnly user={user} character={character}>
             <Stack direction="row" spacing={1} justifyContent="space-between">
               <VehicleActionValues character={character} />
-              <PlayerTypeOnly character={character} except="Mook">
-                <ActionButtons character={character}
-                  takeWounds={takeChasePoints}
-                  takeConditionPoints={takeConditionPoints}
-                />
-              </PlayerTypeOnly>
-              <PlayerTypeOnly character={character} only="Mook">
-                <MookActionButtons character={character}
-                  takeWounds={takeChasePoints}
-                  takeConditionPoints={takeConditionPoints}
-                />
-              </PlayerTypeOnly>
+              <ActionButtonsWrapper
+                character={character}
+                takeChasePoints={takeChasePoints}
+                takeConditionPoints={takeConditionPoints}
+              />
             </Stack>
           </GamemasterOnly>
           <DriverDetails vehicle={character} />

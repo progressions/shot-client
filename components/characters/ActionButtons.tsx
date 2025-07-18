@@ -41,48 +41,41 @@ export default function ActionButtons({ character, healWounds, cheeseItAction, t
 
   return (
     <>
-    <Stack direction="row" justifyContent="flex-end" sx={{height: 30}} onMouseEnter={() => setOpen(true)} onMouseLeave={() => setOpen(false)} ref={containerRef}>
-      <Slide direction="left" in={open} mountOnEnter unmountOnExit onMouseEnter={() => setOpen(true)} onMouseLeave={() => setOpen(open)} container={containerRef?.current}>
-        <Stack direction="row" spacing={1} sx={{height: 30}} justifyContent="flex-end" ref={containerRef}>
-        <ButtonGroup variant="contained" size="small">
-          { cheeseItAction && <Tooltip title="Cheese It" arrow>
-            <Button variant="contained" sx={{color: "black", backgroundColor: "#eb8334"}} onClick={() => cheeseItAction(character)}>
-              <RunCircleIcon sx={{width: 33, height: 33}} />
+      <ButtonGroup variant="contained" size="small">
+        { cheeseItAction && <Tooltip title="Cheese It" arrow>
+          <Button variant="contained" sx={{color: "black", backgroundColor: "#eb8334"}} onClick={() => cheeseItAction(character)}>
+            <RunCircleIcon sx={{width: 33, height: 33}} />
+          </Button>
+        </Tooltip> }
+      </ButtonGroup>
+      <ButtonGroup variant="contained" size="small">
+        { takeWounds &&
+          <Tooltip title={woundLabel} arrow>
+            <Button onClick={() => {takeWounds(character)}}>
+              {woundIcon}
             </Button>
           </Tooltip> }
-        </ButtonGroup>
-        <ButtonGroup variant="contained" size="small">
-          { takeWounds &&
-            <Tooltip title={woundLabel} arrow>
-              <Button onClick={() => {takeWounds(character)}}>
-                {woundIcon}
-              </Button>
-            </Tooltip> }
-          { healWounds &&
-          <PlayerTypeOnly character={character} except="Mook">
-            <Tooltip title="Heal Wounds" arrow>
-              <Button variant="contained" onClick={() => {healWounds(character)}}>
-                <FavoriteIcon color="error" />
-              </Button>
-            </Tooltip>
-          </PlayerTypeOnly> }
-        </ButtonGroup>
-        <ButtonGroup variant="outlined" size="small" className="actionButtons">
-          { takeDodgeAction && <Tooltip title="Dodge" arrow>
-            <Button variant="contained" color="highlight" onClick={() => takeDodgeAction(character)}>
-              <DirectionsRunIcon />
+        { healWounds &&
+        <PlayerTypeOnly character={character} except="Mook">
+          <Tooltip title="Heal Wounds" arrow>
+            <Button variant="contained" onClick={() => {healWounds(character)}}>
+              <FavoriteIcon color="error" />
             </Button>
-          </Tooltip> }
-          { takeAction && <Tooltip title="Take Action" arrow>
-            <Button sx={{width: 60}} variant="contained" color="highlight" onClick={() => {takeAction(character)}}>
-              <BoltIcon sx={{width: 50, height: 50}} />
-            </Button>
-          </Tooltip> }
-        </ButtonGroup>
-      </Stack>
-    </Slide>
-    { open ? <ArrowRightSharpIcon /> : <ArrowLeftSharpIcon /> }
-  </Stack>
+          </Tooltip>
+        </PlayerTypeOnly> }
+      </ButtonGroup>
+      <ButtonGroup variant="outlined" size="small" className="actionButtons">
+        { takeDodgeAction && <Tooltip title="Dodge" arrow>
+          <Button variant="contained" color="highlight" onClick={() => takeDodgeAction(character)}>
+            <DirectionsRunIcon />
+          </Button>
+        </Tooltip> }
+        { takeAction && <Tooltip title="Take Action" arrow>
+          <Button sx={{width: 60}} variant="contained" color="highlight" onClick={() => {takeAction(character)}}>
+            <BoltIcon sx={{width: 50, height: 50}} />
+          </Button>
+        </Tooltip> }
+      </ButtonGroup>
   </>
   )
 }

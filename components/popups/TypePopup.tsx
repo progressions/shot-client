@@ -2,13 +2,9 @@ import { Box, Typography, Stack } from "@mui/material"
 import styles from "@/components/editor/Editor.module.scss"
 import { RichTextRenderer } from "@/components/editor"
 import ReactDOMServer from "react-dom/server"
-import type { CharacterType } from "@/types/types"
+import type { PopupProps, CharacterType } from "@/types/types"
 
-interface TypePopupProps {
-  id: CharacterType
-}
-
-const descriptions: Record<TypePopupProps["id"], JSX.Element> = {
+const descriptions: Record<PopupProps["id"], JSX.Element> = {
   "PC": <p>A player character (PC).</p>,
   "Mook": <p>A mook, a character that can be easily defeated.</p>,
   "Featured Foe": <p>A featured foe, a significant character in the story.</p>,
@@ -17,7 +13,7 @@ const descriptions: Record<TypePopupProps["id"], JSX.Element> = {
   "Ally": <p>An ally, a character that assists the player characters.</p>,
 }
 
-export default function TypePopup({ id }: TypePopupProps) {
+export default function TypePopup({ id, data }: PopupProps) {
   const description = descriptions[id] || <p>Unknown character type.</p>
   const html = ReactDOMServer.renderToStaticMarkup(description)
 

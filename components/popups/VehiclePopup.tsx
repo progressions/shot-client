@@ -1,6 +1,6 @@
 import { Box, Typography, Stack } from "@mui/material"
 import styles from "@/components/editor/Editor.module.scss"
-import type { Vehicle, User } from "@/types/types"
+import type { PopupProps, Vehicle, User } from "@/types/types"
 import { defaultVehicle } from "@/types/types"
 import Client from "@/utils/Client"
 import { useState, useEffect } from "react"
@@ -9,13 +9,9 @@ import VS from "@/services/VehicleService"
 import GamemasterOnly from "@/components/GamemasterOnly"
 import { useClient } from "@/contexts"
 
-interface VehiclePopupProps {
-  id: string
-}
-
 export default function CharacterPopup({
-  id
-}: VehiclePopupProps) {
+  id, data
+}: PopupProps) {
   const { user, client } = useClient()
   const [vehicle, setVehicle] = useState<Vehicle>(defaultVehicle)
 

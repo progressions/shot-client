@@ -7,7 +7,7 @@ import Layout from "@/components/Layout"
 import ShotCounter from "@/components/fights/ShotCounter"
 
 import { getServerClient } from "@/utils/getServerClient"
-import { useFight, useWebSocket, useToast, useClient } from "@/contexts"
+import { useLocalStorage, useFight, useWebSocket, useToast, useClient } from "@/contexts"
 
 import type { Viewer, ParamsType, AuthSession, ShotType, Vehicle, Person, Character, Fight, ID } from "@/types/types"
 import { ServerSideProps } from "@/types/types"
@@ -46,6 +46,7 @@ export default function Fight({ fight: initialFight }: FightParams) {
   const { toastError, toastSuccess } = useToast()
   const { notFound, loading, edited } = state
   const { viewingUsers } = useWebSocket()
+  const { saveLocally, getLocally } = useLocalStorage()
 
   useEffect(() => {
     dispatch({ type: FightActions.FIGHT, payload: initialFight })
@@ -57,6 +58,9 @@ export default function Fight({ fight: initialFight }: FightParams) {
         const data = await client.getFight(fight)
         dispatch({ type: FightActions.FIGHT, payload: data })
         dispatch({ type: FightActions.SUCCESS })
+
+        console.log("clearing local storage for fight events")
+        saveLocally(`fight-events-${fight.id}`, null)
       } catch (error: any) {
         if (error.message === "Not Found") {
           dispatch({ type: FightActions.UPDATE, name: "notFound", value: true })

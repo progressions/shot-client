@@ -19,7 +19,7 @@ export default function SchticksDisplay({ character, first }: SchticksDisplayPro
     <>
       { first &&
         <Stack direction="row" spacing={1} alignItems="center" justifyContent="flex-start">
-          <Link data-mention-id={character.id} data-mention-class-name="Schticks" sx={{color: "white"}}>
+          <Link data-mention-id={character.id} data-mention-class-name="Schticks" data-mention-data={JSON.stringify(schticks)} sx={{color: "white"}}>
             <IconButton color="inherit">
               <LightbulbIcon />
             </IconButton>
@@ -30,7 +30,7 @@ export default function SchticksDisplay({ character, first }: SchticksDisplayPro
         </Stack>
       }
       { !first &&
-        <Link data-mention-id={character.id} data-mention-class-name="Schticks" sx={{color: "white"}}>
+        <Link data-mention-id={character.id} data-mention-class-name="Schticks" data-mention-data={JSON.stringify(schticks)} sx={{color: "white"}}>
           <IconButton color="inherit">
             <LightbulbIcon />
           </IconButton>

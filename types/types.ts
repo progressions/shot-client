@@ -2,6 +2,11 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { Session, User as NextAuthUser } from "next-auth"
 import { AlertColor } from "@mui/material"
 
+export interface PopupProps {
+  id: string
+  data?: any
+}
+
 export interface VehicleArchetype {
   name: string
   Acceleration: number

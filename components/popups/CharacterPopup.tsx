@@ -1,6 +1,6 @@
 import { Link, Box, Typography, Stack } from "@mui/material"
 import styles from "@/components/editor/Editor.module.scss"
-import type { Character, User } from "@/types/types"
+import type { PopupProps, Character, User } from "@/types/types"
 import { DescriptionKeys as D, defaultCharacter } from "@/types/types"
 import { useState, useEffect } from "react"
 import CharacterAvatar from "@/components/avatars/CharacterAvatar"
@@ -10,13 +10,9 @@ import { RichTextRenderer } from "@/components/editor"
 import ReactDOMServer from "react-dom/server"
 import { useClient } from "@/contexts"
 
-interface CharacterPopupProps {
-  id: string
-}
-
 export default function CharacterPopup({
-  id,
-}: CharacterPopupProps) {
+  id, data
+}: PopupProps) {
   const { user, client } = useClient()
   const [character, setCharacter] = useState<Character>(defaultCharacter)
 

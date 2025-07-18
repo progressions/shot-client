@@ -1,7 +1,7 @@
 import { IconButton, Box, Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, TextField, MenuItem, Stack, Typography } from "@mui/material"
 import { CampaignContextType, useCampaign } from "@/contexts/CampaignContext"
 import { useClient } from "@/contexts/ClientContext"
-import { useMemo, useCallback, useEffect, useState } from "react"
+import { useMemo, useCallback, useState } from "react"
 import Client from "@/utils/Client"
 import NameDisplay from "@/components/campaigns/NameDisplay"
 

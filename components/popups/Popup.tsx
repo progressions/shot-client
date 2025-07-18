@@ -3,50 +3,53 @@
 import { Paper, Box } from "@mui/material"
 import styles from "@/components/popups/Popups.module.scss"
 import type { CharacterType } from "@/types/types"
-import { SchticksPopup, SkillsPopup, WeaponsPopup, CharacterPopup, VehiclePopup, FactionPopup, TypePopup, ArchetypePopup, WeaponPopup, SchtickPopup, PartyPopup, SitePopup } from "@/components/popups"
+import { CharacterEffectsPopup, SchticksPopup, SkillsPopup, WeaponsPopup, CharacterPopup, VehiclePopup, FactionPopup, TypePopup, ArchetypePopup, WeaponPopup, SchtickPopup, PartyPopup, SitePopup } from "@/components/popups"
 import { MouseEvent } from "react"
 
-interface PopupProps {
+interface PopupBaseProps {
   instanceId: string
   anchorEl: HTMLElement | null
   position: { top: number, left: number }
-  content: { id: string, className: string | null } | null
+  content: { id: string, className: string | null, data: any } | null
   isDimmed: boolean
   onMouseEnter: () => void
   onMouseLeave: (event: MouseEvent<HTMLDivElement>) => void // Use React's MouseEvent
 }
 
-export default function Popup({ instanceId, position, content, isDimmed, onMouseEnter, onMouseLeave }: PopupProps) {
+export default function PopupBase({ instanceId, position, content, isDimmed, onMouseEnter, onMouseLeave }: PopupBaseProps) {
   const classNames = [styles.mentionPopup, isDimmed ? styles.dimmed : ""].filter(Boolean).join(" ")
+  const data = content?.data ? JSON.parse(content.data) : null
 
   if (!content) return null
 
   const renderPopupContent = () => {
     switch (content.className) {
       case "Character":
-        return <CharacterPopup id={content.id} />
+        return <CharacterPopup id={content.id} data={data} />
       case "Vehicle":
-        return <VehiclePopup id={content.id} />
+        return <VehiclePopup id={content.id} data={data} />
       case "Faction":
-        return <FactionPopup id={content.id} />
+        return <FactionPopup id={content.id} data={data} />
       case "Type":
-        return <TypePopup id={content.id as CharacterType} />
+        return <TypePopup id={content.id as CharacterType} data={data} />
       case "Archetype":
-        return <ArchetypePopup id={content.id} />
+        return <ArchetypePopup id={content.id} data={data} />
       case "Weapon":
-        return <WeaponPopup id={content.id} />
+        return <WeaponPopup id={content.id} data={data} />
       case "Schtick":
-        return <SchtickPopup id={content.id} />
+        return <SchtickPopup id={content.id} data={data} />
       case "Party":
-        return <PartyPopup id={content.id} />
+        return <PartyPopup id={content.id} data={data} />
       case "Site":
-        return <SitePopup id={content.id} />
+        return <SitePopup id={content.id} data={data} />
       case "Weapons":
-        return <WeaponsPopup id={content.id} />
+        return <WeaponsPopup id={content.id} data={data} />
       case "Skills":
-        return <SkillsPopup id={content.id} />
+        return <SkillsPopup id={content.id} data={data} />
       case "Schticks":
-        return <SchticksPopup id={content.id} />
+        return <SchticksPopup id={content.id} data={data} />
+      case "CharacterEffects":
+        return <CharacterEffectsPopup id={content.id} data={data} />
       default:
         return null
     }

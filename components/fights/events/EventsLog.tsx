@@ -6,7 +6,7 @@ import type { FightEvent, Vehicle, Character, Fight, ShotType } from "@/types/ty
 import MenuBookIcon from '@mui/icons-material/MenuBook'
 import ContentCopyIcon from '@mui/icons-material/ContentCopy'
 import FES from "@/services/FightEventService"
-import { useClient } from "@/contexts/ClientContext"
+import { useClient, useLocalStorage } from "@/contexts"
 import { groupEvents, type GroupedEvents, type SequenceOnlyEvents, type UngroupedEvents } from "@/components/fights/events/groupEvents"
 import { formatEventsLog } from "@/components/fights/events/formatEventsLog"
 
@@ -83,10 +83,22 @@ export default function EventsLog() {
   const [processing, setProcessing] = useState(false)
   const [open, setOpen] = useState(false)
   const [events, setEvents] = useState<FightEvent[]>([])
+  const { getLocally, saveLocally } = useLocalStorage()
 
   useEffect(() => {
     async function fetchEvents() {
+      // Check if events are already cached
+      const cachedEvents = getLocally(`fight-events-${fight.id}`)
+      console.log("cachedEvents:", cachedEvents)
+      if (cachedEvents) {
+        console.log("Using cached events for fight:", fight.id)
+        setEvents(cachedEvents as FightEvent[])
+        return
+      }
+      console.log("Fetching events for fight:", fight.id)
       const events = await FES.getFightEvents(client, fight)
+      // Save fetched events to local storage
+      saveLocally(`fight-events-${fight.id}`, events)
       setEvents(events || [])
     }
     if (fight?.id) {

@@ -21,7 +21,7 @@ export default function SkillsDisplay({ character, first }: SkillsDisplayProps) 
     <>
       { first &&
         <Stack direction="row" spacing={1} alignItems="center" justifyContent="flex-start">
-          <Link data-mention-id={character.id} data-mention-class-name="Skills" sx={{color: "white"}}>
+          <Link data-mention-id={character.id} data-mention-class-name="Skills" data-mention-data={JSON.stringify(skillValues)} sx={{color: "white"}}>
             <IconButton color="inherit">
               <ArticleIcon />
             </IconButton>
@@ -32,7 +32,7 @@ export default function SkillsDisplay({ character, first }: SkillsDisplayProps) 
         </Stack>
       }
       { !first &&
-        <Link data-mention-id={character.id} data-mention-class-name="Skills" sx={{color: "white"}}>
+        <Link data-mention-id={character.id} data-mention-class-name="Skills" data-mention-data={JSON.stringify(skillValues)} sx={{color: "white"}}>
           <IconButton color="inherit">
             <ArticleIcon />
           </IconButton>

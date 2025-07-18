@@ -18,8 +18,6 @@ export default function VehiclesAutocomplete({ label, vehicle, setVehicle, disab
   const [vehicles, setVehicles] = useState<Vehicle[]>([])
   const [loading, setLoading] = useState<boolean>(true)
 
-  console.log("excludeVehicles", excludeVehicles)
-
   useEffect(() => {
     const data = FS.vehiclesInFight(fight).filter(c => !excludeVehicles?.some(exclude => exclude.id === c.id))
     setVehicles(data)

@@ -8,6 +8,7 @@ import { AlertColor } from "@mui/material"
 import BloodtypeIcon from '@mui/icons-material/Bloodtype'
 import WhatshotIcon from '@mui/icons-material/Whatshot'
 
+import ActionButtonsWrapper from "@/components/characters/ActionButtonsWrapper"
 import ActionValues from '@/components/characters/ActionValues'
 import ActionModal from '@/components/characters/ActionModal'
 import WoundsModal from '@/components/characters/WoundsModal'
@@ -190,25 +191,15 @@ export default function CharacterDetails({ character, editingCharacter, setEditi
             shot={shot}
           />
           <GamemasterOnly user={user} character={character}>
-            <Stack direction="row" spacing={1} justifyContent="space-between">
-              <ActionValues character={character} />
-              <PlayerTypeOnly character={character} except="Mook">
-                <ActionButtons character={character}
-                  healWounds={healWounds}
-                  takeWounds={takeWounds}
-                  takeAction={takeAction}
-                  takeDodgeAction={takeDodgeAction}
-                  cheeseItAction={cheeseItAction}
-                />
-              </PlayerTypeOnly>
-              <PlayerTypeOnly character={character} only="Mook">
-                <MookActionButtons character={character}
-                  healWounds={healWounds}
-                  takeWounds={takeWounds}
-                  takeAction={takeAction}
-                />
-              </PlayerTypeOnly>
-            </Stack>
+            <ActionButtonsWrapper
+              first={first}
+              character={character}
+              takeAction={takeAction}
+              takeWounds={takeWounds}
+              healWounds={healWounds}
+              takeDodgeAction={takeDodgeAction}
+              cheeseItAction={cheeseItAction}
+            />
             { first &&
               <Stack spacing={1}>
                 <SchticksDisplay character={character} first={first} />

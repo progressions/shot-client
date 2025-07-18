@@ -12,7 +12,7 @@ interface PopupInstance {
   instanceId: string
   anchorEl: HTMLElement | null
   position: { top: number, left: number } | null
-  content: { id: string, className: string | null } | null
+  content: { id: string, className: string | null, data: any } | null
   isDimmed: boolean
   mentionId: string | null
   parentId: string | null
@@ -54,6 +54,7 @@ export function PopupProvider({ children }: PopupProviderProps) {
 
     const mentionId = target.getAttribute("data-mention-id");
     const mentionClassName = target.getAttribute("data-mention-class-name");
+    const mentionData = target.getAttribute("data-mention-data");
     if (mentionId) {
       const instanceId = generateInstanceId();
       const parentPopup = target.closest("[data-popup-instance]");
@@ -100,7 +101,7 @@ export function PopupProvider({ children }: PopupProviderProps) {
             instanceId,
             anchorEl: target,
             position: calculatePopperPosition(target),
-            content: { id: mentionId, className: mentionClassName },
+            content: { id: mentionId, className: mentionClassName, data: mentionData },
             isDimmed: false,
             mentionId,
             parentId

@@ -1,4 +1,4 @@
-import { Stack, Alert, Tooltip, IconButton, Popover, AlertTitle, Box, Typography } from "@mui/material"
+import { Link, Stack, Alert, Tooltip, IconButton, Popover, AlertTitle, Box, Typography } from "@mui/material"
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 import DeleteIcon from '@mui/icons-material/Delete'
 import { useToast } from "@/contexts/ToastContext"
@@ -55,6 +55,18 @@ export default function Effects({ character, effects, severity }: EffectsProps) 
     }
   }
 
+  return (<>
+    <Link
+      data-mention-id={`effects-${severity}-${character.id}`}
+      data-mention-class-name="CharacterEffects"
+      data-mention-data={JSON.stringify({ severity, effects })}
+    >
+      <IconButton onMouseEnter={showEffect} color={severity}>
+        <InfoOutlinedIcon />
+      </IconButton>
+    </Link>
+  </>)
+
   return (
     <>
       <Tooltip title={`${effects.length} effects`}>
@@ -63,24 +75,6 @@ export default function Effects({ character, effects, severity }: EffectsProps) 
         </IconButton>
       </Tooltip>
       <Popover anchorEl={anchorEl} open={open} onClose={closePopover} anchorOrigin={{vertical: 'bottom', horizontal: 'center'}}>
-        <Alert severity={severity as Severity}>
-          {
-            effects.map((effect: CharacterEffect) => (<Box key={effect.id}>
-              <Stack direction="row" spacing={2}>
-                <AlertTitle>
-                  <Box sx={{width: 100}}>{effect.name}</Box>
-                </AlertTitle>
-                <GamemasterOnly user={user} character={character}>
-                  <IconButton onClick={async () => await deleteEffect(effect)}><DeleteIcon sx={{marginTop: -1, color: toolbarColor}} /></IconButton>
-                </GamemasterOnly>
-              </Stack>
-              <Box mt={-1} pb={1}>
-                <Typography variant="caption">{effect.description}</Typography>
-                <Typography variant="subtitle1">{actionValueLabel(effect)} {effect.change}</Typography>
-              </Box>
-            </Box>))
-          }
-        </Alert>
       </Popover>
     </>
   )

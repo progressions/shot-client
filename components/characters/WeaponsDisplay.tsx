@@ -23,7 +23,7 @@ export default function WeaponsDisplay({ character, first }: WeaponsDisplayProps
     <>
       { first &&
         <Stack direction="row" spacing={1} alignItems="center" justifyContent="flex-start">
-          <Link href="/" data-mention-id={character.id} data-mention-class-name="Weapons" sx={{color: "white"}}>
+          <Link href="/" data-mention-id={character.id} data-mention-class-name="Weapons" data-mention-data={JSON.stringify(weapons)} sx={{color: "white"}}>
             <IconButton color="inherit">
               <GiPistolGun />
             </IconButton>
@@ -34,7 +34,7 @@ export default function WeaponsDisplay({ character, first }: WeaponsDisplayProps
         </Stack>
       }
       { !first && <Tooltip title="Weapons">
-        <Link href="/" data-mention-id={character.id} data-mention-class-name="Weapons" sx={{color: "white"}}>
+        <Link href="/" data-mention-id={character.id} data-mention-class-name="Weapons" data-mention-data={JSON.stringify(weapons)} sx={{color: "white"}}>
           <IconButton color="inherit">
             <GiPistolGun />
           </IconButton>

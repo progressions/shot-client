@@ -1,19 +1,15 @@
 import { Box, Typography, Stack } from "@mui/material"
 import styles from "@/components/editor/Editor.module.scss"
-import type { Faction, User } from "@/types/types"
+import type { PopupProps, Faction, User } from "@/types/types"
 import { defaultFaction } from "@/types/types"
 import { useState, useEffect } from "react"
 import { RichTextRenderer } from "@/components/editor"
 import FactionAvatar from "@/components/avatars/FactionAvatar"
 import { useClient } from "@/contexts"
 
-interface FactionPopupProps {
-  id: string
-}
-
 export default function FactionPopup({
-  id
-}: FactionPopupProps) {
+  id, data
+}: PopupProps) {
   const { user, client } = useClient()
   const [faction, setFaction] = useState<Faction>(defaultFaction)
 

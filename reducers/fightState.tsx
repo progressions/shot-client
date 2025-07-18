@@ -6,8 +6,8 @@ export enum FightActions {
   SAVING = "saving",
   SUCCESS = "success",
   ERROR = "error",
-  PREVIOUS = "previous",
-  NEXT = "next",
+  ATTACK = "attack",
+  CHASE = "chase",
   FIGHT = "fight",
   UPDATE = "update",
   UPDATE_FIGHT = "update_fight",
@@ -30,14 +30,14 @@ export interface FightStateType {
   anchorEl: Element | null
 }
 
-export type PayloadType = Fight | string | Element | Error | null
+export type PayloadType = Fight | string | Element | Error | boolean | null
 
 interface ActionNoPayload {
-  type: Extract<FightActions, FightActions.RESET | FightActions.EDIT | FightActions.SAVING | FightActions.SUCCESS | FightActions.PREVIOUS | FightActions.NEXT | FightActions.CLOSE>
+  type: Extract<FightActions, FightActions.RESET | FightActions.EDIT | FightActions.SAVING | FightActions.SUCCESS | FightActions.CLOSE>
 }
 
 interface PayloadAction {
-  type: Extract<FightActions, FightActions.FIGHT | FightActions.OPEN | FightActions.ERROR>
+  type: Extract<FightActions, FightActions.FIGHT | FightActions.OPEN | FightActions.ERROR | FightActions.ATTACK | FightActions.CHASE>
   payload: PayloadType
 }
 
@@ -70,6 +70,20 @@ export function fightReducer(state: FightStateType, action: FightActionType): Fi
       return {
         ...state,
         edited: true
+      }
+    case FightActions.ATTACK:
+      return {
+        ...state,
+        attacking: action.payload as boolean,
+        chasing: false,
+        edited: false
+      }
+    case FightActions.CHASE:
+      return {
+        ...state,
+        attacking: false,
+        chasing: action.payload as boolean,
+        edited: false
       }
     case FightActions.OPEN:
       return {

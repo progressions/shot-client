@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import { colors, Pagination, Box, Switch, FormControlLabel, Stack, Paper, Container, Table, TableContainer, TableBody, TableHead, TableRow, TableCell, Typography } from '@mui/material'
+import { Link, colors, Pagination, Box, Switch, FormControlLabel, Stack, Paper, Container, Table, TableContainer, TableBody, TableHead, TableRow, TableCell, Typography } from '@mui/material'
 import { getServerClient } from "@/utils/getServerClient"
 
 import { ButtonBar } from "@/components/StyledFields"

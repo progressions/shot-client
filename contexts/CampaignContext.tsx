@@ -42,6 +42,11 @@ export function CampaignProvider({ children }: CampaignProviderProps) {
 
   const getCurrentCampaign = async ():Promise<Campaign | null> => {
     try {
+      const cachedCampaign = getLocally(`currentCampaign-${user?.id}`) as Campaign
+      if (cachedCampaign) {
+        setCampaign(cachedCampaign)
+        return cachedCampaign as Campaign
+      }
       const data = await client.getCurrentCampaign()
       setCampaign(data)
       return data as Campaign
@@ -55,7 +60,7 @@ export function CampaignProvider({ children }: CampaignProviderProps) {
     if (!user) return
 
     try {
-      const data = getCurrentCampaign()
+      getCurrentCampaign()
     } catch(error) {
       console.error(error)
     }

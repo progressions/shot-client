@@ -14,7 +14,7 @@ import { useClient } from "@/contexts/ClientContext"
 
 import type { Character, CharacterType } from "@/types/types"
 
-interface ActionButtonsParams {
+interface MookActionButtonsParams {
   character: Character,
   healWounds?: (character: Character) => void,
   takeWounds?: (character: Character) => void,
@@ -24,7 +24,7 @@ interface ActionButtonsParams {
   deleteCharacter?: (character: Character) => void,
 }
 
-export default function ActionButtons({ character, healWounds, takeWounds, takeConditionPoints, takeAction, editCharacter, deleteCharacter }: ActionButtonsParams) {
+export default function MookActionButtons({ character, healWounds, takeWounds, takeConditionPoints, takeAction, editCharacter, deleteCharacter }: MookActionButtonsParams) {
   const { user } = useClient()
 
   const woundLabel = "Kill Mooks"
