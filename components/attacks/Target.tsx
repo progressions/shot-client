@@ -52,9 +52,11 @@ export default function Target({ state, setTarget, handleChange, dispatch }: Tar
   const [toughnessChanged, adjustedToughness] = CES.adjustedActionValue(target, "Toughness", fight, true)
   const toughnessHelperText = toughnessChanged ? `${toughnessChanged > 0 ? "+" : ""}${toughnessChanged}` : ""
 
+  const [defenseChanged, adjustedDefense] = CES.adjustedActionValue(target, "Defense", fight, true)
   const defenseHelperText = [
     dodged ? "Dodged" : "",
     stunt ? "Stunt" : "",
+    defenseChanged ? `${defenseChanged > 0 ? "+" : ""}${defenseChanged}` : "",
   ].filter(Boolean).join(", ")
 
   return(<>

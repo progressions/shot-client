@@ -1,9 +1,7 @@
 import { FightActions } from "@/reducers/fightState"
-import { useFight } from "@/contexts/FightContext"
-import { useToast } from "@/contexts/ToastContext"
-import { useClient } from "@/contexts/ClientContext"
+import { useFight, useToast, useClient } from "@/contexts"
 import { SaveCancelButtons, StyledTextField, StyledDialog } from "@/components/StyledFields"
-import { Button, DialogContent, Stack, Box, Typography } from "@mui/material"
+import { Paper, colors, Button, DialogContent, Stack, Box, Typography } from "@mui/material"
 import { useState } from "react"
 import PlayArrowIcon from '@mui/icons-material/PlayArrow'
 import FS from "@/services/FightService"
@@ -18,24 +16,23 @@ interface InitiativeCharacters {
 }
 
 export default function Initiative() {
-  const { fight, dispatch } = useFight()
+  const { fight, state, dispatch } = useFight()
   const { toastError, toastSuccess } = useToast()
   const { client } = useClient()
+  const { initiative } = state
 
   const defaultValues:InitiativeCharacters = {}
   const [values, setValues] = useState<InitiativeCharacters>(defaultValues)
   const [processing, setProcessing] = useState(false)
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(true)
 
   function handleClick() {
-    setProcessing(true)
-    setOpen(true)
+    dispatch({ type: FightActions.INITIATIVE, payload: !initiative })
   }
 
   function handleClose() {
     setValues(defaultValues)
-    setOpen(false)
-    setProcessing(false)
+    dispatch({ type: FightActions.INITIATIVE, payload: false })
   }
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
@@ -69,18 +66,12 @@ export default function Initiative() {
 
   const combatants = FS.playerCharactersForInitiative(fight)
 
+  if (!initiative) return
   return (<>
-    <Button variant="contained" color="secondary" endIcon={<PlayArrowIcon />} disabled={processing} onClick={handleClick}>PCs</Button>
-    <StyledDialog
-      open={open}
-      onClose={handleClose}
-      onSubmit={handleSubmit}
-      title="Initiative"
-    >
       { !!combatants.length &&
-        <DialogContent>
+        <Paper sx={{ p: 2, ml: 2, my: 2, width: "100%", backgroundColor: colors.blueGrey[300] }}>
           <Typography mb={3}>Ask each player to roll Initiative, enter the values below. They should use the Acceleration of their vehicle if they are driving, and Speed if they are not.</Typography>
-          <Stack spacing={2}>
+          <Stack spacing={2} mb={3}>
             {
               combatants.map((combatant) => {
                 if (VS.isVehicle(combatant)) return null
@@ -96,7 +87,9 @@ export default function Initiative() {
                       sx={{width: 110}}
                     />
                     <Typography variant="h5" color="error" sx={{width: 20}}>{combatant.current_shot}</Typography>
-                    <Typography variant="h5" sx={{width: 400}}>{combatant.name}</Typography>
+                    <Typography variant="h5" sx={{width: 300}}>{combatant.name}</Typography>
+                    { !combatant.driving?.id && <Typography sx={{color: colors.blueGrey[600], fontSize: "1rem"}}>Speed {CS.speed(combatant)}</Typography> }
+                    { combatant.driving?.id && <Typography sx={{color: colors.blueGrey[600], fontSize: "1rem"}}>Acc {VS.speed(combatant.driving)}</Typography> }
                   </Stack>
                 )
               })
@@ -108,13 +101,12 @@ export default function Initiative() {
               onCancel={handleClose}
             />
           </Stack>
-        </DialogContent>
+        </Paper>
       }
       { !combatants.length &&
         <DialogContent>
           <Typography mb={3}>No characters available for Initiative.</Typography>
         </DialogContent>
       }
-    </StyledDialog>
   </>)
 }

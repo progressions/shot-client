@@ -1,4 +1,4 @@
-import type { Weapon, SkillValue, Character, CharacterEffect } from "@/types/types"
+import type { Vehicle, Weapon, SkillValue, Character, CharacterEffect } from "@/types/types"
 import { DescriptionValues, DescriptionKeys } from "@/types/types"
 import SharedService, { woundThresholds } from "@/services/SharedService"
 
@@ -216,6 +216,10 @@ const CharacterService = {
 
   background: function(character: Character): string {
     return this.descriptionValue(character, DescriptionKeys.Background)
+  },
+
+  driving: function(character: Character): Vehicle | null {
+    return character.driving as Vehicle || null
   }
 
 }

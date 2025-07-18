@@ -15,8 +15,8 @@ interface ActionValueDisplayParams {
 }
 
 export const colorForValue = (changed: number): string => {
-  if (changed === -1) return "red"
-  if (changed == 1) return "green"
+  if (changed < 0) return "red"
+  if (changed > 0) return "green"
 
   return "inherit"
 }

@@ -19,7 +19,14 @@ import { FightActions } from "@/reducers/fightState"
 export default function Sequence() {
   const { user, client } = useClient()
   const { toastSuccess } = useToast()
-  const { fight, dispatch } = useFight()
+  const { fight, state, dispatch } = useFight()
+  const { initiative, saving } = state
+
+  console.log("initiative", initiative)
+
+  const openInitiative = () => {
+    dispatch({ type: FightActions.INITIATIVE, payload: !initiative })
+  }
 
   const addSequence = async () => {
     const updatedFight = { id: fight.id, sequence: fight.sequence + 1 } as Fight
@@ -71,7 +78,7 @@ export default function Sequence() {
           <Stack direction="row" spacing={2}>
             <GamemasterOnly user={user}>
               <RollInitiative />
-              <Initiative />
+              <Button variant="contained" color="secondary" endIcon={<PlayArrowIcon />} disabled={saving} onClick={openInitiative}>PCs</Button>
             </GamemasterOnly>
           </Stack>
           <Stack direction="row" spacing={2}>
@@ -80,6 +87,7 @@ export default function Sequence() {
           </Stack>
         </Stack>
       </Grid>
+      <Initiative />
     </Grid>
   )
 }

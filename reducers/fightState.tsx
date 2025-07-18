@@ -8,6 +8,7 @@ export enum FightActions {
   ERROR = "error",
   ATTACK = "attack",
   CHASE = "chase",
+  INITIATIVE = "initiative",
   FIGHT = "fight",
   UPDATE = "update",
   UPDATE_FIGHT = "update_fight",
@@ -23,6 +24,7 @@ export interface FightStateType {
   showHidden: boolean
   attacking: boolean
   chasing: boolean
+  initiative: boolean
   error: string
   fight: Fight
   search: string
@@ -37,7 +39,7 @@ interface ActionNoPayload {
 }
 
 interface PayloadAction {
-  type: Extract<FightActions, FightActions.FIGHT | FightActions.OPEN | FightActions.ERROR | FightActions.ATTACK | FightActions.CHASE>
+  type: Extract<FightActions, FightActions.FIGHT | FightActions.OPEN | FightActions.ERROR | FightActions.ATTACK | FightActions.CHASE | FightActions.INITIATIVE>
   payload: PayloadType
 }
 
@@ -56,6 +58,7 @@ export const initialFightState:FightStateType = {
   notFound: false,
   attacking: false,
   chasing: false,
+  initiative: false,
   error: "",
   fight: defaultFight,
   search: "",
@@ -83,6 +86,12 @@ export function fightReducer(state: FightStateType, action: FightActionType): Fi
         ...state,
         attacking: false,
         chasing: action.payload as boolean,
+        edited: false
+      }
+    case FightActions.INITIATIVE:
+      return {
+        ...state,
+        initiative: action.payload as boolean,
         edited: false
       }
     case FightActions.OPEN:
