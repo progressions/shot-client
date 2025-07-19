@@ -22,8 +22,6 @@ export default function Sequence() {
   const { fight, state, dispatch } = useFight()
   const { initiative, saving } = state
 
-  console.log("initiative", initiative)
-
   const openInitiative = () => {
     dispatch({ type: FightActions.INITIATIVE, payload: !initiative })
   }

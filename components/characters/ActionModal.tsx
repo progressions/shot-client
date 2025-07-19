@@ -1,10 +1,11 @@
-import { useEffect, useState } from 'react'
+import { useReducer, useEffect, useState } from 'react'
 import { Box, Stack, TextField, Button, Dialog } from '@mui/material'
 
 import { useFight, useToast, useClient } from "@/contexts"
 import type { Character, Fight, Toast } from "@/types/types"
 import { CharacterTypes } from "@/types/types"
 import { FightActions } from '@/reducers/fightState'
+import { FormActions, formReducer, initializeFormState } from '@/reducers/formState'
 import { StyledFormDialog, StyledTextField } from "@/components/StyledFields"
 import CS from "@/services/CharacterService"
 import FES from "@/services/FightEventService"
@@ -16,24 +17,37 @@ interface ActionModalParams {
 }
 
 export default function ActionModal({open, setOpen, character }: ActionModalParams) {
+  const initialFormState = initializeFormState({ shots: 3 })
+  const [formState, dispatchForm] = useReducer(formReducer, initialFormState)
+  const { saving, disabled, formData } = formState
+  const { shots } = formData
+
   const { fight, dispatch:dispatchFight } = useFight()
-  const [shots, setShots] = useState<number>(3)
-  const [saving, setSaving] = useState<boolean>(false)
   const { toastSuccess, toastError } = useToast()
   const { client } = useClient()
 
   useEffect(() => {
+    dispatchForm({ type: FormActions.DISABLE, payload: !shots })
+  }, [shots])
+
+  useEffect(() => {
+    dispatchForm({ type: FormActions.UPDATE, name: 'shots', value: 3 })
+  }, [open])
+
+  useEffect(() => {
     if (CS.isType(character, [CharacterTypes.Boss, CharacterTypes.UberBoss])) {
-      setShots(2)
+      dispatchForm({ type: FormActions.UPDATE, name: 'shots', value: 2 })
     }
   }, [character])
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
-    setShots(parseInt(event.target.value))
+    dispatchForm({ type: FormActions.UPDATE, name: event.target.name, value: parseInt(event.target.value) })
   }
+
   const submitAction = async (event: React.ChangeEvent<HTMLInputElement>): Promise<void> => {
-    setSaving(true)
+    dispatchForm({ type: FormActions.SUBMIT })
     event.preventDefault()
+
     if (shots > 0) {
       try {
         await client.actCharacter(character, fight as Fight, shots)
@@ -46,12 +60,12 @@ export default function ActionModal({open, setOpen, character }: ActionModalPara
         toastError()
       }
     }
-    setSaving(false)
+    dispatchForm({ type: FormActions.RESET, payload: initialFormState })
   }
+
   const cancelForm = () => {
-    setShots(3)
     setOpen(false)
-    setSaving(false)
+    dispatchForm({ type: FormActions.RESET, payload: initialFormState})
   }
 
   return (
@@ -62,7 +76,7 @@ export default function ActionModal({open, setOpen, character }: ActionModalPara
       aria-describedby="modal-modal-description"
       disableRestoreFocus
       onSubmit={submitAction}
-      saving={saving}
+      saving={saving || disabled}
       onCancel={cancelForm}
       title="Spend Shots"
       width="xs"
