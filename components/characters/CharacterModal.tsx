@@ -1,8 +1,9 @@
-import { MouseEventHandler, useState, useEffect, SyntheticEvent } from "react"
+import { useReducer, MouseEventHandler, useState, useEffect, SyntheticEvent } from "react"
 import { colors, FormControl, Switch, Tooltip, Typography, DialogActions, FormControlLabel, MenuItem, Checkbox, InputAdornment, Dialog, DialogTitle, DialogContent, DialogContentText, Box, Stack, TextField, Button, Paper, Popover } from "@mui/material"
 import FavoriteIcon from "@mui/icons-material/Favorite"
 import PeopleIcon from "@mui/icons-material/People"
 import { StyledTextField, SaveCancelButtons, SaveButton, CancelButton, StyledDialog } from "@/components/StyledFields"
+import { FormActions, formReducer, initializeFormState } from '@/reducers/formState'
 
 import Router from "next/router"
 
@@ -14,9 +15,7 @@ import EditActionValues from "@/components/characters/edit/EditActionValues"
 import DeathMarks from "@/components/characters/DeathMarks"
 import PlayerTypeOnly from "@/components/PlayerTypeOnly"
 
-import { useToast } from "@/contexts/ToastContext"
-import { useFight } from "@/contexts/FightContext"
-import { useClient } from "@/contexts/ClientContext"
+import { useToast, useFight, useClient } from "@/contexts"
 
 import type { Person, Fight, Character, Toast, ID } from "@/types/types"
 import { defaultCharacter } from "@/types/types"
@@ -26,24 +25,25 @@ import CS from "@/services/CharacterService"
 interface CharacterModalParams {
   open: Character,
   setOpen: React.Dispatch<React.SetStateAction<Character>>
-  fight?: Fight,
   character: Person | null
   reload?: () => Promise<void>
 }
 
 export default function CharacterModal({ open, setOpen, character:activeCharacter, reload }: CharacterModalParams) {
+  const initialFormState = initializeFormState({ character: activeCharacter || defaultCharacter })
+  const [formState, dispatchForm] = useReducer(formReducer, initialFormState)
+  const { saving, disabled, formData } = formState
+  const { character }  = formData
+
   const { fight, dispatch:dispatchFight } = useFight()
   const { user, client } = useClient()
   const { toastSuccess, toastError } = useToast()
 
-  const [saving, setSaving] = useState(false);
-
-  const [character, setCharacter] = useState<Person>(activeCharacter || defaultCharacter)
   const newCharacter = !character.id
 
   useEffect(() => {
     if (activeCharacter) {
-      setCharacter(activeCharacter)
+      dispatchForm({ type: FormActions.UPDATE, name: "character", value: activeCharacter })
     }
   }, [activeCharacter])
 
@@ -52,36 +52,36 @@ export default function CharacterModal({ open, setOpen, character:activeCharacte
   }
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setCharacter((prevState: Person) => ({ ...prevState, [event.target.name]: event.target.value }))
+    dispatchForm({ type: FormActions.UPDATE, name: "character", value: { ...character, [event.target.name]: event.target.value } })
   }
 
   const handleCheck = (event: SyntheticEvent<Element, Event>) => {
     const target = event.target as HTMLInputElement
-    setCharacter((prevState: Person) => ({ ...prevState, [target.name]: target.checked }))
+    dispatchForm({ type: FormActions.UPDATE, name: "character", value: { ...character, [target.name]: target.checked } })
   }
 
   const handleWounds = (event: React.ChangeEvent<HTMLInputElement>) => {
     const updatedCharacter = CS.updateWounds(character, parseInt(event.target.value) || 0)
-    setCharacter(updatedCharacter as Person)
+    dispatchForm({ type: FormActions.UPDATE, name: "character", value: updatedCharacter })
   }
 
   const handleAVChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const updatedCharacter = CS.updateActionValue(character, event.target.name, event.target.value)
-    setCharacter(updatedCharacter as Person)
+    dispatchForm({ type: FormActions.UPDATE, name: "character", value: updatedCharacter })
   }
 
   const handleDeathMarks = (event: React.SyntheticEvent<Element, Event>, newValue: number | null) => {
     const updatedCharacter = CS.setDeathMarks(character, newValue || 0)
-    setCharacter(updatedCharacter as Person)
+    dispatchForm({ type: FormActions.UPDATE, name: "character", value: updatedCharacter })
   }
 
   const cancelForm = () => {
-    setCharacter(character || defaultCharacter)
-    setOpen(defaultCharacter)
+    dispatchForm({ type: FormActions.RESET, payload: initialFormState })
+    setOpen(false)
   }
 
   async function handleSubmit(event: React.ChangeEvent<HTMLInputElement>) {
-    setSaving(true)
+    dispatchForm({ type: FormActions.SUBMIT })
     event.preventDefault()
 
     try {
@@ -89,9 +89,8 @@ export default function CharacterModal({ open, setOpen, character:activeCharacte
         await client.createCharacter(character, fight) :
         await client.updateCharacter(character, fight)
 
-      setCharacter(data)
-      setSaving(false)
-      cancelForm()
+      dispatchForm({ type: FormActions.UPDATE, name: "character", value: data })
+
       if (newCharacter) {
         toastSuccess(`${character.name} created.`)
       } else {
@@ -105,9 +104,9 @@ export default function CharacterModal({ open, setOpen, character:activeCharacte
       }
     } catch(error) {
       toastError()
-      setSaving(false)
-      cancelForm()
+      dispatchForm({ type: FormActions.RESET, payload: initialFormState })
     }
+    cancelForm()
   }
 
   const woundsLabel = CS.isType(character, "Mook") ? "Mooks" : "Wounds"
@@ -126,7 +125,11 @@ export default function CharacterModal({ open, setOpen, character:activeCharacte
 
   const healCharacter = () => {
     const updatedCharacter = CS.fullHeal(character)
-    setCharacter(updatedCharacter as Person)
+    dispatchForm({ type: FormActions.UPDATE, name: "character", value: updatedCharacter })
+  }
+
+  const setCharacter = (updatedCharacter: Character) => {
+    dispatchForm({ type: FormActions.UPDATE, name: "character", value: updatedCharacter })
   }
 
   return (
@@ -136,6 +139,7 @@ export default function CharacterModal({ open, setOpen, character:activeCharacte
         onClose={handleClose}
         title={dialogTitle}
         onSubmit={handleSubmit}
+        disabled={saving}
       >
         <DialogContent>
           <Stack spacing={2}>
