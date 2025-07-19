@@ -31,10 +31,6 @@ export default function ActionModal({open, setOpen, character }: ActionModalPara
   }, [shots])
 
   useEffect(() => {
-    dispatchForm({ type: FormActions.UPDATE, name: 'shots', value: 3 })
-  }, [open])
-
-  useEffect(() => {
     if (CS.isType(character, [CharacterTypes.Boss, CharacterTypes.UberBoss])) {
       dispatchForm({ type: FormActions.UPDATE, name: 'shots', value: 2 })
     }
@@ -57,6 +53,7 @@ export default function ActionModal({open, setOpen, character }: ActionModalPara
         toastSuccess(`${character.name} spent ${shots} shots.`)
         dispatchFight({ type: FightActions.EDIT })
       } catch(error) {
+        console.error("Error spending shots:", error)
         toastError()
       }
     }
@@ -76,7 +73,7 @@ export default function ActionModal({open, setOpen, character }: ActionModalPara
       aria-describedby="modal-modal-description"
       disableRestoreFocus
       onSubmit={submitAction}
-      saving={saving || disabled}
+      disabled={saving || disabled}
       onCancel={cancelForm}
       title="Spend Shots"
       width="xs"

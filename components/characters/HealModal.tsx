@@ -1,9 +1,10 @@
-import { useState } from 'react'
+import { useEffect, useReducer, useState } from 'react'
 import { DialogContent, Box, Stack, TextField, Button, Dialog } from '@mui/material'
 
 import { useFight, useToast, useClient } from "@/contexts"
 import type { Person, Character, Fight, Toast, ActionValues } from "@/types/types"
 import { FightActions } from '@/reducers/fightState'
+import { FormActions, formReducer, initializeFormState } from '@/reducers/formState'
 import { StyledTextField, StyledFormDialog, SaveCancelButtons } from '@/components/StyledFields'
 import CS from "@/services/CharacterService"
 
@@ -14,17 +15,25 @@ interface HealModalParams {
 }
 
 export default function HealModal({open, setOpen, character }: HealModalParams) {
+  const initialFormState = initializeFormState({ healing: 0 })
+  const [formState, dispatchForm] = useReducer(formReducer, initialFormState)
+  const { saving, disabled, formData } = formState
+  const { healing } = formData
+
   const { fight, dispatch:dispatchFight } = useFight()
-  const [healing, setHealing] = useState<number>(0)
-  const [saving, setSaving] = useState<boolean>(false)
   const { toastSuccess, toastError } = useToast()
   const { client } = useClient()
 
+  useEffect(() => {
+    dispatchForm({ type: FormActions.DISABLE, payload: !healing })
+  }, [healing])
+
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setHealing(parseInt(event.target.value))
+    dispatchForm({ type: FormActions.UPDATE, name: "healing", value: parseInt(event.target.value) })
   }
+
   const submitWounds = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSaving(true)
+    dispatchForm({ type: FormActions.SUBMIT })
     event.preventDefault()
 
     const updatedCharacter = CS.healWounds(character, healing)
@@ -32,18 +41,17 @@ export default function HealModal({open, setOpen, character }: HealModalParams) 
     try {
       await client.updateCharacter(updatedCharacter, fight)
       dispatchFight({ type: FightActions.EDIT })
-      setHealing(0)
       setOpen(false)
       toastSuccess(`${character.name} healed ${healing} Wounds.`)
     } catch(error) {
+      console.error("Error healing wounds:", error)
       toastError()
     }
-    setSaving(false)
+    dispatchForm({ type: FormActions.RESET, payload: initialFormState })
   }
   const cancelForm = () => {
-    setHealing(0)
     setOpen(false)
-    setSaving(false)
+    dispatchForm({ type: FormActions.RESET, payload: initialFormState })
   }
 
   return (
@@ -53,7 +61,7 @@ export default function HealModal({open, setOpen, character }: HealModalParams) 
       onSubmit={submitWounds}
       title="Heal Wounds"
       onCancel={cancelForm}
-      saving={saving}
+      disabled={saving || disabled}
       width="xs"
     >
       <StyledTextField
