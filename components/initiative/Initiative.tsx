@@ -32,10 +32,12 @@ export default function Initiative() {
 
   function handleClose() {
     setValues(defaultValues)
+    setProcessing(false)
     dispatch({ type: FightActions.INITIATIVE, payload: false })
   }
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    setProcessing(true)
     event.preventDefault()
 
     const eligibleCharacters:InitPenalty[] = Object.keys(values).map((key) => {
@@ -69,7 +71,7 @@ export default function Initiative() {
   if (!initiative) return
   return (<>
       { !!combatants.length &&
-        <Paper sx={{ p: 2, ml: 2, my: 2, width: "100%", backgroundColor: colors.blueGrey[300] }}>
+        <Paper sx={{ p: 2, ml: 2, my: 2, width: "100%", backgroundColor: colors.blueGrey[300], color: colors.blueGrey[900] }}>
           <Typography mb={3}>Ask each player to roll Initiative, enter the values below. They should use the Acceleration of their vehicle if they are driving, and Speed if they are not.</Typography>
           <Stack spacing={2} mb={3}>
             {
@@ -87,9 +89,9 @@ export default function Initiative() {
                       sx={{width: 110}}
                     />
                     <Typography variant="h5" color="error" sx={{width: 20}}>{combatant.current_shot}</Typography>
-                    <Typography variant="h5" sx={{width: 300}}>{combatant.name}</Typography>
-                    { !combatant.driving?.id && <Typography sx={{color: colors.blueGrey[600], fontSize: "1rem"}}>Speed {CS.speed(combatant)}</Typography> }
-                    { combatant.driving?.id && <Typography sx={{color: colors.blueGrey[600], fontSize: "1rem"}}>Acc {VS.speed(combatant.driving)}</Typography> }
+                    <Typography variant="h5">{combatant.name}</Typography>
+                    { !combatant.driving?.id && <Typography sx={{color: colors.blueGrey[700], fontSize: "1rem"}}>Speed {CS.speed(combatant)}</Typography> }
+                    { combatant.driving?.id && <Typography sx={{color: colors.blueGrey[700], fontSize: "1rem"}}>Acc {VS.speed(combatant.driving)}</Typography> }
                   </Stack>
                 )
               })
@@ -97,6 +99,7 @@ export default function Initiative() {
           </Stack>
           <Stack direction="row" spacing={2} justifyContent="flex-end">
             <SaveCancelButtons
+              saving={processing}
               onSubmit={() => { alert("submit") }}
               onCancel={handleClose}
             />

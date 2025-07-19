@@ -56,8 +56,7 @@ export default function Locations() {
             <List
               dense
               sx={{
-                bgcolor: colors.blueGrey["800"],
-                color: 'white',
+                p: 0,
                 borderRadius: 1,
                 maxHeight: '600px',
                 overflow: 'auto',
@@ -68,7 +67,7 @@ export default function Locations() {
                 .map(([location, names], index) => (
                   <Box key={index}>
                     <ListItem>
-                      <ListItemIcon sx={{ color: 'white', minWidth: '36px' }}>
+                      <ListItemIcon sx={{ color: 'black', minWidth: '36px' }}>
                         <AddLocationIcon />
                       </ListItemIcon>
                       <ListItemText
@@ -81,7 +80,7 @@ export default function Locations() {
                         <ListItemText
                           primary={name}
                           sx={{ pl: '36px' }}
-                          primaryTypographyProps={{ color: colors.blueGrey["200"], fontSize: '1.1rem' }}
+                          primaryTypographyProps={{ fontSize: '1.1rem' }}
                         />
                       </ListItem>
                     ))}
@@ -89,9 +88,6 @@ export default function Locations() {
                 ))}
             </List>
           )}
-          <Stack direction="row" spacing={2} justifyContent="flex-end" sx={{ mt: 2 }}>
-            <CancelButton onClick={handleClose}>Close</CancelButton>
-          </Stack>
         </DialogContent>
       </StyledDialog>
     </>
