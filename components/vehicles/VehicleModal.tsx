@@ -107,6 +107,10 @@ export default function VehicleModal({ character:activeVehicle, reload }: Vehicl
     cancelForm()
   }
 
+  const setCharacter = (updatedCharacter: Vehicle) => {
+    dispatchForm({ type: FormActions.UPDATE, name: "character", value: updatedCharacter })
+  }
+
   const woundsLabel = VS.isType(character, "Mook") ? "Mooks" : "Chase"
   const dialogTitle = newVehicle ? "Create Vehicle" : "Update Vehicle"
 
@@ -150,7 +154,7 @@ export default function VehicleModal({ character:activeVehicle, reload }: Vehicl
                   InputProps={{startAdornment: <InputAdornment position="start"><CommuteIcon color='error' /></InputAdornment>}} />
               </PlayerTypeOnly>
               <StyledTextField label="Impairments" type="number" name="impairments" value={character.impairments || ''} onChange={handleChange} />
-              <ColorPicker character={character} onChange={handleChange} />
+              <ColorPicker character={character} onChange={handleChange} setCharacter={setCharacter} />
             </Stack>
             <Stack direction="row" spacing={2}>
               <StyledTextField label="Acceleration" type="number" sx={{width: 100}} name="Acceleration" value={character.action_values?.['Acceleration'] || ''} onChange={handleAVChange} />
