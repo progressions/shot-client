@@ -9,6 +9,7 @@ import type { VehicleStateAction } from "@/reducers/vehicleState"
 import { CharacterActions } from "@/reducers/characterState"
 import { VehicleActions } from "@/reducers/vehicleState"
 import type { Character } from "@/types/types"
+import { FormActions, useForm } from "@/reducers/formState"
 
 interface ColorPickerProps {
   character: Character
@@ -17,17 +18,23 @@ interface ColorPickerProps {
   dispatch?: React.Dispatch<CharacterStateAction> | React.Dispatch<VehicleStateAction>
 }
 
+type FormData = {
+  picker: boolean
+  anchorEl: Element | null
+}
+
 export default function ColorPicker({ character, onChange, setCharacter, dispatch }: ColorPickerProps) {
-  const [picker, setPicker] = useState<boolean>(false)
-  const [anchorEl, setAnchorEl] = useState<Element | null>(null)
+  const { formState, dispatchForm, initialFormState } = useForm<FormData>({ picker: false, anchorEl: null })
+  const { formData } = formState
+  const { picker, anchorEl } = formData
 
   const togglePicker = (event: React.MouseEvent<HTMLElement>) => {
     if (picker) {
-      setPicker(false)
-      setAnchorEl(null)
+      dispatchForm({ type: FormActions.UPDATE, name: "picker", value: false })
+      dispatchForm({ type: FormActions.UPDATE, name: "anchorEl", value: null })
     } else {
-      setPicker(true)
-      setAnchorEl(event.target as Element)
+      dispatchForm({ type: FormActions.UPDATE, name: "picker", value: true })
+      dispatchForm({ type: FormActions.UPDATE, name: "anchorEl", value: event.target as Element })
     }
   }
 
@@ -36,10 +43,9 @@ export default function ColorPicker({ character, onChange, setCharacter, dispatc
       dispatch({ type: CharacterActions.UPDATE, name: "color", value: color?.hex })
     }
     if (setCharacter) {
-      setCharacter((prevState: Character) => ({ ...prevState, color: color?.hex }))
+      setCharacter({ ...character, color: color?.hex })
     }
-    setPicker(false)
-    setAnchorEl(null)
+    dispatchForm({ type: FormActions.RESET, payload: initialFormState })
   }
 
   return (

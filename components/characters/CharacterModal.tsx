@@ -145,8 +145,8 @@ export default function CharacterModal({ character:activeCharacter, reload }: Ch
         <DialogContent>
           <Stack spacing={2}>
             <Stack direction="row" spacing={2}>
-              <CharacterType value={character.action_values?.['Type'] as string || ''} onChange={handleAVChange} />
-              { character.action_values["Type"] === "PC" && <StyledTextField name="Archetype" label="Archetype" fullWidth value={character.action_values["Archetype"]} onChange={handleAVChange} /> }
+              <CharacterType value={CS.type(character) || ""} onChange={handleAVChange} />
+              { CS.isPC(character) && <StyledTextField name="Archetype" label="Archetype" fullWidth value={CS.archetype(character)} onChange={handleAVChange} /> }
               <FormControlLabel label="Task" name="task" control={<Switch checked={!!character.task} />} onChange={handleCheck} />
             </Stack>
             <Stack direction="row" spacing={2}>
