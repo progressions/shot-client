@@ -92,6 +92,10 @@ class Api {
     }
   }
 
+  characterPdf(character: Character | ID): string {
+    return `${this.allCharacters(character)}/pdf`
+  }
+
   vehicles(fight?: Fight | null, vehicle?: Vehicle | ID): string {
     if (!fight?.id) {
       return this.allVehicles(vehicle)

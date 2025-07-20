@@ -182,6 +182,22 @@ class Client {
     return this.get(this.api.characters(null, character))
   }
 
+  async getCharacterPdf(character: Character | ID):Promise<string> {
+    const url = `${this.api.characterPdf(character)}`
+
+    return await axios({
+      url: url,
+      method: "GET",
+      params: {},
+      responseType: 'arraybuffer', // Ensure the response is treated as binary data
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': this.jwt
+      }
+    })
+    .then(response => response.data)
+  }
+
   async getVehicle(vehicle: Vehicle | ID):Promise<Vehicle> {
     return this.get(this.api.vehicles(null, vehicle))
   }
@@ -618,7 +634,6 @@ class Client {
   }
 
   async requestFormData<T>(method: string, url: string, formData: FormData): Promise<T> {
-
     // Make the PATCH request with multipart/form-data
     return await axios({
       url: url,

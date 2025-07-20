@@ -56,7 +56,7 @@ export default function CharacterView({ character }: CharacterViewProps) {
           <Container maxWidth="md" component={Paper} sx={{backgroundColor: colors.blueGrey[300], color: "black", marginTop: 2, py: 2}}>
             <CharacterProvider character={character}>
               { !editing && <ShowCharacter character={character} /> }
-              { editing && <EditCharacter character={character} /> }
+              { editing && <EditCharacter /> }
             </CharacterProvider>
           </Container>
         </Layout>

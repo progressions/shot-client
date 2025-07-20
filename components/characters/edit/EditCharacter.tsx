@@ -18,10 +18,11 @@ import ImageDisplay from "@/components/characters/ImageDisplay"
 import NotionLink from "@/components/notion/NotionLink"
 import AssignUser from "@/components/characters/edit/AssignUser"
 import UserAvatar from "@/components/UserAvatar"
+import PdfDownload from "@/components/characters/PdfDownload"
 
 import { useReducer, useEffect } from "react"
 
-import { Tooltip, Grid, ButtonGroup, Link, colors, Typography, Box, Stack, TextField, FormControlLabel, Switch, Button, InputAdornment } from "@mui/material"
+import { IconButton, Tooltip, Grid, ButtonGroup, Link, colors, Typography, Box, Stack, TextField, FormControlLabel, Switch, Button, InputAdornment } from "@mui/material"
 import FavoriteIcon from '@mui/icons-material/Favorite'
 import PeopleIcon from '@mui/icons-material/People'
 import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1'
@@ -40,7 +41,6 @@ import CS from "@/services/CharacterService"
 import GamemasterOnly from "@/components/GamemasterOnly"
 
 interface EditCharacterProps {
-  character: Character
 }
 
 export default function EditCharacter({ }: EditCharacterProps) {
@@ -92,16 +92,6 @@ export default function EditCharacter({ }: EditCharacterProps) {
     dispatchCharacter({ type: CharacterActions.ACTION_VALUE, name: "Marks of Death", value: value as number })
   }
 
-  async function cancelForm() {
-    try {
-      const data = await client.getCharacter(character)
-      dispatchCharacter({ type: CharacterActions.CHARACTER, payload: data })
-      toastSuccess("Changes reverted.")
-    } catch(error) {
-      toastError()
-    }
-  }
-
   const woundsLabel = CS.isMook(character) ? "Mooks" : "Wounds"
 
   const woundsAdornment = () => {
@@ -151,14 +141,15 @@ export default function EditCharacter({ }: EditCharacterProps) {
               </Stack>
               { !(edited || saving) && character?.user?.id && userDisplay }
               <Grid container spacing={2} alignItems="flex-end">
-                <Grid item xs={6}>
+                <Grid item xs={7}>
                   <FormControlLabel label="Task" name="task" control={<Switch checked={character.task} />} onChange={handleCheck} />
                   <FormControlLabel label="Active" name="active" control={<Switch checked={character.active} />} onChange={handleCheck} />
                 </Grid>
-                <Grid item xs={2}>
-                </Grid>
-                <Grid item xs={4}>
+                <Grid item xs={3}>
                   <NotionLink />
+                </Grid>
+                <Grid item xs={1}>
+                  <PdfDownload />
                 </Grid>
               </Grid>
               <Stack direction="row" spacing={1}>
