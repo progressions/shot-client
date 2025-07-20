@@ -32,7 +32,7 @@ export default function CharacterMenu() {
     dispatchForm({ type: FormActions.UPDATE, name: "anchorEl", value: event.currentTarget })
   }
   const handleClose = () => {
-    dispatchForm({ type: FormActions.RESET, payload: initialFormState })
+    dispatchForm({ type: FormActions.UPDATE, name: "anchorEl", value: null })
   }
   const openAssignUser = () => {
     dispatchForm({ type: FormActions.UPDATE, name: "assignUserOpen", value: true })
