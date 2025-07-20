@@ -150,7 +150,7 @@ export default function UsersAdmin({ jwt, users:initialUsers, currentUser }: Use
                     })
                   }
                 </TableBody>
-                <UserModal setUser={setUser} user={user} setUsers={setUsers} />
+                { !!user?.id && <UserModal setUser={setUser} user={user} setUsers={setUsers} /> }
               </Table>
             </TableContainer>
           </Container>

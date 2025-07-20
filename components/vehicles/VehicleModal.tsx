@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react'
+import { useReducer, useState, useEffect } from 'react'
 import { Switch, DialogActions, DialogContent, FormControlLabel, InputAdornment, Stack, Button, Paper, Popover } from '@mui/material'
 import CommuteIcon from '@mui/icons-material/Commute'
 import CarCrashIcon from '@mui/icons-material/CarCrash'
-import { BlockPicker, ColorResult } from 'react-color'
+import ColorPicker from "@/components/characters/edit/ColorPicker"
 
 import PlayerTypeOnly from "@/components/PlayerTypeOnly"
 import CharacterType from '@/components/characters/edit/CharacterType'
@@ -12,39 +12,38 @@ import PursuerSelector from "@/components/vehicles/PursuerSelector"
 import DriverSelector from "@/components/vehicles/DriverSelector"
 import ArchetypeSelector from "@/components/vehicles/VehicleArchetypeSelector"
 
-import { useToast } from "@/contexts/ToastContext"
-import { useFight } from "@/contexts/FightContext"
-import { useClient } from "@/contexts/ClientContext"
+import { useToast, useFight, useClient } from "@/contexts"
 import type { Character, Vehicle, Fight, VehicleArchetype } from "@/types/types"
 import { defaultVehicle } from "@/types/types"
 import { StyledTextField, SaveCancelButtons, StyledDialog } from "@/components/StyledFields"
+import { FormActions, useForm } from '@/reducers/formState'
 import { FightActions } from '@/reducers/fightState'
 import VS from "@/services/VehicleService"
 
 interface VehicleModalParams {
-  open: Vehicle,
-  setOpen: React.Dispatch<React.SetStateAction<Vehicle>>
-  fight?: Fight,
   character: Vehicle | null
   reload?: () => Promise<void>
 }
 
-export default function VehicleModal({ open, setOpen, character:activeVehicle, reload }: VehicleModalParams) {
-  const [picker, setPicker] = useState<boolean>(false)
-  const [anchorEl, setAnchorEl] = useState<Element | null>(null)
+type FormData = {
+  character: Vehicle
+}
+
+export default function VehicleModal({ character:activeVehicle, reload }: VehicleModalParams) {
+  const { formState, dispatchForm, initialFormState } = useForm<FormData>({ character: activeVehicle || defaultVehicle });
+  const { open, saving, disabled, formData } = formState
+  const { character }  = formData
+
   const { toastSuccess, toastError } = useToast()
   const { client } = useClient()
   const { fight, dispatch:dispatchFight } = useFight()
 
-  const [saving, setSaving] = useState(false);
-
-  const [character, setCharacter] = useState<Vehicle>(activeVehicle || defaultVehicle)
-
   const newVehicle = !character.id
 
   useEffect(() => {
-    if (activeVehicle?.id) {
-      setCharacter(activeVehicle)
+    if (activeVehicle?.id || activeVehicle?.new) {
+      dispatchForm({ type: FormActions.UPDATE, name: "character", value: activeVehicle })
+      dispatchForm({ type: FormActions.OPEN, payload: true })
     }
   }, [activeVehicle])
 
@@ -53,41 +52,35 @@ export default function VehicleModal({ open, setOpen, character:activeVehicle, r
   }
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setCharacter((prevState: Vehicle) => ({ ...prevState, [event.target.name]: event.target.value }))
+    dispatchForm({ type: FormActions.UPDATE, name: "character", value: { ...character, [event.target.name]: event.target.value } })
   }
 
   const handleCheck = (event: React.SyntheticEvent<Element, Event>) => {
     const target = event.target as HTMLInputElement
-    setCharacter((prevState: Vehicle) => ({ ...prevState, [target.name]: target.checked }))
+    dispatchForm({ type: FormActions.UPDATE, name: "character", value: { ...character, [target.name]: target.checked } })
   }
 
   const handleAVChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { action_values } = character || {}
-    setCharacter((prevState: Vehicle) => ({ ...prevState, action_values: { ...action_values, [event.target.name]: event.target.value } }))
+    const updatedCharacter = VS.updateActionValue(character, event.target.name, event.target.value)
+    dispatchForm({ type: FormActions.UPDATE, name: "character", value: updatedCharacter })
   }
 
   const handleDriverChange = (driver: Character) => {
-    setCharacter((prevState: Vehicle) => (VS.updateDriver(prevState, driver)))
+    const updatedCharacter = VS.updateDriver(character, driver)
+    dispatchForm({ type: FormActions.UPDATE, name: "character", value: updatedCharacter })
   }
 
   const handleArchetypeChange = (archetype: VehicleArchetype) => {
-    console.log(archetype)
-    setCharacter((prevState: Vehicle) => (VS.updateFromArchetype(prevState, archetype)))
-  }
-
-  const handleColor = (color: ColorResult) => {
-    setCharacter((prevState: Vehicle) => ({ ...prevState, color: color?.hex }))
-    setPicker(false)
-    setAnchorEl(null)
+    const updatedCharacter = VS.updateFromArchetype(character, archetype)
+    dispatchForm({ type: FormActions.UPDATE, name: "character", value: updatedCharacter })
   }
 
   const cancelForm = () => {
-    setCharacter(character || defaultVehicle)
-    setOpen(defaultVehicle)
+    dispatchForm({ type: FormActions.RESET, payload: initialFormState })
   }
 
   async function handleSubmit(event: React.ChangeEvent<HTMLInputElement>) {
-    setSaving(true)
+    dispatchForm({ type: FormActions.SUBMIT })
     event.preventDefault()
 
     try {
@@ -95,8 +88,7 @@ export default function VehicleModal({ open, setOpen, character:activeVehicle, r
         await client.createVehicle(character, fight) :
         await client.updateVehicle(character, fight)
 
-      setCharacter(data)
-      setSaving(false)
+      dispatchForm({ type: FormActions.UPDATE, name: "character", value: data })
       cancelForm()
       if (newVehicle) {
         toastSuccess(`${character.name} created.`)
@@ -111,19 +103,8 @@ export default function VehicleModal({ open, setOpen, character:activeVehicle, r
     } catch(error) {
       console.error(error)
       toastError()
-      setSaving(false)
-      cancelForm()
     }
-  }
-
-  const togglePicker = (event: React.MouseEvent<HTMLElement>) => {
-    if (picker) {
-      setPicker(false)
-      setAnchorEl(null)
-    } else {
-      setPicker(true)
-      setAnchorEl(event.target as Element)
-    }
+    cancelForm()
   }
 
   const woundsLabel = VS.isType(character, "Mook") ? "Mooks" : "Chase"
@@ -132,7 +113,7 @@ export default function VehicleModal({ open, setOpen, character:activeVehicle, r
   return (
     <>
       <StyledDialog
-        open={!!(open.id || open.new) && open.category === "vehicle"}
+        open={open}
         onClose={handleClose}
         title={dialogTitle}
         onSubmit={handleSubmit}
@@ -169,14 +150,8 @@ export default function VehicleModal({ open, setOpen, character:activeVehicle, r
                   InputProps={{startAdornment: <InputAdornment position="start"><CommuteIcon color='error' /></InputAdornment>}} />
               </PlayerTypeOnly>
               <StyledTextField label="Impairments" type="number" name="impairments" value={character.impairments || ''} onChange={handleChange} />
-              <Button sx={{width: 2, height: 50, bgcolor: character.color, borderColor: 'primary', border: 1, borderRadius: 2}} onClick={togglePicker} />
-              <StyledTextField id="colorPicker" label="Color" name="color" value={character.color || ''} onChange={handleChange} />
+              <ColorPicker character={character} onChange={handleChange} />
             </Stack>
-            <Popover anchorEl={anchorEl} open={picker} onClose={() => setPicker(false)} anchorOrigin={{vertical: 'bottom', horizontal: 'center'}}>
-              <Paper>
-                <BlockPicker color={character.color || ''} onChangeComplete={handleColor} colors={['#D0021B', '#F5A623', '#F8E71C', '#8B572A', '#7ED321', '#417505', '#BD10E0', '#9013FE', '#4A90E2', '#50E3C2', '#B8E986', '#000000', '#4A4A4A', '#9B9B9B', '#FFFFFF']} />
-              </Paper>
-            </Popover>
             <Stack direction="row" spacing={2}>
               <StyledTextField label="Acceleration" type="number" sx={{width: 100}} name="Acceleration" value={character.action_values?.['Acceleration'] || ''} onChange={handleAVChange} />
               <StyledTextField label="Handling" type="number" sx={{width: 100}} name="Handling" value={character.action_values?.['Handling'] || ''} onChange={handleAVChange} />

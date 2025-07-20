@@ -24,8 +24,6 @@ export default function EditSchticks({}: EditSchticksProps) {
   const [state, dispatch] = useReducer(schticksReducer, initialSchticksState)
   const { loading, edited, category, path, name, schticks, meta, page } = state
 
-  console.log("EditSchticks", { characterReload, loading, schticks })
-
   async function reload() {
     try {
       console.log("Fetching Schticks page ", page)
@@ -37,27 +35,19 @@ export default function EditSchticks({}: EditSchticksProps) {
   }
 
   useEffect(() => {
-    console.log("Reloading schticks first time")
-
     if (user?.id) {
       reload().catch(console.error)
     }
   }, [user])
 
   useEffect(() => {
-    console.log("EditSchticks characterReload changed", characterReload)
-
     if (user?.id && characterReload) {
-      console.log("Reloading schticks due to character reload")
       reload().catch(console.error)
     }
   }, [user, characterReload])
 
   useEffect(() => {
-    console.log("EditSchticks edited changed", characterReload)
-
     if (user?.id && edited) {
-      console.log("Reloading schticks due to schticks edited")
       reload().catch(console.error)
     }
   }, [user, edited])

@@ -2,11 +2,10 @@ import { Autocomplete, Box, Stack, TextField, Button, Dialog } from '@mui/materi
 import { useState, useEffect, useReducer } from "react"
 import type { Schtick } from "@/types/types"
 import { defaultSchtick } from "@/types/types"
-import { useClient } from "@/contexts/ClientContext"
-import { useToast } from "@/contexts/ToastContext"
+import { useClient, useToast } from "@/contexts"
 import { StyledTextField, StyledDialog, SaveCancelButtons } from "@/components/StyledFields"
-import { initialSchticksState, schticksReducer } from "@/reducers/schticksState"
 import { SchticksActions } from "@/reducers/schticksState"
+import { FormActions, useForm } from '@/reducers/formState'
 import { Editor } from "@/components/editor"
 
 import type { SchticksStateType, SchticksActionType } from "@/reducers/schticksState"
@@ -19,19 +18,18 @@ interface SchtickModalProps {
   schtick?: Schtick
 }
 
+type FormData = {
+  schtick: Schtick
+}
+
 export default function SchtickModal({ open, setOpen, state, dispatch, schtick:initialSchtick }: SchtickModalProps) {
+  const { formState, dispatchForm, initialFormState } = useForm<FormData>({ schtick: initialSchtick || defaultSchtick })
+  const { saving, disabled, formData } = formState
+  const { schtick } = formData
+
   const { toastSuccess, toastError } = useToast()
   const { client } = useClient()
-  const { saving, category, path } = state
-  const [schtick, setSchtick] = useState<Schtick>(initialSchtick || defaultSchtick)
-
-  useEffect(() => {
-    if (initialSchtick?.id) {
-      setSchtick(initialSchtick)
-    } else {
-      setSchtick(defaultSchtick)
-    }
-  }, [initialSchtick])
+  const { category, path } = state
 
   async function handleSubmit(event: React.ChangeEvent<HTMLInputElement>) {
     event.preventDefault()
@@ -47,11 +45,11 @@ export default function SchtickModal({ open, setOpen, state, dispatch, schtick:i
   }
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
-    setSchtick(oldSchtick => ({ ...schtick, [event.target.name]: event.target.value }))
+    dispatchForm({ type: FormActions.UPDATE, name: "schtick", value: { ...schtick, [event.target.name]: event.target.value } })
   }
 
   function cancelForm() {
-    setSchtick(defaultSchtick)
+    dispatchForm({ type: FormActions.RESET, payload: initialFormState })
     setOpen(false)
   }
 
@@ -60,6 +58,7 @@ export default function SchtickModal({ open, setOpen, state, dispatch, schtick:i
       open={open}
       onClose={() => setOpen(false)}
       title="Schtick"
+      disabled={saving || disabled}
       onSubmit={handleSubmit}
     >
       <Stack p={4} spacing={2} sx={{width: 530}}>
@@ -67,7 +66,7 @@ export default function SchtickModal({ open, setOpen, state, dispatch, schtick:i
         <StyledTextField name="category" label="Category" value={schtick?.category || ""} onChange={handleChange} />
         <StyledTextField name="path" label="Path" value={schtick?.path || ""} onChange={handleChange} />
         <Editor name="description" value={schtick?.description || ""} onChange={handleChange} />
-        <SaveCancelButtons disabled={saving} onCancel={cancelForm} />
+        <SaveCancelButtons disabled={saving || disabled} onCancel={cancelForm} />
       </Stack>
     </StyledDialog>
   )

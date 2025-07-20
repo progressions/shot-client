@@ -1,6 +1,6 @@
 import { FightActions } from "@/reducers/fightState"
 import { useFight, useToast, useClient } from "@/contexts"
-import { SaveCancelButtons, StyledTextField, StyledDialog } from "@/components/StyledFields"
+import { SaveCancelButtons, StyledTextField } from "@/components/StyledFields"
 import { Paper, colors, Button, DialogContent, Stack, Box, Typography } from "@mui/material"
 import { useEffect, useState } from "react"
 import PlayArrowIcon from '@mui/icons-material/PlayArrow'

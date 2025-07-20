@@ -7,7 +7,7 @@ import { colors, Paper, ButtonGroup, FormControlLabel, Switch, Tooltip, DialogCo
 import { useFight } from "@/contexts/FightContext"
 import { useClient } from "@/contexts/ClientContext"
 import { useToast } from "@/contexts/ToastContext"
-import { StyledDialog, StyledTextField } from "@/components/StyledFields"
+import { StyledTextField } from "@/components/StyledFields"
 import { useEffect, useReducer, useState } from "react"
 import type { Weapon, Character, Fight } from "@/types/types"
 import { defaultWeapon, defaultCharacter, CharacterTypes } from "@/types/types"

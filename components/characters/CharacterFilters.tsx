@@ -4,8 +4,7 @@ import type { Character, Archetype, Faction, InputParamsType } from "@/types/typ
 import { CharactersStateType, CharactersActionType, CharactersActions } from "@/reducers/charactersState"
 import { StyledAutocomplete, StyledTextField, StyledSelect } from "@/components/StyledFields"
 import { CharacterTypes, defaultFaction } from "@/types/types"
-
-import { useRouter } from 'next/router'
+import { useEffect, useRef } from "react"
 
 interface CharacterFiltersProps {
   state: CharactersStateType,
@@ -14,9 +13,27 @@ interface CharacterFiltersProps {
 }
 
 export default function CharacterFilters({ state, dispatch, textSearch = false }: CharacterFiltersProps) {
-  const router = useRouter()
-
+  const timerRef = useRef<NodeJS.Timeout | null>(null)
   const { loading, meta, character, characters, character_type, faction, factions, archetype, archetypes, search } = state
+
+  useEffect(() => {
+    return () => {
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+      }
+    };
+  }, [])
+
+  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch({ type: CharactersActions.SEARCH, payload: event.target.value });
+
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+    }
+    timerRef.current = setTimeout(() => {
+      dispatch({ type: CharactersActions.EDIT });
+    }, 1000);
+  }
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     dispatch({ type: CharactersActions.UPDATE, name: event.target.name, value: event.target.value })
@@ -100,7 +117,7 @@ export default function CharacterFilters({ state, dispatch, textSearch = false }
               disabled={loading}
               sx={{ width: 155 }}
               value={search}
-              onChange={handleChange}
+              onChange={handleSearch}
             />
           </Box>
         }

@@ -5,11 +5,10 @@ export enum CharactersActions {
   EDIT = "edit",
   SAVING = "saving",
   SUCCESS = "success",
-  PREVIOUS = "previous",
-  NEXT = "next",
   CHARACTER = "character",
   RESET_CHARACTER = "reset_character",
   CHARACTERS = "characters",
+  SEARCH = "search",
   UPDATE = "update",
   UPDATE_CHARACTER = "update_character",
   OPEN = "open"
@@ -38,18 +37,18 @@ export interface CharactersStateType {
 export type PayloadType = CharacterCategory | Character | CharactersResponse | CharactersAndVehiclesResponse | string | Element | null
 
 interface ActionNoPayload {
-  type: Extract<CharactersActions, CharactersActions.RESET | CharactersActions.EDIT | CharactersActions.SAVING | CharactersActions.SUCCESS | CharactersActions.PREVIOUS | CharactersActions.NEXT | CharactersActions.RESET_CHARACTER>
+  type: Extract<CharactersActions, CharactersActions.RESET | CharactersActions.EDIT | CharactersActions.SAVING | CharactersActions.SUCCESS | CharactersActions.RESET_CHARACTER>
 }
 
 interface PayloadAction {
-  type: Extract<CharactersActions, CharactersActions.CHARACTER | CharactersActions.CHARACTERS | CharactersActions.OPEN>
+  type: Extract<CharactersActions, CharactersActions.CHARACTER | CharactersActions.CHARACTERS | CharactersActions.OPEN | CharactersActions.SEARCH>
   payload: PayloadType
 }
 
 interface UpdateAction {
   type: Extract<CharactersActions, CharactersActions.UPDATE | CharactersActions.UPDATE_CHARACTER>
   name: string
-  value: string | boolean | number
+  value: string | boolean | number | Character
 }
 
 export type CharactersActionType = ActionNoPayload | UpdateAction | PayloadAction
@@ -81,18 +80,6 @@ export function charactersReducer(state: CharactersStateType, action: Characters
         ...state,
         edited: true
       }
-    case CharactersActions.PREVIOUS:
-      return {
-        ...state,
-        edited: true,
-        page: state.meta["prev_page"] as number
-      }
-    case CharactersActions.NEXT:
-      return {
-        ...state,
-        edited: true,
-        page: state.meta["next_page"] as number
-      }
     case CharactersActions.OPEN:
       return {
         ...state,
@@ -112,6 +99,14 @@ export function charactersReducer(state: CharactersStateType, action: Characters
         loading: false,
         saving: false,
         edited: false
+      }
+    case CharactersActions.SEARCH:
+      return {
+        ...state,
+        edited: false,
+        loading: false,
+        search: action.payload as string,
+        page: 1,
       }
     case CharactersActions.UPDATE:
       if (action.name === "faction") {

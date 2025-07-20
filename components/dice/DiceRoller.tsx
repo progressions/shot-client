@@ -1,27 +1,37 @@
 import { StyledDialog } from "@/components/StyledFields"
 import { Stack, Avatar, Tooltip, Button, IconButton, Dialog, DialogTitle, DialogContent, Box, Typography } from '@mui/material'
 import CasinoIcon from '@mui/icons-material/Casino'
-import { useState } from 'react'
+import { useReducer } from 'react'
 import DS from "@/services/DiceService"
 import { Swerve } from "@/types/types"
+import { FormActions, useForm } from '@/reducers/formState'
+
+type FormData = {
+  rolls: Swerve
+  title: string
+  rollType: string
+}
 
 export default function DiceRoller() {
-  const [open, setOpen] = useState<boolean>(false)
-  const [rolls, setRolls] = useState<Swerve>({ result: 0, positiveRolls: [], negativeRolls: [], positive: null, negative: null, boxcars: false })
-  const [title, setTitle] = useState<string>('')
+  const initialSwerve: Swerve = { result: 0, positiveRolls: [], negativeRolls: [], positive: null, negative: null, boxcars: false }
+  const { formState, dispatchForm, initialFormState } = useForm<FormData>({ rolls: initialSwerve, title: "", rollType: "" })
+  const { open, saving, disabled, formData } = formState
+  const { rolls, title, rollType } = formData as { rolls: Swerve; title: string; rollType: string }
 
   const showExplodingRoll = (): void => {
     const rolls = DS.rollSwerve()
-    setTitle("Swerve")
-    setRolls(rolls)
-    setOpen(true)
+    dispatchForm({ type: FormActions.UPDATE, name: "rollType", value: "Swerve" })
+    dispatchForm({ type: FormActions.UPDATE, name: "rolls", value: rolls })
+    dispatchForm({ type: FormActions.UPDATE, name: "title", value: "Swerve" })
+    dispatchForm({ type: FormActions.OPEN, payload: true })
   }
 
   const showSingleRoll = (): void => {
     const sum = DS.rollDie()
-    setTitle("Single Die Roll")
-    setRolls((rolls) => ({ ...rolls, result: sum }))
-    setOpen(true)
+    dispatchForm({ type: FormActions.UPDATE, name: "rollType", value: "Single Roll" })
+    dispatchForm({ type: FormActions.UPDATE, name: "title", value: "Single Die Roll" })
+    dispatchForm({ type: FormActions.UPDATE, name: "rolls", value: { ...rolls, result: sum } })
+    dispatchForm({ type: FormActions.OPEN, payload: true })
   }
 
   return (
@@ -43,17 +53,19 @@ export default function DiceRoller() {
           </Button>
         </Tooltip>
       </Stack>
-      <StyledDialog open={open} onClose={() => setOpen(false)} title={title}>
+      <StyledDialog open={open} onClose={() => dispatchForm({ type: FormActions.OPEN, payload: false })} title={title}>
         <DialogContent>
           <Box p={4}>
             <Stack spacing={1}>
               { rolls.boxcars && <Typography variant="h4">Boxcars!</Typography> }
-              <Stack direction="row" spacing={1}>
-                { rolls.positiveRolls?.map((roll, index) => <Avatar key={"positive" + index} sx={{ backgroundColor: "red", color: "black", width: 40, height: 40 }} variant="rounded">{roll}</Avatar>) }
-              </Stack>
-              <Stack direction="row" spacing={1}>
-                { rolls.negativeRolls?.map((roll, index) => <Avatar key={"negative" + index} sx={{ backgroundColor: "white", color: "black", width: 40, height: 40 }} variant="rounded">{roll}</Avatar>) }
-              </Stack>
+              { rollType === "Swerve" && <>
+                <Stack direction="row" spacing={1}>
+                  { rolls.positiveRolls?.map((roll, index) => <Avatar key={"positive" + index} sx={{ backgroundColor: "red", color: "black", width: 40, height: 40 }} variant="rounded">{roll}</Avatar>) }
+                </Stack>
+                <Stack direction="row" spacing={1}>
+                  { rolls.negativeRolls?.map((roll, index) => <Avatar key={"negative" + index} sx={{ backgroundColor: "white", color: "black", width: 40, height: 40 }} variant="rounded">{roll}</Avatar>) }
+                </Stack>
+              </> }
               <Typography align='center' variant="h3">
                 { rolls.result }
               </Typography>

@@ -2,7 +2,6 @@ import { Avatar, Dialog, DialogTitle, DialogContent, IconButton, Box, Card, Card
 import CS from "@/services/CharacterService"
 import ImageIcon from "@mui/icons-material/Image"
 import { useState } from "react"
-import { StyledDialog } from "@/components/StyledFields"
 import type { Character } from "@/types/types"
 
 interface ImageDisplayProps {

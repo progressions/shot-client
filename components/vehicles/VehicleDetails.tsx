@@ -5,12 +5,9 @@ import DirectionsCarIcon from "@mui/icons-material/DirectionsCar"
 import GamemasterOnly from "@/components/GamemasterOnly"
 import PlayerTypeOnly from "@/components/PlayerTypeOnly"
 import VehicleActionValues from "@/components/vehicles/ActionValues"
-import VehicleActionModal from "@/components/vehicles/ActionModal"
 import ChasePointsModal from "@/components/vehicles/ChasePointsModal"
-import KillMooksModal from "@/components/vehicles/KillMooksModal"
 import ConditionPointsModal from "@/components/vehicles/ConditionPointsModal"
 import ActionButtons from "@/components/vehicles/ActionButtons"
-import MookActionButtons from "@/components/vehicles/MookActionButtons"
 import NameDisplay from "@/components/characters/NameDisplay"
 import WoundsDisplay from "@/components/vehicles/WoundsDisplay"
 import PositionDisplay from "@/components/vehicles/PositionDisplay"
@@ -122,38 +119,13 @@ export default function VehicleDetails({ character, editingCharacter, setEditing
           <GamemasterOnly user={user} character={character}>
             <Stack direction="row" spacing={1} justifyContent="space-between">
               <VehicleActionValues character={character} />
-              <ActionButtonsWrapper
-                character={character}
-                takeChasePoints={takeChasePoints}
-                takeConditionPoints={takeConditionPoints}
-              />
+              <ActionButtonsWrapper character={character} />
             </Stack>
           </GamemasterOnly>
           <DriverDetails vehicle={character} />
           <PositionDisplay character={character} />
           <GroupedEffects character={character} />
         </Stack>
-        <VehicleActionModal
-          open={openAction}
-          setOpen={setOpenAction}
-          character={character}
-        />
-        <PlayerTypeOnly character={character} except="Mook">
-          <ChasePointsModal open={openChasePoints}
-            setOpen={setOpenChasePoints}
-            character={character as Vehicle}
-          />
-        </PlayerTypeOnly>
-        <PlayerTypeOnly character={character} only="Mook">
-          <KillMooksModal open={openChasePoints}
-            setOpen={setOpenChasePoints}
-            character={character as Vehicle}
-          />
-        </PlayerTypeOnly>
-        <ConditionPointsModal open={openConditionPoints}
-          setOpen={setOpenConditionPoints}
-          character={character as Vehicle}
-        />
       </TableCell>
     </TableRow>
   )

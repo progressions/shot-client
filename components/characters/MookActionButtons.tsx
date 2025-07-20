@@ -6,6 +6,8 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import NewReleasesIcon from '@mui/icons-material/NewReleases'
 import DirectionsRunIcon from '@mui/icons-material/DirectionsRun'
 import CommuteIcon from '@mui/icons-material/Commute'
+import KillMooksModal from "@/components/characters/KillMooksModal"
+import ActionModal from "@/components/characters/ActionModal"
 
 import GamemasterOnly from "@/components/GamemasterOnly"
 import { useClient } from "@/contexts/ClientContext"
@@ -15,14 +17,13 @@ import CS from "@/services/CharacterService"
 interface ActionButtonsParams {
   character: Character,
   healWounds?: (character: Character) => void,
-  takeWounds?: (character: Character) => void,
   takeConditionPoints?: (character: Character) => void,
   takeAction?: (character: Character) => void,
   editCharacter?: (character: Character) => void,
   deleteCharacter?: (character: Character) => void,
 }
 
-export default function MookActionButtons({ character, healWounds, takeWounds, takeConditionPoints, takeAction, editCharacter, deleteCharacter }: ActionButtonsParams) {
+export default function MookActionButtons({ character, healWounds, takeConditionPoints, takeAction, editCharacter, deleteCharacter }: ActionButtonsParams) {
   const { user } = useClient()
 
   const woundLabel = "Kill Mooks"
@@ -38,12 +39,7 @@ export default function MookActionButtons({ character, healWounds, takeWounds, t
   return (
     <Stack direction="row" spacing={1} sx={{height: 30}}>
       <ButtonGroup variant="contained" size="small">
-        { takeWounds &&
-          <Tooltip title={woundLabel} arrow>
-            <Button onClick={() => {takeWounds(character)}}>
-              {woundIcon}
-            </Button>
-          </Tooltip> }
+        <KillMooksModal character={character} />
         <GamemasterOnly user={user} character={character}>
           { editCharacter &&
           <Tooltip title="Edit Character" arrow>
@@ -60,11 +56,7 @@ export default function MookActionButtons({ character, healWounds, takeWounds, t
         </GamemasterOnly>
       </ButtonGroup>
       <ButtonGroup variant="outlined" size="small" className="actionButtons">
-        { takeAction && <Tooltip title="Take Action" arrow>
-          <Button sx={{width: 60}} variant="contained" color="highlight" onClick={() => {takeAction(character)}}>
-            <BoltIcon sx={{width: 50, height: 50}} />
-          </Button>
-        </Tooltip> }
+        <ActionModal character={character} />
       </ButtonGroup>
     </Stack>
   )

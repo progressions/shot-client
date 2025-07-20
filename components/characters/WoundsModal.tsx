@@ -1,23 +1,25 @@
 import { useReducer, useEffect, useState } from "react"
-import { DialogContent, Box, Stack, TextField, Button, Dialog } from "@mui/material"
+import { Tooltip, DialogContent, Box, Stack, TextField, Button, Dialog } from "@mui/material"
+import HeartBrokenIcon from "@mui/icons-material/HeartBroken"
 
 import { useFight, useToast, useClient } from "@/contexts"
 import type { Person, Character, Fight, Toast, ActionValues } from "@/types/types"
 import { FightActions } from "@/reducers/fightState"
-import { FormActions, formReducer, initializeFormState } from '@/reducers/formState'
+import { FormActions, useForm } from '@/reducers/formState'
 import { StyledFormDialog, StyledTextField } from "@/components/StyledFields"
 import CS from "@/services/CharacterService"
 
 interface WoundsModalParams {
-  open: boolean,
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>
   character: Person,
 }
 
-export default function WoundsModal({open, setOpen, character }: WoundsModalParams) {
-  const initialFormState = initializeFormState({ smackdown: 0 })
-  const [formState, dispatchForm] = useReducer(formReducer, initialFormState)
-  const { saving, disabled, formData } = formState
+type FormData = {
+  smackdown: number
+}
+
+export default function WoundsModal({ character }: WoundsModalParams) {
+  const { formState, dispatchForm, initialFormState } = useForm<FormData>({ smackdown: 0 });
+  const { open, saving, disabled, formData } = formState;
   const { smackdown } = formData
 
   const { fight, dispatch:dispatchFight } = useFight()
@@ -28,9 +30,14 @@ export default function WoundsModal({open, setOpen, character }: WoundsModalPara
     dispatchForm({ type: FormActions.DISABLE, payload: !smackdown })
   }, [smackdown])
 
+  const handleOpen = () => {
+    dispatchForm({ type: FormActions.OPEN, payload: true })
+  }
+
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     dispatchForm({ type: FormActions.UPDATE, name: "smackdown", value: parseInt(event.target.value) })
   }
+
   const submitWounds = async (event: React.ChangeEvent<HTMLInputElement>) => {
     dispatchForm({ type: FormActions.SUBMIT })
     event.preventDefault()
@@ -41,7 +48,6 @@ export default function WoundsModal({open, setOpen, character }: WoundsModalPara
     try {
       await client.updateCharacter(updatedCharacter, fight)
       dispatchFight({ type: FightActions.EDIT })
-      setOpen(false)
       toastSuccess(`${character.name} took a smackdown of ${smackdown}, causing ${wounds} wounds.`)
     } catch(error) {
       console.error(error)
@@ -50,16 +56,19 @@ export default function WoundsModal({open, setOpen, character }: WoundsModalPara
     dispatchForm({ type: FormActions.RESET, payload: initialFormState }) 
   }
   const cancelForm = () => {
-    setOpen(false)
     dispatchForm({ type: FormActions.RESET, payload: initialFormState })
   }
-  const label = "Smackdown"
 
-  return (
+  return (<>
+    <Tooltip title="Take Smackdown" arrow>
+      <Button onClick={handleOpen}>
+        <HeartBrokenIcon color='error' />
+      </Button>
+    </Tooltip>
     <StyledFormDialog
       open={open}
-      onClose={() => setOpen(false)}
-      title={label}
+      onClose={cancelForm}
+      title="Smackdown"
       disabled={saving || disabled}
       onSubmit={submitWounds}
       onCancel={cancelForm}
@@ -68,7 +77,7 @@ export default function WoundsModal({open, setOpen, character }: WoundsModalPara
       <StyledTextField
         autoFocus
         type="number"
-        label={label}
+        label="Smackdown"
         required
         disabled={saving}
         name="wounds"
@@ -76,5 +85,5 @@ export default function WoundsModal({open, setOpen, character }: WoundsModalPara
         onChange={handleChange}
       />
     </StyledFormDialog>
-  )
+  </>)
 }

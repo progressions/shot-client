@@ -1,25 +1,27 @@
 import { useReducer, useEffect, useState } from 'react'
-import { Box, Stack, TextField, Button, Dialog } from '@mui/material'
+import { Tooltip, Box, Stack, TextField, Button, Dialog } from '@mui/material'
 
+import BoltIcon from "@mui/icons-material/Bolt"
 import { useFight, useToast, useClient } from "@/contexts"
 import type { Character, Fight, Toast } from "@/types/types"
 import { CharacterTypes } from "@/types/types"
 import { FightActions } from '@/reducers/fightState'
-import { FormActions, formReducer, initializeFormState } from '@/reducers/formState'
+import { FormActions, useForm } from '@/reducers/formState'
 import { StyledFormDialog, StyledTextField } from "@/components/StyledFields"
 import CS from "@/services/CharacterService"
 import FES from "@/services/FightEventService"
 
 interface ActionModalParams {
-  open: boolean,
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>
   character: Character,
 }
 
-export default function ActionModal({open, setOpen, character }: ActionModalParams) {
-  const initialFormState = initializeFormState({ shots: 3 })
-  const [formState, dispatchForm] = useReducer(formReducer, initialFormState)
-  const { saving, disabled, formData } = formState
+type FormData = {
+  shots: number
+}
+
+export default function ActionModal({ character }: ActionModalParams) {
+  const { formState, dispatchForm, initialFormState } = useForm<FormData>({ shots: 3 })
+  const { open, saving, disabled, formData } = formState
   const { shots } = formData
 
   const { fight, dispatch:dispatchFight } = useFight()
@@ -46,10 +48,13 @@ export default function ActionModal({open, setOpen, character }: ActionModalPara
 
     if (shots > 0) {
       try {
-        await client.actCharacter(character, fight as Fight, shots)
+        if (CS.isVehicle(character)) {
+          await client.actVehicle(character, fight as Fight, shots)
+        } else {
+          await client.actCharacter(character, fight as Fight, shots)
+        }
         await FES.spendShots(client, fight as Fight, character, shots)
 
-        setOpen(false)
         toastSuccess(`${character.name} spent ${shots} shots.`)
         dispatchFight({ type: FightActions.EDIT })
       } catch(error) {
@@ -61,14 +66,22 @@ export default function ActionModal({open, setOpen, character }: ActionModalPara
   }
 
   const cancelForm = () => {
-    setOpen(false)
     dispatchForm({ type: FormActions.RESET, payload: initialFormState})
   }
 
-  return (
+  const handleOpen = () => {
+    dispatchForm({ type: FormActions.OPEN, payload: true })
+  }
+
+  return (<>
+    <Tooltip title="Take Action" arrow>
+      <Button sx={{width: 60}} variant="contained" color="highlight" onClick={handleOpen}>
+        <BoltIcon sx={{width: 50, height: 50}} />
+      </Button>
+    </Tooltip>
     <StyledFormDialog
       open={open}
-      onClose={() => setOpen(false)}
+      onClose={cancelForm}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
       disableRestoreFocus
@@ -89,5 +102,5 @@ export default function ActionModal({open, setOpen, character }: ActionModalPara
         onChange={handleChange}
       />
     </StyledFormDialog>
-  )
+  </>)
 }

@@ -15,7 +15,8 @@ interface CreateCharacterParams {
 }
 
 export default function CreateCharacter({ fight, reload }: CreateCharacterParams) {
-  const [newCharacter, setNewCharacter] = useState<Character>(defaultCharacter)
+  const [newCharacter, setNewCharacter] = useState<Character | null>(null)
+  const [open, setOpen] = useState<boolean>(false)
 
   const openModal = (): void => {
     setNewCharacter({...defaultCharacter, new: true})
@@ -26,7 +27,7 @@ export default function CreateCharacter({ fight, reload }: CreateCharacterParams
       <Button color="primary" variant="contained" startIcon={<PersonAddIcon />} onClick={openModal}>
         New
       </Button>
-      <CharacterModal open={newCharacter} setOpen={setNewCharacter} fight={fight} character={newCharacter as Person} reload={reload} />
+      <CharacterModal character={newCharacter as Person} reload={reload} />
     </>
   )
 }

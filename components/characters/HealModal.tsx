@@ -1,23 +1,25 @@
 import { useEffect, useReducer, useState } from 'react'
-import { DialogContent, Box, Stack, TextField, Button, Dialog } from '@mui/material'
+import { Tooltip, DialogContent, Box, Stack, TextField, Button, Dialog } from '@mui/material'
 
+import FavoriteIcon from "@mui/icons-material/Favorite"
 import { useFight, useToast, useClient } from "@/contexts"
 import type { Person, Character, Fight, Toast, ActionValues } from "@/types/types"
 import { FightActions } from '@/reducers/fightState'
-import { FormActions, formReducer, initializeFormState } from '@/reducers/formState'
+import { FormActions, useForm } from '@/reducers/formState'
 import { StyledTextField, StyledFormDialog, SaveCancelButtons } from '@/components/StyledFields'
 import CS from "@/services/CharacterService"
 
 interface HealModalParams {
-  open: boolean,
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>
   character: Person,
 }
 
-export default function HealModal({open, setOpen, character }: HealModalParams) {
-  const initialFormState = initializeFormState({ healing: 0 })
-  const [formState, dispatchForm] = useReducer(formReducer, initialFormState)
-  const { saving, disabled, formData } = formState
+type FormData = {
+  healing: number
+}
+
+export default function HealModal({ character }: HealModalParams) {
+  const { formState, dispatchForm, initialFormState } = useForm<FormData>({ healing: 0 })
+  const { open, saving, disabled, formData } = formState
   const { healing } = formData
 
   const { fight, dispatch:dispatchFight } = useFight()
@@ -32,6 +34,10 @@ export default function HealModal({open, setOpen, character }: HealModalParams) 
     dispatchForm({ type: FormActions.UPDATE, name: "healing", value: parseInt(event.target.value) })
   }
 
+  const handleOpen = () => {
+    dispatchForm({ type: FormActions.OPEN, payload: true })
+  }
+
   const submitWounds = async (event: React.ChangeEvent<HTMLInputElement>) => {
     dispatchForm({ type: FormActions.SUBMIT })
     event.preventDefault()
@@ -41,7 +47,6 @@ export default function HealModal({open, setOpen, character }: HealModalParams) 
     try {
       await client.updateCharacter(updatedCharacter, fight)
       dispatchFight({ type: FightActions.EDIT })
-      setOpen(false)
       toastSuccess(`${character.name} healed ${healing} Wounds.`)
     } catch(error) {
       console.error("Error healing wounds:", error)
@@ -50,14 +55,18 @@ export default function HealModal({open, setOpen, character }: HealModalParams) 
     dispatchForm({ type: FormActions.RESET, payload: initialFormState })
   }
   const cancelForm = () => {
-    setOpen(false)
     dispatchForm({ type: FormActions.RESET, payload: initialFormState })
   }
 
-  return (
+  return (<>
+    <Tooltip title="Heal Wounds" arrow>
+      <Button variant="contained" onClick={handleOpen}>
+        <FavoriteIcon color="error" />
+      </Button>
+    </Tooltip>
     <StyledFormDialog
       open={open}
-      onClose={() => setOpen(false)}
+      onClose={cancelForm}
       onSubmit={submitWounds}
       title="Heal Wounds"
       onCancel={cancelForm}
@@ -75,5 +84,5 @@ export default function HealModal({open, setOpen, character }: HealModalParams) 
         onChange={handleChange}
       />
     </StyledFormDialog>
-  )
+  </>)
 }

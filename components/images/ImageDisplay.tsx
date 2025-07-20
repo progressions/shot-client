@@ -1,7 +1,6 @@
 import { Avatar, Dialog, DialogTitle, DialogContent, IconButton, Box, Card, CardContent, CardMedia, colors, Typography } from "@mui/material"
 import ImageIcon from "@mui/icons-material/Image"
 import { useState } from "react"
-import { StyledDialog } from "@/components/StyledFields"
 import type { Weapon, Site, Party, Vehicle, Character, User, Faction } from "@/types/types"
 
 type Entity = Weapon | Site | Party | Vehicle | Character | User | Faction

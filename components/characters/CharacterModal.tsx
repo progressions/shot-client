@@ -3,7 +3,7 @@ import { colors, FormControl, Switch, Tooltip, Typography, DialogActions, FormCo
 import FavoriteIcon from "@mui/icons-material/Favorite"
 import PeopleIcon from "@mui/icons-material/People"
 import { StyledTextField, SaveCancelButtons, SaveButton, CancelButton, StyledDialog } from "@/components/StyledFields"
-import { FormActions, formReducer, initializeFormState } from '@/reducers/formState'
+import { FormActions, useForm } from '@/reducers/formState'
 
 import Router from "next/router"
 
@@ -23,16 +23,17 @@ import { FightActions } from "@/reducers/fightState"
 import CS from "@/services/CharacterService"
 
 interface CharacterModalParams {
-  open: Character,
-  setOpen: React.Dispatch<React.SetStateAction<Character>>
   character: Person | null
   reload?: () => Promise<void>
 }
 
-export default function CharacterModal({ open, setOpen, character:activeCharacter, reload }: CharacterModalParams) {
-  const initialFormState = initializeFormState({ character: activeCharacter || defaultCharacter })
-  const [formState, dispatchForm] = useReducer(formReducer, initialFormState)
-  const { saving, disabled, formData } = formState
+type CharacterFormData = {
+  character: Character
+}
+
+export default function CharacterModal({ character:activeCharacter, reload }: CharacterModalParams) {
+  const { formState, dispatchForm, initialFormState } = useForm<CharacterFormData>({ character: activeCharacter || defaultCharacter })
+  const { open, saving, disabled, formData } = formState
   const { character }  = formData
 
   const { fight, dispatch:dispatchFight } = useFight()
@@ -42,8 +43,9 @@ export default function CharacterModal({ open, setOpen, character:activeCharacte
   const newCharacter = !character.id
 
   useEffect(() => {
-    if (activeCharacter) {
+    if (activeCharacter?.id || activeCharacter?.new) {
       dispatchForm({ type: FormActions.UPDATE, name: "character", value: activeCharacter })
+      dispatchForm({ type: FormActions.OPEN, payload: true })
     }
   }, [activeCharacter])
 
@@ -77,7 +79,6 @@ export default function CharacterModal({ open, setOpen, character:activeCharacte
 
   const cancelForm = () => {
     dispatchForm({ type: FormActions.RESET, payload: initialFormState })
-    setOpen(false)
   }
 
   async function handleSubmit(event: React.ChangeEvent<HTMLInputElement>) {
@@ -135,7 +136,7 @@ export default function CharacterModal({ open, setOpen, character:activeCharacte
   return (
     <>
       <StyledDialog
-        open={!!(open.id || open.new) && open.category === "character"}
+        open={open}
         onClose={handleClose}
         title={dialogTitle}
         onSubmit={handleSubmit}

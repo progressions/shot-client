@@ -1,9 +1,10 @@
 import { colors, Paper, Container, Stack, Box, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, TextField, Typography, Button } from "@mui/material"
 
-import { useState } from "react"
+import { useReducer, useState } from "react"
 import { useToast, useClient } from "@/contexts"
 import Router from 'next/router'
-import { StyledFormDialog, StyledDialog, StyledTextField, SaveCancelButtons } from "@/components/StyledFields"
+import { StyledFormDialog, StyledTextField, SaveCancelButtons } from "@/components/StyledFields"
+import { FormActions, useForm } from '@/reducers/formState'
 
 import type { Campaign, Invitation } from "@/types/types"
 
@@ -11,44 +12,46 @@ interface CreateInvitationProps {
   campaign: Campaign
 }
 
+type FormData = {
+  invitation: Invitation
+  campaign: Campaign
+}
+
 export default function CreateInvitation({ campaign:initialCampaign }: CreateInvitationProps) {
+  const { formState, dispatchForm, initialFormState } = useForm<FormData>({ invitation: {} as Invitation, campaign: initialCampaign })
+  const { open, saving, disabled, error, formData } = formState
+  const { invitation, campaign } = formData
+
   const { client } = useClient()
   const { toastError, toastSuccess } = useToast()
 
-  const [campaign, setCampaign] = useState(initialCampaign)
-  const [saving, setSaving] = useState(false)
-  const [open, setOpen] = useState(false)
-  const [invitation, setInvitation] = useState<Invitation>({} as Invitation)
-  const [error, setError] = useState(null)
-
   const handleOpen = () => {
-    setInvitation({} as Invitation)
-    setOpen(true)
+    dispatchForm({ type: FormActions.OPEN, payload: true })
   }
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setInvitation((prev: Invitation) => ({ ...prev, [event.target.name]: event.target.value }))
+    dispatchForm({ type: FormActions.UPDATE, name: "invitation", value: { ...invitation, [event.target.name]: event.target.value } })
   }
 
   const handleSubmit = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    dispatchForm({ type: FormActions.SUBMIT })
     event.preventDefault()
-    setSaving(true)
 
     try {
       const data = await client.createInvitation(invitation as Invitation, campaign)
       toastSuccess(`Invitation created for ${invitation?.email}.`)
       Router.reload()
-    } catch(error) {
+    } catch(error: any) {
+      console.error("Error creating invitation:", error)
+      dispatchForm({ type: FormActions.ERROR, payload: error.message })
       toastError()
     }
 
-    setSaving(false)
+    dispatchForm({ type: FormActions.RESET, payload: initialFormState })
   }
 
   const cancelForm = () => {
-    setInvitation({} as Invitation)
-    setOpen(false)
-    setError(null)
+    dispatchForm({ type: FormActions.RESET, payload: initialFormState })
   }
 
   return (
@@ -57,6 +60,7 @@ export default function CreateInvitation({ campaign:initialCampaign }: CreateInv
       <StyledFormDialog
         open={open}
         onClose={cancelForm}
+        disabled={disabled}
         onSubmit={handleSubmit}
       >
         <Box component="form" onSubmit={handleSubmit} pb={1}>

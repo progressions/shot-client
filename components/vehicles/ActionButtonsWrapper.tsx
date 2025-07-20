@@ -9,14 +9,10 @@ import ArrowRightSharpIcon from '@mui/icons-material/ArrowRightSharp';
 
 interface ActionButtonsWrapperProps {
   character: Vehicle
-  takeConditionPoints?: (character: Vehicle) => void
-  takeChasePoints?: (character: Vehicle) => void
 }
 
 export default function ActionButtonsWrapper({
   character,
-  takeConditionPoints,
-  takeChasePoints
 }: ActionButtonsWrapperProps) {
   const [open, setOpen] = useState(false)
   const containerRef = useRef<HTMLDivElement>(null)
@@ -26,16 +22,10 @@ export default function ActionButtonsWrapper({
       <Slide direction="left" in={open} mountOnEnter unmountOnExit onMouseEnter={() => setOpen(true)} onMouseLeave={() => setOpen(open)} container={containerRef?.current}>
         <Stack direction="row" spacing={1} sx={{height: 30}} justifyContent="flex-end" ref={containerRef}>
           <PlayerTypeOnly character={character} except="Mook">
-            <ActionButtons character={character}
-              takeWounds={takeChasePoints}
-              takeConditionPoints={takeConditionPoints}
-            />
+            <ActionButtons character={character} />
           </PlayerTypeOnly>
           <PlayerTypeOnly character={character} only="Mook">
-            <MookActionButtons character={character}
-              takeWounds={takeChasePoints}
-              takeConditionPoints={takeConditionPoints}
-            />
+            <MookActionButtons character={character} />
           </PlayerTypeOnly>
         </Stack>
       </Slide>

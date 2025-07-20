@@ -10,7 +10,7 @@ import type { Character, Vehicle, Fight, Toast, ID } from "@/types/types"
 import { defaultVehicle } from "@/types/types"
 
 export default function CreateVehicle() {
-  const [newVehicle, setNewVehicle] = useState<Vehicle>(defaultVehicle)
+  const [newVehicle, setNewVehicle] = useState<Vehicle | null>(null)
 
   const openModal = (): void => {
     setNewVehicle({...defaultVehicle, new: true})
@@ -21,7 +21,7 @@ export default function CreateVehicle() {
       <Button variant="contained" color="primary" startIcon={<DirectionsCarFilledIcon />} onClick={openModal}>
         New
       </Button>
-      <VehicleModal open={newVehicle} setOpen={setNewVehicle} character={newVehicle} />
+      <VehicleModal character={newVehicle} />
     </>
   )
 }

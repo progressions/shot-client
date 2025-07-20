@@ -1,22 +1,25 @@
 import { useReducer, useEffect, useState } from "react"
-import { DialogContent, Box, Stack, TextField, Button, Dialog } from "@mui/material"
+import { Tooltip, DialogContent, Box, Stack, TextField, Button, Dialog } from "@mui/material"
+import HeartBrokenIcon from "@mui/icons-material/HeartBroken"
 
 import { useFight, useToast, useClient } from "@/contexts"
 import type { Person, Character, Fight, Toast, ActionValues } from "@/types/types"
 import { FightActions } from "@/reducers/fightState"
-import { FormActions, formReducer, initializeFormState } from '@/reducers/formState'
+import { FormActions, useForm } from '@/reducers/formState'
 import { StyledFormDialog, StyledTextField } from "@/components/StyledFields"
+import CS from "@/services/CharacterService"
 
-interface WoundsModalParams {
-  open: boolean,
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>
+interface KillMooksModalProps {
   character: Person,
 }
 
-export default function WoundsModal({open, setOpen, character }: WoundsModalParams) {
-  const initialFormState = initializeFormState({ mooks: 0 })
-  const [formState, dispatchForm] = useReducer(formReducer, initialFormState)
-  const { saving, disabled, formData } = formState
+type FormData = {
+  mooks: number
+}
+
+export default function KillMooksModal({ character }: KillMooksModalProps) {
+  const { formState, dispatchForm, initialFormState } = useForm<FormData>({ mooks: 0 })
+  const { open, saving, disabled, formData } = formState
   const { mooks } = formData
 
   const { fight, dispatch:dispatchFight } = useFight()
@@ -38,33 +41,44 @@ export default function WoundsModal({open, setOpen, character }: WoundsModalPara
     const newCount: number = character.count - mooks
 
     try {
-      await client.updateCharacter({ ...character, count: newCount }, fight)
+      if (CS.isVehicle(character)) {
+        await client.updateVehicle({ ...character, count: newCount }, fight)
+      } else {
+        await client.updateCharacter({ ...character, count: newCount }, fight)
+      }
       dispatchFight({ type: FightActions.EDIT })
       toastSuccess(`${character.name} lost ${mooks} mooks.`)
-      setOpen(false)
     } catch(error) {
       console.error(error)
       toastError()
     }
     dispatchForm({ type: FormActions.RESET, payload: initialFormState })
   }
+
   const cancelForm = () => {
-    setOpen(false)
     dispatchForm({ type: FormActions.RESET, payload: initialFormState })
   }
-  const label = "Kill Mooks"
 
-  return (
+  const handleOpen = () => {
+    dispatchForm({ type: FormActions.OPEN, payload: true })
+  }
+
+  return (<>
+    <Tooltip title="Kill Mooks" arrow>
+      <Button onClick={handleOpen}>
+        <HeartBrokenIcon color='error' />
+      </Button>
+    </Tooltip>
     <StyledFormDialog
       open={open}
-      onClose={() => setOpen(false)}
-      title={label}
+      onClose={handleOpen}
+      title="Kill Mooks"
       onSubmit={submitWounds}
       disabled={saving || disabled}
       onCancel={cancelForm}
       width="xs"
     >
-      <StyledTextField autoFocus type="number" label={label} required name="wounds" value={mooks || ""} onChange={handleChange} />
+      <StyledTextField autoFocus type="number" label="Kill Mooks" required name="wounds" value={mooks || ""} onChange={handleChange} />
     </StyledFormDialog>
-  )
+  </>)
 }

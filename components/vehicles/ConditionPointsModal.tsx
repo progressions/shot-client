@@ -1,33 +1,37 @@
-import { useState } from 'react'
-import { Box, Stack, TextField, Button, Dialog } from '@mui/material'
+import { Tooltip, Box, Stack, TextField, Button, Dialog } from '@mui/material'
+import CarCrashIcon from '@mui/icons-material/CarCrash'
 
-import { useFight } from "@/contexts/FightContext"
-import { useToast } from "@/contexts/ToastContext"
-import { useClient } from "@/contexts/ClientContext"
+import { useFight, useToast, useClient } from "@/contexts"
 import type { Vehicle, Character, Fight, Toast, VehicleActionValues } from "@/types/types"
 import { FightActions } from '@/reducers/fightState'
+import { FormActions, useForm } from '@/reducers/formState'
 import { StyledFormDialog, StyledTextField } from "@/components/StyledFields"
 import VS from "@/services/VehicleService"
 
 interface ConditionPointsModalParams {
-  open: boolean,
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>
   character: Vehicle,
 }
 
-const ConditionPointsModal = ({open, setOpen, character }: ConditionPointsModalParams) => {
+type FormData = {
+  conditionPoints: number
+}
+
+export default function ConditionPointsModal({ character }: ConditionPointsModalParams) {
+  const { formState, dispatchForm, initialFormState } = useForm<FormData>({ conditionPoints: 0 })
+  const { open, saving, disabled, formData } = formState
+  const { conditionPoints } = formData
+
   const { fight, dispatch:dispatchFight } = useFight()
-  const [conditionPoints, setConditionPoints] = useState<number>(0)
-  const [saving, setSaving] = useState<boolean>(false)
   const { toastSuccess, toastError } = useToast()
 
   const { client } = useClient()
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setConditionPoints(parseInt(event.target.value))
+    dispatchForm({ type: FormActions.UPDATE, name: "conditionPoints", value: parseInt(event.target.value) })
   }
 
-  const submitConditionPoints = async (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSubmit = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    dispatchForm({ type: FormActions.SUBMIT })
     event.preventDefault()
 
     const points = VS.calculateConditionPoints(character, conditionPoints)
@@ -36,37 +40,38 @@ const ConditionPointsModal = ({open, setOpen, character }: ConditionPointsModalP
     try {
       await client.updateVehicle(updatedVehicle, fight)
       dispatchFight({ type: FightActions.EDIT })
-      setConditionPoints(0)
-      setOpen(false)
       toastSuccess(`${character.name} took a smackdown of ${conditionPoints}, causing ${points} Condition Points.`)
-      return
     } catch(error) {
       toastError()
     }
+    cancelForm()
   }
 
   const cancelForm = () => {
-    setConditionPoints(0)
-    setOpen(false)
+    dispatchForm({ type: FormActions.RESET, payload: initialFormState })
   }
-  const label = "Condition Points"
 
-  return (
+  const handleOpen = () => {
+    dispatchForm({ type: FormActions.OPEN, payload: true })
+  }
+
+  return (<>
+    <Tooltip title="Take Condition Points">
+      <Button variant="contained" onClick={handleOpen}>
+        <CarCrashIcon color="error" />
+      </Button>
+    </Tooltip>
     <StyledFormDialog
-      title={label}
+      title="Condition Points"
       open={open}
-      onClose={() => setOpen(false)}
-      aria-labelledby="modal-modal-title"
-      aria-describedby="modal-modal-description"
+      onClose={cancelForm}
       disableRestoreFocus
-      onSubmit={submitConditionPoints}
-      saving={saving}
+      onSubmit={handleSubmit}
+      disabled={saving || disabled}
       onCancel={cancelForm}
       width="xs"
     >
-      <StyledTextField autoFocus type="number" label={label} required name="Condition Points" value={conditionPoints || ""} onChange={handleChange} />
+      <StyledTextField autoFocus type="number" label="Condition Points" required name="Condition Points" value={conditionPoints || ""} onChange={handleChange} />
     </StyledFormDialog>
-  )
+  </>)
 }
-
-export default ConditionPointsModal

@@ -7,6 +7,8 @@ import DirectionsRunIcon from "@mui/icons-material/DirectionsRun"
 import FavoriteIcon from "@mui/icons-material/Favorite"
 import CommuteIcon from "@mui/icons-material/Commute"
 import CarCrashIcon from "@mui/icons-material/CarCrash"
+import KillMooksModal from "@/components/characters/KillMooksModal"
+import ActionModal from "@/components/characters/ActionModal"
 
 import GamemasterOnly from "@/components/GamemasterOnly"
 import PlayerTypeOnly from "@/components/PlayerTypeOnly"
@@ -16,68 +18,18 @@ import type { Character, CharacterType } from "@/types/types"
 
 interface MookActionButtonsParams {
   character: Character,
-  healWounds?: (character: Character) => void,
-  takeWounds?: (character: Character) => void,
-  takeConditionPoints?: (character: Character) => void,
-  takeAction?: (character: Character) => void,
-  editCharacter?: (character: Character) => void,
-  deleteCharacter?: (character: Character) => void,
 }
 
-export default function MookActionButtons({ character, healWounds, takeWounds, takeConditionPoints, takeAction, editCharacter, deleteCharacter }: MookActionButtonsParams) {
+export default function MookActionButtons({ character }: MookActionButtonsParams) {
   const { user } = useClient()
-
-  const woundLabel = "Kill Mooks"
-  const woundIcon = <CommuteIcon color="error" />
-
-  const mainAttack = character.driver?.id ? character.driver.skills?.["Driving"] : character.skills?.["Driving"]
 
   return (
     <Stack direction="row" spacing={1} sx={{height: 30}}>
       <ButtonGroup variant="contained" size="small">
-        { takeWounds &&
-          <Tooltip title={woundLabel} arrow>
-            <Button onClick={() => {takeWounds(character)}}>
-              {woundIcon}
-            </Button>
-          </Tooltip> }
-        { healWounds &&
-        <PlayerTypeOnly character={character} except="Mook">
-          <Tooltip title="Heal Wounds" arrow>
-            <Button variant="contained" onClick={() => {healWounds(character)}}>
-              <FavoriteIcon color="error" />
-            </Button>
-          </Tooltip>
-        </PlayerTypeOnly> }
-        { takeConditionPoints &&
-        <PlayerTypeOnly character={character} except="Mook">
-          <Tooltip title="Take Condition Points">
-            <Button variant="contained" onClick={() => {takeConditionPoints(character)}}>
-              <CarCrashIcon color="error" />
-            </Button>
-          </Tooltip>
-        </PlayerTypeOnly> }
-        <GamemasterOnly user={user} character={character}>
-          { editCharacter &&
-          <Tooltip title="Edit Character" arrow>
-            <Button color="secondary" onClick={() => {editCharacter(character)}}>
-              <EditIcon />
-            </Button>
-          </Tooltip> }
-          { deleteCharacter &&
-          <Tooltip title="Delete Character" arrow>
-            <Button color="secondary" onClick={() => deleteCharacter(character)}>
-              <DeleteIcon />
-            </Button>
-          </Tooltip> }
-        </GamemasterOnly>
+        <KillMooksModal character={character} />
       </ButtonGroup>
       <ButtonGroup variant="outlined" size="small" className="actionButtons">
-        { takeAction && <Tooltip title="Take Action" arrow>
-          <Button sx={{width: 60}} variant="contained" color="highlight" onClick={() => {takeAction(character)}}>
-            <BoltIcon sx={{width: 50, height: 50}} />
-          </Button>
-        </Tooltip> }
+        <ActionModal character={character} />
       </ButtonGroup>
     </Stack>
   )

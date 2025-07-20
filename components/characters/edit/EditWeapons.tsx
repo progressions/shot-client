@@ -24,8 +24,6 @@ export default function EditWeapons({}: EditWeaponsProps) {
   const [state, dispatch] = useReducer(weaponsReducer, initialWeaponsState)
   const { weapons, edited, meta, page, loading, juncture, category, name } = state
 
-  console.log("EditWeapons", { characterReload, loading, weapons })
-
   async function reload() {
     try {
       console.log("Fetching Weapons page ", page)
@@ -37,27 +35,19 @@ export default function EditWeapons({}: EditWeaponsProps) {
   }
 
   useEffect(() => {
-    console.log("Reloading weapons first time")
-
     if (user?.id) {
       reload().catch(console.error)
     }
   }, [user])
 
   useEffect(() => {
-    console.log("EditWeapons characterReload changed", characterReload)
-
     if (user?.id && characterReload) {
-      console.log("Reloading weapons due to character reload")
       reload().catch(console.error)
     }
   }, [user, characterReload])
 
   useEffect(() => {
-    console.log("EditWeapons edited changed", characterReload)
-
     if (user?.id && edited) {
-      console.log("Reloading weapons due to weapons edited")
       reload().catch(console.error)
     }
   }, [user, edited])

@@ -1,5 +1,5 @@
 import { Paper, colors, Button, DialogContent, Stack, Box } from "@mui/material"
-import { StyledDialog, StyledTextField } from "@/components/StyledFields"
+import { StyledTextField } from "@/components/StyledFields"
 import HeartBrokenIcon from "@mui/icons-material/HeartBroken"
 import PersonOffIcon from "@mui/icons-material/PersonOff"
 import BoltIcon from '@mui/icons-material/Bolt'

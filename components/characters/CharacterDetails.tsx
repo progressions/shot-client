@@ -60,7 +60,6 @@ export default function CharacterDetails({ character, editingCharacter, setEditi
   const { toastSuccess, toastError } = useToast()
 
   const firstShot = fight.shot_order[0][0]
-  // const firstCharacter = fight.shot_order[0][1][0]["id"] === character.id
   const first = (shot == firstShot) // && firstCharacter
 
   function closeAction() {
@@ -85,15 +84,15 @@ export default function CharacterDetails({ character, editingCharacter, setEditi
     setEditingCharacter(character)
   }
 
-  function takeAction(character: Character): void {
+  function takeAction(): void {
     setOpenAction(true)
   }
 
-  function takeWounds(character: Character): void {
+  function takeWounds(): void {
     setOpenWounds(true)
   }
 
-  function healWounds(character: Character): void {
+  function healWounds(): void {
     setOpenHeal(true)
   }
 
@@ -218,26 +217,6 @@ export default function CharacterDetails({ character, editingCharacter, setEditi
           <DrivingDetails character={character} />
           <GroupedEffects character={character} />
         </Stack>
-        <ActionModal open={openAction}
-          setOpen={setOpenAction}
-          character={character}
-        />
-        <PlayerTypeOnly character={character} except="Mook">
-          <WoundsModal open={openWounds}
-            setOpen={setOpenWounds}
-            character={character as Person}
-          />
-        </PlayerTypeOnly>
-        <PlayerTypeOnly character={character} only="Mook">
-          <KillMooksModal open={openWounds}
-            setOpen={setOpenWounds}
-            character={character as Person}
-          />
-        </PlayerTypeOnly>
-        <HealModal open={openHeal}
-          setOpen={setOpenHeal}
-          character={character as Person}
-        />
       </TableCell>
     </TableRow>
   )

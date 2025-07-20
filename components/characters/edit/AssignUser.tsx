@@ -1,30 +1,37 @@
 import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1'
 import { Link, ButtonGroup, Tooltip, IconButton, Box, DialogContent, DialogContentText, DialogActions, Button, Stack, Typography } from "@mui/material"
-import { useCharacter } from "@/contexts/CharacterContext"
-import { useClient } from "@/contexts/ClientContext"
-import { useToast } from "@/contexts/ToastContext"
-import { StyledAutocomplete, StyledSelect, StyledDialog, StyledTextField, SaveButton, CancelButton } from "@/components/StyledFields"
-import { useState, useEffect } from "react"
+import { useCharacter, useClient, useToast } from "@/contexts"
+import { StyledAutocomplete, StyledSelect, StyledDialog, StyledTextField, SaveCancelButtons } from "@/components/StyledFields"
+import { useReducer, useState, useEffect } from "react"
 import type { User, Character, InputParamsType } from '@/types/types'
 import { CharacterActions } from "@/reducers/characterState"
 import CS from "@/services/CharacterService"
 import GamemasterOnly from "@/components/GamemasterOnly"
+import { FormActions, useForm } from '@/reducers/formState'
+
+type FormData = {
+  users: User[]
+  userId: string
+}
 
 export default function AssignUser() {
   const { character, state, dispatch, syncCharacter, updateCharacter, reloadCharacter } = useCharacter()
+
+  const { formState, dispatchForm, initialFormState } = useForm<FormData>({ users: [], userId: character?.user_id || "" })
+  const { loading, edited, open, saving, disabled, formData } = formState
+  const { users, userId } = formData
+
   const { client } = useClient()
-  const [open, setOpen] = useState(false)
-  const [loading, setLoading] = useState(true)
-  const [users, setUsers] = useState<User[]>([])
-  const [userId, setUserId] = useState(character?.user_id || "")
-  const { edited, saving } = state
+
+  useEffect(() => {
+    dispatchForm({ type: FormActions.DISABLE, payload: !userId })
+  }, [userId])
 
   useEffect(() => {
     if (open) {
       const data = client.getUsers().then(data => {
         const usersList = [{email: "None", id: ""}, ...data]
-        setUsers(usersList as User[])
-        setLoading(false)
+        dispatchForm({ type: FormActions.UPDATE, name: "users", value: usersList })
 
         return data
       })
@@ -32,21 +39,23 @@ export default function AssignUser() {
   }, [open, client, character?.name])
 
   function handleLink() {
-    setOpen(true)
+    dispatchForm({ type: FormActions.OPEN, payload: true })
   }
 
   function handleClose() {
-    setOpen(false)
+    dispatchForm({ type: FormActions.RESET, payload: initialFormState })
     dispatch({ type: CharacterActions.RESET })
   }
 
-  async function onSubmit() {
-    setOpen(false)
-    dispatch({ type: CharacterActions.UPDATE, name: "user_id", value: userId as string})
+  async function handleSubmit() {
+    dispatchForm({ type: FormActions.SUBMIT })
+    const updatedCharacter = await client.updateCharacter({ ...character, user_id: userId })
+    dispatch({ type: CharacterActions.CHARACTER, payload: updatedCharacter })
+    dispatchForm({ type: FormActions.RESET, payload: initialFormState })
   }
 
   function handleSelect(event: React.ChangeEvent<HTMLInputElement>, newValue: any) {
-    setUserId(newValue?.id || "")
+    dispatchForm({ type: FormActions.UPDATE, name: "userId", value: newValue?.id || "" })
   }
 
   function getOptionLabel(user: any) {
@@ -61,6 +70,11 @@ export default function AssignUser() {
     return <></>
   }
 
+  console.log("AssignUser saving", saving)
+
+  if (saving) {
+    return <Typography variant="h6">Saving...</Typography>
+  }
   return (
     <>
       <Tooltip title="Assign User" arrow>
@@ -70,15 +84,16 @@ export default function AssignUser() {
       </Tooltip>
       <StyledDialog
         open={open}
+        disabled={saving || disabled}
         onClose={handleClose}
-        onSubmit={onSubmit}
+        onSubmit={handleSubmit}
         title="Assign User"
       >
         <DialogContent>
           <Stack spacing={2}>
             <StyledAutocomplete
               value={character?.user}
-              disabled={loading || saving}
+              disabled={saving}
               options={users || []}
               sx={{ width: 250 }}
               onChange={handleSelect}
@@ -89,8 +104,11 @@ export default function AssignUser() {
           </Stack>
         </DialogContent>
         <DialogActions>
-          <CancelButton disabled={loading} onClick={handleClose} />
-          <Button variant="contained" color="primary" onClick={onSubmit}>Save</Button>
+          <SaveCancelButtons
+            disabled={saving || disabled}
+            onSave={handleSubmit}
+            onCancel={handleClose}
+          />
         </DialogActions>
       </StyledDialog>
     </>

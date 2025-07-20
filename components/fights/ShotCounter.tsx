@@ -52,15 +52,12 @@ export default function ShotCounter() {
           </TableBody>
         </Table>
       </TableContainer>
-      <CharacterModal open={editingCharacter}
-        setOpen={setEditingCharacter}
+      { CS.isCharacter(editingCharacter) && <CharacterModal
         character={editingCharacter as Person}
-      />
-      <VehicleModal
-        open={editingCharacter as Vehicle}
-        setOpen={setEditingCharacter as React.Dispatch<React.SetStateAction<Vehicle>>}
+      /> }
+      { CS.isVehicle(editingCharacter) && <VehicleModal
         character={editingCharacter as Vehicle}
-      />
+      /> }
     </>
   )
 }

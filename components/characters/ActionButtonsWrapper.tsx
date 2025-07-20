@@ -11,9 +11,9 @@ import ArrowRightSharpIcon from '@mui/icons-material/ArrowRightSharp';
 interface ActionButtonsParams {
   first: boolean
   character: Character
-  healWounds?: (character: Character) => void
-  takeWounds?: (character: Character) => void
-  takeAction?: (character: Character) => void
+  healWounds?: () => void
+  takeWounds?: () => void
+  takeAction?: () => void
   takeDodgeAction?: (character: Character) => void
   cheeseItAction?: (character: Character) => void
 }
@@ -38,9 +38,6 @@ export default function ActionButtonsWrapper({
           <Stack direction="row" spacing={1} sx={{height: 30}} justifyContent="flex-end" ref={containerRef}>
             <PlayerTypeOnly character={character} except="Mook">
               <ActionButtons character={character}
-                healWounds={healWounds}
-                takeWounds={takeWounds}
-                takeAction={takeAction}
                 takeDodgeAction={takeDodgeAction}
                 cheeseItAction={cheeseItAction}
               />
@@ -48,7 +45,6 @@ export default function ActionButtonsWrapper({
             <PlayerTypeOnly character={character} only="Mook">
               <MookActionButtons character={character}
                 healWounds={healWounds}
-                takeWounds={takeWounds}
                 takeAction={takeAction}
               />
             </PlayerTypeOnly>

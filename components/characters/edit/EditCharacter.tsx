@@ -51,8 +51,6 @@ export default function EditCharacter({ }: EditCharacterProps) {
   const { edited, saving, character } = characterState
   const { weapons, schticks, skills, description, action_values } = character
 
-  console.log("EditCharacter edited", edited)
-
   async function handleSubmit(event: React.ChangeEvent<HTMLInputElement>): Promise<void> {
     event.preventDefault()
 
@@ -144,6 +142,7 @@ export default function EditCharacter({ }: EditCharacterProps) {
                   name="name"
                   label="Name"
                   required
+                  autoFocus
                   fullWidth
                   onChange={handleChange}
                   value={character.name}
@@ -167,7 +166,7 @@ export default function EditCharacter({ }: EditCharacterProps) {
                 <CharacterType value={action_values.Type as string} onChange={handleAVChange} />
               </Stack>
               <Stack direction="row" spacing={1}>
-                <StyledTextField name="Archetype" label="Archetype" autoFocus fullWidth onChange={handleAVChange as React.ChangeEventHandler} value={action_values.Archetype} />
+                <StyledTextField name="Archetype" label="Archetype" fullWidth onChange={handleAVChange as React.ChangeEventHandler} value={action_values.Archetype} />
               </Stack>
             </Stack>
             { character?.id && <ImageManager name="character" entity={character} updateEntity={updateCharacter} deleteImage={deleteImage} apiEndpoint="allCharacters" /> }
