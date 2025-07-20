@@ -15,10 +15,8 @@ import ImageManager from "@/components/images/ImageManager"
 import EditWeapons from "@/components/characters/edit/EditWeapons"
 import UploadImage from "@/components/characters/edit/UploadImage"
 import ImageDisplay from "@/components/characters/ImageDisplay"
-import NotionLink from "@/components/notion/NotionLink"
-import AssignUser from "@/components/characters/edit/AssignUser"
 import UserAvatar from "@/components/UserAvatar"
-import PdfDownload from "@/components/characters/PdfDownload"
+import CharacterMenu from "@/components/characters/edit/CharacterMenu"
 
 import { useReducer, useEffect } from "react"
 
@@ -109,10 +107,6 @@ export default function EditCharacter({ }: EditCharacterProps) {
 
   const userDisplay = (<>
     <Stack direction="row" spacing={1}>
-      { CS.isPC(character) &&
-      <GamemasterOnly user={user} character={character}>
-        <AssignUser />
-      </GamemasterOnly> }
       <UserAvatar user={character?.user} />
       <Typography variant="h6" sx={{pt: 0.4}}>
         {[character?.user?.first_name, character?.user?.last_name].filter(Boolean).join(" ") || character?.user?.email}
@@ -145,12 +139,6 @@ export default function EditCharacter({ }: EditCharacterProps) {
                   <FormControlLabel label="Task" name="task" control={<Switch checked={character.task} />} onChange={handleCheck} />
                   <FormControlLabel label="Active" name="active" control={<Switch checked={character.active} />} onChange={handleCheck} />
                 </Grid>
-                <Grid item xs={3}>
-                  <NotionLink />
-                </Grid>
-                <Grid item xs={1}>
-                  <PdfDownload />
-                </Grid>
               </Grid>
               <Stack direction="row" spacing={1}>
                 <Faction faction={character.faction} onChange={handleFactionChange} />
@@ -160,7 +148,10 @@ export default function EditCharacter({ }: EditCharacterProps) {
                 <StyledTextField name="Archetype" label="Archetype" fullWidth onChange={handleAVChange as React.ChangeEventHandler} value={action_values.Archetype} />
               </Stack>
             </Stack>
-            { character?.id && <ImageManager name="character" entity={character} updateEntity={updateCharacter} deleteImage={deleteImage} apiEndpoint="allCharacters" /> }
+            <Stack spacing={1} alignItems="flex-end" direction="column">
+              <CharacterMenu />
+              { character?.id && <ImageManager name="character" entity={character} updateEntity={updateCharacter} deleteImage={deleteImage} apiEndpoint="allCharacters" /> }
+            </Stack>
           </Stack>
           <Stack spacing={2} direction="row" alignItems='center'>
             <StyledTextField label={woundsLabel}

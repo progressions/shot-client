@@ -9,16 +9,21 @@ import CS from "@/services/CharacterService"
 import GamemasterOnly from "@/components/GamemasterOnly"
 import { FormActions, useForm } from '@/reducers/formState'
 
+interface AssignUserProps {
+  open: boolean
+  onClose: () => void
+}
+
 type FormData = {
   users: User[]
   userId: string
 }
 
-export default function AssignUser() {
+export default function AssignUser({ open = false, onClose }: AssignUserProps) {
   const { character, state, dispatch, syncCharacter, updateCharacter, reloadCharacter } = useCharacter()
 
   const { formState, dispatchForm, initialFormState } = useForm<FormData>({ users: [], userId: character?.user_id || "" })
-  const { loading, edited, open, saving, disabled, formData } = formState
+  const { loading, edited, saving, disabled, formData } = formState
   const { users, userId } = formData
 
   const { client } = useClient()
@@ -38,13 +43,10 @@ export default function AssignUser() {
     }
   }, [open, client, character?.name])
 
-  function handleLink() {
-    dispatchForm({ type: FormActions.OPEN, payload: true })
-  }
-
   function handleClose() {
     dispatchForm({ type: FormActions.RESET, payload: initialFormState })
     dispatch({ type: CharacterActions.RESET })
+    onClose()
   }
 
   async function handleSubmit() {
@@ -52,6 +54,7 @@ export default function AssignUser() {
     const updatedCharacter = await client.updateCharacter({ ...character, user_id: userId })
     dispatch({ type: CharacterActions.CHARACTER, payload: updatedCharacter })
     dispatchForm({ type: FormActions.RESET, payload: initialFormState })
+    onClose()
   }
 
   function handleSelect(event: React.ChangeEvent<HTMLInputElement>, newValue: any) {
@@ -70,18 +73,11 @@ export default function AssignUser() {
     return <></>
   }
 
-  console.log("AssignUser saving", saving)
-
   if (saving) {
     return <Typography variant="h6">Saving...</Typography>
   }
   return (
     <>
-      <Tooltip title="Assign User" arrow>
-        <Button variant="contained" onClick={handleLink} disabled={saving}>
-          <PersonAddAlt1Icon />
-        </Button>
-      </Tooltip>
       <StyledDialog
         open={open}
         disabled={saving || disabled}

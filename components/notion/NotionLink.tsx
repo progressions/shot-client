@@ -10,21 +10,30 @@ import { useState, useEffect } from "react"
 import type { Character, InputParamsType } from '@/types/types'
 import { CharacterActions } from "@/reducers/characterState"
 import CS from "@/services/CharacterService"
+import { FormActions, useForm } from '@/reducers/formState'
 
-export default function NotionLink() {
-  const { character, dispatch, syncCharacter, updateCharacter, reloadCharacter } = useCharacter()
+interface NotionLinkProps {
+  open: boolean
+  onClose: () => void
+}
+
+type FormData = {
+  pages: any[]
+  pageId: string
+}
+
+export default function NotionLink({ open, onClose }: NotionLinkProps) {
+  const { character, dispatch } = useCharacter()
   const { user, client } = useClient()
-  const [open, setOpen] = useState(false)
-  const [loading, setLoading] = useState(true)
-  const [pages, setPages] = useState([])
-  const [pageId, setPageId] = useState(character?.notion_page_id || "")
-  const [saving, setSaving] = useState(false)
+
+  const { formState, dispatchForm, initialFormState } = useForm<FormData>({ pages: [], pageId: character?.notion_page_id || "" })
+  const { loading, edited, saving, disabled, formData } = formState
+  const { pages, pageId } = formData
 
   useEffect(() => {
     if (open) {
       const data = client.getNotionCharacters({ name: character?.name }).then(data => {
-        setPages(data as any)
-        setLoading(false)
+        dispatchForm({ type: FormActions.UPDATE, name: "pages", value: data })
 
         return data
       })
@@ -37,27 +46,13 @@ export default function NotionLink() {
     })
   }
 
-  async function handleSync(): Promise<void> {
-    setSaving(true)
-    await syncCharacter()
-    setSaving(false)
-  }
-
-  function handleLink() {
-    setOpen(true)
-  }
-
-  function handleClose() {
-    setOpen(false)
-  }
-
   function onSubmit() {
     dispatch({ type: CharacterActions.UPDATE, name: "notion_page_id", value: pageId as string})
-    setOpen(false)
+    onClose()
   }
 
   function handleSelect(event: React.ChangeEvent<HTMLInputElement>, newValue: any) {
-    setPageId(newValue?.id || "")
+    dispatchForm({ type: FormActions.UPDATE, name: "pageId", value: newValue?.id || "" })
   }
 
   function getOptionLabel(page: any) {
@@ -69,30 +64,9 @@ export default function NotionLink() {
 
   return (
     <>
-      <Stack direction="row" spacing={1} alignItems="center">
-        <ButtonGroup variant="contained">
-          <Tooltip title="Link to Notion Page" arrow>
-            <Button onClick={handleLink}>
-              <LibraryAddIcon />
-            </Button>
-          </Tooltip>
-          <Tooltip title="Sync from Notion" arrow>
-            <Button onClick={handleSync} disabled={saving}>
-              <SystemUpdateAltIcon />
-            </Button>
-          </Tooltip>
-        </ButtonGroup>
-        { notionLink &&
-          <Tooltip title="Open Notion Page" arrow>
-            <Link color="inherit" href={notionLink} target="_blank">
-              <LaunchIcon fontSize="large" />
-            </Link>
-          </Tooltip>
-         }
-      </Stack>
       <StyledDialog
         open={open}
-        onClose={handleClose}
+        onClose={onClose}
         onSubmit={onSubmit}
         title="Link Character"
       >
@@ -111,7 +85,7 @@ export default function NotionLink() {
           </Stack>
         </DialogContent>
         <DialogActions>
-          <CancelButton disabled={loading} onClick={handleClose} />
+          <CancelButton disabled={loading} onClick={onClose} />
           <Button variant="contained" color="primary" onClick={onSubmit}>Save</Button>
         </DialogActions>
       </StyledDialog>
