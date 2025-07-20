@@ -7,14 +7,13 @@ import { useState } from "react"
 import type { CharacterStateAction } from "@/reducers/characterState"
 import type { VehicleStateAction } from "@/reducers/vehicleState"
 import { CharacterActions } from "@/reducers/characterState"
-import { VehicleActions } from "@/reducers/vehicleState"
-import type { Character } from "@/types/types"
+import type { Character, Vehicle } from "@/types/types"
 import { FormActions, useForm } from "@/reducers/formState"
 
 interface ColorPickerProps {
   character: Character
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void
-  setCharacter?: React.Dispatch<React.SetStateAction<Character>>
+  setCharacter?: (updatedCharacter: Character | Vehicle) => void
   dispatch?: React.Dispatch<CharacterStateAction> | React.Dispatch<VehicleStateAction>
 }
 
@@ -52,7 +51,7 @@ export default function ColorPicker({ character, onChange, setCharacter, dispatc
     <>
       <Button sx={{width: 2, height: 50, bgcolor: character.color, borderColor: 'primary', border: 1, borderRadius: 2}} onClick={togglePicker} />
       <StyledTextField id="colorPicker" label="Color" name="color" value={character.color || ''} onChange={onChange} />
-      <Popover anchorEl={anchorEl} open={picker} onClose={() => setPicker(false)} anchorOrigin={{vertical: 'bottom', horizontal: 'center'}}>
+      <Popover anchorEl={anchorEl} open={picker} anchorOrigin={{vertical: 'bottom', horizontal: 'center'}}>
         <Paper>
           <BlockPicker color={character.color || ''} onChangeComplete={handleColor} colors={['#D0021B', '#F5A623', '#F8E71C', '#8B572A', '#7ED321', '#417505', '#BD10E0', '#9013FE', '#4A90E2', '#50E3C2', '#B8E986', '#000000', '#4A4A4A', '#9B9B9B', '#FFFFFF']} />
         </Paper>
