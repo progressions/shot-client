@@ -1,6 +1,5 @@
 import Layout from '@/components/Layout'
 import Head from 'next/head'
-import type { NextApiRequest, NextApiResponse } from "next"
 
 import { useState } from "react"
 import { Stack, Box, Button, Container, Typography, TextField } from "@mui/material"
