@@ -7,9 +7,9 @@ import { useUploadForm } from "@/utils/useUploadForm"
 import DeleteIcon from "@mui/icons-material/Delete"
 import AddAPhotoIcon from "@mui/icons-material/AddAPhoto"
 
-import type { User, Character, Party, Site, Vehicle, Weapon, Faction } from '@/types/types'
+import type { Juncture, User, Character, Party, Site, Vehicle, Weapon, Faction } from '@/types/types'
 
-type Entity = Weapon | Site | Party | Vehicle | Character | User | Faction
+export type Entity = Weapon | Site | Party | Vehicle | Character | User | Faction | Juncture
 
 interface ImageManagerProps {
   name: string

@@ -56,6 +56,11 @@ export default function MenuPopupState({ campaign, user }: MenuPopupStateProps) 
                 </Link>
               </MenuItem>
               <MenuItem onClick={popupState.close}>
+                <Link underline="none" color="inherit" href='/junctures'>
+                  Junctures
+                </Link>
+              </MenuItem>
+              <MenuItem onClick={popupState.close}>
                 <Link underline="none" color="inherit" href='/parties'>
                   Parties
                 </Link>

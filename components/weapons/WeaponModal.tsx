@@ -4,14 +4,14 @@ import { useClient } from "@/contexts/ClientContext"
 import { useToast } from "@/contexts/ToastContext"
 import { useCharacter } from "@/contexts/CharacterContext"
 
-import type { WeaponCategory, FilterParamsType, OptionType, Juncture, InputParamsType, Character, Weapon } from "@/types/types"
+import type { WeaponCategory, FilterParamsType, OptionType, JunctureName, InputParamsType, Character, Weapon } from "@/types/types"
 import { defaultWeapon } from "@/types/types"
 import { useState, useEffect, useReducer } from "react"
 import type { WeaponsStateType, WeaponsActionType } from "@/reducers/weaponsState"
 import { WeaponsActions } from "@/reducers/weaponsState"
 import ImageManager from "@/components/images/ImageManager"
 
-const filterOptions = createFilterOptions<Juncture>();
+const filterOptions = createFilterOptions<JunctureName>();
 
 interface WeaponModalProps {
   weapon?: Weapon
@@ -68,12 +68,12 @@ export default function WeaponModal({ state, dispatch, open, setOpen, weapon:ini
     setWeapon(oldWeapon => ({ ...weapon, category: newValue }))
   }
 
-  function changeJuncture(event: React.SyntheticEvent<Element, Event>, newValue: Juncture) {
+  function changeJuncture(event: React.SyntheticEvent<Element, Event>, newValue: JunctureName) {
     // dispatch({ type: WeaponsActions.UPDATE, name: "juncture", value: newValue })
     setWeapon(oldWeapon => ({ ...weapon, juncture: newValue }))
   }
 
-  function getOptionLabel(option: Juncture | OptionType) {
+  function getOptionLabel(option: JunctureName | OptionType) {
     // Value selected with enter, right from the input
     if (typeof option === 'string') {
       return option;
@@ -116,12 +116,12 @@ export default function WeaponModal({ state, dispatch, open, setOpen, weapon:ini
                   onChange={changeJuncture}
                   openOnFocus
                   getOptionLabel={getOptionLabel}
-                  filterOptions={(options: Juncture[], params: FilterParamsType) => {
+                  filterOptions={(options: JunctureName[], params: FilterParamsType) => {
                     const filtered = filterOptions(options, params);
 
                     const { inputValue } = params;
                     // Suggest the creation of a new value
-                    const isExisting = options.some((option: Juncture) => inputValue === option);
+                    const isExisting = options.some((option: JunctureName) => inputValue === option);
                     if (inputValue !== '' && !isExisting) {
                       filtered.push(
                         inputValue,

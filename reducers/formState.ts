@@ -13,6 +13,8 @@ export enum FormActions {
 
 interface EditAction {
   type: FormActions.EDIT;
+  name?: string
+  value?: string | boolean | number
 }
 
 interface SubmitAction {
@@ -90,11 +92,23 @@ export function formReducer<T extends Record<string, unknown>>(
 ): FormStateType<T> {
   switch (action.type) {
     case FormActions.EDIT:
+      if (action.name && action.value !== undefined) {
+        return {
+          ...state,
+          edited: true,
+          loading: false,
+          [action.name]: action.value,
+          formData: {
+            ...state.formData,
+          } as T,
+        };
+      }
       return {
         ...state,
         edited: true,
       };
     case FormActions.UPDATE:
+      console.log("FormReducer UPDATE", action.name, action.value);
       return {
         ...state,
         edited: true,

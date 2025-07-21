@@ -103,6 +103,12 @@ export interface SitesResponse {
   meta: PaginationMeta
 }
 
+export interface JuncturesResponse {
+  junctures: Juncture[]
+  factions: Faction[]
+  meta: PaginationMeta
+}
+
 export interface SchticksResponse {
   schticks: Schtick[]
   meta: PaginationMeta
@@ -113,7 +119,7 @@ export interface SchticksResponse {
 export interface WeaponsResponse {
   weapons: Weapon[]
   meta: PaginationMeta
-  junctures: Juncture[]
+  junctures: string[]
   categories: WeaponCategory[]
 }
 
@@ -170,7 +176,6 @@ export type Severity = 'error' | 'info' | 'success' | 'warning'
 export type WeaponCategory = string
 export type SchtickCategory = string
 export type SchtickPath = string
-export type Juncture = string
 
 export interface CampaignsResponse {
   gamemaster: Campaign[]
@@ -210,6 +215,8 @@ export interface Campaign {
   invitations: Invitation[]
 }
 
+export type JunctureName = string
+
 export interface Weapon {
   id?: string
   name: string
@@ -218,7 +225,7 @@ export interface Weapon {
   concealment: number
   reload_value: number
   category: WeaponCategory
-  juncture: Juncture
+  juncture: JunctureName
   mook_bonus: number
   kachunk: boolean
   image_url: string | null
@@ -427,6 +434,16 @@ export interface Site {
   faction?: Faction | null
   characters?: Character[]
   secret: boolean
+  image_url: string | null
+}
+
+export interface Juncture {
+  id?: string
+  name: string
+  description?: string
+  faction?: Faction | null
+  characters?: Character[]
+  active: boolean
   image_url: string | null
 }
 
@@ -721,6 +738,14 @@ export const defaultSchtick:Schtick = {
 
 export const defaultAdvancement:Advancement = {
   description: ""
+}
+
+export const defaultJuncture:Juncture = {
+  name: "",
+  description: "",
+  faction: null,
+  active: true,
+  image_url: null
 }
 
 export const defaultSite:Site = {

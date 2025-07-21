@@ -1,4 +1,4 @@
-import type { WeaponsResponse, WeaponCategory, Juncture, PaginationMeta, Weapon } from "@/types/types"
+import type { WeaponsResponse, WeaponCategory, JunctureName, PaginationMeta, Weapon } from "@/types/types"
 import { defaultPaginationMeta, defaultWeapon } from "@/types/types"
 
 export enum WeaponsActions {
@@ -22,8 +22,8 @@ export interface WeaponsStateType {
   loading: boolean
   saving: boolean
   page: number
-  juncture: Juncture
-  junctures: Juncture[]
+  juncture: JunctureName
+  junctures: JunctureName[]
   category: WeaponCategory
   categories: WeaponCategory[]
   name: string
@@ -32,7 +32,7 @@ export interface WeaponsStateType {
   meta: PaginationMeta
 }
 
-export type PayloadType = WeaponCategory | Juncture | Weapon | WeaponsResponse | string | number
+export type PayloadType = WeaponCategory | JunctureName | Weapon | WeaponsResponse | string | number
 
 interface ActionNoPayload {
   type: Extract<WeaponsActions, WeaponsActions.RESET | WeaponsActions.EDIT | WeaponsActions.SAVING | WeaponsActions.SUCCESS | WeaponsActions.PREVIOUS | WeaponsActions.NEXT>
@@ -103,7 +103,7 @@ export function weaponsReducer(state: WeaponsStateType, action: WeaponsActionTyp
         ...state,
         edited: true,
         page: initialWeaponsState.page,
-        juncture: (action.payload || initialWeaponsState.juncture) as Juncture,
+        juncture: (action.payload || initialWeaponsState.juncture) as JunctureName,
         category: initialWeaponsState.category,
         weapon: initialWeaponsState.weapon
       }

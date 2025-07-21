@@ -17,6 +17,7 @@ import type {
   Character,
   User,
   Person,
+  Juncture,
   ID
 } from "@/types/types"
 
@@ -160,6 +161,14 @@ class Api {
       return `${this.allCharacters(character)}/advancements/${advancement.id}`
     } else {
       return `${this.allCharacters(character)}/advancements`
+    }
+  }
+
+  junctures(juncture?: Juncture | ID): string {
+    if (juncture?.id) {
+      return `${this.api()}/junctures/${juncture.id}`
+    } else {
+      return `${this.api()}/junctures`
     }
   }
 

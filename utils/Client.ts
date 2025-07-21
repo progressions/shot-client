@@ -11,6 +11,8 @@ import type {
   SchticksResponse,
   CampaignsResponse,
   SitesResponse,
+  JuncturesResponse,
+  Juncture,
   Person,
   FightsResponse,
   CharactersAndVehiclesResponse,
@@ -290,6 +292,31 @@ class Client {
 
   async deleteAdvancement(character: Character, advancement: Advancement):Promise<void> {
     return this.delete(this.api.advancements(character, advancement))
+  }
+
+  async getJunctures(params = {}):Promise<JuncturesResponse> {
+    const query = Object.entries(params).map(([key, value]) => `${key}=${value || ""}`).join("&")
+    return this.get(`${this.api.junctures()}?${query}`)
+  }
+
+  async createJuncture(juncture: Juncture):Promise<Juncture> {
+    return this.post(this.api.junctures(), {"juncture": juncture})
+  }
+
+  async getJuncture(juncture: Juncture | ID):Promise<Juncture> {
+    return this.get(this.api.junctures(juncture))
+  }
+
+  async deleteJuncture(juncture: Juncture):Promise<void> {
+    return this.delete(this.api.junctures(juncture))
+  }
+
+  async updateJuncture(juncture: Juncture):Promise<Juncture> {
+    return this.patch(this.api.junctures(juncture), {"juncture": juncture})
+  }
+
+  async deleteJunctureImage(juncture: Juncture):Promise<void> {
+    return this.delete(`${this.api.junctures(juncture)}/image`)
   }
 
   async getSites(params = {}):Promise<SitesResponse> {
