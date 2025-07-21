@@ -4,35 +4,11 @@ import type { NextApiRequest, NextApiResponse } from "next"
 
 import { useState } from "react"
 import { Stack, Box, Button, Container, Typography, TextField } from "@mui/material"
-import { useClient } from "@/contexts/ClientContext"
-import { useToast } from "@/contexts/ToastContext"
-import { useCampaign } from "@/contexts/CampaignContext"
+import { useClient, useToast } from "@/contexts"
 
 import Client from "@/utils/Client"
-import { getServerClient } from "@/utils/getServerClient"
 
-import type { AuthSession, Schtick, ServerSideProps, Campaign } from "@/types/types"
-import { GetServerSideProps } from 'next'
-import { InferGetServerSidePropsType } from 'next'
-
-export async function getServerSideProps<GetServerSideProps>({ req, res }: ServerSideProps) {
-  const { client } = await getServerClient(req, res)
-
-  try {
-    const campaign = await client.getCurrentCampaign()
-
-    return {
-      props: {
-      }
-    }
-  } catch(error) {
-    return {
-      props: {
-        fights: [],
-      }
-    }
-  }
-}
+import type { Schtick } from "@/types/types"
 
 export default function UploadSchticks() {
   const [saving, setSaving] = useState(false)
@@ -74,7 +50,7 @@ export default function UploadSchticks() {
       <main>
         <Layout>
           <Container maxWidth="md">
-            <Typography variant="h1" gutterBottom>Schticks</Typography>
+            <Typography variant="h3" gutterBottom>Schticks</Typography>
             <Box component="form" onSubmit={handleSubmit} sx={{width: 900}}>
               <Stack spacing={2}>
                 <TextField name="file" onChange={handleChange} fullWidth required multiline rows={30} sx={{backgroundColor: "white", color: "black"}} InputProps={{sx: {color: "black"}}} />
