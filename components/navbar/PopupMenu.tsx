@@ -46,6 +46,11 @@ export default function MenuPopupState({ campaign, user }: MenuPopupStateProps) 
                 </Link>
               </MenuItem>
               <MenuItem onClick={popupState.close}>
+                <Link underline="none" color="inherit" href='/characters/upload'>
+                  Import Character from PDF
+                </Link>
+              </MenuItem>
+              <MenuItem onClick={popupState.close}>
                 <Link underline="none" color="inherit" href='/sites'>
                   Sites
                 </Link>

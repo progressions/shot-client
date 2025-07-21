@@ -388,6 +388,9 @@ export interface Vehicle {
   task: boolean
   notion_page_id: string | null
   driving?: Vehicle
+  wealth: string
+  juncture_id: string | null
+  juncture: Juncture | null
 }
 
 export interface Person {
@@ -420,6 +423,9 @@ export interface Person {
   task: boolean
   notion_page_id: string | null
   driving?: Vehicle
+  wealth: string
+  juncture_id: string | null
+  juncture: Juncture | null
 }
 
 export interface Advancement {
@@ -625,6 +631,9 @@ export const defaultCharacter:Person = {
   image_url: "",
   task: false,
   notion_page_id: null,
+  wealth: "Poor",
+  juncture_id: null,
+  juncture: null
 }
 
 export const defaultVehicle:Vehicle = {
@@ -671,6 +680,9 @@ export const defaultVehicle:Vehicle = {
   image_url: "",
   task: false,
   notion_page_id: null,
+  wealth: "",
+  juncture_id: null,
+  juncture: null
 }
 
 export const defaultFight:Fight = {

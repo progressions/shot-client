@@ -105,7 +105,7 @@ export default function SiteModal({ state, dispatch, open, setOpen, site:initial
         <FormControlLabel label="Hidden" name="secret" control={<Switch checked={site.secret} />} onChange={handleCheck} />
       </GamemasterOnly>
       <Stack spacing={2} direction="row">
-        <Stack spacing={1} sx={{width: 600, maxWidth: 600}}>
+        <Stack spacing={1} sx={{width: 550, maxWidth: 550}}>
           <Stack direction="row" spacing={1} alignItems="center">
             <StyledTextField
               sx={{width: 600}}

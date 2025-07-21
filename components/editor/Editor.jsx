@@ -75,6 +75,7 @@ const Editor = ({ name, value, onChange }) => {
       Faction: `/factions/${id}`,
       Schtick: `/schticks/${id}`,
       Weapon: `/weapons/${id}`,
+      Juncture: `/junctures/${id}`,
       Type: `/`,
       Archetype: `/`,
     }

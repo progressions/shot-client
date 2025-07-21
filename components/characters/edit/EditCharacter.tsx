@@ -6,6 +6,7 @@ import CharacterType from "@/components/characters/edit/CharacterType"
 import FortuneSelect from "@/components/characters/edit/FortuneSelect"
 import Description from "@/components/characters/edit/Description"
 import Faction from "@/components/characters/edit/Faction"
+import Juncture from "@/components/characters/edit/Juncture"
 import EditSchticks from "@/components/characters/edit/EditSchticks"
 import SchtickSelector from "@/components/schticks/SchtickSelector"
 import Skills from "@/components/characters/edit/Skills"
@@ -17,6 +18,8 @@ import UploadImage from "@/components/characters/edit/UploadImage"
 import ImageDisplay from "@/components/characters/ImageDisplay"
 import UserAvatar from "@/components/UserAvatar"
 import CharacterMenu from "@/components/characters/edit/CharacterMenu"
+import Archetype from "@/components/characters/edit/Archetype"
+import Wealth from "@/components/characters/edit/Wealth"
 
 import { useReducer, useEffect } from "react"
 
@@ -76,6 +79,10 @@ export default function EditCharacter({ }: EditCharacterProps) {
     dispatchCharacter({ type: CharacterActions.UPDATE, name: event.target.name, value: event.target.value || newValue })
   }
 
+  function handleJunctureChange(event: React.ChangeEvent<HTMLInputElement>, newValue: string) {
+    dispatchCharacter({ type: CharacterActions.UPDATE, name: event.target.name, value: event.target.value || newValue })
+  }
+
   function handleSkillsChange(event: React.ChangeEvent<HTMLInputElement>) {
     dispatchCharacter({ type: CharacterActions.SKILLS, name: event.target.name, value: event.target.value })
   }
@@ -88,19 +95,6 @@ export default function EditCharacter({ }: EditCharacterProps) {
     const { action_values } = character || {}
     const value = (newValue === CS.marksOfDeath(character)) ? 0 : newValue
     dispatchCharacter({ type: CharacterActions.ACTION_VALUE, name: "Marks of Death", value: value as number })
-  }
-
-  const woundsLabel = CS.isMook(character) ? "Mooks" : "Wounds"
-
-  const woundsAdornment = () => {
-    if (CS.isType(character, "Mooks")) {
-      return (
-        <InputAdornment position="start"><PeopleIcon color='error' /></InputAdornment>
-      )
-    }
-    return (
-      <InputAdornment position="start"><FavoriteIcon color='error' /></InputAdornment>
-    )
   }
 
   const notionLink = CS.notionLink(character)
@@ -145,29 +139,18 @@ export default function EditCharacter({ }: EditCharacterProps) {
                 <CharacterType value={action_values.Type as string} onChange={handleAVChange} />
               </Stack>
               <Stack direction="row" spacing={1}>
-                <StyledTextField name="Archetype" label="Archetype" fullWidth onChange={handleAVChange as React.ChangeEventHandler} value={action_values.Archetype} />
+                <Archetype archetype={CS.archetype(character)} onChange={handleAVChange} />
+              </Stack>
+              <Stack spacing={2} direction="row" alignItems='center'>
+                <Juncture juncture={character.juncture} onChange={handleJunctureChange} />
+                <Wealth wealth={character.wealth} onChange={handleChange} />
+                <ColorPicker character={character} onChange={handleChange} dispatch={dispatchCharacter} />
               </Stack>
             </Stack>
             <Stack spacing={1} alignItems="flex-end" direction="column">
               <CharacterMenu />
               { character?.id && <ImageManager name="character" entity={character} updateEntity={updateCharacter} deleteImage={deleteImage} apiEndpoint="allCharacters" /> }
             </Stack>
-          </Stack>
-          <Stack spacing={2} direction="row" alignItems='center'>
-            <StyledTextField label={woundsLabel}
-              type="number"
-              name="Wounds"
-              value={character.action_values?.['Wounds'] || ''}
-              onChange={handleAVChange as React.ChangeEventHandler}
-              InputProps={
-                {startAdornment: woundsAdornment()}
-              }
-            />
-            <PlayerTypeOnly character={character} only="PC">
-              <DeathMarks character={character} onChange={handleDeathMarks} />
-            </PlayerTypeOnly>
-            <StyledTextField label="Impairments" type="number" name="impairments" value={character.impairments || ''} onChange={handleChange} />
-            <ColorPicker character={character} onChange={handleChange} dispatch={dispatchCharacter} />
           </Stack>
           <EditActionValues character={character} onChange={handleAVChange as React.ChangeEventHandler} />
           <PlayerTypeOnly character={character} only="PC">

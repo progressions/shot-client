@@ -11,7 +11,7 @@ const MentionList = forwardRef((props, ref) => {
     }
   }
 
-  const itemKeys = ["Character", "Vehicle", "Party", "Site", "Faction", "Weapon", "Schtick"]
+  const itemKeys = ["Character", "Vehicle", "Party", "Site", "Faction", "Weapon", "Schtick", "Juncture"]
   const validCategories = itemKeys.filter((key) => Array.isArray(props.items?.[key]) && props.items[key].length > 0)
   const totalItems = validCategories.reduce((sum, key) => sum + props.items[key].length, 0)
 

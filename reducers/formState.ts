@@ -97,16 +97,16 @@ export function formReducer<T extends Record<string, unknown>>(
           ...state,
           edited: true,
           loading: false,
-          [action.name]: action.value,
           formData: {
             ...state.formData,
           } as T,
+          [action.name]: action.value,
         };
       }
       return {
         ...state,
         edited: true,
-      };
+      }
     case FormActions.UPDATE:
       console.log("FormReducer UPDATE", action.name, action.value);
       return {

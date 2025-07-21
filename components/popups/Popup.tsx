@@ -3,7 +3,7 @@
 import { Paper, Box } from "@mui/material"
 import styles from "@/components/popups/Popups.module.scss"
 import type { CharacterType } from "@/types/types"
-import { CharacterEffectsPopup, SchticksPopup, SkillsPopup, WeaponsPopup, CharacterPopup, VehiclePopup, FactionPopup, TypePopup, ArchetypePopup, WeaponPopup, SchtickPopup, PartyPopup, SitePopup } from "@/components/popups"
+import { JuncturePopup, CharacterEffectsPopup, SchticksPopup, SkillsPopup, WeaponsPopup, CharacterPopup, VehiclePopup, FactionPopup, TypePopup, ArchetypePopup, WeaponPopup, SchtickPopup, PartyPopup, SitePopup } from "@/components/popups"
 import { MouseEvent } from "react"
 
 interface PopupBaseProps {
@@ -50,6 +50,8 @@ export default function PopupBase({ instanceId, position, content, isDimmed, onM
         return <SchticksPopup id={content.id} data={data} />
       case "CharacterEffects":
         return <CharacterEffectsPopup id={content.id} data={data} />
+      case "Juncture":
+        return <JuncturePopup id={content.id} data={data} />
       default:
         return null
     }

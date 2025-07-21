@@ -548,6 +548,10 @@ class Client {
     })
   }
 
+  async uploadCharacterPdf(formData: FormData): Promise<Character> {
+    return this.requestFormData('POST', `${this.api.characters()}/pdf`, formData);
+  }
+
   async removeSchtick(character: Character | ID, schtick: Schtick | ID):Promise<void> {
     return this.delete(this.api.characterSchticks(character, schtick))
   }
