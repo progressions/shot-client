@@ -7,59 +7,66 @@ export enum FormActions {
   DISABLE = "disable",
   LOADING = "loading",
   ERROR = "error",
+  SUCCESS = "success",
   UPDATE = "update",
   RESET = "reset",
 }
 
 interface EditAction {
-  type: FormActions.EDIT;
+  type: FormActions.EDIT
   name?: string
   value?: string | boolean | number
 }
 
 interface SubmitAction {
-  type: FormActions.SUBMIT;
+  type: FormActions.SUBMIT
 }
 
 interface UpdateAction {
-  type: FormActions.UPDATE;
-  name: string;
-  value: any;
+  type: FormActions.UPDATE
+  name: string
+  value: any
 }
 
 interface OpenAction {
-  type: FormActions.OPEN;
-  payload: boolean;
+  type: FormActions.OPEN
+  payload: boolean
 }
 
 interface DisableAction {
-  type: FormActions.DISABLE;
-  payload: boolean;
+  type: FormActions.DISABLE
+  payload: boolean
 }
 
 interface LoadingAction {
-  type: FormActions.LOADING;
-  payload: boolean;
+  type: FormActions.LOADING
+  payload: boolean
 }
 
 interface ErrorAction {
-  type: FormActions.ERROR;
-  payload: string | null;
+  type: FormActions.ERROR
+  payload: string | null
+}
+
+interface SuccessAction {
+  type: FormActions.SUCCESS
+  payload: string | null
 }
 
 interface ResetAction<T> {
-  type: FormActions.RESET;
-  payload: FormStateType<T>;
+  type: FormActions.RESET
+  payload: FormStateType<T>
 }
 
 export interface FormStateType<T> {
-  edited: boolean;
-  loading: boolean;
-  saving: boolean;
-  disabled: boolean;
-  open: boolean;
-  error: string | null;
-  formData: T;
+  edited: boolean
+  loading: boolean
+  saving: boolean
+  disabled: boolean
+  open: boolean
+  error: string | null
+  success: string | null
+  formData: T
 }
 
 export type FormStateAction<T> =
@@ -70,7 +77,8 @@ export type FormStateAction<T> =
   | DisableAction
   | LoadingAction
   | ErrorAction
-  | ResetAction<T>;
+  | SuccessAction
+  | ResetAction<T>
 
 export function initializeFormState<T extends Record<string, unknown>>(
   formData: T | null = null
@@ -82,8 +90,9 @@ export function initializeFormState<T extends Record<string, unknown>>(
     disabled: true,
     open: false,
     error: null,
+    success: null,
     formData: formData ?? ({} as T),
-  };
+  }
 }
 
 export function formReducer<T extends Record<string, unknown>>(
@@ -101,14 +110,14 @@ export function formReducer<T extends Record<string, unknown>>(
             ...state.formData,
           } as T,
           [action.name]: action.value,
-        };
+        }
       }
       return {
         ...state,
         edited: true,
       }
     case FormActions.UPDATE:
-      console.log("FormReducer UPDATE", action.name, action.value);
+      console.log("FormReducer UPDATE", action.name, action.value)
       return {
         ...state,
         edited: true,
@@ -119,43 +128,55 @@ export function formReducer<T extends Record<string, unknown>>(
           ...state.formData,
           [action.name]: action.value,
         } as T,
-      };
+      }
     case FormActions.OPEN:
       return {
         ...state,
         open: action.payload,
-      };
+      }
     case FormActions.DISABLE:
       return {
         ...state,
         disabled: action.payload,
-      };
+      }
     case FormActions.LOADING:
       return {
         ...state,
         loading: action.payload,
-      };
+      }
     case FormActions.ERROR:
       return {
         ...state,
         disabled: true,
+        saving: false,
+        loading: false,
         error: action.payload,
-      };
+        success: null,
+      }
+    case FormActions.SUCCESS:
+      return {
+        ...state,
+        disabled: false,
+        saving: false,
+        loading: false,
+        error: null,
+        success: action.payload,
+      }
     case FormActions.SUBMIT:
       return {
         ...state,
         edited: false,
         saving: true,
-      };
+      }
     case FormActions.RESET:
-      return action.payload;
+      return action.payload
     default:
-      return state;
+      return state
   }
 }
 
 export function useForm<T extends Record<string, unknown>>(initialData: T) {
-  const initialFormState = initializeFormState<T>(initialData);
-  const [formState, dispatchForm] = useReducer(formReducer<T>, initialFormState);
-  return { formState, dispatchForm, initialFormState };
+  const initialFormState = initializeFormState<T>(initialData)
+  const [formState, dispatchForm] = useReducer(formReducer<T>, initialFormState)
+  return { formState, dispatchForm, initialFormState }
 }

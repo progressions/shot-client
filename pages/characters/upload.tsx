@@ -1,63 +1,59 @@
-import Layout from '@/components/Layout'
-import Head from 'next/head'
+import Layout from "@/components/Layout"
+import Head from "next/head"
 
-import { useState, FormEvent } from 'react';
-import { Box, Button, Typography, TextField, Alert, Paper, Link } from '@mui/material';
-import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import { useClient } from '@/contexts/ClientContext';
-import { useToast } from '@/contexts/ToastContext';
-import { getServerClient } from '@/utils/getServerClient';
-import type { ServerSideProps, Character } from '@/types/types';
-import { GetServerSideProps } from 'next';
+import { useState, FormEvent } from "react"
+import { colors, Box, Button, Typography, TextField, Alert, Paper, Link } from "@mui/material"
+import CloudUploadIcon from "@mui/icons-material/CloudUpload"
+import { useClient, useToast } from "@/contexts"
+import type { Character } from "@/types/types"
+import { defaultCharacter } from "@/types/types"
+import { FormActions, useForm } from "@/reducers/formState"
 
-export async function getServerSideProps({ req, res }: ServerSideProps) {
-  const { client } = await getServerClient(req, res);
-  try {
-    await client.getCurrentCampaign();
-    return { props: {} };
-  } catch (error) {
-    return { props: { fights: [] } };
-  }
+type FormData = {
+  file: File | null
+  character: Character
+  error: string
 }
 
 export default function UploadForm() {
-  const { client } = useClient();
-  const { toastError } = useToast();
-  const [file, setFile] = useState<File | null>(null);
-  const [error, setError] = useState<string>('');
-  const [success, setSuccess] = useState<string>('');
-  const [character, setCharacter] = useState<Character | null>(null);
+  const { client } = useClient()
+  const { toastError } = useToast()
+
+  const { formState, dispatchForm, initialFormState } = useForm<FormData>({ file: null, character: defaultCharacter, error: "" })
+  const { success, error, formData } = formState
+  const { file, character } = formData
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
     if (selectedFile && selectedFile.type === 'application/pdf') {
-      setFile(selectedFile);
-      setError('');
+      dispatchForm({ type: FormActions.UPDATE, name: "file", value: selectedFile })
+      dispatchForm({ type: FormActions.ERROR, payload: "" })
     } else {
-      setFile(null);
-      setError('Please select a valid PDF file.');
+      dispatchForm({ type: FormActions.UPDATE, name: "file", value: null })
+      dispatchForm({ type: FormActions.ERROR, payload: "Please select a valid PDF file." })
     }
   };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+
+    e.preventDefault()
     if (!file) {
-      setError('No file selected.');
-      return;
+      dispatchForm({ type: FormActions.ERROR, payload: "No file selected." })
+      return
     }
 
     const formData = new FormData();
     formData.append('pdf_file', file);
 
     try {
-      const character = await client.uploadCharacterPdf(formData);
-      setCharacter(character); // Store returned character
-      setSuccess('Character created successfully!');
-      setFile(null);
-      (e.target as HTMLFormElement).reset();
+      const character = await client.uploadCharacterPdf(formData)
+      dispatchForm({ type: FormActions.RESET, payload: { ...initialFormState, formData: { file: null, character, error: "" } } })
+      dispatchForm({ type: FormActions.SUCCESS, payload: "Character created successfully!" })
+
+      { (e.target as HTMLFormElement).reset(); }
     } catch (err) {
       console.error('Upload error:', err);
-      setError('An error occurred while uploading the file.');
+      dispatchForm({ type: FormActions.ERROR, payload: "Failed to upload PDF." })
       toastError('Failed to upload PDF');
     }
   };
@@ -78,18 +74,13 @@ export default function UploadForm() {
                 Upload PDF to Create Character
               </Typography>
               {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
-              {success && <Alert severity="success" sx={{ mb: 2 }}>{success}</Alert>}
-              {character && (
-                <Box sx={{ mb: 2 }}>
-                  <Typography>
-                    View character:{' '}
-                    <Link href={`/characters/${character.id}`} target="_blank">
-                      {character.name}
-                    </Link>
-                  </Typography>
-                </Box>
-              )}
-              <Box component="form" onSubmit={handleSubmit}>
+              {success && <Alert severity="success" sx={{ mb: 2 }}>
+                {success}{" "}
+                <Link href={`/characters/${character.id}`} target="_blank">
+                  {character.name}
+                </Link>
+              </Alert>}
+              <Box sx={{marginTop: 4}} component="form" onSubmit={handleSubmit}>
                 <TextField
                   fullWidth
                   type="file"
