@@ -176,6 +176,10 @@ export default function UploadForm() {
     }
   }
 
+  const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.stopPropagation() // Prevent click from triggering the file input
+  }
+
   return (
     <>
       <Head>
@@ -240,7 +244,12 @@ export default function UploadForm() {
                             {p.status === "success" && <CheckIcon color="success" fontSize="small" />}
                             {p.status === "error" && <ErrorOutlineIcon color="error" fontSize="small" />}
                             {p.status === "success" && p.character ? (
-                              <Link href={`/characters/${p.character.id}`} target="_blank" sx={{ ml: 1 }}>
+                              <Link
+                                href={`/characters/${p.character.id}`}
+                                target="_blank"
+                                sx={{ ml: 1 }}
+                                onClick={handleLinkClick}
+                              >
                                 {p.character.name}
                               </Link>
                             ) : p.status === "error" && p.errorMsg ? (
