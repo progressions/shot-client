@@ -1,15 +1,15 @@
 import Layout from "@/components/Layout"
 import Head from "next/head"
-
 import { Link, Stack, Box, Typography, Alert, Paper, useTheme, CircularProgress } from "@mui/material"
-import { useClient, useToast } from "@/contexts"
-import type { Character, CharacterJson } from "@/types/types"
+import { useCampaign, useClient, useToast } from "@/contexts"
+import type { BackendErrorResponse, CableData, Character, CharacterJson } from "@/types/types"
 import { FormActions, useForm } from "@/reducers/formState"
 import { AxiosError } from "axios"
 import { Editor } from "@/components/editor"
 import { SaveButton, CancelButton, SaveCancelButtons } from "@/components/StyledFields"
 import CS from "@/services/CharacterService"
-import { FormEvent } from "react"
+import { FormEvent, useState, useEffect } from "react"
+import { Subscription } from '@rails/actioncable'
 
 type FormData = {
   description: string
@@ -17,16 +17,12 @@ type FormData = {
   character: Character | null
 }
 
-type BackendErrorResponse = {
-  name?: string[]
-  error?: string
-  errors?: Record<string, string[]>
-}
-
 export default function UploadForm() {
   const { client } = useClient()
   const { toastError } = useToast()
   const theme = useTheme()
+  const consumer = client.consumer()
+  const { campaign } = useCampaign()
 
   const { formState, dispatchForm, initialFormState } = useForm<FormData>({
     description: "",
@@ -36,18 +32,44 @@ export default function UploadForm() {
   const { disabled, loading, saving, success, error, formData } = formState
   const { description, json, character } = formData
 
+  const [pending, setPending] = useState(false)
+  const [subscription, setSubscription] = useState<Subscription | null>(null)
+
+  useEffect(() => {
+    return () => {
+      if (subscription) subscription.unsubscribe()
+    }
+  }, [subscription])
+
   async function handleSubmit() {
     dispatchForm({ type: FormActions.UPDATE, name: "character", value: null })
     dispatchForm({ type: FormActions.SUBMIT })
+    setPending(true)
     try {
-      const data: CharacterJson = await client.generateAiCharacter({ description })
+      const response = await client.generateAiCharacter({ description })
 
-      const char = CS.characterFromJson(data)
-
-      dispatchForm({ type: FormActions.UPDATE, name: "json", value: data })
-      dispatchForm({ type: FormActions.SUCCESS, payload: "Character generated successfully" })
+      const sub = consumer.subscriptions.create(
+        { channel: "CampaignChannel", id: campaign?.id },
+        {
+          received: (data: CableData) => {
+            if (data.status === 'preview_ready' && data.json) {
+              const char = CS.characterFromJson(data.json) // data.json is guaranteed non-undefined here
+              dispatchForm({ type: FormActions.UPDATE, name: "json", value: data.json })
+              dispatchForm({ type: FormActions.SUCCESS, payload: "Character generated successfully" })
+              setPending(false)
+              sub.unsubscribe()
+            } else if (data.status === 'error' && data.error) {
+              handleError(new Error(data.error))
+              setPending(false)
+              sub.unsubscribe()
+            }
+          }
+        }
+      )
+      setSubscription(sub)
     } catch (err) {
       handleError(err)
+      setPending(false)
     }
   }
 
@@ -121,19 +143,19 @@ export default function UploadForm() {
               <Typography variant="h4" gutterBottom>
                 Generate Characters
               </Typography>
-              { !json && !saving && <Typography>Enter a description to generate a character</Typography> }
+              { !json && !saving && !pending && <Typography>Enter a description to generate a character</Typography> }
 
               {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
               {success && <Alert severity="success" sx={{ mb: 2 }}>{success}</Alert>}
-              { saving && (
+              { (saving || pending) && (
                 <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", mt: 4, mb: 2 }}>
                   <CircularProgress sx={{ color: theme.palette.primary.main }} />
                   <Typography variant="body1" sx={{ mt: 2 }}>
-                    Generating character...
+                    {pending ? "Character generation pending..." : "Generating character..."}
                   </Typography>
                 </Box>
               )}
-              {!saving && json && (
+              {!saving && !pending && json && (
                 <Box sx={{ mt: 2 }}>
                   <Typography variant="h5">Name: {json.name}</Typography>
                   <Typography>Type: {json.type}</Typography>
@@ -145,13 +167,13 @@ export default function UploadForm() {
                   <Typography>Damage: {json.damage}</Typography>
 
                   { !character &&
-                  <Stack spacing="2" direction="row">
-                    <SaveButton onClick={generateCharacter} disabled={disabled || saving} sx={{ mt: 2 }}>
-                      Generate Character
-                    </SaveButton>
-                    <CancelButton onClick={cancelForm} sx={{ mt: 2 }}>
-                      Clear
-                    </CancelButton>
+                  <Stack spacing="2" direction="row" sx={{mt: 2}}>
+                    <SaveCancelButtons
+                      cancelText="Clear"
+                      saveText="Create Character"
+                      onCancel={cancelForm}
+                      onSave={generateCharacter}
+                    />
                   </Stack> }
                   { character &&
                   <Typography variant="h5" sx={{ mt: 2 }}>
@@ -162,7 +184,7 @@ export default function UploadForm() {
                   </Typography> }
                 </Box>
                 )}
-                { !saving && <>
+                { !character?.id && !saving && !pending && <>
                   <Box sx={{ my: 4 }} component="form" onSubmit={(e: FormEvent<HTMLFormElement>) => {
                     e.preventDefault()
                     handleSubmit()
@@ -176,6 +198,13 @@ export default function UploadForm() {
                   />
                 </Box>
               </> }
+              { character?.id && !saving && !pending && (
+                <Box sx={{ mt: 2 }}>
+                  <SaveButton onClick={() => dispatchForm({ type: FormActions.RESET, payload: initialFormState })}>
+                    Generate Another Character
+                  </SaveButton>
+                </Box>
+              )}
             </Paper>
           </Box>
         </Layout>

@@ -2,6 +2,18 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { Session, User as NextAuthUser } from "next-auth"
 import { AlertColor } from "@mui/material"
 
+export type BackendErrorResponse = {
+  name?: string[]
+  error?: string
+  errors?: Record<string, string[]>
+}
+
+export interface CableData {
+  status: 'preview_ready' | 'error'
+  json?: CharacterJson
+  error?: string
+}
+
 export interface CharacterJson {
   name: string
   type: CharacterType
