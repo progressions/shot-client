@@ -254,7 +254,12 @@ export default function UploadForm() {
                               <Link
                                 href={`/characters/${p.character.id}`}
                                 target="_blank"
-                                sx={{ ml: 1 }}
+                                sx={{
+                                  ml: 1,
+                                  fontFamily: theme.typography.fontFamily,
+                                  textDecoration: "underline",
+                                  color: theme.palette.primary.main,
+                                }}
                                 onClick={handleLinkClick}
                               >
                                 {p.character.name}
