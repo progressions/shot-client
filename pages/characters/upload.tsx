@@ -10,6 +10,7 @@ import { useClient, useToast } from "@/contexts"
 import type { Character } from "@/types/types"
 import { defaultCharacter } from "@/types/types"
 import { FormActions, useForm } from "@/reducers/formState"
+import { AxiosError } from "axios"
 
 type FormData = {
   files: File[]
@@ -22,6 +23,12 @@ type UploadProgress = {
   status: "pending" | "uploading" | "success" | "error"
   character?: Character
   errorMsg?: string
+}
+
+type BackendErrorResponse = {
+  name?: string[]
+  error?: string
+  errors?: Record<string, string[]>
 }
 
 export default function UploadForm() {
@@ -124,11 +131,11 @@ export default function UploadForm() {
         const character = await client.uploadCharacterPdf(formData)
         updateProgress(file, { status: "success", character })
         return { success: true, character, file }
-      } catch (err) {
+      } catch (err: unknown) {
         console.error(`Upload error for ${file.name}:`, err)
         let errorMsg = "Failed to upload PDF."
-        if (err.response && err.response.data) {
-          const data = err.response.data
+        if (err instanceof AxiosError && err.response && err.response.data) {
+          const data = err.response.data as BackendErrorResponse
           if (data.name && Array.isArray(data.name)) {
             errorMsg = `Name ${data.name.join(", ")}`
           } else if (data.error) {
