@@ -165,6 +165,8 @@ export function formReducer<T extends Record<string, unknown>>(
     case FormActions.SUBMIT:
       return {
         ...state,
+        error: null,
+        success: null,
         edited: false,
         saving: true,
       }

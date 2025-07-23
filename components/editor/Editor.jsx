@@ -130,6 +130,7 @@ const Editor = ({ name, value, onChange }) => {
   return (
     <div className={styles.editorContainer}>
       <EditorProvider
+        name={name}
         sx={{ width: '100%' }}
         immediatelyRender={false}
         extensions={extensions}

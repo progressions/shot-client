@@ -5,6 +5,7 @@ import { useToast, useCharacter, useClient } from "@/contexts"
 import AssignUser from "@/components/characters/edit/AssignUser"
 import NotionLink from "@/components/notion/NotionLink"
 import { FormActions, useForm } from '@/reducers/formState'
+import { useRouter } from "next/router"
 
 type FormData = {
   assignUserOpen: boolean
@@ -14,17 +15,19 @@ type FormData = {
   isSyncing: boolean
   isLinking: boolean
   isDownloading: boolean
+  isDeleting: boolean
 }
 
 export default function CharacterMenu() {
   const { character, syncCharacter } = useCharacter()
   const { client } = useClient()
   const { toastError, toastSuccess } = useToast()
+  const router = useRouter()
 
-  const initialFormData: FormData = { anchorEl: null, assignUserOpen: false, notionOpen: false, isAssigning: false, isSyncing: false, isLinking: false, isDownloading: false }
+  const initialFormData: FormData = { anchorEl: null, assignUserOpen: false, notionOpen: false, isAssigning: false, isSyncing: false, isLinking: false, isDownloading: false, isDeleting: false }
   const { formState, dispatchForm, initialFormState } = useForm<FormData>(initialFormData)
   const { formData } = formState
-  const { anchorEl, assignUserOpen, notionOpen, isAssigning, isSyncing, isLinking, isDownloading } = formData
+  const { anchorEl, assignUserOpen, notionOpen, isAssigning, isSyncing, isLinking, isDownloading, isDeleting } = formData
 
   const open = Boolean(anchorEl)
 
@@ -81,6 +84,21 @@ export default function CharacterMenu() {
     dispatchForm({ type: FormActions.RESET, payload: initialFormState })
   }
 
+  async function handleDelete() {
+    if (confirm("Are you sure you want to delete this character? This action cannot be undone.")) {
+      dispatchForm({ type: FormActions.UPDATE, name: "isDeleting", value: true })
+      try {
+        await client.deleteCharacter(character)
+        toastSuccess("Character deleted successfully")
+        router.push("/characters")
+      } catch (error) {
+        console.error('Error deleting character:', error)
+        toastError("Error deleting character")
+      }
+    }
+    dispatchForm({ type: FormActions.RESET, payload: initialFormState })
+  }
+
   return (<>
     <IconButton onClick={handleClick} sx={{backgroundColor: colors.blueGrey[800], color: "text.primary"}}>
       <MoreHorizIcon />
@@ -99,6 +117,8 @@ export default function CharacterMenu() {
       { isSyncing && <MenuItem>Syncing...</MenuItem> }
       { !isDownloading && <MenuItem onClick={downloadPdf}>Download PDF</MenuItem> }
       { isDownloading && <MenuItem>Downloading...</MenuItem> }
+      { isDeleting && <MenuItem>Deleting...</MenuItem> }
+      { !isDeleting && <MenuItem onClick={handleDelete}>Delete Character</MenuItem> }
     </Menu>
 
     <AssignUser open={assignUserOpen} onClose={closeAssignUser} />

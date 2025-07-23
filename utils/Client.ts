@@ -2,6 +2,7 @@ import axios, { AxiosResponse } from "axios"
 import Api from "@/utils/Api"
 import type {
   Location,
+  CharacterJson,
   Shot,
   Faction,
   FactionsResponse,
@@ -59,6 +60,11 @@ class Client {
     const websocketUrl = this.api.cable(this.jwt)
     this.consumerInstance = createConsumer(websocketUrl)
     return this.consumerInstance
+  }
+
+  async generateAiCharacter(params: { description: string } = { description: "" }):Promise<CharacterJson> {
+    const query = Object.entries(params).map(([key, value]) => `${key}=${value || ""}`).join("&")
+    return this.post(this.api.ai(), { ai: params })
   }
 
   async getSuggestions(params = {}):Promise<SuggestionsResponse> {
@@ -219,7 +225,11 @@ class Client {
   }
 
   async deleteCharacter(character: Character, fight?: Fight | null):Promise<void> {
-    return this.delete(this.api.characters(fight, { id: character.shot_id } as Character))
+    if (fight?.id) {
+      return this.delete(this.api.characters(fight, { id: character.shot_id } as Character))
+    } else {
+      return this.delete(this.api.characters(null, character))
+    }
   }
 
   async deleteCharacterImage(character: Character):Promise<void> {

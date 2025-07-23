@@ -1,5 +1,5 @@
-import type { Vehicle, Weapon, SkillValue, Character, CharacterEffect } from "@/types/types"
-import { DescriptionValues, DescriptionKeys } from "@/types/types"
+import type { Juncture, Faction, CharacterJson, Vehicle, Weapon, SkillValue, Character, CharacterEffect } from "@/types/types"
+import { defaultJuncture, defaultFaction, defaultCharacter, DescriptionValues, DescriptionKeys } from "@/types/types"
 import SharedService, { woundThresholds } from "@/services/SharedService"
 
 interface Service {
@@ -88,6 +88,53 @@ const CharacterService = {
     updatedCharacter.impairments = 0
 
     return updatedCharacter
+  },
+
+  updateJuncture: function(character: Character, juncture: Juncture | null): Character {
+    return {
+      ...character,
+      juncture_id: juncture?.id || null,
+      juncture: juncture || defaultJuncture
+    }
+  },
+
+  updateFaction: function(character: Character, faction: Faction | null): Character {
+    return {
+      ...character,
+      faction_id: faction?.id || null,
+      faction: faction || defaultFaction
+    }
+  },
+
+  characterFromJson: function(json: CharacterJson): Character {
+    return {
+      ...defaultCharacter,
+      name: json.name,
+      wealth: json.wealth,
+      action_values: {
+        ...defaultCharacter.action_values,
+        "Type": json.type,
+        "MainAttack": json.mainAttack,
+        [json.mainAttack]: json.attackValue,
+        "Defense": json.defense,
+        "Toughness": json.toughness,
+        "Speed": json.speed,
+        "Damage": json.damage,
+      },
+      description: {
+        ...defaultCharacter.description,
+        "Background": json.description || "",
+        "Nicknames": json.nicknames || "",
+        "Age": json.age || "",
+        "Height": json.height || "",
+        "Weight": json.weight || "",
+        "Hair Color": json.hairColor || "",
+        "Eye Color": json.eyeColor || "",
+        "Style of Dress": json.styleOfDress || "",
+        "Appearance": json.appearance || "",
+        "Melodramatic Hook": json.melodramaticHook || "",
+      }
+    }
   },
 
   /* Reader functions, don't change the state, just return values */

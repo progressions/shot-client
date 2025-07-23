@@ -2,6 +2,30 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { Session, User as NextAuthUser } from "next-auth"
 import { AlertColor } from "@mui/material"
 
+export interface CharacterJson {
+  name: string
+  type: CharacterType
+  description: string
+  mainAttack: string
+  attackValue: number
+  defense: number
+  toughness: number
+  speed: number
+  damage: number
+  nicknames: string
+  age: string
+  height: string
+  weight: string
+  hairColor: string
+  eyeColor: string
+  styleOfDress: string
+  appearance: string
+  melodramaticHook: string
+  faction: string
+  juncture: string
+  wealth: string
+}
+
 export interface PopupProps {
   id: string
   data?: any

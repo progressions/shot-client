@@ -30,6 +30,10 @@ class Api {
     return `${process.env.NEXT_PUBLIC_WEBSOCKET_URL}/cable?token=${jwt || ""}`
   }
 
+  ai(): string {
+    return `${this.api()}/ai`
+  }
+
   suggestions(): string {
     return `${this.api()}/suggestions`
   }

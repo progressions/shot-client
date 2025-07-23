@@ -47,7 +47,12 @@ export default function MenuPopupState({ campaign, user }: MenuPopupStateProps) 
               </MenuItem>
               <MenuItem onClick={popupState.close}>
                 <Link underline="none" color="inherit" href='/characters/upload'>
-                  Import Character from PDF
+                  Import Character
+                </Link>
+              </MenuItem>
+              <MenuItem onClick={popupState.close}>
+                <Link underline="none" color="inherit" href='/characters/generate'>
+                  Generate GMCs
                 </Link>
               </MenuItem>
               <MenuItem onClick={popupState.close}>
