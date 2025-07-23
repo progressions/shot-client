@@ -103,12 +103,13 @@ export default function Weapon({ weapon, state, dispatch }: WeaponProps) {
       </WeaponCardBase>
     )
   }
+  const subHeader = [weapon.juncture, weapon.category].filter(Boolean).join(" ")
 
   return (
     <>
       <WeaponCardBase
         title={`${weapon.name} ${stats}`}
-        subheader={`${weapon.juncture} ${weapon.category}`}
+        subheader={subHeader}
         action={[editButton, deleteButton]}
       >
         { weapon.image_url &&
@@ -122,7 +123,7 @@ export default function Weapon({ weapon, state, dispatch }: WeaponProps) {
           src={weapon.image_url}
         /> }
         <Typography sx={{marginBottom: 3}} variant="body2" gutterBottom>
-          {weapon.description}
+          {weapon.description || ""}
         </Typography>
         { weapon.mook_bonus > 0 &&
           <Typography variant="subtitle2">
@@ -131,7 +132,7 @@ export default function Weapon({ weapon, state, dispatch }: WeaponProps) {
             &nbsp;
             +{weapon.mook_bonus} Attack vs Mooks
           </Typography> }
-        { weapon.kachunk &&
+        { !!weapon.kachunk &&
           <Typography variant="subtitle2">
             <GiShotgun />
             Damage Value is 14 if you spend a shot to go “KA-CHUNK!”
