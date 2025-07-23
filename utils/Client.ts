@@ -675,7 +675,11 @@ class Client {
         'Authorization': this.jwt
       }
     })
-    .then((response: AxiosResponse<T>) => response.data);
+    .then((response: AxiosResponse<T>) => response.data)
+    .catch((error) => {
+      console.error("Error in requestFormData:", error)
+      return Promise.reject(error)
+    })
   }
 
   queryParams(params={}) {
