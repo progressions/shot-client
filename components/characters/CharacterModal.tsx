@@ -5,7 +5,7 @@ import PeopleIcon from "@mui/icons-material/People"
 import { StyledTextField, SaveCancelButtons, SaveButton, CancelButton, StyledDialog } from "@/components/StyledFields"
 import { FormActions, useForm } from '@/reducers/formState'
 
-import Router from "next/router"
+import { useRouter } from "next/router"
 
 import ColorPicker from "@/components/characters/edit/ColorPicker"
 import CharacterType from "@/components/characters/edit/CharacterType"
@@ -36,6 +36,7 @@ export default function CharacterModal({ character:activeCharacter, reload }: Ch
   const { open, saving, disabled, formData } = formState
   const { character }  = formData
 
+  const router = useRouter()
   const { fight, dispatch:dispatchFight } = useFight()
   const { user, client } = useClient()
   const { toastSuccess, toastError } = useToast()
@@ -94,6 +95,10 @@ export default function CharacterModal({ character:activeCharacter, reload }: Ch
 
       if (newCharacter) {
         toastSuccess(`${character.name} created.`)
+        if (!fight?.id) {
+          console.log("about to push")
+          router.push(`/characters/${data.id}`)
+        }
       } else {
         toastSuccess(`${character.name} updated.`)
       }

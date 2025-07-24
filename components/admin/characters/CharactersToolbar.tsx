@@ -6,6 +6,7 @@ import CreateCharacter from "@/components/characters/CreateCharacter"
 import GamemasterOnly from "@/components/GamemasterOnly"
 import { ButtonBar } from "@/components/StyledFields"
 import CreateVehicle from "@/components/vehicles/CreateVehicle"
+import CharacterMenu from "@/components/characters/CharacterMenu"
 import { CharactersStateType, CharactersActionType, CharactersActions } from "@/reducers/charactersState"
 
 interface CharactersToolbarProps {
@@ -24,11 +25,12 @@ export default function CharactersToolbar({ state, dispatch, textSearch }: Chara
 
   return (
     <ButtonBar>
-      <Stack direction="row" spacing={2} alignItems="center">
-        <CharacterFilters state={state} dispatch={dispatch} textSearch={textSearch} />
-        <CreateCharacter />
-        <CreateVehicle />
-        <FormControlLabel label="Show Hidden" control={<Switch checked={showHidden} />} onChange={show} />
+      <Stack direction="row" spacing={2} alignItems="center" justifyContent="space-between" width="100%">
+        <Stack direction="row" spacing={2} alignItems="center">
+          <CharacterFilters state={state} dispatch={dispatch} textSearch={textSearch} />
+          <FormControlLabel label="Show Hidden" control={<Switch checked={showHidden} />} onChange={show} />
+        </Stack>
+        <CharacterMenu />
       </Stack>
     </ButtonBar>
   )

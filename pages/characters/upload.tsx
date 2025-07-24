@@ -2,7 +2,7 @@ import Layout from "@/components/Layout"
 import Head from "next/head"
 
 import { useState, FormEvent, useRef } from "react"
-import { Box, Button, Typography, Alert, Paper, Link, useTheme, CircularProgress } from "@mui/material"
+import { Stack, Box, Button, Typography, Alert, Paper, Link, useTheme, CircularProgress } from "@mui/material"
 import CloudUploadIcon from "@mui/icons-material/CloudUpload"
 import CheckIcon from "@mui/icons-material/Check"
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline"
@@ -11,6 +11,8 @@ import type { Character } from "@/types/types"
 import { defaultCharacter } from "@/types/types"
 import { FormActions, useForm } from "@/reducers/formState"
 import { AxiosError } from "axios"
+import { ButtonBar } from "@/components/StyledFields"
+import CharacterMenu from "@/components/characters/CharacterMenu"
 
 type FormData = {
   files: File[]
@@ -197,7 +199,12 @@ export default function UploadForm() {
       </Head>
       <main>
         <Layout>
-          <Box sx={{ maxWidth: 600, mx: "auto", mt: 4 }}>
+          <Box sx={{ maxWidth: 700, mx: "auto", mt: 4 }}>
+            <ButtonBar>
+              <Stack direction="row" spacing={2} alignItems="center" justifyContent="flex-end" width="100%">
+                <CharacterMenu />
+              </Stack>
+            </ButtonBar>
             <Paper elevation={3} sx={{ p: 4 }}>
               <Typography variant="h4" gutterBottom>
                 Upload PDFs to Create Characters

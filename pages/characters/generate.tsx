@@ -6,10 +6,11 @@ import type { BackendErrorResponse, CableData, Character, CharacterJson } from "
 import { FormActions, useForm } from "@/reducers/formState"
 import { AxiosError } from "axios"
 import { Editor } from "@/components/editor"
-import { SaveButton, CancelButton, SaveCancelButtons } from "@/components/StyledFields"
+import { ButtonBar, SaveButton, CancelButton, SaveCancelButtons } from "@/components/StyledFields"
 import CS from "@/services/CharacterService"
 import { FormEvent, useState, useEffect } from "react"
 import { Subscription } from '@rails/actioncable'
+import CharacterMenu from "@/components/characters/CharacterMenu"
 
 type FormData = {
   description: string
@@ -138,7 +139,12 @@ export default function UploadForm() {
       </Head>
       <main>
         <Layout>
-          <Box sx={{ maxWidth: 600, mx: "auto", mt: 4 }}>
+          <Box sx={{ maxWidth: 700, mx: "auto", mt: 4 }}>
+            <ButtonBar>
+              <Stack direction="row" spacing={2} alignItems="center" justifyContent="flex-end" width="100%">
+                <CharacterMenu />
+              </Stack>
+            </ButtonBar>
             <Paper elevation={3} sx={{ p: 4 }}>
               <Typography variant="h4" gutterBottom>
                 Generate Characters
