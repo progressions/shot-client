@@ -45,7 +45,6 @@ export const authOptions: NextAuthOptions = {
       if (trigger === 'update' && session?.user) {
         token.user = { ...session.user }; // Update token.user with new session.user
       }
-      console.log('jwt callback', { token, user, trigger, session });
       return token;
     },
     session({ session, token }) {
@@ -60,7 +59,6 @@ export const authOptions: NextAuthOptions = {
         // @ts-ignore
         session.id = token.id;
       }
-      console.log('session callback', { session, token });
       return session;
     },
   },
