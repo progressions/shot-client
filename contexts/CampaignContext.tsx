@@ -25,6 +25,7 @@ const CampaignContext = createContext<CampaignContextType>(defaultContext)
 export function CampaignProvider({ children }: CampaignProviderProps) {
   const { user, client } = useClient()
   const { saveLocally, getLocally } = useLocalStorage()
+  const consumer = client.consumer()
 
   const [campaign, setCampaign] = useState<Campaign | null>(defaultCampaign)
 
@@ -65,6 +66,25 @@ export function CampaignProvider({ children }: CampaignProviderProps) {
       console.error(error)
     }
   }, [user])
+
+  useEffect(() => {
+    if (!user || !campaign?.id) return
+
+    const subscription = consumer.subscriptions.create(
+      { channel: "CampaignChannel", id: campaign.id },
+      {
+        connected: () => console.log("Connected to CampaignChannel"),
+        disconnected: () => console.log("Disconnected from CampaignChannel"),
+        received: (data: any) => {
+          console.log("CampaignChannel data", data)
+        },
+      }
+    )
+
+    return () => {
+      subscription.unsubscribe()
+    }
+  }, [user, campaign])
 
   return (
     <CampaignContext.Provider value={{campaign, setCurrentCampaign, getCurrentCampaign}}>
