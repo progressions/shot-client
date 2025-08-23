@@ -11,7 +11,7 @@ describe("AttackReducerService", () => {
   beforeEach(() => {
     // Reset the mocked function before each test
     jest.restoreAllMocks();
-  }),
+  })
 
   it("tests a lot of attacks", () => {
     expectAttack(defaultCharacter, defaultCharacter, 10)
@@ -24,7 +24,7 @@ describe("AttackReducerService", () => {
     expectAttack(hitman, brick, 15)
     expectAttack(shing, brick, 15, true)
     expectAttack(shing, brick, -12)
-  }),
+  })
 
   describe("PC vs Uber-Boss", () => {
     let state: AttackState
@@ -37,7 +37,7 @@ describe("AttackReducerService", () => {
       state = ARS.setTarget(state, huanKen)
 
       state.edited = true
-    }),
+    })
 
     it("fails to hit", () => {
       // Swerve -1 + Action Value 14 - Defense 17 = Outcome -4
@@ -50,7 +50,7 @@ describe("AttackReducerService", () => {
       expect(result.success).toEqual(false)
 
       expectNoChanges(state, result)
-    }),
+    })
 
     it("fails a stunt", () => {
       state.stunt = true
@@ -65,7 +65,7 @@ describe("AttackReducerService", () => {
       expect(result.success).toEqual(false)
 
       expectNoChanges(state, result)
-    }),
+    })
 
     it("hits", () => {
       // Swerve 5 + Action Value 14 - Defense 17 = Outcome 2
@@ -83,7 +83,7 @@ describe("AttackReducerService", () => {
         smackdown: 9,
         wounds: 1
       })
-    }),
+    })
 
     it("hits a stunt", () => {
       state.stunt = true
@@ -106,7 +106,7 @@ describe("AttackReducerService", () => {
         wounds: 1
       })
     })
-  }),
+  })
 
   describe("PC vs Boss", () => {
     let state: AttackState
@@ -119,7 +119,7 @@ describe("AttackReducerService", () => {
       state = ARS.setTarget(state, shing)
 
       state.edited = true
-    }),
+    })
 
     it("fails to hit", () => {
       // Swerve -1 + Action Value 14 - Defense 14 = Outcome -1
@@ -132,7 +132,7 @@ describe("AttackReducerService", () => {
       expect(result.success).toEqual(false)
 
       expectNoChanges(state, result)
-    }),
+    })
 
     it("fails a stunt", () => {
       // Swerve 1 + Action Value 14 - Defense 14 - Stunt 2 = Outcome -1
@@ -146,7 +146,7 @@ describe("AttackReducerService", () => {
       expect(result.success).toEqual(false)
 
       expectNoChanges(state, result)
-    }),
+    })
 
     it("hits", () => {
       // Swerve 5 + Action Value 14 - Defense 14 = Outcome 5
@@ -164,7 +164,7 @@ describe("AttackReducerService", () => {
         smackdown: 12,
         wounds: 5
       })
-    }),
+    })
 
     it("hits a stunt", () => {
       state.stunt = true
@@ -187,7 +187,7 @@ describe("AttackReducerService", () => {
         wounds: 5
       })
     })
-  }),
+  })
 
   describe("PC vs Featured Foe", () => {
     let state: AttackState
@@ -200,7 +200,7 @@ describe("AttackReducerService", () => {
       state = ARS.setTarget(state, hitman)
 
       state.edited = true
-    }),
+    })
 
     it("fails to hit", () => {
       // Swerve -2 + Action Value 14 - Defense 13 = Outcome -1
@@ -213,7 +213,7 @@ describe("AttackReducerService", () => {
       expect(result.success).toEqual(false)
 
       expectNoChanges(state, result)
-    }),
+    })
 
     it("fails a stunt", () => {
       state.stunt = true
@@ -228,7 +228,7 @@ describe("AttackReducerService", () => {
       expect(result.success).toEqual(false)
 
       expectNoChanges(state, result)
-    }),
+    })
 
     it("hits", () => {
       // Swerve 5 + Action Value 14 - Defense 13 = Outcome 6
@@ -246,7 +246,7 @@ describe("AttackReducerService", () => {
         smackdown: 13,
         wounds: 6
       })
-    }),
+    })
 
     it("hits a stunt", () => {
       state.stunt = true
@@ -269,7 +269,7 @@ describe("AttackReducerService", () => {
         wounds: 6
       })
     })
-  }),
+  })
 
   describe("PC vs Mooks", () => {
     let state: AttackState
@@ -282,7 +282,7 @@ describe("AttackReducerService", () => {
       state = ARS.setTarget(state, zombies)
 
       state.edited = true
-    }),
+    })
 
     it("fails to hit", () => {
       // Swerve -2 + Action Value 14 - Defense 13 = Outcome -1
@@ -295,7 +295,7 @@ describe("AttackReducerService", () => {
       expect(result.success).toEqual(false)
 
       expectNoChanges(state, result)
-    }),
+    })
 
     it("fails a stunt", () => {
       state.stunt = true
@@ -310,7 +310,7 @@ describe("AttackReducerService", () => {
       expect(result.success).toEqual(false)
 
       expectNoChanges(state, result)
-    }),
+    })
 
     it("hits 1 mook", () => {
       // Swerve 5 + Action Value 14 - Defense 13 = Outcome 6
@@ -327,7 +327,7 @@ describe("AttackReducerService", () => {
         outcome: 6,
         mooks: 1
       })
-    }),
+    })
 
     it("hits 1 mook as a stunt", () => {
       state.stunt = true
@@ -346,7 +346,7 @@ describe("AttackReducerService", () => {
         outcome: 4,
         mooks: 1
       })
-    }),
+    })
 
     it("hits 5 mooks", () => {
       // Swerve 5 + Action Value 14 - Defense 18 = Outcome 1
@@ -363,7 +363,7 @@ describe("AttackReducerService", () => {
         outcome: 1,
         mooks: 5
       })
-    }),
+    })
 
     it("hits 5 mooks as a stunt", () => {
       state.stunt = true
@@ -384,7 +384,7 @@ describe("AttackReducerService", () => {
         mooks: 5
       })
     })
-  }),
+  })
 
   describe("Mooks vs PC", () => {
     let state: AttackState
@@ -398,14 +398,14 @@ describe("AttackReducerService", () => {
 
       state.count = 2
       state.edited = true
-    }),
+    })
 
     it("tests mook attacks", () => {
       expectMookAttack(zombies, defaultCharacter, [-2, -2, 5, 14, 9, -12])
       expectMookAttack(zombies, brick, [-2, -2])
       expectMookAttack(zombies, brick, [10, 12, 26, -9])
       expectMookAttack(zombies, brick, [26, 9, -4, 13, 8, 7, 6, 5, 4, 3, 2, 1])
-    }),
+    })
 
     it("fails to hit", () => {
       // Both attacks:
@@ -420,7 +420,7 @@ describe("AttackReducerService", () => {
 
       // attack is a miss
       expect(result.success).toEqual(false)
-    }),
+    })
 
     it("1 mook hits, 1 misses", () => {
       // First attack: Swerve 8 + Action Value 8 - Defense 13 = Outcome 3
@@ -445,7 +445,7 @@ describe("AttackReducerService", () => {
         smackdown: 0,
         wounds: 3
       })
-    }),
+    })
 
     it("2 mooks hit", () => {
       // First attack: Swerve 8 + Action Value 8 - Defense 13 = Outcome 3
@@ -470,7 +470,7 @@ describe("AttackReducerService", () => {
         smackdown: 0,
         wounds: 10
       })
-    }),
+    })
 
     it("30 mooks hit", () => {
       expect(state.attacker).toEqual(zombies)

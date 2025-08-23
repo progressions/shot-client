@@ -10,7 +10,7 @@ describe("AttackReducerService", () => {
   beforeEach(() => {
     // Reset the mocked function before each test
     jest.restoreAllMocks();
-  }),
+  })
 
   describe("process", () => {
     let state: AttackState
@@ -23,7 +23,7 @@ describe("AttackReducerService", () => {
       state = ARS.setTarget(state, shing)
     })
 
-    it.only("kills 1 out of 15 mooks", () => {
+    it("kills 1 out of 15 mooks", () => {
       state = ARS.setTarget(state, zombies)
 
       const swerve = {
@@ -38,9 +38,9 @@ describe("AttackReducerService", () => {
 
       expect(result.success).toEqual(true)
       expect(CS.mooks(result.target)).toEqual(CS.mooks(zombies) - 1)
-    }),
+    })
 
-    it.only("kills 5 out of 15 mooks", () => {
+    it("kills 5 out of 15 mooks", () => {
       const calculateAttackValuesMock = jest.spyOn(ARS, "calculateAttackValues")
       state = ARS.setTarget(state, zombies)
 
@@ -57,14 +57,14 @@ describe("AttackReducerService", () => {
       expect(calculateAttackValuesMock).toHaveBeenCalled()
       expect(result.success).toEqual(true)
       expect(CS.mooks(result.target)).toEqual(CS.mooks(zombies) - 5)
-    }),
+    })
 
     it("calls resolveAttack if it's edited", () => {
       const resolveAttackSpy = jest.spyOn(ARS, "resolveAttack")
       state.edited = true
       ARS.process(state)
       expect(resolveAttackSpy).toHaveBeenCalled()
-    }),
+    })
 
     it("doesn't call resolveAttack if edited is false", () => {
       const resolveAttackSpy = jest.spyOn(ARS, "resolveAttack")
@@ -72,7 +72,7 @@ describe("AttackReducerService", () => {
       ARS.process(state)
       expect(resolveAttackSpy).not.toHaveBeenCalled()
     })
-  }),
+  })
 
   describe("resolveAttack", () => {
     let state: AttackState
@@ -100,28 +100,25 @@ describe("AttackReducerService", () => {
 
       const result = ARS.resolveAttack(state)
 
-      expect(takeSmackdownSpy).toHaveBeenCalledWith(zombies, 5)
+      expect(takeSmackdownSpy).toHaveBeenCalledWith(zombies, 5, 0)
       expect(CS.mooks(result.target)).toEqual(10)
-    }),
+    })
 
     it("calls takeSmackdown with the smackdown for non-Mooks", () => {
       state = ARS.setTarget(state, shing)
       const takeSmackdownSpy = jest.spyOn(ARS.CS, "takeSmackdown")
       takeSmackdownSpy.mockReturnValue({
         ...shing,
-        action_values: {
-          ...shing.action_values,
-          "Wounds": 7
-        }
+        count: 7
       })
 
       state.smackdown = 12
       const result = ARS.resolveAttack(state)
 
-      expect(takeSmackdownSpy).toHaveBeenCalledWith(shing, 7)
+      expect(takeSmackdownSpy).toHaveBeenCalledWith(shing, 7, 7)
       expect(CS.wounds(result.target)).toEqual(7)
     })
-  }),
+  })
 
   describe("resolveMookAttacks", () => {
     let state: AttackState
@@ -132,7 +129,7 @@ describe("AttackReducerService", () => {
       }
       state = ARS.setAttacker(state, zombies)
       state = ARS.setTarget(state, brick)
-    }),
+    })
 
     it("rolls Mook attacks", () => {
       const swerveSpy = jest.spyOn(ARS.AS, "swerve")
@@ -152,13 +149,13 @@ describe("AttackReducerService", () => {
       const result = ARS.resolveMookAttacks(state)
       expect(swerveSpy).toHaveBeenCalledTimes(3)
       expect(result.mookResults).toEqual([
-        { actionResult: 19, success: true, smackdown: 13, wounds: 6 },
-        { actionResult: -5, success: false, smackdown: null, wounds: null },
-        { actionResult: 15, success: true, smackdown: 9, wounds: 2 }
+        { actionResult: 27, success: true, smackdown: 21, wounds: 14 },
+        { actionResult: 3, success: false, smackdown: null, wounds: null },
+        { actionResult: 23, success: true, smackdown: 17, wounds: 10 }
       ])
       expect(result.success).toEqual(true)
-      expect(result.wounds).toEqual(8)
-    }),
+      expect(result.wounds).toEqual(24)
+    })
 
     it("rolls Mook attacks and fails", () => {
       const swerveSpy = jest.spyOn(ARS.AS, "swerve")
@@ -178,14 +175,14 @@ describe("AttackReducerService", () => {
       const result = ARS.resolveMookAttacks(state)
       expect(swerveSpy).toHaveBeenCalledTimes(3)
       expect(result.mookResults).toEqual([
-        { actionResult: 9, success: false, smackdown: null, wounds: null },
-        { actionResult: -5, success: false, smackdown: null, wounds: null },
-        { actionResult: 1, success: false, smackdown: null, wounds: null }
+        { actionResult: 17, success: true, smackdown: 11, wounds: 4 },
+        { actionResult: 3, success: false, smackdown: null, wounds: null },
+        { actionResult: 9, success: false, smackdown: null, wounds: null }
       ])
-      expect(result.success).toEqual(false)
-      expect(result.wounds).toEqual(0)
+      expect(result.success).toEqual(true)
+      expect(result.wounds).toEqual(4)
     })
-  }),
+  })
 
   describe("calculateAttackValues", () => {
     let state: AttackState
@@ -196,7 +193,7 @@ describe("AttackReducerService", () => {
       }
       state = ARS.setAttacker(state, shing)
       state = ARS.setTarget(state, brick)
-    }),
+    })
 
     it("calls AS.wounds", () => {
       const woundsSpy = jest.spyOn(ARS.AS, "wounds")
@@ -210,7 +207,7 @@ describe("AttackReducerService", () => {
         damage: state.damage,
       })
     })
-  }),
+  })
 
   describe("setAttacker", () => {
     let state: AttackState
@@ -219,9 +216,9 @@ describe("AttackReducerService", () => {
       state = {
         ...initialAttackState,
       }
-    }),
+    })
 
-    it.only("sets the attacker", () => {
+    it("sets the attacker", () => {
       const result1 = ARS.setAttacker(state, carolina)
       const result = ARS.setWeapon(result1, derringer)
       expect(result.attacker).toEqual(carolina)

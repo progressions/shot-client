@@ -1,0 +1,118 @@
+import { NextApiRequest, NextApiResponse } from 'next'
+import { getServerSession } from 'next-auth/next'
+import { getServerClient } from '../../utils/getServerClient'
+import { authOptions } from '../../pages/api/auth/[...nextauth]'
+import Client from '../../utils/Client'
+import { AuthSession, AuthUser } from '../../types/types'
+
+jest.mock('next-auth/next')
+jest.mock('../../utils/Client')
+jest.mock('../../pages/api/auth/[...nextauth]', () => ({
+  authOptions: { providers: [] }
+}))
+
+const mockGetServerSession = getServerSession as jest.MockedFunction<typeof getServerSession>
+const mockClient = Client as jest.MockedClass<typeof Client>
+
+describe('getServerClient', () => {
+  let mockReq: NextApiRequest
+  let mockRes: NextApiResponse
+  let mockSession: AuthSession
+  let mockUser: AuthUser
+
+  beforeEach(() => {
+    jest.clearAllMocks()
+    
+    mockReq = {} as NextApiRequest
+    mockRes = {} as NextApiResponse
+    
+    mockUser = {
+      id: 'user-1',
+      name: 'Test User',
+      email: 'test@example.com'
+    } as AuthUser
+
+    mockSession = {
+      authorization: 'test-jwt-token',
+      user: mockUser,
+      expires: '2024-01-01',
+      id: {},
+      status: 'authenticated',
+      data: null
+    } as unknown as AuthSession
+
+    mockClient.mockImplementation((params) => ({
+      jwt: params?.jwt
+    }) as any)
+  })
+
+  it('should return client, jwt, session, and user from valid session', async () => {
+    mockGetServerSession.mockResolvedValue(mockSession)
+
+    const result = await getServerClient(mockReq, mockRes)
+
+    expect(mockGetServerSession).toHaveBeenCalledWith(mockReq, mockRes, authOptions)
+    expect(mockClient).toHaveBeenCalledWith({ jwt: 'test-jwt-token' })
+    expect(result).toEqual({
+      client: expect.objectContaining({ jwt: 'test-jwt-token' }),
+      jwt: 'test-jwt-token',
+      session: mockSession,
+      user: mockUser
+    })
+  })
+
+  it('should handle session without authorization', async () => {
+    const sessionWithoutAuth = {
+      ...mockSession,
+      authorization: null
+    } as AuthSession
+
+    mockGetServerSession.mockResolvedValue(sessionWithoutAuth)
+
+    const result = await getServerClient(mockReq, mockRes)
+
+    expect(mockClient).toHaveBeenCalledWith({ jwt: null })
+    expect(result.jwt).toBeNull()
+    expect(result.session).toEqual(sessionWithoutAuth)
+  })
+
+  it('should handle null session', async () => {
+    mockGetServerSession.mockResolvedValue(null)
+
+    const result = await getServerClient(mockReq, mockRes)
+
+    expect(mockClient).toHaveBeenCalledWith({ jwt: undefined })
+    expect(result).toEqual({
+      client: expect.objectContaining({ jwt: undefined }),
+      jwt: undefined,
+      session: null,
+      user: undefined
+    })
+  })
+
+  it('should handle session without user', async () => {
+    const sessionWithoutUser = {
+      ...mockSession,
+      user: undefined
+    } as AuthSession
+
+    mockGetServerSession.mockResolvedValue(sessionWithoutUser)
+
+    const result = await getServerClient(mockReq, mockRes)
+
+    expect(result.user).toBeUndefined()
+    expect(result.session).toEqual(sessionWithoutUser)
+  })
+
+  it('should pass correct parameters to getServerSession', async () => {
+    mockGetServerSession.mockResolvedValue(mockSession)
+
+    await getServerClient(mockReq, mockRes)
+
+    expect(mockGetServerSession).toHaveBeenCalledWith(
+      mockReq,
+      mockRes,
+      authOptions
+    )
+  })
+})

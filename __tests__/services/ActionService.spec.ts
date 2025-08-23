@@ -13,7 +13,7 @@ describe("ActionService", () => {
       expect(actionResult).toEqual(23)
       expect(swerve).toEqual(6)
     })
-  }),
+  })
 
   describe("outcome", () => {
     it("subtracts the Defense from the actionResult", () => {
@@ -25,7 +25,7 @@ describe("ActionService", () => {
       expect(outcome).toEqual(18)
       expect(actionResult).toEqual(23)
       expect(swerve).toEqual(6)
-    }),
+    })
 
     it("adds 2 to the Defense if the attack is a stunt", () => {
       const roll = {
@@ -37,7 +37,7 @@ describe("ActionService", () => {
       expect(actionResult).toEqual(23)
       expect(swerve).toEqual(6)
     })
-  }),
+  })
 
   describe("smackdown", () => {
     it("adds the Damage to the Outcome", () => {
@@ -57,7 +57,7 @@ describe("ActionService", () => {
       expect(outcome).toEqual(18)
       expect(actionResult).toEqual(23)
       expect(swerve).toEqual(6)
-    }),
+    })
 
     it("subtracts 2 if the attack is a stunt", () => {
       const roll = {
@@ -78,7 +78,7 @@ describe("ActionService", () => {
       expect(actionResult).toEqual(23)
       expect(swerve).toEqual(6)
     })
-  }),
+  })
 
   describe("wounds", () => {
     it("subtracts toughness from the smackdown", () => {
@@ -100,7 +100,7 @@ describe("ActionService", () => {
       expect(outcome).toEqual(18)
       expect(actionResult).toEqual(23)
       expect(swerve).toEqual(6)
-    }),
+    })
 
     it("subtracts 2 if the attack is a stunt", () => {
       const roll = {
@@ -121,7 +121,7 @@ describe("ActionService", () => {
       expect(actionResult).toEqual(23)
       expect(swerve).toEqual(6)
     })
-  }),
+  })
 
   describe("attacks", () => {
     it("returns an array of attacks", () => {
@@ -161,7 +161,7 @@ describe("ActionService", () => {
         }
       ])
     })
-  }),
+  })
 
   describe("totalWounds", () => {
     it("returns the total wounds after subtracting toughness from each attack", () => {

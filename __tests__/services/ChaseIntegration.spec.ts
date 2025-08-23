@@ -21,7 +21,7 @@ describe("ChaseReducerService", () => {
   beforeEach(() => {
     // Reset the mocked function before each test
     jest.restoreAllMocks();
-  }),
+  })
 
   it("tests a lot of chases", () => {
     // failure
@@ -40,7 +40,7 @@ describe("ChaseReducerService", () => {
     expectEvasionAttack(brickMobile, battleTruck, ChaseMethod.RAM_SIDESWIPE, "near", 12)
     expectEvasionAttack(brickMobile, battleTruck, ChaseMethod.WIDEN_THE_GAP, "near", 12)
     expectEvasionAttack(brickMobile, battleTruck, ChaseMethod.EVADE, "far", 12)
-  }),
+  })
 
   describe("PC vs Boss evades", () => {
     beforeEach(() => {
@@ -51,7 +51,7 @@ describe("ChaseReducerService", () => {
       state = CRS.setTarget(state, target)
       state.method = ChaseMethod.EVADE
       state.edited = true
-    }),
+    })
 
     it("fails to evade", () => {
       // Swerve 7 + Action Value 7 - Defense 15 = Outcome -1
@@ -65,7 +65,7 @@ describe("ChaseReducerService", () => {
       expect(result.success).toEqual(false)
 
       expectNoChanges(state, result)
-    }),
+    })
 
     it("fails to evade as a stunt", () => {
       state.stunt = true
@@ -81,7 +81,7 @@ describe("ChaseReducerService", () => {
       expect(result.success).toEqual(false)
 
       expectNoChanges(state, result)
-    }),
+    })
 
     it("evades", () => {
       // Swerve 12 + Action Value 7 - Defense 15 = Outcome 4
@@ -103,7 +103,7 @@ describe("ChaseReducerService", () => {
 
       // no bump when evading
       expectAttackerUnharmed(state, result)
-    }),
+    })
 
     it("evades as a stunt", () => {
       state.stunt = true
@@ -128,7 +128,7 @@ describe("ChaseReducerService", () => {
       // no bump when evading
       expectAttackerUnharmed(state, result)
     })
-  }),
+  })
 
   describe("PC vs Boss widens the gap", () => {
     beforeEach(() => {
@@ -139,7 +139,7 @@ describe("ChaseReducerService", () => {
       state = CRS.setTarget(state, target)
       state.method = ChaseMethod.WIDEN_THE_GAP
       state.edited = true
-    }),
+    })
 
     it("fails to widen the gap", () => {
       // Swerve -1 + Action Value 15 - Defense 15 = Outcome -1
@@ -151,7 +151,7 @@ describe("ChaseReducerService", () => {
       expect(result.success).toEqual(false)
 
       expectNoChanges(state, result)
-    }),
+    })
 
     it("fails to widen the gap as a stunt", () => {
       // Swerve 2 + Action Value 7 - Defense 15 - Stunt 2
@@ -165,7 +165,7 @@ describe("ChaseReducerService", () => {
       expect(result.success).toEqual(false)
 
       expectNoChanges(state, result)
-    }),
+    })
 
     it("widens the gap", () => {
       // Swerve 12 + Action Value 7 - Defense 15 = Outcome 4
@@ -189,7 +189,7 @@ describe("ChaseReducerService", () => {
       })
 
       expectAttackerUnharmed(state, result)
-    }),
+    })
 
     it("widens the gap as a stunt", () => {
       // Swerve 12 + Action Value 7 - Defense 15 - Stunt 2 = Outcome 2
@@ -214,7 +214,7 @@ describe("ChaseReducerService", () => {
 
       expectAttackerUnharmed(state, result)
     })
-  }),
+  })
 
   describe("PC vs Boss narrows the gap", () => {
     beforeEach(() => {
@@ -237,7 +237,7 @@ describe("ChaseReducerService", () => {
       expect(result.success).toEqual(false)
 
       expectNoChanges(state, result)
-    }),
+    })
 
     it("fails to narrow the gap as a stunt", () => {
       // Swerve 2 + Action Value 7 - Defense 15
@@ -250,7 +250,7 @@ describe("ChaseReducerService", () => {
       expect(result.success).toEqual(false)
 
       expectNoChanges(state, result)
-    }),
+    })
 
     it("narrows the gap", () => {
       // Swerve 12 + Action Value 7 - Defense 15 = Outcome 4
@@ -273,7 +273,7 @@ describe("ChaseReducerService", () => {
       })
 
       expectAttackerUnharmed(state, result)
-    }),
+    })
 
     it("narrows the gap as a stunt", () => {
       // Swerve 12 + Action Value 7 - Defense 15 - Stunt 2 = Outcome 2
@@ -298,7 +298,7 @@ describe("ChaseReducerService", () => {
 
       expectAttackerUnharmed(state, result)
     })
-  }),
+  })
 
   describe("PC vs Boss sideswipes", () => {
     beforeEach(() => {
@@ -309,7 +309,7 @@ describe("ChaseReducerService", () => {
       state = CRS.setTarget(state, target)
       state.method = ChaseMethod.RAM_SIDESWIPE
       state.edited = true
-    }),
+    })
 
     it("fails to ram/sideswipe the boss", () => {
       // Swerve -1 + Action Value 15 - Defense 15 = Outcome -1
@@ -321,7 +321,7 @@ describe("ChaseReducerService", () => {
       expect(result.success).toEqual(false)
 
       expectNoChanges(state, result)
-    }),
+    })
 
     it("fails to ram/sideswipe the boss as a stunt", () => {
       // Swerve -3 + Action Value 15 - Defense 15 - Stunt 2 = Outcome -1
@@ -334,7 +334,7 @@ describe("ChaseReducerService", () => {
       expect(result.success).toEqual(false)
 
       expectNoChanges(state, result)
-    }),
+    })
 
     it("rams/sideswipes the boss", () => {
       // Swerve 12 + Action Value 7 - Defense 15 = Outcome 4
@@ -355,7 +355,7 @@ describe("ChaseReducerService", () => {
         conditionPoints: 2,
         bump: 4
       })
-    }),
+    })
 
     it("rams/sideswipes the boss as a stunt", () => {
       // Swerve 14 + Action Value 7 - Defense 15 - Stunt 2 = Outcome 4
@@ -382,7 +382,7 @@ describe("ChaseReducerService", () => {
       expect(VS.chasePoints(result.attacker)).toEqual(4)
       expect(VS.conditionPoints(result.attacker)).toEqual(4)
     })
-  }),
+  })
 
   describe("PC vs Mooks evades", () => {
     beforeEach(() => {
@@ -394,7 +394,7 @@ describe("ChaseReducerService", () => {
       state.method = ChaseMethod.EVADE
       state.count = 2
       state.edited = true
-    }),
+    })
 
     it("fails to evade", () => {
       // Swerve 0 + Action Value 7 - Defense 7
@@ -409,7 +409,7 @@ describe("ChaseReducerService", () => {
       expect(result.success).toEqual(false)
 
       expectNoChanges(state, result)
-    }),
+    })
 
     it("evades 1 mook", () => {
       // Swerve 0 + Action Value 7 - Defense 7 = Outcome 0
@@ -430,7 +430,7 @@ describe("ChaseReducerService", () => {
       })
 
       expectAttackerUnharmed(state, result)
-    }),
+    })
 
     it("evades 1 mook as a stunt", () => {
       // Swerve 2 + Action Value 7 - Defense 7 - Stunt 2 = Outcome 0
@@ -452,7 +452,7 @@ describe("ChaseReducerService", () => {
       })
 
       expectAttackerUnharmed(state, result)
-    }),
+    })
 
     it("evades 5 mooks", () => {
       // Swerve 12 + Action Value 7 - Defense 7 = Outcome 12
@@ -473,7 +473,7 @@ describe("ChaseReducerService", () => {
       })
 
       expectAttackerUnharmed(state, result)
-    }),
+    })
 
     it("evades 5 mooks as a sunt", () => {
       state.stunt = true
@@ -497,7 +497,7 @@ describe("ChaseReducerService", () => {
 
       expectAttackerUnharmed(state, result)
     })
-  }),
+  })
 
   describe("PC vs Mooks widens the gap", () => {
     beforeEach(() => {
@@ -509,7 +509,7 @@ describe("ChaseReducerService", () => {
       state.method = ChaseMethod.WIDEN_THE_GAP
       state.count = 2
       state.edited = true
-    }),
+    })
 
     it("fails to widen the gap", () => {
       // Swerve -1 + Action Value 7 - Defense 15
@@ -524,7 +524,7 @@ describe("ChaseReducerService", () => {
       expect(result.success).toEqual(false)
 
       expectNoChanges(state, result)
-    }),
+    })
 
     it("fails to widen the gap as a stunt", () => {
       // Swerve 1 + Action Value 7 - Defense 15 - Stunt 2
@@ -540,7 +540,7 @@ describe("ChaseReducerService", () => {
       expect(result.success).toEqual(false)
 
       expectNoChanges(state, result)
-    }),
+    })
 
     it("widens the gap taking out 1 mook", () => {
       // Swerve 0 + Action Value 7 - Defense 15
@@ -561,7 +561,7 @@ describe("ChaseReducerService", () => {
       // they've widened the gap, they're now "far"
       expect(VS.position(result.attacker)).toEqual("far")
       expect(VS.position(result.target)).toEqual("far")
-    }),
+    })
 
     it("widens the gap taking out 5 mooks", () => {
       // Swerve 12 + Action Value 7 - Defense 15 = Outcome 4
@@ -582,7 +582,7 @@ describe("ChaseReducerService", () => {
       })
 
       expectAttackerUnharmed(state, result)
-    }),
+    })
 
     it("widens the gap taking out 5 mooks as a stunt", () => {
       state.stunt = true
@@ -622,7 +622,7 @@ describe("ChaseReducerService", () => {
 
       expectNoChanges(state, result)
     })
-  }),
+  })
 
   describe("PC vs Mooks narrows the gap", () => {
     beforeEach(() => {
@@ -634,7 +634,7 @@ describe("ChaseReducerService", () => {
       state.method = ChaseMethod.NARROW_THE_GAP
       state.count = 2
       state.edited = true
-    }),
+    })
 
     it("fails to narrow the gap", () => {
       // Swerve -1 + Action Value 7 - Defense 7
@@ -649,7 +649,7 @@ describe("ChaseReducerService", () => {
       expect(result.success).toEqual(false)
 
       expectNoChanges(state, result)
-    }),
+    })
 
     it("narrows the gap taking out 1 mook", () => {
       // Swerve 0 + Action Value 7 - Defense 7
@@ -670,7 +670,7 @@ describe("ChaseReducerService", () => {
       })
 
       expectAttackerUnharmed(state, result)
-    }),
+    })
 
     it("narrows the gap taking out 1 mook as a stunt", () => {
       // Swerve 0 + Action Value 7 - Defense 7
@@ -691,7 +691,7 @@ describe("ChaseReducerService", () => {
       })
 
       expectAttackerUnharmed(state, result)
-    }),
+    })
 
     it("fails to narrow the gap taking out 1 mook as a stunt", () => {
       state.stunt = true
@@ -706,7 +706,7 @@ describe("ChaseReducerService", () => {
       // the attack is a miss
       expect(result.success).toEqual(false)
       expectNoChanges(state, result)
-    }),
+    })
 
     it("narrows the gap taking out 5 mooks", () => {
       // Swerve 12 + Action Value 7 - Defense 7
@@ -727,7 +727,7 @@ describe("ChaseReducerService", () => {
         mooks: 5,
         position: "near"
       })
-    }),
+    })
 
     it("narrows the gap taking out 5 mooks as a stunt", () => {
       state.stunt = true
@@ -750,7 +750,7 @@ describe("ChaseReducerService", () => {
         mooks: 5,
         position: "near"
       })
-    }),
+    })
 
     it("fails to narrow the gap taking out 5 mooks as a stunt", () => {
       state.stunt = true
@@ -766,7 +766,7 @@ describe("ChaseReducerService", () => {
       expect(result.success).toEqual(false)
       expectNoChanges(state, result)
     })
-  }),
+  })
 
   describe("PC vs Mooks sideswipes", () => {
     beforeEach(() => {
@@ -778,7 +778,7 @@ describe("ChaseReducerService", () => {
       state.method = ChaseMethod.RAM_SIDESWIPE
       state.count = 2
       state.edited = true
-    }),
+    })
 
     it("fails to kill any mooks", () => {
       // Swerve -1 + Action Value 7 - Defense 15
@@ -793,7 +793,7 @@ describe("ChaseReducerService", () => {
       expect(result.success).toEqual(false)
 
       expectNoChanges(state, result)
-    }),
+    })
 
     it("sideswipes 1 mook", () => {
       // Swerve 25 + Action Value 7 - Defense 15 = Outcome 17
@@ -813,7 +813,7 @@ describe("ChaseReducerService", () => {
       })
 
       expectAttackerUnharmed(state, result)
-    }),
+    })
 
     it("sideswipes 1 mook as a stunt", () => {
       state.stunt = true
@@ -835,7 +835,7 @@ describe("ChaseReducerService", () => {
       })
 
       expectAttackerUnharmed(state, result)
-    }),
+    })
 
     it("sideswipes 5 mooks", () => {
       // Swerve 25 + Action Value 7 - Defense 20 = Outcome 12
@@ -856,7 +856,7 @@ describe("ChaseReducerService", () => {
       })
 
       expectAttackerUnharmed(state, result)
-    }),
+    })
 
     it("sideswipes 5 mooks as a stunt", () => {
       state.stunt = true
@@ -880,7 +880,7 @@ describe("ChaseReducerService", () => {
 
       expectAttackerUnharmed(state, result)
     })
-  }),
+  })
 
   describe("Mooks vs PC evades", () => {
     beforeEach(() => {
@@ -892,7 +892,7 @@ describe("ChaseReducerService", () => {
       state.method = ChaseMethod.EVADE
       state.count = 2
       state.edited = true
-    }),
+    })
 
     it("fails to evade", () => {
       // Swerve -2 + Action Value 7 - Defense 7
@@ -908,7 +908,7 @@ describe("ChaseReducerService", () => {
       expect(result.success).toEqual(false)
 
       expectNoChanges(state, result)
-    }),
+    })
 
     it("evades", () => {
       // First attack:
@@ -943,7 +943,7 @@ describe("ChaseReducerService", () => {
         conditionPoints: 0
       })
     })
-  }),
+  })
 
   describe("Mooks vs PC widens the gap", () => {
     beforeEach(() => {
@@ -955,7 +955,7 @@ describe("ChaseReducerService", () => {
       state.method = ChaseMethod.WIDEN_THE_GAP
       state.count = 2
       state.edited = true
-    }),
+    })
 
     it("fails to widen the gap", () => {
       // Swerve -2 + Action Value 7 - Defense 7
@@ -971,7 +971,7 @@ describe("ChaseReducerService", () => {
       expect(result.success).toEqual(false)
 
       expectNoChanges(state, result)
-    }),
+    })
 
     it("widens the gap", () => {
       // First attack:
@@ -1008,7 +1008,7 @@ describe("ChaseReducerService", () => {
       })
       expectAttackerUnharmed(state, result)
     })
-  }),
+  })
 
   describe("Mooks vs PC narrows the gap", () => {
     beforeEach(() => {
@@ -1020,7 +1020,7 @@ describe("ChaseReducerService", () => {
       state.method = ChaseMethod.NARROW_THE_GAP
       state.count = 2
       state.edited = true
-    }),
+    })
 
     it("fails to narrow the gap", () => {
       // Swerve -2 + Action Value 7 - Defense 7
@@ -1036,7 +1036,7 @@ describe("ChaseReducerService", () => {
       expect(result.success).toEqual(false)
 
       expectNoChanges(state, result)
-    }),
+    })
 
     it("narrows the gap", () => {
       // First attack:
@@ -1073,7 +1073,7 @@ describe("ChaseReducerService", () => {
       })
       expectAttackerUnharmed(state, result)
     })
-  }),
+  })
 
   describe("Mooks vs PC rams/sideswipes", () => {
     beforeEach(() => {
@@ -1085,7 +1085,7 @@ describe("ChaseReducerService", () => {
       state.method = ChaseMethod.RAM_SIDESWIPE
       state.count = 2
       state.edited = true
-    }),
+    })
 
     it("fails to ram/sideswipe the PC", () => {
       // Swerve -2 + Action Value 7 - Defense 7
@@ -1101,7 +1101,7 @@ describe("ChaseReducerService", () => {
       expect(result.success).toEqual(false)
 
       expectNoChanges(state, result)
-    }),
+    })
 
     it("rams/sideswipes the PC", () => {
       // First attack:
