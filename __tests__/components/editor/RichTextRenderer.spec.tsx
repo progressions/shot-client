@@ -1,8 +1,7 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
 import '@testing-library/jest-dom'
-import { ThemeProvider } from '@mui/material/styles'
-import { theme } from '@/components/StyledFields'
+import { ThemeProvider, createTheme } from '@mui/material/styles'
 import RichTextRenderer from '@/components/editor/RichTextRenderer'
 
 // Mock DOMPurify
@@ -39,6 +38,8 @@ jest.mock('@/components/StyledFields', () => ({
 jest.mock('@/components/editor/Editor.module.scss', () => ({
   richText: 'mock-rich-text-class'
 }))
+
+const theme = createTheme()
 
 const renderWithTheme = (component: React.ReactElement) => {
   return render(
