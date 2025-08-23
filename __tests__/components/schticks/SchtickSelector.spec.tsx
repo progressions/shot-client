@@ -437,7 +437,7 @@ describe('SchtickSelector', () => {
     it('should handle missing character gracefully', async () => {
       // Mock useCharacter to return null character
       const originalCharacter = mockCharacter
-      ;(mockCharacter as any) = null
+      ;(mockCharacter as any) = undefined
 
       renderWithTheme(<SchtickSelector allSchticksState={allSchticksState} dispatchAllSchticks={mockDispatchAllSchticks} />)
 

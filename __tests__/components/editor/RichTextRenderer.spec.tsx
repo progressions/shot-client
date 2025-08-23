@@ -4,11 +4,9 @@ import '@testing-library/jest-dom'
 import { ThemeProvider, createTheme } from '@mui/material/styles'
 import RichTextRenderer from '@/components/editor/RichTextRenderer'
 
-// Mock DOMPurify
-const mockSanitize = jest.fn((html) => html)
-jest.mock('dompurify', () => ({
-  sanitize: mockSanitize
-}))
+// DOMPurify is mocked via __mocks__/dompurify.ts
+import DOMPurify from 'dompurify'
+const mockSanitize = DOMPurify.sanitize as jest.Mock
 
 // Mock contexts
 const mockUseClient = {
@@ -248,15 +246,16 @@ describe('RichTextRenderer', () => {
     })
 
     test('handles missing user context', () => {
-      const mockUseClientWithoutUser = require('@/contexts')
-      mockUseClientWithoutUser.useClient.mockReturnValue({
-        user: null,
-        client: {}
-      })
+      // Temporarily modify the mock user to null
+      const originalUser = mockUseClient.user
+      mockUseClient.user = null as any
       
       renderWithTheme(<RichTextRenderer html="<p>Test</p>" />)
       
       expect(screen.getByTestId('styled-rich-text')).toBeInTheDocument()
+      
+      // Restore original user
+      mockUseClient.user = originalUser
     })
   })
 

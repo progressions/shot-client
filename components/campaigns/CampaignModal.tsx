@@ -16,11 +16,16 @@ interface CampaignModalProps {
 }
 
 export default function CampaignModal({ open, setOpen, campaign:activeCampaign, reload }: CampaignModalProps) {
-  const [campaign, setCampaign] = useState(activeCampaign)
+  const [campaign, setCampaign] = useState(activeCampaign || defaultCampaign)
   const [saving, setSaving] = useState(false)
 
   const { client } = useClient()
   const { toastSuccess, toastError } = useToast()
+
+  // Update local state when prop changes
+  useEffect(() => {
+    setCampaign(activeCampaign || defaultCampaign)
+  }, [activeCampaign])
 
   const handleSubmit = async (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault()
@@ -47,7 +52,10 @@ export default function CampaignModal({ open, setOpen, campaign:activeCampaign, 
   }
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setCampaign((prevState: Campaign) => ({ ...prevState, [event.target.name]: event.target.value }))
+    setCampaign((prevState: Campaign) => ({ 
+      ...prevState || defaultCampaign, 
+      [event.target.name]: event.target.value 
+    }))
   }
 
   return (
@@ -61,8 +69,8 @@ export default function CampaignModal({ open, setOpen, campaign:activeCampaign, 
           <DialogTitle>Campaign</DialogTitle>
           <DialogContent>
             <Stack spacing={2}>
-              <TextField autoFocus name="name" value={campaign.name} label="Title" onChange={handleChange} />
-              <TextField name="description" multiline rows={3} value={campaign.description} label="Description" onChange={handleChange} />
+              <TextField autoFocus name="name" value={campaign?.name || ''} label="Title" onChange={handleChange} />
+              <TextField name="description" multiline rows={3} value={campaign?.description || ''} label="Description" onChange={handleChange} />
             </Stack>
           </DialogContent>
           <DialogActions>

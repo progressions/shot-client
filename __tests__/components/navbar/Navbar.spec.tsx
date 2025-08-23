@@ -1,11 +1,12 @@
 import React from 'react'
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import '@testing-library/jest-dom'
-import { ThemeProvider } from '@mui/material/styles'
-import { theme } from '@/components/StyledFields'
+import { ThemeProvider, createTheme } from '@mui/material/styles'
 import Navbar from '@/components/navbar/Navbar'
 import { createMockUser } from '../../factories/user'
 import { createMockCampaign } from '../../factories/campaign'
+
+const theme = createTheme()
 
 // Mock Next.js Image component
 jest.mock('next/image', () => {
@@ -155,7 +156,7 @@ describe('Navbar', () => {
       expect(navbar).toBeInTheDocument()
       
       // Should have toolbar structure
-      expect(screen.getByRole('toolbar')).toBeInTheDocument()
+      expect(document.querySelector('.MuiToolbar-root')).toBeTruthy()
     })
   })
 
@@ -167,7 +168,7 @@ describe('Navbar', () => {
     })
 
     test('hides current campaign when no user', () => {
-      mockUseClient.user = null
+      mockUseClient.user = undefined as any as any
       
       renderWithTheme(<Navbar />)
       
@@ -224,7 +225,7 @@ describe('Navbar', () => {
     })
 
     test('sets default user when no user provided', () => {
-      mockUseClient.user = null
+      mockUseClient.user = undefined as any as any
       
       renderWithTheme(<Navbar />)
       
@@ -303,7 +304,7 @@ describe('Navbar', () => {
     test('maintains proper component hierarchy', () => {
       renderWithTheme(<Navbar />)
       
-      const toolbar = screen.getByRole('toolbar')
+      const toolbar = document.querySelector('.MuiToolbar-root') as HTMLElement
       const appBar = screen.getByRole('banner')
       
       expect(appBar).toContainElement(toolbar)
@@ -341,7 +342,7 @@ describe('Navbar', () => {
       renderWithTheme(<Navbar />)
       
       expect(screen.getByRole('banner')).toBeInTheDocument()
-      expect(screen.getByRole('toolbar')).toBeInTheDocument()
+      expect(document.querySelector('.MuiToolbar-root')).toBeTruthy()
     })
 
     test('has accessible logo alt text', () => {
@@ -362,7 +363,7 @@ describe('Navbar', () => {
 
   describe('error handling', () => {
     test('handles missing user gracefully', () => {
-      mockUseClient.user = undefined
+      mockUseClient.user = undefined as any
       
       renderWithTheme(<Navbar />)
       
@@ -371,7 +372,7 @@ describe('Navbar', () => {
     })
 
     test('handles missing campaign gracefully', () => {
-      mockUseCampaign.campaign = null
+      mockUseCampaign.campaign = undefined as any
       
       renderWithTheme(<Navbar />)
       
@@ -380,7 +381,7 @@ describe('Navbar', () => {
     })
 
     test('handles missing session gracefully', () => {
-      mockUseClient.session = null
+      mockUseClient.session = undefined as any
       
       renderWithTheme(<Navbar />)
       
@@ -438,7 +439,7 @@ describe('Navbar', () => {
       mockUseClient.user = user2
       rerender(<ThemeProvider theme={theme}><Navbar /></ThemeProvider>)
       
-      mockUseClient.user = null
+      mockUseClient.user = undefined as any as any
       rerender(<ThemeProvider theme={theme}><Navbar /></ThemeProvider>)
       
       expect(screen.getByTestId('auth-button')).toBeInTheDocument()

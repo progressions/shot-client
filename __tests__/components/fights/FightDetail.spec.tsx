@@ -1,11 +1,12 @@
 import React from 'react'
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import '@testing-library/jest-dom'
-import { ThemeProvider } from '@mui/material/styles'
-import { theme } from '@/components/StyledFields'
+import { ThemeProvider, createTheme } from '@mui/material/styles'
 import FightDetail from '@/components/fights/FightDetail'
 import { createMockFight } from '../../factories/fight'
 import { createMockCharacter } from '../../factories/character'
+
+const theme = createTheme()
 
 // Mock contexts
 const mockClient = {
@@ -21,11 +22,13 @@ const mockToast = {
   toastWarning: jest.fn()
 }
 
+const mockUseClient = {
+  client: mockClient,
+  user: { id: 'user-1', gamemaster: true }
+}
+
 jest.mock('@/contexts/ClientContext', () => ({
-  useClient: () => ({
-    client: mockClient,
-    user: { id: 'user-1', gamemaster: true }
-  })
+  useClient: () => mockUseClient
 }))
 
 jest.mock('@/contexts/ToastContext', () => ({
@@ -175,7 +178,7 @@ describe('FightDetail', () => {
     })
 
     test('does not render description section when empty', () => {
-      const fight = createMockFight({ description: null })
+      const fight = createMockFight({ description: undefined })
       
       renderWithTheme(<FightDetail fight={fight} dispatch={mockDispatch} />)
       
@@ -220,11 +223,8 @@ describe('FightDetail', () => {
     })
 
     test('does not render actors links when user is not authenticated', () => {
-      const mockUseClient = require('@/contexts/ClientContext').useClient
-      mockUseClient.mockReturnValue({
-        client: mockClient,
-        user: { id: null } // No user ID
-      })
+      const originalUser = mockUseClient.user
+      mockUseClient.user = { id: undefined } as any // No user ID
       
       const actors = [createMockCharacter({ name: 'Test Actor' })]
       const fight = createMockFight({ actors })
@@ -233,6 +233,9 @@ describe('FightDetail', () => {
       
       // Should still render avatars but not the links section
       expect(screen.getByTestId('character-avatars')).toBeInTheDocument()
+      
+      // Restore original user
+      mockUseClient.user = originalUser
     })
 
     test('calls ReactDOMServer.renderToStaticMarkup for actors', () => {
@@ -274,17 +277,17 @@ describe('FightDetail', () => {
     })
 
     test('hides GM actions for non-gamemaster users', () => {
-      const mockUseClient = require('@/contexts/ClientContext').useClient
-      mockUseClient.mockReturnValue({
-        client: mockClient,
-        user: { id: 'user-1', gamemaster: false }
-      })
+      const originalUser = mockUseClient.user
+      mockUseClient.user = { id: 'user-1', gamemaster: false }
       
       const fight = createMockFight()
       
       renderWithTheme(<FightDetail fight={fight} dispatch={mockDispatch} />)
       
       expect(screen.queryByTestId('gm-only')).not.toBeInTheDocument()
+      
+      // Restore original user
+      mockUseClient.user = originalUser
     })
   })
 
@@ -503,7 +506,7 @@ describe('FightDetail', () => {
 
   describe('edge cases', () => {
     test('handles fight without updated_at', () => {
-      const fight = createMockFight({ updated_at: null })
+      const fight = createMockFight({ updated_at: undefined })
       
       renderWithTheme(<FightDetail fight={fight} dispatch={mockDispatch} />)
       
@@ -512,7 +515,7 @@ describe('FightDetail', () => {
     })
 
     test('handles fight without name', () => {
-      const fight = createMockFight({ name: null })
+      const fight = createMockFight({ name: undefined })
       
       renderWithTheme(<FightDetail fight={fight} dispatch={mockDispatch} />)
       
@@ -520,7 +523,7 @@ describe('FightDetail', () => {
     })
 
     test('handles fight without actors', () => {
-      const fight = createMockFight({ actors: null })
+      const fight = createMockFight({ actors: undefined })
       
       renderWithTheme(<FightDetail fight={fight} dispatch={mockDispatch} />)
       
@@ -545,23 +548,23 @@ describe('FightDetail', () => {
     })
 
     test('handles null user context', () => {
-      const mockUseClient = require('@/contexts/ClientContext').useClient
-      mockUseClient.mockReturnValue({
-        client: mockClient,
-        user: null
-      })
+      const originalUser = mockUseClient.user
+      mockUseClient.user = null as any
       
       const fight = createMockFight()
       
       renderWithTheme(<FightDetail fight={fight} dispatch={mockDispatch} />)
       
       expect(screen.queryByTestId('gm-only')).not.toBeInTheDocument()
+      
+      // Restore original user
+      mockUseClient.user = originalUser
     })
 
     test('handles missing fight ID for deletion', async () => {
       window.confirm = jest.fn(() => true)
       
-      const fight = createMockFight({ id: null, name: 'Test Fight' })
+      const fight = createMockFight({ id: undefined, name: 'Test Fight' })
       
       renderWithTheme(<FightDetail fight={fight} dispatch={mockDispatch} />)
       
@@ -574,7 +577,7 @@ describe('FightDetail', () => {
     })
 
     test('handles missing fight ID for visibility toggle', async () => {
-      const fight = createMockFight({ id: null, active: true })
+      const fight = createMockFight({ id: undefined, active: true })
       
       renderWithTheme(<FightDetail fight={fight} dispatch={mockDispatch} />)
       
@@ -583,7 +586,7 @@ describe('FightDetail', () => {
       
       await waitFor(() => {
         expect(mockClient.updateFight).toHaveBeenCalledWith({
-          id: null,
+          id: undefined,
           active: false
         })
       })

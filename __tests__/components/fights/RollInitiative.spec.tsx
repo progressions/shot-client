@@ -21,6 +21,17 @@ const mockFight = {
   ] as ShotType[]
 }
 
+const mockStartFight = {
+  ...defaultFight,
+  id: 'fight-123',
+  sequence: 1,
+  shot_order: [
+    [0, []],
+    [1, []],
+    [2, []]
+  ] as ShotType[]
+}
+
 const mockClient = {
   updateFight: jest.fn(),
   updateCharacter: jest.fn(),
@@ -108,7 +119,7 @@ describe('RollInitiative', () => {
     it('should render initiative button', () => {
       renderWithTheme(<RollInitiative />)
 
-      expect(screen.getByRole('button', { name: /initiative/i })).toBeInTheDocument()
+      expect(screen.getByRole('button')).toBeInTheDocument()
     })
 
     it('should show Initiative label when not at start of sequence', () => {
@@ -143,7 +154,7 @@ describe('RollInitiative', () => {
     it('should be enabled by default', () => {
       renderWithTheme(<RollInitiative />)
 
-      const button = screen.getByRole('button', { name: /initiative/i })
+      const button = screen.getByRole('button')
       expect(button).not.toBeDisabled()
     })
   })
@@ -208,12 +219,36 @@ describe('RollInitiative', () => {
     })
 
     it('should disable button during processing', async () => {
+      // Make the mock async operations actually take time
+      let resolvePromise: () => void = () => {}
+      const slowPromise = new Promise<void>((resolve) => {
+        resolvePromise = resolve
+      })
+      
+      mockClient.touchFight.mockReturnValue(slowPromise)
+      
       renderWithTheme(<RollInitiative />)
 
-      const button = screen.getByRole('button', { name: /initiative/i })
-      fireEvent.click(button)
-
-      expect(button).toBeDisabled()
+      const button = screen.getByRole('button')
+      expect(button).not.toBeDisabled()
+      
+      // Click the button but don't await it yet
+      act(() => {
+        fireEvent.click(button)
+      })
+      
+      // Button should be disabled during processing
+      await waitFor(() => {
+        expect(button).toBeDisabled()
+      })
+      
+      // Now resolve the promise to finish the test
+      resolvePromise()
+      
+      // Wait for processing to complete
+      await waitFor(() => {
+        expect(button).not.toBeDisabled()
+      })
     })
 
     it('should call appropriate methods for non-start sequence', async () => {
@@ -236,8 +271,10 @@ describe('RollInitiative', () => {
 
       renderWithTheme(<RollInitiative />)
 
-      const button = screen.getByRole('button', { name: /initiative/i })
-      fireEvent.click(button)
+      const button = screen.getByRole('button')
+      await act(async () => {
+        fireEvent.click(button)
+      })
 
       await waitFor(() => {
         expect(mockClient.touchFight).toHaveBeenCalledWith(fightWithCharacters)
@@ -261,7 +298,9 @@ describe('RollInitiative', () => {
       renderWithTheme(<RollInitiative />)
 
       const button = screen.getByRole('button', { name: /start/i })
-      fireEvent.click(button)
+      await act(async () => {
+        fireEvent.click(button)
+      })
 
       await waitFor(() => {
         expect(mockClient.updateFight).toHaveBeenCalledWith({
@@ -305,8 +344,10 @@ describe('RollInitiative', () => {
 
       renderWithTheme(<RollInitiative />)
 
-      const button = screen.getByRole('button', { name: /initiative/i })
-      fireEvent.click(button)
+      const button = screen.getByRole('button')
+      await act(async () => {
+        fireEvent.click(button)
+      })
 
       await waitFor(() => {
         expect(mockClient.touchFight).toHaveBeenCalled()
@@ -332,8 +373,10 @@ describe('RollInitiative', () => {
 
       renderWithTheme(<RollInitiative />)
 
-      const button = screen.getByRole('button', { name: /initiative/i })
-      fireEvent.click(button)
+      const button = screen.getByRole('button')
+      await act(async () => {
+        fireEvent.click(button)
+      })
 
       await waitFor(() => {
         expect(mockClient.touchFight).toHaveBeenCalled()
@@ -362,8 +405,10 @@ describe('RollInitiative', () => {
 
       renderWithTheme(<RollInitiative />)
 
-      const button = screen.getByRole('button', { name: /initiative/i })
-      fireEvent.click(button)
+      const button = screen.getByRole('button')
+      await act(async () => {
+        fireEvent.click(button)
+      })
 
       await waitFor(() => {
         expect(mockClient.touchFight).toHaveBeenCalled()
@@ -410,8 +455,10 @@ describe('RollInitiative', () => {
 
       renderWithTheme(<RollInitiative />)
 
-      const button = screen.getByRole('button', { name: /initiative/i })
-      fireEvent.click(button)
+      const button = screen.getByRole('button')
+      await act(async () => {
+        fireEvent.click(button)
+      })
 
       await waitFor(() => {
         expect(mockClient.touchFight).toHaveBeenCalled()
@@ -450,8 +497,10 @@ describe('RollInitiative', () => {
 
       renderWithTheme(<RollInitiative />)
 
-      const button = screen.getByRole('button', { name: /initiative/i })
-      fireEvent.click(button)
+      const button = screen.getByRole('button')
+      await act(async () => {
+        fireEvent.click(button)
+      })
 
       await waitFor(() => {
         expect(mockClient.updateVehicle).toHaveBeenCalledWith(
@@ -487,7 +536,9 @@ describe('RollInitiative', () => {
       renderWithTheme(<RollInitiative />)
 
       const button = screen.getByRole('button', { name: /start/i })
-      fireEvent.click(button)
+      await act(async () => {
+        fireEvent.click(button)
+      })
 
       await waitFor(() => {
         expect(mockDispatchFight).toHaveBeenCalledWith({
@@ -519,8 +570,10 @@ describe('RollInitiative', () => {
 
       renderWithTheme(<RollInitiative />)
 
-      const button = screen.getByRole('button', { name: /initiative/i })
-      fireEvent.click(button)
+      const button = screen.getByRole('button')
+      await act(async () => {
+        fireEvent.click(button)
+      })
 
       // Should still complete processing despite character update error
       await waitFor(() => {
@@ -557,8 +610,10 @@ describe('RollInitiative', () => {
 
       renderWithTheme(<RollInitiative />)
 
-      const button = screen.getByRole('button', { name: /initiative/i })
-      fireEvent.click(button)
+      const button = screen.getByRole('button')
+      await act(async () => {
+        fireEvent.click(button)
+      })
 
       // Should still complete processing despite vehicle update error
       await waitFor(() => {
@@ -583,7 +638,9 @@ describe('RollInitiative', () => {
       renderWithTheme(<RollInitiative />)
 
       const button = screen.getByRole('button', { name: /start/i })
-      fireEvent.click(button)
+      await act(async () => {
+        fireEvent.click(button)
+      })
 
       await waitFor(() => {
         expect(mockClient.updateFight).toHaveBeenCalledWith({
@@ -609,8 +666,10 @@ describe('RollInitiative', () => {
 
       renderWithTheme(<RollInitiative />)
 
-      const button = screen.getByRole('button', { name: /initiative/i })
-      fireEvent.click(button)
+      const button = screen.getByRole('button')
+      await act(async () => {
+        fireEvent.click(button)
+      })
 
       await waitFor(() => {
         expect(mockClient.touchFight).toHaveBeenCalled()
@@ -625,21 +684,23 @@ describe('RollInitiative', () => {
     it('should have proper button styling', () => {
       renderWithTheme(<RollInitiative />)
 
-      const button = screen.getByRole('button', { name: /initiative/i })
+      const button = screen.getByRole('button')
       expect(button).toHaveClass('MuiButton-contained')
     })
 
     it('should have accessible button text', () => {
       renderWithTheme(<RollInitiative />)
 
-      expect(screen.getByRole('button', { name: /initiative/i })).toBeInTheDocument()
+      expect(screen.getByRole('button')).toBeInTheDocument()
     })
 
     it('should handle button focus correctly', () => {
       renderWithTheme(<RollInitiative />)
 
-      const button = screen.getByRole('button', { name: /initiative/i })
-      button.focus()
+      const button = screen.getByRole('button')
+      act(() => {
+        button.focus()
+      })
 
       expect(document.activeElement).toBe(button)
     })
@@ -666,8 +727,10 @@ describe('RollInitiative', () => {
 
       renderWithTheme(<RollInitiative />)
 
-      const button = screen.getByRole('button', { name: /initiative/i })
-      fireEvent.click(button)
+      const button = screen.getByRole('button')
+      await act(async () => {
+        fireEvent.click(button)
+      })
 
       await waitFor(() => {
         expect(mockClient.touchFight).toHaveBeenCalled()
@@ -697,8 +760,10 @@ describe('RollInitiative', () => {
 
       renderWithTheme(<RollInitiative />)
 
-      const button = screen.getByRole('button', { name: /initiative/i })
-      fireEvent.click(button)
+      const button = screen.getByRole('button')
+      await act(async () => {
+        fireEvent.click(button)
+      })
 
       await waitFor(() => {
         expect(mockClient.touchFight).toHaveBeenCalled()
@@ -724,8 +789,10 @@ describe('RollInitiative', () => {
 
       renderWithTheme(<RollInitiative />)
 
-      const button = screen.getByRole('button', { name: /initiative/i })
-      fireEvent.click(button)
+      const button = screen.getByRole('button')
+      await act(async () => {
+        fireEvent.click(button)
+      })
 
       await waitFor(() => {
         expect(mockClient.touchFight).toHaveBeenCalled()

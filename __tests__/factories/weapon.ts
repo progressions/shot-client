@@ -12,8 +12,7 @@ export function createMockWeapon(overrides: Partial<Weapon> = {}): Weapon {
     description: 'A standard test weapon for unit testing',
     mook_bonus: 0,
     kachunk: false,
-    created_at: '2024-01-01T00:00:00Z',
-    updated_at: '2024-01-01T00:00:00Z',
+    image_url: null,
     ...overrides
   }
 }

@@ -7,8 +7,10 @@ export function createMockSchtick(overrides: Partial<Schtick> = {}): Schtick {
     category: 'Martial Arts',
     path: 'Tiger',
     description: 'A test schtick for unit testing',
-    created_at: '2024-01-01T00:00:00Z',
-    updated_at: '2024-01-01T00:00:00Z',
+    campaign_id: 'test-campaign-1',
+    schtick_id: 'test-schtick-1',
+    prerequisite: {},
+    color: '#2196f3',
     ...overrides
   }
 }

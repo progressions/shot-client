@@ -3,6 +3,26 @@ import { defaultVehicle, defaultCharacter } from "@/types/types"
 import { brick, carolina, shing } from "@/__tests__/factories/Characters"
 import VS from "@/services/VehicleService"
 
+export const createMockVehicle = (overrides: Partial<Vehicle> = {}): Vehicle => {
+  return {
+    ...defaultVehicle,
+    id: "test-vehicle-1",
+    name: "Test Vehicle",
+    active: true,
+    color: "#4caf50",
+    action_values: {
+      ...defaultVehicle.action_values,
+      "Type": "PC",
+      "Acceleration": 7,
+      "Handling": 7,
+      "Squeal": 8,
+      "Frame": 6,
+      "Crunch": 7
+    },
+    ...overrides
+  }
+}
+
 export function pursuer(vehicle: Vehicle, position: string) {
   return VS.chain(vehicle, [
     ["updateActionValue", "Pursuer", "true"],
