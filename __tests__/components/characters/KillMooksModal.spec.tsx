@@ -2,7 +2,7 @@ import React from 'react'
 import { render, screen, fireEvent, waitFor, act } from '@testing-library/react'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 import KillMooksModal from '../../../components/characters/KillMooksModal'
-import { defaultCharacter, defaultFight, defaultUser } from '../../../types/types'
+import { defaultCharacter, defaultFight, defaultUser, CharacterTypes } from '../../../types/types'
 import type { Person, Fight } from '../../../types/types'
 import { FightActions } from '../../../reducers/fightState'
 import CS from '../../../services/CharacterService'
@@ -87,8 +87,12 @@ describe('KillMooksModal', () => {
     ...defaultCharacter,
     id: 'character-123',
     name: 'Mook Squad',
-    category: 'mook' as const,
-    count: 10
+    category: 'character' as const,
+    count: 10,
+    action_values: {
+      ...defaultCharacter.action_values,
+      Type: CharacterTypes.Mook
+    }
   }
 
   const mockVehicle: Person = {
