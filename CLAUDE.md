@@ -4,156 +4,206 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Repository Overview
 
-This is the **legacy-client** - a Next.js 13+ frontend application that serves as the original frontend for the Feng Shui 2 RPG campaign management system. It connects to the Rails API v1 endpoints and is maintained for backward compatibility while the newer shot-client-next uses API v2.
+This is the **legacy-client** - the original Next.js frontend for the Chi War Feng Shui 2 RPG campaign management system. It runs on port 3003 and communicates with the Rails API backend using v1 endpoints. While newer development focuses on shot-client-next, this application is maintained for backward compatibility.
 
 ## Development Commands
 
-### Common Development Tasks
+### Core Development
 ```bash
-npm run dev        # Start development server on port 3001
-npm run build      # Build for production
-npm run start      # Start production server
-npm run lint       # Run ESLint
-npm test           # Run Jest tests
+npm run dev                    # Start development server on port 3003
+npm run build                  # Build for production
+npm run start                  # Start production server
+npm run lint                   # Run ESLint
+npm run test                   # Run Jest tests
 ```
 
-### Test Commands
+### Testing Commands
 ```bash
-npm test                                    # Run all Jest tests
-npm test -- CharacterService.spec.ts       # Run specific test file
-npm test -- --watch                        # Run tests in watch mode
+npm test                              # Run all Jest tests
+npm test -- --watch                  # Run tests in watch mode
+npm test services/CharacterService   # Run specific test file
 ```
 
-## Architecture
+## Architecture Overview
 
-### Framework & Core Technologies
-- **Next.js 13+** with Pages Router (not App Router)
-- **TypeScript** for type safety
-- **Material-UI (MUI) v5** for UI components with custom dark theme
-- **NextAuth.js** for authentication
-- **Jest + ts-jest** for unit testing
-- **Sass/SCSS** for styling
-
-### Key Architectural Patterns
-
-**Pages Router Structure:**
-- `pages/` - Next.js page components with file-based routing
-- `pages/api/` - API routes (primarily NextAuth configuration)
+### Pages Router Structure
+Uses Next.js Pages Router (not App Router) with file-based routing:
+- `pages/` - Route definitions with dynamic segments `[id].tsx`
+- `pages/api/` - API routes (primarily NextAuth)
 - `pages/_app.tsx` - Application wrapper with providers
-- `pages/_document.tsx` - HTML document structure
-
-**Context-Based State Management:**
-- Multiple React contexts for global state (Campaign, Fight, Client, etc.)
-- Provider hierarchy defined in `_app.tsx`
-- Local storage integration for persistence
-
-**Service Layer Architecture:**
-- `services/` - Domain logic and business rules
-- `reducers/` - State transformation logic
-- `utils/Api.ts` - API client with Rails backend integration
-- `utils/Client.ts` - Axios-based HTTP client
-
-**Real-time Communication:**
-- Action Cable integration via `@rails/actioncable`
-- WebSocket connections for live updates
-- Campaign and Fight channels for collaborative features
+- `pages/_document.tsx` - Document structure
 
 ### Component Organization
-
-**Feature-Based Structure:**
+Components are organized by feature domain:
 ```
 components/
-├── characters/     # Character management components
-├── fights/         # Combat/fight management
-├── campaigns/      # Campaign operations
-├── attacks/        # Combat attack system
-├── vehicles/       # Vehicle/chase mechanics
-├── weapons/        # Weapon management
-├── factions/       # Faction system
-└── shared/         # Reusable components
+├── attacks/          # Combat attack system
+├── characters/       # Character management (CRUD, display)
+├── fights/           # Combat encounter management
+├── campaigns/        # Campaign selection and management
+├── vehicles/         # Vehicle system for chase scenes
+├── weapons/          # Weapon management
+├── schticks/         # Special abilities system
+├── editor/           # Rich text editor with mentions
+└── popups/           # Modal popup system
 ```
 
-**Component Patterns:**
-- Feature directories contain List, Show, Form, Modal, and specialized components
-- `edit/` subdirectories for editing interfaces
-- Autocomplete components for entity selection
-- Avatar and Badge components for visual representation
+### State Management Architecture
 
-### Type System
+**Context Providers (Hierarchical):**
+- `SessionProvider` - NextAuth authentication
+- `LocalStorageProvider` - Persistent local storage
+- `ClientProvider` - API client and user state
+- `CampaignProvider` - Current campaign context
+- `FightProvider` - Combat state management
+- `WebSocketProvider` - Real-time connections
+- `ToastProvider` - Notification system
 
-**Comprehensive TypeScript Types:**
-- `types/types.ts` - Complete domain model definitions
-- Union types for character types, positions, etc.
-- Default objects for all entities
-- Complex interfaces for API responses with pagination
-
-**Key Domain Types:**
-- `Character` (union of `Person` and `Vehicle`)
-- `Campaign`, `Fight`, `Faction`, `Party`, `Site`, `Juncture`
-- `Weapon`, `Schtick`, `ActionValues`, `SkillValues`
-- Response wrappers with pagination metadata
+**Key Patterns:**
+- Nested providers in `_app.tsx` establish global state hierarchy
+- Local state with `useState` for component-specific data
+- Reducers in `reducers/` for complex state transitions
+- Services in `services/` for business logic
 
 ### API Integration
 
-**Rails API v1 Client:**
-- Class-based API client in `utils/Api.ts`
-- RESTful endpoint construction
-- Nested resource URL building
-- JWT token authentication
+**API Client (`utils/Api.ts`):**
+- Centralized URL builder for Rails v1 API endpoints
+- Environment-based configuration for server URLs
+- RESTful resource patterns with nested routes
+- WebSocket cable URL generation
 
-**Authentication Flow:**
-- NextAuth.js with custom JWT provider
-- Rails backend authentication via API endpoints
-- Session management with persistent storage
-- Middleware for route protection
+**Authentication:**
+- NextAuth.js for session management
+- JWT tokens for API authentication
+- User context provides authentication state
 
-### Testing Strategy
+**WebSocket Integration:**
+- Action Cable integration via `@rails/actioncable`
+- Real-time fight updates and campaign broadcasts
+- Connection management in `WebSocketContext`
+
+### Service Layer Pattern
+
+**Service Architecture:**
+- `CharacterService.ts` - Character state manipulation and calculations
+- `FightService.ts` - Combat mechanics and initiative
+- `AttackReducerService.ts` - Combat resolution logic
+- `ChaseReducerService.ts` - Vehicle chase mechanics
+- `SharedService.ts` - Common utilities across character/vehicle systems
+
+**Key Service Features:**
+- Functional approach with immutable state updates
+- Chainable operations via `chain()` and `chainz()` methods
+- Domain-specific calculations (wounds, toughness, initiative)
+- Type-safe interfaces for all operations
+
+### Component Patterns
+
+**Feature Component Structure:**
+```
+characters/
+├── CharacterModal.tsx        # CRUD modal
+├── CharacterDetails.tsx      # Display component
+├── CreateCharacter.tsx       # Creation form
+├── edit/EditCharacter.tsx    # Edit forms
+└── show/ShowCharacter.tsx    # Read-only display
+```
+
+**Common Patterns:**
+- Modal-based editing with Material-UI dialogs
+- Autocomplete components for entity selection
+- Avatar components with badges for visual representation
+- Toolbar components for bulk actions
+
+### Rich Text Editor System
+
+**TipTap Integration:**
+- `components/editor/` - Custom rich text editor
+- Mention system for referencing characters/entities
+- WYSIWYG editing with toolbar
+- Sanitized HTML rendering with DOMPurify
+
+### Combat System Architecture
+
+**Combat Flow:**
+1. Fight creation and character/vehicle assignment
+2. Initiative rolling and shot management
+3. Attack resolution with dice mechanics
+4. Real-time updates via WebSocket
+
+**Key Combat Components:**
+- `Initiative.tsx` - Shot order management
+- `attacks/` - Attack resolution system
+- `dice/DiceRoller.tsx` - Exploding dice mechanics
+- `fights/Sequence.tsx` - Turn order display
+
+## Data Models and Types
+
+**Core Entities (`types/types.ts`):**
+- `Character` - Player/NPC with skills, weapons, schticks
+- `Vehicle` - Chase scene participants
+- `Fight` - Combat encounters with shots and locations
+- `Campaign` - Game sessions with users and content
+- `Party` - Groups of characters/vehicles
+- `Weapon/Schtick` - Equipment and special abilities
+
+**Character Types:**
+- `:pc` - Player Characters
+- `:npc` - Non-Player Characters
+- `:boss/:uber_boss` - Major antagonists
+- `:featured_foe` - Notable enemies
+- `:mook` - Weak enemies (handled differently in combat)
+
+## Testing Strategy
 
 **Jest Configuration:**
-- `ts-jest` preset for TypeScript support
-- Path mapping for `@/` imports
-- Test factories for consistent test data
-- Service layer unit tests with mocking
+- TypeScript testing with `ts-jest`
+- Test factories in `__tests__/factories/`
+- Service layer unit tests
+- Integration tests for combat mechanics
 
 **Test Structure:**
-- `__tests__/factories/` - Test data factories
-- `__tests__/helpers/` - Testing utilities
-- `__tests__/services/` - Service layer tests
-- Comprehensive character service test coverage
+```
+__tests__/
+├── factories/        # Test data factories
+├── helpers/          # Test utilities
+└── services/         # Service layer tests
+```
 
-### Styling & Theme
+## Environment Configuration
 
-**Material-UI Theming:**
-- Custom dark theme with blue/red color palette
-- Global styles for dark background
-- Component-level SCSS modules where needed
-- Consistent typography and spacing
+**Required Environment Variables:**
+- `NEXT_PUBLIC_SERVER_URL` - Rails API base URL
+- `NEXT_PUBLIC_WEBSOCKET_URL` - WebSocket server URL
+- NextAuth configuration variables
 
-## Development Workflow
+## Material-UI Theming
 
-### Local Development Setup
-1. Ensure Rails backend is running on port 3000
-2. Install dependencies: `npm install`
-3. Start development server: `npm run dev` (runs on port 3001)
-4. Access application at `http://localhost:3001`
+**Custom Dark Theme:**
+- Dark color palette with blue/red accent colors
+- Custom component overrides
+- Consistent styling across all components
 
-### Code Quality
-- ESLint configuration for Next.js and TypeScript
-- Type checking enforced throughout codebase
-- Consistent import organization with path aliases
-- SCSS modules for component-specific styling
+## Path Aliases and Module Resolution
 
-### Real-time Features
-The application includes extensive real-time functionality:
-- Live campaign updates via WebSocket
-- Fight sequence synchronization
-- Character action broadcasting
-- Multi-user collaborative editing
+**TypeScript Path Mapping:**
+- `@/*` maps to project root
+- Absolute imports for all internal modules
+- Custom type definitions in `types/` directory
 
-## Important Notes
+## Legacy Considerations
 
-- This is the **legacy** frontend - new features should prioritize shot-client-next
-- Uses API v1 endpoints (not the newer v2 API)
-- Maintains backward compatibility for existing users
-- Complex combat system with detailed character mechanics
-- Extensive character customization and management features
+**V1 API Integration:**
+- Uses Rails API v1 endpoints (not v2)
+- Some patterns may differ from newer shot-client-next
+- Maintained for compatibility with existing campaigns
+- Consider migration path when making significant changes
+
+## WebSocket Real-time Features
+
+**Action Cable Channels:**
+- Campaign-wide updates for user management
+- Fight-specific updates for combat state
+- Character/vehicle action broadcasts
+- Toast notifications for user feedback
