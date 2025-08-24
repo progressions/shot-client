@@ -3,8 +3,8 @@
  * These provide flexible mock creation with sensible defaults
  */
 
-import type { Character, Vehicle, Fight, Weapon, Schtick, User, Campaign } from "@/types/types"
-import { CharacterTypes, defaultCharacter, defaultVehicle, defaultFight, defaultWeapon, defaultSchtick, defaultUser, defaultCampaign } from "@/types/types"
+import type { Character, Vehicle, Fight, Weapon, Schtick, User, Campaign, Party, Faction } from "@/types/types"
+import { CharacterTypes, defaultCharacter, defaultVehicle, defaultFight, defaultWeapon, defaultSchtick, defaultUser, defaultCampaign, defaultParty, defaultFaction } from "@/types/types"
 
 /**
  * Creates a mock character with optional overrides
@@ -127,6 +127,35 @@ export const createMockCampaign = (overrides: Partial<Campaign> = {}): Campaign 
     id: "test-campaign-1",
     name: "Test Campaign",
     description: "A test campaign",
+    ...overrides
+  }
+}
+
+/**
+ * Creates a mock party with optional overrides
+ */
+export const createMockParty = (overrides: Partial<Party> = {}): Party => {
+  return {
+    ...defaultParty,
+    id: "test-party-1",
+    name: "Test Party",
+    description: "A test party",
+    characters: [],
+    vehicles: [],
+    ...overrides
+  }
+}
+
+/**
+ * Creates a mock faction with optional overrides
+ */
+export const createMockFaction = (overrides: Partial<Faction> = {}): Faction => {
+  return {
+    ...defaultFaction,
+    id: "test-faction-1",
+    name: "Test Faction",
+    description: "A test faction",
+    active: true,
     ...overrides
   }
 }
