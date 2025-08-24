@@ -1,0 +1,312 @@
+# Chi War Legacy Client Test Strategy
+# Generated from codebase analysis
+
+project:
+  name: chi-war-legacy-client
+  type: nextjs_frontend
+  framework: next_pages_router
+  api_version: v1
+  port: 3003
+
+test_frameworks:
+  unit: jest
+  component: "@testing-library/react"
+  e2e: playwright # Located in parent test-scripts directory
+  
+current_coverage:
+  components: 71 # of 225 total components (31.5%)
+  services: 14 # All 11 services have tests
+  reducers: 3
+  utils: 5
+  contexts: 1
+  
+  coverage_gaps:
+    - pages # No page-level tests
+    - campaigns # Missing campaign management tests
+    - admin # No admin interface tests
+    - editor # Limited rich text editor tests
+    - websocket # No WebSocket integration tests
+
+test_patterns:
+  naming_convention: "*.spec.ts(x)"
+  test_location: "__tests__/"
+  factory_location: "__tests__/factories/"
+  helper_location: "__tests__/helpers/"
+  
+  existing_patterns:
+    - Factory pattern for test data (Characters.ts, Weapons.ts, Vehicles.ts)
+    - Helper modules for complex test scenarios (AttackHelpers, ChaseHelpers)
+    - Service layer unit tests with functional approach
+    - Component tests using React Testing Library
+    - Integration tests for combat mechanics (AttackIntegration, ChaseIntegration)
+
+backend_tests:
+  services:
+    - name: CharacterService
+      path: __tests__/services/CharacterService.spec.ts
+      coverage: comprehensive
+      methods_tested:
+        - skill calculations
+        - attack values
+        - wound management
+        - impairment effects
+        - toughness calculations
+        
+    - name: FightService
+      path: __tests__/services/FightService.spec.ts
+      coverage: comprehensive
+      methods_tested:
+        - initiative rolling
+        - shot management
+        - sequence sorting
+        - fight state transitions
+        
+    - name: AttackReducerService
+      path: __tests__/services/AttackReducerService.spec.ts
+      coverage: comprehensive
+      methods_tested:
+        - attack resolution
+        - damage calculation
+        - mook handling
+        - boxcars/critical handling
+        
+    - name: VehicleService
+      path: __tests__/services/VehicleService.spec.ts
+      coverage: moderate
+      methods_tested:
+        - chase mechanics
+        - position tracking
+        - condition handling
+        
+    - name: CharacterEffectService
+      path: __tests__/services/CharacterEffectService.spec.ts
+      coverage: moderate
+      methods_tested:
+        - effect management
+        - bonus/penalty calculations
+        
+    - name: PartyService
+      path: __tests__/services/PartyService.spec.ts
+      coverage: basic
+      methods_tested:
+        - party management
+        - member operations
+
+component_tests:
+  ui_components:
+    - category: avatars
+      coverage: complete
+      components: [CharacterAvatar, VehicleAvatar, WeaponAvatar, PartyAvatar, SiteAvatar, FactionAvatar, JunctureAvatar]
+      
+    - category: characters
+      coverage: partial
+      tested: [ActionButtons, WoundsDisplay, DeathMarks, CharacterModal, HealModal]
+      missing: [CharacterDetails, ImageDisplay, SchticksDisplay, WeaponsDisplay, SkillsDisplay]
+      
+    - category: attacks
+      coverage: partial
+      tested: [AttackButton, AttackModal, CharactersAutocomplete, WeaponAutocomplete]
+      missing: [Attacker, Target, Results, MookResults, Smackdowns]
+      
+    - category: fights
+      coverage: minimal
+      tested: [FightDetail, RollInitiative, Sequence]
+      missing: [FightModal, Initiative, ShotDisplay, LocationManager]
+      
+    - category: campaigns
+      coverage: minimal
+      tested: [CampaignModal, NameDisplay]
+      missing: [CampaignSelector, CurrentCampaign, PlayerDetails, CreateCampaign]
+      
+    - category: navigation
+      coverage: partial
+      tested: [Navbar, AuthButton, PopupMenu]
+      missing: [Layout integration tests]
+
+e2e_user_journeys:
+  authentication:
+    - name: user_registration
+      path: pages/auth/signup.tsx
+      test_coverage: none
+      critical_paths:
+        - Email signup
+        - Password validation
+        - Email confirmation
+        
+    - name: user_login
+      path: pages/auth/signin.tsx
+      test_coverage: minimal
+      critical_paths:
+        - Email/password login
+        - NextAuth session management
+        - Remember me functionality
+        
+  campaign_management:
+    - name: campaign_creation
+      path: pages/campaigns/index.tsx
+      test_coverage: none
+      critical_paths:
+        - Create new campaign
+        - Set gamemaster
+        - Invite players
+        
+    - name: campaign_activation
+      path: pages/campaigns/[id].tsx
+      test_coverage: none
+      critical_paths:
+        - Select active campaign
+        - Switch between campaigns
+        - View campaign details
+        
+  character_management:
+    - name: character_creation
+      paths: 
+        - pages/characters/index.tsx
+        - components/characters/CreateCharacter.tsx
+      test_coverage: partial
+      critical_paths:
+        - Manual character creation
+        - AI generation (pages/characters/generate.tsx)
+        - CSV upload (pages/characters/upload.tsx)
+        - Archetype selection
+        - Skill assignment
+        
+    - name: character_editing
+      path: pages/characters/[id].tsx
+      test_coverage: minimal
+      critical_paths:
+        - Edit action values
+        - Manage weapons/schticks
+        - Update description
+        - Upload image
+        - Assign to user
+        
+  combat_system:
+    - name: fight_setup
+      path: pages/fights/[id].tsx
+      test_coverage: minimal
+      critical_paths:
+        - Create fight
+        - Add characters/vehicles
+        - Set locations
+        - Roll initiative
+        
+    - name: combat_resolution
+      components:
+        - components/attacks/AttackModal.tsx
+        - components/initiative/Initiative.tsx
+      test_coverage: partial
+      critical_paths:
+        - Attack declaration
+        - Dice rolling mechanics
+        - Damage application
+        - Shot advancement
+        - Mook management
+        
+    - name: chase_scenes
+      components:
+        - components/chases/ChaseModal.tsx
+      test_coverage: moderate
+      critical_paths:
+        - Vehicle positioning
+        - Attack from vehicles
+        - Condition tracking
+        
+  party_management:
+    - name: party_operations
+      path: pages/parties/[id].tsx
+      test_coverage: minimal
+      critical_paths:
+        - Create party
+        - Add/remove members
+        - Assign faction
+        - Party actions in combat
+        
+  world_building:
+    - name: sites_management
+      path: pages/sites/index.tsx
+      test_coverage: none
+      critical_paths:
+        - Create sites
+        - Link to characters
+        - Use in fights
+        
+    - name: factions_junctures
+      paths:
+        - pages/factions/index.tsx
+        - pages/junctures/index.tsx
+      test_coverage: none
+      critical_paths:
+        - Faction assignment
+        - Juncture selection
+
+priority_testing_areas:
+  critical:
+    - Authentication flow (no tests)
+    - Campaign selection/activation (no tests)
+    - Combat mechanics (partial coverage)
+    - Real-time WebSocket updates (no tests)
+    
+  high:
+    - Character CRUD operations (partial)
+    - Fight management (minimal)
+    - Party formation (minimal)
+    
+  medium:
+    - Rich text editor (minimal)
+    - File uploads (no tests)
+    - AI generation (no tests)
+    
+  low:
+    - Admin interface (no tests)
+    - Profile management (no tests)
+
+recommended_actions:
+  immediate:
+    - Add page-level integration tests for critical user flows
+    - Create E2E tests for authentication and campaign activation
+    - Add WebSocket connection tests
+    - Increase character component test coverage
+    
+  short_term:
+    - Complete fight system test coverage
+    - Add campaign management tests
+    - Create integration tests for API client
+    - Add error handling tests
+    
+  long_term:
+    - Achieve 80% component test coverage
+    - Add visual regression tests
+    - Create performance tests for large campaigns
+    - Add accessibility tests
+
+test_commands:
+  unit: "npm test"
+  watch: "npm test -- --watch"
+  coverage: "npm test -- --coverage"
+  specific: "npm test [file_pattern]"
+  e2e: "cd ../test-scripts && node test-*.js"
+
+test_data_setup:
+  factories:
+    - Characters: Complete character objects with all attributes
+    - Vehicles: Vehicle objects for chase scenes
+    - Weapons: Weapon configurations
+    - Campaign: Campaign test data
+    - Fight: Combat encounter data
+    - User: User account data
+    
+  helpers:
+    - AttackHelpers: Combat calculation utilities
+    - ChaseHelpers: Vehicle combat utilities
+    - Helpers: General test utilities
+
+ci_configuration:
+  jest_config: jest.config.js
+  setup_files: jest.setup.ts
+  test_environment: jsdom
+  module_mapper: 
+    "@/": Project root alias
+  ignore_patterns:
+    - __tests__/factories/
+    - __tests__/helpers/

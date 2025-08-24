@@ -3,7 +3,7 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import '@testing-library/jest-dom'
 import { ThemeProvider, createTheme } from '@mui/material/styles'
 import SchtickModal from '@/components/schticks/SchtickModal'
-import { createMockSchtick } from '../../factories/schtick'
+import { createMockSchtick } from '../../factories/MockFactories'
 
 const theme = createTheme()
 

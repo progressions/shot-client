@@ -3,7 +3,7 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import '@testing-library/jest-dom'
 import { ThemeProvider, createTheme } from '@mui/material/styles'
 import CampaignModal from '@/components/campaigns/CampaignModal'
-import { createMockCampaign } from '../../factories/campaign'
+import { createMockCampaign } from '../../factories/MockFactories'
 
 const theme = createTheme()
 

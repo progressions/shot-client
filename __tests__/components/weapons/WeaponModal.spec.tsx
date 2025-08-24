@@ -3,7 +3,7 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import '@testing-library/jest-dom'
 import { ThemeProvider, createTheme } from '@mui/material/styles'
 import WeaponModal from '@/components/weapons/WeaponModal'
-import { createMockWeapon } from '../../factories/weapon'
+import { createMockWeapon } from '../../factories/MockFactories'
 
 const theme = createTheme()
 

@@ -3,7 +3,7 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import '@testing-library/jest-dom'
 import { ThemeProvider, createTheme } from '@mui/material/styles'
 import Sequence from '@/components/fights/Sequence'
-import { createMockFight } from '../../factories/fight'
+import { createMockFight } from '../../factories/MockFactories'
 
 const theme = createTheme()
 

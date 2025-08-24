@@ -3,8 +3,7 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import '@testing-library/jest-dom'
 import { ThemeProvider, createTheme } from '@mui/material/styles'
 import Navbar from '@/components/navbar/Navbar'
-import { createMockUser } from '../../factories/user'
-import { createMockCampaign } from '../../factories/campaign'
+import { createMockUser, createMockCampaign } from '../../factories/MockFactories'
 
 const theme = createTheme()
 
