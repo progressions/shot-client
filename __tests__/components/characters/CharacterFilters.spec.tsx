@@ -32,8 +32,16 @@ describe('CharacterFilters Component', () => {
       meta: {},
       character: null,
       characters: [
-        createMockCharacter({ id: '1', name: 'Test Character 1', character_type: 'pc' }),
-        createMockCharacter({ id: '2', name: 'Test Character 2', character_type: 'npc' })
+        createMockCharacter({ 
+          id: '1', 
+          name: 'Test Character 1', 
+          action_values: { ...createMockCharacter().action_values, Type: 'PC' as any }
+        }),
+        createMockCharacter({ 
+          id: '2', 
+          name: 'Test Character 2', 
+          action_values: { ...createMockCharacter().action_values, Type: 'NPC' as any }
+        })
       ],
       character_type: '',
       faction: { id: '', name: '' },
@@ -275,7 +283,7 @@ describe('CharacterFilters Component', () => {
       const characterWithPerson = createMockCharacter({ 
         id: '2', 
         name: 'Test Person',
-        category: 'person',
+        category: 'character',
         action_values: { Type: 'Human' }
       })
 
